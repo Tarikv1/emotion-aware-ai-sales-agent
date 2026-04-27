@@ -62,3 +62,6 @@ Use that folder to record decisions, methodology changes, and experiment rationa
 
 The main steering document is `docs/thesis/ROADMAP.md`.
 The product-facing brief is `docs/product/PRODUCT_BRIEF.md`.
+=======
+# emotion-aware-ai-sales-agent
+Emotion aware AI sales agent that uses persuasion strategies
