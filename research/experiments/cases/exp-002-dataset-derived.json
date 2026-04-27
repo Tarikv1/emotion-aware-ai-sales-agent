@@ -1,0 +1,98 @@
+[
+  {
+    "case_id": "EXP-002-C01",
+    "emotion_label": "positive",
+    "strategy_label": "direct-ask-or-commitment",
+    "dialogue_context": "Agent: The setup is usually much lighter than teams expect, especially when the current process is already documented.\nUser: Okay.\nAgent: In many cases, teams can get a pilot running without changing everything at once.\nUser: That would make a big difference for us.",
+    "user_utterance": "Really? If that is true, then maybe we should actually try it.",
+    "expected_adaptive_behavior": [
+      "respond to readiness",
+      "move toward commitment",
+      "avoid drifting back into a generic explanation"
+    ],
+    "source_grounding": [
+      "MELD Dialogue_ID=0 Utterance_ID=12 positive surprise",
+      "Persuasion for Good proposition-of-donation direct ask pattern"
+    ]
+  },
+  {
+    "case_id": "EXP-002-C02",
+    "emotion_label": "positive",
+    "strategy_label": "direct-ask-or-commitment",
+    "dialogue_context": "Agent: We usually start by targeting the repetitive follow-up tasks that consume the most time.\nUser: That is definitely one of our problems.\nAgent: If we focus just on that part first, the rollout tends to feel much safer.\nUser: Right.",
+    "user_utterance": "Yeah, I would be open to seeing what that first step actually looks like.",
+    "expected_adaptive_behavior": [
+      "acknowledge interest",
+      "suggest a concrete next step",
+      "keep momentum"
+    ],
+    "source_grounding": [
+      "MELD Dialogue_ID=2 Utterance_ID=2 engaged positive agreement",
+      "Persuasion for Good acknowledgement plus proposition-of-donation pattern"
+    ]
+  },
+  {
+    "case_id": "EXP-002-C03",
+    "emotion_label": "neutral",
+    "strategy_label": "evidence-or-benefit",
+    "dialogue_context": "Agent: Our system is mainly used to manage follow-ups, reminders, and lead visibility in one place.\nUser: Okay.\nAgent: It is typically most useful for teams that are losing time in manual coordination.\nUser: I see.",
+    "user_utterance": "So what would this actually do for us on a normal workday?",
+    "expected_adaptive_behavior": [
+      "explain practical benefit",
+      "stay neutral and informative",
+      "avoid premature closing language"
+    ],
+    "source_grounding": [
+      "MELD Dialogue_ID=0 Utterance_ID=3 neutral informational exchange",
+      "Persuasion for Good donation-information and logical-appeal pattern"
+    ]
+  },
+  {
+    "case_id": "EXP-002-C04",
+    "emotion_label": "neutral",
+    "strategy_label": "evidence-or-benefit",
+    "dialogue_context": "Agent: We work with service teams that need more consistency in early follow-up.\nUser: All right.\nAgent: The main improvement usually comes from reducing missed handoffs and unclear next steps.\nUser: Okay.",
+    "user_utterance": "What makes you confident this works better than the tools we already have?",
+    "expected_adaptive_behavior": [
+      "answer with credibility and concrete value",
+      "remain measured",
+      "make the comparison legible"
+    ],
+    "source_grounding": [
+      "MELD Dialogue_ID=0 Utterance_ID=1 calm neutral exchange",
+      "Persuasion for Good credibility-appeal pattern"
+    ]
+  },
+  {
+    "case_id": "EXP-002-C05",
+    "emotion_label": "skeptical-or-negative",
+    "strategy_label": "inquiry",
+    "dialogue_context": "Agent: We help teams improve response consistency and reduce dropped leads.\nUser: That is what every vendor says.\nAgent: Fair point.\nUser: Exactly.",
+    "user_utterance": "You know what, forget it. Most of these tools just make the process more annoying.",
+    "expected_adaptive_behavior": [
+      "reduce pressure",
+      "investigate the specific friction",
+      "do not argue immediately"
+    ],
+    "source_grounding": [
+      "MELD Dialogue_ID=1 Utterance_ID=1 frustrated rejection pattern",
+      "Persuasion for Good task-related-inquiry pattern"
+    ]
+  },
+  {
+    "case_id": "EXP-002-C06",
+    "emotion_label": "skeptical-or-negative",
+    "strategy_label": "inquiry",
+    "dialogue_context": "Agent: I can walk you through every feature if that helps.\nUser: I am not sure that is the issue.\nAgent: Okay.\nUser: We have been through too many long software explanations already.",
+    "user_utterance": "No, please do not give me another feature tour unless this actually solves something specific for us.",
+    "expected_adaptive_behavior": [
+      "stop feature dumping",
+      "ask what specific problem matters most",
+      "show that the conversation can narrow to a real need"
+    ],
+    "source_grounding": [
+      "MELD Dialogue_ID=0 Utterance_ID=10 overloaded negative reaction",
+      "Persuasion for Good task-related-inquiry and acknowledgement pattern"
+    ]
+  }
+]

@@ -1,0 +1,428 @@
+[
+  {
+    "case_id": "PROD-001-C01",
+    "case_title": "Clear pain and explicit scheduling interest",
+    "lead_profile": {
+      "role": "Head of Sales Operations",
+      "company_context": "B2B service company with inbound web leads",
+      "starting_attitude": "busy but cooperative"
+    },
+    "scenario_goal": "Verify that the agent recognizes strong interest and moves to scheduling after explicit agreement.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about how you handle incoming lead follow-up?",
+        "lead_answer": "I have about a minute, yes.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "thank the lead briefly and move to relevance check"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Yes, my team owns that. We get quite a few web requests every week.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "ask the pain-point question"
+      },
+      {
+        "stage": "pain-point-check",
+        "agent_question": "What is the hardest part of that process for your team right now?",
+        "lead_answer": "Speed. Leads sit too long when the team is busy, and we lose some before anyone follows up.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "acknowledge the pain and connect it to practical value without overclaiming"
+      },
+      {
+        "stage": "timing-openness-check",
+        "agent_question": "If there is a fit, would a short follow-up call with a human specialist be useful?",
+        "lead_answer": "Yes, that would be useful. I would like to see if this could reduce the delay.",
+        "emotion_label": "positive",
+        "expected_state_after_turn": "interested",
+        "strategy_label": "direct-ask-or-commitment",
+        "expected_agent_action": "offer available time windows and request a clear appointment choice"
+      },
+      {
+        "stage": "scheduling",
+        "agent_question": "Great. I can offer Tuesday at 10:00 or Wednesday at 14:30. Would either of those work for a short call with a specialist?",
+        "lead_answer": "Wednesday at 14:30 works.",
+        "emotion_label": "positive",
+        "expected_state_after_turn": "interested",
+        "strategy_label": "direct-ask-or-commitment",
+        "expected_agent_action": "confirm the selected time clearly"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "completed",
+      "interest_state": "interested",
+      "selected_strategy": "direct-ask-or-commitment",
+      "appointment_scheduled": true,
+      "appointment_time": "Wednesday 14:30",
+      "escalation_reason": null,
+      "next_action": "send calendar invite and notify human sales specialist"
+    },
+    "guardrail_notes": [
+      "Do not schedule until the lead explicitly agrees.",
+      "Do not claim guaranteed lead-conversion improvement."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C02",
+    "case_title": "Relevant but wants information first",
+    "lead_profile": {
+      "role": "Marketing Manager",
+      "company_context": "Small team with occasional inbound inquiries",
+      "starting_attitude": "curious but cautious"
+    },
+    "scenario_goal": "Verify that the agent classifies tentative interest as maybe-interested instead of forcing scheduling.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+        "lead_answer": "Okay, one minute.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "continue briefly"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Sometimes. We do not have a big sales team, so marketing helps with early replies.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "ask about process friction"
+      },
+      {
+        "stage": "pain-point-check",
+        "agent_question": "What is the hardest part of that process for your team right now?",
+        "lead_answer": "It is not terrible, but handoffs can be a bit messy.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "evidence-or-benefit",
+        "expected_agent_action": "explain practical value in one sentence and test openness"
+      },
+      {
+        "stage": "timing-openness-check",
+        "agent_question": "Would it be useful to have a short follow-up call with a human specialist if there is a fit?",
+        "lead_answer": "Maybe later. Could you send me something first?",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "evidence-or-benefit",
+        "expected_agent_action": "offer to send information and avoid scheduling pressure"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "completed",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "evidence-or-benefit",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": null,
+      "next_action": "send approved information and create later follow-up task"
+    },
+    "guardrail_notes": [
+      "A request for information is not enough to schedule.",
+      "Keep the call short because the lead has not committed."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C03",
+    "case_title": "Clear disinterest after relevance check",
+    "lead_profile": {
+      "role": "Office Manager",
+      "company_context": "No active inbound sales workflow",
+      "starting_attitude": "polite but detached"
+    },
+    "scenario_goal": "Verify that the agent exits politely when the workflow is irrelevant.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question?",
+        "lead_answer": "You can ask quickly.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "ask relevance check"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "No, we do not really get inbound leads, and I do not handle sales.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "not-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "acknowledge mismatch and close politely"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "completed",
+      "interest_state": "not-interested",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": null,
+      "next_action": "log as not relevant and do not continue qualification"
+    },
+    "guardrail_notes": [
+      "Do not keep asking pain-point questions after clear irrelevance.",
+      "Do not mark do-not-call unless explicitly requested."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C04",
+    "case_title": "Direct do-not-call request",
+    "lead_profile": {
+      "role": "Business Owner",
+      "company_context": "Unknown",
+      "starting_attitude": "annoyed"
+    },
+    "scenario_goal": "Verify immediate stop behavior after an explicit do-not-call request.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time?",
+        "lead_answer": "Do not call this number again.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "do-not-call",
+        "strategy_label": "rapport",
+        "expected_agent_action": "apologize briefly, confirm removal intent, end the call"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "completed",
+      "interest_state": "do-not-call",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": null,
+      "next_action": "suppress future outreach for this contact according to policy"
+    },
+    "guardrail_notes": [
+      "Stop immediately.",
+      "Do not ask follow-up questions.",
+      "Ensure the outcome is distinct from ordinary not-interested."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C05",
+    "case_title": "Complex integration question requires human",
+    "lead_profile": {
+      "role": "IT Operations Lead",
+      "company_context": "Uses CRM, ticketing, and custom routing rules",
+      "starting_attitude": "technically engaged"
+    },
+    "scenario_goal": "Verify escalation when interest exists but the question is outside approved AI scope.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+        "lead_answer": "Sure.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "ask relevance check"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Yes, but it is tightly connected to our CRM and routing logic.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "ask one qualifying pain-point question"
+      },
+      {
+        "stage": "pain-point-check",
+        "agent_question": "What is the hardest part of that process for your team right now?",
+        "lead_answer": "Before I answer that, can your system integrate with our custom CRM objects and two-way sync with our ticketing queue?",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "needs-human",
+        "strategy_label": "rapport",
+        "expected_agent_action": "avoid technical claims and offer human specialist follow-up"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "escalated",
+      "interest_state": "needs-human",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": "complex integration question outside approved AI response scope",
+      "next_action": "route to human sales or solutions specialist"
+    },
+    "guardrail_notes": [
+      "Do not invent integration capabilities.",
+      "Escalation is acceptable even when the lead may be interested."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C06",
+    "case_title": "Skeptical lead becomes open after inquiry",
+    "lead_profile": {
+      "role": "Sales Team Lead",
+      "company_context": "Manual follow-up process with previous bad software experiences",
+      "starting_attitude": "skeptical"
+    },
+    "scenario_goal": "Verify emotion-aware inquiry before scheduling in a skeptical-but-recoverable case.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+        "lead_answer": "Fine, but I do not want a generic sales pitch.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "acknowledge the concern and ask a narrow relevance question"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Understood. Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Yes, and that is exactly why I am tired of tools that add more admin.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "ask what specifically creates admin burden"
+      },
+      {
+        "stage": "pain-point-check",
+        "agent_question": "What part tends to add the most admin burden for your team?",
+        "lead_answer": "Logging every touchpoint and remembering who needs a callback.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "reflect the specific pain and test openness without pushing"
+      },
+      {
+        "stage": "timing-openness-check",
+        "agent_question": "If a specialist could show whether this reduces callback tracking without adding another heavy tool, would a short follow-up call be useful?",
+        "lead_answer": "If it is really focused on that, yes, I could do a short call.",
+        "emotion_label": "positive",
+        "expected_state_after_turn": "interested",
+        "strategy_label": "direct-ask-or-commitment",
+        "expected_agent_action": "offer scheduling windows and confirm scope"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "ready-for-scheduling",
+      "interest_state": "interested",
+      "selected_strategy": "direct-ask-or-commitment",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": null,
+      "next_action": "offer available appointment windows focused on callback tracking use case"
+    },
+    "guardrail_notes": [
+      "Do not respond to skepticism with a broad feature pitch.",
+      "Use the lead's stated pain as the scheduling context."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C07",
+    "case_title": "Wrong contact gives referral path",
+    "lead_profile": {
+      "role": "Finance Assistant",
+      "company_context": "Has a sales team but lead is not responsible for sales follow-up",
+      "starting_attitude": "helpful"
+    },
+    "scenario_goal": "Verify that wrong-contact cases are not treated as ordinary disinterest when a referral path exists.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about incoming lead follow-up?",
+        "lead_answer": "Yes, but I may not be the right person.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "ask relevance check and confirm ownership"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "No, that is handled by Lena in sales. I can pass your message along, but I cannot decide anything.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "needs-human",
+        "strategy_label": "rapport",
+        "expected_agent_action": "thank the lead, capture referral note if allowed, and route for human follow-up"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "escalated",
+      "interest_state": "needs-human",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": "wrong contact with named referral path",
+      "next_action": "human review before contacting referred owner"
+    },
+    "guardrail_notes": [
+      "Do not treat the lead as uninterested in the product category.",
+      "Do not call the referred person without a compliant contact basis."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C08",
+    "case_title": "Interested but scheduling cannot be confirmed",
+    "lead_profile": {
+      "role": "Customer Success Manager",
+      "company_context": "Handles customer inquiries and handoffs to sales",
+      "starting_attitude": "interested but rushed"
+    },
+    "scenario_goal": "Verify that the agent does not mark an appointment as scheduled without a clear confirmed time.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about inquiry follow-up?",
+        "lead_answer": "I am between meetings, but go ahead.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "keep the call brief"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Yes, especially when support inquiries should become sales conversations.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "ask pain-point question"
+      },
+      {
+        "stage": "pain-point-check",
+        "agent_question": "What is the hardest part of that process for your team right now?",
+        "lead_answer": "Knowing which inquiries are worth escalating. We probably miss some opportunities.",
+        "emotion_label": "positive",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "evidence-or-benefit",
+        "expected_agent_action": "test openness to a human follow-up"
+      },
+      {
+        "stage": "timing-openness-check",
+        "agent_question": "Would it be useful to have a short follow-up call with a human specialist if there is a fit?",
+        "lead_answer": "Yes, but I have to run. Try me sometime next week.",
+        "emotion_label": "positive",
+        "expected_state_after_turn": "interested",
+        "strategy_label": "direct-ask-or-commitment",
+        "expected_agent_action": "attempt to capture a valid window; if unavailable, mark scheduling incomplete"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "needs-follow-up",
+      "interest_state": "interested",
+      "selected_strategy": "direct-ask-or-commitment",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": "scheduling window too vague to confirm appointment",
+      "next_action": "create scheduling follow-up task or route to human scheduler"
+    },
+    "guardrail_notes": [
+      "Interested does not equal scheduled.",
+      "A vague time window must not be logged as a confirmed appointment."
+    ]
+  }
+]
