@@ -68,6 +68,25 @@ lead_role: Head of Sales Operations
 company_context: B2B service company with inbound web leads
 starting_attitude: busy but cooperative
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Head of Sales Operations",
+    "company_context": "B2B service company with inbound web leads",
+    "starting_attitude": "busy but cooperative"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -168,6 +187,35 @@ scenario_goal: Verify that the agent recognizes strong interest and moves to sch
 lead_role: Head of Sales Operations
 company_context: B2B service company with inbound web leads
 starting_attitude: busy but cooperative
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Head of Sales Operations",
+    "company_context": "B2B service company with inbound web leads",
+    "starting_attitude": "busy but cooperative"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about how you handle incoming lead follow-up?",
+      "lead_answer": "I have about a minute, yes.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": "Wednesday 14:30",
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -270,6 +318,44 @@ lead_role: Head of Sales Operations
 company_context: B2B service company with inbound web leads
 starting_attitude: busy but cooperative
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Head of Sales Operations",
+    "company_context": "B2B service company with inbound web leads",
+    "starting_attitude": "busy but cooperative"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about how you handle incoming lead follow-up?",
+      "lead_answer": "I have about a minute, yes.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, my team owns that. We get quite a few web requests every week.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": "Wednesday 14:30",
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -371,6 +457,53 @@ lead_role: Head of Sales Operations
 company_context: B2B service company with inbound web leads
 starting_attitude: busy but cooperative
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Head of Sales Operations",
+    "company_context": "B2B service company with inbound web leads",
+    "starting_attitude": "busy but cooperative"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about how you handle incoming lead follow-up?",
+      "lead_answer": "I have about a minute, yes.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, my team owns that. We get quite a few web requests every week.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "pain-point-check",
+      "agent_question": "What is the hardest part of that process for your team right now?",
+      "lead_answer": "Speed. Leads sit too long when the team is busy, and we lose some before anyone follows up.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "pain-point-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "skeptical-or-negative",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": "Wednesday 14:30",
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -471,6 +604,62 @@ scenario_goal: Verify that the agent recognizes strong interest and moves to sch
 lead_role: Head of Sales Operations
 company_context: B2B service company with inbound web leads
 starting_attitude: busy but cooperative
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Head of Sales Operations",
+    "company_context": "B2B service company with inbound web leads",
+    "starting_attitude": "busy but cooperative"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about how you handle incoming lead follow-up?",
+      "lead_answer": "I have about a minute, yes.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, my team owns that. We get quite a few web requests every week.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "pain-point-check",
+      "agent_question": "What is the hardest part of that process for your team right now?",
+      "lead_answer": "Speed. Leads sit too long when the team is busy, and we lose some before anyone follows up.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "continue"
+    },
+    {
+      "stage": "timing-openness-check",
+      "agent_question": "If there is a fit, would a short follow-up call with a human specialist be useful?",
+      "lead_answer": "Yes, that would be useful. I would like to see if this could reduce the delay.",
+      "detected_emotion": "positive",
+      "interest_state": "interested",
+      "selected_strategy": "direct-ask-or-commitment",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "timing-openness-check",
+  "current_interest_state": "interested",
+  "current_emotion_label": "positive",
+  "current_strategy": "direct-ask-or-commitment",
+  "appointment_status": "offered-or-ready",
+  "appointment_time": "Wednesday 14:30",
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -619,6 +808,25 @@ lead_role: Marketing Manager
 company_context: Small team with occasional inbound inquiries
 starting_attitude: curious but cautious
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Marketing Manager",
+    "company_context": "Small team with occasional inbound inquiries",
+    "starting_attitude": "curious but cautious"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -719,6 +927,35 @@ scenario_goal: Verify that the agent classifies tentative interest as maybe-inte
 lead_role: Marketing Manager
 company_context: Small team with occasional inbound inquiries
 starting_attitude: curious but cautious
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Marketing Manager",
+    "company_context": "Small team with occasional inbound inquiries",
+    "starting_attitude": "curious but cautious"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Okay, one minute.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -821,6 +1058,44 @@ lead_role: Marketing Manager
 company_context: Small team with occasional inbound inquiries
 starting_attitude: curious but cautious
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Marketing Manager",
+    "company_context": "Small team with occasional inbound inquiries",
+    "starting_attitude": "curious but cautious"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Okay, one minute.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Sometimes. We do not have a big sales team, so marketing helps with early replies.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -921,6 +1196,53 @@ scenario_goal: Verify that the agent classifies tentative interest as maybe-inte
 lead_role: Marketing Manager
 company_context: Small team with occasional inbound inquiries
 starting_attitude: curious but cautious
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Marketing Manager",
+    "company_context": "Small team with occasional inbound inquiries",
+    "starting_attitude": "curious but cautious"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Okay, one minute.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Sometimes. We do not have a big sales team, so marketing helps with early replies.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "pain-point-check",
+      "agent_question": "What is the hardest part of that process for your team right now?",
+      "lead_answer": "It is not terrible, but handoffs can be a bit messy.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "evidence-or-benefit",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "pain-point-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "evidence-or-benefit",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -1069,6 +1391,25 @@ lead_role: Office Manager
 company_context: No active inbound sales workflow
 starting_attitude: polite but detached
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Office Manager",
+    "company_context": "No active inbound sales workflow",
+    "starting_attitude": "polite but detached"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -1169,6 +1510,35 @@ scenario_goal: Verify that the agent exits politely when the workflow is irrelev
 lead_role: Office Manager
 company_context: No active inbound sales workflow
 starting_attitude: polite but detached
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Office Manager",
+    "company_context": "No active inbound sales workflow",
+    "starting_attitude": "polite but detached"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question?",
+      "lead_answer": "You can ask quickly.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -1316,6 +1686,25 @@ scenario_goal: Verify immediate stop behavior after an explicit do-not-call requ
 lead_role: Business Owner
 company_context: Unknown
 starting_attitude: annoyed
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Business Owner",
+    "company_context": "Unknown",
+    "starting_attitude": "annoyed"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -1465,6 +1854,25 @@ lead_role: IT Operations Lead
 company_context: Uses CRM, ticketing, and custom routing rules
 starting_attitude: technically engaged
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "IT Operations Lead",
+    "company_context": "Uses CRM, ticketing, and custom routing rules",
+    "starting_attitude": "technically engaged"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -1566,6 +1974,35 @@ lead_role: IT Operations Lead
 company_context: Uses CRM, ticketing, and custom routing rules
 starting_attitude: technically engaged
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "IT Operations Lead",
+    "company_context": "Uses CRM, ticketing, and custom routing rules",
+    "starting_attitude": "technically engaged"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Sure.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -1666,6 +2103,44 @@ scenario_goal: Verify escalation when interest exists but the question is outsid
 lead_role: IT Operations Lead
 company_context: Uses CRM, ticketing, and custom routing rules
 starting_attitude: technically engaged
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "IT Operations Lead",
+    "company_context": "Uses CRM, ticketing, and custom routing rules",
+    "starting_attitude": "technically engaged"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Sure.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, but it is tightly connected to our CRM and routing logic.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -1814,6 +2289,25 @@ lead_role: Sales Team Lead
 company_context: Manual follow-up process with previous bad software experiences
 starting_attitude: skeptical
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Team Lead",
+    "company_context": "Manual follow-up process with previous bad software experiences",
+    "starting_attitude": "skeptical"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -1914,6 +2408,35 @@ scenario_goal: Verify emotion-aware inquiry before scheduling in a skeptical-but
 lead_role: Sales Team Lead
 company_context: Manual follow-up process with previous bad software experiences
 starting_attitude: skeptical
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Team Lead",
+    "company_context": "Manual follow-up process with previous bad software experiences",
+    "starting_attitude": "skeptical"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Fine, but I do not want a generic sales pitch.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "skeptical-or-negative",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -2016,6 +2539,44 @@ lead_role: Sales Team Lead
 company_context: Manual follow-up process with previous bad software experiences
 starting_attitude: skeptical
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Team Lead",
+    "company_context": "Manual follow-up process with previous bad software experiences",
+    "starting_attitude": "skeptical"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Fine, but I do not want a generic sales pitch.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Understood. Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, and that is exactly why I am tired of tools that add more admin.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "skeptical-or-negative",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -2116,6 +2677,53 @@ scenario_goal: Verify emotion-aware inquiry before scheduling in a skeptical-but
 lead_role: Sales Team Lead
 company_context: Manual follow-up process with previous bad software experiences
 starting_attitude: skeptical
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Team Lead",
+    "company_context": "Manual follow-up process with previous bad software experiences",
+    "starting_attitude": "skeptical"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+      "lead_answer": "Fine, but I do not want a generic sales pitch.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Understood. Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, and that is exactly why I am tired of tools that add more admin.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "pain-point-check",
+      "agent_question": "What part tends to add the most admin burden for your team?",
+      "lead_answer": "Logging every touchpoint and remembering who needs a callback.",
+      "detected_emotion": "skeptical-or-negative",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "pain-point-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "skeptical-or-negative",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -2264,6 +2872,25 @@ lead_role: Finance Assistant
 company_context: Has a sales team but lead is not responsible for sales follow-up
 starting_attitude: helpful
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Finance Assistant",
+    "company_context": "Has a sales team but lead is not responsible for sales follow-up",
+    "starting_attitude": "helpful"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -2364,6 +2991,35 @@ scenario_goal: Verify that wrong-contact cases are not treated as ordinary disin
 lead_role: Finance Assistant
 company_context: Has a sales team but lead is not responsible for sales follow-up
 starting_attitude: helpful
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Finance Assistant",
+    "company_context": "Has a sales team but lead is not responsible for sales follow-up",
+    "starting_attitude": "helpful"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about incoming lead follow-up?",
+      "lead_answer": "Yes, but I may not be the right person.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -2512,6 +3168,25 @@ lead_role: Customer Success Manager
 company_context: Handles customer inquiries and handoffs to sales
 starting_attitude: interested but rushed
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Customer Success Manager",
+    "company_context": "Handles customer inquiries and handoffs to sales",
+    "starting_attitude": "interested but rushed"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -2612,6 +3287,35 @@ scenario_goal: Verify that the agent does not mark an appointment as scheduled w
 lead_role: Customer Success Manager
 company_context: Handles customer inquiries and handoffs to sales
 starting_attitude: interested but rushed
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Customer Success Manager",
+    "company_context": "Handles customer inquiries and handoffs to sales",
+    "starting_attitude": "interested but rushed"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about inquiry follow-up?",
+      "lead_answer": "I am between meetings, but go ahead.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -2714,6 +3418,44 @@ lead_role: Customer Success Manager
 company_context: Handles customer inquiries and handoffs to sales
 starting_attitude: interested but rushed
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Customer Success Manager",
+    "company_context": "Handles customer inquiries and handoffs to sales",
+    "starting_attitude": "interested but rushed"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about inquiry follow-up?",
+      "lead_answer": "I am between meetings, but go ahead.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, especially when support inquiries should become sales conversations.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -2814,6 +3556,53 @@ scenario_goal: Verify that the agent does not mark an appointment as scheduled w
 lead_role: Customer Success Manager
 company_context: Handles customer inquiries and handoffs to sales
 starting_attitude: interested but rushed
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Customer Success Manager",
+    "company_context": "Handles customer inquiries and handoffs to sales",
+    "starting_attitude": "interested but rushed"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about inquiry follow-up?",
+      "lead_answer": "I am between meetings, but go ahead.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, especially when support inquiries should become sales conversations.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    },
+    {
+      "stage": "pain-point-check",
+      "agent_question": "What is the hardest part of that process for your team right now?",
+      "lead_answer": "Knowing which inquiries are worth escalating. We probably miss some opportunities.",
+      "detected_emotion": "positive",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "evidence-or-benefit",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "pain-point-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "positive",
+  "current_strategy": "evidence-or-benefit",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -2962,6 +3751,25 @@ lead_role: Operations Manager
 company_context: Receives inbound requests but lead is unavailable during the call
 starting_attitude: busy but not hostile
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Operations Manager",
+    "company_context": "Receives inbound requests but lead is unavailable during the call",
+    "starting_attitude": "busy but not hostile"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -3109,6 +3917,25 @@ lead_role: Sales Manager
 company_context: Has a basic process that is acceptable for now
 starting_attitude: matter-of-fact
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Manager",
+    "company_context": "Has a basic process that is acceptable for now",
+    "starting_attitude": "matter-of-fact"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -3210,6 +4037,35 @@ lead_role: Sales Manager
 company_context: Has a basic process that is acceptable for now
 starting_attitude: matter-of-fact
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Manager",
+    "company_context": "Has a basic process that is acceptable for now",
+    "starting_attitude": "matter-of-fact"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about incoming lead follow-up?",
+      "lead_answer": "Sure, very quickly.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -3310,6 +4166,44 @@ scenario_goal: Verify that relevance alone does not become interest when the lea
 lead_role: Sales Manager
 company_context: Has a basic process that is acceptable for now
 starting_attitude: matter-of-fact
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Sales Manager",
+    "company_context": "Has a basic process that is acceptable for now",
+    "starting_attitude": "matter-of-fact"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about incoming lead follow-up?",
+      "lead_answer": "Sure, very quickly.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "continue"
+    },
+    {
+      "stage": "relevance-check",
+      "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+      "lead_answer": "Yes, our sales team handles it directly.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "inquiry",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "inquiry",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 
@@ -3458,6 +4352,25 @@ lead_role: Managing Director
 company_context: Likely decision-maker with limited patience
 starting_attitude: direct
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Managing Director",
+    "company_context": "Likely decision-maker with limited patience",
+    "starting_attitude": "direct"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -3605,6 +4518,25 @@ lead_role: Customer Support Lead
 company_context: Handles customer inquiries involving personal data
 starting_attitude: concerned
 
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Customer Support Lead",
+    "company_context": "Handles customer inquiries involving personal data",
+    "starting_attitude": "concerned"
+  },
+  "conversation_so_far": [],
+  "current_stage": "not-started",
+  "current_interest_state": "unknown",
+  "current_emotion_label": "unknown",
+  "current_strategy": "none",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+
 Current turn:
 
 Agent question:
@@ -3705,6 +4637,35 @@ scenario_goal: Verify escalation when the conversation touches privacy or compli
 lead_role: Customer Support Lead
 company_context: Handles customer inquiries involving personal data
 starting_attitude: concerned
+
+Accumulated call state:
+
+{
+  "lead_profile": {
+    "role": "Customer Support Lead",
+    "company_context": "Handles customer inquiries involving personal data",
+    "starting_attitude": "concerned"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about customer inquiry follow-up?",
+      "lead_answer": "One minute is fine.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "next_action": "ask-follow-up"
+    }
+  ],
+  "current_stage": "opening-permission",
+  "current_interest_state": "maybe-interested",
+  "current_emotion_label": "neutral",
+  "current_strategy": "rapport",
+  "appointment_status": "not-offered",
+  "appointment_time": null,
+  "escalation_flags": [],
+  "suppression_requested": false
+}
 
 Current turn:
 

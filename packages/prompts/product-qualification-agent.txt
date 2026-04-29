@@ -39,6 +39,10 @@ Case:
 
 {case_context}
 
+Accumulated call state:
+
+{accumulated_call_state}
+
 Current turn:
 
 Agent question:

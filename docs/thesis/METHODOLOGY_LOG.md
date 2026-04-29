@@ -16,6 +16,126 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-04-29 - SQLite prototype import
+
+- Objective: create the first local persistence layer for the product MVP simulation records
+- Action taken:
+  - added a SQLite schema for leads, call sessions, qualification answers, turn decisions, call outcomes, appointments, and escalations
+  - implemented an importer that loads `PROD-001-db-records.json` into SQLite
+  - generated a query report proving retrieval of interested leads, do-not-call leads, appointments, escalations, and turn-level decisions
+- Data used:
+  - `research/experiments/generated/PROD-001-db-records.json`
+  - `docs/product/LEAD_DATABASE_DESIGN.md`
+- Output created:
+  - `db/sqlite_schema.sql`
+  - `scripts/import_simulation_records.py`
+  - `docs/product/SQLITE_PROTOTYPE.md`
+  - `research/experiments/generated/PROD-001.sqlite`
+  - `research/experiments/generated/PROD-001-sqlite-report.md`
+- What was learned:
+  - the synthetic simulation records fit cleanly into a relational schema
+  - the current records support the product queries needed for the first MVP workflow
+  - SQLite is sufficient for local prototype work before a production backend is needed
+- Why it matters for the thesis:
+  - it demonstrates a concrete logging and outcome-storage path for the integrated prototype
+- Open questions:
+  - whether future live model outputs should be stored alongside reference labels
+  - how production privacy, retention, and access-control rules should be implemented
+
+### 2026-04-29 - Database-shaped simulation export
+
+- Objective: connect the product simulation runner to the lead database design without introducing a real database yet
+- Action taken:
+  - added an optional `--export-records` flag to `scripts/run_product_simulation.py`
+  - exported synthetic reference records for leads, call sessions, qualification answers, turn decisions, call outcomes, appointments, and escalations
+  - documented the export command in the lead database design
+- Data used:
+  - `research/experiments/cases/prod-001-qualification-simulation.json`
+  - `docs/product/LEAD_DATABASE_DESIGN.md`
+  - `docs/product/SIMULATION_CONTRACT.md`
+- Output created:
+  - `research/experiments/generated/PROD-001-db-records.json`
+- What was learned:
+  - the simulation artifacts can now be shaped like future product persistence records
+  - appointment and escalation records can be derived cleanly from the final `CallOutcome`
+- Why it matters for the thesis:
+  - it makes the integrated prototype more concrete by linking state-aware conversation simulation to auditable outcome logging
+- Open questions:
+  - whether the first real persistence layer should be SQLite or Postgres
+  - how much transcript text should be stored once real calls exist
+
+### 2026-04-29 - Accumulated-state simulation runner
+
+- Objective: prevent the product simulation runner from treating each customer turn as an isolated exchange
+- Action taken:
+  - updated the product qualification prompt to include accumulated call state
+  - updated `scripts/run_product_simulation.py` to build state across prior turns
+  - regenerated the evaluation packet so later turns include prior questions, answers, states, strategies, appointment status, escalation flags, and suppression status
+- Data used:
+  - `research/experiments/cases/prod-001-qualification-simulation.json`
+  - `packages/prompts/product-qualification-agent.txt`
+  - `docs/product/SIMULATION_CONTRACT.md`
+- Output created:
+  - updated `scripts/run_product_simulation.py`
+  - updated `research/experiments/generated/PROD-001-evaluation-packet.md`
+- What was learned:
+  - the simulation prompt can now represent the current customer conversation more realistically
+  - the runner is closer to the eventual product database model, where `CallSession` accumulates state across turns
+- Why it matters for the thesis:
+  - it improves the integrated prototype path by making state-aware strategy selection explicit at the turn level
+- Open questions:
+  - how to export accumulated-state runs into database-shaped JSON records
+  - whether future live model execution should compare each candidate turn against reference labels automatically
+
+### 2026-04-29 - Lead database design
+
+- Objective: define how the product should store leads, qualification answers, turn decisions, call outcomes, appointments, and escalations
+- Action taken:
+  - created a product database design aligned with the simulation `CallOutcome` contract
+  - defined core entities for lead identity, accumulated call state, per-turn answers, agent decisions, appointment records, and escalation records
+  - documented privacy boundaries so real customer data is not committed to the repository
+  - updated the simulation contract to require accumulated dialogue state in future runner revisions
+- Data used:
+  - `docs/product/CLIENT_MVP_WORKFLOW.md`
+  - `docs/product/SIMULATION_CONTRACT.md`
+  - `docs/data/DATA_USAGE_POLICY.md`
+  - `research/experiments/PROD-001-first-simulation-pass.md`
+- Output created:
+  - `docs/product/LEAD_DATABASE_DESIGN.md`
+- What was learned:
+  - the database should preserve both final outcomes and the turn-level reasoning trail
+  - the simulation runner should eventually export records in the same shape that the product database will persist
+  - accumulated call state is necessary for realistic product behavior
+- Why it matters for the thesis:
+  - it strengthens the integrated prototype path by connecting emotion/state estimation, strategy selection, and product outcome logging
+- Open questions:
+  - which database technology to use for the first prototype
+  - whether raw transcripts should be stored or replaced by summaries and structured answers
+  - how long production call records should be retained
+
+### 2026-04-29 - First product simulation dry run
+
+- Objective: test the product simulation contract on representative qualification cases before live model execution
+- Action taken:
+  - selected three representative cases from `PROD-001`: happy-path scheduling, do-not-call, and privacy escalation
+  - manually produced candidate final outcomes using the simulation contract and product qualification prompt
+  - compared candidate outcomes against expected reference labels and guardrails
+- Data used:
+  - `research/experiments/cases/prod-001-qualification-simulation.json`
+  - `research/experiments/generated/PROD-001-evaluation-packet.md`
+  - `docs/product/SIMULATION_CONTRACT.md`
+- Output created:
+  - `research/experiments/PROD-001-first-simulation-pass.md`
+- What was learned:
+  - the current schema is usable for first-pass state, strategy, scheduling, and escalation evaluation
+  - the prompt and runner should eventually include accumulated dialogue state rather than treating each turn mostly in isolation
+  - the final `CallOutcome` fields are strong enough to inform the planned lead database design
+- Why it matters for the thesis:
+  - this gives the product-prototype workflow an initial evaluation trail while keeping the limitation clear that no live model was run yet
+- Open questions:
+  - whether the first live execution should use a model API or a deterministic rule engine
+  - how to store future candidate outputs so they can feed directly into the product lead database
+
 ### 2026-04-28 - Product simulation contract and runner
 
 - Objective: turn the product simulation case set into a runnable evaluation workflow

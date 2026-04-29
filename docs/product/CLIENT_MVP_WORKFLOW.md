@@ -137,3 +137,5 @@ This gives the product a concrete path while keeping implementation manageable.
 Use `QUALIFICATION_QUESTION_FLOW.md` as the first concrete question-and-decision layer for this workflow.
 
 The simulation contract is defined in `SIMULATION_CONTRACT.md`.
+
+The first lead and outcome persistence design is defined in `LEAD_DATABASE_DESIGN.md`.

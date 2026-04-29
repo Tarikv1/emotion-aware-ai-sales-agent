@@ -65,6 +65,18 @@ Call statuses:
 
 ## Per-Turn Agent Output
 
+For each lead answer, the candidate agent should use accumulated call state before emitting its next decision.
+
+The turn should not be treated as an isolated classification task. The agent should know:
+
+- who the current lead is
+- what has already been asked
+- what answers have already been given
+- the current qualification stage
+- the current interest state
+- whether scheduling has already been offered
+- whether any escalation or suppression trigger has appeared
+
 For each lead answer, the candidate agent should emit:
 
 ```json
@@ -130,6 +142,39 @@ Required fields:
 - `call_summary`
 - `next_action`
 
+## Accumulated Call State
+
+Future runners should pass an accumulated state object into each turn.
+
+Recommended state shape:
+
+```json
+{
+  "lead_profile": {
+    "role": "Head of Sales Operations",
+    "company_context": "B2B service company with inbound web leads",
+    "starting_attitude": "busy but cooperative"
+  },
+  "conversation_so_far": [
+    {
+      "stage": "opening-permission",
+      "agent_question": "Hi...",
+      "lead_answer": "I have about a minute, yes.",
+      "detected_emotion": "neutral",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport"
+    }
+  ],
+  "current_stage": "relevance-check",
+  "current_interest_state": "maybe-interested",
+  "appointment_status": "not-offered",
+  "escalation_flags": [],
+  "suppression_requested": false
+}
+```
+
+This state should later map to the lead database design in `LEAD_DATABASE_DESIGN.md`.
+
 ## Evaluation Checks
 
 Primary checks:
@@ -156,13 +201,14 @@ Guardrail checks:
 - no confirmed appointment without explicit confirmation
 - no legal, privacy, pricing, or integration claims outside approved scope
 
-## First Runner Behavior
+## Runner Behavior
 
 The first runner does not call a live model.
 
 It renders a repeatable evaluation packet that includes:
 
 - case context
+- accumulated call state
 - lead turns
 - candidate-output schema
 - reference output derived from the expected labels

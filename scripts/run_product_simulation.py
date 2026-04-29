@@ -14,6 +14,7 @@ ALLOWED_STRATEGIES = {
     "direct-ask-or-commitment",
 }
 ALLOWED_CALL_STATUSES = {"completed", "escalated", "ready-for-scheduling", "needs-follow-up"}
+SIMULATION_TIMESTAMP = "2026-04-29T00:00:00Z"
 
 
 def load_text(path: Path) -> str:
@@ -90,6 +91,252 @@ def reference_call_outcome(case: dict) -> dict:
     return outcome
 
 
+def lead_contact_status(outcome: dict) -> str:
+    interest_state = outcome["interest_state"]
+    if interest_state == "do-not-call":
+        return "do-not-call"
+    if outcome.get("appointment_scheduled"):
+        return "appointment-scheduled"
+    if interest_state == "interested":
+        return "qualified"
+    if interest_state == "maybe-interested":
+        return "called"
+    if interest_state == "needs-human":
+        return "needs-human"
+    if interest_state == "not-interested":
+        return "not-interested"
+    return "called"
+
+
+def normalized_answer_for(turn: dict) -> dict:
+    return {
+        "stage": turn["stage"],
+        "expected_state_after_answer": turn["expected_state_after_turn"],
+    }
+
+
+def initial_call_state(case: dict) -> dict:
+    return {
+        "lead_profile": case["lead_profile"],
+        "conversation_so_far": [],
+        "current_stage": "not-started",
+        "current_interest_state": "unknown",
+        "current_emotion_label": "unknown",
+        "current_strategy": "none",
+        "appointment_status": "not-offered",
+        "appointment_time": None,
+        "escalation_flags": [],
+        "suppression_requested": False,
+    }
+
+
+def appointment_status_for(turn: dict, outcome: dict) -> str:
+    if turn["stage"] == "scheduling" and outcome.get("appointment_scheduled"):
+        return "confirmed"
+    if turn["expected_state_after_turn"] == "interested":
+        return "offered-or-ready"
+    return "not-offered"
+
+
+def escalation_flags_for(turn: dict, outcome: dict) -> list[str]:
+    flags = []
+    if turn["expected_state_after_turn"] == "needs-human":
+        reason = outcome.get("escalation_reason") or "needs human review"
+        flags.append(reason)
+    return flags
+
+
+def update_call_state(state: dict, turn: dict, reference: dict, outcome: dict) -> dict:
+    updated = dict(state)
+    updated["conversation_so_far"] = [
+        *state["conversation_so_far"],
+        {
+            "stage": turn["stage"],
+            "agent_question": turn["agent_question"],
+            "lead_answer": turn["lead_answer"],
+            "detected_emotion": reference["detected_emotion"],
+            "interest_state": reference["interest_state"],
+            "selected_strategy": reference["selected_strategy"],
+            "next_action": reference["next_action"],
+        },
+    ]
+    updated["current_stage"] = turn["stage"]
+    updated["current_interest_state"] = reference["interest_state"]
+    updated["current_emotion_label"] = reference["detected_emotion"]
+    updated["current_strategy"] = reference["selected_strategy"]
+    updated["appointment_status"] = appointment_status_for(turn, outcome)
+    if outcome.get("appointment_scheduled") and outcome.get("appointment_time"):
+        updated["appointment_time"] = outcome["appointment_time"]
+    updated["escalation_flags"] = [*state["escalation_flags"], *escalation_flags_for(turn, outcome)]
+    updated["suppression_requested"] = state["suppression_requested"] or reference["interest_state"] == "do-not-call"
+    return updated
+
+
+def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
+    records = {
+        "metadata": {
+            "source": "product-synthetic",
+            "source_case_file": source_cases_path.as_posix(),
+            "generated_by": "scripts/run_product_simulation.py",
+            "generated_at": SIMULATION_TIMESTAMP,
+            "record_mode": "reference-simulation",
+            "privacy_note": "Synthetic simulation records only. Do not store real customer data in this repository.",
+        },
+        "leads": [],
+        "call_sessions": [],
+        "qualification_answers": [],
+        "turn_decisions": [],
+        "call_outcomes": [],
+        "appointments": [],
+        "escalations": [],
+    }
+
+    for case_index, case in enumerate(cases, start=1):
+        outcome = reference_call_outcome(case)
+        profile = case["lead_profile"]
+        lead_id = f"lead-{case['case_id'].lower()}"
+        call_id = f"call-{case['case_id'].lower()}"
+        outcome_id = f"outcome-{case['case_id'].lower()}"
+
+        records["leads"].append(
+            {
+                "lead_id": lead_id,
+                "full_name": f"Synthetic Lead {case_index:02d}",
+                "phone_number": None,
+                "email": None,
+                "company_name": profile["company_context"],
+                "role_title": profile["role"],
+                "source": "product-synthetic-simulation",
+                "region": None,
+                "language": "en",
+                "contact_status": lead_contact_status(outcome),
+                "consent_status": "unknown",
+                "do_not_call": outcome["interest_state"] == "do-not-call",
+                "do_not_call_reason": outcome["next_action"] if outcome["interest_state"] == "do-not-call" else None,
+                "preferred_contact_time": None,
+                "owner_user_id": None,
+                "created_at": SIMULATION_TIMESTAMP,
+                "updated_at": SIMULATION_TIMESTAMP,
+            }
+        )
+
+        state = initial_call_state(case)
+        for turn_index, turn in enumerate(case["turns"], start=1):
+            reference = reference_turn_output(turn, turn_index == len(case["turns"]), case["expected_outcome"])
+            answer_id = f"answer-{case['case_id'].lower()}-{turn_index:02d}"
+            decision_id = f"decision-{case['case_id'].lower()}-{turn_index:02d}"
+
+            records["qualification_answers"].append(
+                {
+                    "answer_id": answer_id,
+                    "call_id": call_id,
+                    "lead_id": lead_id,
+                    "stage": turn["stage"],
+                    "question_text": turn["agent_question"],
+                    "answer_text": turn["lead_answer"],
+                    "normalized_answer": normalized_answer_for(turn),
+                    "detected_emotion": reference["detected_emotion"],
+                    "interest_state_after_answer": reference["interest_state"],
+                    "selected_strategy": reference["selected_strategy"],
+                    "confidence": reference["confidence"],
+                    "created_at": SIMULATION_TIMESTAMP,
+                }
+            )
+
+            records["turn_decisions"].append(
+                {
+                    "decision_id": decision_id,
+                    "call_id": call_id,
+                    "lead_id": lead_id,
+                    "turn_index": turn_index,
+                    "stage": reference["stage"],
+                    "detected_emotion": reference["detected_emotion"],
+                    "interest_state": reference["interest_state"],
+                    "selected_strategy": reference["selected_strategy"],
+                    "next_action": reference["next_action"],
+                    "agent_response": reference["agent_response"],
+                    "confidence": reference["confidence"],
+                    "rationale": reference["rationale"],
+                    "guardrail_flags": case.get("guardrail_notes", []) if turn_index == len(case["turns"]) else [],
+                    "created_at": SIMULATION_TIMESTAMP,
+                }
+            )
+            state = update_call_state(state, turn, reference, case["expected_outcome"])
+
+        records["call_sessions"].append(
+            {
+                "call_id": call_id,
+                "lead_id": lead_id,
+                "channel": "simulation",
+                "started_at": SIMULATION_TIMESTAMP,
+                "ended_at": SIMULATION_TIMESTAMP,
+                "call_status": outcome["call_status"],
+                "current_stage": state["current_stage"],
+                "current_interest_state": state["current_interest_state"],
+                "current_emotion_label": state["current_emotion_label"],
+                "current_strategy": state["current_strategy"],
+                "confidence": 0.8,
+                "transcript_storage_mode": "structured-synthetic",
+                "transcript_text": None,
+                "call_summary": outcome["call_summary"],
+                "created_by": "simulation-runner",
+                "created_at": SIMULATION_TIMESTAMP,
+            }
+        )
+
+        records["call_outcomes"].append(
+            {
+                "outcome_id": outcome_id,
+                "call_id": call_id,
+                "lead_id": lead_id,
+                "call_status": outcome["call_status"],
+                "interest_state": outcome["interest_state"],
+                "selected_strategy": outcome["selected_strategy"],
+                "appointment_scheduled": outcome["appointment_scheduled"],
+                "appointment_time": outcome["appointment_time"],
+                "escalation_reason": outcome["escalation_reason"],
+                "call_summary": outcome["call_summary"],
+                "next_action": outcome["next_action"],
+                "created_at": SIMULATION_TIMESTAMP,
+            }
+        )
+
+        if outcome.get("appointment_scheduled"):
+            records["appointments"].append(
+                {
+                    "appointment_id": f"appointment-{case['case_id'].lower()}",
+                    "lead_id": lead_id,
+                    "call_id": call_id,
+                    "scheduled_time": outcome["appointment_time"],
+                    "timezone": None,
+                    "assigned_sales_agent_id": None,
+                    "appointment_status": "confirmed",
+                    "confirmation_text": outcome["next_action"],
+                    "calendar_event_id": None,
+                    "created_at": SIMULATION_TIMESTAMP,
+                    "updated_at": SIMULATION_TIMESTAMP,
+                }
+            )
+
+        if outcome.get("escalation_reason"):
+            records["escalations"].append(
+                {
+                    "escalation_id": f"escalation-{case['case_id'].lower()}",
+                    "lead_id": lead_id,
+                    "call_id": call_id,
+                    "escalation_reason": outcome["escalation_reason"],
+                    "severity": "medium",
+                    "assigned_to": None,
+                    "status": "open",
+                    "notes": outcome["next_action"],
+                    "created_at": SIMULATION_TIMESTAMP,
+                    "resolved_at": None,
+                }
+            )
+
+    return records
+
+
 def validate_cases(cases: list[dict]) -> list[str]:
     errors = []
     seen_ids = set()
@@ -125,9 +372,10 @@ def validate_cases(cases: list[dict]) -> list[str]:
     return errors
 
 
-def render_prompt(template: str, case: dict, turn: dict) -> str:
+def render_prompt(template: str, case: dict, turn: dict, state: dict) -> str:
     return template.format(
         case_context=case_context(case),
+        accumulated_call_state=json.dumps(state, indent=2),
         agent_question=turn["agent_question"],
         lead_answer=turn["lead_answer"],
         stage=turn["stage"],
@@ -146,9 +394,10 @@ def build_case_section(case: dict, template: str) -> str:
     ]
 
     outcome = case["expected_outcome"]
+    state = initial_call_state(case)
     for index, turn in enumerate(case["turns"], start=1):
         reference = reference_turn_output(turn, index == len(case["turns"]), outcome)
-        prompt = render_prompt(template, case, turn)
+        prompt = render_prompt(template, case, turn, state)
         lines.extend(
             [
                 f"### Turn {index}: `{turn['stage']}`",
@@ -180,6 +429,7 @@ def build_case_section(case: dict, template: str) -> str:
                 "",
             ]
         )
+        state = update_call_state(state, turn, reference, outcome)
 
     lines.extend(
         [
@@ -228,6 +478,10 @@ def main():
         default="packages/prompts/product-qualification-agent.txt",
         help="Path to the product qualification agent prompt template.",
     )
+    parser.add_argument(
+        "--export-records",
+        help="Optional path to write database-shaped synthetic simulation records as JSON.",
+    )
     args = parser.parse_args()
 
     cases_path = Path(args.cases)
@@ -257,6 +511,12 @@ def main():
     sections = [build_case_section(case, template) for case in cases]
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(header + sections), encoding="utf-8")
+
+    if args.export_records:
+        records_path = Path(args.export_records)
+        records = build_database_records(cases, cases_path)
+        records_path.parent.mkdir(parents=True, exist_ok=True)
+        records_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

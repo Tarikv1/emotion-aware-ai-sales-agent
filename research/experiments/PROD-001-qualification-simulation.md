@@ -95,8 +95,27 @@ Runnable packet generation completed.
 
 - `research/experiments/generated/PROD-001-simulation-packet.md` renders the scenario scripts.
 - `research/experiments/generated/PROD-001-evaluation-packet.md` renders prompts, reference structured outputs, candidate-output slots, and manual checks.
+- `research/experiments/generated/PROD-001-db-records.json` exports database-shaped synthetic reference records.
+- `research/experiments/PROD-001-first-simulation-pass.md` records the first three-case dry run.
 
 Live model execution has not been run yet.
+
+Database-shaped export counts:
+
+- Leads: 12
+- Call sessions: 12
+- Qualification answers: 32
+- Turn decisions: 32
+- Call outcomes: 12
+- Appointments: 1
+- Escalations: 5
+
+SQLite import completed:
+
+- `research/experiments/generated/PROD-001.sqlite`
+- `research/experiments/generated/PROD-001-sqlite-report.md`
+
+The report verifies retrieval of interested leads, do-not-call leads, appointments, escalations, and turn-level decisions.
 
 ## Observations
 
