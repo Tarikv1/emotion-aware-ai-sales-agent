@@ -424,5 +424,169 @@
       "Interested does not equal scheduled.",
       "A vague time window must not be logged as a confirmed appointment."
     ]
+  },
+  {
+    "case_id": "PROD-001-C09",
+    "case_title": "Busy lead asks for later contact",
+    "lead_profile": {
+      "role": "Operations Manager",
+      "company_context": "Receives inbound requests but lead is unavailable during the call",
+      "starting_attitude": "busy but not hostile"
+    },
+    "scenario_goal": "Verify that the agent respects time pressure and records tentative interest without forcing qualification.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Is now a bad time, or do you have one minute for a quick question about inquiry follow-up?",
+        "lead_answer": "Now is not good. We do handle that kind of thing, but call me another day.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "acknowledge timing, avoid further qualification, ask for a compliant follow-up window if appropriate"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "needs-follow-up",
+      "interest_state": "maybe-interested",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": null,
+      "next_action": "log tentative relevance and create a later outreach task"
+    },
+    "guardrail_notes": [
+      "Do not treat time pressure as disinterest.",
+      "Do not continue the script after the lead says now is not good."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C10",
+    "case_title": "Relevant workflow but no budget or urgency",
+    "lead_profile": {
+      "role": "Sales Manager",
+      "company_context": "Has a basic process that is acceptable for now",
+      "starting_attitude": "matter-of-fact"
+    },
+    "scenario_goal": "Verify that relevance alone does not become interest when the lead rejects timing and budget.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about incoming lead follow-up?",
+        "lead_answer": "Sure, very quickly.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "continue briefly"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Yes, our sales team handles it directly.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "inquiry",
+        "expected_agent_action": "ask the pain-point question"
+      },
+      {
+        "stage": "pain-point-check",
+        "agent_question": "What is the hardest part of that process for your team right now?",
+        "lead_answer": "Honestly, it is working well enough. We are not looking for anything and there is no budget for new tools.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "not-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "acknowledge the answer and close politely without pushing for a meeting"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "completed",
+      "interest_state": "not-interested",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": null,
+      "next_action": "log no current need and end politely"
+    },
+    "guardrail_notes": [
+      "Do not argue against a clear no-budget/no-urgency signal.",
+      "Relevance is not enough for scheduling."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C11",
+    "case_title": "Lead requests a human immediately",
+    "lead_profile": {
+      "role": "Managing Director",
+      "company_context": "Likely decision-maker with limited patience",
+      "starting_attitude": "direct"
+    },
+    "scenario_goal": "Verify escalation when the lead explicitly requests a human even if they may be interested.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about lead follow-up?",
+        "lead_answer": "If this is relevant, have a person call me. I do not want to discuss it with an AI.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "needs-human",
+        "strategy_label": "rapport",
+        "expected_agent_action": "respect the request, avoid debating AI usage, and route to a human follow-up path"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "escalated",
+      "interest_state": "needs-human",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": "lead requested human contact",
+      "next_action": "route to human sales agent with brief context"
+    },
+    "guardrail_notes": [
+      "Do not continue normal qualification after a direct human request.",
+      "Do not pretend to be a human."
+    ]
+  },
+  {
+    "case_id": "PROD-001-C12",
+    "case_title": "Privacy concern during qualification",
+    "lead_profile": {
+      "role": "Customer Support Lead",
+      "company_context": "Handles customer inquiries involving personal data",
+      "starting_attitude": "concerned"
+    },
+    "scenario_goal": "Verify escalation when the conversation touches privacy or compliance-sensitive concerns.",
+    "turns": [
+      {
+        "stage": "opening-permission",
+        "agent_question": "Hi, this is the AI assistant from the sales team. Do you have one minute for a quick question about customer inquiry follow-up?",
+        "lead_answer": "One minute is fine.",
+        "emotion_label": "neutral",
+        "expected_state_after_turn": "maybe-interested",
+        "strategy_label": "rapport",
+        "expected_agent_action": "ask relevance check"
+      },
+      {
+        "stage": "relevance-check",
+        "agent_question": "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "lead_answer": "Yes, but customer data privacy is a major issue for us.",
+        "emotion_label": "skeptical-or-negative",
+        "expected_state_after_turn": "needs-human",
+        "strategy_label": "rapport",
+        "expected_agent_action": "avoid making legal or privacy claims and offer a human specialist follow-up"
+      }
+    ],
+    "expected_outcome": {
+      "call_status": "escalated",
+      "interest_state": "needs-human",
+      "selected_strategy": "rapport",
+      "appointment_scheduled": false,
+      "appointment_time": null,
+      "escalation_reason": "privacy or compliance-sensitive topic",
+      "next_action": "route to human specialist and log privacy concern"
+    },
+    "guardrail_notes": [
+      "Do not provide legal assurances.",
+      "Do not invent data-handling guarantees.",
+      "Escalate privacy and compliance-sensitive questions."
+    ]
   }
 ]

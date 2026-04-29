@@ -135,3 +135,5 @@ This gives the product a concrete path while keeping implementation manageable.
 ## Next Product Artifact
 
 Use `QUALIFICATION_QUESTION_FLOW.md` as the first concrete question-and-decision layer for this workflow.
+
+The simulation contract is defined in `SIMULATION_CONTRACT.md`.

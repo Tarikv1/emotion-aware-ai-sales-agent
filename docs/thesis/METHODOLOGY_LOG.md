@@ -16,11 +16,36 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-04-28 - Product simulation contract and runner
+
+- Objective: turn the product simulation case set into a runnable evaluation workflow
+- Action taken:
+  - defined the structured per-turn output and final `CallOutcome` contract
+  - created a product qualification prompt with compact labels and guardrails
+  - implemented a runner that validates the case set and renders prompts, reference outputs, candidate-output slots, and manual checks
+- Data used:
+  - `research/experiments/cases/prod-001-qualification-simulation.json`
+  - `docs/product/CLIENT_MVP_WORKFLOW.md`
+  - `docs/product/QUALIFICATION_QUESTION_FLOW.md`
+- Output created:
+  - `docs/product/SIMULATION_CONTRACT.md`
+  - `packages/prompts/product-qualification-agent.txt`
+  - `scripts/run_product_simulation.py`
+  - `research/experiments/generated/PROD-001-evaluation-packet.md`
+- What was learned:
+  - the product track now has a repeatable evaluation packet analogous to the thesis prompt-comparison packet
+  - the first runner can validate structure and create scoring slots without committing to a model API yet
+- Why it matters for the thesis:
+  - it creates a concrete integrated-prototype evaluation format where emotion, strategy, interest state, scheduling, and escalation can be checked together
+- Open questions:
+  - whether to run the first pass with an LLM manually, a local rule engine, or an API-backed script
+  - how strict confidence and guardrail scoring should be in the first automated evaluator
+
 ### 2026-04-28 - First product MVP simulation case set
 
 - Objective: create the first runnable product-track artifact for the autonomous qualification and appointment-setting workflow
 - Action taken:
-  - defined eight turn-based lead scenarios covering interest, uncertainty, disinterest, do-not-call, escalation, referral, skepticism, and scheduling failure
+  - defined twelve turn-based lead scenarios covering interest, uncertainty, disinterest, do-not-call, escalation, referral, skepticism, scheduling failure, time pressure, no-budget rejection, human requests, and privacy concerns
   - represented each scenario as structured JSON with expected state, strategy, and `CallOutcome`
   - created a renderer script that turns the JSON cases into a readable simulation packet
 - Data used:

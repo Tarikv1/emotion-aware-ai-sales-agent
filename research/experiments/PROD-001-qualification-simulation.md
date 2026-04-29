@@ -31,7 +31,7 @@ A small structured case set can cover the main lead-qualification outcomes and m
 - Name: PROD-001 qualification simulation cases
 - Source: project-authored synthetic product scenarios
 - License/usage notes: internal research/product planning artifact
-- Size: 8 cases
+- Size: 12 cases
 - Language: English
 - Labels: compact emotion label, expected interest state, compact strategy label, expected `CallOutcome`
 - Notes: this is not thesis evidence from public or private customer data; it is a controlled product-workflow test set.
@@ -42,7 +42,11 @@ Editable files or modules:
 
 - `research/experiments/cases/prod-001-qualification-simulation.json`
 - `scripts/render_product_simulation.py`
+- `scripts/run_product_simulation.py`
+- `packages/prompts/product-qualification-agent.txt`
+- `docs/product/SIMULATION_CONTRACT.md`
 - `research/experiments/generated/PROD-001-simulation-packet.md`
+- `research/experiments/generated/PROD-001-evaluation-packet.md`
 
 Fixed constraints:
 
@@ -76,17 +80,23 @@ Secondary metrics:
 
 1. Load the structured case file.
 2. Render a markdown simulation packet.
-3. For each turn, ask the candidate agent to produce:
+3. Render an evaluation packet using the product qualification prompt and simulation contract.
+4. For each turn, ask the candidate agent to produce:
    - state estimate
    - selected strategy
    - next response or action
    - scheduling/escalation decision
-4. Compare the agent output against the expected turn labels and final `CallOutcome`.
-5. Record misses and revise either the prompt, rules, or case definitions.
+5. Compare the agent output against the expected turn labels and final `CallOutcome`.
+6. Record misses and revise either the prompt, rules, or case definitions.
 
 ## Results
 
-Not run yet.
+Runnable packet generation completed.
+
+- `research/experiments/generated/PROD-001-simulation-packet.md` renders the scenario scripts.
+- `research/experiments/generated/PROD-001-evaluation-packet.md` renders prompts, reference structured outputs, candidate-output slots, and manual checks.
+
+Live model execution has not been run yet.
 
 ## Observations
 
@@ -100,6 +110,10 @@ The first case set intentionally includes normal success cases and boundary case
 - skeptical lead that becomes open through inquiry
 - wrong contact with referral path
 - interested lead with unconfirmed scheduling window
+- busy lead asking for later contact
+- relevant workflow with no budget or urgency
+- direct request for a human
+- privacy/compliance concern
 
 ## Decision
 
@@ -111,4 +125,4 @@ This creates the first runnable product-track artifact and gives the client MVP 
 
 ## Next Step
 
-Use the generated packet to test a product-specific agent prompt or rule engine that emits structured `CallOutcome` records.
+Use the generated evaluation packet to test a product-specific agent prompt or rule engine that emits structured turn outputs and final `CallOutcome` records.
