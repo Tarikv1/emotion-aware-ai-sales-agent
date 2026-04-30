@@ -38,6 +38,7 @@ The core should not need to be rewritten for every vertical.
 The reusable agent core handles:
 
 - permission to continue
+- low-latency live turn handling
 - customer-state estimation
 - emotion/sentiment estimation
 - strategy selection
@@ -47,6 +48,8 @@ The reusable agent core handles:
 - escalation and do-not-call handling
 - structured logging
 - sales-expert feedback capture
+
+The reusable core is the only component that should sit directly in the live customer-facing critical path. Background specialist modules may support the core, but the product should avoid a live sequence of multiple sub-agents that delays every response.
 
 ## Campaign Configuration
 
@@ -113,6 +116,7 @@ These should apply across all verticals:
 - do not schedule without clear confirmation
 - escalate when confidence is low or the customer asks for a human
 - log selected strategy and rationale
+- respond quickly enough for live conversation, using a bridge response when slower lookup is needed
 
 ## Category-Specific Guardrails
 
@@ -140,6 +144,12 @@ Future simulation sets should be organized by campaign type:
 The goal is not to manually create a different agent for every product. The goal is to test whether the same core agent behaves correctly when campaign configuration changes.
 
 The difficulty gauntlet is intentionally sequenced before a larger industry library. The agent should first handle transferable sales challenges such as price resistance, timing delays, authority gaps, trust concerns, status quo resistance, competitor comparisons, vague interest, human requests, and unsupported-claim boundaries.
+
+Future runtime simulations should also measure latency behavior:
+
+- fast-path turns that can be answered immediately
+- slow-path turns that require a bridge response
+- background specialist tasks that must not block the first spoken response
 
 ## Product Direction
 

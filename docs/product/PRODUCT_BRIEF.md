@@ -24,6 +24,8 @@ The product is not limited to selling to companies. It should support both B2B a
 - B2B: business contacts, teams, departments, and company decision-makers
 - B2C: individual consumers, households, or personal buyers
 
+The product must also be low-latency. In a live call, the customer should normally hear the first response within 1-2 seconds after they finish speaking. If a turn requires slower lookup or verification, the agent should immediately use a short bridge response and continue the deeper work in the background.
+
 ## Initial Product Positioning
 
 The first sellable version should be framed as a configurable autonomous lead-qualification and appointment-setting agent for constrained outbound calling workflows, not as a universal call-center replacement.
@@ -61,6 +63,7 @@ MVP capabilities:
 
 - accept a dialogue transcript or manually entered conversation context
 - load a campaign configuration for the product being sold
+- run a real-time response path optimized for 1-2 second first response latency
 - estimate compact customer state
 - select a persuasion strategy
 - generate and execute the next response autonomously in the target channel
@@ -69,6 +72,8 @@ MVP capabilities:
 - schedule a follow-up call with a human sales agent when appropriate
 - log why the strategy was selected
 - escalate or pause when confidence is low, policy boundaries are hit, or the user asks for a human
+
+The live response path should not depend on chaining multiple sub-agents sequentially. Specialist modules can support compliance, product lookup, CRM updates, scheduling, and post-call evaluation, but the customer-facing turn should be handled by the fast real-time sales-agent core.
 
 Development and testing may use human review, but launch behavior should not require human approval for every normal response.
 
@@ -163,11 +168,14 @@ lead/contact details
   -> qualification questions
   -> customer-state estimate
   -> strategy selection
+  -> low-latency response path
   -> autonomous response
   -> appointment scheduling when interested
   -> logging and confidence checks
   -> fallback or escalation when needed
 ```
+
+See `docs/product/REALTIME_AGENT_ARCHITECTURE.md` for the runtime layering, latency budget, bridge-response behavior, and sub-agent policy.
 
 ## Near-Term Product Step
 

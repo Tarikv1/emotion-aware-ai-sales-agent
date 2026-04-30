@@ -19,6 +19,8 @@ The product simulation runner now supports campaign wrappers, so one reusable co
 
 The next product-learning priority is difficulty-first: strengthen the reusable core against universal sales objections and edge cases before expanding aggressively into more industries.
 
+The product runtime priority is low latency. The live call path should be a fast real-time sales-agent core with deterministic guardrails and short bridge responses when slower lookup is needed. Specialist modules or sub-agents should support background compliance, product lookup, CRM work, handoff preparation, and post-call learning rather than blocking every customer-facing reply.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -157,6 +159,7 @@ Likely MVP:
 
 - import lead/contact details
 - place or simulate an outbound call
+- start the first agent response within a 1-2 second target after the customer finishes speaking
 - ask a small set of qualification questions
 - estimate customer state
 - select a strategy
@@ -165,6 +168,7 @@ Likely MVP:
 - log the strategy choice and rationale
 - escalate or pause when confidence or safety boundaries require it
 - collect sales-expert feedback during development and testing
+- use bridge responses when approved lookup, scheduling, or human handoff preparation takes longer than the live turn budget
 
 Scope note:
 
@@ -181,6 +185,7 @@ Open questions:
 - how calendar/availability integration should work for human sales-agent scheduling
 - how much the first B2C flow should differ from the first B2B lead-qualification flow
 - what German insurance-sales and outbound-calling constraints must be reviewed before any live deployment
+- how to measure live-turn latency in the prototype without confusing model quality with voice-platform delay
 
 ## Phase 5: Thesis Write-Up Support
 
@@ -229,3 +234,4 @@ Immediate product artifact:
 - B2C insurance-specific simulation cases
 - mixed campaign wrappers that combine consumer and B2B product profiles
 - sales difficulty gauntlet before broad industry-library expansion
+- real-time agent architecture and latency budget
