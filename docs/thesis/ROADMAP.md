@@ -15,6 +15,8 @@ The product track should support both B2B and B2C sales contexts. The first prod
 
 The first concrete B2C client example is a German call center selling consumer insurance products, including dental insurance and cancer-related or serious-illness insurance. This should inform the next product simulation expansion.
 
+The product simulation runner now supports campaign wrappers, so one reusable core can be exercised across multiple client/product profiles while preserving per-campaign guardrails.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -223,3 +225,4 @@ Immediate product artifact:
 - turn-based product simulation case set
 - mixed B2B/B2C simulation expansion
 - B2C insurance-specific simulation cases
+- mixed campaign wrappers that combine consumer and B2B product profiles

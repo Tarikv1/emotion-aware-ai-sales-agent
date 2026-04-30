@@ -132,9 +132,9 @@ Examples:
 Future simulation sets should be organized by campaign type:
 
 - `PROD-001`: B2B-leaning lead qualification
-- `PROD-002`: B2C insurance campaign
-- `PROD-003`: mixed generic B2C product campaigns
-- `PROD-004`: B2B product/service campaign
+- `PROD-002`: strict B2C insurance campaign
+- `PROD-003`: mixed consumer campaigns plus at least one B2B campaign
+- `PROD-004`: broader follow-on campaign sets if needed for deeper B2B or additional vertical coverage
 
 The goal is not to manually create a different agent for every product. The goal is to test whether the same core agent behaves correctly when campaign configuration changes.
 

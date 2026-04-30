@@ -50,14 +50,22 @@ def load_json(path: Path):
     return json.loads(load_text(path))
 
 
-def load_simulation_spec(path: Path) -> tuple[dict, list[dict], bool]:
+def normalize_campaign(campaign: dict | None) -> dict:
+    normalized = dict(DEFAULT_CAMPAIGN)
+    normalized.update(campaign or {})
+    return normalized
+
+
+def load_simulation_spec(path: Path) -> tuple[list[dict], list[dict], bool]:
     payload = load_json(path)
     if isinstance(payload, list):
-        return dict(DEFAULT_CAMPAIGN), payload, False
+        return [dict(DEFAULT_CAMPAIGN)], payload, False
     if isinstance(payload, dict):
-        campaign = dict(DEFAULT_CAMPAIGN)
-        campaign.update(payload.get("campaign", {}))
-        return campaign, payload.get("cases", []), True
+        if "campaigns" in payload:
+            campaigns = [normalize_campaign(campaign) for campaign in payload.get("campaigns", [])]
+            return campaigns, payload.get("cases", []), True
+        campaign = normalize_campaign(payload.get("campaign", {}))
+        return [campaign], payload.get("cases", []), True
     raise SystemExit("Case file must be either a case list or a campaign wrapper object.")
 
 
@@ -108,6 +116,17 @@ def campaign_summary_lines(campaign: dict) -> list[str]:
         f"- Country or region: `{campaign.get('country_or_region')}`",
         f"- Language: `{campaign.get('language')}`",
     ]
+
+
+def campaigns_summary_lines(campaigns: list[dict]) -> list[str]:
+    lines = []
+    for campaign in campaigns:
+        lines.append(
+            f"- `{campaign.get('campaign_id')}`: {campaign.get('product_name')} / "
+            f"`{campaign.get('product_category')}` / `{campaign.get('customer_type')}` / "
+            f"`{campaign.get('country_or_region')}` / `{campaign.get('language')}`"
+        )
+    return lines
 
 
 def infer_next_action(turn: dict, is_last_turn: bool, outcome: dict) -> str:
@@ -235,9 +254,8 @@ def update_call_state(state: dict, turn: dict, reference: dict, outcome: dict) -
     return updated
 
 
-def build_database_records(cases: list[dict], source_cases_path: Path, campaign: dict) -> dict:
-    normalized_campaign = dict(DEFAULT_CAMPAIGN)
-    normalized_campaign.update(campaign or {})
+def build_database_records(cases: list[dict], source_cases_path: Path, campaigns: list[dict]) -> dict:
+    campaign_by_id = {campaign["campaign_id"]: campaign for campaign in campaigns}
     records = {
         "metadata": {
             "source": "product-synthetic",
@@ -248,7 +266,7 @@ def build_database_records(cases: list[dict], source_cases_path: Path, campaign:
             "privacy_note": "Synthetic simulation records only. Do not store real customer data in this repository.",
         },
         "leads": [],
-        "sales_campaigns": [normalized_campaign],
+        "sales_campaigns": campaigns,
         "call_sessions": [],
         "qualification_answers": [],
         "turn_decisions": [],
@@ -262,9 +280,12 @@ def build_database_records(cases: list[dict], source_cases_path: Path, campaign:
         profile = case["lead_profile"]
         lead_id = f"lead-{case['case_id'].lower()}"
         call_id = f"call-{case['case_id'].lower()}"
-        campaign_id = normalized_campaign["campaign_id"]
+        campaign_id = case.get("campaign_id") or (campaigns[0]["campaign_id"] if len(campaigns) == 1 else None)
+        if not campaign_id or campaign_id not in campaign_by_id:
+            raise SystemExit(f"Case {case['case_id']} references unknown campaign_id {campaign_id!r}")
+        campaign = campaign_by_id[campaign_id]
         outcome_id = f"outcome-{case['case_id'].lower()}"
-        customer_type = normalized_campaign.get("customer_type", "unknown")
+        customer_type = campaign.get("customer_type", "unknown")
         full_name = profile.get("full_name") or f"Synthetic Lead {case_index:02d}"
         company_name = profile.get("company_context") if customer_type == "b2b" else None
         role_title = profile.get("role") if customer_type == "b2b" else None
@@ -280,7 +301,7 @@ def build_database_records(cases: list[dict], source_cases_path: Path, campaign:
                 "role_title": role_title,
                 "source": "product-synthetic-simulation",
                 "region": None,
-                "language": normalized_campaign.get("language", "en"),
+                "language": campaign.get("language", "en"),
                 "contact_status": lead_contact_status(outcome),
                 "consent_status": "unknown",
                 "do_not_call": outcome["interest_state"] == "do-not-call",
@@ -461,11 +482,55 @@ def validate_campaign(campaign: dict) -> list[str]:
         errors.append("campaign: missing language")
     if not campaign.get("qualification_questions"):
         errors.append("campaign: missing qualification_questions")
+    if campaign.get("approved_opening") is None:
+        errors.append("campaign: missing approved_opening")
+    if not campaign.get("allowed_claims"):
+        errors.append("campaign: missing allowed_claims")
+    if not campaign.get("forbidden_claims"):
+        errors.append("campaign: missing forbidden_claims")
+    if not campaign.get("required_disclosures"):
+        errors.append("campaign: missing required_disclosures")
+    if not campaign.get("escalation_triggers"):
+        errors.append("campaign: missing escalation_triggers")
+    if not campaign.get("scheduling_goal"):
+        errors.append("campaign: missing scheduling_goal")
+    if not campaign.get("human_handoff_role"):
+        errors.append("campaign: missing human_handoff_role")
+    if not campaign.get("compliance_notes"):
+        errors.append("campaign: missing compliance_notes")
     return errors
 
 
-def render_prompt(template: str, case: dict, turn: dict, state: dict) -> str:
+def validate_campaigns(campaigns: list[dict], cases: list[dict], has_campaign_wrapper: bool) -> list[str]:
+    errors = []
+    campaign_ids = {campaign.get("campaign_id") for campaign in campaigns}
+
+    if has_campaign_wrapper:
+        seen_campaign_ids = set()
+        for campaign in campaigns:
+            campaign_id = campaign.get("campaign_id", "<missing>")
+            if campaign_id in seen_campaign_ids:
+                errors.append(f"{campaign_id}: duplicate campaign_id")
+            seen_campaign_ids.add(campaign_id)
+            errors.extend(validate_campaign(campaign))
+
+        if len(campaigns) > 1:
+            for case in cases:
+                if not case.get("campaign_id"):
+                    errors.append(f"{case.get('case_id', '<missing>')}: missing campaign_id")
+                elif case["campaign_id"] not in seen_campaign_ids:
+                    errors.append(f"{case['case_id']}: unknown campaign_id {case['campaign_id']!r}")
+    else:
+        for case in cases:
+            if case.get("campaign_id") and case["campaign_id"] not in campaign_ids:
+                errors.append(f"{case['case_id']}: unknown campaign_id {case['campaign_id']!r}")
+
+    return errors
+
+
+def render_prompt(template: str, case: dict, turn: dict, state: dict, campaign: dict) -> str:
     return template.format(
+        campaign_context=json.dumps(campaign, indent=2, ensure_ascii=False),
         case_context=case_context(case),
         accumulated_call_state=json.dumps(state, indent=2),
         agent_question=turn["agent_question"],
@@ -474,13 +539,16 @@ def render_prompt(template: str, case: dict, turn: dict, state: dict) -> str:
     )
 
 
-def build_case_section(case: dict, template: str) -> str:
+def build_case_section(case: dict, template: str, campaign: dict) -> str:
     lines = [
         f"## {case['case_id']}: {case['case_title']}",
         "",
         f"- Scenario goal: {case['scenario_goal']}",
         "",
     ]
+    lines.extend(["Campaign:", ""])
+    lines.extend(campaign_summary_lines(campaign))
+    lines.extend(["", "Lead profile:", ""])
     lines.extend(profile_summary_lines(case["lead_profile"]))
     lines.append("")
 
@@ -488,7 +556,7 @@ def build_case_section(case: dict, template: str) -> str:
     state = initial_call_state(case)
     for index, turn in enumerate(case["turns"], start=1):
         reference = reference_turn_output(turn, index == len(case["turns"]), outcome)
-        prompt = render_prompt(template, case, turn, state)
+        prompt = render_prompt(template, case, turn, state, campaign)
         lines.extend(
             [
                 f"### Turn {index}: `{turn['stage']}`",
@@ -579,8 +647,8 @@ def main():
     out_path = Path(args.out)
     prompt_path = Path(args.prompt)
 
-    campaign, cases, has_campaign_wrapper = load_simulation_spec(cases_path)
-    errors = validate_campaign(campaign) if has_campaign_wrapper else []
+    campaigns, cases, has_campaign_wrapper = load_simulation_spec(cases_path)
+    errors = validate_campaigns(campaigns, cases, has_campaign_wrapper)
     errors.extend(validate_cases(cases))
     if errors:
         raise SystemExit("Case validation failed:\n" + "\n".join(f"- {error}" for error in errors))
@@ -600,14 +668,25 @@ def main():
         "Use this packet to run the qualification agent turn by turn and compare candidate JSON outputs against the reference labels.",
         "",
     ]
-    header.extend(["Campaign:", ""] + campaign_summary_lines(campaign) + [""])
-    sections = [build_case_section(case, template) for case in cases]
+    if len(campaigns) == 1:
+        header.extend(["Campaign:", ""] + campaign_summary_lines(campaigns[0]) + [""])
+    else:
+        header.extend(["Campaigns:", ""] + campaigns_summary_lines(campaigns) + [""])
+
+    campaign_lookup = {campaign["campaign_id"]: campaign for campaign in campaigns}
+
+    sections = []
+    for case in cases:
+        case_campaign_id = case.get("campaign_id") or (campaigns[0]["campaign_id"] if len(campaigns) == 1 else None)
+        if not case_campaign_id or case_campaign_id not in campaign_lookup:
+            raise SystemExit(f"Case {case['case_id']} references unknown campaign_id {case_campaign_id!r}")
+        sections.append(build_case_section(case, template, campaign_lookup[case_campaign_id]))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(header + sections), encoding="utf-8")
 
     if args.export_records:
         records_path = Path(args.export_records)
-        records = build_database_records(cases, cases_path, campaign)
+        records = build_database_records(cases, cases_path, campaigns)
         records_path.parent.mkdir(parents=True, exist_ok=True)
         records_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
 

@@ -631,3 +631,26 @@ Use this file as a chronological research journal for the thesis implementation.
   - the roadmap gives the thesis work a clear sequence from text baseline to dataset expansion, voice features, prototype integration, and writing support
 - Open questions:
   - how detailed the repeatable prompt-execution workflow should be before implementation begins
+
+### 2026-04-30 - Campaign wrapper simulation expansion
+
+- Objective: prove the product simulation runner can support multiple SalesCampaign profiles while keeping one reusable agent core
+- Action taken:
+  - added the strict B2C insurance campaign as `PROD-002`
+  - extended the runner to accept campaign wrappers with one or many campaign profiles
+  - added a mixed consumer/B2B campaign set as `PROD-003`
+  - generated evaluation packets, database-shaped exports, SQLite imports, and reports for both new campaign sets
+- Data used:
+  - clarified product architecture for a reusable core plus configurable SalesCampaign profiles
+  - synthetic campaign scenarios for windows, glasses, SD cards, and B2B workflow software
+- Output created:
+  - `research/experiments/PROD-002-b2c-insurance-simulation.md`
+  - `research/experiments/PROD-003-mixed-campaigns-simulation.md`
+- What was learned:
+  - the same runner can handle both a single sensitive vertical and a mixed multi-campaign product set
+  - campaign-specific guardrails belong in the wrapper, not in the reusable core
+- Why it matters for the thesis:
+  - the product evidence now supports the claim that the agent architecture is vertical-agnostic rather than insurance-specific
+- Open questions:
+  - whether future campaign libraries should be versioned separately from experiment case files
+  - how much of the campaign configuration should eventually move into reusable templates

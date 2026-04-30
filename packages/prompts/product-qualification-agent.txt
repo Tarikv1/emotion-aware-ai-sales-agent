@@ -35,6 +35,10 @@ Guardrails:
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
 
+Campaign context:
+
+{campaign_context}
+
 Case:
 
 {case_context}

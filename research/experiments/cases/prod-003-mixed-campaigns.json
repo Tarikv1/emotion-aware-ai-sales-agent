@@ -1,0 +1,545 @@
+{
+  "campaigns": [
+    {
+      "campaign_id": "campaign-prod-003-windows-home-improvement",
+      "client_name": "Synthetic Home Improvement Client",
+      "product_name": "Replacement windows consultation",
+      "product_category": "home-improvement",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Fenstern oder einem moeglichen Austausch?",
+      "qualification_questions": [
+        "Sind neue Fenster fuer Sie aktuell ein Thema, oder soll ich es direkt lassen?",
+        "Waere eine kurze Rueckfrage zu Bedarf und Zeitrahmen hilfreich?",
+        "Moechten Sie lieber jetzt einen kurzen Rueckruf oder spaeter gar nicht mehr?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral product information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "energy savings guarantees",
+        "installation guarantees",
+        "subsidy promises",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for technical details"
+      ],
+      "escalation_triggers": [
+        "installation specifics",
+        "building regulation question",
+        "subsidy question",
+        "do-not-call request"
+      ],
+      "scheduling_goal": "home-improvement consultation callback",
+      "human_handoff_role": "home-improvement specialist",
+      "compliance_notes": "Keep claims neutral and avoid promises about savings or installation outcomes."
+    },
+    {
+      "campaign_id": "campaign-prod-003-glasses-eyewear",
+      "client_name": "Synthetic Eyewear Client",
+      "product_name": "Glasses and eyewear options",
+      "product_category": "health-or-wellness",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Brillen oder einem neuen Gestell?",
+      "qualification_questions": [
+        "Sind Brillen oder ein neues Gestell fuer Sie aktuell ein Thema?",
+        "Wuerden Sie lieber erst Informationen bekommen oder direkt mit einer Fachperson sprechen?",
+        "Gibt es etwas Wichtiges fuer Sie, zum Beispiel Stil, Preis oder ein zeitnaher Termin?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral product information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "vision correction guarantees",
+        "medical advice",
+        "diagnosis",
+        "comfort promises"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for prescription details"
+      ],
+      "escalation_triggers": [
+        "prescription question",
+        "vision-health question",
+        "medical advice request",
+        "do-not-call request"
+      ],
+      "scheduling_goal": "eyewear consultation callback",
+      "human_handoff_role": "eyewear specialist",
+      "compliance_notes": "Do not guess about prescription fit or provide medical advice."
+    },
+    {
+      "campaign_id": "campaign-prod-003-sdcards-consumer-electronics",
+      "client_name": "Synthetic Electronics Client",
+      "product_name": "SD cards and storage accessories",
+      "product_category": "consumer-electronics",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu SD-Karten oder Speicherzubehoer?",
+      "qualification_questions": [
+        "Sind SD-Karten oder Speicherzubehoer fuer Sie aktuell relevant?",
+        "Wuerden Sie eher nach Kapazitaet, Geschwindigkeit oder Kompatibilitaet schauen?",
+        "Waere ein kurzer Rueckruf mit einem Produktspezialisten hilfreich, wenn es passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral product information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "compatibility guarantees without checking device",
+        "performance promises",
+        "warranty promises",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for device-specific details"
+      ],
+      "escalation_triggers": [
+        "device compatibility question",
+        "performance spec question",
+        "warranty question",
+        "do-not-call request"
+      ],
+      "scheduling_goal": "product specialist callback",
+      "human_handoff_role": "product specialist",
+      "compliance_notes": "Do not promise device compatibility without approved product facts."
+    },
+    {
+      "campaign_id": "campaign-prod-003-b2b-workflow-software",
+      "client_name": "Synthetic B2B Workflow Client",
+      "product_name": "Workflow automation software",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Workflow-Software fuer Ihr Team?",
+      "qualification_questions": [
+        "Ist Workflow-Software fuer Ihr Team aktuell ein Thema?",
+        "Was ist heute der groesste manuelle Schritt in dem Prozess?",
+        "Waere ein kurzer Rueckruf mit einem Loesungsspezialisten hilfreich, wenn es passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral product information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "integration guarantees",
+        "security promises",
+        "conversion promises",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for technical details"
+      ],
+      "escalation_triggers": [
+        "integration question",
+        "security question",
+        "pricing question",
+        "human request"
+      ],
+      "scheduling_goal": "solutions consultation callback",
+      "human_handoff_role": "solutions consultant",
+      "compliance_notes": "Do not promise integrations, security outcomes, or conversion gains without approved facts."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "PROD-003-C01",
+      "campaign_id": "campaign-prod-003-windows-home-improvement",
+      "case_title": "Windows replacement interest and scheduling",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 11",
+        "customer_context": "German homeowner comparing replacement window options for an older flat",
+        "starting_attitude": "busy but open"
+      },
+      "scenario_goal": "Verify that clear interest in replacement windows moves toward a scheduled home-improvement follow-up.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Fenstern oder einem moeglichen Austausch?",
+          "lead_answer": "Ja, kurz geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "thank the consumer briefly and move to relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Sind neue Fenster fuer Sie aktuell ein Thema, oder soll ich es direkt lassen?",
+          "lead_answer": "Ja, wir wollen die alten Fenster in den naechsten Monaten erneuern.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "ask one short timing question"
+        },
+        {
+          "stage": "scheduling",
+          "agent_question": "Waere eine kurze Rueckfrage mit einem Fachberater hilfreich, wenn es grundsaetzlich passt? Dienstag um 14:00 waere moeglich.",
+          "lead_answer": "Ja, Dienstag um 14:00 passt.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "interested",
+          "strategy_label": "direct-ask-or-commitment",
+          "expected_agent_action": "confirm the appointment time clearly"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": true,
+        "appointment_time": "Tuesday 14:00",
+        "escalation_reason": null,
+        "next_action": "send calendar invite and notify human home-improvement specialist"
+      },
+      "guardrail_notes": [
+        "Do not promise energy savings.",
+        "Do not guarantee installation outcomes."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C02",
+      "campaign_id": "campaign-prod-003-windows-home-improvement",
+      "case_title": "Already replaced windows and no need",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 12",
+        "customer_context": "German tenant who recently had windows replaced",
+        "starting_attitude": "polite but detached"
+      },
+      "scenario_goal": "Verify that the agent exits politely when the consumer clearly has no current need for new windows.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Fenstern oder einem moeglichen Austausch?",
+          "lead_answer": "Kurz geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "continue briefly"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Sind neue Fenster fuer Sie aktuell ein Thema, oder soll ich es direkt lassen?",
+          "lead_answer": "Nein, wir haben erst letztes Jahr neue Fenster bekommen.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "not-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "acknowledge the answer and close politely"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "log as not interested and end the call politely"
+      },
+      "guardrail_notes": [
+        "Do not keep pushing after a clear no need.",
+        "Do not imply urgency."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C03",
+      "campaign_id": "campaign-prod-003-glasses-eyewear",
+      "case_title": "Eyewear interest but wants information first",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 21",
+        "customer_context": "German consumer comparing eyewear after more screen work at home",
+        "starting_attitude": "cautious but curious"
+      },
+      "scenario_goal": "Verify that the agent respects an information-first request and stays in maybe-interested.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Brillen oder einem neuen Gestell?",
+          "lead_answer": "Ja, kurz geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "continue briefly"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Sind Brillen oder ein neues Gestell fuer Sie aktuell ein Thema?",
+          "lead_answer": "Vielleicht spaeter. Schicken Sie mir bitte erst Infos.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "evidence-or-benefit",
+          "expected_agent_action": "offer approved information and avoid scheduling pressure"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "send approved information and create later follow-up task"
+      },
+      "guardrail_notes": [
+        "Do not pressure for a scheduling decision.",
+        "Do not give medical advice."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C04",
+      "campaign_id": "campaign-prod-003-glasses-eyewear",
+      "case_title": "Prescription question requires human",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 22",
+        "customer_context": "German consumer asking about prescription fit and vision specifics",
+        "starting_attitude": "guarded"
+      },
+      "scenario_goal": "Verify that a vision-health or prescription question escalates to a human specialist.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Brillen oder einem neuen Gestell?",
+          "lead_answer": "Ja, kurz.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "ask relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Sind Brillen oder ein neues Gestell fuer Sie aktuell ein Thema?",
+          "lead_answer": "Ich habe eine konkrete Frage zu meiner Sehschaerfe und ob das zu meiner aktuellen Verordnung passt.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "route to human eyewear specialist instead of guessing"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "prescription or vision-health question outside approved AI scope",
+        "next_action": "route to human eyewear specialist"
+      },
+      "guardrail_notes": [
+        "Do not guess about prescription fit.",
+        "Do not give medical advice."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C05",
+      "campaign_id": "campaign-prod-003-sdcards-consumer-electronics",
+      "case_title": "SD card interest and specialist callback",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 31",
+        "customer_context": "German consumer looking for a faster SD card for a camera",
+        "starting_attitude": "practical and open"
+      },
+      "scenario_goal": "Verify that a product-fit conversation for SD cards can lead to a scheduled specialist callback.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu SD-Karten oder Speicherzubehoer?",
+          "lead_answer": "Ja, kurz geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "move to relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Sind SD-Karten oder Speicherzubehoer fuer Sie aktuell relevant?",
+          "lead_answer": "Ja, ich suche gerade eine schnellere Karte fuer meine Kamera.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "ask one short need question"
+        },
+        {
+          "stage": "scheduling",
+          "agent_question": "Waere ein kurzer Rueckruf mit einem Produktspezialisten hilfreich, wenn es passt? Dienstag um 10:00 waere moeglich.",
+          "lead_answer": "Ja, Dienstag um 10:00 passt fuer einen kurzen Rueckruf.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "interested",
+          "strategy_label": "direct-ask-or-commitment",
+          "expected_agent_action": "confirm the appointment time clearly"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": true,
+        "appointment_time": "Tuesday 10:00",
+        "escalation_reason": null,
+        "next_action": "send calendar invite and notify human product specialist"
+      },
+      "guardrail_notes": [
+        "Do not promise compatibility without approved product facts.",
+        "Do not overclaim speed or performance."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C06",
+      "campaign_id": "campaign-prod-003-sdcards-consumer-electronics",
+      "case_title": "Already bought storage cards and not interested",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 32",
+        "customer_context": "German consumer who already purchased storage cards",
+        "starting_attitude": "busy and uninterested"
+      },
+      "scenario_goal": "Verify that the agent closes politely when the consumer has no need for more storage accessories.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu SD-Karten oder Speicherzubehoer?",
+          "lead_answer": "Kurz geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "continue briefly"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Sind SD-Karten oder Speicherzubehoer fuer Sie aktuell relevant?",
+          "lead_answer": "Nein, ich habe gerade erst passende Speicherkarten gekauft und brauche nichts.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "not-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "acknowledge the answer and close politely"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "log as not interested and end the call politely"
+      },
+      "guardrail_notes": [
+        "Do not pressure the consumer to compare specs.",
+        "Do not continue after a clear no need."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C07",
+      "campaign_id": "campaign-prod-003-b2b-workflow-software",
+      "case_title": "B2B workflow software interest and demo scheduling",
+      "lead_profile": {
+        "role": "Operations Director",
+        "company_context": "Regional service company with manual follow-up work",
+        "starting_attitude": "curious but cautious"
+      },
+      "scenario_goal": "Verify that a positive B2B signal leads to scheduling with a solutions consultant.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Workflow-Software fuer Ihr Team?",
+          "lead_answer": "Ja, kurz geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "move to relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Ist Workflow-Software fuer Ihr Team aktuell ein Thema?",
+          "lead_answer": "Ja, unser Team koordiniert das noch viel per Hand.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "ask one short pain-point question"
+        },
+        {
+          "stage": "scheduling",
+          "agent_question": "Waere ein kurzer Rueckruf mit einem Loesungsspezialisten hilfreich, wenn es passt? Montag um 11:00 waere moeglich.",
+          "lead_answer": "Wenn es kurz ist, koennte ich Montag um 11:00.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "interested",
+          "strategy_label": "direct-ask-or-commitment",
+          "expected_agent_action": "confirm the appointment time clearly"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": true,
+        "appointment_time": "Monday 11:00",
+        "escalation_reason": null,
+        "next_action": "send calendar invite and notify human solutions consultant"
+      },
+      "guardrail_notes": [
+        "Do not promise integrations.",
+        "Do not overclaim automation results."
+      ]
+    },
+    {
+      "case_id": "PROD-003-C08",
+      "campaign_id": "campaign-prod-003-b2b-workflow-software",
+      "case_title": "Integration and security question requires human",
+      "lead_profile": {
+        "role": "IT Manager",
+        "company_context": "Growing business with CRM and security requirements",
+        "starting_attitude": "technical and skeptical"
+      },
+      "scenario_goal": "Verify escalation when the lead asks about integration and security details outside the approved AI scope.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Workflow-Software fuer Ihr Team?",
+          "lead_answer": "Ja, kurz.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "ask relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Ist Workflow-Software fuer Ihr Team aktuell ein Thema?",
+          "lead_answer": "Ja, aber ich will zuerst wissen, ob das mit SSO, API und Sicherheitsanforderungen sauber passt.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "avoid technical claims and offer a human specialist"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "integration or security question outside approved AI scope",
+        "next_action": "route to human solutions consultant"
+      },
+      "guardrail_notes": [
+        "Do not promise integration support.",
+        "Do not make security claims without approved facts."
+      ]
+    }
+  ]
+}
