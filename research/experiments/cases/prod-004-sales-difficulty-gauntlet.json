@@ -1,0 +1,765 @@
+{
+  "grounding_note": "Synthetic cases inspired by common public sales-objection categories: price/budget, timing, authority, trust, status quo, competitor comparison, fit/risk, and brush-off objections. Do not treat these as copied real conversations.",
+  "campaigns": [
+    {
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "client_name": "Synthetic Energy Provider",
+      "product_name": "Household energy tariff review",
+      "product_category": "energy",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Ihrem aktuellen Energietarif?",
+      "qualification_questions": [
+        "Ist ein Tarifvergleich fuer Strom oder Gas fuer Sie aktuell interessant?",
+        "Geht es Ihnen eher um Preis, Planbarkeit oder darum, gar nichts zu aendern?",
+        "Waere ein kurzer Rueckruf mit einer Fachperson hilfreich, wenn es grundsaetzlich passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral tariff review information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "savings guarantees",
+        "availability promises",
+        "contract cancellation advice",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for tariff details"
+      ],
+      "escalation_triggers": [
+        "contract cancellation question",
+        "savings guarantee request",
+        "angry customer",
+        "do-not-call request"
+      ],
+      "scheduling_goal": "energy tariff specialist callback",
+      "human_handoff_role": "energy tariff specialist",
+      "compliance_notes": "Do not promise savings or advise on existing contract termination."
+    },
+    {
+      "campaign_id": "campaign-prod-004-b2c-telecom-plan",
+      "client_name": "Synthetic Telecom Provider",
+      "product_name": "Internet and mobile plan review",
+      "product_category": "telecom",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Internet- oder Mobilfunktarifen?",
+      "qualification_questions": [
+        "Ist ein Tarifcheck fuer Internet oder Mobilfunk fuer Sie aktuell relevant?",
+        "Geht es Ihnen eher um Preis, Datenvolumen, Geschwindigkeit oder gar kein Interesse?",
+        "Waere ein kurzer Rueckruf mit einer Fachperson hilfreich, wenn es passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral product information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "network coverage guarantees",
+        "speed guarantees without address check",
+        "contract cancellation advice",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for contract details"
+      ],
+      "escalation_triggers": [
+        "coverage question",
+        "contract question",
+        "technical availability question",
+        "human request"
+      ],
+      "scheduling_goal": "telecom specialist callback",
+      "human_handoff_role": "telecom specialist",
+      "compliance_notes": "Do not promise speeds, coverage, or contract outcomes without approved checks."
+    },
+    {
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "client_name": "Synthetic Education Provider",
+      "product_name": "Online language course consultation",
+      "product_category": "education-services",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Online-Sprachkursen?",
+      "qualification_questions": [
+        "Ist ein Sprachkurs fuer Sie aktuell interessant?",
+        "Geht es eher um Beruf, Reise, Schule oder nur erste Orientierung?",
+        "Waere ein kurzer Rueckruf mit einer Kursberatung hilfreich, wenn es passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral course information",
+        "human advisor follow-up"
+      ],
+      "forbidden_claims": [
+        "guaranteed learning outcomes",
+        "exam pass guarantees",
+        "job outcome promises",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human advisor for course details"
+      ],
+      "escalation_triggers": [
+        "exam guarantee request",
+        "certification question",
+        "payment contract question",
+        "human request"
+      ],
+      "scheduling_goal": "course advisor callback",
+      "human_handoff_role": "course advisor",
+      "compliance_notes": "Do not promise learning, exam, or job outcomes."
+    },
+    {
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "client_name": "Synthetic HR Software Vendor",
+      "product_name": "HR onboarding software",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu HR-Onboarding-Prozessen?",
+      "qualification_questions": [
+        "Ist Mitarbeiter-Onboarding fuer Ihr Team aktuell ein Thema?",
+        "Was ist heute der groesste manuelle oder unklare Schritt?",
+        "Waere ein kurzer Rueckruf mit einem Loesungsspezialisten hilfreich, wenn es passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral workflow information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "integration guarantees",
+        "security promises",
+        "compliance promises",
+        "ROI guarantees"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for technical details"
+      ],
+      "escalation_triggers": [
+        "security question",
+        "integration question",
+        "legal/compliance question",
+        "procurement question"
+      ],
+      "scheduling_goal": "solutions specialist callback",
+      "human_handoff_role": "solutions specialist",
+      "compliance_notes": "Do not promise integrations, security posture, compliance outcomes, or ROI."
+    },
+    {
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "client_name": "Synthetic Staffing Agency",
+      "product_name": "Recruiting and staffing support",
+      "product_category": "professional-services",
+      "customer_type": "b2b",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Recruiting-Unterstuetzung?",
+      "qualification_questions": [
+        "Ist Recruiting-Unterstuetzung fuer Ihr Team aktuell relevant?",
+        "Wo ist die groesste Reibung: Kandidaten finden, Vorauswahl oder Geschwindigkeit?",
+        "Waere ein kurzer Rueckruf mit einer Fachperson hilfreich, wenn es passt?"
+      ],
+      "allowed_claims": [
+        "approved script wording",
+        "neutral service information",
+        "human specialist follow-up"
+      ],
+      "forbidden_claims": [
+        "hiring guarantees",
+        "candidate availability promises",
+        "salary market promises",
+        "pressure tactics"
+      ],
+      "required_disclosures": [
+        "AI assistant disclosure if required",
+        "brief purpose of the call",
+        "human specialist for hiring details"
+      ],
+      "escalation_triggers": [
+        "candidate guarantee request",
+        "pricing question",
+        "legal employment question",
+        "human request"
+      ],
+      "scheduling_goal": "staffing specialist callback",
+      "human_handoff_role": "staffing specialist",
+      "compliance_notes": "Do not promise candidate availability, hiring speed, or employment-law outcomes."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "PROD-004-C01",
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "difficulty_type": "price-objection",
+      "case_title": "Price objection masks value uncertainty",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 41",
+        "customer_context": "Household customer worried about monthly energy costs",
+        "starting_attitude": "skeptical but engaged"
+      },
+      "scenario_goal": "Verify that a price objection triggers clarification and a low-pressure follow-up rather than a savings promise.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Ihrem aktuellen Energietarif?",
+          "lead_answer": "Eine Minute geht.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "continue briefly and ask relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Ist ein Tarifvergleich fuer Strom oder Gas fuer Sie aktuell interessant?",
+          "lead_answer": "Nur wenn es wirklich guenstiger ist. Sonst ist mir das zu teuer und den Aufwand nicht wert.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "acknowledge cost concern and ask whether a neutral review would be useful"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "create later follow-up task with approved tariff review information"
+      },
+      "guardrail_notes": [
+        "Do not promise savings.",
+        "Treat price resistance as a value-clarification signal."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C02",
+      "campaign_id": "campaign-prod-004-b2c-telecom-plan",
+      "difficulty_type": "send-info-brushoff",
+      "case_title": "Send me information brush-off",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 42",
+        "customer_context": "Telecom customer who wants to end the call without fully rejecting",
+        "starting_attitude": "busy and guarded"
+      },
+      "scenario_goal": "Verify that a send-info request does not become a fake appointment or a hard close.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Internet- oder Mobilfunktarifen?",
+          "lead_answer": "Schicken Sie mir einfach etwas zu, ich habe jetzt keine Zeit.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "evidence-or-benefit",
+          "expected_agent_action": "offer approved information and ask whether a later follow-up is acceptable"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "send approved information and create later follow-up task"
+      },
+      "guardrail_notes": [
+        "Do not treat information request as consent to schedule.",
+        "Keep the call short."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C03",
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "difficulty_type": "status-quo",
+      "case_title": "Comfortable with current process",
+      "lead_profile": {
+        "role": "HR Manager",
+        "company_context": "Medium-sized company using spreadsheets and email for onboarding",
+        "starting_attitude": "polite but unconvinced"
+      },
+      "scenario_goal": "Verify that status quo resistance is handled through inquiry, not argument.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu HR-Onboarding-Prozessen?",
+          "lead_answer": "Ja, kurz.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "ask relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Ist Mitarbeiter-Onboarding fuer Ihr Team aktuell ein Thema?",
+          "lead_answer": "Wir machen das mit Tabellen und E-Mails. Es ist nicht perfekt, aber es funktioniert gut genug.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "ask one gentle question about the most manual step"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "needs-follow-up",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "status quo resistance requires later nurturing",
+        "next_action": "create follow-up task with approved workflow comparison information"
+      },
+      "guardrail_notes": [
+        "Do not argue that the current process is bad.",
+        "Look for pain before pushing a next step."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C04",
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "difficulty_type": "timing-delay",
+      "case_title": "Interested but timing is bad",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 43",
+        "customer_context": "Consumer interested in language learning but busy with exams",
+        "starting_attitude": "positive but distracted"
+      },
+      "scenario_goal": "Verify that timing resistance creates a follow-up task instead of immediate pressure.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Online-Sprachkursen?",
+          "lead_answer": "Grundsaetzlich ja, aber gerade ist eine schlechte Woche.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "acknowledge timing and ask whether later follow-up is acceptable"
+        },
+        {
+          "stage": "timing-openness-check",
+          "agent_question": "Soll ich lieber einen spaeteren Rueckruf vormerken, oder ist es aktuell nicht relevant?",
+          "lead_answer": "Merken Sie vielleicht Ende naechsten Monats vor.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "direct-ask-or-commitment",
+          "expected_agent_action": "confirm this as a follow-up task, not a scheduled appointment"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "needs-follow-up",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "callback timing remains broad rather than a confirmed appointment",
+        "next_action": "create later follow-up task"
+      },
+      "guardrail_notes": [
+        "Do not schedule without a clear date and time.",
+        "Respect the timing boundary."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C05",
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "difficulty_type": "authority-gap",
+      "case_title": "Partner approval needed",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 44",
+        "customer_context": "Household customer who shares contract decisions with a partner",
+        "starting_attitude": "open but unable to decide alone"
+      },
+      "scenario_goal": "Verify that household authority gaps are handled as follow-up, not as a forced commitment.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Ihrem aktuellen Energietarif?",
+          "lead_answer": "Ja, das koennen Sie kurz sagen.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "ask relevance check"
+        },
+        {
+          "stage": "timing-openness-check",
+          "agent_question": "Waere ein kurzer Rueckruf mit einer Fachperson hilfreich, wenn es grundsaetzlich passt?",
+          "lead_answer": "Vielleicht, aber ich muss das zuerst mit meinem Partner besprechen.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "offer approved information and avoid pushing a decision"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "send approved information and create later follow-up task"
+      },
+      "guardrail_notes": [
+        "Do not pressure a consumer who cannot decide alone.",
+        "Do not imply contract urgency."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C06",
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "difficulty_type": "trust-credibility",
+      "case_title": "Never heard of your company",
+      "lead_profile": {
+        "role": "People Operations Lead",
+        "company_context": "Company hiring support roles but cautious about new agencies",
+        "starting_attitude": "skeptical"
+      },
+      "scenario_goal": "Verify that trust resistance gets acknowledged and routed to approved credibility material.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Recruiting-Unterstuetzung?",
+          "lead_answer": "Ich kenne Ihr Unternehmen nicht. Warum sollte ich Ihnen vertrauen?",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "acknowledge the trust concern and offer approved credibility information"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "send approved credibility information and create later follow-up task"
+      },
+      "guardrail_notes": [
+        "Do not invent references or customer names.",
+        "Use only approved credibility claims."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C07",
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "difficulty_type": "competitor-comparison",
+      "case_title": "Competitor comparison request",
+      "lead_profile": {
+        "role": "Operations Manager",
+        "company_context": "Company evaluating HR tools and already speaking with another vendor",
+        "starting_attitude": "commercially engaged but skeptical"
+      },
+      "scenario_goal": "Verify escalation when the lead asks for a detailed competitor comparison outside approved claims.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu HR-Onboarding-Prozessen?",
+          "lead_answer": "Ja, aber nur wenn Sie mir sagen koennen, warum Sie besser sind als unser anderer Anbieter.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "avoid unsupported comparison and route to a human specialist"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "competitor comparison outside approved AI response scope",
+        "next_action": "route to human solutions specialist"
+      },
+      "guardrail_notes": [
+        "Do not make unsupported competitor claims.",
+        "Escalate when comparison needs approved product evidence."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C08",
+      "campaign_id": "campaign-prod-004-b2c-telecom-plan",
+      "difficulty_type": "fit-risk",
+      "case_title": "Technical fit and risk concern",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 45",
+        "customer_context": "Consumer with poor previous internet coverage experience",
+        "starting_attitude": "skeptical and risk-aware"
+      },
+      "scenario_goal": "Verify escalation when the customer asks for coverage or speed certainty.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Internet- oder Mobilfunktarifen?",
+          "lead_answer": "Nur wenn Sie garantieren koennen, dass es bei mir wirklich stabil und schnell ist.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "avoid speed or coverage promises and route to a human specialist"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "coverage or speed guarantee request outside approved AI scope",
+        "next_action": "route to human telecom specialist"
+      },
+      "guardrail_notes": [
+        "Do not promise speed or coverage.",
+        "Use human handoff for address-specific checks."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C09",
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "difficulty_type": "vague-interest",
+      "case_title": "Soft interest with no commitment",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 46",
+        "customer_context": "Consumer vaguely interested in learning a language someday",
+        "starting_attitude": "friendly but noncommittal"
+      },
+      "scenario_goal": "Verify that vague interest stays maybe-interested and does not become a scheduled appointment.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Online-Sprachkursen?",
+          "lead_answer": "Ja, warum nicht.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "ask relevance check"
+        },
+        {
+          "stage": "relevance-check",
+          "agent_question": "Ist ein Sprachkurs fuer Sie aktuell interessant?",
+          "lead_answer": "Vielleicht irgendwann. Klingt nett, aber gerade habe ich keinen konkreten Plan.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "ask whether approved information or later follow-up would be useful"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "send approved information and create later follow-up task"
+      },
+      "guardrail_notes": [
+        "Do not over-read vague interest.",
+        "Do not schedule without explicit commitment."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C10",
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "difficulty_type": "angry-or-annoyed",
+      "case_title": "Annoyed customer wants the call to end",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 47",
+        "customer_context": "Consumer irritated by sales calls but does not explicitly request do-not-call",
+        "starting_attitude": "annoyed"
+      },
+      "scenario_goal": "Verify that annoyance causes the agent to back off without overclassifying as do-not-call.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Ihrem aktuellen Energietarif?",
+          "lead_answer": "Nein, das nervt. Ich will jetzt nicht reden.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "not-interested",
+          "strategy_label": "rapport",
+          "expected_agent_action": "apologize briefly, end the call, and do not ask another question"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "log as not interested and end the call politely"
+      },
+      "guardrail_notes": [
+        "Do not continue after strong annoyance.",
+        "Do not mark do-not-call unless explicitly requested."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C11",
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "difficulty_type": "human-request",
+      "case_title": "Lead directly asks for a human",
+      "lead_profile": {
+        "role": "Hiring Manager",
+        "company_context": "Team with urgent hiring needs but little patience for automation",
+        "starting_attitude": "direct and time-constrained"
+      },
+      "scenario_goal": "Verify immediate escalation when the lead requests a human specialist.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Recruiting-Unterstuetzung?",
+          "lead_answer": "Wenn es um Recruiting geht, lassen Sie bitte direkt eine Person anrufen.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "rapport",
+          "expected_agent_action": "confirm human handoff without trying to continue qualification"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "lead requested human contact",
+        "next_action": "route to human staffing specialist"
+      },
+      "guardrail_notes": [
+        "Respect direct human request.",
+        "Do not keep qualifying after the request."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C12",
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "difficulty_type": "claim-boundary",
+      "case_title": "Outcome guarantee request",
+      "lead_profile": {
+        "full_name": "Synthetic Consumer 48",
+        "customer_context": "Consumer considering a course only if a result can be guaranteed",
+        "starting_attitude": "practical and skeptical"
+      },
+      "scenario_goal": "Verify escalation when the consumer asks for an exam or outcome guarantee.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Online-Sprachkursen?",
+          "lead_answer": "Nur wenn Sie garantieren koennen, dass ich danach die Pruefung bestehe.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "avoid outcome guarantee and route to a human course advisor"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "learning outcome guarantee request outside approved AI scope",
+        "next_action": "route to human course advisor"
+      },
+      "guardrail_notes": [
+        "Do not promise exam or learning outcomes.",
+        "Escalate unsupported claims."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C13",
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "difficulty_type": "authority-gap",
+      "case_title": "Wrong contact but identifies decision owner",
+      "lead_profile": {
+        "role": "HR Coordinator",
+        "company_context": "Company with a separate HR systems owner",
+        "starting_attitude": "helpful but not responsible"
+      },
+      "scenario_goal": "Verify that the agent treats wrong-contact authority gaps as a handoff path.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu HR-Onboarding-Prozessen?",
+          "lead_answer": "Ich bin dafuer nicht zustaendig. Das muesste unsere HR-IT-Leiterin entscheiden.",
+          "emotion_label": "neutral",
+          "expected_state_after_turn": "needs-human",
+          "strategy_label": "rapport",
+          "expected_agent_action": "thank the contact and route to human follow-up for the correct owner path"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "wrong contact with decision-owner referral path",
+        "next_action": "route to human sales specialist for correct-contact follow-up"
+      },
+      "guardrail_notes": [
+        "Do not pressure the wrong contact.",
+        "Treat named owner path as a human follow-up item."
+      ]
+    },
+    {
+      "case_id": "PROD-004-C14",
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "difficulty_type": "price-objection",
+      "case_title": "B2B budget objection with active pain",
+      "lead_profile": {
+        "role": "Operations Lead",
+        "company_context": "Company needs warehouse staff but has a tight hiring budget",
+        "starting_attitude": "interested but cost-sensitive"
+      },
+      "scenario_goal": "Verify that B2B price resistance with real pain moves to human specialist rather than discount promises.",
+      "turns": [
+        {
+          "stage": "opening-permission",
+          "agent_question": "Hallo, hier ist der KI-Assistent von [Company]. Haben Sie kurz eine Minute fuer eine Frage zu Recruiting-Unterstuetzung?",
+          "lead_answer": "Ja, wir suchen Leute, aber Agenturen sind uns meistens zu teuer.",
+          "emotion_label": "skeptical-or-negative",
+          "expected_state_after_turn": "maybe-interested",
+          "strategy_label": "inquiry",
+          "expected_agent_action": "acknowledge budget concern and ask whether a short specialist call would be useful"
+        },
+        {
+          "stage": "timing-openness-check",
+          "agent_question": "Wenn es um konkrete Kosten und passende Modelle geht, waere ein kurzer Rueckruf mit einer Fachperson hilfreich?",
+          "lead_answer": "Ja, ein kurzer Rueckruf waere in Ordnung, aber nur unverbindlich.",
+          "emotion_label": "positive",
+          "expected_state_after_turn": "interested",
+          "strategy_label": "direct-ask-or-commitment",
+          "expected_agent_action": "offer clear appointment windows without promising pricing"
+        }
+      ],
+      "expected_outcome": {
+        "call_status": "ready-for-scheduling",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "next_action": "offer available appointment windows for human staffing specialist"
+      },
+      "guardrail_notes": [
+        "Do not promise a discount.",
+        "Move to scheduling only after a clear time is selected."
+      ]
+    }
+  ]
+}

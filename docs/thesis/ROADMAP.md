@@ -17,6 +17,8 @@ The first concrete B2C client example is a German call center selling consumer i
 
 The product simulation runner now supports campaign wrappers, so one reusable core can be exercised across multiple client/product profiles while preserving per-campaign guardrails. The mixed case sets are examples of that breadth, not the boundary of the product.
 
+The next product-learning priority is difficulty-first: strengthen the reusable core against universal sales objections and edge cases before expanding aggressively into more industries.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -226,3 +228,4 @@ Immediate product artifact:
 - mixed B2B/B2C simulation expansion
 - B2C insurance-specific simulation cases
 - mixed campaign wrappers that combine consumer and B2B product profiles
+- sales difficulty gauntlet before broad industry-library expansion

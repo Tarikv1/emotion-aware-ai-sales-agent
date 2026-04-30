@@ -654,3 +654,25 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - whether future campaign libraries should be versioned separately from experiment case files
   - how much of the campaign configuration should eventually move into reusable templates
+
+### 2026-04-30 - Sales difficulty gauntlet added
+
+- Objective: prioritize transferable sales skill before broad industry expansion
+- Action taken:
+  - defined a reusable sales difficulty taxonomy
+  - added `PROD-004` as a multi-campaign objection and edge-case gauntlet
+  - generated an evaluation packet, database-shaped export, SQLite import, and report
+- Data used:
+  - public sales-objection category patterns from Apollo, Salesgenie, Proposify, and B2B Vic
+  - synthetic cases rewritten for this project
+- Output created:
+  - `docs/product/SALES_DIFFICULTY_TAXONOMY.md`
+  - `research/experiments/PROD-004-sales-difficulty-gauntlet.md`
+- What was learned:
+  - the agent should first be evaluated on universal sales difficulties such as price, timing, authority, trust, status quo, fit risk, competitor comparison, and claim boundaries
+  - industry breadth is still important, but it should build on stronger sales behavior rather than replace it
+- Why it matters for the thesis:
+  - this creates a more realistic product evaluation layer for emotion-aware strategy selection under resistance
+- Open questions:
+  - how the rule baseline performs on the harder difficulty set
+  - whether the LLM agent improves naturalness and emotion handling without weakening guardrails

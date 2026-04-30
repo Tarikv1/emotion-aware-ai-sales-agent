@@ -134,9 +134,12 @@ Future simulation sets should be organized by campaign type:
 - `PROD-001`: B2B-leaning lead qualification
 - `PROD-002`: strict B2C insurance campaign
 - `PROD-003`: mixed consumer campaigns plus at least one B2B campaign
-- `PROD-004`: broader follow-on campaign sets if needed for deeper B2B or additional vertical coverage
+- `PROD-004`: sales difficulty gauntlet across a small mixed campaign set
+- `PROD-005`: broader follow-on campaign library for additional vertical coverage
 
 The goal is not to manually create a different agent for every product. The goal is to test whether the same core agent behaves correctly when campaign configuration changes.
+
+The difficulty gauntlet is intentionally sequenced before a larger industry library. The agent should first handle transferable sales challenges such as price resistance, timing delays, authority gaps, trust concerns, status quo resistance, competitor comparisons, vague interest, human requests, and unsupported-claim boundaries.
 
 ## Product Direction
 
