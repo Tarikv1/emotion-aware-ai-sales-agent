@@ -278,6 +278,7 @@ def table_count(conn: sqlite3.Connection, table: str) -> int:
 
 
 def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) -> str:
+    run_label = records_path.stem[:-len("-db-records")] if records_path.stem.endswith("-db-records") else records_path.stem
     tables = [
         "leads",
         "sales_campaigns",
@@ -291,7 +292,7 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
     interested = query_rows(
         conn,
         """
-        SELECT leads.lead_id, leads.role_title, call_outcomes.next_action
+        SELECT leads.lead_id, COALESCE(leads.role_title, leads.full_name) AS display_name, call_outcomes.next_action
         FROM leads
         JOIN call_outcomes ON call_outcomes.lead_id = leads.lead_id
         WHERE call_outcomes.interest_state = 'interested'
@@ -301,7 +302,7 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
     do_not_call = query_rows(
         conn,
         """
-        SELECT lead_id, role_title, do_not_call_reason
+        SELECT lead_id, COALESCE(role_title, full_name) AS display_name, do_not_call_reason
         FROM leads
         WHERE do_not_call = 1
         ORDER BY lead_id
@@ -323,18 +324,29 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
         ORDER BY escalation_id
         """,
     )
-    sample_turns = query_rows(
+    sample_call_row = query_rows(
         conn,
         """
+        SELECT call_id
+        FROM call_sessions
+        ORDER BY call_id
+        LIMIT 1
+        """,
+    )
+    sample_call_id = sample_call_row[0]["call_id"] if sample_call_row else None
+    sample_turns = query_rows(
+        conn,
+        f"""
         SELECT turn_index, stage, interest_state, selected_strategy, next_action
         FROM turn_decisions
-        WHERE call_id = 'call-prod-001-c01'
+        {"WHERE call_id = ?" if sample_call_id else ""}
         ORDER BY turn_index
         """,
+        (sample_call_id,) if sample_call_id else (),
     )
 
     lines = [
-        "# PROD-001 SQLite Import Report",
+        f"# {run_label} SQLite Import Report",
         "",
         f"- Database: `{db_path.as_posix()}`",
         f"- Source records: `{records_path.as_posix()}`",
@@ -360,10 +372,10 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
     )
 
     lines.extend(["", "## Interested Leads", ""])
-    lines.extend(f"- `{row['lead_id']}` ({row['role_title']}): {row['next_action']}" for row in interested)
+    lines.extend(f"- `{row['lead_id']}` ({row['display_name']}): {row['next_action']}" for row in interested)
 
     lines.extend(["", "## Do-Not-Call Leads", ""])
-    lines.extend(f"- `{row['lead_id']}` ({row['role_title']}): {row['do_not_call_reason']}" for row in do_not_call)
+    lines.extend(f"- `{row['lead_id']}` ({row['display_name']}): {row['do_not_call_reason']}" for row in do_not_call)
 
     lines.extend(["", "## Appointments", ""])
     lines.extend(
@@ -377,7 +389,7 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
         for row in escalations
     )
 
-    lines.extend(["", "## Sample Turn Decisions For `call-prod-001-c01`", ""])
+    lines.extend(["", f"## Sample Turn Decisions For `{sample_call_id or 'unknown-call'}`", ""])
     lines.extend(
         f"- Turn {row['turn_index']} `{row['stage']}`: `{row['interest_state']}` / `{row['selected_strategy']}` -> `{row['next_action']}`"
         for row in sample_turns

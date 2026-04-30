@@ -16,6 +16,31 @@ ALLOWED_STRATEGIES = {
 ALLOWED_CALL_STATUSES = {"completed", "escalated", "ready-for-scheduling", "needs-follow-up"}
 SIMULATION_TIMESTAMP = "2026-04-29T00:00:00Z"
 
+DEFAULT_CAMPAIGN = {
+    "campaign_id": "campaign-prod-001-b2b-lead-qualification",
+    "client_name": "Synthetic B2B Client",
+    "product_name": "Lead follow-up solution",
+    "product_category": "software-b2b",
+    "customer_type": "b2b",
+    "country_or_region": None,
+    "language": "en",
+    "approved_opening": None,
+    "qualification_questions": [
+        "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "What is the hardest part of that process for your team right now?",
+        "If there is a fit, would a short follow-up call with a human specialist be useful?",
+    ],
+    "allowed_claims": [],
+    "forbidden_claims": ["unsupported product claims", "guaranteed conversion improvement"],
+    "required_disclosures": [],
+    "escalation_triggers": ["complex product question", "human request", "privacy or compliance topic"],
+    "scheduling_goal": "human specialist follow-up",
+    "human_handoff_role": "sales specialist",
+    "compliance_notes": "Synthetic reference campaign for PROD-001.",
+    "created_at": SIMULATION_TIMESTAMP,
+    "updated_at": SIMULATION_TIMESTAMP,
+}
+
 
 def load_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
@@ -23,6 +48,17 @@ def load_text(path: Path) -> str:
 
 def load_json(path: Path):
     return json.loads(load_text(path))
+
+
+def load_simulation_spec(path: Path) -> tuple[dict, list[dict], bool]:
+    payload = load_json(path)
+    if isinstance(payload, list):
+        return dict(DEFAULT_CAMPAIGN), payload, False
+    if isinstance(payload, dict):
+        campaign = dict(DEFAULT_CAMPAIGN)
+        campaign.update(payload.get("campaign", {}))
+        return campaign, payload.get("cases", []), True
+    raise SystemExit("Case file must be either a case list or a campaign wrapper object.")
 
 
 def as_code(value) -> str:
@@ -35,16 +71,43 @@ def as_code(value) -> str:
 
 def case_context(case: dict) -> str:
     profile = case["lead_profile"]
-    return "\n".join(
-        [
-            f"case_id: {case['case_id']}",
-            f"case_title: {case['case_title']}",
-            f"scenario_goal: {case['scenario_goal']}",
-            f"lead_role: {profile['role']}",
-            f"company_context: {profile['company_context']}",
-            f"starting_attitude: {profile['starting_attitude']}",
-        ]
-    )
+    lines = [
+        f"case_id: {case['case_id']}",
+        f"case_title: {case['case_title']}",
+        f"scenario_goal: {case['scenario_goal']}",
+    ]
+    for key in ["full_name", "role", "company_context", "customer_context", "starting_attitude"]:
+        value = profile.get(key)
+        if value:
+            lines.append(f"{key}: {value}")
+    return "\n".join(lines)
+
+
+def profile_summary_lines(profile: dict) -> list[str]:
+    lines = []
+    for key, label in [
+        ("full_name", "Lead name"),
+        ("role", "Lead role"),
+        ("company_context", "Company context"),
+        ("customer_context", "Customer context"),
+        ("starting_attitude", "Starting attitude"),
+    ]:
+        value = profile.get(key)
+        if value:
+            lines.append(f"- {label}: `{value}`")
+    return lines
+
+
+def campaign_summary_lines(campaign: dict) -> list[str]:
+    return [
+        f"- Campaign ID: `{campaign.get('campaign_id')}`",
+        f"- Client name: `{campaign.get('client_name')}`",
+        f"- Product name: `{campaign.get('product_name')}`",
+        f"- Product category: `{campaign.get('product_category')}`",
+        f"- Customer type: `{campaign.get('customer_type')}`",
+        f"- Country or region: `{campaign.get('country_or_region')}`",
+        f"- Language: `{campaign.get('language')}`",
+    ]
 
 
 def infer_next_action(turn: dict, is_last_turn: bool, outcome: dict) -> str:
@@ -172,7 +235,9 @@ def update_call_state(state: dict, turn: dict, reference: dict, outcome: dict) -
     return updated
 
 
-def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
+def build_database_records(cases: list[dict], source_cases_path: Path, campaign: dict) -> dict:
+    normalized_campaign = dict(DEFAULT_CAMPAIGN)
+    normalized_campaign.update(campaign or {})
     records = {
         "metadata": {
             "source": "product-synthetic",
@@ -183,32 +248,7 @@ def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
             "privacy_note": "Synthetic simulation records only. Do not store real customer data in this repository.",
         },
         "leads": [],
-        "sales_campaigns": [
-            {
-                "campaign_id": "campaign-prod-001-b2b-lead-qualification",
-                "client_name": "Synthetic B2B Client",
-                "product_name": "Lead follow-up solution",
-                "product_category": "software-b2b",
-                "customer_type": "b2b",
-                "country_or_region": None,
-                "language": "en",
-                "approved_opening": None,
-                "qualification_questions": [
-                    "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
-                    "What is the hardest part of that process for your team right now?",
-                    "If there is a fit, would a short follow-up call with a human specialist be useful?",
-                ],
-                "allowed_claims": [],
-                "forbidden_claims": ["unsupported product claims", "guaranteed conversion improvement"],
-                "required_disclosures": [],
-                "escalation_triggers": ["complex product question", "human request", "privacy or compliance topic"],
-                "scheduling_goal": "human specialist follow-up",
-                "human_handoff_role": "sales specialist",
-                "compliance_notes": "Synthetic reference campaign for PROD-001.",
-                "created_at": SIMULATION_TIMESTAMP,
-                "updated_at": SIMULATION_TIMESTAMP,
-            }
-        ],
+        "sales_campaigns": [normalized_campaign],
         "call_sessions": [],
         "qualification_answers": [],
         "turn_decisions": [],
@@ -222,21 +262,25 @@ def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
         profile = case["lead_profile"]
         lead_id = f"lead-{case['case_id'].lower()}"
         call_id = f"call-{case['case_id'].lower()}"
-        campaign_id = "campaign-prod-001-b2b-lead-qualification"
+        campaign_id = normalized_campaign["campaign_id"]
         outcome_id = f"outcome-{case['case_id'].lower()}"
+        customer_type = normalized_campaign.get("customer_type", "unknown")
+        full_name = profile.get("full_name") or f"Synthetic Lead {case_index:02d}"
+        company_name = profile.get("company_context") if customer_type == "b2b" else None
+        role_title = profile.get("role") if customer_type == "b2b" else None
 
         records["leads"].append(
             {
                 "lead_id": lead_id,
-                "customer_type": "b2b",
-                "full_name": f"Synthetic Lead {case_index:02d}",
+                "customer_type": customer_type,
+                "full_name": full_name,
                 "phone_number": None,
                 "email": None,
-                "company_name": profile["company_context"],
-                "role_title": profile["role"],
+                "company_name": company_name,
+                "role_title": role_title,
                 "source": "product-synthetic-simulation",
                 "region": None,
-                "language": "en",
+                "language": normalized_campaign.get("language", "en"),
                 "contact_status": lead_contact_status(outcome),
                 "consent_status": "unknown",
                 "do_not_call": outcome["interest_state"] == "do-not-call",
@@ -401,6 +445,25 @@ def validate_cases(cases: list[dict]) -> list[str]:
     return errors
 
 
+def validate_campaign(campaign: dict) -> list[str]:
+    errors = []
+    if not campaign.get("campaign_id"):
+        errors.append("campaign: missing campaign_id")
+    if not campaign.get("product_name"):
+        errors.append("campaign: missing product_name")
+    if not campaign.get("product_category"):
+        errors.append("campaign: missing product_category")
+    if campaign.get("customer_type") not in {"b2b", "b2c", "unknown"}:
+        errors.append(f"campaign: invalid customer_type {campaign.get('customer_type')!r}")
+    if campaign.get("country_or_region") is None:
+        errors.append("campaign: missing country_or_region")
+    if not campaign.get("language"):
+        errors.append("campaign: missing language")
+    if not campaign.get("qualification_questions"):
+        errors.append("campaign: missing qualification_questions")
+    return errors
+
+
 def render_prompt(template: str, case: dict, turn: dict, state: dict) -> str:
     return template.format(
         case_context=case_context(case),
@@ -416,11 +479,10 @@ def build_case_section(case: dict, template: str) -> str:
         f"## {case['case_id']}: {case['case_title']}",
         "",
         f"- Scenario goal: {case['scenario_goal']}",
-        f"- Lead role: `{case['lead_profile']['role']}`",
-        f"- Company context: {case['lead_profile']['company_context']}",
-        f"- Starting attitude: `{case['lead_profile']['starting_attitude']}`",
         "",
     ]
+    lines.extend(profile_summary_lines(case["lead_profile"]))
+    lines.append("")
 
     outcome = case["expected_outcome"]
     state = initial_call_state(case)
@@ -517,8 +579,9 @@ def main():
     out_path = Path(args.out)
     prompt_path = Path(args.prompt)
 
-    cases = load_json(cases_path)
-    errors = validate_cases(cases)
+    campaign, cases, has_campaign_wrapper = load_simulation_spec(cases_path)
+    errors = validate_campaign(campaign) if has_campaign_wrapper else []
+    errors.extend(validate_cases(cases))
     if errors:
         raise SystemExit("Case validation failed:\n" + "\n".join(f"- {error}" for error in errors))
 
@@ -537,13 +600,14 @@ def main():
         "Use this packet to run the qualification agent turn by turn and compare candidate JSON outputs against the reference labels.",
         "",
     ]
+    header.extend(["Campaign:", ""] + campaign_summary_lines(campaign) + [""])
     sections = [build_case_section(case, template) for case in cases]
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(header + sections), encoding="utf-8")
 
     if args.export_records:
         records_path = Path(args.export_records)
-        records = build_database_records(cases, cases_path)
+        records = build_database_records(cases, cases_path, campaign)
         records_path.parent.mkdir(parents=True, exist_ok=True)
         records_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
 
