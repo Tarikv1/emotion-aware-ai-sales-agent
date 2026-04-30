@@ -1,8 +1,8 @@
 # PROD-004 LLM Agent Run
 
-Status: blocked pending live model credentials.
+Status: completed.
 
-This checkpoint adds a live LLM runner for the PROD-004 sales difficulty gauntlet without recording synthetic or guessed LLM results.
+This checkpoint records a live LLM runner and completed LLM run for the PROD-004 sales difficulty gauntlet.
 
 ## Purpose
 
@@ -24,20 +24,25 @@ python scripts\run_llm_product_agent.py `
   --report-out research\experiments\generated\PROD-004-llm-agent-report.md
 ```
 
-## Current Result
+## Result
 
-The local environment does not currently expose `OPENAI_API_KEY`, so the runner exits before calling a live model.
+- Model: `gpt-4o-mini`
+- Results JSON: `research/experiments/generated/PROD-004-llm-agent-results.json`
+- Report: `research/experiments/generated/PROD-004-llm-agent-report.md`
+- Comparison: `research/experiments/PROD-004-llm-vs-rule-comparison.md`
 
-Expected blocker message:
+Aggregate LLM results:
 
-```text
-Missing OPENAI_API_KEY. Set OPENAI_API_KEY to run the LLM product agent. The runner did not call a live model.
-```
+- Turn emotion matches: 13 / 20
+- Turn interest-state matches: 18 / 20
+- Turn strategy matches: 7 / 20
+- Final call-status matches: 10 / 14
+- Final interest-state matches: 12 / 14
+- Final strategy matches: 6 / 14
+- Final appointment matches: 14 / 14
 
-## Next Evaluation Question
+## Evaluation Question
 
-Once credentials are available, compare the LLM agent against the PROD-004 rule baseline:
+Compared with the deterministic rule baseline, the LLM agent improved emotion detection, interest-state detection, final call-status judgment, and final interest-state judgment. The main weakness is weaker alignment with the internal strategy taxonomy.
 
-- Does it improve emotion detection?
-- Does it improve hard sales judgment on objections, authority gaps, timing delays, and competitor comparisons?
-- Does it preserve guardrails by escalating claim-boundary and human-request cases instead of over-selling?
+Next improvement target: tighten the output contract so impossible combinations are normalized, especially `interest_state = needs-human` with `call_status = completed`.

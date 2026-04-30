@@ -1,0 +1,728 @@
+{
+  "model": "gpt-4o-mini",
+  "summary": {
+    "turn_total": 20,
+    "emotion_matches": 13,
+    "interest_state_matches": 18,
+    "strategy_matches": 7,
+    "final_total": 14,
+    "final_call_status_matches": 10,
+    "final_interest_state_matches": 12,
+    "final_strategy_matches": 6,
+    "final_appointment_matches": 14
+  },
+  "results": [
+    {
+      "case_id": "PROD-004-C01",
+      "case_title": "Price objection masks value uncertainty",
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Danke! Ich möchte Ihnen ein paar Fragen zu Ihrem aktuellen Energietarif stellen. Ist ein Tarifvergleich für Strom oder Gas für Sie aktuell interessant?",
+          "confidence": 0.9,
+          "rationale": "The lead expressed willingness to engage, indicating a positive emotion and a potential interest in discussing their energy tariff."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "agent_response": "Ich verstehe, dass der Preis für Sie wichtig ist. Darf ich fragen, was für Sie einen Tarifwechsel attraktiv machen würde?",
+          "confidence": 0.8,
+          "rationale": "The lead expresses skepticism about the value of a tariff comparison, indicating a need for clarification on potential benefits, which aligns with the selected strategy."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead expressed skepticism about tariff comparisons, indicating a need for clarification on potential benefits. The agent successfully engaged the lead and asked a follow-up question to explore their needs further.",
+        "next_action": "Follow up with a human specialist if the lead shows further interest."
+      },
+      "scores": {
+        "case_id": "PROD-004-C01",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": false
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C02",
+      "case_title": "Send me information brush-off",
+      "campaign_id": "campaign-prod-004-b2c-telecom-plan",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Ich verstehe, dass Sie beschäftigt sind. Darf ich fragen, ob ein Tarifcheck für Sie aktuell relevant ist?",
+          "confidence": 0.8,
+          "rationale": "The lead's request to send information indicates a neutral interest but a lack of time, suggesting they may be open to further inquiry without pressure."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead expressed a desire to receive information but indicated they were busy and did not want to engage further at this time.",
+        "next_action": "Send requested information and follow up later"
+      },
+      "scores": {
+        "case_id": "PROD-004-C02",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C03",
+      "case_title": "Comfortable with current process",
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Danke! Ist Mitarbeiter-Onboarding fuer Ihr Team aktuell ein Thema?",
+          "confidence": 0.8,
+          "rationale": "The lead's willingness to engage indicates a positive emotion and a potential interest in discussing HR onboarding processes further."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Ich verstehe, dass Ihr aktueller Prozess funktioniert. Was ist heute der größte manuelle oder unklare Schritt, den Sie dabei haben?",
+          "confidence": 0.8,
+          "rationale": "The lead is using a method that works for them, indicating a neutral stance. The inquiry strategy is appropriate to explore their current challenges further."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead is currently using spreadsheets and emails for onboarding, which works for them but is not perfect. The conversation focused on understanding their current process and challenges.",
+        "next_action": "Continue to explore the lead's challenges and suggest a follow-up with a solutions specialist."
+      },
+      "scores": {
+        "case_id": "PROD-004-C03",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": false
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": false,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C04",
+      "case_title": "Interested but timing is bad",
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Verstehe, dass Sie beschäftigt sind. Wäre es hilfreich, wenn ich einen kurzen Rückruf für später vereinbare?",
+          "confidence": 0.9,
+          "rationale": "The lead shows a positive attitude but indicates timing issues, suggesting a follow-up is appropriate without pressure."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "create-follow-up-task",
+          "agent_response": "Ich werde einen Rückruf für Ende nächsten Monats vormerken. Vielen Dank für Ihr Interesse!",
+          "confidence": 0.9,
+          "rationale": "The lead expressed a positive attitude and interest in a follow-up, indicating a willingness to engage later despite current distractions."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "needs-follow-up",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead is interested in language courses but is currently busy with exams. A follow-up call has been scheduled for the end of next month.",
+        "next_action": "Create a follow-up task for a callback at the end of next month."
+      },
+      "scores": {
+        "case_id": "PROD-004-C04",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": false
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C05",
+      "case_title": "Partner approval needed",
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Super, danke! Ist ein Tarifvergleich fuer Strom oder Gas fuer Sie aktuell interessant?",
+          "confidence": 0.9,
+          "rationale": "The lead responded positively and is open to the conversation, indicating a potential interest in discussing their energy tariff."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Das klingt gut! Wann denken Sie, dass Sie mit Ihrem Partner sprechen könnten, um das Thema zu klären?",
+          "confidence": 0.9,
+          "rationale": "The lead is open to a follow-up but needs to discuss with their partner first, indicating a positive attitude towards the conversation."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "needs-follow-up",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead is open to discussing their energy tariff but needs to consult with their partner before proceeding.",
+        "next_action": "Follow up after the lead has discussed with their partner."
+      },
+      "scores": {
+        "case_id": "PROD-004-C05",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": false
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": false,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C06",
+      "case_title": "Never heard of your company",
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "not-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "close-politely",
+          "agent_response": "Ich verstehe Ihre Bedenken. Vielen Dank für Ihre Zeit. Wenn Sie in Zukunft Fragen haben, können Sie uns jederzeit kontaktieren.",
+          "confidence": 0.9,
+          "rationale": "The lead expressed skepticism and a lack of trust, indicating they are not interested at this time. The strategy is to acknowledge their concern and close politely without pushing further."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead expressed skepticism about the company and indicated they are not interested in the services offered.",
+        "next_action": "Close politely and leave the door open for future contact."
+      },
+      "scores": {
+        "case_id": "PROD-004-C06",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": false,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": false,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C07",
+      "case_title": "Competitor comparison request",
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Ich verstehe, dass Sie einen Vergleich wünschen. Ich werde das an einen Lösungsspezialisten weiterleiten, der Ihnen dabei helfen kann.",
+          "confidence": 0.9,
+          "rationale": "The lead is skeptical and seeking specific competitive information, which requires escalation to a human specialist."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "Lead requested a detailed competitor comparison, requiring human specialist follow-up.",
+        "call_summary": "The lead expressed skepticism and requested a comparison with another vendor, necessitating escalation to a solutions specialist.",
+        "next_action": "Forward the lead's request to a solutions specialist for further assistance."
+      },
+      "scores": {
+        "case_id": "PROD-004-C07",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C08",
+      "case_title": "Technical fit and risk concern",
+      "campaign_id": "campaign-prod-004-b2c-telecom-plan",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Ich verstehe Ihre Bedenken bezüglich der Stabilität und Geschwindigkeit. Ich werde Ihre Anfrage an einen Fachmann weiterleiten, der Ihnen genauere Informationen geben kann.",
+          "confidence": 0.9,
+          "rationale": "The lead expresses skepticism and a need for guarantees, indicating a lack of trust in the AI's ability to provide the necessary information, thus requiring escalation to a human specialist."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "Customer requested guarantees on stability and speed, requiring human specialist follow-up.",
+        "call_summary": "The customer expressed skepticism about internet stability and speed, leading to an escalation to a telecom specialist for further assistance.",
+        "next_action": "Escalate to a human specialist for detailed coverage and speed information."
+      },
+      "scores": {
+        "case_id": "PROD-004-C08",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": false,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C09",
+      "case_title": "Soft interest with no commitment",
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Super! Ist ein Sprachkurs fuer Sie aktuell interessant?",
+          "confidence": 0.8,
+          "rationale": "The lead responded positively and is open to the conversation, indicating a vague interest in language courses."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Das ist verständlich! Gibt es einen bestimmten Grund, warum Sie momentan keinen konkreten Plan haben?",
+          "confidence": 0.9,
+          "rationale": "The lead expressed vague interest without commitment, indicating a neutral emotional state. The inquiry strategy is appropriate to explore their thoughts further."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead expressed vague interest in language courses but did not commit to a specific plan or appointment.",
+        "next_action": "No follow-up scheduled; monitor for future interest."
+      },
+      "scores": {
+        "case_id": "PROD-004-C09",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": false
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C10",
+      "case_title": "Annoyed customer wants the call to end",
+      "campaign_id": "campaign-prod-004-b2c-energy-switch",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "not-interested",
+          "selected_strategy": "emotional-appeal",
+          "next_action": "close-politely",
+          "agent_response": "Ich verstehe, dass es gerade nicht passt. Ich wünsche Ihnen einen schönen Tag!",
+          "confidence": 0.9,
+          "rationale": "The lead expressed irritation and a clear desire not to engage, indicating a not-interested state. The strategy is to close politely to respect their feelings."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "emotional-appeal",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead expressed irritation and a clear desire not to engage, leading to a polite closure of the call.",
+        "next_action": "close politely"
+      },
+      "scores": {
+        "case_id": "PROD-004-C10",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C11",
+      "case_title": "Lead directly asks for a human",
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "needs-human",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "escalate",
+          "agent_response": "Ich werde Ihre Anfrage an einen Fachmann weiterleiten, der Sie direkt kontaktieren kann.",
+          "confidence": 1.0,
+          "rationale": "The lead explicitly requested to speak with a human specialist, indicating a need for immediate assistance."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "needs-human",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "Lead requested to speak with a human specialist.",
+        "call_summary": "The lead directly requested to speak with a human specialist regarding recruiting support.",
+        "next_action": "Escalate the lead to a staffing specialist for follow-up."
+      },
+      "scores": {
+        "case_id": "PROD-004-C11",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": false,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C12",
+      "case_title": "Outcome guarantee request",
+      "campaign_id": "campaign-prod-004-b2c-education-course",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Ich verstehe, dass das für Sie wichtig ist. Ich werde Ihre Anfrage an einen menschlichen Berater weiterleiten, der Ihnen mehr Informationen geben kann.",
+          "confidence": 0.9,
+          "rationale": "The lead is skeptical and specifically requests a guarantee, which requires escalation to a human advisor for proper handling."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "The lead requested a guarantee for exam outcomes, which requires escalation to a human advisor.",
+        "call_summary": "The lead expressed skepticism and requested a guarantee for passing an exam, prompting an escalation to a human advisor for further assistance.",
+        "next_action": "Escalate to a human course advisor for follow-up."
+      },
+      "scores": {
+        "case_id": "PROD-004-C12",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C13",
+      "case_title": "Wrong contact but identifies decision owner",
+      "campaign_id": "campaign-prod-004-b2b-hr-software",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Verstehe, ich kann Ihnen nicht weiterhelfen. Darf ich Ihre HR-IT-Leiterin kontaktieren oder einen Rückruf für sie arrangieren?",
+          "confidence": 0.9,
+          "rationale": "The lead indicated they are not responsible for the decision, suggesting a need for a human specialist to engage with the appropriate decision-maker."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "Lead is not the decision-maker and identified the HR-IT-Leiterin as the appropriate contact.",
+        "call_summary": "The lead indicated they are not responsible for HR onboarding decisions and suggested contacting the HR-IT-Leiterin.",
+        "next_action": "Arrange a callback for the HR-IT-Leiterin."
+      },
+      "scores": {
+        "case_id": "PROD-004-C13",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": false
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": false,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-004-C14",
+      "case_title": "B2B budget objection with active pain",
+      "campaign_id": "campaign-prod-004-b2b-staffing-service",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "continue",
+          "agent_response": "Ich verstehe, dass Kosten ein wichtiges Thema für Sie sind. Darf ich fragen, wo genau die größte Reibung bei der Rekrutierung liegt: Kandidaten finden, Vorauswahl oder Geschwindigkeit?",
+          "confidence": 0.8,
+          "rationale": "The lead expressed interest in hiring but is cost-sensitive, indicating a need for further inquiry to understand their specific challenges."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "positive",
+          "interest_state": "needs-human",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "offer-scheduling",
+          "agent_response": "Super! Wann waere es Ihnen am besten, um mit einem Fachmann zu sprechen?",
+          "confidence": 0.9,
+          "rationale": "The lead expressed a willingness for a callback, indicating a positive interest in discussing further with a human specialist, while also emphasizing the need for it to be non-binding."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "ready-for-scheduling",
+        "interest_state": "needs-human",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "The lead is interested in recruiting support but is cost-sensitive. They expressed a willingness for a callback with a human specialist, emphasizing the need for it to be non-binding.",
+        "next_action": "Schedule a callback with a staffing specialist."
+      },
+      "scores": {
+        "case_id": "PROD-004-C14",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": true,
+            "interest_state_match": false,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": false,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    }
+  ]
+}
