@@ -1,0 +1,91 @@
+{
+  "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
+  "voice_milestone": "VOICE-004",
+  "provider": "browser-speech-recognition-demo",
+  "campaign_id": "campaign-prod-005-b2c-telecom",
+  "campaign": {
+    "product_name": "Internet and mobile plan review",
+    "product_category": "telecom",
+    "customer_type": "b2c",
+    "language": "de"
+  },
+  "stage": "relevance-check",
+  "input_type": "speech-final",
+  "asr_adapter": {
+    "provider": "browser-speech-recognition-demo",
+    "transcript_source": "browser-final-result",
+    "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+    "confidence": null,
+    "language": "de",
+    "requires_api_key": false,
+    "audio_uploaded_to_local_server": false,
+    "transcript_sent_to_local_server": true,
+    "browser_api": "SpeechRecognition or webkitSpeechRecognition",
+    "consent_boundary": "user-initiated microphone permission for local prototype only"
+  },
+  "response_packet": {
+    "voice_run_id": "VOICE-001-dry-run",
+    "voice_milestone": "VOICE-001",
+    "provider": "dry-run",
+    "mode": "metadata-only",
+    "campaign_id": "campaign-prod-005-b2c-telecom",
+    "campaign": {
+      "product_name": "Internet and mobile plan review",
+      "product_category": "telecom",
+      "customer_type": "b2c",
+      "language": "de"
+    },
+    "stage": "relevance-check",
+    "input_type": "speech-final",
+    "silence_count": null,
+    "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+    "decision": {
+      "case_id": "REALTIME-CLI-TURN",
+      "response_mode": "fast-response",
+      "first_response_latency_budget_ms": 700,
+      "first_response_latency_bucket": "under-1s",
+      "background_completion_budget_ms": null,
+      "background_modules": [
+        "human-handoff-prep"
+      ],
+      "live_path_subagents": [],
+      "detected_emotion": "skeptical-or-negative",
+      "sales_difficulty": "claim-boundary",
+      "interest_state": "needs-human",
+      "selected_strategy": "inquiry",
+      "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
+      "bridge_response": null,
+      "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+      "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+      "first_response_latency_ms": 0,
+      "first_response_latency_observed_bucket": "under-1s"
+    },
+    "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+    "voice": {
+      "name": "Neutral Synthetic Test Voice",
+      "style": "neutral-synthetic-test",
+      "consent_boundary": "synthetic-test-voice-only",
+      "cloned_voice": false
+    },
+    "latency_contract": {
+      "first_response_target_ms": 2000,
+      "tts_start_target_ms": 500,
+      "source_decision_latency_ms": 0,
+      "source_decision_latency_bucket": "under-1s"
+    },
+    "audio_output_path": null,
+    "trace": {
+      "source": "scripts/realtime_turn_cli.py",
+      "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "synthetic_output": true,
+      "requires_api_key": false
+    }
+  },
+  "trace": {
+    "source": "scripts/run_browser_speech_demo.py",
+    "realtime_source": "scripts/realtime_turn_cli.py",
+    "response_packet_source": "scripts/generate_voice_response.py",
+    "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
+  }
+}
