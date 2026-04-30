@@ -35,6 +35,8 @@ It tests whether campaign-specific guardrails can live in the campaign wrapper w
 - scheduling or escalation
 - structured logging
 
+The named products in this set are illustrative examples of the broader campaign model, not a limit on the kinds of products or services the reusable core should support.
+
 ## Dataset
 
 - Name: PROD-003 mixed campaign cases

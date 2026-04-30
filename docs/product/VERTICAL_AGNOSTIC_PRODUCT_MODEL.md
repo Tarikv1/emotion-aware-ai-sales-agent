@@ -6,7 +6,7 @@ Define the product as a configurable AI sales agent for many call-center sales c
 
 The first known client sells insurance, but the product should eventually support any client that wants an agent to qualify interest and move a sales conversation forward safely.
 
-Examples:
+Examples discussed so far:
 
 - dental insurance
 - cancer-related or serious-illness insurance
@@ -15,7 +15,7 @@ Examples:
 - SD cards
 - consumer services
 - B2B software or operational tools
-- other call-center sales campaigns
+- other call-center sales campaigns and client-approved products or services
 
 ## Core Idea
 

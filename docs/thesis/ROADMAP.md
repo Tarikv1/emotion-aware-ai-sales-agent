@@ -13,9 +13,9 @@ This is also a real product effort with a potential paying client. The first pro
 
 The product track should support both B2B and B2C sales contexts. The first product simulation is B2B-leaning, but later case sets should include direct-to-consumer customer conversations.
 
-The first concrete B2C client example is a German call center selling consumer insurance products, including dental insurance and cancer-related or serious-illness insurance. This should inform the next product simulation expansion.
+The first concrete B2C client example is a German call center selling consumer insurance products, including dental insurance and cancer-related or serious-illness insurance. This should inform the next product simulation expansion, but it is only one example of the broader campaign-driven product model.
 
-The product simulation runner now supports campaign wrappers, so one reusable core can be exercised across multiple client/product profiles while preserving per-campaign guardrails.
+The product simulation runner now supports campaign wrappers, so one reusable core can be exercised across multiple client/product profiles while preserving per-campaign guardrails. The mixed case sets are examples of that breadth, not the boundary of the product.
 
 ## Dual Track Principle
 

@@ -38,7 +38,7 @@ The first simulation case set is B2B-leaning because the initial client workflow
 
 The first concrete client example is a German call center selling insurance products to consumers, including dental insurance and cancer-related or serious-illness insurance. This should be treated as a sensitive B2C insurance sales context, not ordinary generic lead qualification.
 
-That client is an early vertical example, not the product boundary. Future clients may sell windows, glasses, SD cards, software, services, or other products through call centers.
+That client is an early vertical example, not the product boundary. Future clients may sell windows, glasses, SD cards, software, services, or many other products through call centers. Those examples are illustrative, not exhaustive.
 
 ## Likely First Client Value
 
