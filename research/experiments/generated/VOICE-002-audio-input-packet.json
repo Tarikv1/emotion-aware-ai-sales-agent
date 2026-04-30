@@ -1,0 +1,106 @@
+{
+  "voice_input_run_id": "VOICE-002-manual-transcript",
+  "voice_milestone": "VOICE-002",
+  "provider": "manual-transcript",
+  "campaign_id": "campaign-prod-005-b2c-telecom",
+  "campaign": {
+    "product_name": "Internet and mobile plan review",
+    "product_category": "telecom",
+    "customer_type": "b2c",
+    "language": "de"
+  },
+  "stage": "relevance-check",
+  "input_type": "speech-final",
+  "audio_input": {
+    "path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-002-customer-placeholder.wav",
+    "project_relative_path": "research\\experiments\\generated\\VOICE-002-customer-placeholder.wav",
+    "format": "wav",
+    "byte_size": 5644,
+    "sha256": "110be0d4e2bae5a52da7276dee3703f62df7b33794aa2706a89da0b71207a6c0",
+    "duration_seconds": 0.35,
+    "channels": 1,
+    "sample_rate_hz": 8000,
+    "sample_width_bytes": 2,
+    "frame_count": 2800
+  },
+  "consent": {
+    "confirmed": true,
+    "scope": "recorded-audio experiment only",
+    "private_customer_audio_allowed": false,
+    "synthetic_placeholder_recommended": true
+  },
+  "transcription": {
+    "provider": "manual-transcript",
+    "transcript_source": "cli",
+    "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+    "confidence": null,
+    "language": "de",
+    "requires_api_key": false
+  },
+  "response_packet": {
+    "voice_run_id": "VOICE-001-dry-run",
+    "voice_milestone": "VOICE-001",
+    "provider": "dry-run",
+    "mode": "metadata-only",
+    "campaign_id": "campaign-prod-005-b2c-telecom",
+    "campaign": {
+      "product_name": "Internet and mobile plan review",
+      "product_category": "telecom",
+      "customer_type": "b2c",
+      "language": "de"
+    },
+    "stage": "relevance-check",
+    "input_type": "speech-final",
+    "silence_count": null,
+    "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+    "decision": {
+      "case_id": "REALTIME-CLI-TURN",
+      "response_mode": "fast-response",
+      "first_response_latency_budget_ms": 700,
+      "first_response_latency_bucket": "under-1s",
+      "background_completion_budget_ms": null,
+      "background_modules": [
+        "human-handoff-prep"
+      ],
+      "live_path_subagents": [],
+      "detected_emotion": "skeptical-or-negative",
+      "sales_difficulty": "claim-boundary",
+      "interest_state": "needs-human",
+      "selected_strategy": "inquiry",
+      "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
+      "bridge_response": null,
+      "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+      "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+      "first_response_latency_ms": 0,
+      "first_response_latency_observed_bucket": "under-1s"
+    },
+    "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+    "voice": {
+      "name": "Neutral Synthetic Test Voice",
+      "style": "neutral-synthetic-test",
+      "consent_boundary": "synthetic-test-voice-only",
+      "cloned_voice": false
+    },
+    "latency_contract": {
+      "first_response_target_ms": 2000,
+      "tts_start_target_ms": 500,
+      "source_decision_latency_ms": 0,
+      "source_decision_latency_bucket": "under-1s"
+    },
+    "audio_output_path": null,
+    "trace": {
+      "source": "scripts/realtime_turn_cli.py",
+      "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "synthetic_output": true,
+      "requires_api_key": false
+    }
+  },
+  "listener_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-002-listen.html",
+  "trace": {
+    "source": "scripts/run_voice_input_turn.py",
+    "realtime_source": "scripts/realtime_turn_cli.py",
+    "response_packet_source": "scripts/generate_voice_response.py",
+    "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
+  }
+}
