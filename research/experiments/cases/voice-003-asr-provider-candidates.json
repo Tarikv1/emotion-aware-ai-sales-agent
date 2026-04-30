@@ -1,0 +1,138 @@
+{
+  "voice_milestone": "VOICE-003",
+  "comparison_scope": "provider-family scoring only; no API calls and no audio uploads",
+  "score_scale": "1=weak fit, 5=strong fit",
+  "scoring_weights": {
+    "latency_fit": 1.2,
+    "privacy_fit": 1.4,
+    "no_key_prototype_fit": 1.6,
+    "streaming_readiness": 1.1,
+    "batch_file_readiness": 0.7,
+    "german_readiness": 1.0,
+    "integration_simplicity": 1.2,
+    "cost_control": 0.8,
+    "thesis_usefulness": 1.0
+  },
+  "candidates": [
+    {
+      "provider_id": "manual-transcript-baseline",
+      "provider_family": "Human-approved transcript baseline",
+      "role": "regression-baseline",
+      "requires_api_key": false,
+      "latency_fit": 2,
+      "privacy_fit": 5,
+      "no_key_prototype_fit": 5,
+      "streaming_readiness": 1,
+      "batch_file_readiness": 5,
+      "german_readiness": 5,
+      "integration_simplicity": 5,
+      "cost_control": 5,
+      "thesis_usefulness": 5,
+      "adapter_boundary": "audio artifact plus human-approved transcript",
+      "decision_notes": [
+        "Keep as the regression oracle for ASR experiments.",
+        "Not automatic ASR, so it should not be the next automation prototype."
+      ]
+    },
+    {
+      "provider_id": "browser-speech-recognition-demo",
+      "provider_family": "Browser speech recognition API demo",
+      "role": "next-no-key-prototype",
+      "requires_api_key": false,
+      "latency_fit": 4,
+      "privacy_fit": 3,
+      "no_key_prototype_fit": 5,
+      "streaming_readiness": 4,
+      "batch_file_readiness": 2,
+      "german_readiness": 3,
+      "integration_simplicity": 4,
+      "cost_control": 5,
+      "thesis_usefulness": 4,
+      "adapter_boundary": "browser transcript event to realtime turn transcript",
+      "decision_notes": [
+        "Best next no-key demo path if browser support is acceptable.",
+        "Privacy behavior depends on browser implementation and must be disclosed before real users."
+      ]
+    },
+    {
+      "provider_id": "local-offline-asr-class",
+      "provider_family": "Local/offline ASR model class",
+      "role": "privacy-first-candidate",
+      "requires_api_key": false,
+      "latency_fit": 3,
+      "privacy_fit": 5,
+      "no_key_prototype_fit": 4,
+      "streaming_readiness": 3,
+      "batch_file_readiness": 4,
+      "german_readiness": 3,
+      "integration_simplicity": 2,
+      "cost_control": 4,
+      "thesis_usefulness": 4,
+      "adapter_boundary": "local audio file or stream to transcript",
+      "decision_notes": [
+        "Strong privacy direction because audio can stay local.",
+        "May require model downloads, hardware checks, and installation work before evaluation."
+      ]
+    },
+    {
+      "provider_id": "cloud-batch-asr-class",
+      "provider_family": "Cloud batch transcription API class",
+      "role": "batch-accuracy-candidate",
+      "requires_api_key": true,
+      "latency_fit": 2,
+      "privacy_fit": 2,
+      "no_key_prototype_fit": 1,
+      "streaming_readiness": 1,
+      "batch_file_readiness": 5,
+      "german_readiness": 4,
+      "integration_simplicity": 3,
+      "cost_control": 3,
+      "thesis_usefulness": 4,
+      "adapter_boundary": "audio upload to transcript result",
+      "decision_notes": [
+        "Good for offline evaluation and transcript quality benchmarking.",
+        "Requires explicit key management, privacy review, and data-retention decision before integration."
+      ]
+    },
+    {
+      "provider_id": "cloud-streaming-asr-class",
+      "provider_family": "Cloud streaming transcription API class",
+      "role": "production-latency-candidate",
+      "requires_api_key": true,
+      "latency_fit": 5,
+      "privacy_fit": 2,
+      "no_key_prototype_fit": 1,
+      "streaming_readiness": 5,
+      "batch_file_readiness": 3,
+      "german_readiness": 4,
+      "integration_simplicity": 3,
+      "cost_control": 2,
+      "thesis_usefulness": 5,
+      "adapter_boundary": "audio stream to partial and final transcripts",
+      "decision_notes": [
+        "Most relevant class for production low-latency calls.",
+        "Requires explicit key management, privacy review, and data-retention decision before integration."
+      ]
+    },
+    {
+      "provider_id": "hybrid-edge-cloud-asr-class",
+      "provider_family": "Hybrid edge/cloud ASR class",
+      "role": "future-resilience-candidate",
+      "requires_api_key": true,
+      "latency_fit": 4,
+      "privacy_fit": 3,
+      "no_key_prototype_fit": 1,
+      "streaming_readiness": 4,
+      "batch_file_readiness": 4,
+      "german_readiness": 4,
+      "integration_simplicity": 2,
+      "cost_control": 2,
+      "thesis_usefulness": 4,
+      "adapter_boundary": "edge pre-processing with cloud fallback transcript",
+      "decision_notes": [
+        "Useful future direction for resilience and privacy-sensitive routing.",
+        "Requires explicit key management, privacy review, and data-retention decision before integration."
+      ]
+    }
+  ]
+}
