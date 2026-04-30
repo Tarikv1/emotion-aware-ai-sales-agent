@@ -213,6 +213,7 @@ TurnDecision
   interest_state
   selected_strategy
   next_action
+  call_control
   agent_response
   confidence
   rationale
@@ -230,6 +231,14 @@ Suggested `next_action` values:
 - `escalate`
 - `suppress-contact`
 - `create-follow-up-task`
+
+Suggested `call_control` values:
+
+- `continue-call`
+- `bridge-then-continue`
+- `transfer-or-escalate`
+- `end-call`
+- `schedule-and-end`
 
 Notes:
 
@@ -254,6 +263,7 @@ CallOutcome
   escalation_reason
   call_summary
   next_action
+  call_control
   created_at
 ```
 
@@ -265,6 +275,8 @@ Rules:
 - `interest_state=do-not-call` should update `Lead.do_not_call=true`.
 - `interest_state=needs-human` should create or link to an `Escalation`.
 - `call_status=escalated` should include an `escalation_reason`.
+- `call_control=end-call` should result in a polite close and hang-up.
+- `call_control=schedule-and-end` requires a confirmed appointment or callback record.
 
 ## Appointment
 

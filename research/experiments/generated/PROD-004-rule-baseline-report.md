@@ -34,7 +34,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C01 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -56,7 +57,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C02 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -78,7 +80,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "status quo resistance requires later nurturing",
   "call_summary": "Rule baseline processed PROD-004-C03 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -100,7 +103,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "callback timing remains broad rather than a confirmed appointment",
   "call_summary": "Rule baseline processed PROD-004-C04 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -122,7 +126,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C05 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -144,7 +149,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C06 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -166,7 +172,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "competitor comparison outside approved AI response scope",
   "call_summary": "Rule baseline processed PROD-004-C07 with final state needs-human.",
-  "next_action": "route to human specialist"
+  "next_action": "route to human specialist",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -188,7 +195,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "coverage or speed guarantee request outside approved AI scope",
   "call_summary": "Rule baseline processed PROD-004-C08 with final state needs-human.",
-  "next_action": "route to human specialist"
+  "next_action": "route to human specialist",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -210,7 +218,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C09 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "next_action": "create scheduling follow-up task or route to human scheduler",
+  "call_control": "end-call"
 }
 ```
 
@@ -232,7 +241,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C10 with final state not-interested.",
-  "next_action": "log no current need and end politely"
+  "next_action": "log no current need and end politely",
+  "call_control": "end-call"
 }
 ```
 
@@ -254,7 +264,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "lead requested human contact",
   "call_summary": "Rule baseline processed PROD-004-C11 with final state needs-human.",
-  "next_action": "route to human specialist"
+  "next_action": "route to human specialist",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -276,7 +287,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "learning outcome guarantee request outside approved AI scope",
   "call_summary": "Rule baseline processed PROD-004-C12 with final state needs-human.",
-  "next_action": "route to human specialist"
+  "next_action": "route to human specialist",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -298,7 +310,8 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": "wrong contact with named referral path",
   "call_summary": "Rule baseline processed PROD-004-C13 with final state needs-human.",
-  "next_action": "route to human specialist"
+  "next_action": "route to human specialist",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -320,6 +333,7 @@ Final candidate outcome:
   "appointment_time": null,
   "escalation_reason": null,
   "call_summary": "Rule baseline processed PROD-004-C14 with final state interested.",
-  "next_action": "offer available appointment windows"
+  "next_action": "offer available appointment windows",
+  "call_control": "continue-call"
 }
 ```

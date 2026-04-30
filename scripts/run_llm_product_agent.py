@@ -14,7 +14,12 @@ from run_product_simulation import (
     render_prompt,
     update_call_state,
 )
-from product_agent_output_contract import normalize_final_outcome, strategy_taxonomy_prompt_block
+from product_agent_output_contract import (
+    call_control_prompt_block,
+    normalize_final_outcome,
+    normalize_turn_output,
+    strategy_taxonomy_prompt_block,
+)
 
 
 DEFAULT_MODEL = "gpt-4o-mini"
@@ -105,6 +110,8 @@ def render_final_prompt(case: dict, campaign: dict, turn_outputs: list[dict]) ->
             "",
             strategy_taxonomy_prompt_block(),
             "",
+            call_control_prompt_block(),
+            "",
             "Final outcome consistency rules:",
             "",
             "- If interest_state is needs-human, call_status must be escalated.",
@@ -144,7 +151,8 @@ def render_final_prompt(case: dict, campaign: dict, turn_outputs: list[dict]) ->
             '  "appointment_time": null,',
             '  "escalation_reason": null,',
             '  "call_summary": "brief summary",',
-            '  "next_action": "brief next action"',
+            '  "next_action": "brief next action",',
+            '  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end"',
             "}",
         ]
     )
@@ -160,6 +168,7 @@ def build_final_outcome(raw_outcome: dict) -> dict:
         "escalation_reason": raw_outcome.get("escalation_reason"),
         "call_summary": raw_outcome.get("call_summary"),
         "next_action": raw_outcome.get("next_action"),
+        "call_control": raw_outcome.get("call_control"),
     })
 
 
@@ -240,7 +249,7 @@ def run_case(
     for index, turn in enumerate(case["turns"], start=1):
         log_progress(f"  Turn {index}/{len(case['turns'])}: {turn['stage']}", quiet)
         prompt = render_prompt(template, case, turn, state, campaign)
-        output = call_chat_completion(prompt, api_key, model, base_url, timeout, temperature)
+        output = normalize_turn_output(call_chat_completion(prompt, api_key, model, base_url, timeout, temperature))
         turn_outputs.append(output)
         state = update_call_state(state, turn, output, case["expected_outcome"])
 

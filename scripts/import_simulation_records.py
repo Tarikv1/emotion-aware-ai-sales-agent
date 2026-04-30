@@ -25,6 +25,8 @@ def execute_schema(conn: sqlite3.Connection, schema_path: Path) -> None:
     conn.executescript(schema_path.read_text(encoding="utf-8"))
     ensure_column(conn, "leads", "customer_type", "TEXT")
     ensure_column(conn, "call_sessions", "campaign_id", "TEXT")
+    ensure_column(conn, "turn_decisions", "call_control", "TEXT")
+    ensure_column(conn, "call_outcomes", "call_control", "TEXT")
 
 
 def ensure_column(conn: sqlite3.Connection, table: str, column: str, column_type: str) -> None:
@@ -175,9 +177,9 @@ def insert_records(conn: sqlite3.Connection, records: dict) -> None:
             """
             INSERT OR REPLACE INTO turn_decisions (
               decision_id, call_id, lead_id, turn_index, stage, detected_emotion,
-              interest_state, selected_strategy, next_action, agent_response,
-              confidence, rationale, guardrail_flags_json, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              interest_state, selected_strategy, next_action, call_control,
+              agent_response, confidence, rationale, guardrail_flags_json, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 decision["decision_id"],
@@ -189,6 +191,7 @@ def insert_records(conn: sqlite3.Connection, records: dict) -> None:
                 decision.get("interest_state"),
                 decision.get("selected_strategy"),
                 decision.get("next_action"),
+                decision.get("call_control"),
                 decision.get("agent_response"),
                 decision.get("confidence"),
                 decision.get("rationale"),
@@ -203,8 +206,8 @@ def insert_records(conn: sqlite3.Connection, records: dict) -> None:
             INSERT OR REPLACE INTO call_outcomes (
               outcome_id, call_id, lead_id, call_status, interest_state,
               selected_strategy, appointment_scheduled, appointment_time,
-              escalation_reason, call_summary, next_action, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              escalation_reason, call_summary, next_action, call_control, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 outcome["outcome_id"],
@@ -218,6 +221,7 @@ def insert_records(conn: sqlite3.Connection, records: dict) -> None:
                 outcome.get("escalation_reason"),
                 outcome.get("call_summary"),
                 outcome.get("next_action"),
+                outcome.get("call_control"),
                 outcome.get("created_at"),
             ),
         )
@@ -292,7 +296,8 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
     interested = query_rows(
         conn,
         """
-        SELECT leads.lead_id, COALESCE(leads.role_title, leads.full_name) AS display_name, call_outcomes.next_action
+        SELECT leads.lead_id, COALESCE(leads.role_title, leads.full_name) AS display_name,
+               call_outcomes.next_action, call_outcomes.call_control
         FROM leads
         JOIN call_outcomes ON call_outcomes.lead_id = leads.lead_id
         WHERE call_outcomes.interest_state = 'interested'
@@ -337,7 +342,7 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
     sample_turns = query_rows(
         conn,
         f"""
-        SELECT turn_index, stage, interest_state, selected_strategy, next_action
+        SELECT turn_index, stage, interest_state, selected_strategy, next_action, call_control
         FROM turn_decisions
         {"WHERE call_id = ?" if sample_call_id else ""}
         ORDER BY turn_index
@@ -372,7 +377,10 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
     )
 
     lines.extend(["", "## Interested Leads", ""])
-    lines.extend(f"- `{row['lead_id']}` ({row['display_name']}): {row['next_action']}" for row in interested)
+    lines.extend(
+        f"- `{row['lead_id']}` ({row['display_name']}): {row['next_action']} (`{row['call_control']}`)"
+        for row in interested
+    )
 
     lines.extend(["", "## Do-Not-Call Leads", ""])
     lines.extend(f"- `{row['lead_id']}` ({row['display_name']}): {row['do_not_call_reason']}" for row in do_not_call)
@@ -391,7 +399,7 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
 
     lines.extend(["", f"## Sample Turn Decisions For `{sample_call_id or 'unknown-call'}`", ""])
     lines.extend(
-        f"- Turn {row['turn_index']} `{row['stage']}`: `{row['interest_state']}` / `{row['selected_strategy']}` -> `{row['next_action']}`"
+        f"- Turn {row['turn_index']} `{row['stage']}`: `{row['interest_state']}` / `{row['selected_strategy']}` -> `{row['next_action']}` (`{row['call_control']}`)"
         for row in sample_turns
     )
 

@@ -21,6 +21,8 @@ The next product-learning priority is difficulty-first: strengthen the reusable 
 
 The product runtime priority is low latency. The live call path should be a fast real-time sales-agent core with deterministic guardrails and short bridge responses when slower lookup is needed. Specialist modules or sub-agents should support background compliance, product lookup, CRM work, handoff preparation, and post-call learning rather than blocking every customer-facing reply.
 
+The live call path also needs explicit call-control decisions. The agent should know when to continue, bridge, transfer, end, or schedule-and-end rather than treating every customer response as an invitation for another question.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -164,6 +166,7 @@ Likely MVP:
 - estimate customer state
 - select a strategy
 - generate and execute the next response autonomously
+- decide whether to continue, bridge, transfer, end, or schedule-and-end the call
 - schedule a human follow-up call if the lead is interested
 - log the strategy choice and rationale
 - escalate or pause when confidence or safety boundaries require it
@@ -235,3 +238,4 @@ Immediate product artifact:
 - mixed campaign wrappers that combine consumer and B2B product profiles
 - sales difficulty gauntlet before broad industry-library expansion
 - real-time agent architecture and latency budget
+- call termination and hang-up policy

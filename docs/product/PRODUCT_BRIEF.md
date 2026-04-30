@@ -70,10 +70,13 @@ MVP capabilities:
 - ask a short sequence of client-approved qualification questions
 - classify interest state
 - schedule a follow-up call with a human sales agent when appropriate
+- decide whether to continue, bridge, transfer, end, or schedule-and-end each call turn
 - log why the strategy was selected
 - escalate or pause when confidence is low, policy boundaries are hit, or the user asks for a human
 
 The live response path should not depend on chaining multiple sub-agents sequentially. Specialist modules can support compliance, product lookup, CRM updates, scheduling, and post-call evaluation, but the customer-facing turn should be handled by the fast real-time sales-agent core.
+
+The live response path also needs explicit call-control behavior. The agent should hang up politely after do-not-call requests, clear refusals, repeated silence, voicemail handling, or completed follow-up/scheduling actions. See `docs/product/CALL_TERMINATION_POLICY.md`.
 
 Development and testing may use human review, but launch behavior should not require human approval for every normal response.
 

@@ -64,11 +64,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -79,6 +87,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -169,6 +188,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -184,6 +204,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "continue briefly and ask relevance check",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -229,11 +250,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -244,6 +273,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -315,7 +355,8 @@ Accumulated call state:
       "detected_emotion": "neutral",
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
-      "next_action": "ask-follow-up"
+      "next_action": "ask-follow-up",
+      "call_control": "continue-call"
     }
   ],
   "current_stage": "opening-permission",
@@ -344,6 +385,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -359,6 +401,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "inquiry",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "acknowledge cost concern and ask whether a neutral review would be useful",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -389,7 +432,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "create later follow-up task with approved tariff review information",
-  "call_summary": "Price objection masks value uncertainty: Verify that a price objection triggers clarification and a low-pressure follow-up rather than a savings promise. Final state is maybe-interested with next action: create later follow-up task with approved tariff review information."
+  "call_summary": "Price objection masks value uncertainty: Verify that a price objection triggers clarification and a low-pressure follow-up rather than a savings promise. Final state is maybe-interested with next action: create later follow-up task with approved tariff review information.",
+  "call_control": "end-call"
 }
 ```
 
@@ -463,11 +507,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -478,6 +530,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -568,6 +631,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -583,6 +647,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "evidence-or-benefit",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "offer approved information and ask whether a later follow-up is acceptable",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -613,7 +678,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "send approved information and create later follow-up task",
-  "call_summary": "Send me information brush-off: Verify that a send-info request does not become a fake appointment or a hard close. Final state is maybe-interested with next action: send approved information and create later follow-up task."
+  "call_summary": "Send me information brush-off: Verify that a send-info request does not become a fake appointment or a hard close. Final state is maybe-interested with next action: send approved information and create later follow-up task.",
+  "call_control": "end-call"
 }
 ```
 
@@ -687,11 +753,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -702,6 +776,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -792,6 +877,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -807,6 +893,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "ask relevance check",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -852,11 +939,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -867,6 +962,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -938,7 +1044,8 @@ Accumulated call state:
       "detected_emotion": "neutral",
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
-      "next_action": "ask-follow-up"
+      "next_action": "ask-follow-up",
+      "call_control": "continue-call"
     }
   ],
   "current_stage": "opening-permission",
@@ -967,6 +1074,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -982,6 +1090,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "inquiry",
   "next_action": "create-follow-up-task",
+  "call_control": "end-call",
   "agent_response": "ask one gentle question about the most manual step",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -1012,7 +1121,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "status quo resistance requires later nurturing",
   "next_action": "create follow-up task with approved workflow comparison information",
-  "call_summary": "Comfortable with current process: Verify that status quo resistance is handled through inquiry, not argument. Final state is maybe-interested with next action: create follow-up task with approved workflow comparison information."
+  "call_summary": "Comfortable with current process: Verify that status quo resistance is handled through inquiry, not argument. Final state is maybe-interested with next action: create follow-up task with approved workflow comparison information.",
+  "call_control": "end-call"
 }
 ```
 
@@ -1086,11 +1196,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -1101,6 +1219,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -1191,6 +1320,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -1206,6 +1336,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "acknowledge timing and ask whether later follow-up is acceptable",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -1251,11 +1382,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -1266,6 +1405,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -1337,7 +1487,8 @@ Accumulated call state:
       "detected_emotion": "neutral",
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
-      "next_action": "ask-follow-up"
+      "next_action": "ask-follow-up",
+      "call_control": "continue-call"
     }
   ],
   "current_stage": "opening-permission",
@@ -1366,6 +1517,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -1381,6 +1533,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "direct-ask-or-commitment",
   "next_action": "create-follow-up-task",
+  "call_control": "end-call",
   "agent_response": "confirm this as a follow-up task, not a scheduled appointment",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -1411,7 +1564,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "callback timing remains broad rather than a confirmed appointment",
   "next_action": "create later follow-up task",
-  "call_summary": "Interested but timing is bad: Verify that timing resistance creates a follow-up task instead of immediate pressure. Final state is maybe-interested with next action: create later follow-up task."
+  "call_summary": "Interested but timing is bad: Verify that timing resistance creates a follow-up task instead of immediate pressure. Final state is maybe-interested with next action: create later follow-up task.",
+  "call_control": "end-call"
 }
 ```
 
@@ -1485,11 +1639,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -1500,6 +1662,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -1590,6 +1763,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -1605,6 +1779,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "ask relevance check",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -1650,11 +1825,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -1665,6 +1848,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -1736,7 +1930,8 @@ Accumulated call state:
       "detected_emotion": "neutral",
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
-      "next_action": "ask-follow-up"
+      "next_action": "ask-follow-up",
+      "call_control": "continue-call"
     }
   ],
   "current_stage": "opening-permission",
@@ -1765,6 +1960,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -1780,6 +1976,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "continue",
+  "call_control": "continue-call",
   "agent_response": "offer approved information and avoid pushing a decision",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -1810,7 +2007,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "send approved information and create later follow-up task",
-  "call_summary": "Partner approval needed: Verify that household authority gaps are handled as follow-up, not as a forced commitment. Final state is maybe-interested with next action: send approved information and create later follow-up task."
+  "call_summary": "Partner approval needed: Verify that household authority gaps are handled as follow-up, not as a forced commitment. Final state is maybe-interested with next action: send approved information and create later follow-up task.",
+  "call_control": "end-call"
 }
 ```
 
@@ -1884,11 +2082,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -1899,6 +2105,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -1989,6 +2206,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -2004,6 +2222,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "continue",
+  "call_control": "continue-call",
   "agent_response": "acknowledge the trust concern and offer approved credibility information",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -2034,7 +2253,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "send approved credibility information and create later follow-up task",
-  "call_summary": "Never heard of your company: Verify that trust resistance gets acknowledged and routed to approved credibility material. Final state is maybe-interested with next action: send approved credibility information and create later follow-up task."
+  "call_summary": "Never heard of your company: Verify that trust resistance gets acknowledged and routed to approved credibility material. Final state is maybe-interested with next action: send approved credibility information and create later follow-up task.",
+  "call_control": "end-call"
 }
 ```
 
@@ -2108,11 +2328,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -2123,6 +2351,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -2213,6 +2452,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -2228,6 +2468,7 @@ Reference structured output:
   "interest_state": "needs-human",
   "selected_strategy": "inquiry",
   "next_action": "escalate",
+  "call_control": "transfer-or-escalate",
   "agent_response": "avoid unsupported comparison and route to a human specialist",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -2258,7 +2499,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "competitor comparison outside approved AI response scope",
   "next_action": "route to human solutions specialist",
-  "call_summary": "Competitor comparison request: Verify escalation when the lead asks for a detailed competitor comparison outside approved claims. Final state is needs-human with next action: route to human solutions specialist."
+  "call_summary": "Competitor comparison request: Verify escalation when the lead asks for a detailed competitor comparison outside approved claims. Final state is needs-human with next action: route to human solutions specialist.",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -2332,11 +2574,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -2347,6 +2597,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -2437,6 +2698,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -2452,6 +2714,7 @@ Reference structured output:
   "interest_state": "needs-human",
   "selected_strategy": "inquiry",
   "next_action": "escalate",
+  "call_control": "transfer-or-escalate",
   "agent_response": "avoid speed or coverage promises and route to a human specialist",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -2482,7 +2745,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "coverage or speed guarantee request outside approved AI scope",
   "next_action": "route to human telecom specialist",
-  "call_summary": "Technical fit and risk concern: Verify escalation when the customer asks for coverage or speed certainty. Final state is needs-human with next action: route to human telecom specialist."
+  "call_summary": "Technical fit and risk concern: Verify escalation when the customer asks for coverage or speed certainty. Final state is needs-human with next action: route to human telecom specialist.",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -2556,11 +2820,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -2571,6 +2843,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -2661,6 +2944,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -2676,6 +2960,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "rapport",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "ask relevance check",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -2721,11 +3006,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -2736,6 +3029,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -2807,7 +3111,8 @@ Accumulated call state:
       "detected_emotion": "positive",
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
-      "next_action": "ask-follow-up"
+      "next_action": "ask-follow-up",
+      "call_control": "continue-call"
     }
   ],
   "current_stage": "opening-permission",
@@ -2836,6 +3141,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -2851,6 +3157,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "inquiry",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "ask whether approved information or later follow-up would be useful",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -2881,7 +3188,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "send approved information and create later follow-up task",
-  "call_summary": "Soft interest with no commitment: Verify that vague interest stays maybe-interested and does not become a scheduled appointment. Final state is maybe-interested with next action: send approved information and create later follow-up task."
+  "call_summary": "Soft interest with no commitment: Verify that vague interest stays maybe-interested and does not become a scheduled appointment. Final state is maybe-interested with next action: send approved information and create later follow-up task.",
+  "call_control": "end-call"
 }
 ```
 
@@ -2955,11 +3263,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -2970,6 +3286,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -3060,6 +3387,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -3075,6 +3403,7 @@ Reference structured output:
   "interest_state": "not-interested",
   "selected_strategy": "rapport",
   "next_action": "close-politely",
+  "call_control": "end-call",
   "agent_response": "apologize briefly, end the call, and do not ask another question",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -3105,7 +3434,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "log as not interested and end the call politely",
-  "call_summary": "Annoyed customer wants the call to end: Verify that annoyance causes the agent to back off without overclassifying as do-not-call. Final state is not-interested with next action: log as not interested and end the call politely."
+  "call_summary": "Annoyed customer wants the call to end: Verify that annoyance causes the agent to back off without overclassifying as do-not-call. Final state is not-interested with next action: log as not interested and end the call politely.",
+  "call_control": "end-call"
 }
 ```
 
@@ -3179,11 +3509,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -3194,6 +3532,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -3284,6 +3633,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -3299,6 +3649,7 @@ Reference structured output:
   "interest_state": "needs-human",
   "selected_strategy": "rapport",
   "next_action": "escalate",
+  "call_control": "transfer-or-escalate",
   "agent_response": "confirm human handoff without trying to continue qualification",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -3329,7 +3680,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "lead requested human contact",
   "next_action": "route to human staffing specialist",
-  "call_summary": "Lead directly asks for a human: Verify immediate escalation when the lead requests a human specialist. Final state is needs-human with next action: route to human staffing specialist."
+  "call_summary": "Lead directly asks for a human: Verify immediate escalation when the lead requests a human specialist. Final state is needs-human with next action: route to human staffing specialist.",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -3403,11 +3755,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -3418,6 +3778,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -3508,6 +3879,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -3523,6 +3895,7 @@ Reference structured output:
   "interest_state": "needs-human",
   "selected_strategy": "inquiry",
   "next_action": "escalate",
+  "call_control": "transfer-or-escalate",
   "agent_response": "avoid outcome guarantee and route to a human course advisor",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -3553,7 +3926,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "learning outcome guarantee request outside approved AI scope",
   "next_action": "route to human course advisor",
-  "call_summary": "Outcome guarantee request: Verify escalation when the consumer asks for an exam or outcome guarantee. Final state is needs-human with next action: route to human course advisor."
+  "call_summary": "Outcome guarantee request: Verify escalation when the consumer asks for an exam or outcome guarantee. Final state is needs-human with next action: route to human course advisor.",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -3627,11 +4001,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -3642,6 +4024,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -3732,6 +4125,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -3747,6 +4141,7 @@ Reference structured output:
   "interest_state": "needs-human",
   "selected_strategy": "rapport",
   "next_action": "escalate",
+  "call_control": "transfer-or-escalate",
   "agent_response": "thank the contact and route to human follow-up for the correct owner path",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -3777,7 +4172,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": "wrong contact with decision-owner referral path",
   "next_action": "route to human sales specialist for correct-contact follow-up",
-  "call_summary": "Wrong contact but identifies decision owner: Verify that the agent treats wrong-contact authority gaps as a handoff path. Final state is needs-human with next action: route to human sales specialist for correct-contact follow-up."
+  "call_summary": "Wrong contact but identifies decision owner: Verify that the agent treats wrong-contact authority gaps as a handoff path. Final state is needs-human with next action: route to human sales specialist for correct-contact follow-up.",
+  "call_control": "transfer-or-escalate"
 }
 ```
 
@@ -3851,11 +4247,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -3866,6 +4270,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -3956,6 +4371,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -3971,6 +4387,7 @@ Reference structured output:
   "interest_state": "maybe-interested",
   "selected_strategy": "inquiry",
   "next_action": "ask-follow-up",
+  "call_control": "continue-call",
   "agent_response": "acknowledge budget concern and ask whether a short specialist call would be useful",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -4016,11 +4433,19 @@ Use this compact interest-state taxonomy:
 
 Use this compact strategy taxonomy:
 
-- rapport
-- inquiry
-- evidence-or-benefit
-- emotional-appeal
-- direct-ask-or-commitment
+- rapport: use for respectful acknowledgment, trust-building, de-escalation, stopping pressure, or clean human handoff.
+- inquiry: use for one clarifying question about value, fit, risk, comparison criteria, timing, or decision path.
+- evidence-or-benefit: use for approved information or a non-guaranteed benefit explanation when the lead asks for details.
+- emotional-appeal: use only for approved empathy or motivation; never use fear, guilt, or pressure.
+- direct-ask-or-commitment: use when the lead is open to a concrete next step, callback window, appointment, or non-binding specialist follow-up.
+
+Use this call-control taxonomy:
+
+- continue-call: keep the call open and continue normal qualification.
+- bridge-then-continue: say a short bridge response while slower lookup or verification runs.
+- transfer-or-escalate: route to a human or specialist workflow instead of continuing autonomous qualification.
+- end-call: say the appropriate closing sentence, update records, and hang up.
+- schedule-and-end: confirm the appointment or callback, update records, and end the call politely.
 
 Guardrails:
 
@@ -4031,6 +4456,17 @@ Guardrails:
 - Do not confirm scheduling without a clear time.
 - Escalate complex product, pricing, legal, privacy, or integration questions.
 - Escalate when the lead directly asks for a human.
+
+Output consistency rules:
+
+- If interest_state is needs-human, next_action must be escalate unless the lead also requested no further contact.
+- If interest_state is do-not-call, next_action must be suppress-contact.
+- If the lead gives only broad timing, create a follow-up task rather than confirming an appointment.
+- If the lead asks for a guarantee, competitor proof, legal/medical/financial answer, or technical certainty beyond approved claims, escalate instead of answering.
+- If next_action is suppress-contact or close-politely, call_control should be end-call.
+- If next_action is escalate, call_control should be transfer-or-escalate.
+- If next_action is confirm-scheduling, call_control should be schedule-and-end.
+- If next_action is create-follow-up-task, call_control should usually be end-call after the follow-up is logged.
 
 Campaign context:
 
@@ -4102,7 +4538,8 @@ Accumulated call state:
       "detected_emotion": "skeptical-or-negative",
       "interest_state": "maybe-interested",
       "selected_strategy": "inquiry",
-      "next_action": "ask-follow-up"
+      "next_action": "ask-follow-up",
+      "call_control": "continue-call"
     }
   ],
   "current_stage": "opening-permission",
@@ -4131,6 +4568,7 @@ Return only JSON with this shape:
   "interest_state": "interested|maybe-interested|not-interested|needs-human|do-not-call",
   "selected_strategy": "rapport|inquiry|evidence-or-benefit|emotional-appeal|direct-ask-or-commitment",
   "next_action": "continue|ask-follow-up|offer-scheduling|confirm-scheduling|close-politely|escalate|suppress-contact|create-follow-up-task",
+  "call_control": "continue-call|bridge-then-continue|transfer-or-escalate|end-call|schedule-and-end",
   "agent_response": "one concise next response the agent would say",
   "confidence": 0.0,
   "rationale": "brief reason for the state and strategy"
@@ -4146,6 +4584,7 @@ Reference structured output:
   "interest_state": "interested",
   "selected_strategy": "direct-ask-or-commitment",
   "next_action": "offer-scheduling",
+  "call_control": "continue-call",
   "agent_response": "offer clear appointment windows without promising pricing",
   "confidence": 0.8,
   "rationale": "Reference output derived from the case-set expected labels."
@@ -4176,7 +4615,8 @@ Turn checks:
   "appointment_time": null,
   "escalation_reason": null,
   "next_action": "offer available appointment windows for human staffing specialist",
-  "call_summary": "B2B budget objection with active pain: Verify that B2B price resistance with real pain moves to human specialist rather than discount promises. Final state is interested with next action: offer available appointment windows for human staffing specialist."
+  "call_summary": "B2B budget objection with active pain: Verify that B2B price resistance with real pain moves to human specialist rather than discount promises. Final state is interested with next action: offer available appointment windows for human staffing specialist.",
+  "call_control": "continue-call"
 }
 ```
 

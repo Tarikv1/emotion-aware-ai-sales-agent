@@ -62,6 +62,7 @@ latest customer answer
   -> interest-state estimate
   -> strategy selection
   -> next-action selection
+  -> call-control / termination decision
   -> output consistency check
   -> concise response
   -> state update
@@ -187,8 +188,11 @@ Examples:
 - no appointment should be confirmed without a clear time
 - broad timing should create a follow-up task, not a confirmed appointment
 - unsupported claims should escalate rather than be answered creatively
+- explicit stop, do-not-call, or uninterested boundaries should end the call politely
 
 This is why the product needs a deterministic output-contract layer even when the main language behavior uses an LLM.
+
+See `docs/product/CALL_TERMINATION_POLICY.md` for the dedicated hang-up, transfer, bridge, and schedule-and-end rules.
 
 ## Runtime Layers
 
@@ -201,6 +205,7 @@ Responsible for:
 - state classification
 - strategy selection
 - next-action decision
+- call-control decision
 - output consistency
 
 This layer is latency-critical.

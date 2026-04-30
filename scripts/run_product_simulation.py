@@ -3,6 +3,8 @@ import argparse
 import json
 from pathlib import Path
 
+from product_agent_output_contract import call_control_for_final_outcome, call_control_for_next_action
+
 
 ALLOWED_EMOTIONS = {"positive", "neutral", "skeptical-or-negative"}
 ALLOWED_INTEREST_STATES = {"interested", "maybe-interested", "not-interested", "needs-human", "do-not-call"}
@@ -152,12 +154,14 @@ def infer_next_action(turn: dict, is_last_turn: bool, outcome: dict) -> str:
 
 
 def reference_turn_output(turn: dict, is_last_turn: bool, outcome: dict) -> dict:
+    next_action = infer_next_action(turn, is_last_turn, outcome)
     return {
         "stage": turn["stage"],
         "detected_emotion": turn["emotion_label"],
         "interest_state": turn["expected_state_after_turn"],
         "selected_strategy": turn["strategy_label"],
-        "next_action": infer_next_action(turn, is_last_turn, outcome),
+        "next_action": next_action,
+        "call_control": call_control_for_next_action(next_action, turn["expected_state_after_turn"]),
         "agent_response": turn["expected_agent_action"],
         "confidence": 0.8,
         "rationale": "Reference output derived from the case-set expected labels.",
@@ -170,6 +174,7 @@ def reference_call_outcome(case: dict) -> dict:
         f"{case['case_title']}: {case['scenario_goal']} "
         f"Final state is {outcome['interest_state']} with next action: {outcome['next_action']}."
     )
+    outcome["call_control"] = call_control_for_final_outcome(outcome)
     return outcome
 
 
@@ -240,6 +245,7 @@ def update_call_state(state: dict, turn: dict, reference: dict, outcome: dict) -
             "interest_state": reference["interest_state"],
             "selected_strategy": reference["selected_strategy"],
             "next_action": reference["next_action"],
+            "call_control": reference["call_control"],
         },
     ]
     updated["current_stage"] = turn["stage"]
@@ -347,6 +353,7 @@ def build_database_records(cases: list[dict], source_cases_path: Path, campaigns
                     "interest_state": reference["interest_state"],
                     "selected_strategy": reference["selected_strategy"],
                     "next_action": reference["next_action"],
+                    "call_control": reference["call_control"],
                     "agent_response": reference["agent_response"],
                     "confidence": reference["confidence"],
                     "rationale": reference["rationale"],
@@ -391,6 +398,7 @@ def build_database_records(cases: list[dict], source_cases_path: Path, campaigns
                 "escalation_reason": outcome["escalation_reason"],
                 "call_summary": outcome["call_summary"],
                 "next_action": outcome["next_action"],
+                "call_control": outcome["call_control"],
                 "created_at": SIMULATION_TIMESTAMP,
             }
         )

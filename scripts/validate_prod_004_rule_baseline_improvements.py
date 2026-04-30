@@ -33,6 +33,11 @@ def main() -> None:
     assert summary["final_strategy_matches"] >= 13, f"Final strategy matches too low: {summary}"
     assert summary["final_appointment_matches"] == 14, f"Appointment matches regressed: {summary}"
 
+    for result in results:
+        for output in result["turn_outputs"]:
+            assert output.get("call_control"), f"{result['case_id']} turn missing call_control"
+        assert result["final_outcome"].get("call_control"), f"{result['case_id']} final outcome missing call_control"
+
 
 if __name__ == "__main__":
     main()

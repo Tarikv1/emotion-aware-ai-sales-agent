@@ -33,6 +33,7 @@ The report checks that the prototype can retrieve:
 - confirmed appointments
 - escalations
 - turn-level decisions for one call
+- call-control decisions such as `continue-call`, `end-call`, and `transfer-or-escalate`
 
 ## Boundary
 

@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS turn_decisions (
   interest_state TEXT,
   selected_strategy TEXT,
   next_action TEXT,
+  call_control TEXT,
   agent_response TEXT,
   confidence REAL,
   rationale TEXT,
@@ -112,6 +113,7 @@ CREATE TABLE IF NOT EXISTS call_outcomes (
   escalation_reason TEXT,
   call_summary TEXT,
   next_action TEXT,
+  call_control TEXT,
   created_at TEXT,
   FOREIGN KEY (call_id) REFERENCES call_sessions (call_id),
   FOREIGN KEY (lead_id) REFERENCES leads (lead_id)

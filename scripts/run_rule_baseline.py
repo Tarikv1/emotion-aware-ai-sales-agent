@@ -3,7 +3,7 @@ import argparse
 import json
 from pathlib import Path
 
-from product_agent_output_contract import normalize_final_outcome
+from product_agent_output_contract import normalize_final_outcome, normalize_turn_output
 
 
 def load_json(path: Path):
@@ -313,6 +313,7 @@ def update_state(state: dict, turn: dict, output: dict) -> dict:
             "interest_state": output["interest_state"],
             "selected_strategy": output["selected_strategy"],
             "next_action": output["next_action"],
+            "call_control": output["call_control"],
         },
     ]
     updated["current_stage"] = turn["stage"]
@@ -334,7 +335,7 @@ def run_turn(turn: dict, state: dict, is_last_turn: bool) -> dict:
     interest_state = classify_interest(turn["lead_answer"], state)
     strategy = select_strategy(turn["lead_answer"], emotion, interest_state, turn["stage"])
     next_action = next_action_for(turn["lead_answer"], interest_state, turn["stage"], is_last_turn)
-    return {
+    return normalize_turn_output({
         "stage": turn["stage"],
         "detected_emotion": emotion,
         "interest_state": interest_state,
@@ -343,7 +344,7 @@ def run_turn(turn: dict, state: dict, is_last_turn: bool) -> dict:
         "agent_response": agent_response_for(interest_state, next_action),
         "confidence": 0.74,
         "rationale": f"Rule baseline selected {interest_state} from answer cues and stage {turn['stage']}.",
-    }
+    })
 
 
 def final_outcome_for(case: dict, state: dict, turn_outputs: list[dict]) -> dict:

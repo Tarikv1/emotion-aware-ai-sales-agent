@@ -45,6 +45,7 @@ The reusable agent core handles:
 - response generation
 - interest classification
 - scheduling or callback handoff
+- call-control decisioning
 - escalation and do-not-call handling
 - structured logging
 - sales-expert feedback capture
@@ -117,6 +118,7 @@ These should apply across all verticals:
 - escalate when confidence is low or the customer asks for a human
 - log selected strategy and rationale
 - respond quickly enough for live conversation, using a bridge response when slower lookup is needed
+- end the call politely when the customer refuses, asks to stop, requests do-not-call, reaches voicemail, or completes the intended call outcome
 
 ## Category-Specific Guardrails
 

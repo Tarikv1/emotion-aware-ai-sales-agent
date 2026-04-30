@@ -20,8 +20,11 @@ def main() -> None:
     module = load_contract_module()
 
     assert hasattr(module, "STRATEGY_DEFINITIONS"), "Missing strategy definitions"
+    assert hasattr(module, "CALL_CONTROL_VALUES"), "Missing call-control values"
     assert hasattr(module, "normalize_final_outcome"), "Missing final-outcome normalizer"
+    assert hasattr(module, "normalize_turn_output"), "Missing turn-output normalizer"
     assert hasattr(module, "strategy_taxonomy_prompt_block"), "Missing prompt taxonomy renderer"
+    assert hasattr(module, "call_control_prompt_block"), "Missing call-control prompt renderer"
 
     for strategy in [
         "rapport",
@@ -47,6 +50,7 @@ def main() -> None:
     assert normalized["call_status"] == "escalated", "needs-human must normalize to escalated"
     assert normalized["selected_strategy"] == "rapport", "needs-human handoff should normalize to rapport"
     assert normalized["escalation_reason"], "escalated outcomes need an escalation reason"
+    assert normalized["call_control"] == "transfer-or-escalate", "needs-human should transfer or escalate"
 
     normalized = module.normalize_final_outcome(
         {
@@ -61,10 +65,12 @@ def main() -> None:
         }
     )
     assert normalized["call_status"] == "ready-for-scheduling", "interested non-appointment should be ready"
+    assert normalized["call_control"] == "continue-call", "ready-for-scheduling should keep the call open"
 
     prompt_block = module.strategy_taxonomy_prompt_block()
     assert "Use `rapport`" in prompt_block
     assert "Use `direct-ask-or-commitment`" in prompt_block
+    assert "end-call" in module.call_control_prompt_block()
 
 
 if __name__ == "__main__":

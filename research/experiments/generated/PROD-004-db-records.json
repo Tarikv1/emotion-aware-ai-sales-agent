@@ -1122,6 +1122,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "continue briefly and ask relevance check",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1138,6 +1139,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "inquiry",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "acknowledge cost concern and ask whether a neutral review would be useful",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1157,6 +1159,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "evidence-or-benefit",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "offer approved information and ask whether a later follow-up is acceptable",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1176,6 +1179,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "ask relevance check",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1192,6 +1196,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "inquiry",
       "next_action": "create-follow-up-task",
+      "call_control": "end-call",
       "agent_response": "ask one gentle question about the most manual step",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1211,6 +1216,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "acknowledge timing and ask whether later follow-up is acceptable",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1227,6 +1233,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "direct-ask-or-commitment",
       "next_action": "create-follow-up-task",
+      "call_control": "end-call",
       "agent_response": "confirm this as a follow-up task, not a scheduled appointment",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1246,6 +1253,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "ask relevance check",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1262,6 +1270,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "continue",
+      "call_control": "continue-call",
       "agent_response": "offer approved information and avoid pushing a decision",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1281,6 +1290,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "continue",
+      "call_control": "continue-call",
       "agent_response": "acknowledge the trust concern and offer approved credibility information",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1300,6 +1310,7 @@
       "interest_state": "needs-human",
       "selected_strategy": "inquiry",
       "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
       "agent_response": "avoid unsupported comparison and route to a human specialist",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1319,6 +1330,7 @@
       "interest_state": "needs-human",
       "selected_strategy": "inquiry",
       "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
       "agent_response": "avoid speed or coverage promises and route to a human specialist",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1338,6 +1350,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "rapport",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "ask relevance check",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1354,6 +1367,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "inquiry",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "ask whether approved information or later follow-up would be useful",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1373,6 +1387,7 @@
       "interest_state": "not-interested",
       "selected_strategy": "rapport",
       "next_action": "close-politely",
+      "call_control": "end-call",
       "agent_response": "apologize briefly, end the call, and do not ask another question",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1392,6 +1407,7 @@
       "interest_state": "needs-human",
       "selected_strategy": "rapport",
       "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
       "agent_response": "confirm human handoff without trying to continue qualification",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1411,6 +1427,7 @@
       "interest_state": "needs-human",
       "selected_strategy": "inquiry",
       "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
       "agent_response": "avoid outcome guarantee and route to a human course advisor",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1430,6 +1447,7 @@
       "interest_state": "needs-human",
       "selected_strategy": "rapport",
       "next_action": "escalate",
+      "call_control": "transfer-or-escalate",
       "agent_response": "thank the contact and route to human follow-up for the correct owner path",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1449,6 +1467,7 @@
       "interest_state": "maybe-interested",
       "selected_strategy": "inquiry",
       "next_action": "ask-follow-up",
+      "call_control": "continue-call",
       "agent_response": "acknowledge budget concern and ask whether a short specialist call would be useful",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1465,6 +1484,7 @@
       "interest_state": "interested",
       "selected_strategy": "direct-ask-or-commitment",
       "next_action": "offer-scheduling",
+      "call_control": "continue-call",
       "agent_response": "offer clear appointment windows without promising pricing",
       "confidence": 0.8,
       "rationale": "Reference output derived from the case-set expected labels.",
@@ -1488,6 +1508,7 @@
       "escalation_reason": null,
       "call_summary": "Price objection masks value uncertainty: Verify that a price objection triggers clarification and a low-pressure follow-up rather than a savings promise. Final state is maybe-interested with next action: create later follow-up task with approved tariff review information.",
       "next_action": "create later follow-up task with approved tariff review information",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1502,6 +1523,7 @@
       "escalation_reason": null,
       "call_summary": "Send me information brush-off: Verify that a send-info request does not become a fake appointment or a hard close. Final state is maybe-interested with next action: send approved information and create later follow-up task.",
       "next_action": "send approved information and create later follow-up task",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1516,6 +1538,7 @@
       "escalation_reason": "status quo resistance requires later nurturing",
       "call_summary": "Comfortable with current process: Verify that status quo resistance is handled through inquiry, not argument. Final state is maybe-interested with next action: create follow-up task with approved workflow comparison information.",
       "next_action": "create follow-up task with approved workflow comparison information",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1530,6 +1553,7 @@
       "escalation_reason": "callback timing remains broad rather than a confirmed appointment",
       "call_summary": "Interested but timing is bad: Verify that timing resistance creates a follow-up task instead of immediate pressure. Final state is maybe-interested with next action: create later follow-up task.",
       "next_action": "create later follow-up task",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1544,6 +1568,7 @@
       "escalation_reason": null,
       "call_summary": "Partner approval needed: Verify that household authority gaps are handled as follow-up, not as a forced commitment. Final state is maybe-interested with next action: send approved information and create later follow-up task.",
       "next_action": "send approved information and create later follow-up task",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1558,6 +1583,7 @@
       "escalation_reason": null,
       "call_summary": "Never heard of your company: Verify that trust resistance gets acknowledged and routed to approved credibility material. Final state is maybe-interested with next action: send approved credibility information and create later follow-up task.",
       "next_action": "send approved credibility information and create later follow-up task",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1572,6 +1598,7 @@
       "escalation_reason": "competitor comparison outside approved AI response scope",
       "call_summary": "Competitor comparison request: Verify escalation when the lead asks for a detailed competitor comparison outside approved claims. Final state is needs-human with next action: route to human solutions specialist.",
       "next_action": "route to human solutions specialist",
+      "call_control": "transfer-or-escalate",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1586,6 +1613,7 @@
       "escalation_reason": "coverage or speed guarantee request outside approved AI scope",
       "call_summary": "Technical fit and risk concern: Verify escalation when the customer asks for coverage or speed certainty. Final state is needs-human with next action: route to human telecom specialist.",
       "next_action": "route to human telecom specialist",
+      "call_control": "transfer-or-escalate",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1600,6 +1628,7 @@
       "escalation_reason": null,
       "call_summary": "Soft interest with no commitment: Verify that vague interest stays maybe-interested and does not become a scheduled appointment. Final state is maybe-interested with next action: send approved information and create later follow-up task.",
       "next_action": "send approved information and create later follow-up task",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1614,6 +1643,7 @@
       "escalation_reason": null,
       "call_summary": "Annoyed customer wants the call to end: Verify that annoyance causes the agent to back off without overclassifying as do-not-call. Final state is not-interested with next action: log as not interested and end the call politely.",
       "next_action": "log as not interested and end the call politely",
+      "call_control": "end-call",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1628,6 +1658,7 @@
       "escalation_reason": "lead requested human contact",
       "call_summary": "Lead directly asks for a human: Verify immediate escalation when the lead requests a human specialist. Final state is needs-human with next action: route to human staffing specialist.",
       "next_action": "route to human staffing specialist",
+      "call_control": "transfer-or-escalate",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1642,6 +1673,7 @@
       "escalation_reason": "learning outcome guarantee request outside approved AI scope",
       "call_summary": "Outcome guarantee request: Verify escalation when the consumer asks for an exam or outcome guarantee. Final state is needs-human with next action: route to human course advisor.",
       "next_action": "route to human course advisor",
+      "call_control": "transfer-or-escalate",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1656,6 +1688,7 @@
       "escalation_reason": "wrong contact with decision-owner referral path",
       "call_summary": "Wrong contact but identifies decision owner: Verify that the agent treats wrong-contact authority gaps as a handoff path. Final state is needs-human with next action: route to human sales specialist for correct-contact follow-up.",
       "next_action": "route to human sales specialist for correct-contact follow-up",
+      "call_control": "transfer-or-escalate",
       "created_at": "2026-04-29T00:00:00Z"
     },
     {
@@ -1670,6 +1703,7 @@
       "escalation_reason": null,
       "call_summary": "B2B budget objection with active pain: Verify that B2B price resistance with real pain moves to human specialist rather than discount promises. Final state is interested with next action: offer available appointment windows for human staffing specialist.",
       "next_action": "offer available appointment windows for human staffing specialist",
+      "call_control": "continue-call",
       "created_at": "2026-04-29T00:00:00Z"
     }
   ],

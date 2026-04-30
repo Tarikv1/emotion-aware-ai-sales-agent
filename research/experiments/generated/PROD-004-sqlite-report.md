@@ -25,7 +25,7 @@
 
 ## Interested Leads
 
-- `lead-prod-004-c14` (Operations Lead): offer available appointment windows for human staffing specialist
+- `lead-prod-004-c14` (Operations Lead): offer available appointment windows for human staffing specialist (`continue-call`)
 
 ## Do-Not-Call Leads
 
@@ -45,5 +45,5 @@
 
 ## Sample Turn Decisions For `call-prod-004-c01`
 
-- Turn 1 `opening-permission`: `maybe-interested` / `rapport` -> `ask-follow-up`
-- Turn 2 `relevance-check`: `maybe-interested` / `inquiry` -> `ask-follow-up`
+- Turn 1 `opening-permission`: `maybe-interested` / `rapport` -> `ask-follow-up` (`continue-call`)
+- Turn 2 `relevance-check`: `maybe-interested` / `inquiry` -> `ask-follow-up` (`continue-call`)
