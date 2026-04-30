@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -18,6 +19,16 @@ def run_voice_script(*args: str) -> dict:
         check=True,
     )
     return json.loads(completed.stdout)
+
+
+def run_voice_process(*args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, str(SCRIPT_PATH), *args],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
 
 
 def main() -> None:
@@ -46,6 +57,35 @@ def main() -> None:
     assert "sk-" not in serialized
     assert "OPENAI_API_KEY" not in serialized
     assert "Authorization: Bearer" not in serialized
+
+    audio_path = ROOT / "research" / "experiments" / "generated" / f"VOICE-001-sapi-check-{os.getpid()}.wav"
+    sapi_result = run_voice_process(
+        "--campaign",
+        "campaign-prod-005-b2c-telecom",
+        "--stage",
+        "relevance-check",
+        "--transcript",
+        "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+        "--provider",
+        "windows-sapi",
+        "--out-audio",
+        str(audio_path),
+    )
+    if sapi_result.returncode == 0:
+        assert audio_path.exists(), "windows-sapi success must create an audio file"
+        assert audio_path.stat().st_size > 44, "windows-sapi success must create a playable WAV"
+        try:
+            audio_path.unlink()
+        except PermissionError:
+            pass
+    else:
+        combined_output = sapi_result.stdout + sapi_result.stderr
+        assert "did not create a playable WAV" in combined_output
+        if audio_path.exists():
+            try:
+                audio_path.unlink()
+            except PermissionError:
+                pass
 
 
 if __name__ == "__main__":

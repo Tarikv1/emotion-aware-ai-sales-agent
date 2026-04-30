@@ -96,14 +96,23 @@ def synthesize_with_windows_sapi(text: str, audio_path: Path, voice_name: str | 
     env["VOICE_001_OUT"] = str(audio_path)
     env["VOICE_001_NAME"] = voice_name or ""
     command = r"""
+$ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Speech
 $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer
-if ($env:VOICE_001_NAME) {
-  $synth.SelectVoice($env:VOICE_001_NAME)
+try {
+  if ($env:VOICE_001_NAME) {
+    $synth.SelectVoice($env:VOICE_001_NAME)
+  }
+  $synth.SetOutputToNull()
+  $synth.Speak('voice preflight')
+  $synth.SetOutputToWaveFile($env:VOICE_001_OUT)
+  $synth.Speak($env:VOICE_001_TEXT)
 }
-$synth.SetOutputToWaveFile($env:VOICE_001_OUT)
-$synth.Speak($env:VOICE_001_TEXT)
-$synth.Dispose()
+finally {
+  if ($synth) {
+    $synth.Dispose()
+  }
+}
 """
     try:
         subprocess.run(
@@ -117,7 +126,19 @@ $synth.Dispose()
         raise SystemExit("Windows SAPI provider requires PowerShell on Windows.") from exc
     except subprocess.CalledProcessError as exc:
         message = exc.stderr.strip() or exc.stdout.strip() or str(exc)
-        raise SystemExit(f"Windows SAPI synthesis failed: {message}") from exc
+        if audio_path.exists():
+            try:
+                audio_path.unlink()
+            except PermissionError:
+                pass
+        raise SystemExit(
+            f"Windows SAPI synthesis did not create a playable WAV in this environment: {message}"
+        ) from exc
+
+    if not audio_path.exists() or audio_path.stat().st_size <= 44:
+        if audio_path.exists():
+            audio_path.unlink()
+        raise SystemExit("Windows SAPI synthesis did not create a playable WAV in this environment.")
 
 
 def write_json(path: Path, payload: dict) -> None:
