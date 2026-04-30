@@ -7,6 +7,10 @@ Define the first concrete product workflow requested by the client.
 The first client need is not a full sales-closing agent.
 It is an autonomous calling agent that qualifies interest and schedules a follow-up call with a human sales agent.
 
+This workflow can apply to B2B or B2C sales. The current first case set is B2B-leaning, but the product should also support direct-to-consumer qualification.
+
+The first concrete client example is a German call center selling consumer insurance products, including dental insurance and cancer-related or serious-illness insurance. This should be treated as a sensitive B2C insurance context.
+
 ## Workflow Summary
 
 ```text
@@ -14,7 +18,7 @@ lead list
   -> AI places outbound call
   -> AI asks a small set of qualification questions
   -> AI detects interest level
-  -> if interested, AI schedules a human follow-up call
+  -> if interested, AI schedules an appropriate human follow-up
   -> if not interested, AI records outcome and ends politely
   -> if uncertain or risky, AI escalates or marks for review
 ```
@@ -26,7 +30,7 @@ The agent's first job is:
 - call potential customers
 - ask a few predefined or semi-adaptive questions
 - determine whether the person is interested
-- schedule the next available appointment with a human sales agent
+- schedule the next available appointment with a human sales agent, specialist, consultant, or service representative
 
 This is a lead-qualification and appointment-setting agent, not a full autonomous closer.
 
@@ -93,6 +97,8 @@ The agent should not:
 - pretend to be a human
 - schedule without clear confirmation
 - handle complex objections beyond the approved scope
+- make unapproved insurance coverage, health, payout, savings, or legal claims
+- use fear-based pressure around illness or medical costs
 
 ## Escalation Conditions
 
@@ -104,6 +110,7 @@ Escalate or mark for review when:
 - the agent is unsure whether the lead is interested
 - compliance-sensitive topics appear
 - scheduling fails after reasonable attempts
+- detailed insurance policy, coverage, health, or legal questions appear
 
 ## Relation To Thesis
 

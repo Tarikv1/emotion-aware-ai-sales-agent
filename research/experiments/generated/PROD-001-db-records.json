@@ -10,6 +10,7 @@
   "leads": [
     {
       "lead_id": "lead-prod-001-c01",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 01",
       "phone_number": null,
       "email": null,
@@ -29,6 +30,7 @@
     },
     {
       "lead_id": "lead-prod-001-c02",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 02",
       "phone_number": null,
       "email": null,
@@ -48,6 +50,7 @@
     },
     {
       "lead_id": "lead-prod-001-c03",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 03",
       "phone_number": null,
       "email": null,
@@ -67,6 +70,7 @@
     },
     {
       "lead_id": "lead-prod-001-c04",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 04",
       "phone_number": null,
       "email": null,
@@ -86,6 +90,7 @@
     },
     {
       "lead_id": "lead-prod-001-c05",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 05",
       "phone_number": null,
       "email": null,
@@ -105,6 +110,7 @@
     },
     {
       "lead_id": "lead-prod-001-c06",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 06",
       "phone_number": null,
       "email": null,
@@ -124,6 +130,7 @@
     },
     {
       "lead_id": "lead-prod-001-c07",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 07",
       "phone_number": null,
       "email": null,
@@ -143,6 +150,7 @@
     },
     {
       "lead_id": "lead-prod-001-c08",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 08",
       "phone_number": null,
       "email": null,
@@ -162,6 +170,7 @@
     },
     {
       "lead_id": "lead-prod-001-c09",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 09",
       "phone_number": null,
       "email": null,
@@ -181,6 +190,7 @@
     },
     {
       "lead_id": "lead-prod-001-c10",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 10",
       "phone_number": null,
       "email": null,
@@ -200,6 +210,7 @@
     },
     {
       "lead_id": "lead-prod-001-c11",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 11",
       "phone_number": null,
       "email": null,
@@ -219,6 +230,7 @@
     },
     {
       "lead_id": "lead-prod-001-c12",
+      "customer_type": "b2b",
       "full_name": "Synthetic Lead 12",
       "phone_number": null,
       "email": null,
@@ -237,9 +249,43 @@
       "updated_at": "2026-04-29T00:00:00Z"
     }
   ],
+  "sales_campaigns": [
+    {
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
+      "client_name": "Synthetic B2B Client",
+      "product_name": "Lead follow-up solution",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": null,
+      "language": "en",
+      "approved_opening": null,
+      "qualification_questions": [
+        "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+        "What is the hardest part of that process for your team right now?",
+        "If there is a fit, would a short follow-up call with a human specialist be useful?"
+      ],
+      "allowed_claims": [],
+      "forbidden_claims": [
+        "unsupported product claims",
+        "guaranteed conversion improvement"
+      ],
+      "required_disclosures": [],
+      "escalation_triggers": [
+        "complex product question",
+        "human request",
+        "privacy or compliance topic"
+      ],
+      "scheduling_goal": "human specialist follow-up",
+      "human_handoff_role": "sales specialist",
+      "compliance_notes": "Synthetic reference campaign for PROD-001.",
+      "created_at": "2026-04-29T00:00:00Z",
+      "updated_at": "2026-04-29T00:00:00Z"
+    }
+  ],
   "call_sessions": [
     {
       "call_id": "call-prod-001-c01",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c01",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -258,6 +304,7 @@
     },
     {
       "call_id": "call-prod-001-c02",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c02",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -276,6 +323,7 @@
     },
     {
       "call_id": "call-prod-001-c03",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c03",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -294,6 +342,7 @@
     },
     {
       "call_id": "call-prod-001-c04",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c04",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -312,6 +361,7 @@
     },
     {
       "call_id": "call-prod-001-c05",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c05",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -330,6 +380,7 @@
     },
     {
       "call_id": "call-prod-001-c06",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c06",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -348,6 +399,7 @@
     },
     {
       "call_id": "call-prod-001-c07",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c07",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -366,6 +418,7 @@
     },
     {
       "call_id": "call-prod-001-c08",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c08",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -384,6 +437,7 @@
     },
     {
       "call_id": "call-prod-001-c09",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c09",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -402,6 +456,7 @@
     },
     {
       "call_id": "call-prod-001-c10",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c10",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -420,6 +475,7 @@
     },
     {
       "call_id": "call-prod-001-c11",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c11",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",
@@ -438,6 +494,7 @@
     },
     {
       "call_id": "call-prod-001-c12",
+      "campaign_id": "campaign-prod-001-b2b-lead-qualification",
       "lead_id": "lead-prod-001-c12",
       "channel": "simulation",
       "started_at": "2026-04-29T00:00:00Z",

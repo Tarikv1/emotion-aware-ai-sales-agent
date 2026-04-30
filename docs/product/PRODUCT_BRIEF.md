@@ -17,15 +17,28 @@ Build a usable autonomous AI sales agent that can adapt its response strategy ba
 
 The launch target is autonomous operation, with fallback and escalation guardrails for uncertain, risky, or out-of-scope conversations.
 
+The product should be vertical-agnostic. It is intended for call centers and sales teams that sell different products or services, not one fixed product category.
+
+The product is not limited to selling to companies. It should support both B2B and B2C sales contexts:
+
+- B2B: business contacts, teams, departments, and company decision-makers
+- B2C: individual consumers, households, or personal buyers
+
 ## Initial Product Positioning
 
-The first sellable version should be framed as an autonomous lead-qualification and appointment-setting agent for a constrained outbound calling workflow, not as a universal call-center replacement.
+The first sellable version should be framed as a configurable autonomous lead-qualification and appointment-setting agent for constrained outbound calling workflows, not as a universal call-center replacement.
 
 A more realistic early product positioning is:
 
-`An emotion-aware autonomous calling agent that qualifies potential customers, detects interest, and schedules follow-up calls with human sales agents when the lead is ready.`
+`A configurable emotion-aware autonomous calling agent that qualifies potential customers, adapts to their conversational state, follows campaign-specific guardrails, and schedules or logs the right next action.`
 
 This keeps the product credible while the underlying system matures.
+
+The first simulation case set is B2B-leaning because the initial client workflow focused on business lead qualification. That should not constrain the long-term product scope.
+
+The first concrete client example is a German call center selling insurance products to consumers, including dental insurance and cancer-related or serious-illness insurance. This should be treated as a sensitive B2C insurance sales context, not ordinary generic lead qualification.
+
+That client is an early vertical example, not the product boundary. Future clients may sell windows, glasses, SD cards, software, services, or other products through call centers.
 
 ## Likely First Client Value
 
@@ -47,6 +60,7 @@ Start with a constrained autonomous lead-qualification and scheduling agent befo
 MVP capabilities:
 
 - accept a dialogue transcript or manually entered conversation context
+- load a campaign configuration for the product being sold
 - estimate compact customer state
 - select a persuasion strategy
 - generate and execute the next response autonomously in the target channel
@@ -57,6 +71,12 @@ MVP capabilities:
 - escalate or pause when confidence is low, policy boundaries are hit, or the user asks for a human
 
 Development and testing may use human review, but launch behavior should not require human approval for every normal response.
+
+For B2C workflows, "follow-up" may mean a human sales call, consultation, service appointment, demo, or callback depending on the client's product.
+
+For insurance workflows, the agent should qualify interest and schedule an approved human callback or specialist conversation. It should not act as a full autonomous insurance advisor or make detailed coverage, health, legal, or savings claims.
+
+For other workflows, the agent should use the client's approved product facts, claims, scripts, and escalation rules.
 
 ## Sales Expert Training Loop
 
@@ -122,6 +142,13 @@ For the first client-ready version:
 - log generated responses and selected strategies
 - separate experimental thesis results from product claims
 - do not use private client data without explicit permission and clear storage rules
+
+Insurance-specific guardrails:
+
+- avoid fear-based pressure around illness, cancer, family, or medical costs
+- do not promise coverage, payout, approval, savings, or medical benefit
+- escalate detailed policy, legal, health, pricing, or coverage questions to a human specialist
+- avoid collecting unnecessary health or sensitive personal data
 
 ## Product Roadmap Relationship
 

@@ -22,7 +22,8 @@ This is a product design document, not an instruction to store real customer dat
 ## Core Entities
 
 ```text
-Lead
+SalesCampaign
+  -> Lead
   -> CallSession
       -> QualificationAnswer
       -> TurnDecision
@@ -31,6 +32,34 @@ Lead
       -> Escalation
 ```
 
+## SalesCampaign
+
+Stores the product or service campaign being run by the call center.
+
+```text
+SalesCampaign
+  campaign_id
+  client_name
+  product_name
+  product_category
+  customer_type
+  country_or_region
+  language
+  approved_opening
+  qualification_questions_json
+  allowed_claims_json
+  forbidden_claims_json
+  required_disclosures_json
+  escalation_triggers_json
+  scheduling_goal
+  human_handoff_role
+  compliance_notes
+  created_at
+  updated_at
+```
+
+This lets the same agent core support different products such as insurance, windows, glasses, SD cards, software, or other call-center campaigns.
+
 ## Lead
 
 Stores stable information about a person or company contact.
@@ -38,6 +67,7 @@ Stores stable information about a person or company contact.
 ```text
 Lead
   lead_id
+  customer_type
   full_name
   phone_number
   email
@@ -66,6 +96,12 @@ Suggested `contact_status` values:
 - `appointment-scheduled`
 - `do-not-call`
 
+Suggested `customer_type` values:
+
+- `b2b`
+- `b2c`
+- `unknown`
+
 Suggested `consent_status` values:
 
 - `unknown`
@@ -78,6 +114,7 @@ Notes:
 - `do_not_call` must override normal outreach.
 - `phone_number` should be normalized before storage.
 - If the lead asks not to be called again, record it immediately.
+- For B2C records, `company_name` and `role_title` may be empty.
 
 ## CallSession
 
@@ -86,6 +123,7 @@ Stores one call attempt or simulated call.
 ```text
 CallSession
   call_id
+  campaign_id
   lead_id
   channel
   started_at
@@ -124,6 +162,7 @@ Important:
 - During a live call, `CallSession` is the accumulated state object.
 - The agent should use prior turns and current fields before deciding the next action.
 - `transcript_text` should be optional and controlled because it may contain personal data.
+- `campaign_id` tells the agent which product facts, scripts, claims, and guardrails apply.
 
 ## QualificationAnswer
 
@@ -319,6 +358,7 @@ This allows expert review to improve prompts, rules, examples, and future traini
 For the first implementation, start with only:
 
 ```text
+SalesCampaign
 Lead
 CallSession
 QualificationAnswer
@@ -402,6 +442,7 @@ python scripts/run_product_simulation.py \
 The export contains:
 
 - `leads`
+- `sales_campaigns`
 - `call_sessions`
 - `qualification_answers`
 - `turn_decisions`

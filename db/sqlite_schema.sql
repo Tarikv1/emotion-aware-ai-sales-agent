@@ -1,7 +1,29 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS sales_campaigns (
+  campaign_id TEXT PRIMARY KEY,
+  client_name TEXT,
+  product_name TEXT,
+  product_category TEXT,
+  customer_type TEXT,
+  country_or_region TEXT,
+  language TEXT,
+  approved_opening TEXT,
+  qualification_questions_json TEXT,
+  allowed_claims_json TEXT,
+  forbidden_claims_json TEXT,
+  required_disclosures_json TEXT,
+  escalation_triggers_json TEXT,
+  scheduling_goal TEXT,
+  human_handoff_role TEXT,
+  compliance_notes TEXT,
+  created_at TEXT,
+  updated_at TEXT
+);
+
 CREATE TABLE IF NOT EXISTS leads (
   lead_id TEXT PRIMARY KEY,
+  customer_type TEXT,
   full_name TEXT,
   phone_number TEXT,
   email TEXT,
@@ -22,6 +44,7 @@ CREATE TABLE IF NOT EXISTS leads (
 
 CREATE TABLE IF NOT EXISTS call_sessions (
   call_id TEXT PRIMARY KEY,
+  campaign_id TEXT,
   lead_id TEXT NOT NULL,
   channel TEXT,
   started_at TEXT,
@@ -37,6 +60,7 @@ CREATE TABLE IF NOT EXISTS call_sessions (
   call_summary TEXT,
   created_by TEXT,
   created_at TEXT,
+  FOREIGN KEY (campaign_id) REFERENCES sales_campaigns (campaign_id),
   FOREIGN KEY (lead_id) REFERENCES leads (lead_id)
 );
 
@@ -125,6 +149,7 @@ CREATE TABLE IF NOT EXISTS escalations (
 );
 
 CREATE INDEX IF NOT EXISTS idx_leads_contact_status ON leads (contact_status);
+CREATE INDEX IF NOT EXISTS idx_sales_campaigns_product_category ON sales_campaigns (product_category);
 CREATE INDEX IF NOT EXISTS idx_call_sessions_lead_id ON call_sessions (lead_id);
 CREATE INDEX IF NOT EXISTS idx_qualification_answers_call_id ON qualification_answers (call_id);
 CREATE INDEX IF NOT EXISTS idx_turn_decisions_call_id ON turn_decisions (call_id);

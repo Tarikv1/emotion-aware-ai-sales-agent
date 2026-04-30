@@ -1,0 +1,851 @@
+{
+  "summary": {
+    "turn_total": 32,
+    "emotion_matches": 18,
+    "interest_state_matches": 32,
+    "strategy_matches": 32,
+    "final_total": 12,
+    "final_call_status_matches": 12,
+    "final_interest_state_matches": 12,
+    "final_strategy_matches": 12,
+    "final_appointment_matches": 12
+  },
+  "results": [
+    {
+      "case_id": "PROD-001-C01",
+      "case_title": "Clear pain and explicit scheduling interest",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage relevance-check."
+        },
+        {
+          "stage": "pain-point-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage pain-point-check."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "continue",
+          "agent_response": "Thanks. I will keep this focused and continue with the next qualification step.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected interested from answer cues and stage timing-openness-check."
+        },
+        {
+          "stage": "scheduling",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "confirm-scheduling",
+          "agent_response": "Confirmed. I will record that time for the follow-up with a human specialist.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected interested from answer cues and stage scheduling."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": true,
+        "appointment_time": "Wednesday 14:30",
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C01 with final state interested.",
+        "next_action": "send calendar invite and notify human sales specialist"
+      },
+      "scores": {
+        "case_id": "PROD-001-C01",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "pain-point-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "scheduling",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C02",
+      "case_title": "Relevant but wants information first",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage relevance-check."
+        },
+        {
+          "stage": "pain-point-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage pain-point-check."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "create-follow-up-task",
+          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage timing-openness-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C02 with final state maybe-interested.",
+        "next_action": "create scheduling follow-up task or route to human scheduler"
+      },
+      "scores": {
+        "case_id": "PROD-001-C02",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "pain-point-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C03",
+      "case_title": "Clear disinterest after relevance check",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "neutral",
+          "interest_state": "not-interested",
+          "selected_strategy": "rapport",
+          "next_action": "close-politely",
+          "agent_response": "Thanks for clarifying. I will note that this is not relevant right now and will not take more of your time.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected not-interested from answer cues and stage relevance-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C03 with final state not-interested.",
+        "next_action": "log no current need and end politely"
+      },
+      "scores": {
+        "case_id": "PROD-001-C03",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C04",
+      "case_title": "Direct do-not-call request",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "do-not-call",
+          "selected_strategy": "rapport",
+          "next_action": "suppress-contact",
+          "agent_response": "Understood. I will make sure this contact is marked so you are not called again.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected do-not-call from answer cues and stage opening-permission."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C04 with final state do-not-call.",
+        "next_action": "suppress future outreach for this contact according to policy"
+      },
+      "scores": {
+        "case_id": "PROD-001-C04",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C05",
+      "case_title": "Complex integration question requires human",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage relevance-check."
+        },
+        {
+          "stage": "pain-point-check",
+          "detected_emotion": "neutral",
+          "interest_state": "needs-human",
+          "selected_strategy": "rapport",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected needs-human from answer cues and stage pain-point-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "complex integration question outside approved AI response scope",
+        "call_summary": "Rule baseline processed PROD-001-C05 with final state needs-human.",
+        "next_action": "route to human specialist"
+      },
+      "scores": {
+        "case_id": "PROD-001-C05",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "pain-point-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C06",
+      "case_title": "Skeptical lead becomes open after inquiry",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage relevance-check."
+        },
+        {
+          "stage": "pain-point-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage pain-point-check."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "offer-scheduling",
+          "agent_response": "That sounds relevant. I can offer a short follow-up with a human specialist if you would like.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected interested from answer cues and stage timing-openness-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "ready-for-scheduling",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C06 with final state interested.",
+        "next_action": "offer available appointment windows"
+      },
+      "scores": {
+        "case_id": "PROD-001-C06",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "pain-point-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C07",
+      "case_title": "Wrong contact gives referral path",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "neutral",
+          "interest_state": "needs-human",
+          "selected_strategy": "rapport",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected needs-human from answer cues and stage relevance-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "wrong contact with named referral path",
+        "call_summary": "Rule baseline processed PROD-001-C07 with final state needs-human.",
+        "next_action": "route to human specialist"
+      },
+      "scores": {
+        "case_id": "PROD-001-C07",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C08",
+      "case_title": "Interested but scheduling cannot be confirmed",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage relevance-check."
+        },
+        {
+          "stage": "pain-point-check",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage pain-point-check."
+        },
+        {
+          "stage": "timing-openness-check",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "create-follow-up-task",
+          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected interested from answer cues and stage timing-openness-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "needs-follow-up",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "scheduling window too vague to confirm appointment",
+        "call_summary": "Rule baseline processed PROD-001-C08 with final state interested.",
+        "next_action": "create scheduling follow-up task or route to human scheduler"
+      },
+      "scores": {
+        "case_id": "PROD-001-C08",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "pain-point-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "timing-openness-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C09",
+      "case_title": "Busy lead asks for later contact",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "create-follow-up-task",
+          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "needs-follow-up",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C09 with final state maybe-interested.",
+        "next_action": "create scheduling follow-up task or route to human scheduler"
+      },
+      "scores": {
+        "case_id": "PROD-001-C09",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C10",
+      "case_title": "Relevant workflow but no budget or urgency",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "positive",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage relevance-check."
+        },
+        {
+          "stage": "pain-point-check",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "not-interested",
+          "selected_strategy": "rapport",
+          "next_action": "close-politely",
+          "agent_response": "Thanks for clarifying. I will note that this is not relevant right now and will not take more of your time.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected not-interested from answer cues and stage pain-point-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "completed",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": null,
+        "call_summary": "Rule baseline processed PROD-001-C10 with final state not-interested.",
+        "next_action": "log no current need and end politely"
+      },
+      "scores": {
+        "case_id": "PROD-001-C10",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "pain-point-check",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C11",
+      "case_title": "Lead requests a human immediately",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "needs-human",
+          "selected_strategy": "rapport",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected needs-human from answer cues and stage opening-permission."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "lead requested human contact",
+        "call_summary": "Rule baseline processed PROD-001-C11 with final state needs-human.",
+        "next_action": "route to human specialist"
+      },
+      "scores": {
+        "case_id": "PROD-001-C11",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": false,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    },
+    {
+      "case_id": "PROD-001-C12",
+      "case_title": "Privacy concern during qualification",
+      "turn_outputs": [
+        {
+          "stage": "opening-permission",
+          "detected_emotion": "neutral",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "rapport",
+          "next_action": "ask-follow-up",
+          "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+        },
+        {
+          "stage": "relevance-check",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "rapport",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
+          "confidence": 0.74,
+          "rationale": "Rule baseline selected needs-human from answer cues and stage relevance-check."
+        }
+      ],
+      "final_outcome": {
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "appointment_scheduled": false,
+        "appointment_time": null,
+        "escalation_reason": "privacy or compliance-sensitive topic",
+        "call_summary": "Rule baseline processed PROD-001-C12 with final state needs-human.",
+        "next_action": "route to human specialist"
+      },
+      "scores": {
+        "case_id": "PROD-001-C12",
+        "turn_scores": [
+          {
+            "stage": "opening-permission",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          },
+          {
+            "stage": "relevance-check",
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
+          }
+        ],
+        "final_scores": {
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
+          "appointment_scheduled_match": true
+        }
+      }
+    }
+  ]
+}

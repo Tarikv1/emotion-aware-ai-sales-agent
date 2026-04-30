@@ -23,6 +23,14 @@ def bool_int(value) -> int:
 
 def execute_schema(conn: sqlite3.Connection, schema_path: Path) -> None:
     conn.executescript(schema_path.read_text(encoding="utf-8"))
+    ensure_column(conn, "leads", "customer_type", "TEXT")
+    ensure_column(conn, "call_sessions", "campaign_id", "TEXT")
+
+
+def ensure_column(conn: sqlite3.Connection, table: str, column: str, column_type: str) -> None:
+    columns = {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
+    if column not in columns:
+        conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {column_type}")
 
 
 def clear_tables(conn: sqlite3.Connection) -> None:
@@ -34,23 +42,59 @@ def clear_tables(conn: sqlite3.Connection) -> None:
         "qualification_answers",
         "call_sessions",
         "leads",
+        "sales_campaigns",
     ]:
         conn.execute(f"DELETE FROM {table}")
 
 
 def insert_records(conn: sqlite3.Connection, records: dict) -> None:
+    for campaign in records.get("sales_campaigns", []):
+        conn.execute(
+            """
+            INSERT OR REPLACE INTO sales_campaigns (
+              campaign_id, client_name, product_name, product_category,
+              customer_type, country_or_region, language, approved_opening,
+              qualification_questions_json, allowed_claims_json,
+              forbidden_claims_json, required_disclosures_json,
+              escalation_triggers_json, scheduling_goal, human_handoff_role,
+              compliance_notes, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                campaign["campaign_id"],
+                campaign.get("client_name"),
+                campaign.get("product_name"),
+                campaign.get("product_category"),
+                campaign.get("customer_type"),
+                campaign.get("country_or_region"),
+                campaign.get("language"),
+                campaign.get("approved_opening"),
+                dump_json(campaign.get("qualification_questions", [])),
+                dump_json(campaign.get("allowed_claims", [])),
+                dump_json(campaign.get("forbidden_claims", [])),
+                dump_json(campaign.get("required_disclosures", [])),
+                dump_json(campaign.get("escalation_triggers", [])),
+                campaign.get("scheduling_goal"),
+                campaign.get("human_handoff_role"),
+                campaign.get("compliance_notes"),
+                campaign.get("created_at"),
+                campaign.get("updated_at"),
+            ),
+        )
+
     for lead in records.get("leads", []):
         conn.execute(
             """
             INSERT OR REPLACE INTO leads (
-              lead_id, full_name, phone_number, email, company_name, role_title,
+              lead_id, customer_type, full_name, phone_number, email, company_name, role_title,
               source, region, language, contact_status, consent_status,
               do_not_call, do_not_call_reason, preferred_contact_time,
               owner_user_id, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 lead["lead_id"],
+                lead.get("customer_type", "unknown"),
                 lead.get("full_name"),
                 lead.get("phone_number"),
                 lead.get("email"),
@@ -74,14 +118,15 @@ def insert_records(conn: sqlite3.Connection, records: dict) -> None:
         conn.execute(
             """
             INSERT OR REPLACE INTO call_sessions (
-              call_id, lead_id, channel, started_at, ended_at, call_status,
+              call_id, campaign_id, lead_id, channel, started_at, ended_at, call_status,
               current_stage, current_interest_state, current_emotion_label,
               current_strategy, confidence, transcript_storage_mode,
               transcript_text, call_summary, created_by, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 session["call_id"],
+                session.get("campaign_id"),
                 session["lead_id"],
                 session.get("channel"),
                 session.get("started_at"),
@@ -235,6 +280,7 @@ def table_count(conn: sqlite3.Connection, table: str) -> int:
 def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) -> str:
     tables = [
         "leads",
+        "sales_campaigns",
         "call_sessions",
         "qualification_answers",
         "turn_decisions",
@@ -298,6 +344,20 @@ def build_report(conn: sqlite3.Connection, db_path: Path, records_path: Path) ->
         "",
     ]
     lines.extend(f"- `{table}`: {table_count(conn, table)}" for table in tables)
+
+    campaigns = query_rows(
+        conn,
+        """
+        SELECT campaign_id, product_name, product_category, customer_type
+        FROM sales_campaigns
+        ORDER BY campaign_id
+        """,
+    )
+    lines.extend(["", "## Campaigns", ""])
+    lines.extend(
+        f"- `{row['campaign_id']}`: {row['product_name']} / `{row['product_category']}` / `{row['customer_type']}`"
+        for row in campaigns
+    )
 
     lines.extend(["", "## Interested Leads", ""])
     lines.extend(f"- `{row['lead_id']}` ({row['role_title']}): {row['next_action']}" for row in interested)

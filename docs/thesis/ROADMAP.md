@@ -11,6 +11,10 @@ The project starts with a public-data-first text baseline, then moves toward mul
 
 This is also a real product effort with a potential paying client. The first product track should turn thesis evidence into an autonomous lead-qualification and appointment-setting agent with fallback and escalation guardrails.
 
+The product track should support both B2B and B2C sales contexts. The first product simulation is B2B-leaning, but later case sets should include direct-to-consumer customer conversations.
+
+The first concrete B2C client example is a German call center selling consumer insurance products, including dental insurance and cancer-related or serious-illness insurance. This should inform the next product simulation expansion.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -158,6 +162,11 @@ Likely MVP:
 - escalate or pause when confidence or safety boundaries require it
 - collect sales-expert feedback during development and testing
 
+Scope note:
+
+- B2B workflows may qualify business contacts, teams, decision-makers, and company needs
+- B2C workflows may qualify individual consumers, personal needs, callback interest, and service appointment readiness
+
 Open questions:
 
 - whether the first product interface should be a CLI, dashboard, or lightweight web app
@@ -166,6 +175,8 @@ Open questions:
 - what claims can be made safely at launch
 - how sales experts should label, correct, and rate agent behavior during development
 - how calendar/availability integration should work for human sales-agent scheduling
+- how much the first B2C flow should differ from the first B2B lead-qualification flow
+- what German insurance-sales and outbound-calling constraints must be reviewed before any live deployment
 
 ## Phase 5: Thesis Write-Up Support
 
@@ -210,3 +221,5 @@ Immediate product artifact:
 - scheduling trigger
 - escalation trigger
 - turn-based product simulation case set
+- mixed B2B/B2C simulation expansion
+- B2C insurance-specific simulation cases

@@ -12,6 +12,8 @@ This flow is designed for:
 
 It is not designed for full autonomous sales closing.
 
+The flow should support both B2B and B2C contexts. The wording of the qualification questions should adapt depending on whether the customer is a business contact or an individual consumer.
+
 ## Core Design Principles
 
 - keep the call short
@@ -249,6 +251,42 @@ For the MVP, start with three core questions after the opener:
 3. `If there is a fit, would a short follow-up call with a human specialist be useful?`
 
 Use follow-up wording adaptively, but keep this small skeleton stable for the first version.
+
+## B2B And B2C Wording Variants
+
+B2B relevance question:
+
+`Are you currently involved in handling follow-up for incoming leads or customer inquiries?`
+
+B2C relevance question:
+
+`Is this something you were personally looking into, or would it be more of a future consideration?`
+
+B2B pain-point question:
+
+`What is the hardest part of that process for your team right now?`
+
+B2C need/motivation question:
+
+`What would matter most to you if you decided to look into this further?`
+
+B2B follow-up question:
+
+`If there is a fit, would a short follow-up call with a human specialist be useful?`
+
+B2C follow-up question:
+
+`Would a short callback or consultation with a specialist be useful, or would you rather not continue right now?`
+
+Insurance B2C relevance question:
+
+`Is dental insurance something you have looked into before, or is it not relevant for you right now?`
+
+Sensitive insurance B2C follow-up question:
+
+`If you have questions, I can arrange a callback with a specialist. Would that be useful, or would you prefer not to continue?`
+
+For cancer-related or serious-illness insurance topics, avoid fear-based wording and do not ask for personal health details in the qualification flow.
 
 ## Strategy Hints By State
 

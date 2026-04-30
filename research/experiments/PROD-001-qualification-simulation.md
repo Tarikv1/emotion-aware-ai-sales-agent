@@ -117,6 +117,14 @@ SQLite import completed:
 
 The report verifies retrieval of interested leads, do-not-call leads, appointments, escalations, and turn-level decisions.
 
+Rule baseline completed:
+
+- `research/experiments/PROD-001-rule-baseline.md`
+- `research/experiments/generated/PROD-001-rule-baseline-results.json`
+- `research/experiments/generated/PROD-001-rule-baseline-report.md`
+
+The rule baseline matched all final outcome checks but only matched 18 / 32 turn-level emotion labels.
+
 ## Observations
 
 The first case set intentionally includes normal success cases and boundary cases:

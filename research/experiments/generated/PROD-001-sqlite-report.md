@@ -7,12 +7,17 @@
 ## Table Counts
 
 - `leads`: 12
+- `sales_campaigns`: 1
 - `call_sessions`: 12
 - `qualification_answers`: 32
 - `turn_decisions`: 32
 - `call_outcomes`: 12
 - `appointments`: 1
 - `escalations`: 5
+
+## Campaigns
+
+- `campaign-prod-001-b2b-lead-qualification`: Lead follow-up solution / `software-b2b` / `b2b`
 
 ## Interested Leads
 

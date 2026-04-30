@@ -16,6 +16,98 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-04-30 - Vertical-agnostic campaign model
+
+- Objective: clarify that the product should support many call-center sales verticals, not only the first insurance client
+- Action taken:
+  - added a vertical-agnostic product model based on campaign configuration
+  - documented that insurance is one early campaign type, not the product boundary
+  - added `SalesCampaign` to the lead database design and SQLite schema
+  - updated simulation export/import to include campaign metadata
+- Data used:
+  - student clarification that future clients may sell many products, such as windows, glasses, SD cards, services, insurance, or B2B offers
+- Output created:
+  - `docs/product/VERTICAL_AGNOSTIC_PRODUCT_MODEL.md`
+  - updates to product brief, B2B/B2C scope, insurance context, lead database design, SQLite schema, and import/export scripts
+- What was learned:
+  - the right abstraction is a reusable sales-agent core plus campaign-specific scripts, claims, guardrails, and escalation triggers
+  - sensitive verticals such as insurance need stricter campaign rules, but simpler products still use the same core loop
+- Why it matters for the thesis:
+  - it keeps the prototype general enough to demonstrate emotion-aware adaptation across product domains while preserving realistic product constraints
+- Open questions:
+  - which non-insurance product vertical should be used first for mixed-vertical simulation cases
+  - how detailed the campaign configuration should be before a real client onboarding flow exists
+
+### 2026-04-30 - First concrete B2C insurance client context
+
+- Objective: record the first real client context more accurately
+- Action taken:
+  - documented that the first known client is a German call center selling consumer insurance products
+  - recorded dental insurance and cancer-related or serious-illness insurance as example products
+  - added insurance-specific guardrails and B2C qualification wording examples
+  - updated the roadmap and product docs so the product is not framed as B2B-only
+- Data used:
+  - student-provided client context
+  - current B2B/B2C product scope docs
+- Output created:
+  - `docs/product/INSURANCE_CLIENT_CONTEXT.md`
+  - updates to product brief, client MVP workflow, qualification flow, B2B/B2C scope, and roadmap
+- What was learned:
+  - the first likely product vertical is sensitive B2C insurance sales rather than generic B2B lead qualification
+  - future simulations need direct-consumer insurance cases and stronger pressure/privacy/compliance guardrails
+- Why it matters for the thesis:
+  - it grounds the product prototype in a realistic application while preserving a broader B2B/B2C product scope
+- Open questions:
+  - which exact insurance scripts and claims the client is legally allowed to use
+  - what German outbound calling, insurance sales, privacy, and recording constraints must be verified before live use
+
+### 2026-04-30 - B2B and B2C product scope clarification
+
+- Objective: clarify that the product should support both company sales and direct-to-consumer sales
+- Action taken:
+  - documented B2B and B2C scope explicitly
+  - updated product positioning to avoid implying that the agent only sells to companies
+  - added B2B/B2C question variants for qualification
+  - added `customer_type` to the lead database design and SQLite schema
+- Data used:
+  - product direction clarification from the student
+  - current product MVP workflow and qualification flow
+- Output created:
+  - `docs/product/B2B_B2C_SCOPE.md`
+  - updated product brief, client workflow, qualification flow, roadmap, database design, and SQLite import path
+- What was learned:
+  - `PROD-001` should be treated as a B2B-leaning first slice, not as the full product definition
+  - future product simulation cases should include B2C customer conversations
+- Why it matters for the thesis:
+  - it prevents the integrated product prototype from being framed too narrowly and keeps the customer-state adaptation idea applicable across sales contexts
+- Open questions:
+  - which B2C domain should be used for the first direct-consumer simulation cases
+  - whether B2C requires additional safety or consumer-protection guardrails beyond the current flow
+
+### 2026-04-30 - Deterministic product rule baseline
+
+- Objective: create a transparent baseline for the product qualification simulation before running a live model
+- Action taken:
+  - implemented `scripts/run_rule_baseline.py`
+  - ran the rule baseline across all 12 `PROD-001` simulation cases
+  - generated detailed JSON results and a markdown summary report
+- Data used:
+  - `research/experiments/cases/prod-001-qualification-simulation.json`
+- Output created:
+  - `scripts/run_rule_baseline.py`
+  - `research/experiments/generated/PROD-001-rule-baseline-results.json`
+  - `research/experiments/generated/PROD-001-rule-baseline-report.md`
+  - `research/experiments/PROD-001-rule-baseline.md`
+- What was learned:
+  - transparent rules can match all final product outcomes in the current synthetic case set
+  - the rule baseline still has weak emotion-label matching, which gives future model runs a meaningful improvement target
+  - the product workflow is now testable without a live model
+- Why it matters for the thesis:
+  - it adds a clear non-LLM baseline for the product-oriented integrated prototype path
+- Open questions:
+  - whether a live model can improve emotion and response naturalness while preserving the same guardrail correctness
+  - whether the case set is now too easy for rule-based state classification and needs harder edge cases
+
 ### 2026-04-29 - SQLite prototype import
 
 - Objective: create the first local persistence layer for the product MVP simulation records

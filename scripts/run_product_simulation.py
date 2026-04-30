@@ -183,6 +183,32 @@ def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
             "privacy_note": "Synthetic simulation records only. Do not store real customer data in this repository.",
         },
         "leads": [],
+        "sales_campaigns": [
+            {
+                "campaign_id": "campaign-prod-001-b2b-lead-qualification",
+                "client_name": "Synthetic B2B Client",
+                "product_name": "Lead follow-up solution",
+                "product_category": "software-b2b",
+                "customer_type": "b2b",
+                "country_or_region": None,
+                "language": "en",
+                "approved_opening": None,
+                "qualification_questions": [
+                    "Are you currently involved in handling follow-up for incoming leads or customer inquiries?",
+                    "What is the hardest part of that process for your team right now?",
+                    "If there is a fit, would a short follow-up call with a human specialist be useful?",
+                ],
+                "allowed_claims": [],
+                "forbidden_claims": ["unsupported product claims", "guaranteed conversion improvement"],
+                "required_disclosures": [],
+                "escalation_triggers": ["complex product question", "human request", "privacy or compliance topic"],
+                "scheduling_goal": "human specialist follow-up",
+                "human_handoff_role": "sales specialist",
+                "compliance_notes": "Synthetic reference campaign for PROD-001.",
+                "created_at": SIMULATION_TIMESTAMP,
+                "updated_at": SIMULATION_TIMESTAMP,
+            }
+        ],
         "call_sessions": [],
         "qualification_answers": [],
         "turn_decisions": [],
@@ -196,11 +222,13 @@ def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
         profile = case["lead_profile"]
         lead_id = f"lead-{case['case_id'].lower()}"
         call_id = f"call-{case['case_id'].lower()}"
+        campaign_id = "campaign-prod-001-b2b-lead-qualification"
         outcome_id = f"outcome-{case['case_id'].lower()}"
 
         records["leads"].append(
             {
                 "lead_id": lead_id,
+                "customer_type": "b2b",
                 "full_name": f"Synthetic Lead {case_index:02d}",
                 "phone_number": None,
                 "email": None,
@@ -266,6 +294,7 @@ def build_database_records(cases: list[dict], source_cases_path: Path) -> dict:
         records["call_sessions"].append(
             {
                 "call_id": call_id,
+                "campaign_id": campaign_id,
                 "lead_id": lead_id,
                 "channel": "simulation",
                 "started_at": SIMULATION_TIMESTAMP,
