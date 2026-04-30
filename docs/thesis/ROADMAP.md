@@ -239,3 +239,4 @@ Immediate product artifact:
 - sales difficulty gauntlet before broad industry-library expansion
 - real-time agent architecture and latency budget
 - call termination and hang-up policy
+- PROD-005 realtime latency and call-control simulation

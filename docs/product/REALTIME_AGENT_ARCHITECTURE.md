@@ -252,3 +252,17 @@ The architecture preserves the broad product goal:
 - fast live responses
 - background specialist support
 - human handoff when risk or complexity requires it
+
+## Simulation Benchmark
+
+`PROD-005` is the first runtime benchmark for this architecture.
+
+It checks:
+
+- fast-path turns
+- bridge responses
+- background module usage
+- call-control decisions
+- live-path sub-agent violations
+
+See `research/experiments/PROD-005-realtime-latency-call-control.md`.

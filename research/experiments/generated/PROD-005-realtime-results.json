@@ -1,0 +1,357 @@
+{
+  "summary": {
+    "case_total": 9,
+    "response_mode_matches": 9,
+    "latency_bucket_matches": 9,
+    "background_modules_matches": 9,
+    "emotion_matches": 9,
+    "sales_difficulty_matches": 9,
+    "interest_state_matches": 9,
+    "strategy_matches": 9,
+    "next_action_matches": 9,
+    "call_control_matches": 9,
+    "live_path_subagent_violations": 0
+  },
+  "results": [
+    {
+      "case_id": "PROD-005-C01",
+      "case_title": "Simple price objection answered on fast path",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "fast-path-objection",
+      "runtime_decision": {
+        "case_id": "PROD-005-C01",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C02",
+      "case_title": "Product detail requires bridge and lookup",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "runtime_scenario": "slow-path-product-lookup",
+      "runtime_decision": {
+        "case_id": "PROD-005-C02",
+        "response_mode": "bridge-then-background",
+        "first_response_latency_budget_ms": 600,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": 3500,
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "bridge_response": "One moment, I want to check the approved product information.",
+        "agent_response": "One moment, I want to check the approved product information.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C03",
+      "case_title": "Do-not-call request ends call",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "do-not-call",
+      "runtime_decision": {
+        "case_id": "PROD-005-C03",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "crm-suppression-update"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C04",
+      "case_title": "Voicemail detected ends call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "runtime_scenario": "voicemail",
+      "runtime_decision": {
+        "case_id": "PROD-005-C04",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "voicemail",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C05",
+      "case_title": "Human request transfers or escalates",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "runtime_scenario": "human-request",
+      "runtime_decision": {
+        "case_id": "PROD-005-C05",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C06",
+      "case_title": "Exact appointment time schedules and ends",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "schedule-confirmed",
+      "runtime_decision": {
+        "case_id": "PROD-005-C06",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "calendar-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "scheduling-confirmation",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "bridge_response": null,
+        "agent_response": "Confirmed. I will record that time for the specialist callback. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C07",
+      "case_title": "Vague callback timing logs follow-up and ends",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "runtime_scenario": "vague-callback",
+      "runtime_decision": {
+        "case_id": "PROD-005-C07",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "timing-delay",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Thanks. I will log a follow-up rather than forcing a fixed appointment now. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C08",
+      "case_title": "Guarantee request escalates fast",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "runtime_scenario": "claim-boundary",
+      "runtime_decision": {
+        "case_id": "PROD-005-C08",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "claim-boundary",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    },
+    {
+      "case_id": "PROD-005-C09",
+      "case_title": "Repeated silence closes call",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "repeated-silence",
+      "runtime_decision": {
+        "case_id": "PROD-005-C09",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "no-response-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "repeated-silence",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "I will end the call for now. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "scores": {
+        "response_mode_match": true,
+        "latency_bucket_match": true,
+        "background_modules_match": true,
+        "emotion_match": true,
+        "sales_difficulty_match": true,
+        "interest_state_match": true,
+        "strategy_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "live_path_subagent_violation": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,310 @@
+{
+  "campaigns": [
+    {
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "client_name": "Synthetic Energy Call Center",
+      "product_name": "Household energy tariff review",
+      "product_category": "energy",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen eines kurzen Tarif-Checks an. Haben Sie eine Minute?",
+      "qualification_questions": [
+        "Sind Sie grundsaetzlich offen fuer einen kurzen Tarif-Check?",
+        "Was waere Ihnen bei einem Wechsel wichtig?",
+        "Falls es passt, duerfen wir einen Rueckruf vereinbaren?"
+      ],
+      "allowed_claims": [
+        "A human specialist can review available tariff options.",
+        "The first call is non-binding."
+      ],
+      "forbidden_claims": [
+        "guaranteed savings",
+        "guaranteed approval",
+        "unsupported competitor comparisons"
+      ],
+      "required_disclosures": [
+        "The offer is non-binding until confirmed by the customer."
+      ],
+      "escalation_triggers": [
+        "guarantee request",
+        "contract/legal question",
+        "human request"
+      ],
+      "scheduling_goal": "non-binding human callback",
+      "human_handoff_role": "energy tariff specialist",
+      "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "client_name": "Synthetic Telecom Call Center",
+      "product_name": "Internet and mobile plan review",
+      "product_category": "telecom",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen eines kurzen Vertrags-Checks an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Sind Sie offen fuer einen kurzen Vertrags-Check?",
+        "Was ist Ihnen bei Internet oder Mobilfunk besonders wichtig?",
+        "Falls es passt, duerfen wir einen Spezialisten-Rueckruf planen?"
+      ],
+      "allowed_claims": [
+        "A human specialist can review available plan options.",
+        "Plan details must be checked against approved product data."
+      ],
+      "forbidden_claims": [
+        "guaranteed coverage",
+        "guaranteed speed",
+        "unsupported technical claims"
+      ],
+      "required_disclosures": [
+        "Technical details depend on address and plan availability."
+      ],
+      "escalation_triggers": [
+        "coverage guarantee",
+        "technical certainty request",
+        "human request"
+      ],
+      "scheduling_goal": "human plan review callback",
+      "human_handoff_role": "telecom specialist",
+      "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "client_name": "Synthetic B2B Software Client",
+      "product_name": "Lead routing workflow software",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": "DE",
+      "language": "en",
+      "approved_opening": "Hi, I am calling about lead-routing workflows. Do you have a minute?",
+      "qualification_questions": [
+        "Do you handle inbound lead routing?",
+        "What is the hardest part of that process?",
+        "If there is fit, would a specialist callback be useful?"
+      ],
+      "allowed_claims": [
+        "A specialist can review workflow fit.",
+        "The first callback is non-binding."
+      ],
+      "forbidden_claims": [
+        "guaranteed conversion lift",
+        "unsupported integration claims",
+        "unsupported security claims"
+      ],
+      "required_disclosures": [
+        "Integration details require specialist review."
+      ],
+      "escalation_triggers": [
+        "integration question",
+        "security question",
+        "human request"
+      ],
+      "scheduling_goal": "specialist discovery callback",
+      "human_handoff_role": "solutions specialist",
+      "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "PROD-005-C01",
+      "case_title": "Simple price objection answered on fast path",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "fast-path-objection",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "relevance-check",
+        "transcript": "Nur wenn es wirklich guenstiger ist. Sonst lohnt sich der Aufwand nicht."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      }
+    },
+    {
+      "case_id": "PROD-005-C02",
+      "case_title": "Product detail requires bridge and lookup",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "runtime_scenario": "slow-path-product-lookup",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "product-detail-check",
+        "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?"
+      },
+      "expected_runtime": {
+        "response_mode": "bridge-then-background",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["campaign-knowledge-lookup"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue"
+      }
+    },
+    {
+      "case_id": "PROD-005-C03",
+      "case_title": "Do-not-call request ends call",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "do-not-call",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "opening-permission",
+        "transcript": "Rufen Sie mich bitte nicht mehr an."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["crm-suppression-update"],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "PROD-005-C04",
+      "case_title": "Voicemail detected ends call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "runtime_scenario": "voicemail",
+      "customer_input": {
+        "input_type": "voicemail-detected",
+        "stage": "opening-permission",
+        "transcript": "You have reached the mailbox of Lena. Please leave a message."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["follow-up-task-write"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "voicemail",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "PROD-005-C05",
+      "case_title": "Human request transfers or escalates",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "runtime_scenario": "human-request",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "opening-permission",
+        "transcript": "Please have a real person call me if this is about software."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["human-handoff-prep"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    },
+    {
+      "case_id": "PROD-005-C06",
+      "case_title": "Exact appointment time schedules and ends",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "schedule-confirmed",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "scheduling",
+        "transcript": "Mittwoch um 10 Uhr passt fuer den Rueckruf."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["calendar-write"],
+        "detected_emotion": "positive",
+        "sales_difficulty": "scheduling-confirmation",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end"
+      }
+    },
+    {
+      "case_id": "PROD-005-C07",
+      "case_title": "Vague callback timing logs follow-up and ends",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "runtime_scenario": "vague-callback",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "timing-openness-check",
+        "transcript": "Vielleicht irgendwann naechste Woche, aber ich kann jetzt nichts fest zusagen."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["follow-up-task-write"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "timing-delay",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call"
+      }
+    },
+    {
+      "case_id": "PROD-005-C08",
+      "case_title": "Guarantee request escalates fast",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "runtime_scenario": "claim-boundary",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "relevance-check",
+        "transcript": "Nur wenn Sie garantieren koennen, dass die Geschwindigkeit bei mir stabil ist."
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["human-handoff-prep"],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "claim-boundary",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate"
+      }
+    },
+    {
+      "case_id": "PROD-005-C09",
+      "case_title": "Repeated silence closes call",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "runtime_scenario": "repeated-silence",
+      "customer_input": {
+        "input_type": "silence-timeout",
+        "stage": "opening-permission",
+        "transcript": "",
+        "silence_count": 2
+      },
+      "expected_runtime": {
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["no-response-log"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "repeated-silence",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call"
+      }
+    }
+  ]
+}
