@@ -55,6 +55,18 @@ VOICE-004:
 
 Browser speech recognition behavior depends on the user's browser. Some browsers may rely on browser-vendor speech services. That is why this remains a prototype, not a production privacy decision.
 
+## Demo Behavior Notes
+
+The page includes a recognition-language selector. Choose `English (en-US)` before speaking English, or `German (de-DE)` before speaking German. If the wrong language is selected, the browser can force the audio into the wrong language and produce strange transcripts.
+
+The page also shows:
+
+- last transcript sent to the local agent
+- decision summary
+- full decision packet
+
+The agent response may stay the same across different spoken inputs if the transcripts map to the same sales-difficulty bucket. For example, multiple claim-boundary phrases should safely produce the same escalation-style response.
+
 ## Generated Artifacts
 
 ```text
@@ -78,4 +90,3 @@ The validator checks export mode, decision mode, browser speech API wiring, cons
 - VOICE-005: latency measurement for browser spoken turns
 - VOICE-006: interruption and barge-in behavior
 - VOICE-007: production ASR integration behind explicit key/privacy gates
-

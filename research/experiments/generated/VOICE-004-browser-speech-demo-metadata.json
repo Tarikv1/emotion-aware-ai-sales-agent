@@ -9,6 +9,12 @@
   "consent_required": true,
   "browser_microphone_permission": "user-initiated",
   "browser_asr_disclosure": "Browser speech recognition behavior depends on the user's browser. Do not use private customer audio in this prototype.",
+  "supported_recognition_languages": [
+    "de-DE",
+    "en-US",
+    "tr-TR"
+  ],
+  "default_recognition_language": "de-DE",
   "local_server": {
     "host": "127.0.0.1",
     "port": 8765,
@@ -22,5 +28,9 @@
   "default_campaign_id": "campaign-prod-005-b2c-telecom",
   "default_stage": "relevance-check",
   "sample_transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+  "alternate_sample_transcripts": {
+    "price_objection": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+    "product_detail_lookup": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?"
+  },
   "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
 }

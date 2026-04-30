@@ -18,6 +18,8 @@ DEFAULT_STAGE = "relevance-check"
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8765
 SAMPLE_TRANSCRIPT = "Nur wenn Sie garantieren koennen, dass es stabil ist."
+PRICE_SAMPLE_TRANSCRIPT = "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt."
+LOOKUP_SAMPLE_TRANSCRIPT = "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?"
 VOICE_MILESTONE = "VOICE-004"
 PROVIDER_ID = "browser-speech-recognition-demo"
 
@@ -51,6 +53,8 @@ def build_metadata(campaign_id: str, stage: str, host: str, port: int, cases_pat
             "Browser speech recognition behavior depends on the user's browser. "
             "Do not use private customer audio in this prototype."
         ),
+        "supported_recognition_languages": ["de-DE", "en-US", "tr-TR"],
+        "default_recognition_language": "de-DE",
         "local_server": {
             "host": host,
             "port": port,
@@ -60,6 +64,10 @@ def build_metadata(campaign_id: str, stage: str, host: str, port: int, cases_pat
         "default_campaign_id": campaign_id,
         "default_stage": stage,
         "sample_transcript": SAMPLE_TRANSCRIPT,
+        "alternate_sample_transcripts": {
+            "price_objection": PRICE_SAMPLE_TRANSCRIPT,
+            "product_detail_lookup": LOOKUP_SAMPLE_TRANSCRIPT,
+        },
         "case_file": project_relative_string(cases_path),
     }
 
@@ -119,6 +127,8 @@ def build_browser_decision_packet(
 def render_html(metadata: dict) -> str:
     metadata_json = json.dumps(metadata, ensure_ascii=False)
     sample = json.dumps(metadata["sample_transcript"], ensure_ascii=False)
+    price_sample = json.dumps(metadata["alternate_sample_transcripts"]["price_objection"], ensure_ascii=False)
+    lookup_sample = json.dumps(metadata["alternate_sample_transcripts"]["product_detail_lookup"], ensure_ascii=False)
     title = "VOICE-004 Browser Speech Demo"
     escaped_url = html.escape(metadata["local_server"]["url"])
     return f"""<!doctype html>
@@ -244,13 +254,24 @@ def render_html(metadata: dict) -> str:
     <div class="hero">
       <h1>VOICE-004 Browser Speech Demo</h1>
       <p>No API key. Browser speech recognition captures the transcript, then this local page sends text only to the local Python agent at <strong>{escaped_url}</strong>. The sales decision still comes from the reusable realtime agent core.</p>
+      <p>Choose the recognition language before speaking. If you speak English while the recognizer is set to German, the browser may force the words into German-looking text.</p>
       <label>
         <input id="consentCheckbox" type="checkbox">
         I understand this is a local prototype. I will not use private customer audio, and I consent to starting browser microphone recognition for this demo.
       </label>
+      <label>
+        Recognition language
+        <select id="languageSelect">
+          <option value="de-DE" selected>German (de-DE)</option>
+          <option value="en-US">English (en-US)</option>
+          <option value="tr-TR">Turkish (tr-TR)</option>
+        </select>
+      </label>
       <div>
         <button id="listenButton" type="button">Start browser speech recognition</button>
-        <button id="sampleButton" class="secondary" type="button">Use sample transcript</button>
+        <button id="sampleButton" class="secondary" type="button">Sample: claim boundary</button>
+        <button id="priceSampleButton" class="secondary" type="button">Sample: price objection</button>
+        <button id="lookupSampleButton" class="secondary" type="button">Sample: product detail lookup</button>
         <button id="sendButton" class="ghost" type="button">Send transcript to local agent</button>
       </div>
       <span id="status" class="status">Ready</span>
@@ -266,6 +287,14 @@ def render_html(metadata: dict) -> str:
         <pre id="responseBox">Waiting for a local decision...</pre>
         <button id="speakButton" type="button">Play response</button>
       </section>
+      <section>
+        <h2>Last Sent Transcript</h2>
+        <pre id="lastSentTranscript">Nothing sent yet.</pre>
+      </section>
+      <section>
+        <h2>Decision Summary</h2>
+        <pre id="decisionSummary">No decision yet.</pre>
+      </section>
       <section class="full">
         <h2>Decision Packet</h2>
         <pre id="packetBox">No packet yet.</pre>
@@ -276,14 +305,21 @@ def render_html(metadata: dict) -> str:
   <script>
     const metadata = {metadata_json};
     const sampleTranscript = {sample};
+    const priceSampleTranscript = {price_sample};
+    const lookupSampleTranscript = {lookup_sample};
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const consentCheckbox = document.querySelector("#consentCheckbox");
+    const languageSelect = document.querySelector("#languageSelect");
     const listenButton = document.querySelector("#listenButton");
     const sampleButton = document.querySelector("#sampleButton");
+    const priceSampleButton = document.querySelector("#priceSampleButton");
+    const lookupSampleButton = document.querySelector("#lookupSampleButton");
     const sendButton = document.querySelector("#sendButton");
     const speakButton = document.querySelector("#speakButton");
     const transcriptBox = document.querySelector("#transcriptBox");
     const responseBox = document.querySelector("#responseBox");
+    const lastSentTranscript = document.querySelector("#lastSentTranscript");
+    const decisionSummary = document.querySelector("#decisionSummary");
     const packetBox = document.querySelector("#packetBox");
     const status = document.querySelector("#status");
     let latestResponse = "";
@@ -302,10 +338,10 @@ def render_html(metadata: dict) -> str:
         return;
       }}
       const recognition = new SpeechRecognition();
-      recognition.lang = "de-DE";
+      recognition.lang = languageSelect.value;
       recognition.interimResults = true;
       recognition.continuous = false;
-      recognition.onstart = () => setStatus("Listening...");
+      recognition.onstart = () => setStatus(`Listening with ${{languageSelect.value}}...`);
       recognition.onerror = event => setStatus(`Recognition error: ${{event.error}}`);
       recognition.onend = () => setStatus("Recognition ended. Review transcript, then send.");
       recognition.onresult = event => {{
@@ -320,7 +356,17 @@ def render_html(metadata: dict) -> str:
 
     sampleButton.addEventListener("click", () => {{
       transcriptBox.value = sampleTranscript;
-      setStatus("Sample transcript loaded.");
+      setStatus("Claim-boundary sample loaded.");
+    }});
+
+    priceSampleButton.addEventListener("click", () => {{
+      transcriptBox.value = priceSampleTranscript;
+      setStatus("Price-objection sample loaded.");
+    }});
+
+    lookupSampleButton.addEventListener("click", () => {{
+      transcriptBox.value = lookupSampleTranscript;
+      setStatus("Product-detail lookup sample loaded.");
     }});
 
     sendButton.addEventListener("click", async () => {{
@@ -329,6 +375,7 @@ def render_html(metadata: dict) -> str:
         setStatus("Add a transcript before sending.");
         return;
       }}
+      lastSentTranscript.textContent = transcript;
       setStatus("Sending transcript to local agent core...");
       const response = await fetch("/decide", {{
         method: "POST",
@@ -346,9 +393,18 @@ def render_html(metadata: dict) -> str:
       }}
       const packet = await response.json();
       latestResponse = packet.response_packet.tts_text;
+      const decision = packet.response_packet.decision;
       responseBox.textContent = latestResponse;
+      decisionSummary.textContent = JSON.stringify({{
+        detected_emotion: decision.detected_emotion,
+        sales_difficulty: decision.sales_difficulty,
+        interest_state: decision.interest_state,
+        selected_strategy: decision.selected_strategy,
+        next_action: decision.next_action,
+        call_control: decision.call_control
+      }}, null, 2);
       packetBox.textContent = JSON.stringify(packet, null, 2);
-      setStatus(`Decision: ${{packet.response_packet.decision.call_control}}`);
+      setStatus(`Decision: ${{decision.call_control}}. Response may stay the same when transcripts map to the same sales difficulty.`);
     }});
 
     speakButton.addEventListener("click", () => {{

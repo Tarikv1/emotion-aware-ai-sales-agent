@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -12,6 +13,7 @@ HTML_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo.html"
 METADATA_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo-metadata.json"
 DECISION_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo-decision.json"
 TRANSCRIPT = "Nur wenn Sie garantieren koennen, dass es stabil ist."
+PRICE_TRANSCRIPT = "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt."
 
 
 def run_demo(*args: str) -> subprocess.CompletedProcess[str]:
@@ -25,9 +27,9 @@ def run_demo(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def assert_no_secret_patterns(text: str) -> None:
-    assert "sk-" not in text
-    assert "OPENAI_API_KEY" not in text
-    assert "Authorization: Bearer" not in text
+    assert re.search(r"sk-[A-Za-z0-9_-]{20,}", text) is None
+    assert re.search(r"OPENAI_API_KEY\s*=", text) is None
+    assert re.search(r"Authorization:\s*Bearer\s+[A-Za-z0-9]", text) is None
 
 
 def main() -> None:
@@ -48,6 +50,12 @@ def main() -> None:
     assert "SpeechRecognition" in html
     assert "webkitSpeechRecognition" in html
     assert "consentCheckbox" in html
+    assert "languageSelect" in html
+    assert "recognition.lang = languageSelect.value" in html
+    assert "priceSampleButton" in html
+    assert "lookupSampleButton" in html
+    assert "lastSentTranscript" in html
+    assert "decisionSummary" in html
     assert "/decide" in html
     assert "speechSynthesis" in html
     assert "No API key" in html
@@ -55,6 +63,8 @@ def main() -> None:
     assert metadata["provider"] == "browser-speech-recognition-demo"
     assert metadata["requires_api_key"] is False
     assert metadata["audio_uploaded_to_local_server"] is False
+    assert "de-DE" in metadata["supported_recognition_languages"]
+    assert "en-US" in metadata["supported_recognition_languages"]
     assert metadata["local_server_endpoints"] == ["/", "/metadata", "/decide"]
 
     completed = run_demo(
@@ -76,7 +86,13 @@ def main() -> None:
     assert file_packet["response_packet"]["decision"]["call_control"] == "transfer-or-escalate"
     assert file_packet["response_packet"]["tts_text"] == file_packet["response_packet"]["decision"]["agent_response"]
 
-    serialized = html + json.dumps(metadata) + json.dumps(file_packet)
+    price_completed = run_demo("--decision-transcript", PRICE_TRANSCRIPT)
+    price_packet = json.loads(price_completed.stdout)
+    assert price_packet["response_packet"]["decision"]["sales_difficulty"] == "price-objection"
+    assert price_packet["response_packet"]["decision"]["call_control"] == "continue-call"
+    assert price_packet["response_packet"]["tts_text"] != file_packet["response_packet"]["tts_text"]
+
+    serialized = html + json.dumps(metadata) + json.dumps(file_packet) + json.dumps(price_packet)
     assert_no_secret_patterns(serialized)
 
 

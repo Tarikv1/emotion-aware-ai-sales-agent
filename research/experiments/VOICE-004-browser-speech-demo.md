@@ -50,6 +50,14 @@ VOICE-004 keeps the prototype no-key and local:
 
 Browser speech recognition may depend on browser implementation details, so it remains a demo path rather than a production privacy answer.
 
+## Debugging Observation
+
+During manual browser testing, English speech could be transcribed as German because the initial prototype hardcoded browser recognition to `de-DE`.
+
+The demo now exposes a recognition-language selector with `de-DE`, `en-US`, and `tr-TR`. It also shows the last transcript sent and a decision summary so repeated agent responses are easier to interpret.
+
+The deterministic agent may intentionally produce the same response for different transcripts when they map to the same sales-difficulty bucket. The validator now checks a price-objection transcript separately so the demo proves that responses can change when the classification changes.
+
 ## Interpretation
 
 VOICE-004 proves the next useful product loop:
@@ -63,4 +71,3 @@ speak
 ```
 
 The next milestone should measure latency in this browser spoken-turn loop before moving to interruption and barge-in behavior.
-
