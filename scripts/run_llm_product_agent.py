@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 import requests
@@ -28,6 +29,15 @@ def load_cases_and_campaigns(path: Path) -> tuple[list[dict], list[dict]]:
     return cases, campaigns
 
 
+def planned_model_call_count(cases: list[dict]) -> int:
+    return sum(len(case.get("turns", [])) + 1 for case in cases)
+
+
+def log_progress(message: str, quiet: bool = False) -> None:
+    if not quiet:
+        print(message, file=sys.stderr, flush=True)
+
+
 def missing_api_key_message(env_name: str) -> str:
     return (
         f"Missing {env_name}. Set {env_name} to run the LLM product agent. "
@@ -48,7 +58,14 @@ def parse_json_object(text: str) -> dict:
     return json.loads(stripped)
 
 
-def call_chat_completion(prompt: str, api_key: str, model: str, base_url: str, timeout: int) -> dict:
+def call_chat_completion(
+    prompt: str,
+    api_key: str,
+    model: str,
+    base_url: str,
+    timeout: int,
+    temperature: float,
+) -> dict:
     response = requests.post(
         base_url,
         headers={
@@ -58,7 +75,7 @@ def call_chat_completion(prompt: str, api_key: str, model: str, base_url: str, t
         json={
             "model": model,
             "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.2,
+            "temperature": temperature,
         },
         timeout=timeout,
     )
@@ -197,17 +214,29 @@ def aggregate(results: list[dict]) -> dict:
     }
 
 
-def run_case(case: dict, campaign: dict, template: str, api_key: str, model: str, base_url: str, timeout: int) -> dict:
+def run_case(
+    case: dict,
+    campaign: dict,
+    template: str,
+    api_key: str,
+    model: str,
+    base_url: str,
+    timeout: int,
+    temperature: float,
+    quiet: bool = False,
+) -> dict:
     state = initial_call_state(case)
     turn_outputs = []
     for index, turn in enumerate(case["turns"], start=1):
+        log_progress(f"  Turn {index}/{len(case['turns'])}: {turn['stage']}", quiet)
         prompt = render_prompt(template, case, turn, state, campaign)
-        output = call_chat_completion(prompt, api_key, model, base_url, timeout)
+        output = call_chat_completion(prompt, api_key, model, base_url, timeout, temperature)
         turn_outputs.append(output)
         state = update_call_state(state, turn, output, case["expected_outcome"])
 
+    log_progress("  Final outcome", quiet)
     final_prompt = render_final_prompt(case, campaign, turn_outputs)
-    final_outcome = build_final_outcome(call_chat_completion(final_prompt, api_key, model, base_url, timeout))
+    final_outcome = build_final_outcome(call_chat_completion(final_prompt, api_key, model, base_url, timeout, temperature))
     scores = score_case(case, turn_outputs, final_outcome)
     return {
         "case_id": case["case_id"],
@@ -281,7 +310,9 @@ def main() -> None:
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
     parser.add_argument("--api-key-env", default="OPENAI_API_KEY")
     parser.add_argument("--timeout", type=int, default=60)
+    parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--limit", type=int, help="Optional max number of cases to run.")
+    parser.add_argument("--quiet", action="store_true", help="Suppress progress output.")
     args = parser.parse_args()
 
     api_key = os.environ.get(args.api_key_env)
@@ -296,10 +327,27 @@ def main() -> None:
     campaign_lookup = {campaign["campaign_id"]: campaign for campaign in campaigns}
     template = load_text(Path(args.prompt))
     results = []
-    for case in cases:
+    log_progress(
+        f"Running {len(cases)} cases with {planned_model_call_count(cases)} model calls using {args.model}.",
+        args.quiet,
+    )
+    for case_index, case in enumerate(cases, start=1):
         campaign_id = case.get("campaign_id") or campaigns[0]["campaign_id"]
         campaign = campaign_lookup[campaign_id]
-        results.append(run_case(case, campaign, template, api_key, args.model, args.base_url, args.timeout))
+        log_progress(f"Case {case_index}/{len(cases)}: {case['case_id']} ({campaign_id})", args.quiet)
+        results.append(
+            run_case(
+                case,
+                campaign,
+                template,
+                api_key,
+                args.model,
+                args.base_url,
+                args.timeout,
+                args.temperature,
+                args.quiet,
+            )
+        )
 
     summary = aggregate(results)
     out_path = Path(args.out)
@@ -312,6 +360,8 @@ def main() -> None:
     report_path = Path(args.report_out)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(render_report(results, summary, report_title_for(cases_path), args.model), encoding="utf-8")
+    log_progress(f"Wrote results to {out_path}", args.quiet)
+    log_progress(f"Wrote report to {report_path}", args.quiet)
 
 
 if __name__ == "__main__":

@@ -17,6 +17,8 @@ def main() -> None:
 
     for name in [
         "load_cases_and_campaigns",
+        "planned_model_call_count",
+        "log_progress",
         "build_final_outcome",
         "score_case",
         "render_report",
@@ -29,6 +31,7 @@ def main() -> None:
     )
     assert len(cases) == 14, "Expected 14 PROD-004 cases"
     assert len(campaigns) == 5, "Expected 5 PROD-004 campaigns"
+    assert module.planned_model_call_count(cases) == 34, "Expected 34 PROD-004 model calls"
     assert "OPENAI_API_KEY" in module.missing_api_key_message("OPENAI_API_KEY")
 
 
