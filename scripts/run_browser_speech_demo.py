@@ -72,6 +72,89 @@ def build_metadata(campaign_id: str, stage: str, host: str, port: int, cases_pat
     }
 
 
+def compact_transcript(transcript: str, limit: int = 140) -> str:
+    compacted = " ".join(transcript.split())
+    if len(compacted) <= limit:
+        return compacted
+    return compacted[: limit - 3].rstrip() + "..."
+
+
+def compose_contextual_demo_response(transcript: str, decision: dict) -> str:
+    quoted = compact_transcript(transcript)
+    difficulty = decision["sales_difficulty"]
+    next_action = decision["next_action"]
+
+    if difficulty == "claim-boundary":
+        return (
+            f"I hear the concern in what you said: \"{quoted}\" I do not want to promise or guarantee something "
+            "that depends on the details. The safest next step is to route this to a specialist."
+        )
+
+    if difficulty == "price-objection":
+        return (
+            f"That makes sense. Based on \"{quoted}\", is the bigger concern the monthly price, "
+            "the contract terms, or whether the review is worth your time?"
+        )
+
+    if difficulty == "product-detail-lookup":
+        return (
+            f"Good question. For \"{quoted}\", I want to check the approved product information first, "
+            "then I can summarize only what is confirmed."
+        )
+
+    if difficulty == "human-request":
+        return (
+            f"Of course. Since you said \"{quoted}\", I will route this to a human specialist "
+            "instead of continuing automatically."
+        )
+
+    if difficulty == "do-not-call":
+        return "Understood. I will make sure this contact is marked so you are not called again. Goodbye."
+
+    if difficulty == "timing-delay":
+        return (
+            f"Thanks, I heard the timing concern: \"{quoted}\". I will log a follow-up rather than "
+            "forcing a fixed appointment now."
+        )
+
+    if difficulty == "scheduling-confirmation":
+        return f"Confirmed. I will record the time you mentioned: \"{quoted}\". Goodbye."
+
+    if difficulty == "voicemail":
+        return "I reached voicemail, so I will log this for follow-up according to campaign rules."
+
+    if difficulty == "repeated-silence":
+        return "I will end the call for now. Goodbye."
+
+    if next_action == "ask-follow-up":
+        return (
+            f"Thanks, I want to make sure I understood you correctly: \"{quoted}\". "
+            "Is your main question about price, fit, timing, or the exact product details?"
+        )
+
+    return decision["agent_response"]
+
+
+def apply_contextual_demo_response(response_packet: dict, transcript: str) -> dict:
+    decision = response_packet["decision"]
+    policy_response = response_packet["tts_text"]
+    contextual_response = compose_contextual_demo_response(transcript, decision)
+
+    response_packet["response_generation"] = {
+        "mode": "local-contextual-composer",
+        "policy_response": policy_response,
+        "guardrail_source": "realtime deterministic policy",
+        "changes_allowed": "wording only; call-control and classification stay unchanged",
+        "llm_used": False,
+        "requires_api_key": False,
+    }
+    response_packet["tts_text"] = contextual_response
+    decision["agent_response"] = contextual_response
+    if decision.get("bridge_response") is not None:
+        decision["bridge_response"] = contextual_response
+    return response_packet
+
+
 def build_browser_decision_packet(
     transcript: str,
     campaign_id: str,
@@ -94,6 +177,7 @@ def build_browser_decision_packet(
         voice_name=None,
         audio_output_path=None,
     )
+    response_packet = apply_contextual_demo_response(response_packet, transcript)
     return {
         "voice_demo_run_id": f"{VOICE_MILESTONE}-browser-speech-recognition",
         "voice_milestone": VOICE_MILESTONE,

@@ -14,6 +14,8 @@ METADATA_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo-metadata.json"
 DECISION_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo-decision.json"
 TRANSCRIPT = "Nur wenn Sie garantieren koennen, dass es stabil ist."
 PRICE_TRANSCRIPT = "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt."
+UNKNOWN_TRANSCRIPT_ONE = "I am not sure this makes sense for my apartment right now."
+UNKNOWN_TRANSCRIPT_TWO = "Can you explain why I should even take this call today?"
 
 
 def run_demo(*args: str) -> subprocess.CompletedProcess[str]:
@@ -85,6 +87,8 @@ def main() -> None:
     assert file_packet["response_packet"]["decision"]["sales_difficulty"] == "claim-boundary"
     assert file_packet["response_packet"]["decision"]["call_control"] == "transfer-or-escalate"
     assert file_packet["response_packet"]["tts_text"] == file_packet["response_packet"]["decision"]["agent_response"]
+    assert file_packet["response_packet"]["response_generation"]["mode"] == "local-contextual-composer"
+    assert "policy_response" in file_packet["response_packet"]["response_generation"]
 
     price_completed = run_demo("--decision-transcript", PRICE_TRANSCRIPT)
     price_packet = json.loads(price_completed.stdout)
@@ -92,7 +96,22 @@ def main() -> None:
     assert price_packet["response_packet"]["decision"]["call_control"] == "continue-call"
     assert price_packet["response_packet"]["tts_text"] != file_packet["response_packet"]["tts_text"]
 
-    serialized = html + json.dumps(metadata) + json.dumps(file_packet) + json.dumps(price_packet)
+    unknown_one = json.loads(run_demo("--decision-transcript", UNKNOWN_TRANSCRIPT_ONE).stdout)
+    unknown_two = json.loads(run_demo("--decision-transcript", UNKNOWN_TRANSCRIPT_TWO).stdout)
+    assert unknown_one["response_packet"]["decision"]["sales_difficulty"] == "unknown-runtime-signal"
+    assert unknown_two["response_packet"]["decision"]["sales_difficulty"] == "unknown-runtime-signal"
+    assert unknown_one["response_packet"]["tts_text"] != unknown_two["response_packet"]["tts_text"]
+    assert UNKNOWN_TRANSCRIPT_ONE in unknown_one["response_packet"]["tts_text"]
+    assert UNKNOWN_TRANSCRIPT_TWO in unknown_two["response_packet"]["tts_text"]
+
+    serialized = (
+        html
+        + json.dumps(metadata)
+        + json.dumps(file_packet)
+        + json.dumps(price_packet)
+        + json.dumps(unknown_one)
+        + json.dumps(unknown_two)
+    )
     assert_no_secret_patterns(serialized)
 
 

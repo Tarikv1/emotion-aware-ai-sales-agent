@@ -56,12 +56,12 @@
       "next_action": "escalate",
       "call_control": "transfer-or-escalate",
       "bridge_response": null,
-      "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+      "agent_response": "I hear the concern in what you said: \"Nur wenn Sie garantieren koennen, dass es stabil ist.\" I do not want to promise or guarantee something that depends on the details. The safest next step is to route this to a specialist.",
       "rationale": "Deterministic runtime policy selected the fastest safe response path.",
       "first_response_latency_ms": 0,
       "first_response_latency_observed_bucket": "under-1s"
     },
-    "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+    "tts_text": "I hear the concern in what you said: \"Nur wenn Sie garantieren koennen, dass es stabil ist.\" I do not want to promise or guarantee something that depends on the details. The safest next step is to route this to a specialist.",
     "voice": {
       "name": "Neutral Synthetic Test Voice",
       "style": "neutral-synthetic-test",
@@ -79,6 +79,14 @@
       "source": "scripts/realtime_turn_cli.py",
       "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
       "synthetic_output": true,
+      "requires_api_key": false
+    },
+    "response_generation": {
+      "mode": "local-contextual-composer",
+      "policy_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+      "guardrail_source": "realtime deterministic policy",
+      "changes_allowed": "wording only; call-control and classification stay unchanged",
+      "llm_used": false,
       "requires_api_key": false
     }
   },

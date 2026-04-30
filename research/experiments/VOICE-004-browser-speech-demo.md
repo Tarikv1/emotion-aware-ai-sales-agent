@@ -58,6 +58,10 @@ The demo now exposes a recognition-language selector with `de-DE`, `en-US`, and 
 
 The deterministic agent may intentionally produce the same response for different transcripts when they map to the same sales-difficulty bucket. The validator now checks a price-objection transcript separately so the demo proves that responses can change when the classification changes.
 
+The demo also adds a local contextual response composer. The realtime policy still selects classification, next action, and call control. The composer changes the spoken wording by referencing the submitted transcript and stores the original fixed policy response as `response_generation.policy_response`.
+
+This is a bridge toward a real guarded LLM response layer, not the final natural sales agent.
+
 ## Interpretation
 
 VOICE-004 proves the next useful product loop:
