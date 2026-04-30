@@ -14,6 +14,7 @@ from run_product_simulation import (
     render_prompt,
     update_call_state,
 )
+from product_agent_output_contract import normalize_final_outcome, strategy_taxonomy_prompt_block
 
 
 DEFAULT_MODEL = "gpt-4o-mini"
@@ -102,6 +103,15 @@ def render_final_prompt(case: dict, campaign: dict, turn_outputs: list[dict]) ->
             "Use the campaign context, lead profile, conversation transcript, and candidate turn outputs.",
             "Return only JSON with the exact final CallOutcome shape.",
             "",
+            strategy_taxonomy_prompt_block(),
+            "",
+            "Final outcome consistency rules:",
+            "",
+            "- If interest_state is needs-human, call_status must be escalated.",
+            "- If interest_state is interested and no appointment time is confirmed, call_status should be ready-for-scheduling.",
+            "- Do not mark appointment_scheduled true without a clear appointment time.",
+            "- Use rapport for respectful human handoff or de-escalation; use inquiry for claim, fit, or comparison clarification.",
+            "",
             "Campaign context:",
             "",
             json.dumps(campaign, indent=2, ensure_ascii=False),
@@ -141,7 +151,7 @@ def render_final_prompt(case: dict, campaign: dict, turn_outputs: list[dict]) ->
 
 
 def build_final_outcome(raw_outcome: dict) -> dict:
-    return {
+    return normalize_final_outcome({
         "call_status": raw_outcome.get("call_status"),
         "interest_state": raw_outcome.get("interest_state"),
         "selected_strategy": raw_outcome.get("selected_strategy"),
@@ -150,7 +160,7 @@ def build_final_outcome(raw_outcome: dict) -> dict:
         "escalation_reason": raw_outcome.get("escalation_reason"),
         "call_summary": raw_outcome.get("call_summary"),
         "next_action": raw_outcome.get("next_action"),
-    }
+    })
 
 
 def score_case(case: dict, turn_outputs: list[dict], final_outcome: dict) -> dict:

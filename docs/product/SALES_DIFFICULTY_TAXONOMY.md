@@ -160,3 +160,79 @@ customer response
 ```
 
 This keeps sales behavior portable across products, clients, and buyer types.
+
+## Strategy Taxonomy
+
+The strategy label describes the safest next sales move, not the whole call outcome.
+
+### `rapport`
+
+Use when the agent should acknowledge, de-escalate, preserve trust, stop pressure, or route politely to a human.
+
+Good fit:
+
+- annoyed or skeptical lead
+- trust concern
+- wrong contact
+- direct human request
+- not-interested or do-not-call boundary
+
+Avoid using it as a generic fallback when the better move is a clarifying question.
+
+### `inquiry`
+
+Use when the agent should ask one careful clarifying question before making a next-step decision.
+
+Good fit:
+
+- price concern where value is unclear
+- status quo resistance
+- competitor comparison criteria
+- fit or risk uncertainty
+- vague interest
+
+Avoid using it after the lead has already asked to stop or asked for a human.
+
+### `evidence-or-benefit`
+
+Use when the lead asks for information or when an approved, non-guaranteed benefit explanation is the right response.
+
+Good fit:
+
+- send-information request
+- safe explanation of an approved benefit
+- credibility support that is already allowed in campaign config
+
+Avoid unsupported claims, invented proof, or guaranteed outcomes.
+
+### `emotional-appeal`
+
+Use only for approved empathy or positive motivation.
+
+Good fit:
+
+- low-risk motivational framing
+- empathetic acknowledgment that does not create pressure
+
+Avoid fear, guilt, urgency manipulation, or sensitive-product pressure.
+
+### `direct-ask-or-commitment`
+
+Use when the lead is open to a concrete next step.
+
+Good fit:
+
+- explicit callback openness
+- appointment scheduling
+- non-binding specialist follow-up
+- broad timing that needs a follow-up task rather than confirmed scheduling
+
+Avoid using it when the lead asks for a human because of risk, guarantee, legal, coverage, or technical uncertainty. Those cases should escalate.
+
+## Final Outcome Consistency Rules
+
+- `interest_state = needs-human` should produce `call_status = escalated`.
+- `interest_state = interested` without a confirmed appointment should usually produce `call_status = ready-for-scheduling`.
+- `appointment_scheduled = true` requires a clear appointment time.
+- broad callback timing should create a follow-up task, not a confirmed appointment.
+- guarantee, competitor-proof, legal, medical, financial, coverage, or technical-certainty requests should escalate unless the campaign explicitly approves the answer.

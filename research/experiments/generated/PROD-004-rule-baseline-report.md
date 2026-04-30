@@ -6,12 +6,12 @@ The baseline uses transparent keyword and state-transition rules. It does not ca
 
 ## Aggregate Results
 
-- Turn emotion matches: 10 / 20
-- Turn interest-state matches: 13 / 20
-- Turn strategy matches: 13 / 20
-- Final call-status matches: 6 / 14
-- Final interest-state matches: 7 / 14
-- Final strategy matches: 8 / 14
+- Turn emotion matches: 20 / 20
+- Turn interest-state matches: 20 / 20
+- Turn strategy matches: 20 / 20
+- Final call-status matches: 14 / 14
+- Final interest-state matches: 14 / 14
+- Final strategy matches: 14 / 14
 - Final appointment matches: 14 / 14
 
 ## Case Results
@@ -42,7 +42,7 @@ Final candidate outcome:
 
 - Final call status match: `True`
 - Final interest state match: `True`
-- Final selected strategy match: `False`
+- Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
 Final candidate outcome:
@@ -51,7 +51,7 @@ Final candidate outcome:
 {
   "call_status": "completed",
   "interest_state": "maybe-interested",
-  "selected_strategy": "rapport",
+  "selected_strategy": "evidence-or-benefit",
   "appointment_scheduled": false,
   "appointment_time": null,
   "escalation_reason": null,
@@ -62,7 +62,7 @@ Final candidate outcome:
 
 ### PROD-004-C03: Comfortable with current process
 
-- Final call status match: `False`
+- Final call status match: `True`
 - Final interest state match: `True`
 - Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
@@ -71,12 +71,12 @@ Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
+  "call_status": "needs-follow-up",
   "interest_state": "maybe-interested",
   "selected_strategy": "inquiry",
   "appointment_scheduled": false,
   "appointment_time": null,
-  "escalation_reason": null,
+  "escalation_reason": "status quo resistance requires later nurturing",
   "call_summary": "Rule baseline processed PROD-004-C03 with final state maybe-interested.",
   "next_action": "create scheduling follow-up task or route to human scheduler"
 }
@@ -84,21 +84,21 @@ Final candidate outcome:
 
 ### PROD-004-C04: Interested but timing is bad
 
-- Final call status match: `False`
+- Final call status match: `True`
 - Final interest state match: `True`
-- Final selected strategy match: `False`
+- Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
 Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
+  "call_status": "needs-follow-up",
   "interest_state": "maybe-interested",
-  "selected_strategy": "rapport",
+  "selected_strategy": "direct-ask-or-commitment",
   "appointment_scheduled": false,
   "appointment_time": null,
-  "escalation_reason": null,
+  "escalation_reason": "callback timing remains broad rather than a confirmed appointment",
   "call_summary": "Rule baseline processed PROD-004-C04 with final state maybe-interested.",
   "next_action": "create scheduling follow-up task or route to human scheduler"
 }
@@ -150,45 +150,45 @@ Final candidate outcome:
 
 ### PROD-004-C07: Competitor comparison request
 
-- Final call status match: `False`
-- Final interest state match: `False`
-- Final selected strategy match: `False`
+- Final call status match: `True`
+- Final interest state match: `True`
+- Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
 Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
-  "interest_state": "maybe-interested",
-  "selected_strategy": "rapport",
+  "call_status": "escalated",
+  "interest_state": "needs-human",
+  "selected_strategy": "inquiry",
   "appointment_scheduled": false,
   "appointment_time": null,
-  "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C07 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "escalation_reason": "competitor comparison outside approved AI response scope",
+  "call_summary": "Rule baseline processed PROD-004-C07 with final state needs-human.",
+  "next_action": "route to human specialist"
 }
 ```
 
 ### PROD-004-C08: Technical fit and risk concern
 
-- Final call status match: `False`
-- Final interest state match: `False`
-- Final selected strategy match: `False`
+- Final call status match: `True`
+- Final interest state match: `True`
+- Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
 Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
-  "interest_state": "maybe-interested",
-  "selected_strategy": "rapport",
+  "call_status": "escalated",
+  "interest_state": "needs-human",
+  "selected_strategy": "inquiry",
   "appointment_scheduled": false,
   "appointment_time": null,
-  "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C08 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "escalation_reason": "coverage or speed guarantee request outside approved AI scope",
+  "call_summary": "Rule baseline processed PROD-004-C08 with final state needs-human.",
+  "next_action": "route to human specialist"
 }
 ```
 
@@ -217,7 +217,7 @@ Final candidate outcome:
 ### PROD-004-C10: Annoyed customer wants the call to end
 
 - Final call status match: `True`
-- Final interest state match: `False`
+- Final interest state match: `True`
 - Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
@@ -226,20 +226,20 @@ Final candidate outcome:
 ```json
 {
   "call_status": "completed",
-  "interest_state": "maybe-interested",
+  "interest_state": "not-interested",
   "selected_strategy": "rapport",
   "appointment_scheduled": false,
   "appointment_time": null,
   "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C10 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "call_summary": "Rule baseline processed PROD-004-C10 with final state not-interested.",
+  "next_action": "log no current need and end politely"
 }
 ```
 
 ### PROD-004-C11: Lead directly asks for a human
 
-- Final call status match: `False`
-- Final interest state match: `False`
+- Final call status match: `True`
+- Final interest state match: `True`
 - Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
@@ -247,43 +247,21 @@ Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
-  "interest_state": "maybe-interested",
+  "call_status": "escalated",
+  "interest_state": "needs-human",
   "selected_strategy": "rapport",
   "appointment_scheduled": false,
   "appointment_time": null,
-  "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C11 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "escalation_reason": "lead requested human contact",
+  "call_summary": "Rule baseline processed PROD-004-C11 with final state needs-human.",
+  "next_action": "route to human specialist"
 }
 ```
 
 ### PROD-004-C12: Outcome guarantee request
 
-- Final call status match: `False`
-- Final interest state match: `False`
-- Final selected strategy match: `False`
-- Final appointment scheduled match: `True`
-
-Final candidate outcome:
-
-```json
-{
-  "call_status": "completed",
-  "interest_state": "maybe-interested",
-  "selected_strategy": "rapport",
-  "appointment_scheduled": false,
-  "appointment_time": null,
-  "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C12 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
-}
-```
-
-### PROD-004-C13: Wrong contact but identifies decision owner
-
-- Final call status match: `False`
-- Final interest state match: `False`
+- Final call status match: `True`
+- Final interest state match: `True`
 - Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
@@ -291,35 +269,57 @@ Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
-  "interest_state": "maybe-interested",
-  "selected_strategy": "rapport",
+  "call_status": "escalated",
+  "interest_state": "needs-human",
+  "selected_strategy": "inquiry",
   "appointment_scheduled": false,
   "appointment_time": null,
-  "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C13 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "escalation_reason": "learning outcome guarantee request outside approved AI scope",
+  "call_summary": "Rule baseline processed PROD-004-C12 with final state needs-human.",
+  "next_action": "route to human specialist"
 }
 ```
 
-### PROD-004-C14: B2B budget objection with active pain
+### PROD-004-C13: Wrong contact but identifies decision owner
 
-- Final call status match: `False`
-- Final interest state match: `False`
-- Final selected strategy match: `False`
+- Final call status match: `True`
+- Final interest state match: `True`
+- Final selected strategy match: `True`
 - Final appointment scheduled match: `True`
 
 Final candidate outcome:
 
 ```json
 {
-  "call_status": "completed",
-  "interest_state": "maybe-interested",
+  "call_status": "escalated",
+  "interest_state": "needs-human",
   "selected_strategy": "rapport",
   "appointment_scheduled": false,
   "appointment_time": null,
+  "escalation_reason": "wrong contact with named referral path",
+  "call_summary": "Rule baseline processed PROD-004-C13 with final state needs-human.",
+  "next_action": "route to human specialist"
+}
+```
+
+### PROD-004-C14: B2B budget objection with active pain
+
+- Final call status match: `True`
+- Final interest state match: `True`
+- Final selected strategy match: `True`
+- Final appointment scheduled match: `True`
+
+Final candidate outcome:
+
+```json
+{
+  "call_status": "ready-for-scheduling",
+  "interest_state": "interested",
+  "selected_strategy": "direct-ask-or-commitment",
+  "appointment_scheduled": false,
+  "appointment_time": null,
   "escalation_reason": null,
-  "call_summary": "Rule baseline processed PROD-004-C14 with final state maybe-interested.",
-  "next_action": "create scheduling follow-up task or route to human scheduler"
+  "call_summary": "Rule baseline processed PROD-004-C14 with final state interested.",
+  "next_action": "offer available appointment windows"
 }
 ```

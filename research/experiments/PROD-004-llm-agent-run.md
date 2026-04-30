@@ -45,4 +45,6 @@ Aggregate LLM results:
 
 Compared with the deterministic rule baseline, the LLM agent improved emotion detection, interest-state detection, final call-status judgment, and final interest-state judgment. The main weakness is weaker alignment with the internal strategy taxonomy.
 
-Next improvement target: tighten the output contract so impossible combinations are normalized, especially `interest_state = needs-human` with `call_status = completed`.
+Implemented follow-up: the LLM runner now applies a shared output contract for future runs so impossible combinations are normalized, especially `interest_state = needs-human` with `call_status = completed`.
+
+Next evaluation target: re-run the LLM agent with the tightened prompt and output contract, then compare against the improved deterministic rule baseline.

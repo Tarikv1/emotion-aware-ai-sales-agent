@@ -1,13 +1,13 @@
 {
   "summary": {
     "turn_total": 20,
-    "emotion_matches": 10,
-    "interest_state_matches": 13,
-    "strategy_matches": 13,
+    "emotion_matches": 20,
+    "interest_state_matches": 20,
+    "strategy_matches": 20,
     "final_total": 14,
-    "final_call_status_matches": 6,
-    "final_interest_state_matches": 7,
-    "final_strategy_matches": 8,
+    "final_call_status_matches": 14,
+    "final_interest_state_matches": 14,
+    "final_strategy_matches": 14,
     "final_appointment_matches": 14
   },
   "results": [
@@ -27,7 +27,7 @@
         },
         {
           "stage": "relevance-check",
-          "detected_emotion": "neutral",
+          "detected_emotion": "skeptical-or-negative",
           "interest_state": "maybe-interested",
           "selected_strategy": "inquiry",
           "next_action": "create-follow-up-task",
@@ -57,7 +57,7 @@
           },
           {
             "stage": "relevance-check",
-            "emotion_match": false,
+            "emotion_match": true,
             "interest_state_match": true,
             "strategy_match": true
           }
@@ -78,7 +78,7 @@
           "stage": "opening-permission",
           "detected_emotion": "neutral",
           "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
+          "selected_strategy": "evidence-or-benefit",
           "next_action": "create-follow-up-task",
           "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
           "confidence": 0.74,
@@ -88,7 +88,7 @@
       "final_outcome": {
         "call_status": "completed",
         "interest_state": "maybe-interested",
-        "selected_strategy": "rapport",
+        "selected_strategy": "evidence-or-benefit",
         "appointment_scheduled": false,
         "appointment_time": null,
         "escalation_reason": null,
@@ -102,13 +102,13 @@
             "stage": "opening-permission",
             "emotion_match": true,
             "interest_state_match": true,
-            "strategy_match": false
+            "strategy_match": true
           }
         ],
         "final_scores": {
           "call_status_match": true,
           "interest_state_match": true,
-          "selected_strategy_match": false,
+          "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
       }
@@ -139,12 +139,12 @@
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
+        "call_status": "needs-follow-up",
         "interest_state": "maybe-interested",
         "selected_strategy": "inquiry",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
+        "escalation_reason": "status quo resistance requires later nurturing",
         "call_summary": "Rule baseline processed PROD-004-C03 with final state maybe-interested.",
         "next_action": "create scheduling follow-up task or route to human scheduler"
       },
@@ -165,7 +165,7 @@
           }
         ],
         "final_scores": {
-          "call_status_match": false,
+          "call_status_match": true,
           "interest_state_match": true,
           "selected_strategy_match": true,
           "appointment_scheduled_match": true
@@ -188,9 +188,9 @@
         },
         {
           "stage": "timing-openness-check",
-          "detected_emotion": "neutral",
+          "detected_emotion": "positive",
           "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
+          "selected_strategy": "direct-ask-or-commitment",
           "next_action": "create-follow-up-task",
           "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
           "confidence": 0.74,
@@ -198,12 +198,12 @@
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
+        "call_status": "needs-follow-up",
         "interest_state": "maybe-interested",
-        "selected_strategy": "rapport",
+        "selected_strategy": "direct-ask-or-commitment",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
+        "escalation_reason": "callback timing remains broad rather than a confirmed appointment",
         "call_summary": "Rule baseline processed PROD-004-C04 with final state maybe-interested.",
         "next_action": "create scheduling follow-up task or route to human scheduler"
       },
@@ -218,15 +218,15 @@
           },
           {
             "stage": "timing-openness-check",
-            "emotion_match": false,
+            "emotion_match": true,
             "interest_state_match": true,
-            "strategy_match": false
+            "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
+          "call_status_match": true,
           "interest_state_match": true,
-          "selected_strategy_match": false,
+          "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
       }
@@ -296,7 +296,7 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
+          "detected_emotion": "skeptical-or-negative",
           "interest_state": "maybe-interested",
           "selected_strategy": "rapport",
           "next_action": "create-follow-up-task",
@@ -320,7 +320,7 @@
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
+            "emotion_match": true,
             "interest_state_match": true,
             "strategy_match": true
           }
@@ -339,39 +339,39 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+          "rationale": "Rule baseline selected needs-human from answer cues and stage opening-permission."
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
-        "interest_state": "maybe-interested",
-        "selected_strategy": "rapport",
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C07 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "escalation_reason": "competitor comparison outside approved AI response scope",
+        "call_summary": "Rule baseline processed PROD-004-C07 with final state needs-human.",
+        "next_action": "route to human specialist"
       },
       "scores": {
         "case_id": "PROD-004-C07",
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
-            "interest_state_match": false,
-            "strategy_match": false
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
-          "interest_state_match": false,
-          "selected_strategy_match": false,
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
       }
@@ -382,39 +382,39 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+          "rationale": "Rule baseline selected needs-human from answer cues and stage opening-permission."
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
-        "interest_state": "maybe-interested",
-        "selected_strategy": "rapport",
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C08 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "escalation_reason": "coverage or speed guarantee request outside approved AI scope",
+        "call_summary": "Rule baseline processed PROD-004-C08 with final state needs-human.",
+        "next_action": "route to human specialist"
       },
       "scores": {
         "case_id": "PROD-004-C08",
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
-            "interest_state_match": false,
-            "strategy_match": false
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
-          "interest_state_match": false,
-          "selected_strategy_match": false,
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
       }
@@ -425,7 +425,7 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
+          "detected_emotion": "positive",
           "interest_state": "maybe-interested",
           "selected_strategy": "rapport",
           "next_action": "ask-follow-up",
@@ -459,7 +459,7 @@
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
+            "emotion_match": true,
             "interest_state_match": true,
             "strategy_match": true
           },
@@ -484,38 +484,38 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "not-interested",
           "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "next_action": "close-politely",
+          "agent_response": "Thanks for clarifying. I will note that this is not relevant right now and will not take more of your time.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+          "rationale": "Rule baseline selected not-interested from answer cues and stage opening-permission."
         }
       ],
       "final_outcome": {
         "call_status": "completed",
-        "interest_state": "maybe-interested",
+        "interest_state": "not-interested",
         "selected_strategy": "rapport",
         "appointment_scheduled": false,
         "appointment_time": null,
         "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C10 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "call_summary": "Rule baseline processed PROD-004-C10 with final state not-interested.",
+        "next_action": "log no current need and end politely"
       },
       "scores": {
         "case_id": "PROD-004-C10",
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
-            "interest_state_match": false,
+            "emotion_match": true,
+            "interest_state_match": true,
             "strategy_match": true
           }
         ],
         "final_scores": {
           "call_status_match": true,
-          "interest_state_match": false,
+          "interest_state_match": true,
           "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
@@ -528,23 +528,23 @@
         {
           "stage": "opening-permission",
           "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
+          "interest_state": "needs-human",
           "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+          "rationale": "Rule baseline selected needs-human from answer cues and stage opening-permission."
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
-        "interest_state": "maybe-interested",
+        "call_status": "escalated",
+        "interest_state": "needs-human",
         "selected_strategy": "rapport",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C11 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "escalation_reason": "lead requested human contact",
+        "call_summary": "Rule baseline processed PROD-004-C11 with final state needs-human.",
+        "next_action": "route to human specialist"
       },
       "scores": {
         "case_id": "PROD-004-C11",
@@ -552,13 +552,13 @@
           {
             "stage": "opening-permission",
             "emotion_match": true,
-            "interest_state_match": false,
+            "interest_state_match": true,
             "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
-          "interest_state_match": false,
+          "call_status_match": true,
+          "interest_state_match": true,
           "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
@@ -570,39 +570,39 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "detected_emotion": "skeptical-or-negative",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+          "rationale": "Rule baseline selected needs-human from answer cues and stage opening-permission."
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
-        "interest_state": "maybe-interested",
-        "selected_strategy": "rapport",
+        "call_status": "escalated",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C12 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "escalation_reason": "learning outcome guarantee request outside approved AI scope",
+        "call_summary": "Rule baseline processed PROD-004-C12 with final state needs-human.",
+        "next_action": "route to human specialist"
       },
       "scores": {
         "case_id": "PROD-004-C12",
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
-            "interest_state_match": false,
-            "strategy_match": false
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
-          "interest_state_match": false,
-          "selected_strategy_match": false,
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
       }
@@ -614,23 +614,23 @@
         {
           "stage": "opening-permission",
           "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
+          "interest_state": "needs-human",
           "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "next_action": "escalate",
+          "agent_response": "Thanks for raising that. I will route this to a human specialist instead of guessing.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage opening-permission."
+          "rationale": "Rule baseline selected needs-human from answer cues and stage opening-permission."
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
-        "interest_state": "maybe-interested",
+        "call_status": "escalated",
+        "interest_state": "needs-human",
         "selected_strategy": "rapport",
         "appointment_scheduled": false,
         "appointment_time": null,
-        "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C13 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "escalation_reason": "wrong contact with named referral path",
+        "call_summary": "Rule baseline processed PROD-004-C13 with final state needs-human.",
+        "next_action": "route to human specialist"
       },
       "scores": {
         "case_id": "PROD-004-C13",
@@ -638,13 +638,13 @@
           {
             "stage": "opening-permission",
             "emotion_match": true,
-            "interest_state_match": false,
+            "interest_state_match": true,
             "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
-          "interest_state_match": false,
+          "call_status_match": true,
+          "interest_state_match": true,
           "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
@@ -656,9 +656,9 @@
       "turn_outputs": [
         {
           "stage": "opening-permission",
-          "detected_emotion": "neutral",
+          "detected_emotion": "skeptical-or-negative",
           "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
+          "selected_strategy": "inquiry",
           "next_action": "ask-follow-up",
           "agent_response": "Thanks. What is the hardest part of that process for your team right now?",
           "confidence": 0.74,
@@ -666,45 +666,45 @@
         },
         {
           "stage": "timing-openness-check",
-          "detected_emotion": "neutral",
-          "interest_state": "maybe-interested",
-          "selected_strategy": "rapport",
-          "next_action": "create-follow-up-task",
-          "agent_response": "Thanks. I will note this for follow-up rather than forcing the conversation now.",
+          "detected_emotion": "positive",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "offer-scheduling",
+          "agent_response": "That sounds relevant. I can offer a short follow-up with a human specialist if you would like.",
           "confidence": 0.74,
-          "rationale": "Rule baseline selected maybe-interested from answer cues and stage timing-openness-check."
+          "rationale": "Rule baseline selected interested from answer cues and stage timing-openness-check."
         }
       ],
       "final_outcome": {
-        "call_status": "completed",
-        "interest_state": "maybe-interested",
-        "selected_strategy": "rapport",
+        "call_status": "ready-for-scheduling",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
         "appointment_scheduled": false,
         "appointment_time": null,
         "escalation_reason": null,
-        "call_summary": "Rule baseline processed PROD-004-C14 with final state maybe-interested.",
-        "next_action": "create scheduling follow-up task or route to human scheduler"
+        "call_summary": "Rule baseline processed PROD-004-C14 with final state interested.",
+        "next_action": "offer available appointment windows"
       },
       "scores": {
         "case_id": "PROD-004-C14",
         "turn_scores": [
           {
             "stage": "opening-permission",
-            "emotion_match": false,
+            "emotion_match": true,
             "interest_state_match": true,
-            "strategy_match": false
+            "strategy_match": true
           },
           {
             "stage": "timing-openness-check",
-            "emotion_match": false,
-            "interest_state_match": false,
-            "strategy_match": false
+            "emotion_match": true,
+            "interest_state_match": true,
+            "strategy_match": true
           }
         ],
         "final_scores": {
-          "call_status_match": false,
-          "interest_state_match": false,
-          "selected_strategy_match": false,
+          "call_status_match": true,
+          "interest_state_match": true,
+          "selected_strategy_match": true,
           "appointment_scheduled_match": true
         }
       }

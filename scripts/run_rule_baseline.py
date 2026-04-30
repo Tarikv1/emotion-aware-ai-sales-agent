@@ -3,6 +3,8 @@ import argparse
 import json
 from pathlib import Path
 
+from product_agent_output_contract import normalize_final_outcome
+
 
 def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
@@ -34,6 +36,10 @@ def contains_any(text: str, phrases: list[str]) -> bool:
     return any(phrase in lowered for phrase in phrases)
 
 
+def answer_text_for(case: dict) -> str:
+    return " ".join(turn["lead_answer"].lower() for turn in case["turns"])
+
+
 def detect_emotion(answer: str) -> str:
     if contains_any(
         answer,
@@ -44,13 +50,41 @@ def detect_emotion(answer: str) -> str:
             "tired",
             "privacy",
             "annoying",
+            "nervt",
+            "will jetzt nicht reden",
             "not good",
             "no budget",
             "not looking",
+            "zu teuer",
+            "nicht wert",
+            "warum sollte ich",
+            "vertrauen",
+            "besser sind",
+            "anderer anbieter",
+            "garantieren",
+            "garantie",
+            "stabil und schnell",
         ],
     ):
         return "skeptical-or-negative"
-    if contains_any(answer, ["yes", "useful", "works", "open", "would like", "great", "sure"]):
+    if contains_any(
+        answer,
+        [
+            "yes",
+            "useful",
+            "works",
+            "open",
+            "would like",
+            "great",
+            "sure",
+            "warum nicht",
+            "in ordnung",
+            "waere in ordnung",
+            "wäre in ordnung",
+            "merken sie",
+            "vormerken",
+        ],
+    ):
         return "positive"
     return "neutral"
 
@@ -63,6 +97,9 @@ def classify_interest(answer: str, state: dict) -> str:
         [
             "have a person call",
             "human",
+            "person anrufen",
+            "direkt eine person",
+            "mensch",
             "privacy",
             "integrate",
             "integration",
@@ -71,9 +108,21 @@ def classify_interest(answer: str, state: dict) -> str:
             "legal",
             "contract",
             "pricing",
+            "besser sind als",
+            "anderer anbieter",
+            "garantieren",
+            "garantie",
+            "stabil und schnell",
+            "pruefung bestehe",
+            "prüfung bestehe",
             "not the right person",
+            "nicht zustaendig",
+            "nicht zuständig",
             "cannot decide",
             "can't decide",
+            "muesste",
+            "müsste",
+            "leiterin",
             "handled by lena",
             "pass your message",
         ],
@@ -89,31 +138,114 @@ def classify_interest(answer: str, state: dict) -> str:
             "no budget",
             "working well enough",
             "we do not need",
+            "will jetzt nicht reden",
+            "das nervt",
         ],
     ):
         return "not-interested"
     if contains_any(answer, ["try me sometime next week"]):
         return "interested"
-    if contains_any(answer, ["could you send me", "send me something", "maybe later", "call me another day"]):
+    if contains_any(
+        answer,
+        [
+            "could you send me",
+            "send me something",
+            "schicken sie mir",
+            "maybe later",
+            "call me another day",
+            "ende naechsten monats",
+            "ende nächsten monats",
+            "vielleicht irgendwann",
+        ],
+    ):
         return "maybe-interested"
     if contains_any(answer, ["wednesday at", "tuesday at", "works"]):
         return "interested"
-    if contains_any(answer, ["would be useful", "short call", "open to", "i could do", "would like to see"]):
+    if contains_any(
+        answer,
+        [
+            "would be useful",
+            "short call",
+            "open to",
+            "i could do",
+            "would like to see",
+            "rueckruf waere in ordnung",
+            "rückruf wäre in ordnung",
+            "kurzer rueckruf",
+            "kurzer rückruf",
+        ],
+    ):
         return "interested"
     if contains_any(answer, ["yes", "sure", "okay", "go ahead", "we do handle", "my team owns", "we get"]):
         return "maybe-interested"
     return state.get("current_interest_state") if state.get("current_interest_state") != "unknown" else "maybe-interested"
 
 
+def is_direct_human_or_owner_path(answer: str) -> bool:
+    return contains_any(
+        answer,
+        [
+            "have a person call",
+            "human",
+            "person anrufen",
+            "direkt eine person",
+            "privacy",
+            "data privacy",
+            "integrate",
+            "integration",
+            "custom crm",
+            "ticketing",
+            "nicht zustaendig",
+            "nicht zuständig",
+            "not the right person",
+            "handled by lena",
+            "leiterin",
+        ],
+    )
+
+
+def is_claim_or_fit_boundary(answer: str) -> bool:
+    return contains_any(
+        answer,
+        [
+            "besser sind als",
+            "anderer anbieter",
+            "garantieren",
+            "garantie",
+            "stabil und schnell",
+            "pruefung bestehe",
+            "prüfung bestehe",
+            "coverage",
+        ],
+    )
+
+
 def select_strategy(answer: str, emotion: str, interest_state: str, stage: str) -> str:
-    if interest_state in {"do-not-call", "needs-human", "not-interested"}:
+    if interest_state == "needs-human":
+        return "rapport" if is_direct_human_or_owner_path(answer) else "inquiry"
+    if interest_state in {"do-not-call", "not-interested"}:
+        return "rapport"
+    if contains_any(answer, ["schicken sie mir", "send me something", "could you send me"]):
+        return "evidence-or-benefit"
+    if contains_any(
+        answer,
+        [
+            "ende naechsten monats",
+            "ende nächsten monats",
+            "vormerken",
+            "rueckruf waere in ordnung",
+            "rückruf wäre in ordnung",
+            "kurzer rueckruf",
+            "kurzer rückruf",
+        ],
+    ):
+        return "direct-ask-or-commitment"
+    if contains_any(answer, ["unternehmen nicht", "why should i trust", "warum sollte ich", "vertrauen"]):
         return "rapport"
     if interest_state == "interested":
         if stage == "pain-point-check":
             return "evidence-or-benefit"
         return "direct-ask-or-commitment"
-    if contains_any(answer, ["send me something"]):
-        return "evidence-or-benefit"
     if contains_any(answer, ["call me another day", "now is not good"]):
         return "rapport"
     if emotion == "skeptical-or-negative":
@@ -138,7 +270,17 @@ def next_action_for(answer: str, interest_state: str, stage: str, is_last_turn: 
         if contains_any(answer, ["next week", "have to run"]):
             return "create-follow-up-task"
         return "offer-scheduling" if is_last_turn else "continue"
-    if contains_any(answer, ["send me something", "call me another day"]):
+    if contains_any(
+        answer,
+        [
+            "send me something",
+            "schicken sie mir",
+            "call me another day",
+            "ende naechsten monats",
+            "ende nächsten monats",
+            "vormerken",
+        ],
+    ):
         return "create-follow-up-task"
     if is_last_turn:
         return "create-follow-up-task"
@@ -214,13 +356,22 @@ def final_outcome_for(case: dict, state: dict, turn_outputs: list[dict]) -> dict
         appointment_time = case["expected_outcome"].get("appointment_time")
 
     escalation_reason = None
+    full_answer_text = answer_text_for(case)
     if interest_state == "needs-human":
-        answer_text = " ".join(turn["lead_answer"].lower() for turn in case["turns"])
+        answer_text = full_answer_text
         if "privacy" in answer_text:
             escalation_reason = "privacy or compliance-sensitive topic"
-        elif "human" in answer_text or "person call" in answer_text:
+        elif "besser sind" in answer_text or "anderer anbieter" in answer_text:
+            escalation_reason = "competitor comparison outside approved AI response scope"
+        elif "stabil und schnell" in answer_text:
+            escalation_reason = "coverage or speed guarantee request outside approved AI scope"
+        elif "pruefung" in answer_text or "prüfung" in answer_text:
+            escalation_reason = "learning outcome guarantee request outside approved AI scope"
+        elif "garantieren" in answer_text or "garantie" in answer_text:
+            escalation_reason = "claim guarantee request outside approved AI response scope"
+        elif "human" in answer_text or "person call" in answer_text or "person anrufen" in answer_text:
             escalation_reason = "lead requested human contact"
-        elif "lena" in answer_text or "right person" in answer_text:
+        elif "lena" in answer_text or "right person" in answer_text or "nicht zustaendig" in answer_text or "nicht zuständig" in answer_text or "leiterin" in answer_text:
             escalation_reason = "wrong contact with named referral path"
         else:
             escalation_reason = "complex integration question outside approved AI response scope"
@@ -239,8 +390,14 @@ def final_outcome_for(case: dict, state: dict, turn_outputs: list[dict]) -> dict
     if interest_state == "maybe-interested" and last["next_action"] == "create-follow-up-task":
         if "call me another day" in case["turns"][-1]["lead_answer"].lower():
             call_status = "needs-follow-up"
+        if contains_any(full_answer_text, ["gut genug", "not perfect", "not perfekt"]):
+            call_status = "needs-follow-up"
+            escalation_reason = "status quo resistance requires later nurturing"
+        if contains_any(full_answer_text, ["ende naechsten monats", "ende nächsten monats", "vormerken"]):
+            call_status = "needs-follow-up"
+            escalation_reason = "callback timing remains broad rather than a confirmed appointment"
 
-    return {
+    return normalize_final_outcome({
         "call_status": call_status,
         "interest_state": interest_state,
         "selected_strategy": selected_strategy,
@@ -249,7 +406,7 @@ def final_outcome_for(case: dict, state: dict, turn_outputs: list[dict]) -> dict
         "escalation_reason": escalation_reason,
         "call_summary": f"Rule baseline processed {case['case_id']} with final state {interest_state}.",
         "next_action": next_action_summary(last["next_action"], interest_state),
-    }
+    })
 
 
 def next_action_summary(next_action: str, interest_state: str) -> str:
