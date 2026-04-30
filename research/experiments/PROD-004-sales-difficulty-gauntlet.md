@@ -75,6 +75,12 @@ Validation completed:
 
 - `scripts/validate_prod_004_difficulty_gauntlet.py`
 
+Rule baseline completed:
+
+- `research/experiments/PROD-004-rule-baseline.md`
+- `research/experiments/generated/PROD-004-rule-baseline-results.json`
+- `research/experiments/generated/PROD-004-rule-baseline-report.md`
+
 Observed table counts:
 
 - Leads: 14
@@ -98,6 +104,18 @@ It should test whether the agent:
 - does not invent claims
 - knows when to route to a human
 - keeps scheduling tied to explicit commitment
+
+The first deterministic rule baseline confirmed this is a harder benchmark:
+
+- Turn emotion matches: 10 / 20
+- Turn interest-state matches: 13 / 20
+- Turn strategy matches: 13 / 20
+- Final call-status matches: 6 / 14
+- Final interest-state matches: 7 / 14
+- Final strategy matches: 8 / 14
+- Final appointment matches: 14 / 14
+
+The rule baseline preserves appointment caution but misses many high-value sales difficulties, especially guarantee requests, competitor comparisons, direct human requests, and authority-gap cases.
 
 ## Decision
 

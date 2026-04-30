@@ -676,3 +676,26 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - how the rule baseline performs on the harder difficulty set
   - whether the LLM agent improves naturalness and emotion handling without weakening guardrails
+
+### 2026-04-30 - PROD-004 rule baseline
+
+- Objective: test the deterministic rule baseline against the harder sales difficulty gauntlet
+- Action taken:
+  - updated the rule baseline runner to load campaign-wrapper case files
+  - ran the baseline on all 14 `PROD-004` cases
+  - documented aggregate results and interpretation
+- Data used:
+  - `research/experiments/cases/prod-004-sales-difficulty-gauntlet.json`
+- Output created:
+  - `research/experiments/PROD-004-rule-baseline.md`
+  - `research/experiments/generated/PROD-004-rule-baseline-results.json`
+  - `research/experiments/generated/PROD-004-rule-baseline-report.md`
+- What was learned:
+  - the baseline preserved appointment caution with 14 / 14 final appointment matches
+  - the baseline was much weaker on hard sales boundaries, with 6 / 14 final call-status matches and 7 / 14 final interest-state matches
+  - common misses include competitor comparisons, guarantee requests, human requests, authority gaps, and annoyance handling
+- Why it matters for the thesis:
+  - `PROD-004` creates a more meaningful benchmark for showing improvement from a stronger LLM or learned agent
+- Open questions:
+  - whether to improve the transparent rule baseline first or use it as-is as a deliberately weak control
+  - how much the next LLM agent should be allowed to use campaign context versus generic sales-difficulty patterns
