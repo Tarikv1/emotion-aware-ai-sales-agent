@@ -266,3 +266,11 @@ It checks:
 - live-path sub-agent violations
 
 See `research/experiments/PROD-005-realtime-latency-call-control.md`.
+
+## Single-Turn Prototype
+
+`scripts/realtime_turn_cli.py` is the first executable single-turn version of the runtime core.
+
+It accepts a campaign, stage, input type, and transcript, then returns the same runtime decision shape used by `PROD-005`.
+
+See `docs/product/REALTIME_TURN_CLI.md`.

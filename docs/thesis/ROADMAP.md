@@ -240,3 +240,4 @@ Immediate product artifact:
 - real-time agent architecture and latency budget
 - call termination and hang-up policy
 - PROD-005 realtime latency and call-control simulation
+- realtime single-turn CLI prototype

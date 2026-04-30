@@ -141,14 +141,25 @@ def classify_runtime_input(case: dict) -> dict:
     }
 
 
-def background_modules_for(decision: dict, expected: dict) -> list[str]:
-    if decision["response_mode"] == "bridge-then-background":
+def background_modules_for(response_mode: str, expected: dict | None, classified: dict) -> list[str]:
+    if expected is not None:
         return expected.get("background_modules", [])
-    return expected.get("background_modules", [])
+    if response_mode == "bridge-then-background":
+        return ["campaign-knowledge-lookup"]
+    if classified["next_action"] == "suppress-contact":
+        return ["crm-suppression-update"]
+    if classified["next_action"] == "escalate":
+        return ["human-handoff-prep"]
+    if classified["next_action"] == "confirm-scheduling":
+        return ["calendar-write"]
+    if classified["next_action"] == "create-follow-up-task":
+        return ["follow-up-task-write"]
+    if classified["sales_difficulty"] == "repeated-silence":
+        return ["no-response-log"]
+    return []
 
 
-def run_case(case: dict) -> dict:
-    expected = case["expected_runtime"]
+def build_runtime_decision(case: dict, expected: dict | None = None) -> dict:
     classified = classify_runtime_input(case)
     response_mode = "bridge-then-background" if classified["sales_difficulty"] == "product-detail-lookup" else "fast-response"
     first_response_ms = BRIDGE_RESPONSE_MS if response_mode == "bridge-then-background" else FAST_RESPONSE_MS
@@ -164,7 +175,7 @@ def run_case(case: dict) -> dict:
         "first_response_latency_budget_ms": first_response_ms,
         "first_response_latency_bucket": latency_bucket(first_response_ms),
         "background_completion_budget_ms": BACKGROUND_COMPLETION_MS if response_mode == "bridge-then-background" else None,
-        "background_modules": background_modules_for({"response_mode": response_mode}, expected),
+        "background_modules": background_modules_for(response_mode, expected, classified),
         "live_path_subagents": [],
         "detected_emotion": classified["detected_emotion"],
         "sales_difficulty": classified["sales_difficulty"],
@@ -176,6 +187,12 @@ def run_case(case: dict) -> dict:
         "agent_response": classified["agent_response"],
         "rationale": "Deterministic runtime policy selected the fastest safe response path.",
     }
+    return runtime_decision
+
+
+def run_case(case: dict) -> dict:
+    expected = case["expected_runtime"]
+    runtime_decision = build_runtime_decision(case, expected)
     scores = score_case(case, runtime_decision)
     return {
         "case_id": case["case_id"],

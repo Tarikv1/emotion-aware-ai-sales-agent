@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ARCHITECTURE_DOC = ROOT / "docs" / "product" / "REALTIME_AGENT_ARCHITECTURE.md"
 TERMINATION_DOC = ROOT / "docs" / "product" / "CALL_TERMINATION_POLICY.md"
+TURN_CLI_DOC = ROOT / "docs" / "product" / "REALTIME_TURN_CLI.md"
 PRODUCT_BRIEF = ROOT / "docs" / "product" / "PRODUCT_BRIEF.md"
 ROADMAP = ROOT / "docs" / "thesis" / "ROADMAP.md"
 
@@ -16,6 +17,7 @@ def read(path: Path) -> str:
 def main() -> None:
     architecture = read(ARCHITECTURE_DOC)
     termination = read(TERMINATION_DOC)
+    turn_cli = read(TURN_CLI_DOC)
     product_brief = read(PRODUCT_BRIEF)
     roadmap = read(ROADMAP)
 
@@ -29,6 +31,7 @@ def main() -> None:
         "must not block",
         "call-control",
         "CALL_TERMINATION_POLICY.md",
+        "realtime_turn_cli.py",
     ]:
         assert phrase in architecture, f"Architecture doc missing: {phrase}"
 
@@ -38,7 +41,9 @@ def main() -> None:
     assert "real-time sales-agent core" in roadmap, "Roadmap should mention real-time core"
     assert "background compliance" in roadmap, "Roadmap should keep sub-agents/background modules out of live path"
     assert "schedule-and-end" in roadmap, "Roadmap should mention call-control outcomes"
+    assert "realtime single-turn CLI prototype" in roadmap, "Roadmap should mention realtime CLI"
     assert "Immediate End-Call Triggers" in termination, "Termination policy should define immediate end-call triggers"
+    assert "scripts/realtime_turn_cli.py" in turn_cli, "Realtime CLI doc should identify the script"
 
 
 if __name__ == "__main__":
