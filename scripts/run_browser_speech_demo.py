@@ -461,10 +461,10 @@ def render_html(metadata: dict) -> str:
     function classifyInterruptionCandidate(transcript, currentAgentResponse, activeAgentSpeech) {{
       const normalized = normalizeForInterruption(transcript);
       const detectedLanguage = detectInterruptionLanguage(normalized);
-      const stopPhrases = ["stop calling", "do not call", "don't call", "stop", "no thanks", "not interested", "leave me alone", "remove my number", "take me off your list", "rufen sie mich nicht mehr an", "rufen sie mich bitte nicht mehr an", "rufen sie nicht mehr an", "nicht mehr an", "kein interesse", "ich habe kein interesse", "nein danke", "lassen sie mich in ruhe", "will ich nicht", "stopp", "stoppen sie"];
+      const stopPhrases = ["stop calling", "do not call", "don't call", "dont call", "do not contact me", "don't contact me", "stop", "no thanks", "not interested", "leave me alone", "remove my number", "take me off your list", "rufen sie mich nicht mehr an", "rufen sie mich bitte nicht mehr an", "rufen sie nicht mehr an", "nicht mehr an", "kein interesse", "ich habe kein interesse", "nein danke", "lassen sie mich in ruhe", "will ich nicht", "stopp", "stoppen sie"];
       const humanPhrases = ["human", "real person", "person call", "specialist", "agent", "representative", "someone call me", "mitarbeiter", "mensch", "berater", "spezialist", "echte person", "person anrufen", "mit einem menschen", "jemand soll mich anrufen"];
       const acknowledgements = ["ok", "okay", "yes", "yeah", "yep", "mhm", "uh huh", "alright", "i see", "got it", "ja", "verstanden", "alles klar", "gut", "passt"];
-      const ambiguous = ["wait", "huh", "what", "sorry", "one second", "hold on", "hang on", "warte", "warten sie", "moment", "kurz", "was", "wie bitte", "entschuldigung", "haeh", "häh"];
+      const ambiguous = ["wait", "wait a second", "wait a minute", "huh", "what", "sorry", "one second", "hold on", "hang on", "warte", "warten sie", "moment", "moment bitte", "kurz", "was", "wie bitte", "entschuldigung", "haeh", "häh"];
       const questionPhrases = ["what", "why", "how", "can you", "could you", "does that", "what does", "explain", "mean", "question", "was bedeutet", "was heisst", "was heißt", "warum", "wie", "koennen sie", "können sie", "erklaeren", "erklären", "bedeutet", "frage"];
       const likely_echo = normalized && normalized.split(" ").length >= 4 && normalizeForInterruption(currentAgentResponse).includes(normalized);
 

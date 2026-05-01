@@ -6,9 +6,9 @@
   "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
   "summary": {
     "case_count": 4,
-    "min_total_decision_loop_ms": 0.566,
-    "max_total_decision_loop_ms": 0.846,
-    "avg_total_decision_loop_ms": 0.69,
+    "min_total_decision_loop_ms": 0.536,
+    "max_total_decision_loop_ms": 0.699,
+    "avg_total_decision_loop_ms": 0.6,
     "under_1s_count": 4,
     "under_2s_count": 0,
     "over_2s_count": 0,
@@ -23,14 +23,14 @@
       "sales_difficulty": "price-objection",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.846,
+      "total_decision_loop_ms": 0.628,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.345,
-        "realtime_decision_ms": 0.027,
-        "guarded_response_ms": 0.028,
-        "voice_packet_build_ms": 0.427
+        "campaign_load_ms": 0.261,
+        "realtime_decision_ms": 0.028,
+        "guarded_response_ms": 0.023,
+        "voice_packet_build_ms": 0.3
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -187,14 +187,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.846,
+          "total_decision_loop_ms": 0.628,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.345,
-            "realtime_decision_ms": 0.027,
-            "guarded_response_ms": 0.028,
-            "voice_packet_build_ms": 0.427
+            "campaign_load_ms": 0.261,
+            "realtime_decision_ms": 0.028,
+            "guarded_response_ms": 0.023,
+            "voice_packet_build_ms": 0.3
           }
         },
         "trace": {
@@ -215,14 +215,14 @@
       "sales_difficulty": "claim-boundary",
       "response_mode": "fast-response",
       "call_control": "transfer-or-escalate",
-      "total_decision_loop_ms": 0.722,
+      "total_decision_loop_ms": 0.699,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.294,
-        "realtime_decision_ms": 0.019,
-        "guarded_response_ms": 0.027,
-        "voice_packet_build_ms": 0.372
+        "campaign_load_ms": 0.265,
+        "realtime_decision_ms": 0.02,
+        "guarded_response_ms": 0.025,
+        "voice_packet_build_ms": 0.379
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -381,14 +381,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.722,
+          "total_decision_loop_ms": 0.699,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.294,
-            "realtime_decision_ms": 0.019,
-            "guarded_response_ms": 0.027,
-            "voice_packet_build_ms": 0.372
+            "campaign_load_ms": 0.265,
+            "realtime_decision_ms": 0.02,
+            "guarded_response_ms": 0.025,
+            "voice_packet_build_ms": 0.379
           }
         },
         "trace": {
@@ -409,14 +409,14 @@
       "sales_difficulty": "product-detail-lookup",
       "response_mode": "bridge-then-background",
       "call_control": "bridge-then-continue",
-      "total_decision_loop_ms": 0.607,
+      "total_decision_loop_ms": 0.536,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.267,
-        "realtime_decision_ms": 0.012,
+        "campaign_load_ms": 0.22,
+        "realtime_decision_ms": 0.014,
         "guarded_response_ms": 0.016,
-        "voice_packet_build_ms": 0.304
+        "voice_packet_build_ms": 0.279
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -575,14 +575,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.607,
+          "total_decision_loop_ms": 0.536,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.267,
-            "realtime_decision_ms": 0.012,
+            "campaign_load_ms": 0.22,
+            "realtime_decision_ms": 0.014,
             "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.304
+            "voice_packet_build_ms": 0.279
           }
         },
         "trace": {
@@ -603,14 +603,14 @@
       "sales_difficulty": "unknown-runtime-signal",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.566,
+      "total_decision_loop_ms": 0.537,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.24,
-        "realtime_decision_ms": 0.015,
+        "campaign_load_ms": 0.215,
+        "realtime_decision_ms": 0.016,
         "guarded_response_ms": 0.018,
-        "voice_packet_build_ms": 0.284
+        "voice_packet_build_ms": 0.28
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -767,14 +767,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.566,
+          "total_decision_loop_ms": 0.537,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.24,
-            "realtime_decision_ms": 0.015,
+            "campaign_load_ms": 0.215,
+            "realtime_decision_ms": 0.016,
             "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.284
+            "voice_packet_build_ms": 0.28
           }
         },
         "trace": {

@@ -9,6 +9,32 @@ from product_agent_output_contract import call_control_for_next_action
 FAST_RESPONSE_MS = 700
 BRIDGE_RESPONSE_MS = 600
 BACKGROUND_COMPLETION_MS = 3500
+STOP_OR_REFUSAL_RUNTIME_PHRASES = [
+    "nicht mehr an",
+    "kein interesse",
+    "nein danke",
+    "do not call",
+    "don't call",
+    "dont call",
+    "stop calling",
+    "not interested",
+    "no thanks",
+    "no thank you",
+]
+HUMAN_REQUEST_RUNTIME_PHRASES = [
+    "real person",
+    "human",
+    "person call",
+    "representative",
+    "specialist",
+    "advisor",
+    "mitarbeiter",
+    "mensch",
+    "berater",
+    "spezialist",
+    "echte person",
+    "person anrufen",
+]
 
 
 def load_json(path: Path):
@@ -61,7 +87,7 @@ def classify_runtime_input(case: dict) -> dict:
             "agent_response": "I will end the call for now. Goodbye.",
         }
 
-    if contains_any(transcript, ["nicht mehr an", "do not call", "don't call", "stop calling"]):
+    if contains_any(transcript, STOP_OR_REFUSAL_RUNTIME_PHRASES):
         return {
             "detected_emotion": "skeptical-or-negative",
             "sales_difficulty": "do-not-call",
@@ -71,7 +97,7 @@ def classify_runtime_input(case: dict) -> dict:
             "agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
         }
 
-    if contains_any(transcript, ["real person", "human", "person call", "person anrufen"]):
+    if contains_any(transcript, HUMAN_REQUEST_RUNTIME_PHRASES):
         return {
             "detected_emotion": "neutral",
             "sales_difficulty": "human-request",

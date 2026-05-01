@@ -12,13 +12,13 @@ Likely echo is ignored so the agent does not interrupt itself.
 
 ## Summary
 
-- Cases: `12`
-- English cases: `6`
-- German cases: `6`
-- Confirmed interruptions: `8`
-- False interruptions blocked: `3`
-- Clarification cases: `2`
-- Sent to agent core: `6`
+- Cases: `36`
+- English cases: `18`
+- German cases: `18`
+- Confirmed interruptions: `20`
+- False interruptions blocked: `12`
+- Clarification cases: `4`
+- Sent to agent core: `16`
 
 ## Case Results
 
@@ -141,3 +141,243 @@ Likely echo is ignored so the agent does not interrupt itself.
 - Send to agent core: `False`
 - Call control: `not sent`
 - Rationale: Transcript overlaps strongly with the current agent response, so it is treated as likely echo.
+
+### VOICE-006-C13: English audio-only event must not stop the agent
+
+- Language: `en`
+- Interruption type: `noise_or_no_transcript`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Raw audio or empty transcript is not enough to cancel the agent.
+
+### VOICE-006-C14: English overlapping transcript must be treated as echo
+
+- Language: `en`
+- Interruption type: `likely_echo`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Transcript overlaps strongly with the current agent response, so it is treated as likely echo.
+
+### VOICE-006-C15: English short acknowledgement okay does not stop the agent
+
+- Language: `en`
+- Interruption type: `short_acknowledgement`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Short acknowledgement is not enough to stop the agent.
+
+### VOICE-006-C16: English short acknowledgement got it does not stop the agent
+
+- Language: `en`
+- Interruption type: `short_acknowledgement`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Short acknowledgement is not enough to stop the agent.
+
+### VOICE-006-C17: English wait-a-second interruption asks clarification
+
+- Language: `en`
+- Interruption type: `short_ambiguous_interruption`
+- Confirmed: `True`
+- Agent speech action: `pause-and-ask-clarification`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Short meaningful interruption should pause and clarify rather than assume intent.
+
+### VOICE-006-C18: English no-punctuation question becomes a new turn
+
+- Language: `en`
+- Interruption type: `clear_customer_question`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `continue-call`
+- Rationale: Clear question should stop current agent speech and become the next customer turn.
+
+### VOICE-006-C19: English refusal variant interrupts and ends call
+
+- Language: `en`
+- Interruption type: `stop_or_refusal`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `end-call`
+- Rationale: Stop or refusal language must interrupt and be handled by call-control policy.
+
+### VOICE-006-C20: English representative request interrupts and escalates
+
+- Language: `en`
+- Interruption type: `human_request`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `transfer-or-escalate`
+- Rationale: Human request should interrupt and route through escalation policy.
+
+### VOICE-006-C21: English price objection becomes a meaningful new turn
+
+- Language: `en`
+- Interruption type: `meaningful_customer_interruption`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `continue-call`
+- Rationale: Meaningful non-echo customer speech should interrupt and be processed as a new turn.
+
+### VOICE-006-C22: English decision hesitation becomes a meaningful new turn
+
+- Language: `en`
+- Interruption type: `meaningful_customer_interruption`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `continue-call`
+- Rationale: Meaningful non-echo customer speech should interrupt and be processed as a new turn.
+
+### VOICE-006-C23: English customer speech when agent is idle does not cancel speech
+
+- Language: `en`
+- Interruption type: `no_active_agent_speech`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: There is no active agent speech to interrupt.
+
+### VOICE-006-C24: English stop phrase when agent is idle does not trigger barge-in
+
+- Language: `en`
+- Interruption type: `no_active_agent_speech`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: There is no active agent speech to interrupt.
+
+### VOICE-006-C25: German background noise must not stop the agent
+
+- Language: `de`
+- Interruption type: `noise_or_no_transcript`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Raw audio or empty transcript is not enough to cancel the agent.
+
+### VOICE-006-C26: German audio-only event must not stop the agent
+
+- Language: `de`
+- Interruption type: `noise_or_no_transcript`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Raw audio or empty transcript is not enough to cancel the agent.
+
+### VOICE-006-C27: German overlapping transcript must be treated as echo
+
+- Language: `de`
+- Interruption type: `likely_echo`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Transcript overlaps strongly with the current agent response, so it is treated as likely echo.
+
+### VOICE-006-C28: German acknowledgement variant does not stop the agent
+
+- Language: `de`
+- Interruption type: `short_acknowledgement`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Short acknowledgement is not enough to stop the agent.
+
+### VOICE-006-C29: German moment-bitte interruption asks clarification
+
+- Language: `de`
+- Interruption type: `short_ambiguous_interruption`
+- Confirmed: `True`
+- Agent speech action: `pause-and-ask-clarification`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: Short meaningful interruption should pause and clarify rather than assume intent.
+
+### VOICE-006-C30: German no-punctuation question becomes a new turn
+
+- Language: `de`
+- Interruption type: `clear_customer_question`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `continue-call`
+- Rationale: Clear question should stop current agent speech and become the next customer turn.
+
+### VOICE-006-C31: German refusal variant interrupts and ends call
+
+- Language: `de`
+- Interruption type: `stop_or_refusal`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `end-call`
+- Rationale: Stop or refusal language must interrupt and be handled by call-control policy.
+
+### VOICE-006-C32: German employee request interrupts and escalates
+
+- Language: `de`
+- Interruption type: `human_request`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `transfer-or-escalate`
+- Rationale: Human request should interrupt and route through escalation policy.
+
+### VOICE-006-C33: German price objection becomes a meaningful new turn
+
+- Language: `de`
+- Interruption type: `meaningful_customer_interruption`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `continue-call`
+- Rationale: Meaningful non-echo customer speech should interrupt and be processed as a new turn.
+
+### VOICE-006-C34: German decision hesitation becomes a meaningful new turn
+
+- Language: `de`
+- Interruption type: `meaningful_customer_interruption`
+- Confirmed: `True`
+- Agent speech action: `cancel-agent-speech-and-process-turn`
+- Send to agent core: `True`
+- Call control: `continue-call`
+- Rationale: Meaningful non-echo customer speech should interrupt and be processed as a new turn.
+
+### VOICE-006-C35: German customer speech when agent is idle does not cancel speech
+
+- Language: `de`
+- Interruption type: `no_active_agent_speech`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: There is no active agent speech to interrupt.
+
+### VOICE-006-C36: German question when agent is idle does not trigger barge-in
+
+- Language: `de`
+- Interruption type: `no_active_agent_speech`
+- Confirmed: `False`
+- Agent speech action: `continue-speaking`
+- Send to agent core: `False`
+- Call control: `not sent`
+- Rationale: There is no active agent speech to interrupt.

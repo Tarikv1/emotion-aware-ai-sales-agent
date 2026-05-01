@@ -37,6 +37,7 @@
     "policy_id": "VOICE-006-safe-interruption-policy",
     "principle": "Raw audio alone does not cancel agent speech; only likely customer interruption can pause or cancel.",
     "interruption_types": [
+      "no_active_agent_speech",
       "noise_or_no_transcript",
       "likely_echo",
       "short_acknowledgement",
@@ -59,15 +60,15 @@
       "en": {
         "language_name": "English",
         "short_acknowledgements": 10,
-        "short_ambiguous_interruptions": 7,
-        "stop_or_refusal_phrases": 9,
+        "short_ambiguous_interruptions": 9,
+        "stop_or_refusal_phrases": 12,
         "human_request_phrases": 7,
         "question_phrases": 10
       },
       "de": {
         "language_name": "German",
         "short_acknowledgements": 8,
-        "short_ambiguous_interruptions": 10,
+        "short_ambiguous_interruptions": 11,
         "stop_or_refusal_phrases": 11,
         "human_request_phrases": 8,
         "question_phrases": 11

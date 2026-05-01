@@ -56,6 +56,14 @@ def interruption(case: dict) -> dict:
     return case["interruption_decision"]
 
 
+def cases_for_language(payload: dict, language: str) -> list[dict]:
+    return [case for case in payload["cases"] if case["language"] == language]
+
+
+def interruption_types_for_language(payload: dict, language: str) -> set[str]:
+    return {interruption(case)["interruption_type"] for case in cases_for_language(payload, language)}
+
+
 def main() -> None:
     assert_condition(SIMULATION_SCRIPT.exists(), "VOICE-006 interruption simulation script is missing.")
     assert_condition(VOICE_004_SCRIPT.exists(), "VOICE-004 browser speech demo script is missing.")
@@ -78,13 +86,39 @@ def main() -> None:
     assert_condition(payload["voice_milestone"] == "VOICE-006", "Unexpected milestone.")
     assert_condition(payload["requires_api_key"] is False, "VOICE-006 must stay no-key.")
     assert_condition(payload["server_started"] is False, "VOICE-006 validation should not start a server.")
-    assert_condition(payload["summary"]["case_count"] >= 12, "Expected bilingual English/German interruption cases.")
+    assert_condition(payload["summary"]["case_count"] >= 36, "Expected widened bilingual English/German interruption cases.")
     assert_condition("en" in payload["policy"]["supported_languages"], "English should be an explicit supported language.")
     assert_condition("de" in payload["policy"]["supported_languages"], "German should be an explicit supported language.")
-    assert_condition(payload["summary"]["languages"]["en"] >= 6, "Expected English interruption coverage.")
-    assert_condition(payload["summary"]["languages"]["de"] >= 6, "Expected German interruption coverage.")
-    assert_condition(payload["summary"]["false_interruptions_blocked"] >= 2, "Noise and echo should be blocked.")
-    assert_condition(payload["summary"]["clarification_cases"] >= 2, "Short ambiguous interruptions should clarify in both languages.")
+    assert_condition(payload["summary"]["languages"]["en"] >= 18, "Expected widened English interruption coverage.")
+    assert_condition(payload["summary"]["languages"]["de"] >= 18, "Expected widened German interruption coverage.")
+    assert_condition(payload["summary"]["false_interruptions_blocked"] >= 8, "Noise, no-transcript audio, echo, and no-active-speech should be blocked in both languages.")
+    assert_condition(payload["summary"]["clarification_cases"] >= 4, "Short ambiguous interruptions should clarify with multiple variants in both languages.")
+    required_interruption_types = {
+        "noise_or_no_transcript",
+        "likely_echo",
+        "short_acknowledgement",
+        "short_ambiguous_interruption",
+        "clear_customer_question",
+        "stop_or_refusal",
+        "human_request",
+        "meaningful_customer_interruption",
+        "no_active_agent_speech",
+    }
+    for language in ("en", "de"):
+        missing_types = required_interruption_types - interruption_types_for_language(payload, language)
+        assert_condition(not missing_types, f"Missing {language} coverage for interruption types: {sorted(missing_types)}")
+    for case in payload["cases"]:
+        decision = interruption(case)
+        if decision["interruption_type"] == "stop_or_refusal":
+            assert_condition(
+                case["voice_packet"]["response_packet"]["decision"]["call_control"] == "end-call",
+                f"{case['case_id']} stop/refusal should end call.",
+            )
+        if decision["interruption_type"] == "human_request":
+            assert_condition(
+                case["voice_packet"]["response_packet"]["decision"]["call_control"] == "transfer-or-escalate",
+                f"{case['case_id']} human request should escalate.",
+            )
 
     noise = interruption(case_by_id(payload, "VOICE-006-C01"))
     assert_condition(noise["interruption_type"] == "noise_or_no_transcript", "Noise should not become an interruption.")

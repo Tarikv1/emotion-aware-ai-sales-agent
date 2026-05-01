@@ -34,6 +34,7 @@ If the agent stops for every sound, it will feel broken. If the agent never stop
 VOICE-006 uses these first labels:
 
 - `noise_or_no_transcript`
+- `no_active_agent_speech`
 - `likely_echo`
 - `short_acknowledgement`
 - `short_ambiguous_interruption`
@@ -50,6 +51,7 @@ It is one safe interruption policy with multilingual phrase packs. The current p
 
 - English: acknowledgements, ambiguous interruptions, refusals, human requests, and questions
 - German: acknowledgements, ambiguous interruptions, refusals, human requests, and questions
+- Paired English/German cases for every interruption type, including noise, likely echo, acknowledgements, ambiguous interruption, questions, stop/refusal, human request, meaningful customer interruption, and no-active-agent-speech
 
 The German pack includes patterns such as:
 
@@ -139,12 +141,14 @@ python scripts\validate_voice_006_interruption_handling.py
 The validator checks:
 
 - background noise does not stop speech
+- customer speech while the agent is idle does not trigger barge-in
 - likely echo does not stop speech
 - short ambiguous interruption pauses and asks clarification
 - clear question cancels and becomes a new turn
 - stop/refusal reaches call-control and ends the call
 - human request reaches call-control and escalates
 - browser HTML exposes the VOICE-006 interruption state
+- English and German each cover every interruption type
 
 ## Generated Artifacts
 
