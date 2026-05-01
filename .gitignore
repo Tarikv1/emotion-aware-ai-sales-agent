@@ -10,3 +10,4 @@ data/processed/*
 __pycache__/
 *.pyc
 *.pyc.*
+.tmp/
