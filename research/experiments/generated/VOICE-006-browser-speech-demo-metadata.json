@@ -50,7 +50,29 @@
       "continue-speaking",
       "pause-and-ask-clarification",
       "cancel-agent-speech-and-process-turn"
-    ]
+    ],
+    "supported_languages": [
+      "en",
+      "de"
+    ],
+    "language_phrase_pack_summary": {
+      "en": {
+        "language_name": "English",
+        "short_acknowledgements": 10,
+        "short_ambiguous_interruptions": 7,
+        "stop_or_refusal_phrases": 9,
+        "human_request_phrases": 7,
+        "question_phrases": 10
+      },
+      "de": {
+        "language_name": "German",
+        "short_acknowledgements": 8,
+        "short_ambiguous_interruptions": 10,
+        "stop_or_refusal_phrases": 11,
+        "human_request_phrases": 8,
+        "question_phrases": 11
+      }
+    }
   },
   "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
 }

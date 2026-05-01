@@ -13,6 +13,7 @@ raw audio alone does not cancel agent speech
 meaningful non-echo customer speech can pause or cancel agent speech
 short ambiguous interruption asks clarification
 call-control policy still wins
+German and English use the same product policy with language-aware phrase packs
 ```
 
 ## Why This Matters
@@ -41,6 +42,34 @@ VOICE-006 uses these first labels:
 - `human_request`
 - `meaningful_customer_interruption`
 
+## Language Model
+
+VOICE-006 is not two products.
+
+It is one safe interruption policy with multilingual phrase packs. The current prototype explicitly covers:
+
+- English: acknowledgements, ambiguous interruptions, refusals, human requests, and questions
+- German: acknowledgements, ambiguous interruptions, refusals, human requests, and questions
+
+The German pack includes patterns such as:
+
+- "Rufen Sie mich bitte nicht mehr an"
+- "kein Interesse"
+- "Mitarbeiter"
+- "echte Person"
+- "Was bedeutet das?"
+- "Wie bitte?"
+
+The English pack includes equivalent patterns such as:
+
+- "stop calling"
+- "not interested"
+- "real person"
+- "what does that mean?"
+- "huh?"
+
+Future languages should be added as phrase packs inside this same policy, not as separate products.
+
 ## Actions
 
 The interruption policy can choose:
@@ -64,6 +93,12 @@ The agent should pause and ask:
 
 ```text
 I paused there. Was something unclear, or did you want to ask something?
+```
+
+For German, the current prototype uses:
+
+```text
+Ich habe kurz pausiert. War etwas unklar, oder wollten Sie etwas fragen?
 ```
 
 This gives the customer room without inventing intent.

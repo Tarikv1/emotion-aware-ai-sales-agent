@@ -15,6 +15,8 @@ stop/refusal -> cancel and follow call-control policy
 human request -> cancel and escalate
 ```
 
+The same policy is tested in English and German. This keeps the product architecture as one multilingual sales agent, not separate products per country.
+
 ## Command
 
 ```powershell
@@ -35,16 +37,24 @@ python scripts\run_voice_006_interruption_simulation.py
 - `VOICE-006-C04`: clear customer question becomes a new turn
 - `VOICE-006-C05`: stop request interrupts and ends call
 - `VOICE-006-C06`: human request interrupts and escalates
+- `VOICE-006-C07`: German short ambiguous interruption asks clarification
+- `VOICE-006-C08`: German clear customer question becomes a new turn
+- `VOICE-006-C09`: German refusal interrupts and ends call
+- `VOICE-006-C10`: German human request interrupts and escalates
+- `VOICE-006-C11`: German acknowledgement does not stop the agent
+- `VOICE-006-C12`: German likely echo does not stop the agent
 
 ## Current Result
 
 Generated summary:
 
 - cases: `6`
-- confirmed interruptions: `4`
-- false interruptions blocked: `2`
-- clarification cases: `1`
-- sent to agent core: `3`
+- English cases: `6`
+- German cases: `6`
+- confirmed interruptions: `8`
+- false interruptions blocked: `3`
+- clarification cases: `2`
+- sent to agent core: `6`
 
 ## Interpretation
 
@@ -55,6 +65,7 @@ VOICE-006 gives the prototype a safer rhythm:
 - It does pause for short meaningful customer signals.
 - It asks a clarification question when the interruption is ambiguous.
 - It still lets hard call-control cases reach the deterministic realtime core.
+- It now protects German and English interruption behavior in the same policy.
 
 ## Safety Boundary
 

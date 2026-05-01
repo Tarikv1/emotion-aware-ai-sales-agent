@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from voice_interruption_policy import classify_interruption_candidate
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SIMULATION_SCRIPT = ROOT / "scripts" / "run_voice_006_interruption_simulation.py"
@@ -76,9 +78,13 @@ def main() -> None:
     assert_condition(payload["voice_milestone"] == "VOICE-006", "Unexpected milestone.")
     assert_condition(payload["requires_api_key"] is False, "VOICE-006 must stay no-key.")
     assert_condition(payload["server_started"] is False, "VOICE-006 validation should not start a server.")
-    assert_condition(payload["summary"]["case_count"] >= 6, "Expected at least six interruption cases.")
+    assert_condition(payload["summary"]["case_count"] >= 12, "Expected bilingual English/German interruption cases.")
+    assert_condition("en" in payload["policy"]["supported_languages"], "English should be an explicit supported language.")
+    assert_condition("de" in payload["policy"]["supported_languages"], "German should be an explicit supported language.")
+    assert_condition(payload["summary"]["languages"]["en"] >= 6, "Expected English interruption coverage.")
+    assert_condition(payload["summary"]["languages"]["de"] >= 6, "Expected German interruption coverage.")
     assert_condition(payload["summary"]["false_interruptions_blocked"] >= 2, "Noise and echo should be blocked.")
-    assert_condition(payload["summary"]["clarification_cases"] >= 1, "Short ambiguous interruptions should clarify.")
+    assert_condition(payload["summary"]["clarification_cases"] >= 2, "Short ambiguous interruptions should clarify in both languages.")
 
     noise = interruption(case_by_id(payload, "VOICE-006-C01"))
     assert_condition(noise["interruption_type"] == "noise_or_no_transcript", "Noise should not become an interruption.")
@@ -114,6 +120,52 @@ def main() -> None:
     assert_condition(human_decision["interruption_type"] == "human_request", "Human request should be detected.")
     assert_condition(human_case["voice_packet"]["response_packet"]["decision"]["call_control"] == "transfer-or-escalate", "Human request should escalate.")
 
+    de_short = interruption(case_by_id(payload, "VOICE-006-C07"))
+    assert_condition(de_short["interruption_type"] == "short_ambiguous_interruption", "German short interruption should clarify.")
+    assert_condition(de_short["detected_language"] == "de", "German short interruption should preserve detected language.")
+    assert_condition(de_short["agent_speech_action"] == "pause-and-ask-clarification", "German short interruption should pause and clarify.")
+    assert_condition("unklar" in de_short["clarification_response"].lower() or "frage" in de_short["clarification_response"].lower(), "German clarification should use German wording.")
+
+    de_question = interruption(case_by_id(payload, "VOICE-006-C08"))
+    assert_condition(de_question["interruption_type"] == "clear_customer_question", "German question should be detected.")
+    assert_condition(de_question["send_to_agent_core"] is True, "German question should go to agent core.")
+
+    de_stop_case = case_by_id(payload, "VOICE-006-C09")
+    de_stop = interruption(de_stop_case)
+    assert_condition(de_stop["interruption_type"] == "stop_or_refusal", "German refusal should be detected.")
+    assert_condition(de_stop_case["voice_packet"]["response_packet"]["decision"]["call_control"] == "end-call", "German refusal should end call.")
+
+    de_human_case = case_by_id(payload, "VOICE-006-C10")
+    de_human = interruption(de_human_case)
+    assert_condition(de_human["interruption_type"] == "human_request", "German human request should be detected.")
+    assert_condition(de_human_case["voice_packet"]["response_packet"]["decision"]["call_control"] == "transfer-or-escalate", "German human request should escalate.")
+
+    de_ack = interruption(case_by_id(payload, "VOICE-006-C11"))
+    assert_condition(de_ack["interruption_type"] == "short_acknowledgement", "German acknowledgement should be detected.")
+    assert_condition(de_ack["interruption_confirmed"] is False, "German acknowledgement should not stop the agent.")
+
+    de_echo = interruption(case_by_id(payload, "VOICE-006-C12"))
+    assert_condition(de_echo["interruption_type"] == "likely_echo", "German echo should be detected.")
+    assert_condition(de_echo["interruption_confirmed"] is False, "German echo should not stop the agent.")
+
+    inferred_short = classify_interruption_candidate(
+        transcript="Wie bitte?",
+        agent_response="Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis?",
+        audio_event_type="speech-final",
+        agent_is_speaking=True,
+    )
+    assert_condition(inferred_short["detected_language"] == "de", "German short phrase should be inferred without a language hint.")
+    assert_condition("unklar" in inferred_short["clarification_response"].lower(), "Inferred German clarification should use German wording.")
+
+    inferred_human = classify_interruption_candidate(
+        transcript="Bitte eine echte Person anrufen.",
+        agent_response="Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis?",
+        audio_event_type="speech-final",
+        agent_is_speaking=True,
+    )
+    assert_condition(inferred_human["detected_language"] == "de", "German human request should be inferred without a language hint.")
+    assert_condition(inferred_human["interruption_type"] == "human_request", "Inferred German human request should escalate.")
+
     html_run = run_command(
         [
             sys.executable,
@@ -132,6 +184,10 @@ def main() -> None:
     assert_condition("classifyInterruptionCandidate" in html, "Browser demo should include interruption classifier.")
     assert_condition("pause-and-ask-clarification" in html, "Browser demo should support clarification action.")
     assert_condition("likely_echo" in html, "Browser demo should guard against echo.")
+    assert_condition("kein interesse" in html.lower(), "Browser demo should include German refusal phrases.")
+    assert_condition("was bedeutet" in html.lower(), "Browser demo should include German question phrases.")
+    assert_condition("mitarbeiter" in html.lower(), "Browser demo should include German human-request phrases.")
+    assert_condition("supported_languages" in json.dumps(metadata["interruption_policy"]), "Metadata should expose supported languages.")
     assert_condition("speechSynthesis.cancel()" in html, "Browser demo should cancel only after confirmed interruption.")
     assert_condition("raw audio alone does not cancel" in html.lower(), "Browser copy should state raw audio alone does not cancel.")
 
@@ -139,6 +195,7 @@ def main() -> None:
     assert_condition("Raw audio alone does not cancel agent speech" in report_text, "Report should document raw-audio guardrail.")
     assert_condition("Short ambiguous interruption asks clarification" in report_text, "Report should document clarification layer.")
     assert_condition("likely echo" in report_text.lower(), "Report should document echo handling.")
+    assert_condition("German" in report_text and "English" in report_text, "Report should document bilingual coverage.")
 
     serialized = json.dumps(payload) + html + json.dumps(metadata) + report_text
     assert_no_secret_patterns(serialized)

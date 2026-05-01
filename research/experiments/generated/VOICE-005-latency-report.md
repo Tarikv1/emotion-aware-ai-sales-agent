@@ -9,9 +9,9 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 ## Summary
 
 - Cases: 4
-- Minimum local decision-loop latency: `0.584 ms`
-- Maximum local decision-loop latency: `0.857 ms`
-- Average local decision-loop latency: `0.67 ms`
+- Minimum local decision-loop latency: `0.566 ms`
+- Maximum local decision-loop latency: `0.846 ms`
+- Average local decision-loop latency: `0.69 ms`
 - Under 1s: `4`
 - Under 2s: `0`
 - Over 2s: `0`
@@ -31,7 +31,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `price-objection`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.857 ms`
+- Total local decision-loop latency: `0.846 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.028 ms`
@@ -41,27 +41,27 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `claim-boundary`
 - Response mode: `fast-response`
 - Call control: `transfer-or-escalate`
-- Total local decision-loop latency: `0.584 ms`
+- Total local decision-loop latency: `0.722 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.021 ms`
+- RESP-001 segment: `0.027 ms`
 
 ### VOICE-005-C03: Product detail lookup bridge path
 
 - Sales difficulty: `product-detail-lookup`
 - Response mode: `bridge-then-background`
 - Call control: `bridge-then-continue`
-- Total local decision-loop latency: `0.613 ms`
+- Total local decision-loop latency: `0.607 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.015 ms`
+- RESP-001 segment: `0.016 ms`
 
 ### VOICE-005-C04: Unknown signal follow-up path
 
 - Sales difficulty: `unknown-runtime-signal`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.608 ms`
+- Total local decision-loop latency: `0.566 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.024 ms`
+- RESP-001 segment: `0.018 ms`

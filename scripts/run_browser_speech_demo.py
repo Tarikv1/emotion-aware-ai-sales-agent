@@ -453,17 +453,24 @@ def render_html(metadata: dict) -> str:
       return overlap / transcriptTokens.size;
     }}
 
+    function detectInterruptionLanguage(normalized) {{
+      const germanMarkers = ["rufen", "nicht mehr", "kein interesse", "nein danke", "mitarbeiter", "mensch", "berater", "spezialist", "echte person", "person anrufen", "mit einem menschen", "jemand soll mich anrufen", "was bedeutet", "was heisst", "was heißt", "warum", "wie bitte", "warte", "warten sie", "moment", "kurz", "entschuldigung", "haeh", "häh", "koennen", "können", "erklären", "erklaeren", "unklar", "frage", "verstanden", "alles klar"];
+      return containsAny(normalized, germanMarkers) ? "de" : "en";
+    }}
+
     function classifyInterruptionCandidate(transcript, currentAgentResponse, activeAgentSpeech) {{
       const normalized = normalizeForInterruption(transcript);
-      const stopPhrases = ["stop calling", "do not call", "don't call", "stop", "no thanks", "not interested", "leave me alone", "rufen sie mich nicht", "nicht mehr an"];
-      const humanPhrases = ["human", "real person", "person call", "specialist", "agent", "mitarbeiter", "mensch", "person anrufen"];
-      const acknowledgements = ["ok", "okay", "yes", "yeah", "yep", "mhm", "uh huh", "alright", "i see", "verstanden", "ja"];
-      const ambiguous = ["wait", "huh", "what", "sorry", "one second", "hold on", "moment", "kurz", "was", "wie bitte"];
-      const questionPhrases = ["what", "why", "how", "can you", "could you", "does that", "what does", "explain", "mean", "question", "frage"];
+      const detectedLanguage = detectInterruptionLanguage(normalized);
+      const stopPhrases = ["stop calling", "do not call", "don't call", "stop", "no thanks", "not interested", "leave me alone", "remove my number", "take me off your list", "rufen sie mich nicht mehr an", "rufen sie mich bitte nicht mehr an", "rufen sie nicht mehr an", "nicht mehr an", "kein interesse", "ich habe kein interesse", "nein danke", "lassen sie mich in ruhe", "will ich nicht", "stopp", "stoppen sie"];
+      const humanPhrases = ["human", "real person", "person call", "specialist", "agent", "representative", "someone call me", "mitarbeiter", "mensch", "berater", "spezialist", "echte person", "person anrufen", "mit einem menschen", "jemand soll mich anrufen"];
+      const acknowledgements = ["ok", "okay", "yes", "yeah", "yep", "mhm", "uh huh", "alright", "i see", "got it", "ja", "verstanden", "alles klar", "gut", "passt"];
+      const ambiguous = ["wait", "huh", "what", "sorry", "one second", "hold on", "hang on", "warte", "warten sie", "moment", "kurz", "was", "wie bitte", "entschuldigung", "haeh", "häh"];
+      const questionPhrases = ["what", "why", "how", "can you", "could you", "does that", "what does", "explain", "mean", "question", "was bedeutet", "was heisst", "was heißt", "warum", "wie", "koennen sie", "können sie", "erklaeren", "erklären", "bedeutet", "frage"];
       const likely_echo = normalized && normalized.split(" ").length >= 4 && normalizeForInterruption(currentAgentResponse).includes(normalized);
 
       const base = {{
         voice_milestone: "VOICE-006",
+        detected_language: detectedLanguage,
         audio_detected: Boolean(normalized),
         speech_detected: Boolean(normalized),
         customer_speech_detected: false,
@@ -496,7 +503,9 @@ def render_html(metadata: dict) -> str:
           interruption_confirmed: true,
           interruption_type: "short_ambiguous_interruption",
           agent_speech_action: "pause-and-ask-clarification",
-          clarification_response: "I paused there. Was something unclear, or did you want to ask something?"
+          clarification_response: detectedLanguage === "de"
+            ? "Ich habe kurz pausiert. War etwas unklar, oder wollten Sie etwas fragen?"
+            : "I paused there. Was something unclear, or did you want to ask something?"
         }};
       }}
       if (transcript.includes("?") || containsAny(normalized, questionPhrases)) {{
