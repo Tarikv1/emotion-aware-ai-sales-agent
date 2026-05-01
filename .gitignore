@@ -11,3 +11,6 @@ __pycache__/
 *.pyc
 *.pyc.*
 .tmp/
+
+# Machine-local generated voice smoke artifacts.
+research/experiments/generated/VOICE-008-*.wav

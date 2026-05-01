@@ -16,6 +16,43 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-01 - VOICE-008 local TTS smoke test
+
+- Objective: test the next no-key audible-output path before integrating a real cloud TTS provider
+- Action taken:
+  - added a bilingual local TTS smoke runner for one German and one English campaign response
+  - added a validator that checks both forced fallback and normal local TTS attempt modes
+  - attempted Windows SAPI local TTS and recorded fallback behavior
+  - ignored generated `VOICE-008` WAV files in Git because they depend on local machine voice availability
+- Data used:
+  - German telecom campaign response from the active `PROD-005` runtime campaign file
+  - English B2B software campaign response from the same active runtime campaign file
+  - existing `VOICE-001` voice packet contract and Windows SAPI helper
+- Output created:
+  - `scripts/run_voice_008_local_tts_smoke.py`
+  - `scripts/validate_voice_008_local_tts_smoke.py`
+  - `docs/product/VOICE_008_LOCAL_TTS_SMOKE_TEST.md`
+  - `research/experiments/VOICE-008-local-tts-smoke-test.md`
+  - `research/experiments/generated/VOICE-008-local-tts-smoke.json`
+  - `research/experiments/generated/VOICE-008-local-tts-smoke-report.md`
+- What was learned:
+  - the local Windows SAPI command path can be attempted without API keys or cloud providers
+  - the current environment does not have a usable local SAPI voice installed or allowed by the current security setting
+  - the dry-run fallback remained safe for both German and English cases
+  - local OS TTS should not be assumed as the reliable audible-output path for this project
+- Why it matters for the thesis:
+  - this checkpoint records a negative/partial result honestly instead of hiding it
+  - it supports the methodological argument that voice integration is being developed through gated experiments and fallback validation
+  - it gives a concrete reason to move from generic local TTS assumptions toward provider-specific TTS research
+- Limitations:
+  - no audible WAV files were produced in the current environment
+  - no TTS naturalness, accent quality, or production latency was measured
+  - the result is machine-dependent because local SAPI voice availability varies
+- Open questions:
+  - which concrete TTS provider or local voice engine should be evaluated first for German and English quality
+  - whether the next checkpoint should prioritize cloud low-latency TTS research or installable local TTS engines
+  - how much voice naturalness evaluation should be manual listening versus structured rubric scoring
+
 ### 2026-05-01 - VOICE-007 provider readiness gate
 
 - Objective: decide the safe next path toward real ASR/TTS providers without introducing API keys, cloud audio upload, or uncontrolled provider dependencies

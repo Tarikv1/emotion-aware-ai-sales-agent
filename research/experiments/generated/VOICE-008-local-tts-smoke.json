@@ -1,0 +1,197 @@
+{
+  "voice_milestone": "VOICE-008",
+  "experiment_scope": "local no-key TTS audio smoke test with dry-run fallback",
+  "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "audio_dir": "research\\experiments\\generated",
+  "summary": {
+    "case_count": 2,
+    "languages": {
+      "de": 1,
+      "en": 1
+    },
+    "provider_attempted": "windows-sapi",
+    "api_calls_made": false,
+    "requires_api_key": false,
+    "cloud_provider_used": false,
+    "customer_audio_uploaded": false,
+    "synthetic_voice_only": true,
+    "audio_file_success_count": 0,
+    "fallback_count": 2,
+    "fallback_safe_count": 2,
+    "response_language_matches": 2,
+    "tts_text_matches_decision": 2,
+    "max_generation_latency_ms": 356.199
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-008-C01",
+      "case_title": "German local TTS smoke",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "de",
+          "response_language": "de",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [
+            "human-handoff-prep"
+          ],
+          "live_path_subagents": [],
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "bridge_response": null,
+          "agent_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "local_tts": {
+        "voice_milestone": "VOICE-008",
+        "provider_attempted": "windows-sapi",
+        "final_provider": "dry-run",
+        "fallback_provider": "dry-run",
+        "fallback_used": true,
+        "fallback_reason": "Windows SAPI is available, but no usable local voice is installed or allowed by the current security setting.",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "generation_latency_ms": 356.199,
+        "requires_api_key": false,
+        "api_calls_made": false,
+        "cloud_provider_used": false,
+        "customer_audio_uploaded": false,
+        "synthetic_voice_only": true,
+        "consent_boundary": "synthetic-test-voice-only"
+      }
+    },
+    {
+      "case_id": "VOICE-008-C02",
+      "case_title": "English local TTS smoke",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign": {
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Can you guarantee the performance will be better?",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "en",
+          "response_language": "en",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [
+            "human-handoff-prep"
+          ],
+          "live_path_subagents": [],
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "bridge_response": null,
+          "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "local_tts": {
+        "voice_milestone": "VOICE-008",
+        "provider_attempted": "windows-sapi",
+        "final_provider": "dry-run",
+        "fallback_provider": "dry-run",
+        "fallback_used": true,
+        "fallback_reason": "Windows SAPI is available, but no usable local voice is installed or allowed by the current security setting.",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "generation_latency_ms": 345.862,
+        "requires_api_key": false,
+        "api_calls_made": false,
+        "cloud_provider_used": false,
+        "customer_audio_uploaded": false,
+        "synthetic_voice_only": true,
+        "consent_boundary": "synthetic-test-voice-only"
+      }
+    }
+  ]
+}

@@ -165,7 +165,7 @@ research/experiments/generated/VOICE-006-browser-speech-demo-metadata.json
 
 VOICE-007 now adds the ASR/TTS provider-readiness gate behind explicit privacy and key constraints.
 
-VOICE-008 should run the next no-key audible-output checkpoint, likely using local Windows SAPI TTS with dry-run fallback.
+VOICE-008 now runs the no-key audible-output checkpoint using local Windows SAPI TTS with dry-run fallback.
 
 Later interruption work should add:
 

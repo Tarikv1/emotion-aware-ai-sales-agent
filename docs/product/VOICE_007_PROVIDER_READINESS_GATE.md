@@ -125,6 +125,8 @@ Provider adapters may change, but they must preserve:
 - fallback metadata
 - no-secret repository policy
 
-## Next Work
+## Follow-Up
 
-The next useful checkpoint is `VOICE-008`: a no-key local TTS audio smoke test using the existing `windows-sapi` path, with fallback to dry-run TTS if local voice generation is unavailable.
+`VOICE-008` now performs the no-key local TTS smoke test using the existing `windows-sapi` path with dry-run fallback.
+
+The next useful checkpoint is `VOICE-009`: vendor-specific TTS provider research before selecting a real integration candidate.

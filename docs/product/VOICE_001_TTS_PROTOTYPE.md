@@ -108,3 +108,4 @@ The validator confirms that dry-run mode produces a voice packet, preserves the 
 - VOICE-003: full spoken turn loop with latency measurement
 - VOICE-004: interruption and barge-in behavior
 - VOICE-005: telephony/call-center integration assumptions
+- VOICE-008: local no-key TTS smoke test with dry-run fallback

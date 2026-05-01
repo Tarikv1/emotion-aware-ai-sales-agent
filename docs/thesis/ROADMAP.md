@@ -29,6 +29,8 @@ Runtime debugging lessons should be preserved for the thesis. When language rout
 
 The voice-provider path now has a readiness gate before real provider integration. ASR/TTS providers must be evaluated for latency, German/English support, API-key safety, audio upload behavior, retention/privacy requirements, and fallback behavior before any live provider key or real customer audio is used.
 
+The local no-key TTS smoke path has been tested. Windows SAPI was reachable, but the current environment had no usable local voice, so `VOICE-008` validated safe dry-run fallback rather than producing audible files. This makes concrete TTS provider research the next useful voice step.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -155,6 +157,7 @@ Current integrated prototype evidence:
 - safe interruption policy with English/German phrase packs
 - response generation remains guarded behind campaign claims, forbidden claims, disclosures, and fallback rules
 - ASR/TTS provider-readiness gate in `VOICE-007`, with cloud providers blocked until key/privacy/retention gates are documented
+- local no-key TTS smoke test in `VOICE-008`, with validated fallback when local voices are unavailable
 
 Out of scope:
 
@@ -259,3 +262,4 @@ Immediate product artifact:
 - active bilingual runtime-language checks
 - documented debugging trail for bilingual routing, guarded response language, and interruption campaign routing
 - VOICE-007 ASR/TTS provider-readiness gate
+- VOICE-008 local TTS smoke test with dry-run fallback
