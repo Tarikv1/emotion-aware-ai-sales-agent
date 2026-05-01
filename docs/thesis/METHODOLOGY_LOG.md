@@ -887,3 +887,42 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether one voice should be used for both languages or separate voices should be compared later
   - whether measured first-audio timing will meet the `500 ms` TTS-start target
   - whether Cartesia quality is strong enough or ElevenLabs should become the next comparison provider
+
+### 2026-05-01 - VOICE-010 live Cartesia bytes smoke result
+
+- Objective: preserve the first live Cartesia TTS result without committing secrets or machine-local audio files
+- Action taken:
+  - ran the guarded Cartesia bytes-endpoint smoke test with local environment variables
+  - deleted the exposed Cartesia key from the Cartesia dashboard after it had been pasted into chat
+  - confirmed the generated JSON and Markdown did not contain secret-like tokens
+  - kept generated WAV files ignored by Git
+  - recorded the first listening impression
+- Data used:
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - user listening feedback on the two generated WAV files
+- Output updated:
+  - `docs/product/VOICE_010_CARTESIA_TTS_SMOKE_TEST.md`
+  - `research/experiments/VOICE-010-cartesia-tts-smoke.md`
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+- What was learned:
+  - both Cartesia bytes-endpoint calls returned HTTP `200`
+  - both German and English WAV files were created locally
+  - English time to first audio byte was `366.492 ms`, which met the `500 ms` TTS-start target
+  - German time to first audio byte was `1083.043 ms`, which did not meet the `500 ms` TTS-start target
+  - first listening impression was acceptable but weak because the clips were short
+- Error or risk recorded:
+  - the API key was pasted into chat and had to be deleted from Cartesia before continuing
+  - this reinforces the need for prompt-based local key entry and immediate key cleanup
+  - bytes-endpoint latency should not be overgeneralized to WebSocket streaming latency
+  - the first validator design reused the canonical output paths and overwrote live metadata during verification
+  - the validator was corrected to write to `.tmp` validation artifacts so future safety checks do not erase live results
+- Why it matters for the thesis:
+  - this creates the first real cloud TTS measurement for the prototype
+  - it shows that provider selection must consider language-specific latency, not only average provider claims
+  - it creates a concrete rationale for a WebSocket streaming follow-up experiment
+- Open questions:
+  - whether Cartesia WebSocket streaming improves German first-audio timing
+  - whether longer German and English sales responses preserve acceptable voice quality
+  - whether ElevenLabs should be tested as a comparison if Cartesia WebSocket latency or quality is insufficient

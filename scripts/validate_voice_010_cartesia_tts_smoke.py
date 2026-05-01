@@ -10,8 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "run_voice_010_cartesia_tts_smoke.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-010-cartesia-tts-smoke.json"
-OUT_JSON = ROOT / "research" / "experiments" / "generated" / "VOICE-010-cartesia-tts-smoke.json"
-REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-010-cartesia-tts-smoke-report.md"
+OUT_JSON = ROOT / ".tmp" / "VOICE-010-cartesia-tts-smoke-validation.json"
+REPORT_OUT = ROOT / ".tmp" / "VOICE-010-cartesia-tts-smoke-validation-report.md"
 
 
 SECRET_PATTERN = re.compile(

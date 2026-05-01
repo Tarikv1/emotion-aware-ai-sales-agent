@@ -25,22 +25,35 @@ The live command requires:
 
 ## Current Result
 
-The committed generated result is dry-run:
+The committed generated result now records the live Cartesia bytes-endpoint smoke run:
 
 - cases: `2`
 - German cases: `1`
 - English cases: `1`
-- API calls made: `0`
-- audio files created: `0`
-- fallback count: `2`
+- API calls made: `2`
+- audio files created: `2`
+- fallback count: `0`
 - response-language matches: `2 / 2`
 - TTS text matches decision: `2 / 2`
+- German time to first audio byte: `1083.043 ms`
+- German total provider latency: `2532.073 ms`
+- English time to first audio byte: `366.492 ms`
+- English total provider latency: `1499.783 ms`
+
+Initial listening impression:
+
+- the generated audio sounded acceptable for a first smoke test
+- the clips are short, so the quality judgment is weak evidence
 
 ## Interpretation
 
-VOICE-010 proves the Cartesia adapter can be prepared safely before any secret is introduced.
+VOICE-010 proves the Cartesia adapter can be prepared safely before any secret is introduced, then used for a bounded live smoke test after local key setup.
 
 It also avoids repeating the earlier long-running shell problem by requiring a bounded timeout for provider requests.
+
+English met the `500 ms` TTS-start target in the bytes-endpoint test. German did not.
+
+This should be interpreted carefully. The bytes endpoint is useful for first provider access and audio-file generation, but WebSocket streaming is the more relevant path for low-latency voice-agent speech.
 
 ## Safety Notes
 
@@ -62,13 +75,13 @@ Generated audio files are machine-local artifacts and are ignored by Git.
 
 ## Known Limitation
 
-This checkpoint has not yet measured Cartesia audio quality or latency because no API key has been used.
+This checkpoint used very short audio samples.
 
-A live run is still required to answer:
+Further work is still required to answer:
 
-- whether German pronunciation is good enough
-- whether English voice quality is good enough
-- whether the measured first-audio timing fits the call-center latency budget
+- whether German pronunciation remains acceptable on longer sales responses
+- whether English voice quality remains acceptable on longer sales responses
+- whether WebSocket first-audio timing fits the call-center latency budget
 - whether the selected voice is appropriate for both German and English
 
 ## Commands

@@ -48,7 +48,7 @@
   "cases": [
     {
       "case_id": "VOICE-010-C01",
-      "case_title": "German Cartesia dry-run TTS smoke",
+      "case_title": "German Cartesia TTS smoke",
       "language": "de",
       "campaign_id": "campaign-prod-005-b2c-telecom",
       "stage": "relevance-check",
@@ -57,7 +57,7 @@
     },
     {
       "case_id": "VOICE-010-C02",
-      "case_title": "English Cartesia dry-run TTS smoke",
+      "case_title": "English Cartesia TTS smoke",
       "language": "en",
       "campaign_id": "campaign-prod-005-b2b-software",
       "stage": "relevance-check",

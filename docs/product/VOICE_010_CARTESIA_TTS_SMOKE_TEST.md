@@ -76,6 +76,8 @@ The validator checks:
 - no audio files during validation
 - no secret-like tokens in generated outputs
 
+The validator writes temporary outputs under `.tmp` so it does not overwrite a saved live-result report.
+
 ## Live Smoke Run
 
 Only after obtaining a Cartesia key and selecting a Cartesia voice ID:
@@ -103,6 +105,33 @@ The generated report should then show:
 
 If anything fails, the script should still produce a report and fall back to `text-only-tts-packet`.
 
+## Live Result
+
+A live Cartesia bytes-endpoint smoke run was completed after the initial no-key harness was committed.
+
+Result:
+
+- API calls made: `2`
+- HTTP status: `200` for both cases
+- Audio files created: `2`
+- Fallback count: `0`
+- German time to first audio byte: `1083.043 ms`
+- German total provider latency: `2532.073 ms`
+- English time to first audio byte: `366.492 ms`
+- English total provider latency: `1499.783 ms`
+
+Initial listening impression:
+
+- the audio did not sound bad
+- the audio sounded acceptable for a first smoke test
+- the clips are too short to make a strong quality judgment
+
+Interpretation:
+
+- English met the `500 ms` TTS-start target in this bytes-endpoint test
+- German did not meet the `500 ms` TTS-start target in this bytes-endpoint test
+- this does not yet disqualify Cartesia because WebSocket streaming is the more realistic low-latency voice-agent path
+
 ## Generated Artifacts
 
 ```text
@@ -128,9 +157,9 @@ This keeps the architecture vertical-agnostic:
 
 After a successful live Cartesia smoke run:
 
-- listen to both generated audio files
-- record German pronunciation quality
-- record English pronunciation quality
-- compare measured latency to the `500 ms` TTS-start target
-- decide whether to proceed to WebSocket streaming as `VOICE-011`
+- run a Cartesia WebSocket streaming smoke test as `VOICE-011`
+- listen to longer German and English samples
+- record German pronunciation quality with more representative text
+- record English pronunciation quality with more representative text
+- compare measured WebSocket first-audio timing to the `500 ms` TTS-start target
 - keep ElevenLabs as the comparison candidate if Cartesia quality or latency is not convincing
