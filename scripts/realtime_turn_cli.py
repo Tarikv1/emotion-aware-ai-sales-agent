@@ -42,9 +42,9 @@ def build_turn_case(
     }
 
 
-def run_turn_decision(case: dict) -> dict:
+def run_turn_decision(case: dict, campaign: dict | None = None) -> dict:
     start = time.perf_counter()
-    decision = build_runtime_decision(case)
+    decision = build_runtime_decision(case, campaign=campaign)
     elapsed_ms = int((time.perf_counter() - start) * 1000)
     decision["first_response_latency_ms"] = elapsed_ms
     decision["first_response_latency_observed_bucket"] = "under-1s" if elapsed_ms <= 1000 else (
@@ -71,7 +71,7 @@ def main() -> None:
     campaigns, _cases = load_realtime_cases(Path(args.cases))
     campaign = find_campaign(campaigns, args.campaign)
     case = build_turn_case(args.campaign, args.stage, args.transcript, args.input_type, args.silence_count)
-    decision = run_turn_decision(case)
+    decision = run_turn_decision(case, campaign)
     output = {
         "campaign_id": campaign["campaign_id"],
         "campaign": {

@@ -391,7 +391,7 @@
       }
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(latestResponse);
-      utterance.lang = "en-US";
+      utterance.lang = languageSelect.value;
       utterance.rate = 0.95;
       utterance.onstart = () => { agentIsSpeaking = true; };
       utterance.onend = () => { agentIsSpeaking = false; };

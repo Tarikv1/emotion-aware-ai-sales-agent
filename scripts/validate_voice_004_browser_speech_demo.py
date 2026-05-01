@@ -108,8 +108,8 @@ def main() -> None:
     assert unknown_one["response_packet"]["decision"]["sales_difficulty"] == "unknown-runtime-signal"
     assert unknown_two["response_packet"]["decision"]["sales_difficulty"] == "unknown-runtime-signal"
     assert unknown_one["response_packet"]["tts_text"] != unknown_two["response_packet"]["tts_text"]
-    assert "fit" in unknown_one["response_packet"]["tts_text"].lower()
-    assert "call" in unknown_two["response_packet"]["tts_text"].lower()
+    assert "pass" in unknown_one["response_packet"]["tts_text"].lower() or "situation" in unknown_one["response_packet"]["tts_text"].lower()
+    assert "anruf" in unknown_two["response_packet"]["tts_text"].lower() or "grund" in unknown_two["response_packet"]["tts_text"].lower()
     assert unknown_one["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
     assert unknown_two["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
 

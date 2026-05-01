@@ -17,9 +17,9 @@
   "stage": "relevance-check",
   "input_type": "speech-final",
   "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
-  "policy_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
-  "candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
-  "final_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+  "policy_response": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+  "candidate_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+  "final_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
   "validation": {
     "validator": "RESP-001 substring forbidden-claim check",
     "checked_text_source": "candidate_response",
@@ -63,6 +63,8 @@
   },
   "decision_snapshot": {
     "response_mode": "fast-response",
+    "campaign_language": "de",
+    "response_language": "de",
     "detected_emotion": "skeptical-or-negative",
     "sales_difficulty": "price-objection",
     "interest_state": "maybe-interested",

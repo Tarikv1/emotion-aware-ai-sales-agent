@@ -9,9 +9,9 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 ## Summary
 
 - Cases: 4
-- Minimum local decision-loop latency: `0.536 ms`
-- Maximum local decision-loop latency: `0.699 ms`
-- Average local decision-loop latency: `0.6 ms`
+- Minimum local decision-loop latency: `0.465 ms`
+- Maximum local decision-loop latency: `0.605 ms`
+- Average local decision-loop latency: `0.51 ms`
 - Under 1s: `4`
 - Under 2s: `0`
 - Over 2s: `0`
@@ -31,37 +31,37 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `price-objection`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.628 ms`
+- Total local decision-loop latency: `0.605 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.023 ms`
+- RESP-001 segment: `0.018 ms`
 
 ### VOICE-005-C02: Claim boundary escalation fast path
 
 - Sales difficulty: `claim-boundary`
 - Response mode: `fast-response`
 - Call control: `transfer-or-escalate`
-- Total local decision-loop latency: `0.699 ms`
+- Total local decision-loop latency: `0.478 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.025 ms`
+- RESP-001 segment: `0.016 ms`
 
 ### VOICE-005-C03: Product detail lookup bridge path
 
 - Sales difficulty: `product-detail-lookup`
 - Response mode: `bridge-then-background`
 - Call control: `bridge-then-continue`
-- Total local decision-loop latency: `0.536 ms`
+- Total local decision-loop latency: `0.465 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.016 ms`
+- RESP-001 segment: `0.013 ms`
 
 ### VOICE-005-C04: Unknown signal follow-up path
 
 - Sales difficulty: `unknown-runtime-signal`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.537 ms`
+- Total local decision-loop latency: `0.488 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.018 ms`
+- RESP-001 segment: `0.017 ms`

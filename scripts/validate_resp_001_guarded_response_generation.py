@@ -81,11 +81,11 @@ def main() -> None:
         "Safe response should improve wording beyond the policy fallback.",
     )
     assert_condition(
-        "monthly price" in safe_payload["final_response"].lower()
-        or "price" in safe_payload["final_response"].lower()
-        or "cost" in safe_payload["final_response"].lower(),
-        "Safe response should contextually address the price concern.",
+        "preis" in safe_payload["final_response"].lower()
+        or "aufwand" in safe_payload["final_response"].lower(),
+        "Safe German response should contextually address the price concern.",
     )
+    assert_condition(safe_payload["decision_snapshot"]["response_language"] == "de", "Safe response should preserve German language.")
     assert_condition(RESULT_PATH.exists(), "Expected generated JSON result file.")
     assert_condition(REPORT_PATH.exists(), "Expected generated Markdown report file.")
 

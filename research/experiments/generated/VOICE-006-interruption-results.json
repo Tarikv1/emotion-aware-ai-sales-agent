@@ -194,6 +194,8 @@
           "transcript": "What does that mean?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -207,12 +209,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -236,9 +238,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -306,14 +308,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.602,
+          "total_decision_loop_ms": 0.767,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.246,
-            "realtime_decision_ms": 0.022,
-            "guarded_response_ms": 0.023,
-            "voice_packet_build_ms": 0.297
+            "campaign_load_ms": 0.28,
+            "realtime_decision_ms": 0.036,
+            "guarded_response_ms": 0.033,
+            "voice_packet_build_ms": 0.4
           }
         },
         "trace": {
@@ -391,6 +393,8 @@
           "transcript": "Stop calling me.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -406,12 +410,12 @@
             "next_action": "suppress-contact",
             "call_control": "end-call",
             "bridge_response": null,
-            "agent_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Understood. I will mark this contact so you are not called again. Goodbye.",
+          "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -435,9 +439,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
-            "candidate_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
-            "final_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "candidate_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -505,14 +509,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.481,
+          "total_decision_loop_ms": 0.626,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.192,
-            "realtime_decision_ms": 0.011,
-            "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.257
+            "campaign_load_ms": 0.227,
+            "realtime_decision_ms": 0.019,
+            "guarded_response_ms": 0.023,
+            "voice_packet_build_ms": 0.347
           }
         },
         "trace": {
@@ -590,6 +594,8 @@
           "transcript": "Please have a real person call me.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -605,12 +611,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -634,9 +640,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
-            "candidate_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
-            "final_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
+            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -704,14 +710,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 1.007,
+          "total_decision_loop_ms": 0.582,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.246,
-            "realtime_decision_ms": 0.01,
-            "guarded_response_ms": 0.365,
-            "voice_packet_build_ms": 0.376
+            "campaign_load_ms": 0.269,
+            "realtime_decision_ms": 0.018,
+            "guarded_response_ms": 0.018,
+            "voice_packet_build_ms": 0.269
           }
         },
         "trace": {
@@ -813,6 +819,8 @@
           "transcript": "Was bedeutet das?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -826,12 +834,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -855,9 +863,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -925,14 +933,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.642,
+          "total_decision_loop_ms": 0.52,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.299,
-            "realtime_decision_ms": 0.02,
-            "guarded_response_ms": 0.024,
-            "voice_packet_build_ms": 0.288
+            "campaign_load_ms": 0.209,
+            "realtime_decision_ms": 0.022,
+            "guarded_response_ms": 0.02,
+            "voice_packet_build_ms": 0.26
           }
         },
         "trace": {
@@ -1010,6 +1018,8 @@
           "transcript": "Rufen Sie mich bitte nicht mehr an.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1025,12 +1035,12 @@
             "next_action": "suppress-contact",
             "call_control": "end-call",
             "bridge_response": null,
-            "agent_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Understood. I will mark this contact so you are not called again. Goodbye.",
+          "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1054,9 +1064,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
-            "candidate_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
-            "final_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "candidate_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1124,14 +1134,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.591,
+          "total_decision_loop_ms": 0.628,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.198,
-            "realtime_decision_ms": 0.008,
-            "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.366
+            "campaign_load_ms": 0.248,
+            "realtime_decision_ms": 0.011,
+            "guarded_response_ms": 0.016,
+            "voice_packet_build_ms": 0.345
           }
         },
         "trace": {
@@ -1209,6 +1219,8 @@
           "transcript": "Bitte eine echte Person anrufen.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1224,12 +1236,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1253,9 +1265,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
-            "candidate_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
-            "final_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
+            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1323,14 +1335,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.47,
+          "total_decision_loop_ms": 0.466,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.184,
-            "realtime_decision_ms": 0.009,
-            "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.258
+            "campaign_load_ms": 0.19,
+            "realtime_decision_ms": 0.012,
+            "guarded_response_ms": 0.013,
+            "voice_packet_build_ms": 0.244
           }
         },
         "trace": {
@@ -1576,6 +1588,8 @@
           "transcript": "Can you explain the contract terms",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1589,12 +1603,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1618,9 +1632,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1688,14 +1702,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.532,
+          "total_decision_loop_ms": 0.485,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.196,
-            "realtime_decision_ms": 0.014,
+            "campaign_load_ms": 0.198,
+            "realtime_decision_ms": 0.017,
             "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.299
+            "voice_packet_build_ms": 0.246
           }
         },
         "trace": {
@@ -1773,6 +1787,8 @@
           "transcript": "I am not interested.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1788,12 +1804,12 @@
             "next_action": "suppress-contact",
             "call_control": "end-call",
             "bridge_response": null,
-            "agent_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Understood. I will mark this contact so you are not called again. Goodbye.",
+          "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1817,9 +1833,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
-            "candidate_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
-            "final_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "candidate_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1887,14 +1903,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.471,
+          "total_decision_loop_ms": 0.721,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.182,
-            "realtime_decision_ms": 0.008,
-            "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.264
+            "campaign_load_ms": 0.246,
+            "realtime_decision_ms": 0.011,
+            "guarded_response_ms": 0.041,
+            "voice_packet_build_ms": 0.411
           }
         },
         "trace": {
@@ -1972,6 +1988,8 @@
           "transcript": "Can I speak to a representative?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1987,12 +2005,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2016,9 +2034,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
-            "candidate_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
-            "final_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
+            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2086,14 +2104,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.474,
+          "total_decision_loop_ms": 0.455,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.181,
-            "realtime_decision_ms": 0.009,
-            "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.265
+            "campaign_load_ms": 0.184,
+            "realtime_decision_ms": 0.011,
+            "guarded_response_ms": 0.013,
+            "voice_packet_build_ms": 0.241
           }
         },
         "trace": {
@@ -2171,6 +2189,8 @@
           "transcript": "The monthly price sounds too high for me.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2184,12 +2204,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
+            "agent_response": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
+          "tts_text": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2213,9 +2233,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
-            "final_response": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
+            "final_response": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2283,14 +2303,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.536,
+          "total_decision_loop_ms": 0.652,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.23,
-            "realtime_decision_ms": 0.017,
-            "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.262
+            "campaign_load_ms": 0.26,
+            "realtime_decision_ms": 0.023,
+            "guarded_response_ms": 0.02,
+            "voice_packet_build_ms": 0.34
           }
         },
         "trace": {
@@ -2368,6 +2388,8 @@
           "transcript": "I need to talk to my partner before deciding.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2381,12 +2403,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2410,9 +2432,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2480,14 +2502,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.636,
+          "total_decision_loop_ms": 0.713,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.23,
-            "realtime_decision_ms": 0.015,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.368
+            "campaign_load_ms": 0.257,
+            "realtime_decision_ms": 0.02,
+            "guarded_response_ms": 0.018,
+            "voice_packet_build_ms": 0.409
           }
         },
         "trace": {
@@ -2733,6 +2755,8 @@
           "transcript": "Koennen Sie das erklaeren",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2746,12 +2770,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2775,9 +2799,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2845,14 +2869,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.851,
+          "total_decision_loop_ms": 0.741,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.332,
-            "realtime_decision_ms": 0.021,
-            "guarded_response_ms": 0.017,
-            "voice_packet_build_ms": 0.471
+            "campaign_load_ms": 0.271,
+            "realtime_decision_ms": 0.023,
+            "guarded_response_ms": 0.022,
+            "voice_packet_build_ms": 0.416
           }
         },
         "trace": {
@@ -2930,6 +2954,8 @@
           "transcript": "Kein Interesse.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2945,12 +2971,12 @@
             "next_action": "suppress-contact",
             "call_control": "end-call",
             "bridge_response": null,
-            "agent_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Understood. I will mark this contact so you are not called again. Goodbye.",
+          "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2974,9 +3000,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
-            "candidate_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
-            "final_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "candidate_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -3044,14 +3070,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.699,
+          "total_decision_loop_ms": 0.687,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.402,
-            "realtime_decision_ms": 0.009,
-            "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.267
+            "campaign_load_ms": 0.277,
+            "realtime_decision_ms": 0.012,
+            "guarded_response_ms": 0.018,
+            "voice_packet_build_ms": 0.37
           }
         },
         "trace": {
@@ -3129,6 +3155,8 @@
           "transcript": "Ich moechte mit einem Mitarbeiter sprechen.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -3144,12 +3172,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -3173,9 +3201,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
-            "candidate_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
-            "final_response": "Of course. I will route this to a telecom specialist instead of continuing automatically.",
+            "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
+            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -3243,14 +3271,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.773,
+          "total_decision_loop_ms": 0.558,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.329,
-            "realtime_decision_ms": 0.01,
-            "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.414
+            "campaign_load_ms": 0.246,
+            "realtime_decision_ms": 0.012,
+            "guarded_response_ms": 0.016,
+            "voice_packet_build_ms": 0.277
           }
         },
         "trace": {
@@ -3328,6 +3356,8 @@
           "transcript": "Der monatliche Preis ist mir zu hoch.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -3341,12 +3371,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -3370,9 +3400,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -3440,14 +3470,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.835,
+          "total_decision_loop_ms": 0.522,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.488,
-            "realtime_decision_ms": 0.018,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.303
+            "campaign_load_ms": 0.182,
+            "realtime_decision_ms": 0.017,
+            "guarded_response_ms": 0.015,
+            "voice_packet_build_ms": 0.299
           }
         },
         "trace": {
@@ -3525,6 +3555,8 @@
           "transcript": "Ich muss erst mit meinem Partner sprechen.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -3538,12 +3570,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -3567,9 +3599,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -3637,14 +3669,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.854,
+          "total_decision_loop_ms": 0.468,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.22,
+            "campaign_load_ms": 0.183,
             "realtime_decision_ms": 0.016,
             "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.595
+            "voice_packet_build_ms": 0.247
           }
         },
         "trace": {

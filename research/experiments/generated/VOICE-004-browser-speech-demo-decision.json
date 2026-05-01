@@ -41,6 +41,8 @@
     "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
     "decision": {
       "case_id": "REALTIME-CLI-TURN",
+      "campaign_language": "de",
+      "response_language": "de",
       "response_mode": "fast-response",
       "first_response_latency_budget_ms": 700,
       "first_response_latency_bucket": "under-1s",
@@ -56,12 +58,12 @@
       "next_action": "escalate",
       "call_control": "transfer-or-escalate",
       "bridge_response": null,
-      "agent_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+      "agent_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
       "rationale": "Deterministic runtime policy selected the fastest safe response path.",
       "first_response_latency_ms": 0,
       "first_response_latency_observed_bucket": "under-1s"
     },
-    "tts_text": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+    "tts_text": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
     "voice": {
       "name": "Neutral Synthetic Test Voice",
       "style": "neutral-synthetic-test",
@@ -85,9 +87,9 @@
       "response_generation_id": "RESP-001-local-guarded",
       "provider": "local-guarded-composer",
       "generation_mode": "local deterministic composer with guardrail validation",
-      "policy_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
-      "candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
-      "final_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+      "policy_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+      "candidate_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
+      "final_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
       "validation": {
         "validator": "RESP-001 substring forbidden-claim check",
         "checked_text_source": "candidate_response",
@@ -155,14 +157,14 @@
     "browser_tts_playback_measured": false,
     "target_first_response_ms": 2000,
     "target_tts_start_ms": 500,
-    "total_decision_loop_ms": 0.57,
+    "total_decision_loop_ms": 0.51,
     "observed_bucket": "under-1s",
     "budget_pass": true,
     "segments": {
-      "campaign_load_ms": 0.239,
-      "realtime_decision_ms": 0.019,
-      "guarded_response_ms": 0.023,
-      "voice_packet_build_ms": 0.274
+      "campaign_load_ms": 0.207,
+      "realtime_decision_ms": 0.017,
+      "guarded_response_ms": 0.018,
+      "voice_packet_build_ms": 0.256
     }
   },
   "trace": {

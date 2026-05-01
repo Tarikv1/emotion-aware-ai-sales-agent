@@ -5,7 +5,7 @@ import time
 from pathlib import Path
 
 from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
-from run_realtime_turn_simulation import load_realtime_cases
+from run_realtime_turn_simulation import load_realtime_cases, normalize_response_language
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,6 +100,68 @@ def signal_reference(decision: dict) -> str:
     return references.get(difficulty, "the concern")
 
 
+def compose_german_candidate_response(decision: dict, campaign: dict, transcript: str) -> str:
+    difficulty = decision.get("sales_difficulty")
+    next_action = decision.get("next_action")
+    handoff_role = campaign.get("human_handoff_role") or "Spezialisten"
+
+    if difficulty == "claim-boundary":
+        return (
+            "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, "
+            f"deshalb leite ich das lieber an einen {handoff_role} weiter."
+        )
+
+    if difficulty == "price-objection":
+        return (
+            "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen "
+            "oder darum, ob sich der Aufwand lohnt?"
+        )
+
+    if difficulty == "product-detail-lookup":
+        return (
+            "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, "
+            "damit ich bei Details nicht rate."
+        )
+
+    if difficulty == "human-request":
+        return f"Natuerlich. Ich leite das an einen {handoff_role} weiter, statt automatisch fortzufahren."
+
+    if difficulty == "do-not-call":
+        return "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren."
+
+    if difficulty == "timing-delay":
+        return "Danke, ich verstehe, dass der Zeitpunkt noch nicht fest ist. Ich dokumentiere einen Rueckruf statt zu draengen."
+
+    if difficulty == "scheduling-confirmation":
+        return "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren."
+
+    if difficulty == "voicemail":
+        return "Ich habe die Mailbox erreicht und dokumentiere einen Follow-up nach den Kampagnenregeln."
+
+    if difficulty == "repeated-silence":
+        return "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren."
+
+    if next_action == "ask-follow-up":
+        return compose_german_unknown_follow_up(transcript)
+
+    return decision["agent_response"]
+
+
+def compose_german_unknown_follow_up(transcript: str) -> str:
+    lowered = transcript.lower()
+    if any(phrase in lowered for phrase in ["make sense", "fit", "apartment", "situation", "for me"]):
+        return (
+            "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, "
+            "um den Preis oder um den Zeitpunkt?"
+        )
+    if any(phrase in lowered for phrase in ["why", "take this call", "call today", "this call"]):
+        return (
+            "Faire Frage. Ich halte den Anruf kurz: Soll ich zuerst den konkreten Grund erklaeren, "
+            "warum ich Sie kontaktiere?"
+        )
+    return "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?"
+
+
 def compose_unknown_follow_up(transcript: str) -> str:
     lowered = transcript.lower()
     if any(phrase in lowered for phrase in ["make sense", "fit", "apartment", "situation", "for me"]):
@@ -116,6 +178,9 @@ def compose_unknown_follow_up(transcript: str) -> str:
 
 
 def compose_candidate_response(decision: dict, campaign: dict, transcript: str) -> str:
+    if normalize_response_language(campaign.get("language")) == "de":
+        return compose_german_candidate_response(decision, campaign, transcript)
+
     difficulty = decision.get("sales_difficulty")
     next_action = decision.get("next_action")
     handoff_role = campaign.get("human_handoff_role") or "specialist"
@@ -198,7 +263,7 @@ def build_guarded_response_packet(
     candidate_response_override: str | None = None,
 ) -> dict:
     case = build_turn_case(campaign["campaign_id"], stage, transcript, input_type, silence_count)
-    decision = run_turn_decision(case)
+    decision = run_turn_decision(case, campaign)
     return apply_guarded_response_to_decision(
         campaign=campaign,
         stage=stage,
@@ -246,6 +311,8 @@ def apply_guarded_response_to_decision(
         "guardrails": guardrails,
         "decision_snapshot": {
             "response_mode": decision.get("response_mode"),
+            "campaign_language": decision.get("campaign_language"),
+            "response_language": decision.get("response_language"),
             "detected_emotion": decision.get("detected_emotion"),
             "sales_difficulty": decision.get("sales_difficulty"),
             "interest_state": decision.get("interest_state"),

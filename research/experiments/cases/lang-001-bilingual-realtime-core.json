@@ -1,0 +1,464 @@
+{
+  "campaigns": [
+    {
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "client_name": "Synthetic German Consumer Call Center",
+      "product_name": "Consumer product callback review",
+      "product_category": "vertical-agnostic-consumer",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "locale": "de-DE",
+      "approved_opening": "Guten Tag, ich rufe wegen eines kurzen Angebots-Checks an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Sind Sie grundsaetzlich offen fuer einen kurzen Check?",
+        "Was waere Ihnen bei einem passenden Angebot wichtig?",
+        "Falls es passt, duerfen wir einen Rueckruf vereinbaren?"
+      ],
+      "allowed_claims": [
+        "A human specialist can review fit and details.",
+        "The first callback is non-binding."
+      ],
+      "forbidden_claims": [
+        "guaranteed savings",
+        "guaranteed approval",
+        "unsupported product claims"
+      ],
+      "required_disclosures": [
+        "Details depend on the specific campaign profile."
+      ],
+      "escalation_triggers": [
+        "guarantee request",
+        "technical or legal certainty request",
+        "human request"
+      ],
+      "scheduling_goal": "non-binding human callback",
+      "human_handoff_role": "German-speaking specialist",
+      "compliance_notes": "LANG-001 synthetic campaign for bilingual realtime core validation."
+    },
+    {
+      "campaign_id": "campaign-lang-001-en-business",
+      "client_name": "Synthetic English Business Call Center",
+      "product_name": "Business service discovery callback",
+      "product_category": "vertical-agnostic-business",
+      "customer_type": "b2b",
+      "country_or_region": "US",
+      "language": "en",
+      "locale": "en-US",
+      "approved_opening": "Hi, I am calling about a quick service-fit review. Do you have a minute?",
+      "qualification_questions": [
+        "Are you open to a quick fit check?",
+        "What would matter most if the service were relevant?",
+        "If there is fit, would a specialist callback be useful?"
+      ],
+      "allowed_claims": [
+        "A specialist can review service fit.",
+        "The first callback is non-binding."
+      ],
+      "forbidden_claims": [
+        "guaranteed performance lift",
+        "unsupported integration claims",
+        "unsupported security claims"
+      ],
+      "required_disclosures": [
+        "Detailed fit requires specialist review."
+      ],
+      "escalation_triggers": [
+        "guarantee request",
+        "technical certainty request",
+        "human request"
+      ],
+      "scheduling_goal": "specialist discovery callback",
+      "human_handoff_role": "English-speaking specialist",
+      "compliance_notes": "LANG-001 synthetic campaign for bilingual realtime core validation."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "LANG-001-DE-C01",
+      "case_title": "German price objection stays in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "price-objection",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "relevance-check",
+        "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt."
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": ["verstehe", "preis", "aufwand"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C01",
+      "case_title": "English price objection stays in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "price-objection",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "relevance-check",
+        "transcript": "That sounds too expensive and I am not sure the review is worth the effort."
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": ["price", "review", "effort"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C02",
+      "case_title": "German detail lookup uses German bridge wording",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "product-detail-lookup",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "product-detail-check",
+        "transcript": "Welche genauen Details gelten und was ist enthalten?"
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "bridge-then-background",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["campaign-knowledge-lookup"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": ["moment", "freigegebenen", "informationen"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C02",
+      "case_title": "English detail lookup uses English bridge wording",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "product-detail-lookup",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "product-detail-check",
+        "transcript": "Which exact service details are included?"
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "bridge-then-background",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["campaign-knowledge-lookup"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": ["moment", "approved", "information"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C03",
+      "case_title": "German stop request ends in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "do-not-call",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "opening-permission",
+        "transcript": "Rufen Sie mich bitte nicht mehr an."
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["crm-suppression-update"],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "response_must_include_any": ["verstanden", "nicht mehr angerufen", "auf wiederhoeren"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C03",
+      "case_title": "English stop request ends in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "do-not-call",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "opening-permission",
+        "transcript": "Please do not call me again."
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["crm-suppression-update"],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "response_must_include_any": ["understood", "not called again", "goodbye"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C04",
+      "case_title": "German human request escalates in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "human-request",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "opening-permission",
+        "transcript": "Ich moechte mit einem Mitarbeiter sprechen."
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["human-handoff-prep"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "response_must_include_any": ["natuerlich", "menschlichen", "spezialisten"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C04",
+      "case_title": "English human request escalates in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "human-request",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "opening-permission",
+        "transcript": "Can I speak with a representative?"
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["human-handoff-prep"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "response_must_include_any": ["of course", "human specialist", "continuing automatically"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C05",
+      "case_title": "German guarantee boundary escalates in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "claim-boundary",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "relevance-check",
+        "transcript": "Koennen Sie garantieren, dass das wirklich besser ist?"
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["human-handoff-prep"],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "claim-boundary",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "response_must_include_any": ["garantieren", "details", "spezialisten"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C05",
+      "case_title": "English guarantee boundary escalates in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "claim-boundary",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "relevance-check",
+        "transcript": "Can you guarantee the performance will be better?"
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["human-handoff-prep"],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "claim-boundary",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "response_must_include_any": ["guarantee", "details", "specialist"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C06",
+      "case_title": "German scheduling confirmation stays in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "schedule-confirmed",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "scheduling",
+        "transcript": "Mittwoch um 10 Uhr passt fuer den Rueckruf."
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["calendar-write"],
+        "detected_emotion": "positive",
+        "sales_difficulty": "scheduling-confirmation",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "response_must_include_any": ["bestaetigt", "rueckruf", "auf wiederhoeren"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C06",
+      "case_title": "English scheduling confirmation stays in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "schedule-confirmed",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "scheduling",
+        "transcript": "Wednesday at 10 works for the callback."
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["calendar-write"],
+        "detected_emotion": "positive",
+        "sales_difficulty": "scheduling-confirmation",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "response_must_include_any": ["confirmed", "callback", "goodbye"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C07",
+      "case_title": "German vague callback logs follow-up in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "timing-delay",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "timing-openness-check",
+        "transcript": "Vielleicht naechste Woche, aber jetzt kann ich nichts fest zusagen."
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["follow-up-task-write"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "timing-delay",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "response_must_include_any": ["danke", "rueckruf", "auf wiederhoeren"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C07",
+      "case_title": "English vague callback logs follow-up in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "timing-delay",
+      "customer_input": {
+        "input_type": "speech-final",
+        "stage": "timing-openness-check",
+        "transcript": "Maybe next week, but I cannot commit to anything firm now."
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["follow-up-task-write"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "timing-delay",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "response_must_include_any": ["thanks", "follow-up", "goodbye"]
+      }
+    },
+    {
+      "case_id": "LANG-001-DE-C08",
+      "case_title": "German repeated silence closes in German",
+      "campaign_id": "campaign-lang-001-de-consumer",
+      "runtime_scenario": "repeated-silence",
+      "customer_input": {
+        "input_type": "silence-timeout",
+        "stage": "opening-permission",
+        "transcript": "",
+        "silence_count": 2
+      },
+      "expected_runtime": {
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["no-response-log"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "repeated-silence",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call",
+        "response_must_include_any": ["beende", "anruf", "auf wiederhoeren"]
+      }
+    },
+    {
+      "case_id": "LANG-001-EN-C08",
+      "case_title": "English repeated silence closes in English",
+      "campaign_id": "campaign-lang-001-en-business",
+      "runtime_scenario": "repeated-silence",
+      "customer_input": {
+        "input_type": "silence-timeout",
+        "stage": "opening-permission",
+        "transcript": "",
+        "silence_count": 2
+      },
+      "expected_runtime": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_bucket": "under-1s",
+        "background_modules": ["no-response-log"],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "repeated-silence",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call",
+        "response_must_include_any": ["end the call", "goodbye"]
+      }
+    }
+  ]
+}

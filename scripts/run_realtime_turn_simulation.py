@@ -35,6 +35,32 @@ HUMAN_REQUEST_RUNTIME_PHRASES = [
     "echte person",
     "person anrufen",
 ]
+LOCALIZED_RESPONSES = {
+    "en": {
+        "voicemail": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+        "repeated-silence": "I will end the call for now. Goodbye.",
+        "do-not-call": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+        "human-request": "Of course. I will route this to a human specialist instead of continuing automatically.",
+        "claim-boundary": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+        "product-detail-lookup": "One moment, I want to check the approved product information.",
+        "scheduling-confirmation": "Confirmed. I will record that time for the specialist callback. Goodbye.",
+        "timing-delay": "Thanks. I will log a follow-up rather than forcing a fixed appointment now. Goodbye.",
+        "price-objection": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+        "unknown-runtime-signal": "Thanks. May I ask one quick clarifying question?",
+    },
+    "de": {
+        "voicemail": "Ich habe die Mailbox erreicht und dokumentiere einen Follow-up nach den Kampagnenregeln.",
+        "repeated-silence": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+        "do-not-call": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "human-request": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
+        "claim-boundary": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+        "product-detail-lookup": "Einen Moment, ich pruefe die freigegebenen Produktinformationen.",
+        "scheduling-confirmation": "Bestaetigt. Ich notiere den Rueckruf fuer den Spezialisten. Auf Wiederhoeren.",
+        "timing-delay": "Danke. Ich dokumentiere einen Rueckruf, statt jetzt einen festen Termin zu erzwingen. Auf Wiederhoeren.",
+        "price-objection": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+        "unknown-runtime-signal": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+    },
+}
 
 
 def load_json(path: Path):
@@ -46,6 +72,27 @@ def load_realtime_cases(path: Path) -> tuple[list[dict], list[dict]]:
     if not isinstance(payload, dict):
         raise SystemExit("PROD-005 case file must be a campaign wrapper object.")
     return payload.get("campaigns", []), payload.get("cases", [])
+
+
+def find_campaign(campaigns: list[dict], campaign_id: str) -> dict | None:
+    for campaign in campaigns:
+        if campaign.get("campaign_id") == campaign_id:
+            return campaign
+    return None
+
+
+def normalize_response_language(language: str | None) -> str:
+    if (language or "").lower().startswith("de"):
+        return "de"
+    return "en"
+
+
+def localized_response(language: str, sales_difficulty: str) -> str:
+    language_key = normalize_response_language(language)
+    return LOCALIZED_RESPONSES[language_key].get(
+        sales_difficulty,
+        LOCALIZED_RESPONSES[language_key]["unknown-runtime-signal"],
+    )
 
 
 def contains_any(text: str, phrases: list[str]) -> bool:
@@ -61,109 +108,130 @@ def latency_bucket(milliseconds: int) -> str:
     return "over-2s"
 
 
-def classify_runtime_input(case: dict) -> dict:
+def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
     customer_input = case["customer_input"]
     transcript = customer_input.get("transcript", "")
     input_type = customer_input.get("input_type")
     stage = customer_input.get("stage")
+    response_language = normalize_response_language((campaign or {}).get("language"))
 
     if input_type == "voicemail-detected":
+        sales_difficulty = "voicemail"
         return {
+            "response_language": response_language,
             "detected_emotion": "neutral",
-            "sales_difficulty": "voicemail",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "maybe-interested",
             "selected_strategy": "rapport",
             "next_action": "create-follow-up-task",
-            "agent_response": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
     if input_type == "silence-timeout" and customer_input.get("silence_count", 0) >= 2:
+        sales_difficulty = "repeated-silence"
         return {
+            "response_language": response_language,
             "detected_emotion": "neutral",
-            "sales_difficulty": "repeated-silence",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "not-interested",
             "selected_strategy": "rapport",
             "next_action": "close-politely",
-            "agent_response": "I will end the call for now. Goodbye.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
     if contains_any(transcript, STOP_OR_REFUSAL_RUNTIME_PHRASES):
+        sales_difficulty = "do-not-call"
         return {
+            "response_language": response_language,
             "detected_emotion": "skeptical-or-negative",
-            "sales_difficulty": "do-not-call",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "do-not-call",
             "selected_strategy": "rapport",
             "next_action": "suppress-contact",
-            "agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
     if contains_any(transcript, HUMAN_REQUEST_RUNTIME_PHRASES):
+        sales_difficulty = "human-request"
         return {
+            "response_language": response_language,
             "detected_emotion": "neutral",
-            "sales_difficulty": "human-request",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "needs-human",
             "selected_strategy": "rapport",
             "next_action": "escalate",
-            "agent_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
     if contains_any(transcript, ["garantieren", "guarantee", "stabil", "coverage", "geschwindigkeit"]):
+        sales_difficulty = "claim-boundary"
         return {
+            "response_language": response_language,
             "detected_emotion": "skeptical-or-negative",
-            "sales_difficulty": "claim-boundary",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "needs-human",
             "selected_strategy": "inquiry",
             "next_action": "escalate",
-            "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
-    if contains_any(transcript, ["welcher genaue tarif", "datenvolumen", "exact plan", "which plan"]):
+    if contains_any(transcript, ["welcher genaue tarif", "welche genauen details", "was ist enthalten", "datenvolumen", "exact plan", "which plan", "which exact", "service details", "included"]):
+        sales_difficulty = "product-detail-lookup"
         return {
+            "response_language": response_language,
             "detected_emotion": "neutral",
-            "sales_difficulty": "product-detail-lookup",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "maybe-interested",
             "selected_strategy": "evidence-or-benefit",
             "next_action": "continue",
-            "agent_response": "One moment, I want to check the approved product information.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
     if stage == "scheduling" and contains_any(transcript, ["mittwoch", "wednesday", "10 uhr", "10 works"]):
+        sales_difficulty = "scheduling-confirmation"
         return {
+            "response_language": response_language,
             "detected_emotion": "positive",
-            "sales_difficulty": "scheduling-confirmation",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "interested",
             "selected_strategy": "direct-ask-or-commitment",
             "next_action": "confirm-scheduling",
-            "agent_response": "Confirmed. I will record that time for the specialist callback. Goodbye.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
-    if contains_any(transcript, ["vielleicht irgendwann", "naechste woche", "nothing firm", "nichts fest"]):
+    if contains_any(transcript, ["vielleicht irgendwann", "vielleicht naechste woche", "naechste woche", "nothing firm", "next week", "cannot commit", "nichts fest"]):
+        sales_difficulty = "timing-delay"
         return {
+            "response_language": response_language,
             "detected_emotion": "neutral",
-            "sales_difficulty": "timing-delay",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "maybe-interested",
             "selected_strategy": "direct-ask-or-commitment",
             "next_action": "create-follow-up-task",
-            "agent_response": "Thanks. I will log a follow-up rather than forcing a fixed appointment now. Goodbye.",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
-    if contains_any(transcript, ["guenstiger", "too expensive", "lohnt sich", "aufwand"]):
+    if contains_any(transcript, ["guenstiger", "zu teuer", "too expensive", "lohnt sich", "aufwand", "worth the effort"]):
+        sales_difficulty = "price-objection"
         return {
+            "response_language": response_language,
             "detected_emotion": "skeptical-or-negative",
-            "sales_difficulty": "price-objection",
+            "sales_difficulty": sales_difficulty,
             "interest_state": "maybe-interested",
             "selected_strategy": "inquiry",
             "next_action": "ask-follow-up",
-            "agent_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+            "agent_response": localized_response(response_language, sales_difficulty),
         }
 
+    sales_difficulty = "unknown-runtime-signal"
     return {
+        "response_language": response_language,
         "detected_emotion": "neutral",
-        "sales_difficulty": "unknown-runtime-signal",
+        "sales_difficulty": sales_difficulty,
         "interest_state": "maybe-interested",
         "selected_strategy": "inquiry",
         "next_action": "ask-follow-up",
-        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "agent_response": localized_response(response_language, sales_difficulty),
     }
 
 
@@ -185,8 +253,8 @@ def background_modules_for(response_mode: str, expected: dict | None, classified
     return []
 
 
-def build_runtime_decision(case: dict, expected: dict | None = None) -> dict:
-    classified = classify_runtime_input(case)
+def build_runtime_decision(case: dict, expected: dict | None = None, campaign: dict | None = None) -> dict:
+    classified = classify_runtime_input(case, campaign)
     response_mode = "bridge-then-background" if classified["sales_difficulty"] == "product-detail-lookup" else "fast-response"
     first_response_ms = BRIDGE_RESPONSE_MS if response_mode == "bridge-then-background" else FAST_RESPONSE_MS
     call_control = "bridge-then-continue" if response_mode == "bridge-then-background" else call_control_for_next_action(
@@ -197,6 +265,8 @@ def build_runtime_decision(case: dict, expected: dict | None = None) -> dict:
 
     runtime_decision = {
         "case_id": case["case_id"],
+        "campaign_language": normalize_response_language((campaign or {}).get("language")),
+        "response_language": classified["response_language"],
         "response_mode": response_mode,
         "first_response_latency_budget_ms": first_response_ms,
         "first_response_latency_bucket": latency_bucket(first_response_ms),
@@ -216,15 +286,23 @@ def build_runtime_decision(case: dict, expected: dict | None = None) -> dict:
     return runtime_decision
 
 
-def run_case(case: dict) -> dict:
+def run_case(case: dict, campaigns: list[dict] | None = None) -> dict:
     expected = case["expected_runtime"]
-    runtime_decision = build_runtime_decision(case, expected)
+    campaign = find_campaign(campaigns or [], case["campaign_id"])
+    runtime_decision = build_runtime_decision(case, expected, campaign)
     scores = score_case(case, runtime_decision)
     return {
         "case_id": case["case_id"],
         "case_title": case["case_title"],
         "campaign_id": case["campaign_id"],
+        "campaign": {
+            "language": normalize_response_language((campaign or {}).get("language")),
+            "locale": (campaign or {}).get("locale"),
+            "product_category": (campaign or {}).get("product_category"),
+            "customer_type": (campaign or {}).get("customer_type"),
+        },
         "runtime_scenario": case["runtime_scenario"],
+        "expected_runtime": expected,
         "runtime_decision": runtime_decision,
         "scores": scores,
     }
@@ -232,6 +310,9 @@ def run_case(case: dict) -> dict:
 
 def score_case(case: dict, decision: dict) -> dict:
     expected = case["expected_runtime"]
+    expected_language = expected.get("response_language")
+    expected_markers = [marker.lower() for marker in expected.get("response_must_include_any", [])]
+    response_text = decision["agent_response"].lower()
     return {
         "response_mode_match": decision["response_mode"] == expected["response_mode"],
         "latency_bucket_match": decision["first_response_latency_bucket"] == expected["first_response_latency_bucket"],
@@ -242,6 +323,8 @@ def score_case(case: dict, decision: dict) -> dict:
         "strategy_match": decision["selected_strategy"] == expected["selected_strategy"],
         "next_action_match": decision["next_action"] == expected["next_action"],
         "call_control_match": decision["call_control"] == expected["call_control"],
+        "response_language_match": expected_language is None or decision["response_language"] == expected_language,
+        "response_marker_match": not expected_markers or any(marker in response_text for marker in expected_markers),
         "live_path_subagent_violation": bool(decision["live_path_subagents"]),
     }
 
@@ -258,10 +341,15 @@ def aggregate(results: list[dict]) -> dict:
         "strategy_matches": 0,
         "next_action_matches": 0,
         "call_control_matches": 0,
+        "response_language_matches": 0,
+        "response_marker_matches": 0,
         "live_path_subagent_violations": 0,
+        "language_counts": {},
     }
     for result in results:
         scores = result["scores"]
+        language = result["runtime_decision"].get("response_language", "en")
+        summary["language_counts"][language] = summary["language_counts"].get(language, 0) + 1
         summary["response_mode_matches"] += int(scores["response_mode_match"])
         summary["latency_bucket_matches"] += int(scores["latency_bucket_match"])
         summary["background_modules_matches"] += int(scores["background_modules_match"])
@@ -271,13 +359,15 @@ def aggregate(results: list[dict]) -> dict:
         summary["strategy_matches"] += int(scores["strategy_match"])
         summary["next_action_matches"] += int(scores["next_action_match"])
         summary["call_control_matches"] += int(scores["call_control_match"])
+        summary["response_language_matches"] += int(scores["response_language_match"])
+        summary["response_marker_matches"] += int(scores["response_marker_match"])
         summary["live_path_subagent_violations"] += int(scores["live_path_subagent_violation"])
     return summary
 
 
 def render_report(results: list[dict], summary: dict) -> str:
     lines = [
-        "# PROD-005 Realtime Latency And Call-Control Report",
+        "# Bilingual Realtime Sales Core Report",
         "",
         "This report was generated by `scripts/run_realtime_turn_simulation.py`.",
         "",
@@ -295,7 +385,10 @@ def render_report(results: list[dict], summary: dict) -> str:
         f"- Strategy matches: {summary['strategy_matches']} / {summary['case_total']}",
         f"- Next-action matches: {summary['next_action_matches']} / {summary['case_total']}",
         f"- Call-control matches: {summary['call_control_matches']} / {summary['case_total']}",
+        f"- Response-language matches: {summary['response_language_matches']} / {summary['case_total']}",
+        f"- Response-marker matches: {summary['response_marker_matches']} / {summary['case_total']}",
         f"- Live-path sub-agent violations: {summary['live_path_subagent_violations']}",
+        f"- Language counts: `{json.dumps(summary['language_counts'], sort_keys=True)}`",
         "",
         "## Case Results",
         "",
@@ -307,6 +400,7 @@ def render_report(results: list[dict], summary: dict) -> str:
                 f"### {result['case_id']}: {result['case_title']}",
                 "",
                 f"- Campaign: `{result['campaign_id']}`",
+                f"- Response language: `{decision['response_language']}`",
                 f"- Scenario: `{result['runtime_scenario']}`",
                 f"- Response mode: `{decision['response_mode']}`",
                 f"- First-response latency bucket: `{decision['first_response_latency_bucket']}`",
@@ -334,8 +428,8 @@ def main() -> None:
     args = parser.parse_args()
 
     cases_path = Path(args.cases)
-    _campaigns, cases = load_realtime_cases(cases_path)
-    results = [run_case(case) for case in cases]
+    campaigns, cases = load_realtime_cases(cases_path)
+    results = [run_case(case, campaigns) for case in cases]
     summary = aggregate(results)
 
     out_path = Path(args.out)

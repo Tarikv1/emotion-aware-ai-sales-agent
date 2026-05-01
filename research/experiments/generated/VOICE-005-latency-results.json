@@ -6,9 +6,9 @@
   "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
   "summary": {
     "case_count": 4,
-    "min_total_decision_loop_ms": 0.536,
-    "max_total_decision_loop_ms": 0.699,
-    "avg_total_decision_loop_ms": 0.6,
+    "min_total_decision_loop_ms": 0.465,
+    "max_total_decision_loop_ms": 0.605,
+    "avg_total_decision_loop_ms": 0.51,
     "under_1s_count": 4,
     "under_2s_count": 0,
     "over_2s_count": 0,
@@ -23,14 +23,14 @@
       "sales_difficulty": "price-objection",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.628,
+      "total_decision_loop_ms": 0.605,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.261,
-        "realtime_decision_ms": 0.028,
-        "guarded_response_ms": 0.023,
-        "voice_packet_build_ms": 0.3
+        "campaign_load_ms": 0.237,
+        "realtime_decision_ms": 0.025,
+        "guarded_response_ms": 0.018,
+        "voice_packet_build_ms": 0.313
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -75,6 +75,8 @@
           "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -88,12 +90,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "agent_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "tts_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -117,9 +119,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
-            "candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
-            "final_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "policy_response": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+            "candidate_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+            "final_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -187,14 +189,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.628,
+          "total_decision_loop_ms": 0.605,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.261,
-            "realtime_decision_ms": 0.028,
-            "guarded_response_ms": 0.023,
-            "voice_packet_build_ms": 0.3
+            "campaign_load_ms": 0.237,
+            "realtime_decision_ms": 0.025,
+            "guarded_response_ms": 0.018,
+            "voice_packet_build_ms": 0.313
           }
         },
         "trace": {
@@ -215,14 +217,14 @@
       "sales_difficulty": "claim-boundary",
       "response_mode": "fast-response",
       "call_control": "transfer-or-escalate",
-      "total_decision_loop_ms": 0.699,
+      "total_decision_loop_ms": 0.478,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.265,
-        "realtime_decision_ms": 0.02,
-        "guarded_response_ms": 0.025,
-        "voice_packet_build_ms": 0.379
+        "campaign_load_ms": 0.191,
+        "realtime_decision_ms": 0.015,
+        "guarded_response_ms": 0.016,
+        "voice_packet_build_ms": 0.249
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -267,6 +269,8 @@
           "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -282,12 +286,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+            "agent_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+          "tts_text": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -311,9 +315,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
-            "candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
-            "final_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+            "policy_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+            "candidate_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
+            "final_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -381,14 +385,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.699,
+          "total_decision_loop_ms": 0.478,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.265,
-            "realtime_decision_ms": 0.02,
-            "guarded_response_ms": 0.025,
-            "voice_packet_build_ms": 0.379
+            "campaign_load_ms": 0.191,
+            "realtime_decision_ms": 0.015,
+            "guarded_response_ms": 0.016,
+            "voice_packet_build_ms": 0.249
           }
         },
         "trace": {
@@ -409,14 +413,14 @@
       "sales_difficulty": "product-detail-lookup",
       "response_mode": "bridge-then-background",
       "call_control": "bridge-then-continue",
-      "total_decision_loop_ms": 0.536,
+      "total_decision_loop_ms": 0.465,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.22,
-        "realtime_decision_ms": 0.014,
-        "guarded_response_ms": 0.016,
-        "voice_packet_build_ms": 0.279
+        "campaign_load_ms": 0.193,
+        "realtime_decision_ms": 0.013,
+        "guarded_response_ms": 0.013,
+        "voice_packet_build_ms": 0.238
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -461,6 +465,8 @@
           "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "bridge-then-background",
             "first_response_latency_budget_ms": 600,
             "first_response_latency_bucket": "under-1s",
@@ -475,13 +481,13 @@
             "selected_strategy": "evidence-or-benefit",
             "next_action": "continue",
             "call_control": "bridge-then-continue",
-            "bridge_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
-            "agent_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+            "bridge_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
+            "agent_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+          "tts_text": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -505,9 +511,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "One moment, I want to check the approved product information.",
-            "candidate_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
-            "final_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+            "policy_response": "Einen Moment, ich pruefe die freigegebenen Produktinformationen.",
+            "candidate_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
+            "final_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -575,14 +581,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.536,
+          "total_decision_loop_ms": 0.465,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.22,
-            "realtime_decision_ms": 0.014,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.279
+            "campaign_load_ms": 0.193,
+            "realtime_decision_ms": 0.013,
+            "guarded_response_ms": 0.013,
+            "voice_packet_build_ms": 0.238
           }
         },
         "trace": {
@@ -603,14 +609,14 @@
       "sales_difficulty": "unknown-runtime-signal",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.537,
+      "total_decision_loop_ms": 0.488,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.215,
-        "realtime_decision_ms": 0.016,
-        "guarded_response_ms": 0.018,
-        "voice_packet_build_ms": 0.28
+        "campaign_load_ms": 0.198,
+        "realtime_decision_ms": 0.017,
+        "guarded_response_ms": 0.017,
+        "voice_packet_build_ms": 0.25
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -655,6 +661,8 @@
           "transcript": "Can you explain why I should even take this call today?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
+            "campaign_language": "de",
+            "response_language": "de",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -668,12 +676,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+            "agent_response": "Faire Frage. Ich halte den Anruf kurz: Soll ich zuerst den konkreten Grund erklaeren, warum ich Sie kontaktiere?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+          "tts_text": "Faire Frage. Ich halte den Anruf kurz: Soll ich zuerst den konkreten Grund erklaeren, warum ich Sie kontaktiere?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -697,9 +705,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Thanks. May I ask one quick clarifying question?",
-            "candidate_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
-            "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+            "candidate_response": "Faire Frage. Ich halte den Anruf kurz: Soll ich zuerst den konkreten Grund erklaeren, warum ich Sie kontaktiere?",
+            "final_response": "Faire Frage. Ich halte den Anruf kurz: Soll ich zuerst den konkreten Grund erklaeren, warum ich Sie kontaktiere?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -767,14 +775,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.537,
+          "total_decision_loop_ms": 0.488,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.215,
-            "realtime_decision_ms": 0.016,
-            "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.28
+            "campaign_load_ms": 0.198,
+            "realtime_decision_ms": 0.017,
+            "guarded_response_ms": 0.017,
+            "voice_packet_build_ms": 0.25
           }
         },
         "trace": {

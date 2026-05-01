@@ -187,7 +187,7 @@ def main() -> None:
     campaign = find_campaign(campaigns, args.campaign)
     campaign["_case_file"] = cases_path
     case = build_turn_case(args.campaign, args.stage, args.transcript, args.input_type, args.silence_count)
-    decision = run_turn_decision(case)
+    decision = run_turn_decision(case, campaign)
 
     if provider == "windows-sapi" and out_audio is not None:
         synthesize_with_windows_sapi(decision["agent_response"], out_audio, args.voice_name)

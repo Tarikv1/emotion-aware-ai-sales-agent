@@ -19,9 +19,9 @@ No LLM/API call was made. The provider is a local deterministic composer used to
 
 ## Responses
 
-- Policy response: That makes sense. Is the main concern the price itself, or whether the review is worth the effort?
-- Candidate response: That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
-- Final response: That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
+- Policy response: Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?
+- Candidate response: Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
+- Final response: Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
 
 ## Guardrail Validation
 

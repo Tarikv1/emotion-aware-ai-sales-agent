@@ -149,7 +149,7 @@ def build_browser_decision_packet(
 
     segment_start = time.perf_counter()
     case = build_turn_case(campaign_id, stage, transcript, input_type, silence_count)
-    decision = run_turn_decision(case)
+    decision = run_turn_decision(case, campaign)
     realtime_decision_ms = elapsed_ms(segment_start)
 
     segment_start = time.perf_counter()
@@ -623,7 +623,7 @@ def render_html(metadata: dict) -> str:
       }}
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(latestResponse);
-      utterance.lang = "en-US";
+      utterance.lang = languageSelect.value;
       utterance.rate = 0.95;
       utterance.onstart = () => {{ agentIsSpeaking = true; }};
       utterance.onend = () => {{ agentIsSpeaking = false; }};

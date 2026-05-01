@@ -34,7 +34,7 @@ def main() -> None:
     assert len(campaigns) >= 3, "PROD-005 should use multiple campaign profiles"
     assert len(cases) >= 9, "PROD-005 should cover at least 9 runtime scenarios"
 
-    results = [module.run_case(case) for case in cases]
+    results = [module.run_case(case, campaigns) for case in cases]
     summary = module.aggregate(results)
 
     assert summary["case_total"] == len(cases)
