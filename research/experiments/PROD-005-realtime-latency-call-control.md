@@ -44,6 +44,7 @@ The case set covers:
 - Strategy matches: 9 / 9
 - Next-action matches: 9 / 9
 - Call-control matches: 9 / 9
+- Response-language matches: 9 / 9
 - Live-path sub-agent violations: 0
 
 ## Interpretation
@@ -56,6 +57,7 @@ The benchmark confirms the intended runtime design:
 - human requests and unsupported-claim boundaries transfer or escalate quickly
 - exact scheduling can use `schedule-and-end`
 - no case requires a live chain of sub-agents before the first response
+- active German and English campaign profiles keep responses in the configured campaign language
 
 ## Next Step
 

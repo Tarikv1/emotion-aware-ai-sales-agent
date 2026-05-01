@@ -15,29 +15,65 @@ DEFAULT_REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-00
 LATENCY_CASES = [
     {
         "case_id": "VOICE-005-C01",
-        "case_title": "Price objection fast path",
+        "case_title": "German price objection fast path",
         "campaign_id": "campaign-prod-005-b2c-telecom",
+        "expected_response_language": "de",
         "stage": "relevance-check",
         "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
     },
     {
         "case_id": "VOICE-005-C02",
-        "case_title": "Claim boundary escalation fast path",
+        "case_title": "German claim boundary escalation fast path",
         "campaign_id": "campaign-prod-005-b2c-telecom",
+        "expected_response_language": "de",
         "stage": "relevance-check",
         "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
     },
     {
         "case_id": "VOICE-005-C03",
-        "case_title": "Product detail lookup bridge path",
+        "case_title": "German product detail lookup bridge path",
         "campaign_id": "campaign-prod-005-b2c-telecom",
+        "expected_response_language": "de",
         "stage": "product-detail-check",
         "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
     },
     {
         "case_id": "VOICE-005-C04",
-        "case_title": "Unknown signal follow-up path",
+        "case_title": "German unknown signal follow-up path",
         "campaign_id": "campaign-prod-005-b2c-telecom",
+        "expected_response_language": "de",
+        "stage": "relevance-check",
+        "transcript": "Koennen Sie mir erklaeren, warum ich dieses Gespraech heute ueberhaupt fuehren sollte?",
+    },
+    {
+        "case_id": "VOICE-005-C05",
+        "case_title": "English price objection fast path",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "expected_response_language": "en",
+        "stage": "relevance-check",
+        "transcript": "That sounds too expensive and I am not sure the review is worth the effort.",
+    },
+    {
+        "case_id": "VOICE-005-C06",
+        "case_title": "English claim boundary escalation fast path",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "expected_response_language": "en",
+        "stage": "relevance-check",
+        "transcript": "Can you guarantee the performance will be better?",
+    },
+    {
+        "case_id": "VOICE-005-C07",
+        "case_title": "English product detail lookup bridge path",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "expected_response_language": "en",
+        "stage": "product-detail-check",
+        "transcript": "Which exact service details are included?",
+    },
+    {
+        "case_id": "VOICE-005-C08",
+        "case_title": "English unknown signal follow-up path",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "expected_response_language": "en",
         "stage": "relevance-check",
         "transcript": "Can you explain why I should even take this call today?",
     },
@@ -76,6 +112,8 @@ def run_latency_case(case: dict, cases_path: Path) -> dict:
         "case_id": case["case_id"],
         "case_title": case["case_title"],
         "campaign_id": case["campaign_id"],
+        "expected_response_language": case["expected_response_language"],
+        "response_language": decision["response_language"],
         "stage": case["stage"],
         "sales_difficulty": decision["sales_difficulty"],
         "response_mode": decision["response_mode"],
@@ -95,10 +133,16 @@ def summarize(cases: list[dict]) -> dict:
         "under-2s": 0,
         "over-2s": 0,
     }
+    language_counts = {}
     for case in cases:
         bucket_counts[case["observed_bucket"]] += 1
+        language_counts[case["response_language"]] = language_counts.get(case["response_language"], 0) + 1
     return {
         "case_count": len(cases),
+        "language_counts": language_counts,
+        "response_language_match_count": sum(
+            1 for case in cases if case["response_language"] == case["expected_response_language"]
+        ),
         "min_total_decision_loop_ms": min(totals) if totals else None,
         "max_total_decision_loop_ms": max(totals) if totals else None,
         "avg_total_decision_loop_ms": round(sum(totals) / len(totals), 2) if totals else None,
@@ -123,6 +167,8 @@ def render_report(payload: dict) -> str:
         "## Summary",
         "",
         f"- Cases: {summary['case_count']}",
+        f"- Language counts: `{json.dumps(summary['language_counts'], sort_keys=True)}`",
+        f"- Response-language matches: `{summary['response_language_match_count']} / {summary['case_count']}`",
         f"- Minimum local decision-loop latency: `{summary['min_total_decision_loop_ms']} ms`",
         f"- Maximum local decision-loop latency: `{summary['max_total_decision_loop_ms']} ms`",
         f"- Average local decision-loop latency: `{summary['avg_total_decision_loop_ms']} ms`",
@@ -146,6 +192,7 @@ def render_report(payload: dict) -> str:
             [
                 f"### {case['case_id']}: {case['case_title']}",
                 "",
+                f"- Response language: `{case['response_language']}`",
                 f"- Sales difficulty: `{case['sales_difficulty']}`",
                 f"- Response mode: `{case['response_mode']}`",
                 f"- Call control: `{case['call_control']}`",

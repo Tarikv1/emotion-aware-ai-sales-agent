@@ -52,6 +52,7 @@ It is one safe interruption policy with multilingual phrase packs. The current p
 - English: acknowledgements, ambiguous interruptions, refusals, human requests, and questions
 - German: acknowledgements, ambiguous interruptions, refusals, human requests, and questions
 - Paired English/German cases for every interruption type, including noise, likely echo, acknowledgements, ambiguous interruption, questions, stop/refusal, human request, meaningful customer interruption, and no-active-agent-speech
+- Matching campaign routing when an interruption becomes a sales-core turn: English cases use an English campaign profile, and German cases use a German campaign profile
 
 The German pack includes patterns such as:
 
@@ -149,6 +150,7 @@ The validator checks:
 - human request reaches call-control and escalates
 - browser HTML exposes the VOICE-006 interruption state
 - English and German each cover every interruption type
+- every interruption sent to the sales core keeps the matching campaign response language
 
 ## Generated Artifacts
 

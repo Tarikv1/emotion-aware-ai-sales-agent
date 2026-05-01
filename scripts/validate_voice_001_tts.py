@@ -48,9 +48,14 @@ def main() -> None:
     assert packet["provider"] == "dry-run"
     assert packet["voice"]["style"] == "neutral-synthetic-test"
     assert packet["campaign_id"] == "campaign-prod-005-b2c-telecom"
+    assert packet["campaign"]["language"] == "de"
+    assert packet["decision"]["campaign_language"] == "de"
+    assert packet["decision"]["response_language"] == "de"
     assert packet["decision"]["sales_difficulty"] == "claim-boundary"
     assert packet["decision"]["call_control"] == "transfer-or-escalate"
     assert packet["tts_text"] == packet["decision"]["agent_response"]
+    assert "spezialisten" in packet["tts_text"].lower() or "details" in packet["tts_text"].lower()
+    assert "i can route" not in packet["tts_text"].lower()
     assert packet["audio_output_path"] is None
 
     serialized = json.dumps(packet)

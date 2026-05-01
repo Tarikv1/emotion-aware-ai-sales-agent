@@ -118,6 +118,7 @@
         "transcript": "Nur wenn es wirklich guenstiger ist. Sonst lohnt sich der Aufwand nicht."
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": [],
@@ -140,6 +141,7 @@
         "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?"
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "bridge-then-background",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["campaign-knowledge-lookup"],
@@ -162,6 +164,7 @@
         "transcript": "Rufen Sie mich bitte nicht mehr an."
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["crm-suppression-update"],
@@ -184,6 +187,7 @@
         "transcript": "You have reached the mailbox of Lena. Please leave a message."
       },
       "expected_runtime": {
+        "response_language": "en",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["follow-up-task-write"],
@@ -206,6 +210,7 @@
         "transcript": "Please have a real person call me if this is about software."
       },
       "expected_runtime": {
+        "response_language": "en",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["human-handoff-prep"],
@@ -228,6 +233,7 @@
         "transcript": "Mittwoch um 10 Uhr passt fuer den Rueckruf."
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["calendar-write"],
@@ -250,6 +256,7 @@
         "transcript": "Vielleicht irgendwann naechste Woche, aber ich kann jetzt nichts fest zusagen."
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["follow-up-task-write"],
@@ -272,6 +279,7 @@
         "transcript": "Nur wenn Sie garantieren koennen, dass die Geschwindigkeit bei mir stabil ist."
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["human-handoff-prep"],
@@ -295,6 +303,7 @@
         "silence_count": 2
       },
       "expected_runtime": {
+        "response_language": "de",
         "response_mode": "fast-response",
         "first_response_latency_bucket": "under-1s",
         "background_modules": ["no-response-log"],

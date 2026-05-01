@@ -92,16 +92,23 @@ def main() -> None:
     assert packet["audio_input"]["byte_size"] > 44
     assert packet["audio_input"]["duration_seconds"] > 0
     assert packet["transcription"]["transcript"] == TRANSCRIPT
+    assert packet["transcription"]["language"] == "de"
     assert packet["transcription"]["requires_api_key"] is False
     assert packet["response_packet"]["provider"] == "dry-run"
+    assert packet["response_packet"]["campaign"]["language"] == "de"
+    assert packet["response_packet"]["decision"]["campaign_language"] == "de"
+    assert packet["response_packet"]["decision"]["response_language"] == "de"
     assert packet["response_packet"]["decision"]["sales_difficulty"] == "claim-boundary"
     assert packet["response_packet"]["decision"]["call_control"] == "transfer-or-escalate"
     assert packet["response_packet"]["tts_text"] == packet["response_packet"]["decision"]["agent_response"]
+    assert "spezialisten" in packet["response_packet"]["tts_text"].lower() or "details" in packet["response_packet"]["tts_text"].lower()
+    assert "i can route" not in packet["response_packet"]["tts_text"].lower()
 
     listener_html = render_listener(packet)
     assert TRANSCRIPT in listener_html
     assert packet["response_packet"]["tts_text"] in listener_html
     assert "speechSynthesis" in listener_html
+    assert 'utterance.lang = "de-DE"' in listener_html
 
     serialized = json.dumps(packet) + listener_html
     assert_no_secret_patterns(serialized)

@@ -96,17 +96,22 @@ def main() -> None:
     assert_condition(payload == json.loads(RESULTS_OUT.read_text(encoding="utf-8")), "Stdout and file JSON should match.")
     assert_condition(payload["voice_milestone"] == "VOICE-005", "Unexpected measurement milestone.")
     assert_condition(payload["server_started"] is False, "VOICE-005 validator should use one-shot mode.")
-    assert_condition(payload["summary"]["case_count"] >= 4, "Expected at least four latency cases.")
+    assert_condition(payload["summary"]["case_count"] >= 8, "Expected bilingual latency cases.")
+    assert_condition(payload["summary"]["language_counts"]["de"] >= 4, "Expected German latency cases.")
+    assert_condition(payload["summary"]["language_counts"]["en"] >= 4, "Expected English latency cases.")
+    assert_condition(payload["summary"]["response_language_match_count"] == payload["summary"]["case_count"], "Every latency case should match campaign response language.")
     assert_condition(payload["summary"]["over_2s_count"] == 0, "No local prototype case should exceed 2s.")
     assert_condition(payload["summary"]["max_total_decision_loop_ms"] <= 2000, "Max latency should stay under 2s.")
 
     case_ids = {case["case_id"] for case in payload["cases"]}
-    for expected_case in ["VOICE-005-C01", "VOICE-005-C02", "VOICE-005-C03", "VOICE-005-C04"]:
+    for expected_case in ["VOICE-005-C01", "VOICE-005-C02", "VOICE-005-C03", "VOICE-005-C04", "VOICE-005-C05", "VOICE-005-C06", "VOICE-005-C07", "VOICE-005-C08"]:
         assert_condition(expected_case in case_ids, f"Missing latency case {expected_case}.")
 
     for case in payload["cases"]:
         assert_latency_block(case["packet"]["latency_measurement"])
         assert_condition(case["packet"]["latency_measurement"]["total_decision_loop_ms"] == case["total_decision_loop_ms"], "Case latency mismatch.")
+        assert_condition(case["response_language"] == case["expected_response_language"], f"{case['case_id']} response language mismatch.")
+        assert_condition(case["packet"]["response_packet"]["decision"]["response_language"] == case["expected_response_language"], f"{case['case_id']} packet response language mismatch.")
 
     report_text = REPORT_OUT.read_text(encoding="utf-8")
     assert_condition("No server was started" in report_text, "Report should state no server was started.")

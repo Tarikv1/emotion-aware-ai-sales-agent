@@ -8,14 +8,16 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 
 ## Summary
 
-- Cases: 4
-- Minimum local decision-loop latency: `0.465 ms`
-- Maximum local decision-loop latency: `0.605 ms`
-- Average local decision-loop latency: `0.51 ms`
-- Under 1s: `4`
+- Cases: 8
+- Language counts: `{"de": 4, "en": 4}`
+- Response-language matches: `8 / 8`
+- Minimum local decision-loop latency: `0.453 ms`
+- Maximum local decision-loop latency: `0.759 ms`
+- Average local decision-loop latency: `0.52 ms`
+- Under 1s: `8`
 - Under 2s: `0`
 - Over 2s: `0`
-- Budget pass count: `4 / 4`
+- Budget pass count: `8 / 8`
 
 ## Segment Meaning
 
@@ -26,42 +28,90 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 
 ## Case Results
 
-### VOICE-005-C01: Price objection fast path
+### VOICE-005-C01: German price objection fast path
 
+- Response language: `de`
 - Sales difficulty: `price-objection`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.605 ms`
-- Observed bucket: `under-1s`
-- Budget pass: `True`
-- RESP-001 segment: `0.018 ms`
-
-### VOICE-005-C02: Claim boundary escalation fast path
-
-- Sales difficulty: `claim-boundary`
-- Response mode: `fast-response`
-- Call control: `transfer-or-escalate`
-- Total local decision-loop latency: `0.478 ms`
+- Total local decision-loop latency: `0.559 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.016 ms`
 
-### VOICE-005-C03: Product detail lookup bridge path
+### VOICE-005-C02: German claim boundary escalation fast path
 
+- Response language: `de`
+- Sales difficulty: `claim-boundary`
+- Response mode: `fast-response`
+- Call control: `transfer-or-escalate`
+- Total local decision-loop latency: `0.477 ms`
+- Observed bucket: `under-1s`
+- Budget pass: `True`
+- RESP-001 segment: `0.015 ms`
+
+### VOICE-005-C03: German product detail lookup bridge path
+
+- Response language: `de`
 - Sales difficulty: `product-detail-lookup`
 - Response mode: `bridge-then-background`
 - Call control: `bridge-then-continue`
-- Total local decision-loop latency: `0.465 ms`
+- Total local decision-loop latency: `0.474 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.013 ms`
 
-### VOICE-005-C04: Unknown signal follow-up path
+### VOICE-005-C04: German unknown signal follow-up path
 
+- Response language: `de`
 - Sales difficulty: `unknown-runtime-signal`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.488 ms`
+- Total local decision-loop latency: `0.496 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.017 ms`
+- RESP-001 segment: `0.016 ms`
+
+### VOICE-005-C05: English price objection fast path
+
+- Response language: `en`
+- Sales difficulty: `price-objection`
+- Response mode: `fast-response`
+- Call control: `continue-call`
+- Total local decision-loop latency: `0.46 ms`
+- Observed bucket: `under-1s`
+- Budget pass: `True`
+- RESP-001 segment: `0.013 ms`
+
+### VOICE-005-C06: English claim boundary escalation fast path
+
+- Response language: `en`
+- Sales difficulty: `claim-boundary`
+- Response mode: `fast-response`
+- Call control: `transfer-or-escalate`
+- Total local decision-loop latency: `0.453 ms`
+- Observed bucket: `under-1s`
+- Budget pass: `True`
+- RESP-001 segment: `0.014 ms`
+
+### VOICE-005-C07: English product detail lookup bridge path
+
+- Response language: `en`
+- Sales difficulty: `product-detail-lookup`
+- Response mode: `bridge-then-background`
+- Call control: `bridge-then-continue`
+- Total local decision-loop latency: `0.759 ms`
+- Observed bucket: `under-1s`
+- Budget pass: `True`
+- RESP-001 segment: `0.012 ms`
+
+### VOICE-005-C08: English unknown signal follow-up path
+
+- Response language: `en`
+- Sales difficulty: `unknown-runtime-signal`
+- Response mode: `fast-response`
+- Call control: `continue-call`
+- Total local decision-loop latency: `0.468 ms`
+- Observed bucket: `under-1s`
+- Budget pass: `True`
+- RESP-001 segment: `0.015 ms`

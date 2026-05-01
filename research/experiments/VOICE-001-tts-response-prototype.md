@@ -28,8 +28,10 @@ The realtime turn engine classified the transcript as a claim-boundary case:
 The selected response was:
 
 ```text
-I do not want to guarantee something that depends on the details. I can route this to a specialist.
+Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.
 ```
+
+The packet records `campaign.language`, `decision.campaign_language`, and `decision.response_language` as `de`.
 
 ## Generated Artifact
 
@@ -55,4 +57,3 @@ VOICE-001 uses metadata-only dry-run mode by default:
 VOICE-001 confirms the project can add a voice output layer while preserving the vertical-agnostic sales-agent architecture.
 
 The next useful step is VOICE-002, which should test speech-to-text from recorded audio while keeping consent and privacy constraints explicit.
-

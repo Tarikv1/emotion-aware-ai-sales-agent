@@ -127,10 +127,12 @@ def render_listener(packet: dict) -> str:
     transcript = packet["transcription"]["transcript"]
     response = packet["response_packet"]["tts_text"]
     audio_path = packet["audio_input"]["project_relative_path"]
+    utterance_language = "de-DE" if packet["transcription"].get("language") == "de" else "en-US"
     transcript_html = html.escape(transcript)
     response_html = html.escape(response)
     audio_path_html = html.escape(audio_path)
     response_json = json.dumps(response)
+    utterance_language_json = json.dumps(utterance_language)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -234,7 +236,7 @@ def render_listener(packet: dict) -> str:
     document.querySelector("#speakButton").addEventListener("click", () => {{
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
+      utterance.lang = {utterance_language_json};
       utterance.rate = 0.95;
       utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);
@@ -290,7 +292,7 @@ def main() -> None:
     campaign["_case_file"] = cases_path
 
     case = build_turn_case(args.campaign, args.stage, transcript, args.input_type, args.silence_count)
-    decision = run_turn_decision(case)
+    decision = run_turn_decision(case, campaign)
     response_packet = build_voice_packet(
         campaign=campaign,
         stage=args.stage,

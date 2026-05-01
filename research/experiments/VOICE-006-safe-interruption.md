@@ -20,6 +20,11 @@ meaningful customer interruption -> cancel and process
 
 The same policy is tested in English and German. This keeps the product architecture as one multilingual sales agent, not separate products per country.
 
+When an interruption is sent into the sales core, the simulation now routes by campaign profile:
+
+- English interruption turns use `campaign-prod-005-b2b-software`
+- German interruption turns use `campaign-prod-005-b2c-telecom`
+
 ## Command
 
 ```powershell
@@ -63,6 +68,7 @@ Generated summary:
 - false interruptions blocked: `12`
 - clarification cases: `4`
 - sent to agent core: `16`
+- response-language matches: `16 / 16`
 
 ## Interpretation
 
@@ -74,6 +80,7 @@ VOICE-006 gives the prototype a safer rhythm:
 - It asks a clarification question when the interruption is ambiguous.
 - It still lets hard call-control cases reach the deterministic realtime core.
 - It now protects every interruption category in German and English in the same policy.
+- It now keeps the response language aligned with the active `SalesCampaign` when interruption turns reach the core.
 
 ## Safety Boundary
 

@@ -93,6 +93,10 @@ def main() -> None:
     assert_condition(payload["summary"]["languages"]["de"] >= 18, "Expected widened German interruption coverage.")
     assert_condition(payload["summary"]["false_interruptions_blocked"] >= 8, "Noise, no-transcript audio, echo, and no-active-speech should be blocked in both languages.")
     assert_condition(payload["summary"]["clarification_cases"] >= 4, "Short ambiguous interruptions should clarify with multiple variants in both languages.")
+    assert_condition(
+        payload["summary"]["response_language_matches"] == payload["summary"]["sent_to_agent_core"],
+        "Every interruption sent to the sales core should keep the matching campaign response language.",
+    )
     required_interruption_types = {
         "noise_or_no_transcript",
         "likely_echo",
@@ -119,6 +123,28 @@ def main() -> None:
                 case["voice_packet"]["response_packet"]["decision"]["call_control"] == "transfer-or-escalate",
                 f"{case['case_id']} human request should escalate.",
             )
+        if case["voice_packet"] is not None:
+            expected_language = case["language"]
+            response_packet = case["voice_packet"]["response_packet"]
+            runtime_decision = response_packet["decision"]
+            assert_condition(
+                response_packet["campaign"]["language"] == expected_language,
+                f"{case['case_id']} should route through a campaign matching the interruption language.",
+            )
+            assert_condition(
+                runtime_decision["campaign_language"] == expected_language,
+                f"{case['case_id']} campaign_language mismatch.",
+            )
+            assert_condition(
+                runtime_decision["response_language"] == expected_language,
+                f"{case['case_id']} response_language mismatch.",
+            )
+            tts_text = response_packet["tts_text"].lower()
+            if expected_language == "de":
+                assert_condition("telecom specialist" not in tts_text, f"{case['case_id']} German response should not keep an English handoff role.")
+            if expected_language == "en":
+                assert_condition("natuerlich" not in tts_text, f"{case['case_id']} English response should not use German wording.")
+                assert_condition("auf wiederhoeren" not in tts_text, f"{case['case_id']} English response should not use German call closing.")
 
     noise = interruption(case_by_id(payload, "VOICE-006-C01"))
     assert_condition(noise["interruption_type"] == "noise_or_no_transcript", "Noise should not become an interruption.")

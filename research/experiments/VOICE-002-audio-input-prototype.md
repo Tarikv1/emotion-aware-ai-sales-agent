@@ -40,8 +40,10 @@ The transcript was routed through the realtime sales-agent core and classified a
 The selected response was:
 
 ```text
-I do not want to guarantee something that depends on the details. I can route this to a specialist.
+Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.
 ```
+
+The audio-input path now passes the campaign profile into the realtime core, so the response language remains `de` for the German telecom campaign.
 
 ## Generated Artifacts
 
@@ -67,4 +69,3 @@ VOICE-002 uses a safe `manual-transcript` adapter by default:
 VOICE-002 confirms that recorded-audio artifacts can be represented in the product architecture without changing the reusable sales-agent core.
 
 The next useful step is a provider comparison milestone that evaluates automatic transcription options against the same adapter boundary.
-

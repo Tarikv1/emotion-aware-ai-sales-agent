@@ -24,6 +24,7 @@ Measured:
 - realtime sales-agent decision
 - RESP-001 guarded response generation
 - VOICE-001-style response packet build
+- response-language routing for active German and English campaigns
 
 Not measured yet:
 
@@ -73,6 +74,8 @@ Segments:
 - `guarded_response_ms`
 - `voice_packet_build_ms`
 
+Each latency case also records `expected_response_language` and `response_language`, so latency checks do not accidentally drift back to a single-language runtime path.
+
 ## Commands
 
 Validate:
@@ -99,6 +102,12 @@ research/experiments/generated/VOICE-005-latency-report.md
 The synthetic local decision-loop cases are well under the 2-second live-response budget.
 
 That is expected because the prototype currently uses deterministic local logic and no provider calls. The important result is not that production latency is solved. The important result is that the core decision path now has a measurable latency contract before more expensive components are added.
+
+VOICE-005 now measures paired German and English active runtime cases:
+
+- German cases: `4`
+- English cases: `4`
+- Response-language matches: `8 / 8`
 
 ## Next Latency Work
 

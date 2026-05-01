@@ -87,11 +87,16 @@ def main() -> None:
     assert file_packet["response_packet"]["decision"]["sales_difficulty"] == "claim-boundary"
     assert file_packet["response_packet"]["decision"]["call_control"] == "transfer-or-escalate"
     assert file_packet["response_packet"]["tts_text"] == file_packet["response_packet"]["decision"]["agent_response"]
+    assert file_packet["response_packet"]["campaign"]["language"] == "de"
+    assert file_packet["response_packet"]["decision"]["campaign_language"] == "de"
+    assert file_packet["response_packet"]["decision"]["response_language"] == "de"
     assert file_packet["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
     assert file_packet["response_packet"]["response_generation"]["provider"] == "local-guarded-composer"
     assert file_packet["response_packet"]["response_generation"]["llm_used"] is False
     assert file_packet["response_packet"]["response_generation"]["requires_api_key"] is False
     assert file_packet["response_packet"]["response_generation"]["final_response"] == file_packet["response_packet"]["tts_text"]
+    assert "spezialisten" in file_packet["response_packet"]["tts_text"].lower()
+    assert "telecom specialist" not in file_packet["response_packet"]["tts_text"].lower()
     assert "garantieren" not in file_packet["response_packet"]["tts_text"].lower()
     assert "guarantee" not in file_packet["response_packet"]["tts_text"].lower()
     assert file_packet["response_packet"]["response_generation"]["validation"]["passed"] is True

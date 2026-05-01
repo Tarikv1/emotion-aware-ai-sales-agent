@@ -56,6 +56,14 @@ The VOICE-001 packet includes:
 
 The `tts_text` must equal `decision.agent_response`. This ensures the voice layer speaks the same response that the realtime agent selected.
 
+For active bilingual runtime paths, the packet also carries:
+
+- `campaign.language`
+- `decision.campaign_language`
+- `decision.response_language`
+
+The voice layer must not translate or switch languages by itself. It speaks the response language selected by the reusable realtime core from the configured `SalesCampaign`.
+
 ## Optional Local Audio Output
 
 On Windows, a local test WAV can be generated with the `windows-sapi` provider:
@@ -100,4 +108,3 @@ The validator confirms that dry-run mode produces a voice packet, preserves the 
 - VOICE-003: full spoken turn loop with latency measurement
 - VOICE-004: interruption and barge-in behavior
 - VOICE-005: telephony/call-center integration assumptions
-

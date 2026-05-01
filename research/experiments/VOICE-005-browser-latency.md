@@ -20,12 +20,16 @@ python scripts\measure_voice_005_latency.py
 
 ## Cases
 
-VOICE-005 measures four transcript types:
+VOICE-005 measures paired German and English transcript types:
 
-- `VOICE-005-C01`: price objection fast path
-- `VOICE-005-C02`: claim-boundary escalation fast path
-- `VOICE-005-C03`: product-detail lookup bridge path
-- `VOICE-005-C04`: unknown-signal follow-up path
+- `VOICE-005-C01`: German price objection fast path
+- `VOICE-005-C02`: German claim-boundary escalation fast path
+- `VOICE-005-C03`: German product-detail lookup bridge path
+- `VOICE-005-C04`: German unknown-signal follow-up path
+- `VOICE-005-C05`: English price objection fast path
+- `VOICE-005-C06`: English claim-boundary escalation fast path
+- `VOICE-005-C07`: English product-detail lookup bridge path
+- `VOICE-005-C08`: English unknown-signal follow-up path
 
 ## Measured Segments
 
@@ -57,10 +61,12 @@ research/experiments/generated/VOICE-005-latency-report.md
 
 Current generated summary:
 
-- cases: `4`
+- cases: `8`
+- language counts: `{"de": 4, "en": 4}`
+- response-language matches: `8 / 8`
 - maximum local decision-loop latency: under `1 ms`
 - over-2s cases: `0`
-- budget pass count: `4 / 4`
+- budget pass count: `8 / 8`
 
 ## Interpretation
 

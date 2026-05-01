@@ -42,7 +42,17 @@ def main() -> None:
     assert summary["call_control_matches"] == len(cases), summary
     assert summary["latency_bucket_matches"] == len(cases), summary
     assert summary["next_action_matches"] == len(cases), summary
+    assert summary["response_language_matches"] == len(cases), summary
     assert summary["live_path_subagent_violations"] == 0, summary
+
+    campaign_languages = {campaign["campaign_id"]: campaign.get("language") for campaign in campaigns}
+    assert {"de", "en"}.issubset(set(campaign_languages.values())), campaign_languages
+    for case, result in zip(cases, results):
+        expected_runtime = case["expected_runtime"]
+        assert "response_language" in expected_runtime, f"{case['case_id']} missing expected response_language"
+        expected_language = expected_runtime["response_language"]
+        assert result["runtime_decision"]["response_language"] == expected_language
+        assert result["runtime_decision"]["campaign_language"] == expected_language
 
     expected_controls = {
         "continue-call",

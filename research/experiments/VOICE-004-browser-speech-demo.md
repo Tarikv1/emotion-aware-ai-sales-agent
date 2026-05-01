@@ -26,8 +26,10 @@ The deterministic sample decision routes through the existing realtime sales-age
 The selected response is:
 
 ```text
-I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.
+Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.
 ```
+
+The default VOICE-004 campaign is German, so the response packet records `campaign.language`, `decision.campaign_language`, and `decision.response_language` as `de`.
 
 ## Generated Artifacts
 

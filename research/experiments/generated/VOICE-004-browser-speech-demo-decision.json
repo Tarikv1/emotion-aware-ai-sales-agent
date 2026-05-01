@@ -58,12 +58,12 @@
       "next_action": "escalate",
       "call_control": "transfer-or-escalate",
       "bridge_response": null,
-      "agent_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
+      "agent_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
       "rationale": "Deterministic runtime policy selected the fastest safe response path.",
       "first_response_latency_ms": 0,
       "first_response_latency_observed_bucket": "under-1s"
     },
-    "tts_text": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
+    "tts_text": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
     "voice": {
       "name": "Neutral Synthetic Test Voice",
       "style": "neutral-synthetic-test",
@@ -88,8 +88,8 @@
       "provider": "local-guarded-composer",
       "generation_mode": "local deterministic composer with guardrail validation",
       "policy_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
-      "candidate_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
-      "final_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen telecom specialist weiter.",
+      "candidate_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
+      "final_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
       "validation": {
         "validator": "RESP-001 substring forbidden-claim check",
         "checked_text_source": "candidate_response",
@@ -157,14 +157,14 @@
     "browser_tts_playback_measured": false,
     "target_first_response_ms": 2000,
     "target_tts_start_ms": 500,
-    "total_decision_loop_ms": 0.51,
+    "total_decision_loop_ms": 0.534,
     "observed_bucket": "under-1s",
     "budget_pass": true,
     "segments": {
-      "campaign_load_ms": 0.207,
-      "realtime_decision_ms": 0.017,
+      "campaign_load_ms": 0.216,
+      "realtime_decision_ms": 0.019,
       "guarded_response_ms": 0.018,
-      "voice_packet_build_ms": 0.256
+      "voice_packet_build_ms": 0.27
     }
   },
   "trace": {

@@ -20,6 +20,10 @@ GERMAN_AGENT_RESPONSE = (
     "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen "
     "oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?"
 )
+CAMPAIGN_BY_LANGUAGE = {
+    "en": "campaign-prod-005-b2b-software",
+    "de": "campaign-prod-005-b2c-telecom",
+}
 
 INTERRUPTION_CASES = [
     {
@@ -328,6 +332,7 @@ def write_text(path: Path, text: str) -> None:
 
 
 def run_case(case: dict, cases_path: Path) -> dict:
+    campaign_id = case.get("campaign_id") or CAMPAIGN_BY_LANGUAGE[case["language"]]
     interruption_decision = classify_interruption_candidate(
         transcript=case["transcript"],
         agent_response=case["agent_response"],
@@ -339,7 +344,7 @@ def run_case(case: dict, cases_path: Path) -> dict:
     if interruption_decision["send_to_agent_core"]:
         voice_packet = build_browser_decision_packet(
             transcript=case["transcript"],
-            campaign_id="campaign-prod-005-b2c-telecom",
+            campaign_id=campaign_id,
             stage="relevance-check",
             input_type="speech-final",
             silence_count=0,
@@ -349,6 +354,7 @@ def run_case(case: dict, cases_path: Path) -> dict:
         "case_id": case["case_id"],
         "case_title": case["case_title"],
         "language": case["language"],
+        "campaign_id": campaign_id,
         "audio_event_type": case["audio_event_type"],
         "transcript": case["transcript"],
         "agent_response_under_playback": case["agent_response"],
@@ -362,6 +368,7 @@ def summarize(cases: list[dict]) -> dict:
     languages = {}
     for case in cases:
         languages[case["language"]] = languages.get(case["language"], 0) + 1
+    sent_cases = [case for case in cases if case["voice_packet"] is not None]
     return {
         "case_count": len(cases),
         "languages": languages,
@@ -378,7 +385,12 @@ def summarize(cases: list[dict]) -> dict:
             for case in cases
             if case["interruption_decision"]["agent_speech_action"] == "pause-and-ask-clarification"
         ),
-        "sent_to_agent_core": sum(1 for case in cases if case["interruption_decision"]["send_to_agent_core"]),
+        "sent_to_agent_core": len(sent_cases),
+        "response_language_matches": sum(
+            1
+            for case in sent_cases
+            if case["voice_packet"]["response_packet"]["decision"]["response_language"] == case["language"]
+        ),
     }
 
 
@@ -405,6 +417,7 @@ def render_report(payload: dict) -> str:
         f"- False interruptions blocked: `{payload['summary']['false_interruptions_blocked']}`",
         f"- Clarification cases: `{payload['summary']['clarification_cases']}`",
         f"- Sent to agent core: `{payload['summary']['sent_to_agent_core']}`",
+        f"- Response-language matches: `{payload['summary']['response_language_matches']} / {payload['summary']['sent_to_agent_core']}`",
         "",
         "## Case Results",
         "",
@@ -412,18 +425,22 @@ def render_report(payload: dict) -> str:
     for case in payload["cases"]:
         decision = case["interruption_decision"]
         call_control = None
+        response_language = None
         if case["voice_packet"] is not None:
             call_control = case["voice_packet"]["response_packet"]["decision"]["call_control"]
+            response_language = case["voice_packet"]["response_packet"]["decision"]["response_language"]
         lines.extend(
             [
                 f"### {case['case_id']}: {case['case_title']}",
                 "",
                 f"- Language: `{case['language']}`",
+                f"- Campaign: `{case['campaign_id']}`",
                 f"- Interruption type: `{decision['interruption_type']}`",
                 f"- Confirmed: `{decision['interruption_confirmed']}`",
                 f"- Agent speech action: `{decision['agent_speech_action']}`",
                 f"- Send to agent core: `{decision['send_to_agent_core']}`",
                 f"- Call control: `{call_control or 'not sent'}`",
+                f"- Response language: `{response_language or 'not sent'}`",
                 f"- Rationale: {decision['rationale']}",
                 "",
             ]

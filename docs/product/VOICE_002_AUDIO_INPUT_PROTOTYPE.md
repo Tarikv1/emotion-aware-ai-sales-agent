@@ -73,6 +73,13 @@ The VOICE-002 packet includes:
 
 The response packet reuses the existing realtime agent path, so `response_packet.tts_text` must match `response_packet.decision.agent_response`.
 
+VOICE-002 now preserves campaign language through the recorded-audio path:
+
+- transcript metadata carries the campaign language
+- the realtime decision receives the campaign profile
+- `response_packet.decision.response_language` must match the campaign language
+- the generated listener uses a matching browser speech-synthesis language such as `de-DE`
+
 ## Generated Artifacts
 
 ```text
@@ -99,4 +106,3 @@ The validator checks consent gating, audio metadata, transcript routing, realtim
 - VOICE-004: local spoken turn loop
 - VOICE-005: interruption and barge-in behavior
 - VOICE-006: telephony/call-center integration plan
-

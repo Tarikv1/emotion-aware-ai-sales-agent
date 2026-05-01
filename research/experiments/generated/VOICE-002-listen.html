@@ -92,16 +92,16 @@
     </section>
     <section>
       <h2>Agent Response</h2>
-      <blockquote id="ttsText">I do not want to guarantee something that depends on the details. I can route this to a specialist.</blockquote>
+      <blockquote id="ttsText">Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.</blockquote>
       <button type="button" id="speakButton">Play agent response</button>
     </section>
   </main>
   <script>
-    const text = "I do not want to guarantee something that depends on the details. I can route this to a specialist.";
+    const text = "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.";
     document.querySelector("#speakButton").addEventListener("click", () => {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
+      utterance.lang = "de-DE";
       utterance.rate = 0.95;
       utterance.pitch = 1;
       window.speechSynthesis.speak(utterance);

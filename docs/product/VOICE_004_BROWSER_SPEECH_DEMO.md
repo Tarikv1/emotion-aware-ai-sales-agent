@@ -60,6 +60,8 @@ Browser speech recognition behavior depends on the user's browser. Some browsers
 
 The page includes a recognition-language selector. Choose `English (en-US)` before speaking English, or `German (de-DE)` before speaking German. If the wrong language is selected, the browser can force the audio into the wrong language and produce strange transcripts.
 
+The Python decision path uses the configured campaign language for the response. Browser speech synthesis uses the selected recognition language as the prototype playback hint, so test the German campaign with `de-DE` and English campaigns with `en-US`.
+
 The page also shows:
 
 - last transcript sent to the local agent

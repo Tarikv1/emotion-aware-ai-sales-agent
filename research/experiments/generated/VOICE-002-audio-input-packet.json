@@ -55,6 +55,8 @@
     "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
     "decision": {
       "case_id": "REALTIME-CLI-TURN",
+      "campaign_language": "de",
+      "response_language": "de",
       "response_mode": "fast-response",
       "first_response_latency_budget_ms": 700,
       "first_response_latency_bucket": "under-1s",
@@ -70,12 +72,12 @@
       "next_action": "escalate",
       "call_control": "transfer-or-escalate",
       "bridge_response": null,
-      "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+      "agent_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
       "rationale": "Deterministic runtime policy selected the fastest safe response path.",
       "first_response_latency_ms": 0,
       "first_response_latency_observed_bucket": "under-1s"
     },
-    "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+    "tts_text": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
     "voice": {
       "name": "Neutral Synthetic Test Voice",
       "style": "neutral-synthetic-test",

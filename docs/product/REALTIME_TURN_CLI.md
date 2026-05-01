@@ -52,6 +52,8 @@ The CLI returns:
 - campaign metadata
 - input stage and transcript
 - `response_mode`
+- campaign language
+- response language
 - `first_response_latency_budget_ms`
 - observed local decision latency
 - background modules
@@ -62,6 +64,8 @@ The CLI returns:
 - next action
 - call control
 - agent response
+
+The CLI passes the selected campaign profile into the realtime decision. For active bilingual campaigns, `decision.response_language` should match the configured campaign language.
 
 ## Product Role
 

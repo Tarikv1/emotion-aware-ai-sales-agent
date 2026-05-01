@@ -103,7 +103,7 @@ def signal_reference(decision: dict) -> str:
 def compose_german_candidate_response(decision: dict, campaign: dict, transcript: str) -> str:
     difficulty = decision.get("sales_difficulty")
     next_action = decision.get("next_action")
-    handoff_role = campaign.get("human_handoff_role") or "Spezialisten"
+    handoff_role = "Spezialisten"
 
     if difficulty == "claim-boundary":
         return (

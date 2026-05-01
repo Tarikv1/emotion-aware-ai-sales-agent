@@ -54,13 +54,15 @@
     "confirmed_interruptions": 20,
     "false_interruptions_blocked": 12,
     "clarification_cases": 4,
-    "sent_to_agent_core": 16
+    "sent_to_agent_core": 16,
+    "response_language_matches": 16
   },
   "cases": [
     {
       "case_id": "VOICE-006-C01",
       "case_title": "English background noise must not stop the agent",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "background-noise",
       "transcript": "",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -85,6 +87,7 @@
       "case_id": "VOICE-006-C02",
       "case_title": "English likely echo must not stop the agent",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-interim",
       "transcript": "Is your bigger concern the monthly price",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -109,6 +112,7 @@
       "case_id": "VOICE-006-C03",
       "case_title": "English short ambiguous interruption asks clarification",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Huh?",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -133,6 +137,7 @@
       "case_id": "VOICE-006-C04",
       "case_title": "English clear customer question becomes a new turn",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "What does that mean?",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -155,12 +160,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -169,7 +174,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "What does that mean?",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -181,12 +186,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -194,8 +199,8 @@
           "transcript": "What does that mean?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -209,12 +214,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -238,9 +243,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
-            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
-            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "policy_response": "Thanks. May I ask one quick clarifying question?",
+            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -253,8 +258,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -267,19 +272,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -308,14 +313,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.767,
+          "total_decision_loop_ms": 0.546,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.28,
-            "realtime_decision_ms": 0.036,
-            "guarded_response_ms": 0.033,
-            "voice_packet_build_ms": 0.4
+            "campaign_load_ms": 0.218,
+            "realtime_decision_ms": 0.02,
+            "guarded_response_ms": 0.018,
+            "voice_packet_build_ms": 0.278
           }
         },
         "trace": {
@@ -332,6 +337,7 @@
       "case_id": "VOICE-006-C05",
       "case_title": "English stop request interrupts and ends call",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Stop calling me.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -354,12 +360,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -368,7 +374,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "Stop calling me.",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -380,12 +386,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -393,8 +399,8 @@
           "transcript": "Stop calling me.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -410,12 +416,12 @@
             "next_action": "suppress-contact",
             "call_control": "end-call",
             "bridge_response": null,
-            "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "agent_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "tts_text": "Understood. I will mark this contact so you are not called again. Goodbye.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -439,9 +445,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
-            "candidate_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
-            "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "policy_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+            "candidate_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "final_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -454,8 +460,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -468,19 +474,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -509,14 +515,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.626,
+          "total_decision_loop_ms": 0.468,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.227,
-            "realtime_decision_ms": 0.019,
-            "guarded_response_ms": 0.023,
-            "voice_packet_build_ms": 0.347
+            "campaign_load_ms": 0.182,
+            "realtime_decision_ms": 0.01,
+            "guarded_response_ms": 0.014,
+            "voice_packet_build_ms": 0.255
           }
         },
         "trace": {
@@ -533,6 +539,7 @@
       "case_id": "VOICE-006-C06",
       "case_title": "English human request interrupts and escalates",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Please have a real person call me.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -555,12 +562,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -569,7 +576,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "Please have a real person call me.",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -581,12 +588,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -594,8 +601,8 @@
           "transcript": "Please have a real person call me.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -611,12 +618,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "agent_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+          "tts_text": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -640,9 +647,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
-            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
-            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
+            "candidate_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+            "final_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -655,8 +662,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -669,19 +676,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -710,14 +717,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.582,
+          "total_decision_loop_ms": 0.445,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.269,
-            "realtime_decision_ms": 0.018,
-            "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.269
+            "campaign_load_ms": 0.178,
+            "realtime_decision_ms": 0.011,
+            "guarded_response_ms": 0.013,
+            "voice_packet_build_ms": 0.238
           }
         },
         "trace": {
@@ -734,6 +741,7 @@
       "case_id": "VOICE-006-C07",
       "case_title": "German short ambiguous interruption asks clarification",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Wie bitte?",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -758,6 +766,7 @@
       "case_id": "VOICE-006-C08",
       "case_title": "German clear customer question becomes a new turn",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Was bedeutet das?",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -933,14 +942,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.52,
+          "total_decision_loop_ms": 0.447,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.209,
-            "realtime_decision_ms": 0.022,
-            "guarded_response_ms": 0.02,
-            "voice_packet_build_ms": 0.26
+            "campaign_load_ms": 0.177,
+            "realtime_decision_ms": 0.015,
+            "guarded_response_ms": 0.016,
+            "voice_packet_build_ms": 0.233
           }
         },
         "trace": {
@@ -957,6 +966,7 @@
       "case_id": "VOICE-006-C09",
       "case_title": "German refusal interrupts and ends call",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Rufen Sie mich bitte nicht mehr an.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -1134,14 +1144,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.628,
+          "total_decision_loop_ms": 0.437,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.248,
-            "realtime_decision_ms": 0.011,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.345
+            "campaign_load_ms": 0.179,
+            "realtime_decision_ms": 0.008,
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.232
           }
         },
         "trace": {
@@ -1158,6 +1168,7 @@
       "case_id": "VOICE-006-C10",
       "case_title": "German human request interrupts and escalates",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Bitte eine echte Person anrufen.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -1236,12 +1247,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "agent_response": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+          "tts_text": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1266,8 +1277,8 @@
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
             "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
-            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
-            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "candidate_response": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
+            "final_response": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1335,14 +1346,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.466,
+          "total_decision_loop_ms": 0.464,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.19,
-            "realtime_decision_ms": 0.012,
-            "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.244
+            "campaign_load_ms": 0.198,
+            "realtime_decision_ms": 0.01,
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.237
           }
         },
         "trace": {
@@ -1359,6 +1370,7 @@
       "case_id": "VOICE-006-C11",
       "case_title": "German short acknowledgement does not stop the agent",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Verstanden.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -1383,6 +1395,7 @@
       "case_id": "VOICE-006-C12",
       "case_title": "German likely echo must not stop the agent",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-interim",
       "transcript": "monatlichen Preis die Vertragsbedingungen",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -1407,6 +1420,7 @@
       "case_id": "VOICE-006-C13",
       "case_title": "English audio-only event must not stop the agent",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "audio-only",
       "transcript": "",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1431,6 +1445,7 @@
       "case_id": "VOICE-006-C14",
       "case_title": "English overlapping transcript must be treated as echo",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-interim",
       "transcript": "monthly price contract terms worth your time",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1455,6 +1470,7 @@
       "case_id": "VOICE-006-C15",
       "case_title": "English short acknowledgement okay does not stop the agent",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Okay.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1479,6 +1495,7 @@
       "case_id": "VOICE-006-C16",
       "case_title": "English short acknowledgement got it does not stop the agent",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Got it.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1503,6 +1520,7 @@
       "case_id": "VOICE-006-C17",
       "case_title": "English wait-a-second interruption asks clarification",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Wait a second.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1527,6 +1545,7 @@
       "case_id": "VOICE-006-C18",
       "case_title": "English no-punctuation question becomes a new turn",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Can you explain the contract terms",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1549,12 +1568,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -1563,7 +1582,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "Can you explain the contract terms",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -1575,12 +1594,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -1588,8 +1607,8 @@
           "transcript": "Can you explain the contract terms",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1603,12 +1622,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1632,9 +1651,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
-            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
-            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "policy_response": "Thanks. May I ask one quick clarifying question?",
+            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1647,8 +1666,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -1661,19 +1680,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -1702,14 +1721,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.485,
+          "total_decision_loop_ms": 0.48,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.198,
-            "realtime_decision_ms": 0.017,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.246
+            "campaign_load_ms": 0.188,
+            "realtime_decision_ms": 0.014,
+            "guarded_response_ms": 0.015,
+            "voice_packet_build_ms": 0.257
           }
         },
         "trace": {
@@ -1726,6 +1745,7 @@
       "case_id": "VOICE-006-C19",
       "case_title": "English refusal variant interrupts and ends call",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "I am not interested.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1748,12 +1768,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -1762,7 +1782,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "I am not interested.",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -1774,12 +1794,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -1787,8 +1807,8 @@
           "transcript": "I am not interested.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -1804,12 +1824,12 @@
             "next_action": "suppress-contact",
             "call_control": "end-call",
             "bridge_response": null,
-            "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "agent_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "tts_text": "Understood. I will mark this contact so you are not called again. Goodbye.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -1833,9 +1853,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
-            "candidate_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
-            "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+            "policy_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+            "candidate_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
+            "final_response": "Understood. I will mark this contact so you are not called again. Goodbye.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -1848,8 +1868,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -1862,19 +1882,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -1903,14 +1923,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.721,
+          "total_decision_loop_ms": 0.443,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.246,
-            "realtime_decision_ms": 0.011,
-            "guarded_response_ms": 0.041,
-            "voice_packet_build_ms": 0.411
+            "campaign_load_ms": 0.173,
+            "realtime_decision_ms": 0.009,
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.244
           }
         },
         "trace": {
@@ -1927,6 +1947,7 @@
       "case_id": "VOICE-006-C20",
       "case_title": "English representative request interrupts and escalates",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Can I speak to a representative?",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -1949,12 +1970,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -1963,7 +1984,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "Can I speak to a representative?",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -1975,12 +1996,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -1988,8 +2009,8 @@
           "transcript": "Can I speak to a representative?",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2005,12 +2026,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "agent_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+          "tts_text": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2034,9 +2055,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
-            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
-            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
+            "candidate_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+            "final_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2049,8 +2070,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -2063,19 +2084,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -2104,14 +2125,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.455,
+          "total_decision_loop_ms": 0.43,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.184,
-            "realtime_decision_ms": 0.011,
-            "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.241
+            "campaign_load_ms": 0.172,
+            "realtime_decision_ms": 0.01,
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.23
           }
         },
         "trace": {
@@ -2128,6 +2149,7 @@
       "case_id": "VOICE-006-C21",
       "case_title": "English price objection becomes a meaningful new turn",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "The monthly price sounds too high for me.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -2150,12 +2172,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -2164,7 +2186,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "The monthly price sounds too high for me.",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -2176,12 +2198,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -2189,8 +2211,8 @@
           "transcript": "The monthly price sounds too high for me.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2204,12 +2226,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
+            "agent_response": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
+          "tts_text": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2233,9 +2255,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
-            "candidate_response": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
-            "final_response": "Danke. Damit wir die Passung schnell klaeren: Geht es eher darum, ob das fuer Ihre Situation passt, um den Preis oder um den Zeitpunkt?",
+            "policy_response": "Thanks. May I ask one quick clarifying question?",
+            "candidate_response": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
+            "final_response": "Thanks. To check fit without wasting time, is your main concern whether this is relevant for your situation, the price, or the timing?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2248,8 +2270,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -2262,19 +2284,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -2303,14 +2325,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.652,
+          "total_decision_loop_ms": 0.458,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.26,
-            "realtime_decision_ms": 0.023,
-            "guarded_response_ms": 0.02,
-            "voice_packet_build_ms": 0.34
+            "campaign_load_ms": 0.177,
+            "realtime_decision_ms": 0.014,
+            "guarded_response_ms": 0.013,
+            "voice_packet_build_ms": 0.247
           }
         },
         "trace": {
@@ -2327,6 +2349,7 @@
       "case_id": "VOICE-006-C22",
       "case_title": "English decision hesitation becomes a meaningful new turn",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "I need to talk to my partner before deciding.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -2349,12 +2372,12 @@
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
         "voice_milestone": "VOICE-004",
         "provider": "browser-speech-recognition-demo",
-        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign_id": "campaign-prod-005-b2b-software",
         "campaign": {
-          "product_name": "Internet and mobile plan review",
-          "product_category": "telecom",
-          "customer_type": "b2c",
-          "language": "de"
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
         },
         "stage": "relevance-check",
         "input_type": "speech-final",
@@ -2363,7 +2386,7 @@
           "transcript_source": "browser-final-result",
           "transcript": "I need to talk to my partner before deciding.",
           "confidence": null,
-          "language": "de",
+          "language": "en",
           "requires_api_key": false,
           "audio_uploaded_to_local_server": false,
           "transcript_sent_to_local_server": true,
@@ -2375,12 +2398,12 @@
           "voice_milestone": "VOICE-001",
           "provider": "dry-run",
           "mode": "metadata-only",
-          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign_id": "campaign-prod-005-b2b-software",
           "campaign": {
-            "product_name": "Internet and mobile plan review",
-            "product_category": "telecom",
-            "customer_type": "b2c",
-            "language": "de"
+            "product_name": "Lead routing workflow software",
+            "product_category": "software-b2b",
+            "customer_type": "b2b",
+            "language": "en"
           },
           "stage": "relevance-check",
           "input_type": "speech-final",
@@ -2388,8 +2411,8 @@
           "transcript": "I need to talk to my partner before deciding.",
           "decision": {
             "case_id": "REALTIME-CLI-TURN",
-            "campaign_language": "de",
-            "response_language": "de",
+            "campaign_language": "en",
+            "response_language": "en",
             "response_mode": "fast-response",
             "first_response_latency_budget_ms": 700,
             "first_response_latency_bucket": "under-1s",
@@ -2403,12 +2426,12 @@
             "next_action": "ask-follow-up",
             "call_control": "continue-call",
             "bridge_response": null,
-            "agent_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "agent_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+          "tts_text": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -2432,9 +2455,9 @@
             "response_generation_id": "RESP-001-local-guarded",
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
-            "policy_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
-            "candidate_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
-            "final_response": "Danke. Damit es hilfreich bleibt: Geht es eher um Preis, Passung, Zeitpunkt oder genaue Details?",
+            "policy_response": "Thanks. May I ask one quick clarifying question?",
+            "candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+            "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -2447,8 +2470,8 @@
             "guardrails": {
               "guardrail_source": "SalesCampaign plus universal response-safety rules",
               "allowed_claims": [
-                "A human specialist can review available plan options.",
-                "Plan details must be checked against approved product data."
+                "A specialist can review workflow fit.",
+                "The first callback is non-binding."
               ],
               "forbidden_claims": [
                 "guarantee",
@@ -2461,19 +2484,19 @@
                 "payout",
                 "legal advice",
                 "medical advice",
-                "guaranteed coverage",
-                "guaranteed speed",
-                "unsupported technical claims"
+                "guaranteed conversion lift",
+                "unsupported integration claims",
+                "unsupported security claims"
               ],
               "required_disclosures": [
-                "Technical details depend on address and plan availability."
+                "Integration details require specialist review."
               ],
               "escalation_triggers": [
-                "coverage guarantee",
-                "technical certainty request",
+                "integration question",
+                "security question",
                 "human request"
               ],
-              "human_handoff_role": "telecom specialist",
+              "human_handoff_role": "solutions specialist",
               "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
             },
             "response_constraints": {
@@ -2502,14 +2525,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.713,
+          "total_decision_loop_ms": 0.444,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.257,
-            "realtime_decision_ms": 0.02,
-            "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.409
+            "campaign_load_ms": 0.181,
+            "realtime_decision_ms": 0.014,
+            "guarded_response_ms": 0.014,
+            "voice_packet_build_ms": 0.229
           }
         },
         "trace": {
@@ -2526,6 +2549,7 @@
       "case_id": "VOICE-006-C23",
       "case_title": "English customer speech when agent is idle does not cancel speech",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Hello, are you still there?",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -2550,6 +2574,7 @@
       "case_id": "VOICE-006-C24",
       "case_title": "English stop phrase when agent is idle does not trigger barge-in",
       "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
       "audio_event_type": "speech-final",
       "transcript": "Stop for a moment.",
       "agent_response_under_playback": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
@@ -2574,6 +2599,7 @@
       "case_id": "VOICE-006-C25",
       "case_title": "German background noise must not stop the agent",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "background-noise",
       "transcript": "",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -2598,6 +2624,7 @@
       "case_id": "VOICE-006-C26",
       "case_title": "German audio-only event must not stop the agent",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "audio-only",
       "transcript": "",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -2622,6 +2649,7 @@
       "case_id": "VOICE-006-C27",
       "case_title": "German overlapping transcript must be treated as echo",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-interim",
       "transcript": "monatlichen Preis Vertragsbedingungen kurzer Vergleich lohnt",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -2646,6 +2674,7 @@
       "case_id": "VOICE-006-C28",
       "case_title": "German acknowledgement variant does not stop the agent",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Alles klar.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -2670,6 +2699,7 @@
       "case_id": "VOICE-006-C29",
       "case_title": "German moment-bitte interruption asks clarification",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Moment bitte.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -2694,6 +2724,7 @@
       "case_id": "VOICE-006-C30",
       "case_title": "German no-punctuation question becomes a new turn",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Koennen Sie das erklaeren",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -2869,14 +2900,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.741,
+          "total_decision_loop_ms": 0.469,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.271,
-            "realtime_decision_ms": 0.023,
-            "guarded_response_ms": 0.022,
-            "voice_packet_build_ms": 0.416
+            "campaign_load_ms": 0.187,
+            "realtime_decision_ms": 0.018,
+            "guarded_response_ms": 0.015,
+            "voice_packet_build_ms": 0.243
           }
         },
         "trace": {
@@ -2893,6 +2924,7 @@
       "case_id": "VOICE-006-C31",
       "case_title": "German refusal variant interrupts and ends call",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Kein Interesse.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -3070,14 +3102,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.687,
+          "total_decision_loop_ms": 0.444,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.277,
-            "realtime_decision_ms": 0.012,
-            "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.37
+            "campaign_load_ms": 0.18,
+            "realtime_decision_ms": 0.008,
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.237
           }
         },
         "trace": {
@@ -3094,6 +3126,7 @@
       "case_id": "VOICE-006-C32",
       "case_title": "German employee request interrupts and escalates",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Ich moechte mit einem Mitarbeiter sprechen.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -3172,12 +3205,12 @@
             "next_action": "escalate",
             "call_control": "transfer-or-escalate",
             "bridge_response": null,
-            "agent_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "agent_response": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
             "rationale": "Deterministic runtime policy selected the fastest safe response path.",
             "first_response_latency_ms": 0,
             "first_response_latency_observed_bucket": "under-1s"
           },
-          "tts_text": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+          "tts_text": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
           "voice": {
             "name": "Neutral Synthetic Test Voice",
             "style": "neutral-synthetic-test",
@@ -3202,8 +3235,8 @@
             "provider": "local-guarded-composer",
             "generation_mode": "local deterministic composer with guardrail validation",
             "policy_response": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
-            "candidate_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
-            "final_response": "Natuerlich. Ich leite das an einen telecom specialist weiter, statt automatisch fortzufahren.",
+            "candidate_response": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
+            "final_response": "Natuerlich. Ich leite das an einen Spezialisten weiter, statt automatisch fortzufahren.",
             "validation": {
               "validator": "RESP-001 substring forbidden-claim check",
               "checked_text_source": "candidate_response",
@@ -3271,14 +3304,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.558,
+          "total_decision_loop_ms": 0.465,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.246,
-            "realtime_decision_ms": 0.012,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.277
+            "campaign_load_ms": 0.173,
+            "realtime_decision_ms": 0.01,
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.264
           }
         },
         "trace": {
@@ -3295,6 +3328,7 @@
       "case_id": "VOICE-006-C33",
       "case_title": "German price objection becomes a meaningful new turn",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Der monatliche Preis ist mir zu hoch.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -3470,14 +3504,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.522,
+          "total_decision_loop_ms": 0.435,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.182,
-            "realtime_decision_ms": 0.017,
-            "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.299
+            "campaign_load_ms": 0.173,
+            "realtime_decision_ms": 0.014,
+            "guarded_response_ms": 0.014,
+            "voice_packet_build_ms": 0.228
           }
         },
         "trace": {
@@ -3494,6 +3528,7 @@
       "case_id": "VOICE-006-C34",
       "case_title": "German decision hesitation becomes a meaningful new turn",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Ich muss erst mit meinem Partner sprechen.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -3669,14 +3704,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.468,
+          "total_decision_loop_ms": 0.573,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.183,
-            "realtime_decision_ms": 0.016,
-            "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.247
+            "campaign_load_ms": 0.188,
+            "realtime_decision_ms": 0.015,
+            "guarded_response_ms": 0.014,
+            "voice_packet_build_ms": 0.351
           }
         },
         "trace": {
@@ -3693,6 +3728,7 @@
       "case_id": "VOICE-006-C35",
       "case_title": "German customer speech when agent is idle does not cancel speech",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Hallo, sind Sie noch da?",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
@@ -3717,6 +3753,7 @@
       "case_id": "VOICE-006-C36",
       "case_title": "German question when agent is idle does not trigger barge-in",
       "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
       "audio_event_type": "speech-final",
       "transcript": "Ich habe eine Frage.",
       "agent_response_under_playback": "Das verstehe ich. Geht es Ihnen eher um den monatlichen Preis, die Vertragsbedingungen oder darum, ob sich ein kurzer Vergleich ueberhaupt lohnt?",
