@@ -97,5 +97,5 @@ The validator checks export mode, decision mode, browser speech API wiring, cons
 ## Next Milestones
 
 - VOICE-005: latency measurement for the local browser decision loop
-- VOICE-006: interruption and barge-in behavior
+- VOICE-006: safe interruption and barge-in behavior
 - VOICE-007: production ASR integration behind explicit key/privacy gates

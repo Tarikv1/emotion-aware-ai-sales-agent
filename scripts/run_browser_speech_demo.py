@@ -11,6 +11,7 @@ from generate_guarded_response import apply_guarded_response_to_decision
 from generate_voice_response import build_voice_packet, resolve_project_path
 from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
 from run_realtime_turn_simulation import load_realtime_cases
+from voice_interruption_policy import interruption_policy_metadata
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,6 +77,7 @@ def build_metadata(campaign_id: str, stage: str, host: str, port: int, cases_pat
             "price_objection": PRICE_SAMPLE_TRANSCRIPT,
             "product_detail_lookup": LOOKUP_SAMPLE_TRANSCRIPT,
         },
+        "interruption_policy": interruption_policy_metadata(),
         "case_file": project_relative_string(cases_path),
     }
 
@@ -352,6 +354,7 @@ def render_html(metadata: dict) -> str:
       <h1>VOICE-004 Browser Speech Demo</h1>
       <p>No API key. Browser speech recognition captures the transcript, then this local page sends text only to the local Python agent at <strong>{escaped_url}</strong>. The sales decision comes from the reusable realtime agent core, and the spoken wording passes through RESP-001 guarded response generation.</p>
       <p>Choose the recognition language before speaking. If you speak English while the recognizer is set to German, the browser may force the words into German-looking text.</p>
+      <p>VOICE-006 safe interruption is conservative: raw audio alone does not cancel agent speech. The demo pauses only after meaningful non-echo customer speech, and short ambiguous interruptions ask a clarification question.</p>
       <label>
         <input id="consentCheckbox" type="checkbox">
         I understand this is a local prototype. I will not use private customer audio, and I consent to starting browser microphone recognition for this demo.
@@ -392,6 +395,10 @@ def render_html(metadata: dict) -> str:
         <h2>Decision Summary</h2>
         <pre id="decisionSummary">No decision yet.</pre>
       </section>
+      <section>
+        <h2>Interruption State</h2>
+        <pre id="interruptionState">No interruption candidate yet.</pre>
+      </section>
       <section class="full">
         <h2>Decision Packet</h2>
         <pre id="packetBox">No packet yet.</pre>
@@ -417,12 +424,108 @@ def render_html(metadata: dict) -> str:
     const responseBox = document.querySelector("#responseBox");
     const lastSentTranscript = document.querySelector("#lastSentTranscript");
     const decisionSummary = document.querySelector("#decisionSummary");
+    const interruptionState = document.querySelector("#interruptionState");
     const packetBox = document.querySelector("#packetBox");
     const status = document.querySelector("#status");
     let latestResponse = "";
+    let agentIsSpeaking = false;
 
     function setStatus(message) {{
       status.textContent = message;
+    }}
+
+    function normalizeForInterruption(text) {{
+      return (text || "").toLowerCase().replace(/[^a-z0-9äöüß]+/g, " ").trim().replace(/\\s+/g, " ");
+    }}
+
+    function containsAny(normalized, phrases) {{
+      return phrases.some(phrase => normalized.includes(phrase));
+    }}
+
+    function tokenOverlapRatio(transcript, agentResponse) {{
+      const transcriptTokens = new Set(normalizeForInterruption(transcript).split(" ").filter(Boolean));
+      const responseTokens = new Set(normalizeForInterruption(agentResponse).split(" ").filter(Boolean));
+      if (!transcriptTokens.size || !responseTokens.size) return 0;
+      let overlap = 0;
+      transcriptTokens.forEach(token => {{
+        if (responseTokens.has(token)) overlap += 1;
+      }});
+      return overlap / transcriptTokens.size;
+    }}
+
+    function classifyInterruptionCandidate(transcript, currentAgentResponse, activeAgentSpeech) {{
+      const normalized = normalizeForInterruption(transcript);
+      const stopPhrases = ["stop calling", "do not call", "don't call", "stop", "no thanks", "not interested", "leave me alone", "rufen sie mich nicht", "nicht mehr an"];
+      const humanPhrases = ["human", "real person", "person call", "specialist", "agent", "mitarbeiter", "mensch", "person anrufen"];
+      const acknowledgements = ["ok", "okay", "yes", "yeah", "yep", "mhm", "uh huh", "alright", "i see", "verstanden", "ja"];
+      const ambiguous = ["wait", "huh", "what", "sorry", "one second", "hold on", "moment", "kurz", "was", "wie bitte"];
+      const questionPhrases = ["what", "why", "how", "can you", "could you", "does that", "what does", "explain", "mean", "question", "frage"];
+      const likely_echo = normalized && normalized.split(" ").length >= 4 && normalizeForInterruption(currentAgentResponse).includes(normalized);
+
+      const base = {{
+        voice_milestone: "VOICE-006",
+        audio_detected: Boolean(normalized),
+        speech_detected: Boolean(normalized),
+        customer_speech_detected: false,
+        interruption_confirmed: false,
+        interruption_type: "noise_or_no_transcript",
+        agent_speech_action: "continue-speaking",
+        clarification_response: null
+      }};
+
+      if (!activeAgentSpeech) {{
+        return {{ ...base, interruption_type: "no_active_agent_speech" }};
+      }}
+      if (!normalized) return base;
+      if (likely_echo || tokenOverlapRatio(transcript, currentAgentResponse) >= 0.72) {{
+        return {{ ...base, audio_detected: true, speech_detected: true, interruption_type: "likely_echo" }};
+      }}
+      if (containsAny(normalized, stopPhrases)) {{
+        return {{ ...base, customer_speech_detected: true, interruption_confirmed: true, interruption_type: "stop_or_refusal", agent_speech_action: "cancel-agent-speech-and-process-turn" }};
+      }}
+      if (containsAny(normalized, humanPhrases)) {{
+        return {{ ...base, customer_speech_detected: true, interruption_confirmed: true, interruption_type: "human_request", agent_speech_action: "cancel-agent-speech-and-process-turn" }};
+      }}
+      if (acknowledgements.includes(normalized)) {{
+        return {{ ...base, customer_speech_detected: true, interruption_type: "short_acknowledgement" }};
+      }}
+      if (ambiguous.includes(normalized) || normalized.length <= 8) {{
+        return {{
+          ...base,
+          customer_speech_detected: true,
+          interruption_confirmed: true,
+          interruption_type: "short_ambiguous_interruption",
+          agent_speech_action: "pause-and-ask-clarification",
+          clarification_response: "I paused there. Was something unclear, or did you want to ask something?"
+        }};
+      }}
+      if (transcript.includes("?") || containsAny(normalized, questionPhrases)) {{
+        return {{ ...base, customer_speech_detected: true, interruption_confirmed: true, interruption_type: "clear_customer_question", agent_speech_action: "cancel-agent-speech-and-process-turn" }};
+      }}
+      return {{ ...base, customer_speech_detected: true, interruption_confirmed: true, interruption_type: "meaningful_customer_interruption", agent_speech_action: "cancel-agent-speech-and-process-turn" }};
+    }}
+
+    function handleInterruptionCandidate(transcript) {{
+      const activeSpeech = agentIsSpeaking || window.speechSynthesis.speaking;
+      const decision = classifyInterruptionCandidate(transcript, latestResponse, activeSpeech);
+      interruptionState.textContent = JSON.stringify(decision, null, 2);
+      if (!decision.interruption_confirmed) return decision;
+
+      if (decision.agent_speech_action === "pause-and-ask-clarification") {{
+        window.speechSynthesis.cancel();
+        agentIsSpeaking = false;
+        latestResponse = decision.clarification_response;
+        responseBox.textContent = latestResponse;
+        setStatus("Paused for a short interruption. Asking whether something was unclear.");
+        return decision;
+      }}
+
+      if (decision.agent_speech_action === "cancel-agent-speech-and-process-turn") {{
+        window.speechSynthesis.cancel();
+        agentIsSpeaking = false;
+        setStatus("Confirmed customer interruption. Review transcript and send it as the next turn.");
+      }}
+      return decision;
     }}
 
     listenButton.addEventListener("click", () => {{
@@ -447,6 +550,7 @@ def render_html(metadata: dict) -> str:
           transcript += event.results[index][0].transcript;
         }}
         transcriptBox.value = transcript.trim();
+        handleInterruptionCandidate(transcriptBox.value);
       }};
       recognition.start();
     }});
@@ -512,6 +616,9 @@ def render_html(metadata: dict) -> str:
       const utterance = new SpeechSynthesisUtterance(latestResponse);
       utterance.lang = "en-US";
       utterance.rate = 0.95;
+      utterance.onstart = () => {{ agentIsSpeaking = true; }};
+      utterance.onend = () => {{ agentIsSpeaking = false; }};
+      utterance.onerror = () => {{ agentIsSpeaking = false; }};
       window.speechSynthesis.speak(utterance);
     }});
   </script>
