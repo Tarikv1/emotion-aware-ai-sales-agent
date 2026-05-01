@@ -11,9 +11,9 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Cases: 8
 - Language counts: `{"de": 4, "en": 4}`
 - Response-language matches: `8 / 8`
-- Minimum local decision-loop latency: `0.453 ms`
-- Maximum local decision-loop latency: `0.759 ms`
-- Average local decision-loop latency: `0.52 ms`
+- Minimum local decision-loop latency: `0.439 ms`
+- Maximum local decision-loop latency: `0.55 ms`
+- Average local decision-loop latency: `0.47 ms`
 - Under 1s: `8`
 - Under 2s: `0`
 - Over 2s: `0`
@@ -34,10 +34,10 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `price-objection`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.559 ms`
+- Total local decision-loop latency: `0.55 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.016 ms`
+- RESP-001 segment: `0.017 ms`
 
 ### VOICE-005-C02: German claim boundary escalation fast path
 
@@ -45,7 +45,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `claim-boundary`
 - Response mode: `fast-response`
 - Call control: `transfer-or-escalate`
-- Total local decision-loop latency: `0.477 ms`
+- Total local decision-loop latency: `0.467 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.015 ms`
@@ -56,7 +56,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `product-detail-lookup`
 - Response mode: `bridge-then-background`
 - Call control: `bridge-then-continue`
-- Total local decision-loop latency: `0.474 ms`
+- Total local decision-loop latency: `0.453 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.013 ms`
@@ -67,7 +67,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `unknown-runtime-signal`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.496 ms`
+- Total local decision-loop latency: `0.453 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.016 ms`
@@ -78,10 +78,10 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `price-objection`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.46 ms`
+- Total local decision-loop latency: `0.445 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
-- RESP-001 segment: `0.013 ms`
+- RESP-001 segment: `0.012 ms`
 
 ### VOICE-005-C06: English claim boundary escalation fast path
 
@@ -89,7 +89,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `claim-boundary`
 - Response mode: `fast-response`
 - Call control: `transfer-or-escalate`
-- Total local decision-loop latency: `0.453 ms`
+- Total local decision-loop latency: `0.439 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.014 ms`
@@ -100,7 +100,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `product-detail-lookup`
 - Response mode: `bridge-then-background`
 - Call control: `bridge-then-continue`
-- Total local decision-loop latency: `0.759 ms`
+- Total local decision-loop latency: `0.467 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.012 ms`
@@ -111,7 +111,7 @@ Browser ASR and browser TTS playback are not measured in VOICE-005. This checkpo
 - Sales difficulty: `unknown-runtime-signal`
 - Response mode: `fast-response`
 - Call control: `continue-call`
-- Total local decision-loop latency: `0.468 ms`
+- Total local decision-loop latency: `0.455 ms`
 - Observed bucket: `under-1s`
 - Budget pass: `True`
 - RESP-001 segment: `0.015 ms`

@@ -11,9 +11,9 @@
       "en": 4
     },
     "response_language_match_count": 8,
-    "min_total_decision_loop_ms": 0.453,
-    "max_total_decision_loop_ms": 0.759,
-    "avg_total_decision_loop_ms": 0.52,
+    "min_total_decision_loop_ms": 0.439,
+    "max_total_decision_loop_ms": 0.55,
+    "avg_total_decision_loop_ms": 0.47,
     "under_1s_count": 8,
     "under_2s_count": 0,
     "over_2s_count": 0,
@@ -30,14 +30,14 @@
       "sales_difficulty": "price-objection",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.559,
+      "total_decision_loop_ms": 0.55,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.222,
+        "campaign_load_ms": 0.223,
         "realtime_decision_ms": 0.023,
-        "guarded_response_ms": 0.016,
-        "voice_packet_build_ms": 0.285
+        "guarded_response_ms": 0.017,
+        "voice_packet_build_ms": 0.276
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -196,14 +196,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.559,
+          "total_decision_loop_ms": 0.55,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.222,
+            "campaign_load_ms": 0.223,
             "realtime_decision_ms": 0.023,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.285
+            "guarded_response_ms": 0.017,
+            "voice_packet_build_ms": 0.276
           }
         },
         "trace": {
@@ -226,14 +226,14 @@
       "sales_difficulty": "claim-boundary",
       "response_mode": "fast-response",
       "call_control": "transfer-or-escalate",
-      "total_decision_loop_ms": 0.477,
+      "total_decision_loop_ms": 0.467,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.188,
+        "campaign_load_ms": 0.185,
         "realtime_decision_ms": 0.014,
         "guarded_response_ms": 0.015,
-        "voice_packet_build_ms": 0.253
+        "voice_packet_build_ms": 0.245
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -394,14 +394,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.477,
+          "total_decision_loop_ms": 0.467,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.188,
+            "campaign_load_ms": 0.185,
             "realtime_decision_ms": 0.014,
             "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.253
+            "voice_packet_build_ms": 0.245
           }
         },
         "trace": {
@@ -424,14 +424,14 @@
       "sales_difficulty": "product-detail-lookup",
       "response_mode": "bridge-then-background",
       "call_control": "bridge-then-continue",
-      "total_decision_loop_ms": 0.474,
+      "total_decision_loop_ms": 0.453,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.197,
-        "realtime_decision_ms": 0.014,
+        "campaign_load_ms": 0.179,
+        "realtime_decision_ms": 0.013,
         "guarded_response_ms": 0.013,
-        "voice_packet_build_ms": 0.243
+        "voice_packet_build_ms": 0.24
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -592,14 +592,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.474,
+          "total_decision_loop_ms": 0.453,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.197,
-            "realtime_decision_ms": 0.014,
+            "campaign_load_ms": 0.179,
+            "realtime_decision_ms": 0.013,
             "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.243
+            "voice_packet_build_ms": 0.24
           }
         },
         "trace": {
@@ -622,14 +622,14 @@
       "sales_difficulty": "unknown-runtime-signal",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.496,
+      "total_decision_loop_ms": 0.453,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.177,
+        "campaign_load_ms": 0.176,
         "realtime_decision_ms": 0.017,
         "guarded_response_ms": 0.016,
-        "voice_packet_build_ms": 0.279
+        "voice_packet_build_ms": 0.237
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -788,14 +788,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.496,
+          "total_decision_loop_ms": 0.453,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.177,
+            "campaign_load_ms": 0.176,
             "realtime_decision_ms": 0.017,
             "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.279
+            "voice_packet_build_ms": 0.237
           }
         },
         "trace": {
@@ -818,14 +818,14 @@
       "sales_difficulty": "price-objection",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.46,
+      "total_decision_loop_ms": 0.445,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.181,
+        "campaign_load_ms": 0.174,
         "realtime_decision_ms": 0.016,
-        "guarded_response_ms": 0.013,
-        "voice_packet_build_ms": 0.242
+        "guarded_response_ms": 0.012,
+        "voice_packet_build_ms": 0.238
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -984,14 +984,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.46,
+          "total_decision_loop_ms": 0.445,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.181,
+            "campaign_load_ms": 0.174,
             "realtime_decision_ms": 0.016,
-            "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.242
+            "guarded_response_ms": 0.012,
+            "voice_packet_build_ms": 0.238
           }
         },
         "trace": {
@@ -1014,14 +1014,14 @@
       "sales_difficulty": "claim-boundary",
       "response_mode": "fast-response",
       "call_control": "transfer-or-escalate",
-      "total_decision_loop_ms": 0.453,
+      "total_decision_loop_ms": 0.439,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.177,
+        "campaign_load_ms": 0.172,
         "realtime_decision_ms": 0.012,
         "guarded_response_ms": 0.014,
-        "voice_packet_build_ms": 0.243
+        "voice_packet_build_ms": 0.235
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -1182,14 +1182,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.453,
+          "total_decision_loop_ms": 0.439,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.177,
+            "campaign_load_ms": 0.172,
             "realtime_decision_ms": 0.012,
             "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.243
+            "voice_packet_build_ms": 0.235
           }
         },
         "trace": {
@@ -1212,14 +1212,14 @@
       "sales_difficulty": "product-detail-lookup",
       "response_mode": "bridge-then-background",
       "call_control": "bridge-then-continue",
-      "total_decision_loop_ms": 0.759,
+      "total_decision_loop_ms": 0.467,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.175,
-        "realtime_decision_ms": 0.013,
+        "campaign_load_ms": 0.203,
+        "realtime_decision_ms": 0.012,
         "guarded_response_ms": 0.012,
-        "voice_packet_build_ms": 0.552
+        "voice_packet_build_ms": 0.233
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -1380,14 +1380,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.759,
+          "total_decision_loop_ms": 0.467,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.175,
-            "realtime_decision_ms": 0.013,
+            "campaign_load_ms": 0.203,
+            "realtime_decision_ms": 0.012,
             "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.552
+            "voice_packet_build_ms": 0.233
           }
         },
         "trace": {
@@ -1410,14 +1410,14 @@
       "sales_difficulty": "unknown-runtime-signal",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.468,
+      "total_decision_loop_ms": 0.455,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.176,
-        "realtime_decision_ms": 0.016,
+        "campaign_load_ms": 0.174,
+        "realtime_decision_ms": 0.015,
         "guarded_response_ms": 0.015,
-        "voice_packet_build_ms": 0.255
+        "voice_packet_build_ms": 0.244
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -1576,14 +1576,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.468,
+          "total_decision_loop_ms": 0.455,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.176,
-            "realtime_decision_ms": 0.016,
+            "campaign_load_ms": 0.174,
+            "realtime_decision_ms": 0.015,
             "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.255
+            "voice_packet_build_ms": 0.244
           }
         },
         "trace": {

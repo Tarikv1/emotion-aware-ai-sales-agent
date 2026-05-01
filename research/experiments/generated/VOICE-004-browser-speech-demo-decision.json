@@ -157,14 +157,14 @@
     "browser_tts_playback_measured": false,
     "target_first_response_ms": 2000,
     "target_tts_start_ms": 500,
-    "total_decision_loop_ms": 0.534,
+    "total_decision_loop_ms": 0.529,
     "observed_bucket": "under-1s",
     "budget_pass": true,
     "segments": {
-      "campaign_load_ms": 0.216,
-      "realtime_decision_ms": 0.019,
-      "guarded_response_ms": 0.018,
-      "voice_packet_build_ms": 0.27
+      "campaign_load_ms": 0.222,
+      "realtime_decision_ms": 0.02,
+      "guarded_response_ms": 0.021,
+      "voice_packet_build_ms": 0.253
     }
   },
   "trace": {

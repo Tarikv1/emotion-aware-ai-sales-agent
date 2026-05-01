@@ -313,14 +313,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.546,
+          "total_decision_loop_ms": 0.542,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.218,
-            "realtime_decision_ms": 0.02,
-            "guarded_response_ms": 0.018,
-            "voice_packet_build_ms": 0.278
+            "campaign_load_ms": 0.222,
+            "realtime_decision_ms": 0.021,
+            "guarded_response_ms": 0.019,
+            "voice_packet_build_ms": 0.27
           }
         },
         "trace": {
@@ -515,14 +515,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.468,
+          "total_decision_loop_ms": 0.472,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.182,
-            "realtime_decision_ms": 0.01,
-            "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.255
+            "campaign_load_ms": 0.186,
+            "realtime_decision_ms": 0.017,
+            "guarded_response_ms": 0.015,
+            "voice_packet_build_ms": 0.248
           }
         },
         "trace": {
@@ -717,14 +717,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.445,
+          "total_decision_loop_ms": 0.573,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.178,
+            "campaign_load_ms": 0.267,
             "realtime_decision_ms": 0.011,
             "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.238
+            "voice_packet_build_ms": 0.275
           }
         },
         "trace": {
@@ -942,14 +942,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.447,
+          "total_decision_loop_ms": 0.476,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.177,
-            "realtime_decision_ms": 0.015,
-            "guarded_response_ms": 0.016,
-            "voice_packet_build_ms": 0.233
+            "campaign_load_ms": 0.185,
+            "realtime_decision_ms": 0.016,
+            "guarded_response_ms": 0.017,
+            "voice_packet_build_ms": 0.252
           }
         },
         "trace": {
@@ -1144,14 +1144,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.437,
+          "total_decision_loop_ms": 0.448,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.179,
+            "campaign_load_ms": 0.181,
             "realtime_decision_ms": 0.008,
-            "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.232
+            "guarded_response_ms": 0.013,
+            "voice_packet_build_ms": 0.239
           }
         },
         "trace": {
@@ -1346,14 +1346,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.464,
+          "total_decision_loop_ms": 0.446,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.198,
-            "realtime_decision_ms": 0.01,
+            "campaign_load_ms": 0.181,
+            "realtime_decision_ms": 0.011,
             "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.237
+            "voice_packet_build_ms": 0.235
           }
         },
         "trace": {
@@ -1721,14 +1721,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.48,
+          "total_decision_loop_ms": 0.458,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.188,
+            "campaign_load_ms": 0.18,
             "realtime_decision_ms": 0.014,
             "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.257
+            "voice_packet_build_ms": 0.241
           }
         },
         "trace": {
@@ -1923,14 +1923,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.443,
+          "total_decision_loop_ms": 0.467,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.173,
+            "campaign_load_ms": 0.176,
             "realtime_decision_ms": 0.009,
             "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.244
+            "voice_packet_build_ms": 0.264
           }
         },
         "trace": {
@@ -2125,14 +2125,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.43,
+          "total_decision_loop_ms": 0.447,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.172,
+            "campaign_load_ms": 0.181,
             "realtime_decision_ms": 0.01,
             "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.23
+            "voice_packet_build_ms": 0.237
           }
         },
         "trace": {
@@ -2325,14 +2325,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.458,
+          "total_decision_loop_ms": 0.456,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.177,
+            "campaign_load_ms": 0.18,
             "realtime_decision_ms": 0.014,
-            "guarded_response_ms": 0.013,
-            "voice_packet_build_ms": 0.247
+            "guarded_response_ms": 0.014,
+            "voice_packet_build_ms": 0.241
           }
         },
         "trace": {
@@ -2525,14 +2525,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.444,
+          "total_decision_loop_ms": 0.451,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.181,
-            "realtime_decision_ms": 0.014,
+            "campaign_load_ms": 0.179,
+            "realtime_decision_ms": 0.015,
             "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.229
+            "voice_packet_build_ms": 0.237
           }
         },
         "trace": {
@@ -2900,14 +2900,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.469,
+          "total_decision_loop_ms": 0.455,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.187,
-            "realtime_decision_ms": 0.018,
+            "campaign_load_ms": 0.18,
+            "realtime_decision_ms": 0.014,
             "guarded_response_ms": 0.015,
-            "voice_packet_build_ms": 0.243
+            "voice_packet_build_ms": 0.239
           }
         },
         "trace": {
@@ -3102,14 +3102,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.444,
+          "total_decision_loop_ms": 0.44,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.18,
+            "campaign_load_ms": 0.177,
             "realtime_decision_ms": 0.008,
             "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.237
+            "voice_packet_build_ms": 0.236
           }
         },
         "trace": {
@@ -3304,14 +3304,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.465,
+          "total_decision_loop_ms": 0.477,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.173,
+            "campaign_load_ms": 0.183,
             "realtime_decision_ms": 0.01,
             "guarded_response_ms": 0.012,
-            "voice_packet_build_ms": 0.264
+            "voice_packet_build_ms": 0.265
           }
         },
         "trace": {
@@ -3504,14 +3504,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.435,
+          "total_decision_loop_ms": 0.448,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.173,
+            "campaign_load_ms": 0.177,
             "realtime_decision_ms": 0.014,
             "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.228
+            "voice_packet_build_ms": 0.236
           }
         },
         "trace": {
@@ -3704,14 +3704,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.573,
+          "total_decision_loop_ms": 0.453,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.188,
-            "realtime_decision_ms": 0.015,
+            "campaign_load_ms": 0.177,
+            "realtime_decision_ms": 0.014,
             "guarded_response_ms": 0.014,
-            "voice_packet_build_ms": 0.351
+            "voice_packet_build_ms": 0.241
           }
         },
         "trace": {

@@ -16,6 +16,46 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-01 - VOICE-007 provider readiness gate
+
+- Objective: decide the safe next path toward real ASR/TTS providers without introducing API keys, cloud audio upload, or uncontrolled provider dependencies
+- Action taken:
+  - added a deterministic ASR/TTS provider-readiness candidate file
+  - implemented `scripts/evaluate_voice_provider_readiness.py`
+  - added `scripts/validate_voice_007_provider_readiness.py` as the regression validator
+  - generated JSON and Markdown readiness artifacts
+  - documented the product checkpoint as `VOICE-007`
+- Data used:
+  - existing `VOICE-001` dry-run and Windows SAPI TTS path
+  - existing `VOICE-002` manual transcript path
+  - existing `VOICE-003` ASR provider-family comparison
+  - existing `VOICE-004` browser speech recognition and synthesis demo
+  - low-latency runtime target of roughly 1-2 seconds for first response
+- Output created:
+  - `research/experiments/cases/voice-007-provider-readiness-candidates.json`
+  - `scripts/evaluate_voice_provider_readiness.py`
+  - `scripts/validate_voice_007_provider_readiness.py`
+  - `docs/product/VOICE_007_PROVIDER_READINESS_GATE.md`
+  - `research/experiments/VOICE-007-provider-readiness-gate.md`
+  - `research/experiments/generated/VOICE-007-provider-readiness.json`
+  - `research/experiments/generated/VOICE-007-provider-readiness-report.md`
+- What was learned:
+  - the next safe no-key ASR path remains the browser speech recognition demo, with manual transcript as the regression baseline
+  - the next safe no-key TTS path is local Windows SAPI, with dry-run TTS packets as the regression baseline
+  - cloud streaming ASR and cloud low-latency TTS are production-relevant, but they must remain blocked until key management, privacy review, retention review, provider terms, and latency measurement are handled
+  - cloned voice TTS is not needed for the thesis prototype and should stay blocked behind explicit voice consent and legal review
+- Why it matters for the thesis:
+  - this creates a defensible methodology step between browser/local prototypes and real cloud provider integration
+  - it shows that provider selection is evaluated through safety, latency, bilingual support, fallback, and reproducibility constraints rather than convenience alone
+- Limitations:
+  - VOICE-007 scores provider classes, not specific vendors
+  - no real latency, accuracy, naturalness, or German-language provider quality is measured yet
+  - vendor-specific claims must be researched later before choosing a concrete provider
+- Open questions:
+  - whether `VOICE-008` should first test local Windows SAPI TTS audio generation or start vendor-specific provider research
+  - what privacy and data-retention rules should be required before any real customer audio leaves the local environment
+  - whether provider comparisons should eventually include cost estimates and German accent robustness
+
 ### 2026-05-01 - Active bilingual runtime backfill and debugging trail
 
 - Objective: make the active voice/runtime experiments explicitly bilingual without turning the product into separate German and English products

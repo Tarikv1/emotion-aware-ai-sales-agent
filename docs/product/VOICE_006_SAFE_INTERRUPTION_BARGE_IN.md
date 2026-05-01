@@ -163,7 +163,9 @@ research/experiments/generated/VOICE-006-browser-speech-demo-metadata.json
 
 ## Next Work
 
-VOICE-007 should move toward production ASR/TTS provider evaluation behind explicit privacy and key gates.
+VOICE-007 now adds the ASR/TTS provider-readiness gate behind explicit privacy and key constraints.
+
+VOICE-008 should run the next no-key audible-output checkpoint, likely using local Windows SAPI TTS with dry-run fallback.
 
 Later interruption work should add:
 

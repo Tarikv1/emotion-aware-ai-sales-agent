@@ -27,6 +27,8 @@ The active runtime path now treats language as a campaign-level runtime property
 
 Runtime debugging lessons should be preserved for the thesis. When language routing, latency, interruption, or guardrail bugs are found and fixed, the issue and fix should be summarized in `METHODOLOGY_LOG.md` so the final thesis can discuss limitations and iteration honestly.
 
+The voice-provider path now has a readiness gate before real provider integration. ASR/TTS providers must be evaluated for latency, German/English support, API-key safety, audio upload behavior, retention/privacy requirements, and fallback behavior before any live provider key or real customer audio is used.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -152,6 +154,7 @@ Current integrated prototype evidence:
 - deterministic language assertions across `PROD-005`, `VOICE-001`, `VOICE-002`, `VOICE-004`, `VOICE-005`, and `VOICE-006`
 - safe interruption policy with English/German phrase packs
 - response generation remains guarded behind campaign claims, forbidden claims, disclosures, and fallback rules
+- ASR/TTS provider-readiness gate in `VOICE-007`, with cloud providers blocked until key/privacy/retention gates are documented
 
 Out of scope:
 
@@ -255,3 +258,4 @@ Immediate product artifact:
 - realtime single-turn CLI prototype
 - active bilingual runtime-language checks
 - documented debugging trail for bilingual routing, guarded response language, and interruption campaign routing
+- VOICE-007 ASR/TTS provider-readiness gate
