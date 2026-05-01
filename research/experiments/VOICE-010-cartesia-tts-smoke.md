@@ -25,7 +25,7 @@ The live command requires:
 
 ## Current Result
 
-The committed generated result now records the live Cartesia bytes-endpoint smoke run:
+The committed generated result now records the second live Cartesia bytes-endpoint smoke run using a German-suitable voice ID:
 
 - cases: `2`
 - German cases: `1`
@@ -35,6 +35,13 @@ The committed generated result now records the live Cartesia bytes-endpoint smok
 - fallback count: `0`
 - response-language matches: `2 / 2`
 - TTS text matches decision: `2 / 2`
+- German time to first audio byte: `1035.629 ms`
+- German total provider latency: `2411.314 ms`
+- English time to first audio byte: `347.719 ms`
+- English total provider latency: `1504.563 ms`
+
+The first live run used an English-oriented voice ID for both languages:
+
 - German time to first audio byte: `1083.043 ms`
 - German total provider latency: `2532.073 ms`
 - English time to first audio byte: `366.492 ms`
@@ -44,6 +51,8 @@ Initial listening impression:
 
 - the generated audio sounded acceptable for a first smoke test
 - the clips are short, so the quality judgment is weak evidence
+- the German-suitable voice ID sounded better for German than the first voice
+- the German-suitable voice still sounded a little muffled
 
 ## Interpretation
 
@@ -51,7 +60,9 @@ VOICE-010 proves the Cartesia adapter can be prepared safely before any secret i
 
 It also avoids repeating the earlier long-running shell problem by requiring a bounded timeout for provider requests.
 
-English met the `500 ms` TTS-start target in the bytes-endpoint test. German did not.
+English met the `500 ms` TTS-start target in both bytes-endpoint tests. German did not.
+
+The German voice-ID rerun improved German latency slightly and improved subjective German quality, but it did not solve the latency target or remove all quality concerns.
 
 This should be interpreted carefully. The bytes endpoint is useful for first provider access and audio-file generation, but WebSocket streaming is the more relevant path for low-latency voice-agent speech.
 

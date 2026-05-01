@@ -926,3 +926,36 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether Cartesia WebSocket streaming improves German first-audio timing
   - whether longer German and English sales responses preserve acceptable voice quality
   - whether ElevenLabs should be tested as a comparison if Cartesia WebSocket latency or quality is insufficient
+
+### 2026-05-01 - VOICE-010 German voice-ID rerun
+
+- Objective: test whether the weaker German audio result was caused by using an English-oriented Cartesia voice ID
+- Action taken:
+  - reran the guarded Cartesia bytes-endpoint smoke test with a German-suitable voice ID
+  - confirmed the generated JSON and Markdown did not contain secret-like tokens
+  - kept generated WAV files ignored by Git
+  - compared the rerun against the first live VOICE-010 result
+- Data used:
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - user listening feedback on the German rerun
+- What was learned:
+  - both Cartesia bytes-endpoint calls again returned HTTP `200`
+  - both German and English WAV files were created locally
+  - German time to first audio byte improved from `1083.043 ms` to `1035.629 ms`
+  - German total provider latency improved from `2532.073 ms` to `2411.314 ms`
+  - English time to first audio byte changed from `366.492 ms` to `347.719 ms`
+  - English total provider latency changed from `1499.783 ms` to `1504.563 ms`
+  - the German voice sounded better than the first run, but still sounded a little muffled
+- Error or risk recorded:
+  - a language-inappropriate voice ID can make a provider look worse than it may actually be
+  - short audio clips are not enough for a reliable voice-quality judgment
+  - bytes-endpoint German latency is still above the `500 ms` TTS-start target even with a better German voice
+- Why it matters for the thesis:
+  - the experiment shows that voice selection is part of the system configuration, not a neutral implementation detail
+  - it supports separating provider evaluation into voice fit, language fit, endpoint type, and latency
+- Open questions:
+  - whether Cartesia WebSocket streaming reduces German first-audio timing enough for live calls
+  - whether longer German samples still sound muffled
+  - whether a different German Cartesia voice performs better
+  - whether ElevenLabs gives stronger German quality or latency for the same sales-agent text

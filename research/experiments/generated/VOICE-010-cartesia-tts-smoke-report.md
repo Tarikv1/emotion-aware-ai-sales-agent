@@ -32,8 +32,8 @@ VOICE-010 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Fallback count: `0`
 - Response-language matches: `2 / 2`
 - TTS text matches decision: `2 / 2`
-- Max time to first audio byte: `1083.043`
-- Max total provider latency: `2532.073 ms`
+- Max time to first audio byte: `1035.629`
+- Max total provider latency: `2411.314 ms`
 
 ## Case Results
 
@@ -45,10 +45,10 @@ VOICE-010 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Generated text sent to provider: `True`
 - Audio file created: `True`
 - Audio path: `research\experiments\generated\VOICE-010-C01-de-cartesia.wav`
-- Audio bytes: `102336`
+- Audio bytes: `92676`
 - HTTP status: `200`
-- Time to first audio byte: `1083.043`
-- Total provider latency: `2532.073 ms`
+- Time to first audio byte: `1035.629`
+- Total provider latency: `2411.314 ms`
 - Fallback provider: `not used`
 - Fallback reason: `not needed`
 
@@ -60,9 +60,9 @@ VOICE-010 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Generated text sent to provider: `True`
 - Audio file created: `True`
 - Audio path: `research\experiments\generated\VOICE-010-C02-en-cartesia.wav`
-- Audio bytes: `95648`
+- Audio bytes: `93418`
 - HTTP status: `200`
-- Time to first audio byte: `366.492`
-- Total provider latency: `1499.783 ms`
+- Time to first audio byte: `347.719`
+- Total provider latency: `1504.563 ms`
 - Fallback provider: `not used`
 - Fallback reason: `not needed`

@@ -105,11 +105,13 @@ The generated report should then show:
 
 If anything fails, the script should still produce a report and fall back to `text-only-tts-packet`.
 
-## Live Result
+## Live Results
 
-A live Cartesia bytes-endpoint smoke run was completed after the initial no-key harness was committed.
+Two live Cartesia bytes-endpoint smoke runs were completed after the initial no-key harness was committed.
 
-Result:
+### Initial Voice-ID Run
+
+The first live run used one voice ID for both German and English. That voice appeared to be English-oriented.
 
 - API calls made: `2`
 - HTTP status: `200` for both cases
@@ -126,10 +128,32 @@ Initial listening impression:
 - the audio sounded acceptable for a first smoke test
 - the clips are too short to make a strong quality judgment
 
+### German Voice-ID Rerun
+
+The second live run used a German-suitable Cartesia voice ID.
+
+Result:
+
+- API calls made: `2`
+- HTTP status: `200` for both cases
+- Audio files created: `2`
+- Fallback count: `0`
+- German time to first audio byte: `1035.629 ms`
+- German total provider latency: `2411.314 ms`
+- English time to first audio byte: `347.719 ms`
+- English total provider latency: `1504.563 ms`
+
+Listening impression:
+
+- the German audio sounded better than the first run
+- the German audio still sounded a little muffled
+- the clips remain too short for a strong quality judgment
+
 Interpretation:
 
-- English met the `500 ms` TTS-start target in this bytes-endpoint test
-- German did not meet the `500 ms` TTS-start target in this bytes-endpoint test
+- English met the `500 ms` TTS-start target in both bytes-endpoint runs
+- German improved slightly with a German-suitable voice ID but still did not meet the `500 ms` TTS-start target
+- German quality appears sensitive to voice selection
 - this does not yet disqualify Cartesia because WebSocket streaming is the more realistic low-latency voice-agent path
 
 ## Generated Artifacts
