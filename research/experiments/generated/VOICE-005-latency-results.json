@@ -6,9 +6,9 @@
   "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
   "summary": {
     "case_count": 4,
-    "min_total_decision_loop_ms": 0.735,
-    "max_total_decision_loop_ms": 0.966,
-    "avg_total_decision_loop_ms": 0.82,
+    "min_total_decision_loop_ms": 0.631,
+    "max_total_decision_loop_ms": 0.726,
+    "avg_total_decision_loop_ms": 0.69,
     "under_1s_count": 4,
     "under_2s_count": 0,
     "over_2s_count": 0,
@@ -23,14 +23,14 @@
       "sales_difficulty": "price-objection",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.966,
+      "total_decision_loop_ms": 0.726,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.45,
-        "realtime_decision_ms": 0.031,
-        "guarded_response_ms": 0.027,
-        "voice_packet_build_ms": 0.44
+        "campaign_load_ms": 0.369,
+        "realtime_decision_ms": 0.023,
+        "guarded_response_ms": 0.021,
+        "voice_packet_build_ms": 0.29
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -187,14 +187,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.966,
+          "total_decision_loop_ms": 0.726,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.45,
-            "realtime_decision_ms": 0.031,
-            "guarded_response_ms": 0.027,
-            "voice_packet_build_ms": 0.44
+            "campaign_load_ms": 0.369,
+            "realtime_decision_ms": 0.023,
+            "guarded_response_ms": 0.021,
+            "voice_packet_build_ms": 0.29
           }
         },
         "trace": {
@@ -215,14 +215,14 @@
       "sales_difficulty": "claim-boundary",
       "response_mode": "fast-response",
       "call_control": "transfer-or-escalate",
-      "total_decision_loop_ms": 0.735,
+      "total_decision_loop_ms": 0.714,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.284,
-        "realtime_decision_ms": 0.02,
-        "guarded_response_ms": 0.028,
-        "voice_packet_build_ms": 0.392
+        "campaign_load_ms": 0.295,
+        "realtime_decision_ms": 0.018,
+        "guarded_response_ms": 0.025,
+        "voice_packet_build_ms": 0.367
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -381,14 +381,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.735,
+          "total_decision_loop_ms": 0.714,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.284,
-            "realtime_decision_ms": 0.02,
-            "guarded_response_ms": 0.028,
-            "voice_packet_build_ms": 0.392
+            "campaign_load_ms": 0.295,
+            "realtime_decision_ms": 0.018,
+            "guarded_response_ms": 0.025,
+            "voice_packet_build_ms": 0.367
           }
         },
         "trace": {
@@ -409,14 +409,14 @@
       "sales_difficulty": "product-detail-lookup",
       "response_mode": "bridge-then-background",
       "call_control": "bridge-then-continue",
-      "total_decision_loop_ms": 0.782,
+      "total_decision_loop_ms": 0.631,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.28,
-        "realtime_decision_ms": 0.017,
-        "guarded_response_ms": 0.022,
-        "voice_packet_build_ms": 0.453
+        "campaign_load_ms": 0.217,
+        "realtime_decision_ms": 0.011,
+        "guarded_response_ms": 0.014,
+        "voice_packet_build_ms": 0.38
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -575,14 +575,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.782,
+          "total_decision_loop_ms": 0.631,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.28,
-            "realtime_decision_ms": 0.017,
-            "guarded_response_ms": 0.022,
-            "voice_packet_build_ms": 0.453
+            "campaign_load_ms": 0.217,
+            "realtime_decision_ms": 0.011,
+            "guarded_response_ms": 0.014,
+            "voice_packet_build_ms": 0.38
           }
         },
         "trace": {
@@ -603,14 +603,14 @@
       "sales_difficulty": "unknown-runtime-signal",
       "response_mode": "fast-response",
       "call_control": "continue-call",
-      "total_decision_loop_ms": 0.786,
+      "total_decision_loop_ms": 0.683,
       "observed_bucket": "under-1s",
       "budget_pass": true,
       "segments": {
-        "campaign_load_ms": 0.328,
-        "realtime_decision_ms": 0.021,
-        "guarded_response_ms": 0.029,
-        "voice_packet_build_ms": 0.398
+        "campaign_load_ms": 0.287,
+        "realtime_decision_ms": 0.018,
+        "guarded_response_ms": 0.021,
+        "voice_packet_build_ms": 0.348
       },
       "packet": {
         "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
@@ -767,14 +767,14 @@
           "browser_tts_playback_measured": false,
           "target_first_response_ms": 2000,
           "target_tts_start_ms": 500,
-          "total_decision_loop_ms": 0.786,
+          "total_decision_loop_ms": 0.683,
           "observed_bucket": "under-1s",
           "budget_pass": true,
           "segments": {
-            "campaign_load_ms": 0.328,
-            "realtime_decision_ms": 0.021,
-            "guarded_response_ms": 0.029,
-            "voice_packet_build_ms": 0.398
+            "campaign_load_ms": 0.287,
+            "realtime_decision_ms": 0.018,
+            "guarded_response_ms": 0.021,
+            "voice_packet_build_ms": 0.348
           }
         },
         "trace": {
