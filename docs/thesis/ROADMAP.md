@@ -263,3 +263,13 @@ Immediate product artifact:
 - documented debugging trail for bilingual routing, guarded response language, and interruption campaign routing
 - VOICE-007 ASR/TTS provider-readiness gate
 - VOICE-008 local TTS smoke test with dry-run fallback
+- VOICE-009 vendor-specific TTS provider research
+
+Next voice checkpoint:
+
+- guarded real-provider TTS latency smoke test using the selected first integration candidate
+- environment-only API key handling
+- synthetic prompts only
+- no customer audio upload
+- explicit timeout guardrails
+- text-only fallback preserved

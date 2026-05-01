@@ -811,3 +811,41 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - whether to improve the transparent rule baseline first or use it as-is as a deliberately weak control
   - how much the next LLM agent should be allowed to use campaign context versus generic sales-difficulty patterns
+
+### 2026-05-01 - VOICE-009 TTS provider research checkpoint
+
+- Objective: choose the first real TTS integration candidate without introducing API keys, SDK calls, or audio uploads
+- Action taken:
+  - added a vendor-specific TTS provider research matrix
+  - added an evaluator and validator for the VOICE-009 checkpoint
+  - generated JSON and Markdown evidence from official/primary sources
+  - documented the product recommendation and thesis interpretation
+- Data used:
+  - official/primary sources from Cartesia, ElevenLabs, OpenAI, Microsoft Azure, Google Cloud, AWS, Deepgram, and Piper/OHF GitHub
+  - source retrieval date: 2026-05-01
+- Output created:
+  - `docs/product/VOICE_009_TTS_PROVIDER_RESEARCH.md`
+  - `research/experiments/VOICE-009-tts-provider-research.md`
+  - `research/experiments/cases/voice-009-tts-provider-research.json`
+  - `research/experiments/generated/VOICE-009-tts-provider-research.json`
+  - `research/experiments/generated/VOICE-009-tts-provider-research-report.md`
+  - `scripts/evaluate_voice_009_tts_provider_research.py`
+  - `scripts/validate_voice_009_tts_provider_research.py`
+- What was learned:
+  - Cartesia Sonic 3 is the best first TTS pilot candidate for the bilingual voice-agent path
+  - ElevenLabs Flash v2.5 is a strong quality/latency alternate
+  - OpenAI TTS is attractive if stack simplicity matters more than specialized TTS focus
+  - Deepgram Aura should not be integrated first because German TTS support was not confirmed in the official source checked
+  - Piper remains useful as a privacy/offline research lane, but needs local runtime, license, German quality, and telephony checks
+- Error or risk recorded:
+  - VOICE-008 showed local Windows SAPI can fail safely when no usable local voice is installed or allowed
+  - VOICE-009 avoided the mistake of jumping directly from that local failure to a cloud SDK integration with an API key
+  - provider claims were documented as research inputs, not as measured workspace performance
+- Why it matters for the thesis:
+  - the voice layer now has a documented evidence-based provider-selection step
+  - the next voice experiment can measure latency and audio quality without confusing provider selection with product architecture
+- Open questions:
+  - whether Cartesia's measured latency in this workspace stays inside the live-call budget
+  - which neutral synthetic voice should be used first
+  - what provider text-retention and data-processing terms mean for German call-center use
+  - whether local Piper should be evaluated after or in parallel with the first cloud TTS smoke test

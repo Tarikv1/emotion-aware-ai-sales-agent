@@ -94,13 +94,8 @@ It also shows that local OS TTS is not reliable enough to assume as the only aud
 
 ## Next Work
 
-VOICE-009 should perform vendor-specific TTS provider research before integration:
+VOICE-009 has now performed vendor-specific TTS provider research before integration.
 
-- German and English voice quality
-- streaming or low-latency support
-- latency target compatibility
-- pricing
-- license and terms
-- data retention
-- API-key handling
-- fallback behavior
+The recommended first integration candidate is `cartesia-sonic-3`, with `elevenlabs-flash-v2-5` as the quality/latency alternate and `openai-gpt-4o-mini-tts` as the stack-simplest alternate.
+
+VOICE-010 should run a guarded real-provider TTS latency smoke test only after API-key storage, text-retention review, timeout behavior, and fallback behavior are documented.

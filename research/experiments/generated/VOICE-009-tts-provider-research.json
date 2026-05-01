@@ -1,0 +1,1706 @@
+{
+  "voice_milestone": "VOICE-009",
+  "comparison_scope": "Vendor-specific TTS provider research for the first real audible voice integration; no API calls, no secrets, and no audio uploads.",
+  "score_scale": "1=weak fit, 5=strong fit",
+  "research_gate": {
+    "retrieved_on": "2026-05-01",
+    "runtime_languages": [
+      "de",
+      "en"
+    ],
+    "first_response_target_ms": 2000,
+    "tts_start_target_ms": 500,
+    "api_key_storage_rule": "environment-only-not-repo",
+    "integration_allowed": false,
+    "api_calls_allowed": false,
+    "audio_upload_allowed": false,
+    "voice_clone_rule": "Do not use cloned, custom, or customer-like voices until explicit consent, legal review, and provider terms are documented.",
+    "fallback_requirement": "Every cloud TTS path must preserve a local/browser/text-only fallback before integration."
+  },
+  "scoring_weights": {
+    "latency_fit": 1.4,
+    "german_english_fit": 1.4,
+    "streaming_fit": 1.3,
+    "voice_quality_fit": 1.0,
+    "sales_voice_control_fit": 1.1,
+    "integration_simplicity": 1.0,
+    "privacy_key_safety": 0.9,
+    "telephony_readiness": 1.0,
+    "thesis_usefulness": 1.0,
+    "provider_maturity_fit": 0.8
+  },
+  "summary": {
+    "candidate_count": 8,
+    "source_count": 28,
+    "official_source_count": 28,
+    "languages_evaluated": [
+      "de",
+      "en",
+      "es"
+    ],
+    "api_calls_made": false,
+    "audio_uploaded": false,
+    "secrets_required": false,
+    "cloud_candidates_key_gated": 7,
+    "voice_clone_candidates_blocked": 6,
+    "recommended_first_integration": "cartesia-sonic-3",
+    "research_retrieved_on": "2026-05-01"
+  },
+  "recommendations": {
+    "recommended_first_integration": {
+      "provider_id": "cartesia-sonic-3",
+      "provider_name": "Cartesia",
+      "model_or_voice_family": "Sonic 3",
+      "provider_class": "cloud-low-latency-tts",
+      "recommended_role": "recommended-first-integration",
+      "requires_api_key": true,
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "streaming_support": "websocket-input-and-output-streaming",
+      "latency_ms_claim": 90,
+      "weighted_score": 50.0,
+      "fallback_path": "Fall back to browser speech synthesis, Windows SAPI dry-run, or text-only packet if provider latency/key/privacy gates fail.",
+      "blockers": [
+        "api-key",
+        "text-payload-retention-review",
+        "provider-terms-review",
+        "latency-smoke-test-required",
+        "voice-consent-for-cloning"
+      ]
+    },
+    "quality_alternate": {
+      "provider_id": "elevenlabs-flash-v2-5",
+      "provider_name": "ElevenLabs",
+      "model_or_voice_family": "Eleven Flash v2.5",
+      "provider_class": "cloud-low-latency-tts",
+      "recommended_role": "quality-alternate",
+      "requires_api_key": true,
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "streaming_support": "streaming-text-to-speech",
+      "latency_ms_claim": 75,
+      "weighted_score": 49.7,
+      "fallback_path": "Fall back to Cartesia pilot, browser speech synthesis, Windows SAPI dry-run, or text-only packet.",
+      "blockers": [
+        "api-key",
+        "text-payload-retention-review",
+        "provider-terms-review",
+        "latency-smoke-test-required",
+        "voice-consent-for-cloning"
+      ]
+    },
+    "stack_simplest_alternate": {
+      "provider_id": "openai-gpt-4o-mini-tts",
+      "provider_name": "OpenAI",
+      "model_or_voice_family": "gpt-4o-mini-tts",
+      "provider_class": "cloud-general-tts",
+      "recommended_role": "stack-simplest-alternate",
+      "requires_api_key": true,
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "streaming_support": "speech-api-streaming-audio-output",
+      "latency_ms_claim": null,
+      "weighted_score": 44.7,
+      "fallback_path": "Fall back to text-only packet, browser speech synthesis, or the selected specialized low-latency TTS provider.",
+      "blockers": [
+        "api-key",
+        "text-payload-retention-review",
+        "latency-smoke-test-required",
+        "voice-disclosure-required",
+        "voice-consent-for-custom-voice"
+      ]
+    },
+    "enterprise_alternate": {
+      "provider_id": "google-cloud-chirp-3-hd",
+      "provider_name": "Google Cloud",
+      "model_or_voice_family": "Chirp 3 HD",
+      "provider_class": "cloud-enterprise-tts",
+      "recommended_role": "enterprise-alternate",
+      "requires_api_key": true,
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "streaming_support": "bidirectional-streaming-with-chirp-3-hd",
+      "latency_ms_claim": null,
+      "weighted_score": 44.4,
+      "fallback_path": "Fall back to specialized low-latency pilot, Azure, or text-only packet if setup or preview status blocks use.",
+      "blockers": [
+        "api-key",
+        "google-cloud-project-setup",
+        "text-payload-retention-review",
+        "latency-smoke-test-required",
+        "preview-status-review"
+      ]
+    },
+    "enterprise_backup": {
+      "provider_id": "amazon-polly-neural",
+      "provider_name": "Amazon Web Services",
+      "model_or_voice_family": "Amazon Polly Neural",
+      "provider_class": "cloud-enterprise-tts",
+      "recommended_role": "enterprise-backup",
+      "requires_api_key": true,
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "streaming_support": "synthesize-speech-and-bidirectional-streaming",
+      "latency_ms_claim": null,
+      "weighted_score": 41.4,
+      "fallback_path": "Fall back to specialized low-latency pilot, Google, Azure, or text-only packet.",
+      "blockers": [
+        "api-key",
+        "aws-resource-setup",
+        "text-payload-retention-review",
+        "latency-smoke-test-required"
+      ]
+    },
+    "do_not_integrate_first": {
+      "provider_id": "deepgram-aura-2",
+      "provider_name": "Deepgram",
+      "model_or_voice_family": "Aura 2",
+      "provider_class": "cloud-low-latency-tts",
+      "recommended_role": "do-not-integrate-first",
+      "requires_api_key": true,
+      "language_support": [
+        "en",
+        "es"
+      ],
+      "streaming_support": "rest-and-websocket-tts",
+      "latency_ms_claim": null,
+      "weighted_score": 36.9,
+      "fallback_path": "Use only for English/Spanish-specific future tests unless official German support is added.",
+      "blockers": [
+        "missing-german-tts-support",
+        "api-key",
+        "text-payload-retention-review",
+        "latency-smoke-test-required"
+      ]
+    },
+    "offline_research_lane": {
+      "provider_id": "piper-local-tts",
+      "provider_name": "Piper / Open Home Foundation Voice",
+      "model_or_voice_family": "Piper local neural TTS",
+      "provider_class": "local-offline-tts",
+      "recommended_role": "offline-research-lane",
+      "requires_api_key": false,
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "streaming_support": "local-cli-and-python-runtime-dependent",
+      "latency_ms_claim": null,
+      "weighted_score": 33.8,
+      "fallback_path": "Keep text-only packet and Windows SAPI dry-run fallback while local model installation is evaluated.",
+      "blockers": [
+        "model-download",
+        "windows-runtime-check",
+        "voice-license-review",
+        "german-quality-check",
+        "telephony-output-check"
+      ]
+    }
+  },
+  "sources": [
+    {
+      "source_id": "cartesia-welcome",
+      "provider_id": "cartesia-sonic-3",
+      "title": "Welcome to Cartesia",
+      "url": "https://docs.cartesia.ai/",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "latency",
+        "voice-agent-positioning",
+        "tts-stt-platform"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "cartesia-sonic-3-docs",
+      "provider_id": "cartesia-sonic-3",
+      "title": "Sonic 3",
+      "url": "https://docs.cartesia.ai/build-with-cartesia/tts-models/sonic-3",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "language-support",
+        "streaming-model",
+        "emotion-control"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "cartesia-realtime-quickstart",
+      "provider_id": "cartesia-sonic-3",
+      "title": "Realtime Text to Speech Quickstart",
+      "url": "https://docs.cartesia.ai/get-started/realtime-text-to-speech-quickstart",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "websocket-streaming",
+        "incremental-llm-output"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "cartesia-websocket-api",
+      "provider_id": "cartesia-sonic-3",
+      "title": "Text to Speech WebSocket API",
+      "url": "https://docs.cartesia.ai/api-reference/tts/websocket",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "audio-chunks",
+        "pcm-output",
+        "timestamps"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "cartesia-pricing",
+      "provider_id": "cartesia-sonic-3",
+      "title": "Cartesia Pricing",
+      "url": "https://cartesia.ai/pricing",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-pricing",
+      "used_for": [
+        "pricing",
+        "concurrency",
+        "voice-cloning-gate"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "elevenlabs-tts-docs",
+      "provider_id": "elevenlabs-flash-v2-5",
+      "title": "ElevenLabs Text to Speech",
+      "url": "https://elevenlabs.io/docs/overview/capabilities/text-to-speech",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "language-support",
+        "low-latency",
+        "streaming",
+        "output-formats"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "elevenlabs-models",
+      "provider_id": "elevenlabs-flash-v2-5",
+      "title": "ElevenLabs Models",
+      "url": "https://elevenlabs.io/docs/models",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "model-id",
+        "language-support",
+        "latency",
+        "model-selection"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "elevenlabs-api-product",
+      "provider_id": "elevenlabs-flash-v2-5",
+      "title": "ElevenLabs Text to Speech API",
+      "url": "https://elevenlabs.io/text-to-speech-api",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-product",
+      "used_for": [
+        "pricing-indication",
+        "model-positioning"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "openai-tts-guide",
+      "provider_id": "openai-gpt-4o-mini-tts",
+      "title": "OpenAI Text to Speech Guide",
+      "url": "https://platform.openai.com/docs/guides/text-to-speech",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "streaming",
+        "voice-options",
+        "disclosure-requirement"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "openai-audio-guide",
+      "provider_id": "openai-gpt-4o-mini-tts",
+      "title": "OpenAI Audio and Speech Guide",
+      "url": "https://platform.openai.com/docs/guides/audio/quickstart",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "voice-agent-architecture",
+        "realtime-vs-chained-agent"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "openai-gpt-4o-mini-tts-model",
+      "provider_id": "openai-gpt-4o-mini-tts",
+      "title": "GPT-4o mini TTS Model",
+      "url": "https://platform.openai.com/docs/models/gpt-4o-mini-tts",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-model-card",
+      "used_for": [
+        "model-id",
+        "token-limit",
+        "rate-limits"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "openai-pricing",
+      "provider_id": "openai-gpt-4o-mini-tts",
+      "title": "OpenAI API Pricing",
+      "url": "https://platform.openai.com/docs/pricing",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-pricing",
+      "used_for": [
+        "pricing"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "azure-tts-overview",
+      "provider_id": "azure-ai-speech-neural",
+      "title": "Azure AI Speech Text to Speech Overview",
+      "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "tts-capabilities",
+        "custom-voice-gate",
+        "ssml"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "azure-language-support",
+      "provider_id": "azure-ai-speech-neural",
+      "title": "Azure Speech Language and Voice Support",
+      "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "language-support",
+        "multilingual-voices"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "azure-rest-tts",
+      "provider_id": "azure-ai-speech-neural",
+      "title": "Azure Speech Text to Speech REST API",
+      "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/rest-text-to-speech",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "api-key",
+        "regional-endpoints",
+        "voice-list"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "azure-speech-pricing",
+      "provider_id": "azure-ai-speech-neural",
+      "title": "Azure AI Speech Pricing",
+      "url": "https://azure.microsoft.com/en-gb/pricing/details/speech/",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-pricing",
+      "used_for": [
+        "pricing"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "google-chirp-3-hd",
+      "provider_id": "google-cloud-chirp-3-hd",
+      "title": "Google Cloud Chirp 3 HD Voices",
+      "url": "https://docs.cloud.google.com/text-to-speech/docs/chirp3-hd",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "language-support",
+        "streaming",
+        "regions",
+        "output-formats"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "google-streaming-tts",
+      "provider_id": "google-cloud-chirp-3-hd",
+      "title": "Google Cloud Bidirectional Streaming TTS",
+      "url": "https://cloud.google.com/text-to-speech/docs/create-audio-text-streaming",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "bidirectional-streaming",
+        "latency",
+        "pre-ga-note"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "google-voices",
+      "provider_id": "google-cloud-chirp-3-hd",
+      "title": "Google Cloud Supported Voices and Languages",
+      "url": "https://cloud.google.com/text-to-speech/docs/voices",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "voice-inventory",
+        "streaming-capability"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "aws-polly-synthesize",
+      "provider_id": "amazon-polly-neural",
+      "title": "Amazon Polly SynthesizeSpeech",
+      "url": "https://docs.aws.amazon.com/polly/latest/dg/API_SynthesizeSpeech.html",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-api-reference",
+      "used_for": [
+        "speech-synthesis-api",
+        "formats",
+        "language-codes"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "aws-polly-stream",
+      "provider_id": "amazon-polly-neural",
+      "title": "Amazon Polly StartSpeechSynthesisStream",
+      "url": "https://docs.aws.amazon.com/polly/latest/dg/API_StartSpeechSynthesisStream.html",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-api-reference",
+      "used_for": [
+        "bidirectional-streaming"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "aws-polly-neural",
+      "provider_id": "amazon-polly-neural",
+      "title": "Amazon Polly Neural Voices",
+      "url": "https://docs.aws.amazon.com/polly/latest/dg/neural-voices.html",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "language-support",
+        "neural-voices",
+        "regions"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "aws-polly-pricing",
+      "provider_id": "amazon-polly-neural",
+      "title": "Amazon Polly Pricing",
+      "url": "https://aws.amazon.com/polly/pricing/",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-pricing",
+      "used_for": [
+        "pricing"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "deepgram-aura-models",
+      "provider_id": "deepgram-aura-2",
+      "title": "Deepgram Aura Voices and Languages",
+      "url": "https://developers.deepgram.com/docs/tts-models",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-docs",
+      "used_for": [
+        "language-support",
+        "tts-models"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "deepgram-pricing",
+      "provider_id": "deepgram-aura-2",
+      "title": "Deepgram Pricing",
+      "url": "https://deepgram.com/pricing",
+      "retrieved_on": "2026-05-01",
+      "source_type": "official-pricing",
+      "used_for": [
+        "pricing",
+        "concurrency"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "piper-archived-repo",
+      "provider_id": "piper-local-tts",
+      "title": "rhasspy/piper GitHub Repository",
+      "url": "https://github.com/rhasspy/piper",
+      "retrieved_on": "2026-05-01",
+      "source_type": "primary-github",
+      "used_for": [
+        "project-history",
+        "voice-language-support",
+        "archive-status"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "piper-ohf-repo",
+      "provider_id": "piper-local-tts",
+      "title": "OHF-Voice/piper1-gpl GitHub Repository",
+      "url": "https://github.com/OHF-Voice/piper1-gpl",
+      "retrieved_on": "2026-05-01",
+      "source_type": "primary-github",
+      "used_for": [
+        "current-project",
+        "local-runtime",
+        "license"
+      ],
+      "official_primary": true
+    },
+    {
+      "source_id": "piper-ohf-releases",
+      "provider_id": "piper-local-tts",
+      "title": "OHF-Voice/piper1-gpl Releases",
+      "url": "https://github.com/OHF-Voice/piper1-gpl/releases",
+      "retrieved_on": "2026-05-01",
+      "source_type": "primary-github",
+      "used_for": [
+        "release-state",
+        "runtime-installation"
+      ],
+      "official_primary": true
+    }
+  ],
+  "ranked_candidates": [
+    {
+      "provider_id": "cartesia-sonic-3",
+      "provider_name": "Cartesia",
+      "model_or_voice_family": "Sonic 3",
+      "provider_class": "cloud-low-latency-tts",
+      "official_sources": [
+        "cartesia-welcome",
+        "cartesia-sonic-3-docs",
+        "cartesia-realtime-quickstart",
+        "cartesia-websocket-api",
+        "cartesia-pricing"
+      ],
+      "source_fact_summary": [
+        "Official docs position Sonic 3 as a streaming TTS model for real-time voice experiences.",
+        "Official language support includes German and English.",
+        "Official docs describe WebSocket input streaming and audio chunk responses.",
+        "Official materials claim a 90 ms time-to-first-audio target for Sonic 3."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "confirmed-official",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "websocket-input-and-output-streaming",
+      "latency_ms_claim": 90,
+      "latency_claim_basis": "provider-stated time to first audio, excluding our own network/runtime measurement",
+      "telephony_format_support": true,
+      "emotion_or_style_control": true,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": true,
+      "custom_voice_available": true,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "recommended-first-integration",
+      "fallback_path": "Fall back to browser speech synthesis, Windows SAPI dry-run, or text-only packet if provider latency/key/privacy gates fail.",
+      "blockers": [
+        "api-key",
+        "text-payload-retention-review",
+        "provider-terms-review",
+        "latency-smoke-test-required",
+        "voice-consent-for-cloning"
+      ],
+      "decision_notes": [
+        "Best first cloud TTS pilot because official docs combine low-latency positioning, streaming, emotion control, and German/English support.",
+        "Do not use cloning or customer-like voices in the first integration."
+      ],
+      "latency_fit": 5,
+      "german_english_fit": 5,
+      "streaming_fit": 5,
+      "voice_quality_fit": 5,
+      "sales_voice_control_fit": 5,
+      "integration_simplicity": 4,
+      "privacy_key_safety": 2,
+      "telephony_readiness": 5,
+      "thesis_usefulness": 5,
+      "provider_maturity_fit": 4,
+      "weighted_score": 50.0,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "german_english_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "streaming_fit": {
+          "value": 5,
+          "weight": 1.3,
+          "weighted_score": 6.5
+        },
+        "voice_quality_fit": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "sales_voice_control_fit": {
+          "value": 5,
+          "weight": 1.1,
+          "weighted_score": 5.5
+        },
+        "integration_simplicity": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "privacy_key_safety": {
+          "value": 2,
+          "weight": 0.9,
+          "weighted_score": 1.8
+        },
+        "telephony_readiness": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "thesis_usefulness": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "provider_maturity_fit": {
+          "value": 4,
+          "weight": 0.8,
+          "weighted_score": 3.2
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "cartesia-welcome",
+          "title": "Welcome to Cartesia",
+          "url": "https://docs.cartesia.ai/",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "cartesia-sonic-3-docs",
+          "title": "Sonic 3",
+          "url": "https://docs.cartesia.ai/build-with-cartesia/tts-models/sonic-3",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "cartesia-realtime-quickstart",
+          "title": "Realtime Text to Speech Quickstart",
+          "url": "https://docs.cartesia.ai/get-started/realtime-text-to-speech-quickstart",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "cartesia-websocket-api",
+          "title": "Text to Speech WebSocket API",
+          "url": "https://docs.cartesia.ai/api-reference/tts/websocket",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "cartesia-pricing",
+          "title": "Cartesia Pricing",
+          "url": "https://cartesia.ai/pricing",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "elevenlabs-flash-v2-5",
+      "provider_name": "ElevenLabs",
+      "model_or_voice_family": "Eleven Flash v2.5",
+      "provider_class": "cloud-low-latency-tts",
+      "official_sources": [
+        "elevenlabs-tts-docs",
+        "elevenlabs-models",
+        "elevenlabs-api-product"
+      ],
+      "source_fact_summary": [
+        "Official docs describe Flash v2.5 as low-latency TTS for real-time applications.",
+        "Official language support includes German and English.",
+        "Official docs list streaming support and telephony-friendly output formats.",
+        "Official docs describe voice library and cloning options, which must remain gated."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "confirmed-official",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "streaming-text-to-speech",
+      "latency_ms_claim": 75,
+      "latency_claim_basis": "provider-stated model latency, excluding application and network latency",
+      "telephony_format_support": true,
+      "emotion_or_style_control": true,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": true,
+      "custom_voice_available": true,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "quality-alternate",
+      "fallback_path": "Fall back to Cartesia pilot, browser speech synthesis, Windows SAPI dry-run, or text-only packet.",
+      "blockers": [
+        "api-key",
+        "text-payload-retention-review",
+        "provider-terms-review",
+        "latency-smoke-test-required",
+        "voice-consent-for-cloning"
+      ],
+      "decision_notes": [
+        "Excellent quality/latency alternate with broad language coverage and strong voice options.",
+        "First integration should use a neutral synthetic voice, not cloning."
+      ],
+      "latency_fit": 5,
+      "german_english_fit": 5,
+      "streaming_fit": 5,
+      "voice_quality_fit": 5,
+      "sales_voice_control_fit": 4,
+      "integration_simplicity": 4,
+      "privacy_key_safety": 2,
+      "telephony_readiness": 5,
+      "thesis_usefulness": 5,
+      "provider_maturity_fit": 5,
+      "weighted_score": 49.7,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "german_english_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "streaming_fit": {
+          "value": 5,
+          "weight": 1.3,
+          "weighted_score": 6.5
+        },
+        "voice_quality_fit": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "sales_voice_control_fit": {
+          "value": 4,
+          "weight": 1.1,
+          "weighted_score": 4.4
+        },
+        "integration_simplicity": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "privacy_key_safety": {
+          "value": 2,
+          "weight": 0.9,
+          "weighted_score": 1.8
+        },
+        "telephony_readiness": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "thesis_usefulness": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "provider_maturity_fit": {
+          "value": 5,
+          "weight": 0.8,
+          "weighted_score": 4.0
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "elevenlabs-tts-docs",
+          "title": "ElevenLabs Text to Speech",
+          "url": "https://elevenlabs.io/docs/overview/capabilities/text-to-speech",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "elevenlabs-models",
+          "title": "ElevenLabs Models",
+          "url": "https://elevenlabs.io/docs/models",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "elevenlabs-api-product",
+          "title": "ElevenLabs Text to Speech API",
+          "url": "https://elevenlabs.io/text-to-speech-api",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "openai-gpt-4o-mini-tts",
+      "provider_name": "OpenAI",
+      "model_or_voice_family": "gpt-4o-mini-tts",
+      "provider_class": "cloud-general-tts",
+      "official_sources": [
+        "openai-tts-guide",
+        "openai-audio-guide",
+        "openai-gpt-4o-mini-tts-model",
+        "openai-pricing"
+      ],
+      "source_fact_summary": [
+        "Official docs identify gpt-4o-mini-tts as a TTS model for natural spoken audio.",
+        "Official docs state the Speech API supports streaming audio output.",
+        "Official docs mention multiple-language audio generation and built-in voice choices.",
+        "Official docs require disclosure that the voice is AI-generated."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "supported-by-multilingual-tts-claim-needs-voice-quality-smoke",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "speech-api-streaming-audio-output",
+      "latency_ms_claim": null,
+      "latency_claim_basis": "no provider-specific ms claim used for this checkpoint",
+      "telephony_format_support": true,
+      "emotion_or_style_control": true,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": true,
+      "custom_voice_available": true,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "stack-simplest-alternate",
+      "fallback_path": "Fall back to text-only packet, browser speech synthesis, or the selected specialized low-latency TTS provider.",
+      "blockers": [
+        "api-key",
+        "text-payload-retention-review",
+        "latency-smoke-test-required",
+        "voice-disclosure-required",
+        "voice-consent-for-custom-voice"
+      ],
+      "decision_notes": [
+        "Best stack-simplest alternate if the existing LLM stack already uses OpenAI APIs.",
+        "Needs a latency smoke test because the official docs support streaming but this checkpoint did not measure end-to-end latency."
+      ],
+      "latency_fit": 4,
+      "german_english_fit": 4,
+      "streaming_fit": 4,
+      "voice_quality_fit": 4,
+      "sales_voice_control_fit": 5,
+      "integration_simplicity": 5,
+      "privacy_key_safety": 2,
+      "telephony_readiness": 4,
+      "thesis_usefulness": 4,
+      "provider_maturity_fit": 5,
+      "weighted_score": 44.7,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 4,
+          "weight": 1.4,
+          "weighted_score": 5.6
+        },
+        "german_english_fit": {
+          "value": 4,
+          "weight": 1.4,
+          "weighted_score": 5.6
+        },
+        "streaming_fit": {
+          "value": 4,
+          "weight": 1.3,
+          "weighted_score": 5.2
+        },
+        "voice_quality_fit": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "sales_voice_control_fit": {
+          "value": 5,
+          "weight": 1.1,
+          "weighted_score": 5.5
+        },
+        "integration_simplicity": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "privacy_key_safety": {
+          "value": 2,
+          "weight": 0.9,
+          "weighted_score": 1.8
+        },
+        "telephony_readiness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "thesis_usefulness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "provider_maturity_fit": {
+          "value": 5,
+          "weight": 0.8,
+          "weighted_score": 4.0
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "openai-tts-guide",
+          "title": "OpenAI Text to Speech Guide",
+          "url": "https://platform.openai.com/docs/guides/text-to-speech",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "openai-audio-guide",
+          "title": "OpenAI Audio and Speech Guide",
+          "url": "https://platform.openai.com/docs/guides/audio/quickstart",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "openai-gpt-4o-mini-tts-model",
+          "title": "GPT-4o mini TTS Model",
+          "url": "https://platform.openai.com/docs/models/gpt-4o-mini-tts",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "openai-pricing",
+          "title": "OpenAI API Pricing",
+          "url": "https://platform.openai.com/docs/pricing",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "google-cloud-chirp-3-hd",
+      "provider_name": "Google Cloud",
+      "model_or_voice_family": "Chirp 3 HD",
+      "provider_class": "cloud-enterprise-tts",
+      "official_sources": [
+        "google-chirp-3-hd",
+        "google-streaming-tts",
+        "google-voices"
+      ],
+      "source_fact_summary": [
+        "Official docs list Chirp 3 HD language availability including German and English.",
+        "Official docs describe bidirectional streaming, allowing text input and audio output at the same time.",
+        "Official docs list supported streaming output formats.",
+        "Some streaming documentation carries preview/pre-GA notes, so launch risk must be reviewed."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "confirmed-official",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "bidirectional-streaming-with-chirp-3-hd",
+      "latency_ms_claim": null,
+      "latency_claim_basis": "streaming latency reduction described, but no ms claim used for this checkpoint",
+      "telephony_format_support": true,
+      "emotion_or_style_control": true,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": false,
+      "custom_voice_available": true,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "enterprise-alternate",
+      "fallback_path": "Fall back to specialized low-latency pilot, Azure, or text-only packet if setup or preview status blocks use.",
+      "blockers": [
+        "api-key",
+        "google-cloud-project-setup",
+        "text-payload-retention-review",
+        "latency-smoke-test-required",
+        "preview-status-review"
+      ],
+      "decision_notes": [
+        "Strong enterprise alternate because Chirp 3 HD supports German, English, and bidirectional streaming.",
+        "Preview/pre-GA details must be checked before treating it as production-ready."
+      ],
+      "latency_fit": 4,
+      "german_english_fit": 5,
+      "streaming_fit": 5,
+      "voice_quality_fit": 4,
+      "sales_voice_control_fit": 4,
+      "integration_simplicity": 3,
+      "privacy_key_safety": 3,
+      "telephony_readiness": 4,
+      "thesis_usefulness": 4,
+      "provider_maturity_fit": 4,
+      "weighted_score": 44.4,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 4,
+          "weight": 1.4,
+          "weighted_score": 5.6
+        },
+        "german_english_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "streaming_fit": {
+          "value": 5,
+          "weight": 1.3,
+          "weighted_score": 6.5
+        },
+        "voice_quality_fit": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "sales_voice_control_fit": {
+          "value": 4,
+          "weight": 1.1,
+          "weighted_score": 4.4
+        },
+        "integration_simplicity": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "privacy_key_safety": {
+          "value": 3,
+          "weight": 0.9,
+          "weighted_score": 2.7
+        },
+        "telephony_readiness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "thesis_usefulness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "provider_maturity_fit": {
+          "value": 4,
+          "weight": 0.8,
+          "weighted_score": 3.2
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "google-chirp-3-hd",
+          "title": "Google Cloud Chirp 3 HD Voices",
+          "url": "https://docs.cloud.google.com/text-to-speech/docs/chirp3-hd",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "google-streaming-tts",
+          "title": "Google Cloud Bidirectional Streaming TTS",
+          "url": "https://cloud.google.com/text-to-speech/docs/create-audio-text-streaming",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "google-voices",
+          "title": "Google Cloud Supported Voices and Languages",
+          "url": "https://cloud.google.com/text-to-speech/docs/voices",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "azure-ai-speech-neural",
+      "provider_name": "Microsoft Azure",
+      "model_or_voice_family": "Azure AI Speech neural voices",
+      "provider_class": "cloud-enterprise-tts",
+      "official_sources": [
+        "azure-tts-overview",
+        "azure-language-support",
+        "azure-rest-tts",
+        "azure-speech-pricing"
+      ],
+      "source_fact_summary": [
+        "Official docs describe standard neural voices, SSML control, real-time synthesis, and custom voice options.",
+        "Official language support includes German and English voices.",
+        "Official REST docs require a region-specific endpoint and key.",
+        "Custom voice options must remain gated behind responsible-use, consent, and legal review."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "confirmed-official",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "speech-sdk-or-rest-real-time-synthesis",
+      "latency_ms_claim": null,
+      "latency_claim_basis": "real-time synthesis supported, but no ms claim used for this checkpoint",
+      "telephony_format_support": true,
+      "emotion_or_style_control": true,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": false,
+      "custom_voice_available": true,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "enterprise-alternate",
+      "fallback_path": "Fall back to the first specialized low-latency pilot or text-only packet if enterprise setup is too heavy.",
+      "blockers": [
+        "api-key",
+        "azure-resource-setup",
+        "text-payload-retention-review",
+        "latency-smoke-test-required",
+        "custom-voice-legal-review"
+      ],
+      "decision_notes": [
+        "Strong enterprise fallback for language coverage, SSML, regional setup, and mature cloud controls.",
+        "Heavier setup than a first narrow TTS pilot."
+      ],
+      "latency_fit": 4,
+      "german_english_fit": 5,
+      "streaming_fit": 4,
+      "voice_quality_fit": 4,
+      "sales_voice_control_fit": 4,
+      "integration_simplicity": 3,
+      "privacy_key_safety": 3,
+      "telephony_readiness": 4,
+      "thesis_usefulness": 4,
+      "provider_maturity_fit": 5,
+      "weighted_score": 43.9,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 4,
+          "weight": 1.4,
+          "weighted_score": 5.6
+        },
+        "german_english_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "streaming_fit": {
+          "value": 4,
+          "weight": 1.3,
+          "weighted_score": 5.2
+        },
+        "voice_quality_fit": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "sales_voice_control_fit": {
+          "value": 4,
+          "weight": 1.1,
+          "weighted_score": 4.4
+        },
+        "integration_simplicity": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "privacy_key_safety": {
+          "value": 3,
+          "weight": 0.9,
+          "weighted_score": 2.7
+        },
+        "telephony_readiness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "thesis_usefulness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "provider_maturity_fit": {
+          "value": 5,
+          "weight": 0.8,
+          "weighted_score": 4.0
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "azure-tts-overview",
+          "title": "Azure AI Speech Text to Speech Overview",
+          "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "azure-language-support",
+          "title": "Azure Speech Language and Voice Support",
+          "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "azure-rest-tts",
+          "title": "Azure Speech Text to Speech REST API",
+          "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/rest-text-to-speech",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "azure-speech-pricing",
+          "title": "Azure AI Speech Pricing",
+          "url": "https://azure.microsoft.com/en-gb/pricing/details/speech/",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "amazon-polly-neural",
+      "provider_name": "Amazon Web Services",
+      "model_or_voice_family": "Amazon Polly Neural",
+      "provider_class": "cloud-enterprise-tts",
+      "official_sources": [
+        "aws-polly-synthesize",
+        "aws-polly-stream",
+        "aws-polly-neural",
+        "aws-polly-pricing"
+      ],
+      "source_fact_summary": [
+        "Official docs list German and English neural voices.",
+        "Official API docs support several audio stream formats, including telephony-friendly options.",
+        "Official streaming docs describe bidirectional synthesis streaming.",
+        "Polly is mature but less directly voice-agent/emotion-positioned than the top specialized providers."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "confirmed-official",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "synthesize-speech-and-bidirectional-streaming",
+      "latency_ms_claim": null,
+      "latency_claim_basis": "streaming API available, but no ms claim used for this checkpoint",
+      "telephony_format_support": true,
+      "emotion_or_style_control": false,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": false,
+      "custom_voice_available": false,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "enterprise-backup",
+      "fallback_path": "Fall back to specialized low-latency pilot, Google, Azure, or text-only packet.",
+      "blockers": [
+        "api-key",
+        "aws-resource-setup",
+        "text-payload-retention-review",
+        "latency-smoke-test-required"
+      ],
+      "decision_notes": [
+        "Good mature enterprise backup with German and English neural voices.",
+        "Not the first pilot because sales-agent emotional controllability appears less central in the official docs checked here."
+      ],
+      "latency_fit": 3,
+      "german_english_fit": 5,
+      "streaming_fit": 4,
+      "voice_quality_fit": 4,
+      "sales_voice_control_fit": 3,
+      "integration_simplicity": 3,
+      "privacy_key_safety": 3,
+      "telephony_readiness": 5,
+      "thesis_usefulness": 3,
+      "provider_maturity_fit": 5,
+      "weighted_score": 41.4,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 3,
+          "weight": 1.4,
+          "weighted_score": 4.2
+        },
+        "german_english_fit": {
+          "value": 5,
+          "weight": 1.4,
+          "weighted_score": 7.0
+        },
+        "streaming_fit": {
+          "value": 4,
+          "weight": 1.3,
+          "weighted_score": 5.2
+        },
+        "voice_quality_fit": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "sales_voice_control_fit": {
+          "value": 3,
+          "weight": 1.1,
+          "weighted_score": 3.3
+        },
+        "integration_simplicity": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "privacy_key_safety": {
+          "value": 3,
+          "weight": 0.9,
+          "weighted_score": 2.7
+        },
+        "telephony_readiness": {
+          "value": 5,
+          "weight": 1.0,
+          "weighted_score": 5.0
+        },
+        "thesis_usefulness": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "provider_maturity_fit": {
+          "value": 5,
+          "weight": 0.8,
+          "weighted_score": 4.0
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "aws-polly-synthesize",
+          "title": "Amazon Polly SynthesizeSpeech",
+          "url": "https://docs.aws.amazon.com/polly/latest/dg/API_SynthesizeSpeech.html",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "aws-polly-stream",
+          "title": "Amazon Polly StartSpeechSynthesisStream",
+          "url": "https://docs.aws.amazon.com/polly/latest/dg/API_StartSpeechSynthesisStream.html",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "aws-polly-neural",
+          "title": "Amazon Polly Neural Voices",
+          "url": "https://docs.aws.amazon.com/polly/latest/dg/neural-voices.html",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "aws-polly-pricing",
+          "title": "Amazon Polly Pricing",
+          "url": "https://aws.amazon.com/polly/pricing/",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "deepgram-aura-2",
+      "provider_name": "Deepgram",
+      "model_or_voice_family": "Aura 2",
+      "provider_class": "cloud-low-latency-tts",
+      "official_sources": [
+        "deepgram-aura-models",
+        "deepgram-pricing"
+      ],
+      "source_fact_summary": [
+        "Official docs list Aura TTS language support as English and Spanish.",
+        "Official pricing positions Aura for TTS and real-time voice applications.",
+        "German support was not confirmed in the official TTS language list reviewed for this checkpoint."
+      ],
+      "language_support": [
+        "en",
+        "es"
+      ],
+      "german_support_state": "not-confirmed-official",
+      "english_support_state": "confirmed-official",
+      "streaming_support": "rest-and-websocket-tts",
+      "latency_ms_claim": null,
+      "latency_claim_basis": "low-latency positioning observed, but no German support and no ms claim used for this checkpoint",
+      "telephony_format_support": true,
+      "emotion_or_style_control": false,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": true,
+      "generated_text_sent_to_provider": true,
+      "customer_audio_uploaded": false,
+      "retention_review_required": true,
+      "key_gate": "required-before-integration",
+      "launch_allowed": false,
+      "voice_cloning_available": false,
+      "custom_voice_available": false,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "do-not-integrate-first",
+      "fallback_path": "Use only for English/Spanish-specific future tests unless official German support is added.",
+      "blockers": [
+        "missing-german-tts-support",
+        "api-key",
+        "text-payload-retention-review",
+        "latency-smoke-test-required"
+      ],
+      "decision_notes": [
+        "Not a first integration for this project because the product needs German and English.",
+        "Could be revisited for English-only deployments or if official German support changes."
+      ],
+      "latency_fit": 4,
+      "german_english_fit": 2,
+      "streaming_fit": 4,
+      "voice_quality_fit": 4,
+      "sales_voice_control_fit": 3,
+      "integration_simplicity": 4,
+      "privacy_key_safety": 2,
+      "telephony_readiness": 4,
+      "thesis_usefulness": 3,
+      "provider_maturity_fit": 4,
+      "weighted_score": 36.9,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 4,
+          "weight": 1.4,
+          "weighted_score": 5.6
+        },
+        "german_english_fit": {
+          "value": 2,
+          "weight": 1.4,
+          "weighted_score": 2.8
+        },
+        "streaming_fit": {
+          "value": 4,
+          "weight": 1.3,
+          "weighted_score": 5.2
+        },
+        "voice_quality_fit": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "sales_voice_control_fit": {
+          "value": 3,
+          "weight": 1.1,
+          "weighted_score": 3.3
+        },
+        "integration_simplicity": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "privacy_key_safety": {
+          "value": 2,
+          "weight": 0.9,
+          "weighted_score": 1.8
+        },
+        "telephony_readiness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "thesis_usefulness": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "provider_maturity_fit": {
+          "value": 4,
+          "weight": 0.8,
+          "weighted_score": 3.2
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "deepgram-aura-models",
+          "title": "Deepgram Aura Voices and Languages",
+          "url": "https://developers.deepgram.com/docs/tts-models",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "deepgram-pricing",
+          "title": "Deepgram Pricing",
+          "url": "https://deepgram.com/pricing",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    },
+    {
+      "provider_id": "piper-local-tts",
+      "provider_name": "Piper / Open Home Foundation Voice",
+      "model_or_voice_family": "Piper local neural TTS",
+      "provider_class": "local-offline-tts",
+      "official_sources": [
+        "piper-archived-repo",
+        "piper-ohf-repo",
+        "piper-ohf-releases"
+      ],
+      "source_fact_summary": [
+        "Primary GitHub sources describe Piper as a fast local neural TTS engine.",
+        "The archived rhasspy repository listed German and English voice availability.",
+        "The current OHF-Voice repository uses a GPL-3.0 license and has active releases.",
+        "Local setup, model licensing, Windows runtime, and voice quality require separate review."
+      ],
+      "language_support": [
+        "de",
+        "en"
+      ],
+      "german_support_state": "historically-confirmed-needs-current-model-license-review",
+      "english_support_state": "historically-confirmed-needs-current-model-license-review",
+      "streaming_support": "local-cli-and-python-runtime-dependent",
+      "latency_ms_claim": null,
+      "latency_claim_basis": "no current local benchmark in this workspace",
+      "telephony_format_support": false,
+      "emotion_or_style_control": false,
+      "api_calls_made": false,
+      "audio_uploaded": false,
+      "requires_api_key": false,
+      "generated_text_sent_to_provider": false,
+      "customer_audio_uploaded": false,
+      "retention_review_required": false,
+      "key_gate": "not-required",
+      "launch_allowed": false,
+      "voice_cloning_available": false,
+      "custom_voice_available": true,
+      "voice_clone_allowed_for_first_integration": false,
+      "consent_legal_gate": "required-before-any-custom-or-cloned-voice",
+      "recommended_role": "offline-research-lane",
+      "fallback_path": "Keep text-only packet and Windows SAPI dry-run fallback while local model installation is evaluated.",
+      "blockers": [
+        "model-download",
+        "windows-runtime-check",
+        "voice-license-review",
+        "german-quality-check",
+        "telephony-output-check"
+      ],
+      "decision_notes": [
+        "Best privacy/offline research lane because no API key or cloud text transfer is required.",
+        "Not first integration because local runtime and model licensing need a separate install-and-quality checkpoint."
+      ],
+      "latency_fit": 3,
+      "german_english_fit": 4,
+      "streaming_fit": 3,
+      "voice_quality_fit": 3,
+      "sales_voice_control_fit": 2,
+      "integration_simplicity": 2,
+      "privacy_key_safety": 5,
+      "telephony_readiness": 2,
+      "thesis_usefulness": 4,
+      "provider_maturity_fit": 3,
+      "weighted_score": 33.8,
+      "score_breakdown": {
+        "latency_fit": {
+          "value": 3,
+          "weight": 1.4,
+          "weighted_score": 4.2
+        },
+        "german_english_fit": {
+          "value": 4,
+          "weight": 1.4,
+          "weighted_score": 5.6
+        },
+        "streaming_fit": {
+          "value": 3,
+          "weight": 1.3,
+          "weighted_score": 3.9
+        },
+        "voice_quality_fit": {
+          "value": 3,
+          "weight": 1.0,
+          "weighted_score": 3.0
+        },
+        "sales_voice_control_fit": {
+          "value": 2,
+          "weight": 1.1,
+          "weighted_score": 2.2
+        },
+        "integration_simplicity": {
+          "value": 2,
+          "weight": 1.0,
+          "weighted_score": 2.0
+        },
+        "privacy_key_safety": {
+          "value": 5,
+          "weight": 0.9,
+          "weighted_score": 4.5
+        },
+        "telephony_readiness": {
+          "value": 2,
+          "weight": 1.0,
+          "weighted_score": 2.0
+        },
+        "thesis_usefulness": {
+          "value": 4,
+          "weight": 1.0,
+          "weighted_score": 4.0
+        },
+        "provider_maturity_fit": {
+          "value": 3,
+          "weight": 0.8,
+          "weighted_score": 2.4
+        }
+      },
+      "source_links": [
+        {
+          "source_id": "piper-archived-repo",
+          "title": "rhasspy/piper GitHub Repository",
+          "url": "https://github.com/rhasspy/piper",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "piper-ohf-repo",
+          "title": "OHF-Voice/piper1-gpl GitHub Repository",
+          "url": "https://github.com/OHF-Voice/piper1-gpl",
+          "retrieved_on": "2026-05-01"
+        },
+        {
+          "source_id": "piper-ohf-releases",
+          "title": "OHF-Voice/piper1-gpl Releases",
+          "url": "https://github.com/OHF-Voice/piper1-gpl/releases",
+          "retrieved_on": "2026-05-01"
+        }
+      ]
+    }
+  ]
+}
