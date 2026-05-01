@@ -1,0 +1,791 @@
+{
+  "voice_milestone": "VOICE-005",
+  "measurement_scope": "local-python-after-final-transcript",
+  "server_started": false,
+  "requires_api_key": false,
+  "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "summary": {
+    "case_count": 4,
+    "min_total_decision_loop_ms": 0.735,
+    "max_total_decision_loop_ms": 0.966,
+    "avg_total_decision_loop_ms": 0.82,
+    "under_1s_count": 4,
+    "under_2s_count": 0,
+    "over_2s_count": 0,
+    "budget_pass_count": 4
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-005-C01",
+      "case_title": "Price objection fast path",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "sales_difficulty": "price-objection",
+      "response_mode": "fast-response",
+      "call_control": "continue-call",
+      "total_decision_loop_ms": 0.966,
+      "observed_bucket": "under-1s",
+      "budget_pass": true,
+      "segments": {
+        "campaign_load_ms": 0.45,
+        "realtime_decision_ms": 0.031,
+        "guarded_response_ms": 0.027,
+        "voice_packet_build_ms": 0.44
+      },
+      "packet": {
+        "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
+        "voice_milestone": "VOICE-004",
+        "provider": "browser-speech-recognition-demo",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "asr_adapter": {
+          "provider": "browser-speech-recognition-demo",
+          "transcript_source": "browser-final-result",
+          "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+          "confidence": null,
+          "language": "de",
+          "requires_api_key": false,
+          "audio_uploaded_to_local_server": false,
+          "transcript_sent_to_local_server": true,
+          "browser_api": "SpeechRecognition or webkitSpeechRecognition",
+          "consent_boundary": "user-initiated microphone permission for local prototype only"
+        },
+        "response_packet": {
+          "voice_run_id": "VOICE-001-dry-run",
+          "voice_milestone": "VOICE-001",
+          "provider": "dry-run",
+          "mode": "metadata-only",
+          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign": {
+            "product_name": "Internet and mobile plan review",
+            "product_category": "telecom",
+            "customer_type": "b2c",
+            "language": "de"
+          },
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "silence_count": null,
+          "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+          "decision": {
+            "case_id": "REALTIME-CLI-TURN",
+            "response_mode": "fast-response",
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_bucket": "under-1s",
+            "background_completion_budget_ms": null,
+            "background_modules": [],
+            "live_path_subagents": [],
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call",
+            "bridge_response": null,
+            "agent_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+            "first_response_latency_ms": 0,
+            "first_response_latency_observed_bucket": "under-1s"
+          },
+          "tts_text": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "voice": {
+            "name": "Neutral Synthetic Test Voice",
+            "style": "neutral-synthetic-test",
+            "consent_boundary": "synthetic-test-voice-only",
+            "cloned_voice": false
+          },
+          "latency_contract": {
+            "first_response_target_ms": 2000,
+            "tts_start_target_ms": 500,
+            "source_decision_latency_ms": 0,
+            "source_decision_latency_bucket": "under-1s"
+          },
+          "audio_output_path": null,
+          "trace": {
+            "source": "scripts/realtime_turn_cli.py",
+            "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+            "synthetic_output": true,
+            "requires_api_key": false
+          },
+          "response_generation": {
+            "response_generation_id": "RESP-001-local-guarded",
+            "provider": "local-guarded-composer",
+            "generation_mode": "local deterministic composer with guardrail validation",
+            "policy_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+            "candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "final_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "validation": {
+              "validator": "RESP-001 substring forbidden-claim check",
+              "checked_text_source": "candidate_response",
+              "passed": true,
+              "forbidden_claim_matches": [],
+              "required_repair": false,
+              "fallback_used": false,
+              "notes": "Candidate passed local guardrail validation."
+            },
+            "guardrails": {
+              "guardrail_source": "SalesCampaign plus universal response-safety rules",
+              "allowed_claims": [
+                "A human specialist can review available plan options.",
+                "Plan details must be checked against approved product data."
+              ],
+              "forbidden_claims": [
+                "guarantee",
+                "guaranteed",
+                "guaranteed savings",
+                "save you money",
+                "always be stable",
+                "no risk",
+                "covered for sure",
+                "payout",
+                "legal advice",
+                "medical advice",
+                "guaranteed coverage",
+                "guaranteed speed",
+                "unsupported technical claims"
+              ],
+              "required_disclosures": [
+                "Technical details depend on address and plan availability."
+              ],
+              "escalation_triggers": [
+                "coverage guarantee",
+                "technical certainty request",
+                "human request"
+              ],
+              "human_handoff_role": "telecom specialist",
+              "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+            },
+            "response_constraints": {
+              "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
+              "max_sentences": 2,
+              "must_not_invent_product_claims": true,
+              "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+            },
+            "latency": {
+              "generation_latency_ms": 0,
+              "source_decision_latency_ms": 0,
+              "target": "keep generation fast enough for the live response path"
+            },
+            "llm_used": false,
+            "requires_api_key": false,
+            "api_calls_made": false
+          }
+        },
+        "latency_measurement": {
+          "voice_milestone": "VOICE-005",
+          "measurement_scope": "local-python-after-final-transcript",
+          "description": "Measures local Python decision latency after a final transcript is available. Browser ASR and browser TTS playback are not measured in this prototype metric.",
+          "server_started": false,
+          "requires_api_key": false,
+          "browser_asr_measured": false,
+          "browser_tts_playback_measured": false,
+          "target_first_response_ms": 2000,
+          "target_tts_start_ms": 500,
+          "total_decision_loop_ms": 0.966,
+          "observed_bucket": "under-1s",
+          "budget_pass": true,
+          "segments": {
+            "campaign_load_ms": 0.45,
+            "realtime_decision_ms": 0.031,
+            "guarded_response_ms": 0.027,
+            "voice_packet_build_ms": 0.44
+          }
+        },
+        "trace": {
+          "source": "scripts/run_browser_speech_demo.py",
+          "realtime_source": "scripts/realtime_turn_cli.py",
+          "response_packet_source": "scripts/generate_voice_response.py",
+          "response_generation_source": "scripts/generate_guarded_response.py",
+          "latency_measurement_source": "VOICE-005 local one-shot packet timing",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-005-C02",
+      "case_title": "Claim boundary escalation fast path",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "sales_difficulty": "claim-boundary",
+      "response_mode": "fast-response",
+      "call_control": "transfer-or-escalate",
+      "total_decision_loop_ms": 0.735,
+      "observed_bucket": "under-1s",
+      "budget_pass": true,
+      "segments": {
+        "campaign_load_ms": 0.284,
+        "realtime_decision_ms": 0.02,
+        "guarded_response_ms": 0.028,
+        "voice_packet_build_ms": 0.392
+      },
+      "packet": {
+        "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
+        "voice_milestone": "VOICE-004",
+        "provider": "browser-speech-recognition-demo",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "asr_adapter": {
+          "provider": "browser-speech-recognition-demo",
+          "transcript_source": "browser-final-result",
+          "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+          "confidence": null,
+          "language": "de",
+          "requires_api_key": false,
+          "audio_uploaded_to_local_server": false,
+          "transcript_sent_to_local_server": true,
+          "browser_api": "SpeechRecognition or webkitSpeechRecognition",
+          "consent_boundary": "user-initiated microphone permission for local prototype only"
+        },
+        "response_packet": {
+          "voice_run_id": "VOICE-001-dry-run",
+          "voice_milestone": "VOICE-001",
+          "provider": "dry-run",
+          "mode": "metadata-only",
+          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign": {
+            "product_name": "Internet and mobile plan review",
+            "product_category": "telecom",
+            "customer_type": "b2c",
+            "language": "de"
+          },
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "silence_count": null,
+          "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+          "decision": {
+            "case_id": "REALTIME-CLI-TURN",
+            "response_mode": "fast-response",
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_bucket": "under-1s",
+            "background_completion_budget_ms": null,
+            "background_modules": [
+              "human-handoff-prep"
+            ],
+            "live_path_subagents": [],
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": "claim-boundary",
+            "interest_state": "needs-human",
+            "selected_strategy": "inquiry",
+            "next_action": "escalate",
+            "call_control": "transfer-or-escalate",
+            "bridge_response": null,
+            "agent_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+            "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+            "first_response_latency_ms": 0,
+            "first_response_latency_observed_bucket": "under-1s"
+          },
+          "tts_text": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+          "voice": {
+            "name": "Neutral Synthetic Test Voice",
+            "style": "neutral-synthetic-test",
+            "consent_boundary": "synthetic-test-voice-only",
+            "cloned_voice": false
+          },
+          "latency_contract": {
+            "first_response_target_ms": 2000,
+            "tts_start_target_ms": 500,
+            "source_decision_latency_ms": 0,
+            "source_decision_latency_bucket": "under-1s"
+          },
+          "audio_output_path": null,
+          "trace": {
+            "source": "scripts/realtime_turn_cli.py",
+            "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+            "synthetic_output": true,
+            "requires_api_key": false
+          },
+          "response_generation": {
+            "response_generation_id": "RESP-001-local-guarded",
+            "provider": "local-guarded-composer",
+            "generation_mode": "local deterministic composer with guardrail validation",
+            "policy_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+            "candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+            "final_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+            "validation": {
+              "validator": "RESP-001 substring forbidden-claim check",
+              "checked_text_source": "candidate_response",
+              "passed": true,
+              "forbidden_claim_matches": [],
+              "required_repair": false,
+              "fallback_used": false,
+              "notes": "Candidate passed local guardrail validation."
+            },
+            "guardrails": {
+              "guardrail_source": "SalesCampaign plus universal response-safety rules",
+              "allowed_claims": [
+                "A human specialist can review available plan options.",
+                "Plan details must be checked against approved product data."
+              ],
+              "forbidden_claims": [
+                "guarantee",
+                "guaranteed",
+                "guaranteed savings",
+                "save you money",
+                "always be stable",
+                "no risk",
+                "covered for sure",
+                "payout",
+                "legal advice",
+                "medical advice",
+                "guaranteed coverage",
+                "guaranteed speed",
+                "unsupported technical claims"
+              ],
+              "required_disclosures": [
+                "Technical details depend on address and plan availability."
+              ],
+              "escalation_triggers": [
+                "coverage guarantee",
+                "technical certainty request",
+                "human request"
+              ],
+              "human_handoff_role": "telecom specialist",
+              "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+            },
+            "response_constraints": {
+              "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
+              "max_sentences": 2,
+              "must_not_invent_product_claims": true,
+              "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+            },
+            "latency": {
+              "generation_latency_ms": 0,
+              "source_decision_latency_ms": 0,
+              "target": "keep generation fast enough for the live response path"
+            },
+            "llm_used": false,
+            "requires_api_key": false,
+            "api_calls_made": false
+          }
+        },
+        "latency_measurement": {
+          "voice_milestone": "VOICE-005",
+          "measurement_scope": "local-python-after-final-transcript",
+          "description": "Measures local Python decision latency after a final transcript is available. Browser ASR and browser TTS playback are not measured in this prototype metric.",
+          "server_started": false,
+          "requires_api_key": false,
+          "browser_asr_measured": false,
+          "browser_tts_playback_measured": false,
+          "target_first_response_ms": 2000,
+          "target_tts_start_ms": 500,
+          "total_decision_loop_ms": 0.735,
+          "observed_bucket": "under-1s",
+          "budget_pass": true,
+          "segments": {
+            "campaign_load_ms": 0.284,
+            "realtime_decision_ms": 0.02,
+            "guarded_response_ms": 0.028,
+            "voice_packet_build_ms": 0.392
+          }
+        },
+        "trace": {
+          "source": "scripts/run_browser_speech_demo.py",
+          "realtime_source": "scripts/realtime_turn_cli.py",
+          "response_packet_source": "scripts/generate_voice_response.py",
+          "response_generation_source": "scripts/generate_guarded_response.py",
+          "latency_measurement_source": "VOICE-005 local one-shot packet timing",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-005-C03",
+      "case_title": "Product detail lookup bridge path",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "product-detail-check",
+      "sales_difficulty": "product-detail-lookup",
+      "response_mode": "bridge-then-background",
+      "call_control": "bridge-then-continue",
+      "total_decision_loop_ms": 0.782,
+      "observed_bucket": "under-1s",
+      "budget_pass": true,
+      "segments": {
+        "campaign_load_ms": 0.28,
+        "realtime_decision_ms": 0.017,
+        "guarded_response_ms": 0.022,
+        "voice_packet_build_ms": 0.453
+      },
+      "packet": {
+        "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
+        "voice_milestone": "VOICE-004",
+        "provider": "browser-speech-recognition-demo",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "product-detail-check",
+        "input_type": "speech-final",
+        "asr_adapter": {
+          "provider": "browser-speech-recognition-demo",
+          "transcript_source": "browser-final-result",
+          "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
+          "confidence": null,
+          "language": "de",
+          "requires_api_key": false,
+          "audio_uploaded_to_local_server": false,
+          "transcript_sent_to_local_server": true,
+          "browser_api": "SpeechRecognition or webkitSpeechRecognition",
+          "consent_boundary": "user-initiated microphone permission for local prototype only"
+        },
+        "response_packet": {
+          "voice_run_id": "VOICE-001-dry-run",
+          "voice_milestone": "VOICE-001",
+          "provider": "dry-run",
+          "mode": "metadata-only",
+          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign": {
+            "product_name": "Internet and mobile plan review",
+            "product_category": "telecom",
+            "customer_type": "b2c",
+            "language": "de"
+          },
+          "stage": "product-detail-check",
+          "input_type": "speech-final",
+          "silence_count": null,
+          "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
+          "decision": {
+            "case_id": "REALTIME-CLI-TURN",
+            "response_mode": "bridge-then-background",
+            "first_response_latency_budget_ms": 600,
+            "first_response_latency_bucket": "under-1s",
+            "background_completion_budget_ms": 3500,
+            "background_modules": [
+              "campaign-knowledge-lookup"
+            ],
+            "live_path_subagents": [],
+            "detected_emotion": "neutral",
+            "sales_difficulty": "product-detail-lookup",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "bridge-then-continue",
+            "bridge_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+            "agent_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+            "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+            "first_response_latency_ms": 0,
+            "first_response_latency_observed_bucket": "under-1s"
+          },
+          "tts_text": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+          "voice": {
+            "name": "Neutral Synthetic Test Voice",
+            "style": "neutral-synthetic-test",
+            "consent_boundary": "synthetic-test-voice-only",
+            "cloned_voice": false
+          },
+          "latency_contract": {
+            "first_response_target_ms": 2000,
+            "tts_start_target_ms": 500,
+            "source_decision_latency_ms": 0,
+            "source_decision_latency_bucket": "under-1s"
+          },
+          "audio_output_path": null,
+          "trace": {
+            "source": "scripts/realtime_turn_cli.py",
+            "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+            "synthetic_output": true,
+            "requires_api_key": false
+          },
+          "response_generation": {
+            "response_generation_id": "RESP-001-local-guarded",
+            "provider": "local-guarded-composer",
+            "generation_mode": "local deterministic composer with guardrail validation",
+            "policy_response": "One moment, I want to check the approved product information.",
+            "candidate_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+            "final_response": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+            "validation": {
+              "validator": "RESP-001 substring forbidden-claim check",
+              "checked_text_source": "candidate_response",
+              "passed": true,
+              "forbidden_claim_matches": [],
+              "required_repair": false,
+              "fallback_used": false,
+              "notes": "Candidate passed local guardrail validation."
+            },
+            "guardrails": {
+              "guardrail_source": "SalesCampaign plus universal response-safety rules",
+              "allowed_claims": [
+                "A human specialist can review available plan options.",
+                "Plan details must be checked against approved product data."
+              ],
+              "forbidden_claims": [
+                "guarantee",
+                "guaranteed",
+                "guaranteed savings",
+                "save you money",
+                "always be stable",
+                "no risk",
+                "covered for sure",
+                "payout",
+                "legal advice",
+                "medical advice",
+                "guaranteed coverage",
+                "guaranteed speed",
+                "unsupported technical claims"
+              ],
+              "required_disclosures": [
+                "Technical details depend on address and plan availability."
+              ],
+              "escalation_triggers": [
+                "coverage guarantee",
+                "technical certainty request",
+                "human request"
+              ],
+              "human_handoff_role": "telecom specialist",
+              "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+            },
+            "response_constraints": {
+              "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
+              "max_sentences": 2,
+              "must_not_invent_product_claims": true,
+              "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+            },
+            "latency": {
+              "generation_latency_ms": 0,
+              "source_decision_latency_ms": 0,
+              "target": "keep generation fast enough for the live response path"
+            },
+            "llm_used": false,
+            "requires_api_key": false,
+            "api_calls_made": false
+          }
+        },
+        "latency_measurement": {
+          "voice_milestone": "VOICE-005",
+          "measurement_scope": "local-python-after-final-transcript",
+          "description": "Measures local Python decision latency after a final transcript is available. Browser ASR and browser TTS playback are not measured in this prototype metric.",
+          "server_started": false,
+          "requires_api_key": false,
+          "browser_asr_measured": false,
+          "browser_tts_playback_measured": false,
+          "target_first_response_ms": 2000,
+          "target_tts_start_ms": 500,
+          "total_decision_loop_ms": 0.782,
+          "observed_bucket": "under-1s",
+          "budget_pass": true,
+          "segments": {
+            "campaign_load_ms": 0.28,
+            "realtime_decision_ms": 0.017,
+            "guarded_response_ms": 0.022,
+            "voice_packet_build_ms": 0.453
+          }
+        },
+        "trace": {
+          "source": "scripts/run_browser_speech_demo.py",
+          "realtime_source": "scripts/realtime_turn_cli.py",
+          "response_packet_source": "scripts/generate_voice_response.py",
+          "response_generation_source": "scripts/generate_guarded_response.py",
+          "latency_measurement_source": "VOICE-005 local one-shot packet timing",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-005-C04",
+      "case_title": "Unknown signal follow-up path",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "sales_difficulty": "unknown-runtime-signal",
+      "response_mode": "fast-response",
+      "call_control": "continue-call",
+      "total_decision_loop_ms": 0.786,
+      "observed_bucket": "under-1s",
+      "budget_pass": true,
+      "segments": {
+        "campaign_load_ms": 0.328,
+        "realtime_decision_ms": 0.021,
+        "guarded_response_ms": 0.029,
+        "voice_packet_build_ms": 0.398
+      },
+      "packet": {
+        "voice_demo_run_id": "VOICE-004-browser-speech-recognition",
+        "voice_milestone": "VOICE-004",
+        "provider": "browser-speech-recognition-demo",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "asr_adapter": {
+          "provider": "browser-speech-recognition-demo",
+          "transcript_source": "browser-final-result",
+          "transcript": "Can you explain why I should even take this call today?",
+          "confidence": null,
+          "language": "de",
+          "requires_api_key": false,
+          "audio_uploaded_to_local_server": false,
+          "transcript_sent_to_local_server": true,
+          "browser_api": "SpeechRecognition or webkitSpeechRecognition",
+          "consent_boundary": "user-initiated microphone permission for local prototype only"
+        },
+        "response_packet": {
+          "voice_run_id": "VOICE-001-dry-run",
+          "voice_milestone": "VOICE-001",
+          "provider": "dry-run",
+          "mode": "metadata-only",
+          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "campaign": {
+            "product_name": "Internet and mobile plan review",
+            "product_category": "telecom",
+            "customer_type": "b2c",
+            "language": "de"
+          },
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "silence_count": null,
+          "transcript": "Can you explain why I should even take this call today?",
+          "decision": {
+            "case_id": "REALTIME-CLI-TURN",
+            "response_mode": "fast-response",
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_bucket": "under-1s",
+            "background_completion_budget_ms": null,
+            "background_modules": [],
+            "live_path_subagents": [],
+            "detected_emotion": "neutral",
+            "sales_difficulty": "unknown-runtime-signal",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call",
+            "bridge_response": null,
+            "agent_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+            "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+            "first_response_latency_ms": 0,
+            "first_response_latency_observed_bucket": "under-1s"
+          },
+          "tts_text": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+          "voice": {
+            "name": "Neutral Synthetic Test Voice",
+            "style": "neutral-synthetic-test",
+            "consent_boundary": "synthetic-test-voice-only",
+            "cloned_voice": false
+          },
+          "latency_contract": {
+            "first_response_target_ms": 2000,
+            "tts_start_target_ms": 500,
+            "source_decision_latency_ms": 0,
+            "source_decision_latency_bucket": "under-1s"
+          },
+          "audio_output_path": null,
+          "trace": {
+            "source": "scripts/realtime_turn_cli.py",
+            "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+            "synthetic_output": true,
+            "requires_api_key": false
+          },
+          "response_generation": {
+            "response_generation_id": "RESP-001-local-guarded",
+            "provider": "local-guarded-composer",
+            "generation_mode": "local deterministic composer with guardrail validation",
+            "policy_response": "Thanks. May I ask one quick clarifying question?",
+            "candidate_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+            "final_response": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+            "validation": {
+              "validator": "RESP-001 substring forbidden-claim check",
+              "checked_text_source": "candidate_response",
+              "passed": true,
+              "forbidden_claim_matches": [],
+              "required_repair": false,
+              "fallback_used": false,
+              "notes": "Candidate passed local guardrail validation."
+            },
+            "guardrails": {
+              "guardrail_source": "SalesCampaign plus universal response-safety rules",
+              "allowed_claims": [
+                "A human specialist can review available plan options.",
+                "Plan details must be checked against approved product data."
+              ],
+              "forbidden_claims": [
+                "guarantee",
+                "guaranteed",
+                "guaranteed savings",
+                "save you money",
+                "always be stable",
+                "no risk",
+                "covered for sure",
+                "payout",
+                "legal advice",
+                "medical advice",
+                "guaranteed coverage",
+                "guaranteed speed",
+                "unsupported technical claims"
+              ],
+              "required_disclosures": [
+                "Technical details depend on address and plan availability."
+              ],
+              "escalation_triggers": [
+                "coverage guarantee",
+                "technical certainty request",
+                "human request"
+              ],
+              "human_handoff_role": "telecom specialist",
+              "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+            },
+            "response_constraints": {
+              "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
+              "max_sentences": 2,
+              "must_not_invent_product_claims": true,
+              "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+            },
+            "latency": {
+              "generation_latency_ms": 0,
+              "source_decision_latency_ms": 0,
+              "target": "keep generation fast enough for the live response path"
+            },
+            "llm_used": false,
+            "requires_api_key": false,
+            "api_calls_made": false
+          }
+        },
+        "latency_measurement": {
+          "voice_milestone": "VOICE-005",
+          "measurement_scope": "local-python-after-final-transcript",
+          "description": "Measures local Python decision latency after a final transcript is available. Browser ASR and browser TTS playback are not measured in this prototype metric.",
+          "server_started": false,
+          "requires_api_key": false,
+          "browser_asr_measured": false,
+          "browser_tts_playback_measured": false,
+          "target_first_response_ms": 2000,
+          "target_tts_start_ms": 500,
+          "total_decision_loop_ms": 0.786,
+          "observed_bucket": "under-1s",
+          "budget_pass": true,
+          "segments": {
+            "campaign_load_ms": 0.328,
+            "realtime_decision_ms": 0.021,
+            "guarded_response_ms": 0.029,
+            "voice_packet_build_ms": 0.398
+          }
+        },
+        "trace": {
+          "source": "scripts/run_browser_speech_demo.py",
+          "realtime_source": "scripts/realtime_turn_cli.py",
+          "response_packet_source": "scripts/generate_voice_response.py",
+          "response_generation_source": "scripts/generate_guarded_response.py",
+          "latency_measurement_source": "VOICE-005 local one-shot packet timing",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
+        }
+      }
+    }
+  ]
+}

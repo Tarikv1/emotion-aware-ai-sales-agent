@@ -2,6 +2,7 @@
 import argparse
 import html
 import json
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -23,6 +24,9 @@ PRICE_SAMPLE_TRANSCRIPT = "Das klingt zu teuer und ich weiss nicht, ob sich der 
 LOOKUP_SAMPLE_TRANSCRIPT = "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?"
 VOICE_MILESTONE = "VOICE-004"
 PROVIDER_ID = "browser-speech-recognition-demo"
+LATENCY_MILESTONE = "VOICE-005"
+FIRST_RESPONSE_TARGET_MS = 2000
+TTS_START_TARGET_MS = 500
 
 
 def project_relative_string(path: Path) -> str:
@@ -94,6 +98,40 @@ def response_generation_for_voice(guarded_response: dict) -> dict:
     }
 
 
+def elapsed_ms(start: float) -> float:
+    return round((time.perf_counter() - start) * 1000, 3)
+
+
+def latency_bucket(milliseconds: int) -> str:
+    if milliseconds <= 1000:
+        return "under-1s"
+    if milliseconds <= 2000:
+        return "under-2s"
+    return "over-2s"
+
+
+def build_latency_measurement(start: float, segments: dict) -> dict:
+    total_ms = elapsed_ms(start)
+    return {
+        "voice_milestone": LATENCY_MILESTONE,
+        "measurement_scope": "local-python-after-final-transcript",
+        "description": (
+            "Measures local Python decision latency after a final transcript is available. "
+            "Browser ASR and browser TTS playback are not measured in this prototype metric."
+        ),
+        "server_started": False,
+        "requires_api_key": False,
+        "browser_asr_measured": False,
+        "browser_tts_playback_measured": False,
+        "target_first_response_ms": FIRST_RESPONSE_TARGET_MS,
+        "target_tts_start_ms": TTS_START_TARGET_MS,
+        "total_decision_loop_ms": total_ms,
+        "observed_bucket": latency_bucket(total_ms),
+        "budget_pass": total_ms <= FIRST_RESPONSE_TARGET_MS,
+        "segments": segments,
+    }
+
+
 def build_browser_decision_packet(
     transcript: str,
     campaign_id: str,
@@ -102,9 +140,17 @@ def build_browser_decision_packet(
     silence_count: int,
     cases_path: Path,
 ) -> dict:
+    packet_start = time.perf_counter()
+    segment_start = time.perf_counter()
     campaign = load_campaign(campaign_id, cases_path)
+    campaign_load_ms = elapsed_ms(segment_start)
+
+    segment_start = time.perf_counter()
     case = build_turn_case(campaign_id, stage, transcript, input_type, silence_count)
     decision = run_turn_decision(case)
+    realtime_decision_ms = elapsed_ms(segment_start)
+
+    segment_start = time.perf_counter()
     guarded_response = apply_guarded_response_to_decision(
         campaign=campaign,
         stage=stage,
@@ -113,9 +159,13 @@ def build_browser_decision_packet(
         silence_count=silence_count,
         decision=decision,
     )
+    guarded_response_ms = elapsed_ms(segment_start)
+
     decision["agent_response"] = guarded_response["final_response"]
     if decision.get("bridge_response") is not None:
         decision["bridge_response"] = guarded_response["final_response"]
+
+    segment_start = time.perf_counter()
     response_packet = build_voice_packet(
         campaign=campaign,
         stage=stage,
@@ -128,6 +178,16 @@ def build_browser_decision_packet(
         audio_output_path=None,
     )
     response_packet["response_generation"] = response_generation_for_voice(guarded_response)
+    voice_packet_build_ms = elapsed_ms(segment_start)
+    latency_measurement = build_latency_measurement(
+        packet_start,
+        {
+            "campaign_load_ms": campaign_load_ms,
+            "realtime_decision_ms": realtime_decision_ms,
+            "guarded_response_ms": guarded_response_ms,
+            "voice_packet_build_ms": voice_packet_build_ms,
+        },
+    )
     return {
         "voice_demo_run_id": f"{VOICE_MILESTONE}-browser-speech-recognition",
         "voice_milestone": VOICE_MILESTONE,
@@ -149,11 +209,13 @@ def build_browser_decision_packet(
             "consent_boundary": "user-initiated microphone permission for local prototype only",
         },
         "response_packet": response_packet,
+        "latency_measurement": latency_measurement,
         "trace": {
             "source": "scripts/run_browser_speech_demo.py",
             "realtime_source": "scripts/realtime_turn_cli.py",
             "response_packet_source": "scripts/generate_voice_response.py",
             "response_generation_source": "scripts/generate_guarded_response.py",
+            "latency_measurement_source": "VOICE-005 local one-shot packet timing",
             "case_file": project_relative_string(cases_path),
         },
     }
