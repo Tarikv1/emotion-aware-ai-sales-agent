@@ -101,9 +101,12 @@ The next integration should therefore test provider latency and audio quality ag
 
 ## Next Work
 
-VOICE-010 should run the first key-gated TTS latency smoke test only after:
+VOICE-010 now adds the first Cartesia-specific TTS smoke harness.
+
+The committed VOICE-010 artifact is intentionally dry-run by default. A live Cartesia run still requires:
 
 - the API key is provided via environment variable only
+- the selected Cartesia voice ID is provided via environment variable only
 - no key is written to the repository
 - the test uses synthetic prompts only
 - no customer audio is uploaded

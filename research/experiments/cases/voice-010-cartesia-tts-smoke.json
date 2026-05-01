@@ -1,0 +1,68 @@
+{
+  "voice_milestone": "VOICE-010",
+  "experiment_scope": "Guarded Cartesia Sonic 3 TTS bytes-endpoint smoke test; default mode makes no provider call.",
+  "provider": {
+    "provider_id": "cartesia-sonic-3",
+    "provider_name": "Cartesia",
+    "endpoint_type": "tts-bytes",
+    "endpoint_url": "https://api.cartesia.ai/tts/bytes",
+    "api_version": "2026-03-01",
+    "model_id": "sonic-3",
+    "api_key_env_var": "CARTESIA_API_KEY",
+    "voice_id_env_var": "CARTESIA_VOICE_ID",
+    "api_key_storage_rule": "environment-only-not-repo",
+    "api_key_value_logged": false,
+    "voice_id_value_logged": false,
+    "voice_clone_allowed": false,
+    "custom_voice_allowed": false,
+    "default_output_format": {
+      "container": "wav",
+      "encoding": "pcm_s16le",
+      "sample_rate": 8000
+    },
+    "generation_config": {
+      "volume": 1,
+      "speed": 1,
+      "emotion": "neutral"
+    },
+    "save": false
+  },
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_api_key_env": "CARTESIA_API_KEY",
+    "live_call_requires_voice_id_env": "CARTESIA_VOICE_ID",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-010-C01",
+      "case_title": "German Cartesia dry-run TTS smoke",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+      "audio_filename": "VOICE-010-C01-de-cartesia.wav"
+    },
+    {
+      "case_id": "VOICE-010-C02",
+      "case_title": "English Cartesia dry-run TTS smoke",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "Can you guarantee the performance will be better?",
+      "audio_filename": "VOICE-010-C02-en-cartesia.wav"
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "voice_milestone": "VOICE-010",
+  "experiment_scope": "Guarded Cartesia Sonic 3 TTS bytes-endpoint smoke test; default mode makes no provider call.",
+  "case_file": "research\\experiments\\cases\\voice-010-cartesia-tts-smoke.json",
+  "runtime_case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "provider": {
+    "provider_id": "cartesia-sonic-3",
+    "provider_name": "Cartesia",
+    "endpoint_type": "tts-bytes",
+    "endpoint_url": "https://api.cartesia.ai/tts/bytes",
+    "api_version": "2026-03-01",
+    "model_id": "sonic-3",
+    "api_key_env_var": "CARTESIA_API_KEY",
+    "voice_id_env_var": "CARTESIA_VOICE_ID",
+    "api_key_storage_rule": "environment-only-not-repo",
+    "api_key_value_logged": false,
+    "voice_id_value_logged": false,
+    "voice_clone_allowed": false,
+    "custom_voice_allowed": false,
+    "default_output_format": {
+      "container": "wav",
+      "encoding": "pcm_s16le",
+      "sample_rate": 8000
+    },
+    "generation_config": {
+      "volume": 1,
+      "speed": 1,
+      "emotion": "neutral"
+    },
+    "save": false
+  },
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_api_key_env": "CARTESIA_API_KEY",
+    "live_call_requires_voice_id_env": "CARTESIA_VOICE_ID",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout"
+    ]
+  },
+  "summary": {
+    "case_count": 2,
+    "languages": {
+      "de": 1,
+      "en": 1
+    },
+    "live_call_requested": false,
+    "api_calls_made": 0,
+    "audio_files_created": 0,
+    "fallback_count": 2,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "response_language_matches": 2,
+    "tts_text_matches_decision": 2,
+    "max_time_to_first_audio_byte_ms": null,
+    "max_total_provider_latency_ms": 0
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-010-C01",
+      "case_title": "German Cartesia dry-run TTS smoke",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Nur wenn Sie garantieren koennen, dass es stabil ist.",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "de",
+          "response_language": "de",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [
+            "human-handoff-prep"
+          ],
+          "live_path_subagents": [],
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "bridge_response": null,
+          "agent_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "cartesia_tts": {
+        "voice_milestone": "VOICE-010",
+        "provider_id": "cartesia-sonic-3",
+        "endpoint_type": "tts-bytes",
+        "model_id": "sonic-3",
+        "language": "de",
+        "live_call_requested": false,
+        "api_key_env_var": "CARTESIA_API_KEY",
+        "voice_id_env_var": "CARTESIA_VOICE_ID",
+        "api_key_present": false,
+        "voice_id_present": false,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": false,
+        "synthetic_prompt_only": true,
+        "voice_clone_used": false,
+        "custom_voice_used": false,
+        "timeout_seconds": 8.0,
+        "request_preview": {
+          "method": "POST",
+          "url": "https://api.cartesia.ai/tts/bytes",
+          "headers": {
+            "Authorization": "Bearer <redacted>",
+            "Cartesia-Version": "2026-03-01",
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "model_id": "sonic-3",
+            "transcript": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+            "voice": {
+              "mode": "id",
+              "id": "<redacted-env:CARTESIA_VOICE_ID>"
+            },
+            "output_format": {
+              "container": "wav",
+              "encoding": "pcm_s16le",
+              "sample_rate": 8000
+            },
+            "language": "de",
+            "generation_config": {
+              "volume": 1,
+              "speed": 1,
+              "emotion": "neutral"
+            },
+            "save": false
+          }
+        },
+        "fallback_provider": "text-only-tts-packet",
+        "api_call_made": false,
+        "fallback_used": true,
+        "fallback_reason": "dry-run-mode",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "http_status": null,
+        "response_content_type": null,
+        "time_to_first_audio_byte_ms": null,
+        "total_provider_latency_ms": 0,
+        "provider_error": null
+      }
+    },
+    {
+      "case_id": "VOICE-010-C02",
+      "case_title": "English Cartesia dry-run TTS smoke",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign": {
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Can you guarantee the performance will be better?",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "en",
+          "response_language": "en",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [
+            "human-handoff-prep"
+          ],
+          "live_path_subagents": [],
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "bridge_response": null,
+          "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "cartesia_tts": {
+        "voice_milestone": "VOICE-010",
+        "provider_id": "cartesia-sonic-3",
+        "endpoint_type": "tts-bytes",
+        "model_id": "sonic-3",
+        "language": "en",
+        "live_call_requested": false,
+        "api_key_env_var": "CARTESIA_API_KEY",
+        "voice_id_env_var": "CARTESIA_VOICE_ID",
+        "api_key_present": false,
+        "voice_id_present": false,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": false,
+        "synthetic_prompt_only": true,
+        "voice_clone_used": false,
+        "custom_voice_used": false,
+        "timeout_seconds": 8.0,
+        "request_preview": {
+          "method": "POST",
+          "url": "https://api.cartesia.ai/tts/bytes",
+          "headers": {
+            "Authorization": "Bearer <redacted>",
+            "Cartesia-Version": "2026-03-01",
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "model_id": "sonic-3",
+            "transcript": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+            "voice": {
+              "mode": "id",
+              "id": "<redacted-env:CARTESIA_VOICE_ID>"
+            },
+            "output_format": {
+              "container": "wav",
+              "encoding": "pcm_s16le",
+              "sample_rate": 8000
+            },
+            "language": "en",
+            "generation_config": {
+              "volume": 1,
+              "speed": 1,
+              "emotion": "neutral"
+            },
+            "save": false
+          }
+        },
+        "fallback_provider": "text-only-tts-packet",
+        "api_call_made": false,
+        "fallback_used": true,
+        "fallback_reason": "dry-run-mode",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "http_status": null,
+        "response_content_type": null,
+        "time_to_first_audio_byte_ms": null,
+        "total_provider_latency_ms": 0,
+        "provider_error": null
+      }
+    }
+  ]
+}

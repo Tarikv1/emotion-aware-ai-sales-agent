@@ -849,3 +849,41 @@ Use this file as a chronological research journal for the thesis implementation.
   - which neutral synthetic voice should be used first
   - what provider text-retention and data-processing terms mean for German call-center use
   - whether local Piper should be evaluated after or in parallel with the first cloud TTS smoke test
+
+### 2026-05-01 - VOICE-010 Cartesia no-key smoke harness
+
+- Objective: prepare the first Cartesia-specific TTS smoke test without storing or using an API key yet
+- Action taken:
+  - added a Cartesia Sonic 3 bytes-endpoint smoke runner
+  - added a validator that checks dry-run and simulated missing-key live fallback paths
+  - added a Cartesia-specific case file with one German and one English synthetic runtime case
+  - generated dry-run JSON and Markdown artifacts
+  - ignored generated VOICE-010 audio files in Git
+- Data used:
+  - existing `PROD-005` bilingual runtime campaigns
+  - Cartesia official docs for the TTS bytes endpoint, WebSocket endpoint, and endpoint comparison
+- Output created:
+  - `docs/product/VOICE_010_CARTESIA_TTS_SMOKE_TEST.md`
+  - `research/experiments/VOICE-010-cartesia-tts-smoke.md`
+  - `research/experiments/cases/voice-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - `scripts/run_voice_010_cartesia_tts_smoke.py`
+  - `scripts/validate_voice_010_cartesia_tts_smoke.py`
+- What was learned:
+  - the provider adapter can be prepared safely before introducing any secret
+  - a real Cartesia run needs both `CARTESIA_API_KEY` and `CARTESIA_VOICE_ID`
+  - the default command should not call a provider even if an environment key exists
+  - the first provider test should use bounded HTTP timeouts before moving to WebSocket streaming
+- Error or risk recorded:
+  - earlier long-attached shell calls made timeout guardrails mandatory for provider smoke tests
+  - API key leakage remains the highest operational risk, so the script redacts authorization and voice identifiers from outputs
+  - voice ID selection is now explicit because using an arbitrary example voice could distort German-quality evaluation
+- Why it matters for the thesis:
+  - it separates provider integration safety from provider quality evaluation
+  - it preserves reproducibility by allowing no-key validation before a live cloud experiment
+- Open questions:
+  - which Cartesia voice ID should be selected for the first live German/English test
+  - whether one voice should be used for both languages or separate voices should be compared later
+  - whether measured first-audio timing will meet the `500 ms` TTS-start target
+  - whether Cartesia quality is strong enough or ElevenLabs should become the next comparison provider
