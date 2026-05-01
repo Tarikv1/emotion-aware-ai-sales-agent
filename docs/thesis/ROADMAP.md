@@ -23,6 +23,10 @@ The product runtime priority is low latency. The live call path should be a fast
 
 The live call path also needs explicit call-control decisions. The agent should know when to continue, bridge, transfer, end, or schedule-and-end rather than treating every customer response as an invitation for another question.
 
+The active runtime path now treats language as a campaign-level runtime property. German and English behavior should remain one product architecture: the reusable sales-agent core reads the selected `SalesCampaign`, preserves `campaign_language` and `response_language`, and the voice layer speaks the selected response language.
+
+Runtime debugging lessons should be preserved for the thesis. When language routing, latency, interruption, or guardrail bugs are found and fixed, the issue and fix should be summarized in `METHODOLOGY_LOG.md` so the final thesis can discuss limitations and iteration honestly.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -142,6 +146,13 @@ Likely components:
 - fallback or escalation rule
 - optional audio/TTS layer if time permits
 
+Current integrated prototype evidence:
+
+- active bilingual runtime checks for German and English campaign profiles
+- deterministic language assertions across `PROD-005`, `VOICE-001`, `VOICE-002`, `VOICE-004`, `VOICE-005`, and `VOICE-006`
+- safe interruption policy with English/German phrase packs
+- response generation remains guarded behind campaign claims, forbidden claims, disclosures, and fallback rules
+
 Out of scope:
 
 - production call-center deployment
@@ -204,6 +215,7 @@ Ongoing actions:
 - update `DECISION_LOG.md` after important decisions
 - keep experiment notes complete
 - record limitations as they appear
+- record implementation errors and fixes when they reveal useful thesis methodology or product constraints
 - preserve collaboration, attribution, and AI-usage notes
 
 Key writing sources:
@@ -241,3 +253,5 @@ Immediate product artifact:
 - call termination and hang-up policy
 - PROD-005 realtime latency and call-control simulation
 - realtime single-turn CLI prototype
+- active bilingual runtime-language checks
+- documented debugging trail for bilingual routing, guarded response language, and interruption campaign routing

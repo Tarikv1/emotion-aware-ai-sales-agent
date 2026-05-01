@@ -16,6 +16,41 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-01 - Active bilingual runtime backfill and debugging trail
+
+- Objective: make the active voice/runtime experiments explicitly bilingual without turning the product into separate German and English products
+- Action taken:
+  - backfilled active runtime checks so `PROD-005`, `VOICE-001`, `VOICE-002`, `VOICE-004`, `VOICE-005`, and `VOICE-006` validate campaign-language and response-language alignment
+  - kept the architecture as one reusable sales-agent core plus configurable `SalesCampaign` profiles
+  - regenerated active runtime artifacts after the validators passed
+  - committed and pushed the checkpoint as `a02149e Backfill active runtime experiments with bilingual language checks`
+- Data used:
+  - active synthetic runtime campaigns from `research/experiments/cases/prod-005-realtime-latency-call-control.json`
+  - German B2C telecom runtime examples and English B2B software runtime examples
+  - prior manual browser observations that English speech could be transcribed or handled as German when the selected language/campaign path was wrong
+- Output created:
+  - updated active runtime validators for language checks
+  - updated generated artifacts for `PROD-005`, `VOICE-001`, `VOICE-002`, `VOICE-004`, `VOICE-005`, and `VOICE-006`
+  - updated product and experiment docs for bilingual runtime behavior
+- Problems encountered and fixes:
+  - `VOICE-002` initially passed transcript text into the realtime core without passing the selected campaign, so the response could default to the wrong language. This was fixed by routing the campaign profile into `run_turn_decision`.
+  - `VOICE-004` and `VOICE-006` exposed a mixed-language response problem where German output could include the English handoff role `telecom specialist`. This was fixed by using German-safe handoff wording in the guarded response composer.
+  - `VOICE-005` contained a case labeled as German while the transcript itself was English. This was corrected so the German/English latency matrix is clean rather than only technically passing.
+  - `VOICE-006` English interruption cases were being sent into the German telecom campaign when they reached the sales core. This was fixed by routing interruption cases through a campaign profile that matches the case language.
+  - The project needed a clear boundary between active runtime backfill and archived historical artifacts. The fix was methodological rather than technical: update active runtime paths now, and only backfill archived experiments if they become active again.
+- What was learned:
+  - bilingual support should be an attribute of campaign configuration and runtime routing, not a fork into separate products
+  - validators must check not only final labels but also runtime language fields and generated response language
+  - generated artifacts can hide language-routing mistakes unless validators assert the campaign language, response language, and spoken text together
+  - debugging failures are thesis-relevant evidence because they show how product constraints were discovered and converted into repeatable checks
+- Why it matters for the thesis:
+  - this checkpoint strengthens the methodology chapter by showing iterative prototype refinement, validation-driven development, and multilingual product generalization
+  - the recorded bugs can later support an honest limitations/debugging section instead of presenting the final prototype as if it emerged fully correct
+- Open questions:
+  - whether later experiments should add a third language to prove the phrase-pack/campaign-language design generalizes beyond English and German
+  - how much bilingual evaluation should use manual human review versus deterministic language assertions
+  - whether the final thesis should present these debugging notes in the methodology chapter, results discussion, or appendix
+
 ### 2026-04-30 - Vertical-agnostic campaign model
 
 - Objective: clarify that the product should support many call-center sales verticals, not only the first insurance client
