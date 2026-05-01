@@ -11,10 +11,11 @@ browser microphone permission
 -> browser speech recognition transcript
 -> local Python /decide endpoint
 -> realtime sales-agent decision
+-> RESP-001 guarded response generation
 -> browser speech playback
 ```
 
-The browser is not a second sales brain. It captures transcript text and plays back the selected response. The Python realtime core still owns classification, strategy, escalation, and call control.
+The browser is not a second sales brain. It captures transcript text and plays back the selected response. The Python realtime core still owns classification, strategy, escalation, and call control. RESP-001 owns the reusable guarded wording step.
 
 ## Script
 
@@ -67,12 +68,13 @@ The page also shows:
 
 The agent response may stay the same across different spoken inputs if the transcripts map to the same sales-difficulty bucket. For example, multiple claim-boundary phrases should safely produce the same escalation-style response.
 
-VOICE-004 now separates two layers:
+VOICE-004 now uses the reusable RESP-001 response-generation layer:
 
 - `policy_response`: the safe deterministic baseline selected by the realtime policy
-- `tts_text`: the contextual demo response spoken to the user
+- `candidate_response`: the improved wording proposed by the guarded response layer
+- `final_response`: the validated response copied into `tts_text`
 
-The contextual demo response can reference the actual transcript while keeping the same call-control decision. This is still not the final LLM sales brain; it is a no-key local composer that makes the browser demo less static while preserving guardrails.
+The response layer keeps the same call-control decision and does not require an API key. It can make the demo less static, but it avoids quoting sensitive or unsafe customer claims directly. This is still not the final LLM sales brain; it is the provider-safe contract that a future LLM candidate provider must obey.
 
 ## Generated Artifacts
 

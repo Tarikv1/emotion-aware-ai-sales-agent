@@ -26,7 +26,7 @@ The deterministic sample decision routes through the existing realtime sales-age
 The selected response is:
 
 ```text
-I do not want to guarantee something that depends on the details. I can route this to a specialist.
+I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.
 ```
 
 ## Generated Artifacts
@@ -58,9 +58,9 @@ The demo now exposes a recognition-language selector with `de-DE`, `en-US`, and 
 
 The deterministic agent may intentionally produce the same response for different transcripts when they map to the same sales-difficulty bucket. The validator now checks a price-objection transcript separately so the demo proves that responses can change when the classification changes.
 
-The demo also adds a local contextual response composer. The realtime policy still selects classification, next action, and call control. The composer changes the spoken wording by referencing the submitted transcript and stores the original fixed policy response as `response_generation.policy_response`.
+The demo now uses RESP-001 guarded response generation. The realtime policy still selects classification, next action, and call control. RESP-001 proposes guarded wording, validates it, stores the original fixed policy response as `response_generation.policy_response`, and copies `response_generation.final_response` into the spoken `tts_text`.
 
-This is a bridge toward a real guarded LLM response layer, not the final natural sales agent.
+This is a bridge toward a real guarded LLM response layer, not the final natural sales agent. A future LLM should plug in as a candidate wording provider behind the same validation and fallback contract.
 
 ## Interpretation
 
@@ -70,6 +70,7 @@ VOICE-004 proves the next useful product loop:
 speak
 -> browser transcript
 -> reusable realtime sales-agent core
+-> RESP-001 guarded response generation
 -> compliant response
 -> browser speech playback
 ```

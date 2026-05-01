@@ -6,6 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
+from generate_guarded_response import apply_guarded_response_to_decision
 from generate_voice_response import build_voice_packet, resolve_project_path
 from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
 from run_realtime_turn_simulation import load_realtime_cases
@@ -42,7 +43,10 @@ def build_metadata(campaign_id: str, stage: str, host: str, port: int, cases_pat
     return {
         "voice_milestone": VOICE_MILESTONE,
         "provider": PROVIDER_ID,
-        "description": "No-key browser speech recognition demo backed by the local realtime sales-agent core.",
+        "description": (
+            "No-key browser speech recognition demo backed by the local realtime sales-agent core "
+            "and RESP-001 guarded response generation."
+        ),
         "requires_api_key": False,
         "api_calls_from_python": False,
         "audio_uploaded_to_local_server": False,
@@ -72,87 +76,22 @@ def build_metadata(campaign_id: str, stage: str, host: str, port: int, cases_pat
     }
 
 
-def compact_transcript(transcript: str, limit: int = 140) -> str:
-    compacted = " ".join(transcript.split())
-    if len(compacted) <= limit:
-        return compacted
-    return compacted[: limit - 3].rstrip() + "..."
-
-
-def compose_contextual_demo_response(transcript: str, decision: dict) -> str:
-    quoted = compact_transcript(transcript)
-    difficulty = decision["sales_difficulty"]
-    next_action = decision["next_action"]
-
-    if difficulty == "claim-boundary":
-        return (
-            f"I hear the concern in what you said: \"{quoted}\" I do not want to promise or guarantee something "
-            "that depends on the details. The safest next step is to route this to a specialist."
-        )
-
-    if difficulty == "price-objection":
-        return (
-            f"That makes sense. Based on \"{quoted}\", is the bigger concern the monthly price, "
-            "the contract terms, or whether the review is worth your time?"
-        )
-
-    if difficulty == "product-detail-lookup":
-        return (
-            f"Good question. For \"{quoted}\", I want to check the approved product information first, "
-            "then I can summarize only what is confirmed."
-        )
-
-    if difficulty == "human-request":
-        return (
-            f"Of course. Since you said \"{quoted}\", I will route this to a human specialist "
-            "instead of continuing automatically."
-        )
-
-    if difficulty == "do-not-call":
-        return "Understood. I will make sure this contact is marked so you are not called again. Goodbye."
-
-    if difficulty == "timing-delay":
-        return (
-            f"Thanks, I heard the timing concern: \"{quoted}\". I will log a follow-up rather than "
-            "forcing a fixed appointment now."
-        )
-
-    if difficulty == "scheduling-confirmation":
-        return f"Confirmed. I will record the time you mentioned: \"{quoted}\". Goodbye."
-
-    if difficulty == "voicemail":
-        return "I reached voicemail, so I will log this for follow-up according to campaign rules."
-
-    if difficulty == "repeated-silence":
-        return "I will end the call for now. Goodbye."
-
-    if next_action == "ask-follow-up":
-        return (
-            f"Thanks, I want to make sure I understood you correctly: \"{quoted}\". "
-            "Is your main question about price, fit, timing, or the exact product details?"
-        )
-
-    return decision["agent_response"]
-
-
-def apply_contextual_demo_response(response_packet: dict, transcript: str) -> dict:
-    decision = response_packet["decision"]
-    policy_response = response_packet["tts_text"]
-    contextual_response = compose_contextual_demo_response(transcript, decision)
-
-    response_packet["response_generation"] = {
-        "mode": "local-contextual-composer",
-        "policy_response": policy_response,
-        "guardrail_source": "realtime deterministic policy",
-        "changes_allowed": "wording only; call-control and classification stay unchanged",
-        "llm_used": False,
-        "requires_api_key": False,
+def response_generation_for_voice(guarded_response: dict) -> dict:
+    return {
+        "response_generation_id": guarded_response["response_generation_id"],
+        "provider": guarded_response["provider"],
+        "generation_mode": guarded_response["generation_mode"],
+        "policy_response": guarded_response["policy_response"],
+        "candidate_response": guarded_response["candidate_response"],
+        "final_response": guarded_response["final_response"],
+        "validation": guarded_response["validation"],
+        "guardrails": guarded_response["guardrails"],
+        "response_constraints": guarded_response["response_constraints"],
+        "latency": guarded_response["latency"],
+        "llm_used": guarded_response["llm_used"],
+        "requires_api_key": guarded_response["requires_api_key"],
+        "api_calls_made": guarded_response["api_calls_made"],
     }
-    response_packet["tts_text"] = contextual_response
-    decision["agent_response"] = contextual_response
-    if decision.get("bridge_response") is not None:
-        decision["bridge_response"] = contextual_response
-    return response_packet
 
 
 def build_browser_decision_packet(
@@ -166,6 +105,17 @@ def build_browser_decision_packet(
     campaign = load_campaign(campaign_id, cases_path)
     case = build_turn_case(campaign_id, stage, transcript, input_type, silence_count)
     decision = run_turn_decision(case)
+    guarded_response = apply_guarded_response_to_decision(
+        campaign=campaign,
+        stage=stage,
+        input_type=input_type,
+        transcript=transcript,
+        silence_count=silence_count,
+        decision=decision,
+    )
+    decision["agent_response"] = guarded_response["final_response"]
+    if decision.get("bridge_response") is not None:
+        decision["bridge_response"] = guarded_response["final_response"]
     response_packet = build_voice_packet(
         campaign=campaign,
         stage=stage,
@@ -177,7 +127,7 @@ def build_browser_decision_packet(
         voice_name=None,
         audio_output_path=None,
     )
-    response_packet = apply_contextual_demo_response(response_packet, transcript)
+    response_packet["response_generation"] = response_generation_for_voice(guarded_response)
     return {
         "voice_demo_run_id": f"{VOICE_MILESTONE}-browser-speech-recognition",
         "voice_milestone": VOICE_MILESTONE,
@@ -203,6 +153,7 @@ def build_browser_decision_packet(
             "source": "scripts/run_browser_speech_demo.py",
             "realtime_source": "scripts/realtime_turn_cli.py",
             "response_packet_source": "scripts/generate_voice_response.py",
+            "response_generation_source": "scripts/generate_guarded_response.py",
             "case_file": project_relative_string(cases_path),
         },
     }
@@ -337,7 +288,7 @@ def render_html(metadata: dict) -> str:
   <main>
     <div class="hero">
       <h1>VOICE-004 Browser Speech Demo</h1>
-      <p>No API key. Browser speech recognition captures the transcript, then this local page sends text only to the local Python agent at <strong>{escaped_url}</strong>. The sales decision still comes from the reusable realtime agent core.</p>
+      <p>No API key. Browser speech recognition captures the transcript, then this local page sends text only to the local Python agent at <strong>{escaped_url}</strong>. The sales decision comes from the reusable realtime agent core, and the spoken wording passes through RESP-001 guarded response generation.</p>
       <p>Choose the recognition language before speaking. If you speak English while the recognizer is set to German, the browser may force the words into German-looking text.</p>
       <label>
         <input id="consentCheckbox" type="checkbox">

@@ -87,7 +87,7 @@ def campaign_summary(campaign: dict) -> dict:
 def signal_reference(decision: dict) -> str:
     difficulty = decision.get("sales_difficulty")
     references = {
-        "claim-boundary": "the certainty or guarantee concern",
+        "claim-boundary": "the certainty concern",
         "price-objection": "the price or effort concern",
         "product-detail-lookup": "the product-detail question",
         "human-request": "the request for a human specialist",
@@ -100,7 +100,22 @@ def signal_reference(decision: dict) -> str:
     return references.get(difficulty, "the concern")
 
 
-def compose_candidate_response(decision: dict, campaign: dict) -> str:
+def compose_unknown_follow_up(transcript: str) -> str:
+    lowered = transcript.lower()
+    if any(phrase in lowered for phrase in ["make sense", "fit", "apartment", "situation", "for me"]):
+        return (
+            "Thanks. To check fit without wasting time, is your main concern whether this is relevant "
+            "for your situation, the price, or the timing?"
+        )
+    if any(phrase in lowered for phrase in ["why", "take this call", "call today", "this call"]):
+        return (
+            "Fair question. I can keep this call short: would it help if I first explain the concrete "
+            "reason for reaching out?"
+        )
+    return "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
+
+
+def compose_candidate_response(decision: dict, campaign: dict, transcript: str) -> str:
     difficulty = decision.get("sales_difficulty")
     next_action = decision.get("next_action")
     handoff_role = campaign.get("human_handoff_role") or "specialist"
@@ -142,7 +157,7 @@ def compose_candidate_response(decision: dict, campaign: dict) -> str:
         return "I will end the call for now. Goodbye."
 
     if next_action == "ask-follow-up":
-        return "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
+        return compose_unknown_follow_up(transcript)
 
     return decision["agent_response"]
 
@@ -184,11 +199,31 @@ def build_guarded_response_packet(
 ) -> dict:
     case = build_turn_case(campaign["campaign_id"], stage, transcript, input_type, silence_count)
     decision = run_turn_decision(case)
+    return apply_guarded_response_to_decision(
+        campaign=campaign,
+        stage=stage,
+        input_type=input_type,
+        transcript=transcript,
+        silence_count=silence_count,
+        decision=decision,
+        candidate_response_override=candidate_response_override,
+    )
+
+
+def apply_guarded_response_to_decision(
+    campaign: dict,
+    stage: str,
+    input_type: str,
+    transcript: str,
+    silence_count: int,
+    decision: dict,
+    candidate_response_override: str | None = None,
+) -> dict:
     policy_response = decision["agent_response"]
     guardrails = build_guardrails(campaign)
 
     generation_start = time.perf_counter()
-    candidate_response = candidate_response_override or compose_candidate_response(decision, campaign)
+    candidate_response = candidate_response_override or compose_candidate_response(decision, campaign, transcript)
     validation = validate_candidate_response(candidate_response, guardrails)
     final_response = policy_response if validation["fallback_used"] else candidate_response
     generation_latency_ms = int((time.perf_counter() - generation_start) * 1000)

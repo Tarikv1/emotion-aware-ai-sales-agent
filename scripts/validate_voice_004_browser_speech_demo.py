@@ -87,22 +87,31 @@ def main() -> None:
     assert file_packet["response_packet"]["decision"]["sales_difficulty"] == "claim-boundary"
     assert file_packet["response_packet"]["decision"]["call_control"] == "transfer-or-escalate"
     assert file_packet["response_packet"]["tts_text"] == file_packet["response_packet"]["decision"]["agent_response"]
-    assert file_packet["response_packet"]["response_generation"]["mode"] == "local-contextual-composer"
-    assert "policy_response" in file_packet["response_packet"]["response_generation"]
+    assert file_packet["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
+    assert file_packet["response_packet"]["response_generation"]["provider"] == "local-guarded-composer"
+    assert file_packet["response_packet"]["response_generation"]["llm_used"] is False
+    assert file_packet["response_packet"]["response_generation"]["requires_api_key"] is False
+    assert file_packet["response_packet"]["response_generation"]["final_response"] == file_packet["response_packet"]["tts_text"]
+    assert "garantieren" not in file_packet["response_packet"]["tts_text"].lower()
+    assert "guarantee" not in file_packet["response_packet"]["tts_text"].lower()
+    assert file_packet["response_packet"]["response_generation"]["validation"]["passed"] is True
 
     price_completed = run_demo("--decision-transcript", PRICE_TRANSCRIPT)
     price_packet = json.loads(price_completed.stdout)
     assert price_packet["response_packet"]["decision"]["sales_difficulty"] == "price-objection"
     assert price_packet["response_packet"]["decision"]["call_control"] == "continue-call"
     assert price_packet["response_packet"]["tts_text"] != file_packet["response_packet"]["tts_text"]
+    assert price_packet["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
 
     unknown_one = json.loads(run_demo("--decision-transcript", UNKNOWN_TRANSCRIPT_ONE).stdout)
     unknown_two = json.loads(run_demo("--decision-transcript", UNKNOWN_TRANSCRIPT_TWO).stdout)
     assert unknown_one["response_packet"]["decision"]["sales_difficulty"] == "unknown-runtime-signal"
     assert unknown_two["response_packet"]["decision"]["sales_difficulty"] == "unknown-runtime-signal"
     assert unknown_one["response_packet"]["tts_text"] != unknown_two["response_packet"]["tts_text"]
-    assert UNKNOWN_TRANSCRIPT_ONE in unknown_one["response_packet"]["tts_text"]
-    assert UNKNOWN_TRANSCRIPT_TWO in unknown_two["response_packet"]["tts_text"]
+    assert "fit" in unknown_one["response_packet"]["tts_text"].lower()
+    assert "call" in unknown_two["response_packet"]["tts_text"].lower()
+    assert unknown_one["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
+    assert unknown_two["response_packet"]["response_generation"]["response_generation_id"] == "RESP-001-local-guarded"
 
     serialized = (
         html

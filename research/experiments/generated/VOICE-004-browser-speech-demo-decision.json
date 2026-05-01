@@ -56,12 +56,12 @@
       "next_action": "escalate",
       "call_control": "transfer-or-escalate",
       "bridge_response": null,
-      "agent_response": "I hear the concern in what you said: \"Nur wenn Sie garantieren koennen, dass es stabil ist.\" I do not want to promise or guarantee something that depends on the details. The safest next step is to route this to a specialist.",
+      "agent_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
       "rationale": "Deterministic runtime policy selected the fastest safe response path.",
       "first_response_latency_ms": 0,
       "first_response_latency_observed_bucket": "under-1s"
     },
-    "tts_text": "I hear the concern in what you said: \"Nur wenn Sie garantieren koennen, dass es stabil ist.\" I do not want to promise or guarantee something that depends on the details. The safest next step is to route this to a specialist.",
+    "tts_text": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
     "voice": {
       "name": "Neutral Synthetic Test Voice",
       "style": "neutral-synthetic-test",
@@ -82,18 +82,74 @@
       "requires_api_key": false
     },
     "response_generation": {
-      "mode": "local-contextual-composer",
+      "response_generation_id": "RESP-001-local-guarded",
+      "provider": "local-guarded-composer",
+      "generation_mode": "local deterministic composer with guardrail validation",
       "policy_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
-      "guardrail_source": "realtime deterministic policy",
-      "changes_allowed": "wording only; call-control and classification stay unchanged",
+      "candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+      "final_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a telecom specialist.",
+      "validation": {
+        "validator": "RESP-001 substring forbidden-claim check",
+        "checked_text_source": "candidate_response",
+        "passed": true,
+        "forbidden_claim_matches": [],
+        "required_repair": false,
+        "fallback_used": false,
+        "notes": "Candidate passed local guardrail validation."
+      },
+      "guardrails": {
+        "guardrail_source": "SalesCampaign plus universal response-safety rules",
+        "allowed_claims": [
+          "A human specialist can review available plan options.",
+          "Plan details must be checked against approved product data."
+        ],
+        "forbidden_claims": [
+          "guarantee",
+          "guaranteed",
+          "guaranteed savings",
+          "save you money",
+          "always be stable",
+          "no risk",
+          "covered for sure",
+          "payout",
+          "legal advice",
+          "medical advice",
+          "guaranteed coverage",
+          "guaranteed speed",
+          "unsupported technical claims"
+        ],
+        "required_disclosures": [
+          "Technical details depend on address and plan availability."
+        ],
+        "escalation_triggers": [
+          "coverage guarantee",
+          "technical certainty request",
+          "human request"
+        ],
+        "human_handoff_role": "telecom specialist",
+        "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+      },
+      "response_constraints": {
+        "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
+        "max_sentences": 2,
+        "must_not_invent_product_claims": true,
+        "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+      },
+      "latency": {
+        "generation_latency_ms": 0,
+        "source_decision_latency_ms": 0,
+        "target": "keep generation fast enough for the live response path"
+      },
       "llm_used": false,
-      "requires_api_key": false
+      "requires_api_key": false,
+      "api_calls_made": false
     }
   },
   "trace": {
     "source": "scripts/run_browser_speech_demo.py",
     "realtime_source": "scripts/realtime_turn_cli.py",
     "response_packet_source": "scripts/generate_voice_response.py",
+    "response_generation_source": "scripts/generate_guarded_response.py",
     "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json"
   }
 }
