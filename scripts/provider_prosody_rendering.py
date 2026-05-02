@@ -228,7 +228,7 @@ def render_provider_variant(
         "customer_audio_uploaded": False,
         "voice_cloning_used": False,
         "generated_audio_created": False,
-        "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017",
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
     }
 
 

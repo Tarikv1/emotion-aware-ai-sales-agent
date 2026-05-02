@@ -77,6 +77,18 @@ For ElevenLabs or Cartesia live TTS:
 - generated audio goes under `research/experiments/generated`
 - generated audio files are ignored by Git unless a future explicit artifact policy says otherwise
 
+## RESP-003 Boundary
+
+For `RESP-003` runtime live-capable TTS:
+
+- default mode is dry-run
+- live provider calls require `--live`
+- generated text must come from a validated `RESP-002` packet
+- protected text should use the exact guarded `final_response`
+- provider-rendered prosody text may be used only for eligible freeform segments
+- generated-audio asset metadata must be included in the result packet
+- human listening review is required before making quality claims
+
 ## Review Gate
 
 Before a new provider integration becomes part of the active runtime path, the project must have:

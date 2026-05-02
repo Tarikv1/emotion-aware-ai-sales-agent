@@ -150,6 +150,23 @@ Validate RESP-002 guarded response voice delivery:
 python scripts\validate_resp_002_runtime_voice_delivery.py
 ```
 
+Generate a runtime TTS-delivery packet in dry-run mode:
+
+```powershell
+python scripts\generate_runtime_tts_delivery.py `
+  --campaign campaign-prod-005-b2c-telecom `
+  --stage relevance-check `
+  --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
+  --out research\experiments\generated\RESP-003-runtime-live-tts-result.json `
+  --report-out research\experiments\generated\RESP-003-runtime-live-tts-report.md
+```
+
+Validate RESP-003 runtime live-capable TTS delivery without provider calls:
+
+```powershell
+python scripts\validate_resp_003_runtime_live_tts.py
+```
+
 Evaluate provider readiness without API calls or audio upload:
 
 ```powershell
@@ -334,6 +351,30 @@ python scripts\run_voice_017_live_ab_audio.py --provider cartesia --live --timeo
 ```
 
 Live VOICE-017 with both providers in one run is intentionally blocked unless `--allow-both-live` is also set.
+
+Live RESP-003 runtime TTS with ElevenLabs requires the local provider boundary review, `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\generate_runtime_tts_delivery.py `
+  --campaign campaign-prod-005-b2c-telecom `
+  --stage relevance-check `
+  --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
+  --provider elevenlabs `
+  --live `
+  --timeout-seconds 8
+```
+
+Live RESP-003 runtime TTS with Cartesia requires the local provider boundary review, `CARTESIA_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\generate_runtime_tts_delivery.py `
+  --campaign campaign-prod-005-b2c-telecom `
+  --stage relevance-check `
+  --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
+  --provider cartesia `
+  --live `
+  --timeout-seconds 8
+```
 
 ## Safety Rules
 

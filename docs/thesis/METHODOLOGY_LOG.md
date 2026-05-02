@@ -1428,3 +1428,46 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - whether future client packs should include a separate `handoff/` folder
   - whether setup validation should later detect non-Python references to external workspace paths as warnings
+
+### 2026-05-02 - RESP-003 runtime live-capable TTS bridge
+
+- Objective: connect the validated runtime voice-delivery packet to optional live TTS while preserving offline default behavior and provider safety boundaries
+- Action taken:
+  - added a RESP-003 runtime TTS delivery module
+  - added a project-local TTS provider client helper so runtime code does not import directly from experiment runners
+  - added a CLI that builds RESP-001, RESP-002, and then appends `tts_delivery`
+  - used validated RESP-002 provider-rendered text only for prosody-eligible freeform segments
+  - forced protected outcomes such as do-not-call to use exact `final_response`
+  - added generated-audio asset-log metadata to the runtime packet
+  - added dry-run, forced-missing-key, protected-text, redaction, and no-secret validation
+  - wired the checkpoint into setup docs and setup validation
+- Data used:
+  - active `PROD-005` German B2C telecom campaign wrapper
+  - RESP-002 runtime voice-delivery output
+  - local provider boundary and generated-audio asset-log docs
+  - existing ElevenLabs and Cartesia provider-call discipline from VOICE-017
+- Output created:
+  - `scripts/runtime_tts_delivery.py`
+  - `scripts/tts_provider_clients.py`
+  - `scripts/generate_runtime_tts_delivery.py`
+  - `scripts/validate_resp_003_runtime_live_tts.py`
+  - `docs/product/RESP_003_RUNTIME_LIVE_TTS.md`
+  - `research/experiments/RESP-003-runtime-live-tts.md`
+  - `research/experiments/generated/RESP-003-runtime-live-tts-result.json`
+  - `research/experiments/generated/RESP-003-runtime-live-tts-report.md`
+- What was learned:
+  - live TTS can remain a separate opt-in layer after guarded response and delivery shaping
+  - provider audio generation does not need to become part of default setup or validation
+  - protected text needs a simpler rule than freeform speech: speak the exact guarded response
+- Error or risk recorded:
+  - the first RESP-003 validator run failed correctly because the runner did not exist yet
+  - live audio quality remains unproven by dry-run validation and needs human listening review
+  - provider latency and provider-side text handling remain external variables during live runs
+- Why it matters for the thesis:
+  - this turns the response stack into an end-to-end architecture from customer transcript to optional audio output
+  - it preserves the thesis/product distinction between safety decisions, wording, delivery shaping, and provider synthesis
+  - it documents another concrete iteration where a missing component was caught by a failing validator before implementation
+- Open questions:
+  - which provider and voice should be used for the next live RESP-003 run
+  - how to connect generated audio to the local demo/playback loop without adding latency or unsafe provider defaults
+  - how to represent multi-segment turns where a freeform bridge, campaign question, and disclosure may all be spoken in one response
