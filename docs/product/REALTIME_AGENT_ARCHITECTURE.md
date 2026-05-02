@@ -200,8 +200,9 @@ The voice path can make approved text sound more human, but only after policy an
 
 ```text
 guarded final response
-  -> segment-aware speech naturalness
-  -> TTS adapter
+  -> RESP-002 runtime voice delivery
+  -> segment-aware prosody and provider preview
+  -> explicit live TTS adapter
 ```
 
 The speech naturalness layer is not allowed to change meaning, strategy, call-control, or compliance content. It may add rare mid-utterance fillers only to eligible freeform speech.
@@ -216,6 +217,8 @@ Protected segments stay exact:
 - appointment confirmations
 
 See `docs/product/VOICE_012_SPEECH_NATURALNESS_LAYER.md`.
+
+`RESP-002` is the current executable bridge for this boundary. It consumes RESP-001 guarded output, keeps the final response unchanged, applies VOICE-015 prosody only to eligible freeform speech, and renders a VOICE-016 provider preview without making provider calls. See `docs/product/RESP_002_RUNTIME_VOICE_DELIVERY.md`.
 
 ## Runtime Layers
 

@@ -1359,3 +1359,42 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether the same preference holds on the remaining VOICE-017 cases
   - whether a second listener agrees with the strong prosody preference
   - whether Cartesia's richer direct tags can match or beat the ElevenLabs prosody result
+
+### 2026-05-02 - RESP-002 runtime voice delivery bridge
+
+- Objective: connect guarded response generation to the voice prosody stack without allowing the voice layer to change meaning or compliance behavior
+- Action taken:
+  - added a RESP-002 runtime voice-delivery module
+  - added a CLI that mirrors the RESP-001 guarded response command and appends `voice_delivery` metadata
+  - classified guarded final responses as either prosody-eligible freeform speech or protected text
+  - applied the VOICE-015 prosody planner to eligible freeform text
+  - rendered an offline VOICE-016 provider preview, defaulting to ElevenLabs
+  - added a validator proving `final_response` stays unchanged and protected cases receive no prosody/provider tags
+- Data used:
+  - `RESP-001` guarded response output for a German B2C telecom price objection
+  - active `PROD-005` runtime campaign wrapper
+  - existing VOICE-015 and VOICE-016 prosody/provider rendering modules
+- Output created:
+  - `scripts/runtime_voice_delivery.py`
+  - `scripts/generate_runtime_voice_delivery.py`
+  - `scripts/validate_resp_002_runtime_voice_delivery.py`
+  - `docs/product/RESP_002_RUNTIME_VOICE_DELIVERY.md`
+  - `research/experiments/RESP-002-runtime-voice-delivery.md`
+  - `research/experiments/generated/RESP-002-runtime-voice-delivery-result.json`
+  - `research/experiments/generated/RESP-002-runtime-voice-delivery-report.md`
+- What was learned:
+  - the runtime path can now prepare approved responses for voice delivery while preserving the exact guarded final response
+  - prosody belongs after safety and response generation, not inside the compliance or call-control layer
+  - protected runtime outcomes such as do-not-call, claim-boundary, human handoff, and appointment confirmation need explicit delivery protection
+- Error or risk recorded:
+  - the first validator run failed correctly because the RESP-002 runner was missing
+  - the first implementation attempt omitted an explicit `eligible_for_prosody` segment field; the schema was clarified and validation reran successfully
+  - the validator initially wrote to official artifact paths, so it was moved to `.tmp` to preserve clean generated evidence
+- Why it matters for the thesis:
+  - this shows a full bridge from sales-state decision to guarded text to voice-delivery preparation
+  - it supports the thesis argument that naturalness improvements can be added without weakening deterministic guardrails
+  - it keeps the product architecture vertical-agnostic and campaign-configurable
+- Open questions:
+  - whether RESP-002 should later synthesize live audio directly or continue handing off to explicit live TTS checkpoints
+  - whether multi-segment responses should represent campaign questions and disclosures separately before TTS
+  - how much runtime prosody should be enabled by default for regulated campaigns

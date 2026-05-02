@@ -35,6 +35,8 @@ The response-generation layer decides:
 
 The speech naturalness layer comes after this. It can add rare mid-utterance fillers to freeform voice output, but it must not alter the guarded response meaning or protected campaign/compliance segments. See `docs/product/VOICE_012_SPEECH_NATURALNESS_LAYER.md`.
 
+`RESP-002` now provides the executable runtime bridge from this guarded response packet into voice delivery metadata. It keeps `final_response` unchanged, wraps the response as eligible or protected delivery segments, applies the VOICE-015 prosody planner, and renders a VOICE-016 provider preview. See `docs/product/RESP_002_RUNTIME_VOICE_DELIVERY.md`.
+
 ## Why This Matters
 
 The project needs the agent to become better at sales without becoming unsafe.
@@ -132,6 +134,7 @@ policy decision
   -> LLM candidate wording
   -> guardrail validation
   -> optional repair or fallback
+  -> RESP-002 voice delivery metadata when speaking
   -> final response
 ```
 

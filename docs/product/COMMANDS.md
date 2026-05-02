@@ -127,6 +127,23 @@ python scripts\generate_guarded_response.py `
   --report-out research\experiments\generated\RESP-001-guarded-response-report.md
 ```
 
+Generate a runtime voice-delivery packet from the guarded response path:
+
+```powershell
+python scripts\generate_runtime_voice_delivery.py `
+  --campaign campaign-prod-005-b2c-telecom `
+  --stage relevance-check `
+  --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
+  --out research\experiments\generated\RESP-002-runtime-voice-delivery-result.json `
+  --report-out research\experiments\generated\RESP-002-runtime-voice-delivery-report.md
+```
+
+Validate RESP-002 guarded response voice delivery:
+
+```powershell
+python scripts\validate_resp_002_runtime_voice_delivery.py
+```
+
 Evaluate provider readiness without API calls or audio upload:
 
 ```powershell

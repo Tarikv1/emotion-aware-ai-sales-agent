@@ -163,6 +163,7 @@ Current integrated prototype evidence:
 - provider-specific prosody rendering in `VOICE-016`, with offline Cartesia and ElevenLabs previews before live audio synthesis
 - guarded live-capable A/B audio harness in `VOICE-017`, with dry-run default and plain-vs-prosody provider inputs
 - first live VOICE-017 ElevenLabs A/B listening result, where the human listener strongly preferred prosody-shaped speech over plain speech in the two-case run
+- runtime voice-delivery bridge in `RESP-002`, which applies prosody/provider preview metadata after guarded response generation while keeping `final_response` unchanged
 
 Out of scope:
 
@@ -278,9 +279,11 @@ Immediate product artifact:
 - VOICE-016 provider-specific prosody rendering previews for Cartesia and ElevenLabs
 - VOICE-017 guarded live-capable A/B audio harness for plain vs prosody-shaped text
 - VOICE-017 first live ElevenLabs A/B result with prosody strongly preferred in the two-case human listening review
+- RESP-002 runtime voice-delivery bridge from guarded response to offline ElevenLabs/Cartesia provider preview
 
 Next voice checkpoint:
 
+- expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence
 - compare original guarded text against filler-only and prosody-shaped text if the thesis needs a more detailed ablation
 - rate whether rare fillers, pause/rate/pitch cues, and bounded stretches improve human-likeness without reducing trust across more cases
