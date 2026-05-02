@@ -253,6 +253,35 @@ one reusable sales-agent core
 - Follow-up:
   - Before production use, complete provider terms, text retention, latency, consent, and disclosure reviews.
 
+## Workspace-Local Process Patterns Adapted Into This Repo
+
+- Source:
+  - `D:\Codex\shared\templates\voice-ai-consent-checklist.md`
+  - `D:\Codex\active\youtube-channel\templates\generated-asset-log.md`
+  - `D:\Codex\active\youtube-channel\automation\media-generation-workflow.md`
+- Checked: 2026-05-02.
+- Reuse label: adapted workspace pattern.
+- What we learned/adapted:
+  - Voice provider runs need explicit consent, provenance, provider boundary, generated asset logging, and review gates.
+  - Provider workflows should document network use, upload use, API key location, cost risk, generated output path, and human review state.
+  - Required workflow material should be local to the product repo, not dependent on another workspace project.
+- Directly copied material: none. The Emotion Aware docs were rewritten locally for this product.
+- Where it affected the Emotion Aware project:
+  - `docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md`
+  - `docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md`
+  - `docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+  - `scripts/validate_self_contained_project_policy.py`
+- Product/runtime boundary:
+  - These docs are now project-local.
+  - No runtime script imports from `D:\Codex\shared`, `active/youtube-channel`, or another workspace project.
+  - Future client handoff should include the Emotion Aware repo only, not the wider `D:\Codex` workspace.
+- Security/privacy notes:
+  - API keys remain environment-only.
+  - Customer audio upload remains blocked unless a separate consent and retention review exists.
+  - Voice cloning remains blocked without explicit written permission for the exact voice and use.
+- Follow-up:
+  - RESP-003 live TTS should use these local docs as its provider-run and generated-audio logging boundary.
+
 ## Sources Needing Clarification Before Adding
 
 - `source unclear`: local MELD, Persuasion for Good, and IEMOCAP dataset archives under `data/public/`.
@@ -274,6 +303,7 @@ one reusable sales-agent core
   - `NousResearch/hermes-agent`
   - `facebookresearch/tribev2`
   - official TTS provider sources for `VOICE-009`
+  - workspace-local process patterns adapted into project-local voice/provider docs
 - Sources needing license/source clarification:
   - local MELD, Persuasion for Good, and IEMOCAP dataset archives
   - Apollo, Salesgenie, Proposify, and B2B Vic sales-objection materials

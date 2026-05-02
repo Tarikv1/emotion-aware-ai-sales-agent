@@ -31,6 +31,8 @@ The voice-provider path now has a readiness gate before real provider integratio
 
 The local no-key TTS smoke path has been tested. Windows SAPI was reachable, but the current environment had no usable local voice, so `VOICE-008` validated safe dry-run fallback rather than producing audible files. This makes concrete TTS provider research the next useful voice step.
 
+The Emotion Aware repo should stay self-contained for client portability. If the project depends on a checklist, template, workflow, script, schema, or review gate, that material must be adapted into this repo rather than referenced from `D:\Codex\shared` or another active workspace project.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.
@@ -164,6 +166,7 @@ Current integrated prototype evidence:
 - guarded live-capable A/B audio harness in `VOICE-017`, with dry-run default and plain-vs-prosody provider inputs
 - first live VOICE-017 ElevenLabs A/B listening result, where the human listener strongly preferred prosody-shaped speech over plain speech in the two-case run
 - runtime voice-delivery bridge in `RESP-002`, which applies prosody/provider preview metadata after guarded response generation while keeping `final_response` unchanged
+- project self-containment policy plus local voice provider run-boundary and generated-audio asset-log docs for client-portable provider workflows
 
 Out of scope:
 
@@ -280,9 +283,11 @@ Immediate product artifact:
 - VOICE-017 guarded live-capable A/B audio harness for plain vs prosody-shaped text
 - VOICE-017 first live ElevenLabs A/B result with prosody strongly preferred in the two-case human listening review
 - RESP-002 runtime voice-delivery bridge from guarded response to offline ElevenLabs/Cartesia provider preview
+- project-local self-containment, voice provider run-boundary, and generated-audio asset-log policies
 
 Next voice checkpoint:
 
+- use the local voice provider run-boundary and generated-audio asset-log docs before implementing RESP-003 live TTS
 - expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence
 - compare original guarded text against filler-only and prosody-shaped text if the thesis needs a more detailed ablation

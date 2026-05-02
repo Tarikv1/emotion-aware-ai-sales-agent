@@ -1398,3 +1398,33 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether RESP-002 should later synthesize live audio directly or continue handing off to explicit live TTS checkpoints
   - whether multi-segment responses should represent campaign questions and disclosures separately before TTS
   - how much runtime prosody should be enabled by default for regulated campaigns
+
+### 2026-05-02 - Project self-containment policy for client portability
+
+- Objective: ensure the Emotion Aware repo remains portable and does not depend on other local workspace folders for required workflows
+- Action taken:
+  - added a project-local self-containment policy
+  - adapted voice provider run-boundary and generated-audio asset-log templates into Emotion Aware docs
+  - added a validator that checks required local docs exist and Python scripts do not hard-depend on `D:\Codex\shared` or other active workspace projects
+  - updated setup checks and third-party inspiration notes
+- Data used:
+  - workspace-level voice consent, generated asset log, and media provider workflow ideas as inspiration only
+  - user requirement that any dependency needed by Emotion Aware must live inside the Emotion Aware folder
+- Output created:
+  - `docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md`
+  - `docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md`
+  - `docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+  - `scripts/validate_self_contained_project_policy.py`
+- What was learned:
+  - future client handoff requires the product repo to carry its own policies, templates, and review gates
+  - workspace-level materials can inspire product docs, but they should not become hidden dependencies
+  - RESP-003 should use local provider-run and generated-audio logging docs, not shared workspace templates
+- Error or risk recorded:
+  - the first self-containment validator run failed because the local docs did not exist yet
+  - the validator initially flagged its own forbidden-reference examples, so it was adjusted to exclude itself from that script scan
+- Why it matters for the thesis:
+  - this strengthens reproducibility and handoff quality because project evidence and safety procedures live inside the project
+  - it supports the product framing as a client-portable sales-agent system rather than a workspace-only prototype
+- Open questions:
+  - whether future client packs should include a separate `handoff/` folder
+  - whether setup validation should later detect non-Python references to external workspace paths as warnings

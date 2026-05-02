@@ -28,6 +28,12 @@ Validate the setup checker itself:
 python scripts\validate_check_setup.py
 ```
 
+Validate that required project policies are local to Emotion Aware and scripts do not hard-depend on other `D:\Codex` workspace projects:
+
+```powershell
+python scripts\validate_self_contained_project_policy.py
+```
+
 ## Relevant File Reading
 
 Use this when a file is large and you only need the useful part. It reads local repo files only, blocks secret/private paths, makes no network calls, and returns small slices.
@@ -335,3 +341,4 @@ Live VOICE-017 with both providers in one run is intentionally blocked unless `-
 - Default validation should not require `OPENAI_API_KEY`, `CARTESIA_API_KEY`, or `CARTESIA_VOICE_ID`.
 - Use `--live` only when provider, consent, retention, and logging assumptions have been reviewed.
 - Keep generated artifacts under `research\experiments\generated` unless a script documents another output path.
+- Keep required checklists, templates, workflows, and scripts inside this repository. Do not make Emotion Aware depend on `D:\Codex\shared` or another active project folder.
