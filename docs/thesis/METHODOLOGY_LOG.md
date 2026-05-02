@@ -999,3 +999,363 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether longer German audio still sounds muffled
   - whether separate German and English voice IDs are enough, or multiple voices per language should be compared
   - whether ElevenLabs should be tested next if Cartesia WebSocket quality or latency is weak
+
+### 2026-05-02 - VOICE-011 live Cartesia WebSocket result
+
+- Objective: measure live WebSocket TTS timing for longer German and English synthetic sales-agent responses
+- Action taken:
+  - ran the guarded Cartesia WebSocket smoke harness with explicit live opt-in
+  - used language-specific German and English voice IDs through environment variables
+  - generated four local WAV files, two German and two English
+  - verified that generated JSON/Markdown artifacts did not contain API key or voice ID values
+  - confirmed the shell no longer had Cartesia environment variables set after the run
+- Data used:
+  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke-report.md`
+  - user listening feedback on the longer generated audio
+- What was learned:
+  - all four WebSocket calls produced audio files
+  - max connection-established timing was `251.277 ms`
+  - max time to first audio chunk was `417.445 ms`, which fits the `500 ms` TTS-start target
+  - max total stream latency was `4580.398 ms`
+  - the audio sounded decent but still recognizably AI-generated
+- Error or risk recorded:
+  - the live-artifact state and shell environment state can differ, so conclusions should be based on generated artifacts plus explicit secret scans, not memory of a terminal session
+  - timing can be measured automatically, but human-like voice quality still requires listening review
+  - provider quality alone is not enough; the text sent to TTS also affects whether the agent sounds human
+- Why it matters for the thesis:
+  - this creates a measured low-latency WebSocket TTS result
+  - it motivates a separate speech-naturalness layer before provider comparison continues
+- Open questions:
+  - whether adding controlled mid-utterance fillers improves perceived human-likeness
+  - whether fillers help or hurt trust in regulated product categories
+  - whether the same naturalness profile should be used for German and English campaigns
+
+### 2026-05-02 - VOICE-012 segment-aware speech naturalness
+
+- Objective: make voice-agent speech less machine-perfect without corrupting scripted campaign questions or compliance-sensitive statements
+- Action taken:
+  - added a reusable `scripts/speech_naturalness.py` renderer
+  - added `VOICE-012` bilingual cases for English and German freeform speech, scripted qualification questions, disclosures, strict insurance boundaries, do-not-call, hang-up, appointment confirmation, and disabled clean-script profiles
+  - generated JSON and Markdown artifacts for the speech naturalness layer
+  - added a validator that proves fillers stay out of protected segments
+- Data used:
+  - user feedback that VOICE-011 sounded decent but obviously AI-generated
+  - product rule that the first MVP may need to ask a fixed set of client-provided qualification questions
+  - existing campaign-profile architecture
+- Output created:
+  - `docs/product/VOICE_012_SPEECH_NATURALNESS_LAYER.md`
+  - `research/experiments/VOICE-012-speech-naturalness.md`
+  - `research/experiments/cases/voice-012-speech-naturalness.json`
+  - `research/experiments/generated/VOICE-012-speech-naturalness.json`
+  - `research/experiments/generated/VOICE-012-speech-naturalness-report.md`
+  - `scripts/speech_naturalness.py`
+  - `scripts/run_voice_012_speech_naturalness.py`
+  - `scripts/validate_voice_012_speech_naturalness.py`
+- What was learned:
+  - humanization must be segment-aware, not a global text rewrite
+  - freeform empathy, transitions, and objection handling can safely receive rare fillers
+  - campaign qualification questions, disclosures, strict insurance boundaries, do-not-call, hang-up, and appointment-confirmation text should remain exact
+  - casual fillers such as `you know` can exist, but they need contextual checks so they do not weaken meaning
+- Error or risk recorded:
+  - an early renderer produced awkward punctuation in German (`also, , dass`), showing why naturalness needs validation, not vibes
+  - a casual English filler selected in a meaning-sensitive slot could weaken the response, so the renderer now contextually prefers safer hesitation sounds before `that` / `dass`
+  - a validator assertion had an error-message bug that tried to inspect a missing secret-match object; the validator was fixed and rerun
+- Why it matters for the thesis:
+  - this gives the project a concrete design for human-like voice delivery that still respects compliance and campaign source-of-truth boundaries
+  - it supports the broader product claim that the agent is campaign-configurable rather than hard-coded for one vertical
+- Open questions:
+  - whether VOICE-012 text improves perceived audio naturalness once synthesized through Cartesia or another provider
+  - whether different campaigns should use `clean`, `warm-professional`, `casual`, or `strict-regulated` naturalness profiles
+  - how sales experts should rate filler frequency and trustworthiness
+
+### 2026-05-02 - VOICE-013 ElevenLabs no-key streaming TTS harness
+
+- Objective: prepare a safe ElevenLabs provider test so Cartesia can be compared against a second high-quality voice candidate
+- Action taken:
+  - reviewed current ElevenLabs streaming, WebSocket, and latency documentation
+  - selected HTTP streaming as the first ElevenLabs smoke path because the test scripts are available upfront
+  - added a guarded ElevenLabs TTS runner with explicit `--live` opt-in
+  - added language-specific voice ID support through `ELEVENLABS_VOICE_ID_DE` and `ELEVENLABS_VOICE_ID_EN`, with `ELEVENLABS_VOICE_ID` as a fallback
+  - generated dry-run JSON and Markdown artifacts
+  - ignored generated VOICE-013 MP3 files in Git
+  - added a validator that checks dry-run and simulated missing-key live fallback paths
+- Data used:
+  - existing `PROD-005` bilingual runtime campaigns
+  - the same longer synthetic scripts used for `VOICE-011`
+  - official ElevenLabs docs for stream speech, WebSocket, and latency
+- Output created:
+  - `docs/product/VOICE_013_ELEVENLABS_TTS_SMOKE_TEST.md`
+  - `research/experiments/VOICE-013-elevenlabs-tts-smoke.md`
+  - `research/experiments/cases/voice-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md`
+  - `scripts/run_voice_013_elevenlabs_tts_smoke.py`
+  - `scripts/validate_voice_013_elevenlabs_tts_smoke.py`
+- What was learned:
+  - the ElevenLabs adapter can be prepared safely without a key
+  - provider comparison should use identical scripts before testing naturalized VOICE-012 variants
+  - dry-run request previews should still show language-specific voice env gates, even when no voice IDs are present
+  - ElevenLabs has a privacy-related `enable_logging=false` option, but live behavior may depend on account plan support
+- Error or risk recorded:
+  - the first dry-run preview fell back to generic `ELEVENLABS_VOICE_ID` when no env vars were set, which made setup less clear
+  - the resolver was changed so missing language-specific voices still report `ELEVENLABS_VOICE_ID_DE` or `ELEVENLABS_VOICE_ID_EN`; generic fallback is used only when that env var actually exists
+  - `enable_logging=false` may fail for non-enterprise accounts, so a live provider error should be recorded rather than silently switching to provider logging
+- Why it matters for the thesis:
+  - this creates a second provider path for a more credible voice-quality comparison
+  - it preserves the research discipline of separating provider adapter safety from live provider quality claims
+- Open questions:
+  - whether ElevenLabs accepts the privacy-oriented live request on the available account
+  - whether ElevenLabs German quality sounds more natural than Cartesia for the same script
+  - whether ElevenLabs latency meets the `500 ms` first-audio target from this local environment
+
+### 2026-05-02 - VOICE-013 first live ElevenLabs attempt
+
+- Objective: run the guarded ElevenLabs streaming TTS harness with local environment-only key and voice IDs
+- Action taken:
+  - ran `VOICE-013` with explicit `--live`
+  - confirmed four provider API calls were attempted
+  - confirmed no customer audio was uploaded
+  - confirmed no API key or voice ID values were present in generated artifacts
+  - removed provider request IDs from stored error bodies while keeping the useful error category and message
+- Data used:
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md`
+- What was learned:
+  - ElevenLabs returned HTTP `402` for all four cases
+  - provider error code was `paid_plan_required`
+  - provider message stated that free users cannot use library voices via the API
+  - no MP3 files were created, so no ElevenLabs audio-quality comparison can be made from this attempt
+  - max recorded provider error latency was `1635.438 ms`, but this is not a valid first-audio latency because no audio was returned
+- Error or risk recorded:
+  - a provider may be technically integrated but blocked by account/plan/voice licensing constraints
+  - request IDs are useful for provider support but do not need to be committed in research artifacts
+  - provider-business-rule failures should be recorded separately from latency or quality failures
+- Why it matters for the thesis:
+  - this is evidence that provider selection includes operational/account constraints, not only model quality
+  - it reinforces the safe-fallback architecture: the system made no customer-audio upload and fell back when provider audio was unavailable
+- Open questions:
+  - whether a paid-compatible ElevenLabs plan or permitted voice ID resolves the block
+  - whether `enable_logging=false` remains accepted once the account/voice issue is resolved
+  - whether ElevenLabs quality is meaningfully better than Cartesia when audio can be generated
+
+### 2026-05-02 - VOICE-013 successful live ElevenLabs run
+
+- Objective: rerun the guarded ElevenLabs streaming TTS harness after resolving the earlier provider/account voice block
+- Action taken:
+  - reran `VOICE-013` with explicit `--live`
+  - generated four MP3 files, two German and two English
+  - verified that generated JSON and Markdown artifacts did not contain API key or voice ID values
+  - confirmed no customer audio was uploaded
+  - confirmed generated MP3 files remain ignored by Git
+- Data used:
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md`
+  - user listening feedback on the generated MP3 files
+- What was learned:
+  - all four ElevenLabs streaming requests returned HTTP `200`
+  - all four MP3 files were created
+  - max time to first audio byte was `507.54 ms`
+  - max total provider latency was `1112.927 ms`
+  - one German case was slightly above the `500 ms` first-audio target
+  - user listening impression was that there is still room for improvement, but ElevenLabs sounded much better than the previous provider audio
+- Error or risk recorded:
+  - informal listening impressions are useful but not enough for a final provider decision
+  - provider latency and perceived naturalness can point in different directions, so both need to be recorded
+  - the first-audio target should be treated as a design target, not as a single-run absolute pass/fail
+- Why it matters for the thesis:
+  - this creates a successful second-provider voice result for comparison against Cartesia
+  - it supports the product architecture decision to keep TTS providers as swappable adapters
+- Open questions:
+  - whether ElevenLabs remains better after structured German/English ratings
+  - whether VOICE-012 naturalized text improves ElevenLabs output further
+  - whether the slightly slower German first-audio case can be improved by model, voice, or request settings
+
+### 2026-05-02 - VOICE-014 provider listening comparison packet
+
+- Objective: convert the informal Cartesia-vs-ElevenLabs listening impression into a structured comparison artifact
+- Action taken:
+  - added a VOICE-014 comparison case file pairing the four Cartesia VOICE-011 samples with the four ElevenLabs VOICE-013 samples
+  - added a runner that reads existing provider artifacts and local audio files without making provider calls
+  - generated JSON, Markdown, and HTML listening comparison artifacts
+  - added a validator that checks all audio pairs exist and that no quality claim is allowed before ratings are recorded
+- Data used:
+  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
+  - local ignored WAV and MP3 files from the successful live runs
+- Output created:
+  - `docs/product/VOICE_014_PROVIDER_LISTENING_COMPARISON.md`
+  - `research/experiments/VOICE-014-provider-listening-comparison.md`
+  - `research/experiments/cases/voice-014-provider-listening-comparison.json`
+  - `research/experiments/generated/VOICE-014-provider-listening-comparison.json`
+  - `research/experiments/generated/VOICE-014-provider-listening-comparison-report.md`
+  - `research/experiments/generated/VOICE-014-provider-listening-comparison.html`
+  - `scripts/run_voice_014_provider_listening_comparison.py`
+  - `scripts/validate_voice_014_provider_listening_comparison.py`
+- What was learned:
+  - all four comparison pairs have both Cartesia and ElevenLabs audio available
+  - ElevenLabs has lower total latency in all four pairs
+  - first-audio timing is mixed: Cartesia starts faster in one German case, ElevenLabs starts faster in the other three cases
+  - a provider decision should combine timing and structured listening ratings, not only informal preference
+- Error or risk recorded:
+  - the validator initially repeated the earlier assertion-message bug around missing regex matches; it was fixed and rerun
+  - local audio files are intentionally ignored by Git, so the comparison artifact is reproducible only on machines where the generated audio exists
+- Why it matters for the thesis:
+  - this adds an evaluation bridge between raw provider smoke tests and a defensible provider choice
+  - it preserves the distinction between measured latency and subjective-but-structured human listening quality
+- Open questions:
+  - how ElevenLabs and Cartesia score under the full rubric
+  - whether VOICE-012 naturalized text improves the stronger provider further
+  - whether German quality should receive heavier weight for the first client context
+
+### 2026-05-02 - VOICE-015 prosody naturalness layer
+
+- Objective: reduce robotic voice delivery caused by flat pitch, uniform pacing, equal word spacing, and no human thinking holds
+- Action taken:
+  - added a provider-neutral prosody planner for pause, rate, emphasis, pitch, and rare stretch cues
+  - kept the default style as `professional-human`
+  - added eight bilingual cases that cover English and German freeform speech, protected campaign questions, disclosures, do-not-call, hangup, strict insurance boundaries, and disabled clean-script mode
+  - generated JSON and Markdown artifacts
+  - added a validator that checks deterministic seeded output, bounded cue ranges, clean TTS text, and zero cues inside protected segments
+- Data used:
+  - user listening feedback that provider audio still sounded too robotic because pacing was stable and pitch was flat
+  - existing VOICE-012 segment-aware protection boundaries
+  - existing VOICE-014 provider-comparison context
+- Output created:
+  - `scripts/prosody_naturalness.py`
+  - `scripts/run_voice_015_prosody_naturalness.py`
+  - `scripts/validate_voice_015_prosody_naturalness.py`
+  - `research/experiments/cases/voice-015-prosody-naturalness.json`
+  - `research/experiments/generated/VOICE-015-prosody-naturalness.json`
+  - `research/experiments/generated/VOICE-015-prosody-naturalness-report.md`
+  - `docs/product/VOICE_015_PROSODY_NATURALNESS_LAYER.md`
+  - `research/experiments/VOICE-015-prosody-naturalness.md`
+- What was learned:
+  - human-like speech needs more than fillers; it also needs controlled variation in pauses, rate, emphasis, pitch, and rare thinking holds
+  - raw Markdown bold should not be treated as the provider contract because TTS providers may ignore or misread it
+  - structured prosody cues keep provider adapters swappable and auditable
+  - seeded randomization gives natural variation without losing reproducibility
+- Error or risk recorded:
+  - during TDD, the strict one-cue insurance case initially used its only cue budget on a comma pause instead of the intended empathy pitch cue
+  - cue priority was changed so pitch is planned before pauses when the campaign allows only a tiny prosody budget
+  - VOICE-015 does not prove improved audio quality yet; it only proves safe cue planning
+- Why it matters for the thesis:
+  - this adds a concrete bridge between text-response generation and perceived voice naturalness
+  - it shows how qualitative listening observations were converted into testable system constraints
+  - it preserves compliance boundaries while improving the realism of the voice layer
+- Open questions:
+  - how ElevenLabs and Cartesia should render the structured cue plan
+  - whether prosody-shaped audio scores higher than plain guarded text in human listening review
+  - whether German pronunciation and trustworthiness improve or worsen when subtle pitch/rate cues are applied
+
+### 2026-05-02 - VOICE-016 provider prosody rendering
+
+- Objective: translate the provider-neutral VOICE-015 prosody plan into inspectable provider-specific TTS inputs before live synthesis
+- Action taken:
+  - added an offline provider-prosody renderer
+  - rendered Cartesia and ElevenLabs variants for all eight VOICE-015 cases
+  - mapped Cartesia pause, rate, emphasis, and stretch cues to SSML-style break, speed, volume, and break behavior
+  - mapped ElevenLabs pause cues to break tags and rate cues to request-level speed settings
+  - recorded unsupported pitch and emphasis cues instead of forcing unreliable provider tricks
+  - added validation that provider tags do not enter protected segments
+- Data used:
+  - `research/experiments/generated/VOICE-015-prosody-naturalness.json`
+  - current provider documentation for Cartesia Sonic 3 SSML-style tags and ElevenLabs pause controls
+- Output created:
+  - `scripts/provider_prosody_rendering.py`
+  - `scripts/run_voice_016_provider_prosody_rendering.py`
+  - `scripts/validate_voice_016_provider_prosody_rendering.py`
+  - `research/experiments/cases/voice-016-provider-prosody-rendering.json`
+  - `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
+  - `research/experiments/generated/VOICE-016-provider-prosody-rendering-report.md`
+  - `docs/product/VOICE_016_PROVIDER_PROSODY_RENDERING.md`
+  - `research/experiments/VOICE-016-provider-prosody-rendering.md`
+- What was learned:
+  - provider support is uneven: Cartesia can represent more cue types directly, while ElevenLabs should remain conservative for this checkpoint
+  - pitch is still not safely mapped for either provider in the current implementation
+  - per-segment rendering is necessary because global text replacement could accidentally alter protected questions or disclosures
+  - a provider preview layer makes future live synthesis auditable and easier to debug
+- Error or risk recorded:
+  - the first VOICE-016 validator version expected Cartesia break tags for a strict insurance case that had only a pitch cue and no pause cue
+  - the validator was corrected to assert break tags only when pause cues are present
+  - unsupported cues must be reported honestly so the project does not claim provider control that has not been proven
+- Why it matters for the thesis:
+  - this checkpoint connects the human-like prosody concept to concrete implementation boundaries
+  - it gives evidence that provider integration is being handled through safe, testable adapters rather than ad hoc prompt tricks
+- Open questions:
+  - whether Cartesia's richer direct cue rendering sounds more human or too mechanical in live audio
+  - whether ElevenLabs' conservative break/speed rendering is enough to improve naturalness
+  - whether a later provider or model supports direct pitch/emphasis controls suitable for live sales calls
+
+### 2026-05-02 - VOICE-017 guarded live A/B audio harness
+
+- Objective: prepare a safe live A/B test that compares plain guarded text against VOICE-016 prosody-shaped text
+- Action taken:
+  - added a VOICE-017 case config selecting two German and two English cases from VOICE-016
+  - added a live-capable runner that prepares plain and prosody variants for ElevenLabs and Cartesia
+  - kept dry-run as the default behavior
+  - added forced-missing-key fallback validation for both providers
+  - blocked accidental live calls to both providers unless `--allow-both-live` is explicitly set
+  - ignored generated VOICE-017 MP3 and WAV files in Git
+- Data used:
+  - `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
+  - previously validated ElevenLabs HTTP streaming and Cartesia WebSocket provider paths
+- Output created:
+  - `scripts/run_voice_017_live_ab_audio.py`
+  - `scripts/validate_voice_017_live_ab_audio.py`
+  - `research/experiments/cases/voice-017-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-017-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+  - `docs/product/VOICE_017_LIVE_AB_AUDIO.md`
+  - `research/experiments/VOICE-017-live-ab-audio.md`
+- What was learned:
+  - live audio comparison needs a smaller case set than the full prosody suite to keep provider calls and listening work manageable
+  - dry-run artifacts can verify request structure and safety boundaries before keys are provided
+  - live A/B testing should start with one provider, likely ElevenLabs, before spending calls on both providers
+- Error or risk recorded:
+  - live `--provider both` could create many calls at once, so the runner blocks it unless `--allow-both-live` is set
+  - dry-run cannot judge whether prosody-shaped input sounds better; it only proves that the live test is safely prepared
+  - generated audio remains local and ignored by Git, so listening comparison depends on the local machine's generated files
+- Why it matters for the thesis:
+  - this creates the first direct path from voice naturalness design to measurable listening evidence
+  - it preserves the methodology rule that perceptual quality claims require human listening ratings
+- Open questions:
+  - whether prosody-shaped audio actually sounds more human than plain guarded text
+  - whether provider tags improve rhythm or make speech sound more artificial
+  - whether ElevenLabs or Cartesia should be preferred after plain-vs-prosody scoring
+
+### 2026-05-02 - VOICE-017 first live prosody listening result
+
+- Objective: record the first human listening result for the plain-vs-prosody audio comparison
+- Action taken:
+  - ran VOICE-017 live with ElevenLabs only and `--limit 2`
+  - generated two plain MP3 files and two prosody MP3 files
+  - confirmed there were no provider fallbacks
+  - confirmed no customer audio was uploaded and no voice cloning was used
+  - recorded the project owner's listening judgment that prosody sounded much better than plain speech
+- Data used:
+  - `research/experiments/generated/VOICE-017-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+  - local ignored VOICE-017 ElevenLabs MP3 files
+- Output created:
+  - `research/experiments/generated/VOICE-017-human-listening-review.md`
+  - updated `research/experiments/generated/VOICE-017-live-ab-audio.json`
+  - updated `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+  - updated `research/experiments/VOICE-017-live-ab-audio.md`
+  - updated `docs/product/VOICE_017_LIVE_AB_AUDIO.md`
+- What was learned:
+  - the prosody-shaped variants were strongly preferred in this first two-case ElevenLabs live A/B run
+  - the VOICE-015/VOICE-016 prosody stack should be kept because it appears directionally valuable in live synthesized speech
+  - the next useful question is how much prosody is optimal, not whether prosody matters at all
+- Error or risk recorded:
+  - this is an internal one-listener result, not a broad customer-preference result
+  - the claim must stay scoped to the two-case ElevenLabs live A/B run until more cases, voices, or listeners are tested
+  - generated audio remains local and ignored by Git, so future reviewers need either regenerated audio or a preserved local artifact package
+- Why it matters for the thesis:
+  - this turns earlier voice-naturalness design work into an actual perceptual result
+  - it gives a concrete example of how qualitative listening feedback can become bounded evaluation evidence
+  - it supports the product direction of using configurable prosody controls while preserving compliance-protected text
+- Open questions:
+  - whether the same preference holds on the remaining VOICE-017 cases
+  - whether a second listener agrees with the strong prosody preference
+  - whether Cartesia's richer direct tags can match or beat the ElevenLabs prosody result

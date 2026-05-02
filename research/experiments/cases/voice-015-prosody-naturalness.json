@@ -1,0 +1,380 @@
+{
+  "voice_milestone": "VOICE-015",
+  "experiment_scope": "Segment-aware professional-human prosody planning for bilingual sales-agent TTS. The layer creates provider-neutral pause, rate, emphasis, pitch, and rare stretch cues for eligible freeform speech only.",
+  "campaigns": [
+    {
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "client_name": "Synthetic B2B Software Client",
+      "product_name": "Lead routing workflow software",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hi, I am calling about lead-routing workflows. Do you have a minute?",
+      "qualification_questions": [
+        "Do you handle inbound lead routing?",
+        "What is the hardest part of that process?",
+        "If there is fit, would a specialist callback be useful?"
+      ],
+      "required_disclosures": [
+        "Integration details require specialist review."
+      ],
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 4,
+        "max_stretches_per_response": 1,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "emphasis_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "client_name": "Synthetic German Dental Insurance Call Center",
+      "product_name": "Dental insurance callback qualification",
+      "product_category": "insurance-dental",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Zahnzusatz-Information an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Haben Sie aktuell eine Zahnzusatzversicherung?",
+        "Ist Ihnen eher Beitrag, Leistung oder ein unverbindlicher Rueckruf wichtig?",
+        "Duerfen wir einen kurzen Rueckruf durch einen Fachberater vormerken?"
+      ],
+      "required_disclosures": [
+        "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+      ],
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 5,
+        "max_stretches_per_response": 1,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "emphasis_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-015-de-insurance-strict",
+      "client_name": "Synthetic German Serious-Illness Insurance Call Center",
+      "product_name": "Serious illness insurance callback qualification",
+      "product_category": "insurance-serious-illness",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Versicherungsinformation an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+      ],
+      "required_disclosures": [
+        "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+      ],
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 1,
+        "max_stretches_per_response": 0,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "emphasis_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": false
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-015-en-clean-scripted",
+      "client_name": "Synthetic Clean Script Client",
+      "product_name": "Strict scripted appointment flow",
+      "product_category": "service-appointment",
+      "customer_type": "b2c",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hello, I am calling about your service appointment. Do you have a minute?",
+      "qualification_questions": [
+        "Would Tuesday afternoon or Wednesday morning work better?"
+      ],
+      "required_disclosures": [
+        "The appointment is not confirmed until the specialist accepts it."
+      ],
+      "speech_prosody": {
+        "enabled": false,
+        "style": "professional-human",
+        "max_cues_per_response": 0,
+        "max_stretches_per_response": 0,
+        "pause_variation_enabled": false,
+        "rate_variation_enabled": false,
+        "emphasis_enabled": false,
+        "pitch_variation_enabled": false,
+        "stretch_enabled": false
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "VOICE-015-C01",
+      "case_title": "English objection handling receives pause, pitch, rate, and emphasis cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c01-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "pause_after": "I understand your concern.",
+          "pitch_target": "I understand your concern",
+          "pitch_direction": "warm-soft",
+          "rate_target": "do not promise",
+          "rate_mode": "careful",
+          "emphasis_targets": ["important"]
+        }
+      ],
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-015-C02",
+      "case_title": "German objection handling receives rare stretch plus bounded prosody cues",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c02-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "pause_after": "Also",
+          "pause_mode": "thinking",
+          "pitch_target": "ich verstehe den Punkt",
+          "pitch_direction": "warm-soft",
+          "rate_target": "nichts verspreche",
+          "rate_mode": "careful",
+          "emphasis_targets": ["Wichtig"],
+          "stretch_targets": ["Also"],
+          "allow_stretch": true
+        }
+      ],
+      "expected": {
+        "min_cues": 5,
+        "max_cues": 5,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-015-C03",
+      "case_title": "English mixed response protects campaign question while freeform gets cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c03-freeform",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+          "pause_after": "That makes sense.",
+          "pitch_target": "That makes sense",
+          "pitch_direction": "warm-soft",
+          "rate_target": "before we schedule anything",
+          "rate_mode": "careful",
+          "emphasis_targets": ["practical"]
+        },
+        {
+          "segment_id": "c03-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Do you handle inbound lead routing?"
+        }
+      ],
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": ["c03-question"]
+      }
+    },
+    {
+      "case_id": "VOICE-015-C04",
+      "case_title": "German mixed response protects qualification question and disclosure",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c04-freeform",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+          "pause_after": "Das hilft mir bei der Einordnung.",
+          "pitch_target": "Das hilft mir",
+          "pitch_direction": "warm-soft",
+          "rate_target": "unverbindlicher Rueckruf",
+          "rate_mode": "careful",
+          "emphasis_targets": ["praktisch"]
+        },
+        {
+          "segment_id": "c04-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Haben Sie aktuell eine Zahnzusatzversicherung?"
+        },
+        {
+          "segment_id": "c04-disclosure",
+          "segment_type": "required_disclosure",
+          "source": "campaign_config",
+          "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+        }
+      ],
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": ["c04-question", "c04-disclosure"]
+      }
+    },
+    {
+      "case_id": "VOICE-015-C05",
+      "case_title": "German do-not-call and hangup lines remain cue-free",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c05-do-not-call",
+          "segment_type": "do_not_call",
+          "source": "policy_core",
+          "text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden."
+        },
+        {
+          "segment_id": "c05-hangup",
+          "segment_type": "hangup",
+          "source": "policy_core",
+          "text": "Auf Wiederhoeren."
+        }
+      ],
+      "expected": {
+        "min_cues": 0,
+        "max_cues": 0,
+        "min_pause_cues": 0,
+        "min_pitch_cues": 0,
+        "min_rate_cues": 0,
+        "min_emphasis_cues": 0,
+        "protected_segment_ids_unchanged": ["c05-do-not-call", "c05-hangup"]
+      }
+    },
+    {
+      "case_id": "VOICE-015-C06",
+      "case_title": "Disabled campaign profile produces no prosody cues",
+      "campaign_id": "campaign-voice-015-en-clean-scripted",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c06-freeform",
+          "segment_type": "freeform_explanation",
+          "source": "agent_freeform",
+          "text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "pause_after": "The safest next step is",
+          "pitch_target": "safest next step",
+          "rate_target": "appointment language exact",
+          "emphasis_targets": ["exact"]
+        }
+      ],
+      "expected": {
+        "min_cues": 0,
+        "max_cues": 0,
+        "min_pause_cues": 0,
+        "min_pitch_cues": 0,
+        "min_rate_cues": 0,
+        "min_emphasis_cues": 0,
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-015-C07",
+      "case_title": "Strict German insurance allows only one empathy pitch cue before protected boundary",
+      "campaign_id": "campaign-voice-015-de-insurance-strict",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c07-empathy",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+          "pitch_target": "Ich verstehe",
+          "pitch_direction": "warm-soft"
+        },
+        {
+          "segment_id": "c07-boundary",
+          "segment_type": "coverage_or_claim_boundary",
+          "source": "compliance",
+          "text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+        },
+        {
+          "segment_id": "c07-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+        }
+      ],
+      "expected": {
+        "min_cues": 1,
+        "max_cues": 1,
+        "min_pause_cues": 0,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 0,
+        "min_emphasis_cues": 0,
+        "protected_segment_ids_unchanged": ["c07-boundary", "c07-question"]
+      }
+    },
+    {
+      "case_id": "VOICE-015-C08",
+      "case_title": "English longer explanation receives professional-human rhythm cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c08-freeform",
+          "segment_type": "freeform_explanation",
+          "source": "agent_freeform",
+          "text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "pause_after": "Here is the realistic way to look at it.",
+          "pause_mode": "transition",
+          "pitch_target": "Here is the realistic way",
+          "pitch_direction": "steady-low",
+          "rate_target": "first step short",
+          "rate_mode": "quick",
+          "emphasis_targets": ["realistic"]
+        }
+      ],
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": []
+      }
+    }
+  ]
+}

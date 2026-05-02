@@ -74,6 +74,7 @@ SalesCampaign
   scheduling_goal
   human_handoff_role
   compliance_notes
+  speech_naturalness
 ```
 
 ## Product Categories
@@ -104,7 +105,9 @@ The emotional and compliance risks differ:
 - SD cards: product specs, compatibility, price, delivery, warranty
 - B2B software: role authority, integrations, workflow fit, budget cycle
 
-The agent should adapt wording, guardrails, and escalation rules based on the campaign.
+The agent should adapt wording, guardrails, escalation rules, and voice naturalness based on the campaign.
+
+For voice output, `speech_naturalness` can define whether the agent should speak in a clean scripted style, warm professional style, or lightly casual style. The same setting must also protect company-provided questions and compliance text from filler insertion.
 
 ## Universal Guardrails
 

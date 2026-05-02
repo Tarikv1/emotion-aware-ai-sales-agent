@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VOICE-014 Provider Listening Comparison</title>
+  <style>
+    :root {
+      --ink: #1e2621;
+      --muted: #617066;
+      --paper: #f7f0e5;
+      --card: #fffaf2;
+      --accent: #0f6b5f;
+      --line: #dccfbb;
+      --shadow: rgba(47, 37, 24, 0.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 8% 6%, rgba(15, 107, 95, 0.18), transparent 28%),
+        radial-gradient(circle at 92% 16%, rgba(177, 103, 46, 0.14), transparent 28%),
+        linear-gradient(135deg, #f9f2e7 0%, #eadfce 100%);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    main {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 44px 0 64px;
+    }
+    header {
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: rgba(255, 250, 242, 0.84);
+      box-shadow: 0 22px 70px var(--shadow);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.4rem, 7vw, 5.8rem);
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+    }
+    p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .comparison {
+      margin-top: 26px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255, 250, 242, 0.92);
+      box-shadow: 0 18px 50px var(--shadow);
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+    }
+    .script {
+      margin: 18px 0;
+      padding: 18px;
+      border-left: 5px solid var(--accent);
+      border-radius: 18px;
+      background: #fff;
+      color: var(--ink);
+    }
+    .providers {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .provider-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+    }
+    audio { width: 100%; margin: 10px 0; }
+    dl { margin: 12px 0 0; display: grid; gap: 8px; }
+    dl div { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); }
+    dt { font-weight: 700; color: var(--ink); }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 11px;
+      text-align: left;
+      height: 42px;
+    }
+    th { background: #f1e5d2; }
+    .missing { color: #9b3d2e; }
+    @media (max-width: 760px) {
+      .providers { grid-template-columns: 1fr; }
+      header, .comparison { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">VOICE-014</p>
+      <h1>Provider Listening Comparison</h1>
+      <p>Listen pair-by-pair. Score each provider from 1 to 5, then add notes. This page makes no provider calls and uses only local generated audio files.</p>
+    </header>
+    
+            <article class="comparison">
+              <div class="comparison-head">
+                <p class="eyebrow">VOICE-014-C01 · DE</p>
+                <h2>German objection handling</h2>
+              </div>
+              <p class="script">Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.</p>
+              <div class="providers">
+                
+                <section class="provider-card">
+                  <h3>Cartesia Sonic 3 WebSocket</h3>
+                  <audio controls preload="metadata" src="VOICE-011-C01-de-cartesia-websocket.wav"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>400.619 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>4490.608 ms</dd></div>
+                    <div><dt>Format</dt><dd>wav</dd></div>
+                  </dl>
+                </section>
+                
+                <section class="provider-card">
+                  <h3>ElevenLabs HTTP Stream</h3>
+                  <audio controls preload="metadata" src="VOICE-013-C01-de-elevenlabs-stream.mp3"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>507.54 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>1112.927 ms</dd></div>
+                    <div><dt>Format</dt><dd>mp3</dd></div>
+                  </dl>
+                </section>
+                
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Criterion</th><th>Cartesia 1-5</th><th>ElevenLabs 1-5</th><th>Notes</th></tr>
+                </thead>
+                <tbody><tr><td>naturalness</td><td></td><td></td><td></td></tr>
+<tr><td>clarity</td><td></td><td></td><td></td></tr>
+<tr><td>language_pronunciation</td><td></td><td></td><td></td></tr>
+<tr><td>sales_call_pacing</td><td></td><td></td><td></td></tr>
+<tr><td>low_muffling_or_artifacts</td><td></td><td></td><td></td></tr>
+<tr><td>emotional_appropriateness</td><td></td><td></td><td></td></tr>
+<tr><td>trustworthiness</td><td></td><td></td><td></td></tr>
+<tr><td>overall_preference</td><td></td><td></td><td></td></tr></tbody>
+              </table>
+            </article>
+            
+            <article class="comparison">
+              <div class="comparison-head">
+                <p class="eyebrow">VOICE-014-C02 · DE</p>
+                <h2>German bridge and handoff</h2>
+              </div>
+              <p class="script">Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.</p>
+              <div class="providers">
+                
+                <section class="provider-card">
+                  <h3>Cartesia Sonic 3 WebSocket</h3>
+                  <audio controls preload="metadata" src="VOICE-011-C02-de-cartesia-websocket.wav"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>330.179 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>4988.674 ms</dd></div>
+                    <div><dt>Format</dt><dd>wav</dd></div>
+                  </dl>
+                </section>
+                
+                <section class="provider-card">
+                  <h3>ElevenLabs HTTP Stream</h3>
+                  <audio controls preload="metadata" src="VOICE-013-C02-de-elevenlabs-stream.mp3"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>258.46 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>891.199 ms</dd></div>
+                    <div><dt>Format</dt><dd>mp3</dd></div>
+                  </dl>
+                </section>
+                
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Criterion</th><th>Cartesia 1-5</th><th>ElevenLabs 1-5</th><th>Notes</th></tr>
+                </thead>
+                <tbody><tr><td>naturalness</td><td></td><td></td><td></td></tr>
+<tr><td>clarity</td><td></td><td></td><td></td></tr>
+<tr><td>language_pronunciation</td><td></td><td></td><td></td></tr>
+<tr><td>sales_call_pacing</td><td></td><td></td><td></td></tr>
+<tr><td>low_muffling_or_artifacts</td><td></td><td></td><td></td></tr>
+<tr><td>emotional_appropriateness</td><td></td><td></td><td></td></tr>
+<tr><td>trustworthiness</td><td></td><td></td><td></td></tr>
+<tr><td>overall_preference</td><td></td><td></td><td></td></tr></tbody>
+              </table>
+            </article>
+            
+            <article class="comparison">
+              <div class="comparison-head">
+                <p class="eyebrow">VOICE-014-C03 · EN</p>
+                <h2>English B2B objection handling</h2>
+              </div>
+              <p class="script">I would not want to overpromise that. Performance depends on the current workflow, the integrations, and how your team handles follow-up today. What I can do is keep this practical: if lead routing is a real pain point, a solutions specialist can review the workflow with you and tell you where there may be a fit, without asking you to commit on this call.</p>
+              <div class="providers">
+                
+                <section class="provider-card">
+                  <h3>Cartesia Sonic 3 WebSocket</h3>
+                  <audio controls preload="metadata" src="VOICE-011-C03-en-cartesia-websocket.wav"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>328.734 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>4493.621 ms</dd></div>
+                    <div><dt>Format</dt><dd>wav</dd></div>
+                  </dl>
+                </section>
+                
+                <section class="provider-card">
+                  <h3>ElevenLabs HTTP Stream</h3>
+                  <audio controls preload="metadata" src="VOICE-013-C03-en-elevenlabs-stream.mp3"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>219.971 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>843.897 ms</dd></div>
+                    <div><dt>Format</dt><dd>mp3</dd></div>
+                  </dl>
+                </section>
+                
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Criterion</th><th>Cartesia 1-5</th><th>ElevenLabs 1-5</th><th>Notes</th></tr>
+                </thead>
+                <tbody><tr><td>naturalness</td><td></td><td></td><td></td></tr>
+<tr><td>clarity</td><td></td><td></td><td></td></tr>
+<tr><td>language_pronunciation</td><td></td><td></td><td></td></tr>
+<tr><td>sales_call_pacing</td><td></td><td></td><td></td></tr>
+<tr><td>low_muffling_or_artifacts</td><td></td><td></td><td></td></tr>
+<tr><td>emotional_appropriateness</td><td></td><td></td><td></td></tr>
+<tr><td>trustworthiness</td><td></td><td></td><td></td></tr>
+<tr><td>overall_preference</td><td></td><td></td><td></td></tr></tbody>
+              </table>
+            </article>
+            
+            <article class="comparison">
+              <div class="comparison-head">
+                <p class="eyebrow">VOICE-014-C04 · EN</p>
+                <h2>English scheduling and close</h2>
+              </div>
+              <p class="script">That works. I will keep it focused and make sure the specialist knows you only have a short window. The goal of the callback is simple: confirm whether the workflow is relevant, answer the integration questions we should not guess on this call, and let you decide whether it is worth a deeper conversation. If Thursday afternoon changes, you can decline or reschedule.</p>
+              <div class="providers">
+                
+                <section class="provider-card">
+                  <h3>Cartesia Sonic 3 WebSocket</h3>
+                  <audio controls preload="metadata" src="VOICE-011-C04-en-cartesia-websocket.wav"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>286.607 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>4899.123 ms</dd></div>
+                    <div><dt>Format</dt><dd>wav</dd></div>
+                  </dl>
+                </section>
+                
+                <section class="provider-card">
+                  <h3>ElevenLabs HTTP Stream</h3>
+                  <audio controls preload="metadata" src="VOICE-013-C04-en-elevenlabs-stream.mp3"></audio>
+                  <dl>
+                    <div><dt>First audio</dt><dd>240.191 ms</dd></div>
+                    <div><dt>Total latency</dt><dd>793.956 ms</dd></div>
+                    <div><dt>Format</dt><dd>mp3</dd></div>
+                  </dl>
+                </section>
+                
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Criterion</th><th>Cartesia 1-5</th><th>ElevenLabs 1-5</th><th>Notes</th></tr>
+                </thead>
+                <tbody><tr><td>naturalness</td><td></td><td></td><td></td></tr>
+<tr><td>clarity</td><td></td><td></td><td></td></tr>
+<tr><td>language_pronunciation</td><td></td><td></td><td></td></tr>
+<tr><td>sales_call_pacing</td><td></td><td></td><td></td></tr>
+<tr><td>low_muffling_or_artifacts</td><td></td><td></td><td></td></tr>
+<tr><td>emotional_appropriateness</td><td></td><td></td><td></td></tr>
+<tr><td>trustworthiness</td><td></td><td></td><td></td></tr>
+<tr><td>overall_preference</td><td></td><td></td><td></td></tr></tbody>
+              </table>
+            </article>
+            
+  </main>
+</body>
+</html>

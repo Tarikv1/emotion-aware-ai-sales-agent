@@ -1,0 +1,61 @@
+{
+  "voice_milestone": "VOICE-014",
+  "experiment_scope": "Structured local listening comparison between Cartesia VOICE-011 and ElevenLabs VOICE-013 using the same longer German and English synthetic sales-agent scripts.",
+  "source_artifacts": {
+    "cartesia": "research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json",
+    "elevenlabs": "research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json"
+  },
+  "safety_gate": {
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "generated_audio_files_committed": false,
+    "rating_values_required_before_provider_claim": true
+  },
+  "rating_rubric": {
+    "scale": "1-5 human listening score",
+    "criteria": [
+      "naturalness",
+      "clarity",
+      "language_pronunciation",
+      "sales_call_pacing",
+      "low_muffling_or_artifacts",
+      "emotional_appropriateness",
+      "trustworthiness",
+      "overall_preference"
+    ],
+    "notes": "Scores should be recorded after listening to matched Cartesia and ElevenLabs samples for the same case."
+  },
+  "pairs": [
+    {
+      "comparison_id": "VOICE-014-C01",
+      "language": "de",
+      "scenario": "German objection handling",
+      "cartesia_case_id": "VOICE-011-C01",
+      "elevenlabs_case_id": "VOICE-013-C01"
+    },
+    {
+      "comparison_id": "VOICE-014-C02",
+      "language": "de",
+      "scenario": "German bridge and handoff",
+      "cartesia_case_id": "VOICE-011-C02",
+      "elevenlabs_case_id": "VOICE-013-C02"
+    },
+    {
+      "comparison_id": "VOICE-014-C03",
+      "language": "en",
+      "scenario": "English B2B objection handling",
+      "cartesia_case_id": "VOICE-011-C03",
+      "elevenlabs_case_id": "VOICE-013-C03"
+    },
+    {
+      "comparison_id": "VOICE-014-C04",
+      "language": "en",
+      "scenario": "English scheduling and close",
+      "cartesia_case_id": "VOICE-011-C04",
+      "elevenlabs_case_id": "VOICE-013-C04"
+    }
+  ]
+}

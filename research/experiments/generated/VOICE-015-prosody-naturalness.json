@@ -1,0 +1,1851 @@
+{
+  "voice_milestone": "VOICE-015",
+  "experiment_scope": "Segment-aware professional-human prosody planning for bilingual sales-agent TTS. The layer creates provider-neutral pause, rate, emphasis, pitch, and rare stretch cues for eligible freeform speech only.",
+  "case_file": "research\\experiments\\cases\\voice-015-prosody-naturalness.json",
+  "summary": {
+    "case_count": 8,
+    "languages": {
+      "en": 4,
+      "de": 4
+    },
+    "profile_styles": [
+      "professional-human"
+    ],
+    "cue_count": 22,
+    "cue_counts": {
+      "emphasis": 5,
+      "pause": 5,
+      "pitch": 6,
+      "rate": 5,
+      "stretch": 1
+    },
+    "eligible_segment_count": 7,
+    "protected_segment_count": 7,
+    "protected_segment_cue_count": 0,
+    "validation_passed": 8,
+    "validation_failed": 0,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  },
+  "runtime_boundary": {
+    "text_only": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "safe_default": "local deterministic prosody planning only"
+  },
+  "results": [
+    {
+      "case_id": "VOICE-015-C01",
+      "case_title": "English objection handling receives pause, pitch, rate, and emphasis cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": []
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 4,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C01",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "cue_count": 4,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+            "pause_after": "I understand your concern.",
+            "pitch_target": "I understand your concern",
+            "pitch_direction": "warm-soft",
+            "rate_target": "do not promise",
+            "rate_mode": "careful",
+            "emphasis_targets": [
+              "important"
+            ]
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+            "tts_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+            "debug_text": "I understand your concern. The **important** thing is that we do not promise anything we cannot verify before looking at the workflow.",
+            "cue_count": 4,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "c01-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "I understand your concern",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.201,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "c01-freeform",
+                "segment_type": "freeform_objection_handling",
+                "after": "I understand your concern.",
+                "mode": "thinking",
+                "duration_ms": 187,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "c01-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "do not promise",
+                "mode": "careful",
+                "ratio": 0.96,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "c01-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "important",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              }
+            ]
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "I understand your concern",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.201,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "after": "I understand your concern.",
+            "mode": "thinking",
+            "duration_ms": 187,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "do not promise",
+            "mode": "careful",
+            "ratio": 0.96,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "important",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          }
+        ],
+        "tts_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+        "debug_text": "I understand your concern. The **important** thing is that we do not promise anything we cannot verify before looking at the workflow.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C02",
+      "case_title": "German objection handling receives rare stretch plus bounded prosody cues",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_cues": 5,
+        "max_cues": 5,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": []
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 5,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C02",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "cue_count": 5,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 1
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+            "pause_after": "Also",
+            "pause_mode": "thinking",
+            "pitch_target": "ich verstehe den Punkt",
+            "pitch_direction": "warm-soft",
+            "rate_target": "nichts verspreche",
+            "rate_mode": "careful",
+            "emphasis_targets": [
+              "Wichtig"
+            ],
+            "stretch_targets": [
+              "Also"
+            ],
+            "allow_stretch": true
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+            "tts_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+            "debug_text": "Also..., ich verstehe den Punkt. **Wichtig** ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+            "cue_count": 5,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "c02-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "ich verstehe den Punkt",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.179,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "c02-freeform",
+                "segment_type": "freeform_objection_handling",
+                "after": "Also",
+                "mode": "thinking",
+                "duration_ms": 314,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "c02-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "nichts verspreche",
+                "mode": "careful",
+                "ratio": 0.926,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "c02-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "Wichtig",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              },
+              {
+                "type": "stretch",
+                "segment_index": 0,
+                "segment_id": "c02-freeform",
+                "segment_type": "freeform_objection_handling",
+                "target": "Also",
+                "variant": "Also...",
+                "hold_ms": 187,
+                "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                "cue_id": "cue-05"
+              }
+            ]
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "ich verstehe den Punkt",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.179,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "after": "Also",
+            "mode": "thinking",
+            "duration_ms": 314,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "nichts verspreche",
+            "mode": "careful",
+            "ratio": 0.926,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "Wichtig",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          },
+          {
+            "type": "stretch",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "target": "Also",
+            "variant": "Also...",
+            "hold_ms": 187,
+            "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+            "cue_id": "cue-05"
+          }
+        ],
+        "tts_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+        "debug_text": "Also..., ich verstehe den Punkt. **Wichtig** ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C03",
+      "case_title": "English mixed response protects campaign question while freeform gets cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": [
+          "c03-question"
+        ]
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 4,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C03",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 2,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 1,
+        "cue_count": 4,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+            "pause_after": "That makes sense.",
+            "pitch_target": "That makes sense",
+            "pitch_direction": "warm-soft",
+            "rate_target": "before we schedule anything",
+            "rate_mode": "careful",
+            "emphasis_targets": [
+              "practical"
+            ]
+          },
+          {
+            "segment_id": "c03-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Do you handle inbound lead routing?"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+            "tts_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+            "debug_text": "That makes sense. I can keep this **practical** and only check whether the workflow is relevant before we schedule anything.",
+            "cue_count": 4,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "c03-freeform",
+                "segment_type": "freeform_transition",
+                "target": "That makes sense",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.2,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "c03-freeform",
+                "segment_type": "freeform_transition",
+                "after": "That makes sense.",
+                "mode": "transition",
+                "duration_ms": 266,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "c03-freeform",
+                "segment_type": "freeform_transition",
+                "target": "before we schedule anything",
+                "mode": "careful",
+                "ratio": 0.951,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "c03-freeform",
+                "segment_type": "freeform_transition",
+                "target": "practical",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c03-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_prosody": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Do you handle inbound lead routing?",
+            "tts_text": "Do you handle inbound lead routing?",
+            "debug_text": "Do you handle inbound lead routing?",
+            "cue_count": 0,
+            "cues": []
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_transition",
+            "target": "That makes sense",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.2,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_transition",
+            "after": "That makes sense.",
+            "mode": "transition",
+            "duration_ms": 266,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_transition",
+            "target": "before we schedule anything",
+            "mode": "careful",
+            "ratio": 0.951,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_transition",
+            "target": "practical",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          }
+        ],
+        "tts_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+        "debug_text": "That makes sense. I can keep this **practical** and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C04",
+      "case_title": "German mixed response protects qualification question and disclosure",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": [
+          "c04-question",
+          "c04-disclosure"
+        ]
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 5,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C04",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 3,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 2,
+        "cue_count": 4,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+            "pause_after": "Das hilft mir bei der Einordnung.",
+            "pitch_target": "Das hilft mir",
+            "pitch_direction": "warm-soft",
+            "rate_target": "unverbindlicher Rueckruf",
+            "rate_mode": "careful",
+            "emphasis_targets": [
+              "praktisch"
+            ]
+          },
+          {
+            "segment_id": "c04-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Haben Sie aktuell eine Zahnzusatzversicherung?"
+          },
+          {
+            "segment_id": "c04-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+            "tts_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+            "debug_text": "Das hilft mir bei der Einordnung. Ich halte es **praktisch** und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+            "cue_count": 4,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "c04-freeform",
+                "segment_type": "freeform_transition",
+                "target": "Das hilft mir",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.333,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "c04-freeform",
+                "segment_type": "freeform_transition",
+                "after": "Das hilft mir bei der Einordnung.",
+                "mode": "transition",
+                "duration_ms": 284,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "c04-freeform",
+                "segment_type": "freeform_transition",
+                "target": "unverbindlicher Rueckruf",
+                "mode": "careful",
+                "ratio": 0.95,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "c04-freeform",
+                "segment_type": "freeform_transition",
+                "target": "praktisch",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c04-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_prosody": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "tts_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "debug_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "cue_count": 0,
+            "cues": []
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c04-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "eligible_for_prosody": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "tts_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "debug_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "cue_count": 0,
+            "cues": []
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "target": "Das hilft mir",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.333,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "after": "Das hilft mir bei der Einordnung.",
+            "mode": "transition",
+            "duration_ms": 284,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "target": "unverbindlicher Rueckruf",
+            "mode": "careful",
+            "ratio": 0.95,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "target": "praktisch",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          }
+        ],
+        "tts_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+        "debug_text": "Das hilft mir bei der Einordnung. Ich halte es **praktisch** und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C05",
+      "case_title": "German do-not-call and hangup lines remain cue-free",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_cues": 0,
+        "max_cues": 0,
+        "min_pause_cues": 0,
+        "min_pitch_cues": 0,
+        "min_rate_cues": 0,
+        "min_emphasis_cues": 0,
+        "protected_segment_ids_unchanged": [
+          "c05-do-not-call",
+          "c05-hangup"
+        ]
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 5,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C05",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 2,
+        "eligible_segment_count": 0,
+        "protected_segment_count": 2,
+        "cue_count": 0,
+        "cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c05-do-not-call",
+            "segment_type": "do_not_call",
+            "source": "policy_core",
+            "text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden."
+          },
+          {
+            "segment_id": "c05-hangup",
+            "segment_type": "hangup",
+            "source": "policy_core",
+            "text": "Auf Wiederhoeren."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c05-do-not-call",
+            "segment_type": "do_not_call",
+            "source": "policy_core",
+            "eligible_for_prosody": false,
+            "protected_reason": "protected_segment_type:do_not_call",
+            "text_before": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "debug_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "cue_count": 0,
+            "cues": []
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c05-hangup",
+            "segment_type": "hangup",
+            "source": "policy_core",
+            "eligible_for_prosody": false,
+            "protected_reason": "protected_segment_type:hangup",
+            "text_before": "Auf Wiederhoeren.",
+            "tts_text": "Auf Wiederhoeren.",
+            "debug_text": "Auf Wiederhoeren.",
+            "cue_count": 0,
+            "cues": []
+          }
+        ],
+        "prosody_plan": [],
+        "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "debug_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C06",
+      "case_title": "Disabled campaign profile produces no prosody cues",
+      "campaign_id": "campaign-voice-015-en-clean-scripted",
+      "language": "en",
+      "expected": {
+        "min_cues": 0,
+        "max_cues": 0,
+        "min_pause_cues": 0,
+        "min_pitch_cues": 0,
+        "min_rate_cues": 0,
+        "min_emphasis_cues": 0,
+        "protected_segment_ids_unchanged": []
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "en",
+        "profile": {
+          "enabled": false,
+          "style": "professional-human",
+          "pause_variation_enabled": false,
+          "rate_variation_enabled": false,
+          "emphasis_enabled": false,
+          "pitch_variation_enabled": false,
+          "stretch_enabled": false,
+          "max_cues_per_response": 0,
+          "max_stretches_per_response": 0,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C06",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "cue_count": 0,
+        "cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c06-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+            "pause_after": "The safest next step is",
+            "pitch_target": "safest next step",
+            "rate_target": "appointment language exact",
+            "emphasis_targets": [
+              "exact"
+            ]
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c06-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+            "tts_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+            "debug_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+            "cue_count": 0,
+            "cues": []
+          }
+        ],
+        "prosody_plan": [],
+        "tts_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+        "debug_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C07",
+      "case_title": "Strict German insurance allows only one empathy pitch cue before protected boundary",
+      "campaign_id": "campaign-voice-015-de-insurance-strict",
+      "language": "de",
+      "expected": {
+        "min_cues": 1,
+        "max_cues": 1,
+        "min_pause_cues": 0,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 0,
+        "min_emphasis_cues": 0,
+        "protected_segment_ids_unchanged": [
+          "c07-boundary",
+          "c07-question"
+        ]
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": false,
+          "max_cues_per_response": 1,
+          "max_stretches_per_response": 0,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C07",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 3,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 2,
+        "cue_count": 1,
+        "cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c07-empathy",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+            "pitch_target": "Ich verstehe",
+            "pitch_direction": "warm-soft"
+          },
+          {
+            "segment_id": "c07-boundary",
+            "segment_type": "coverage_or_claim_boundary",
+            "source": "compliance",
+            "text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+          },
+          {
+            "segment_id": "c07-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c07-empathy",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+            "tts_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+            "debug_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+            "cue_count": 1,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "c07-empathy",
+                "segment_type": "freeform_empathy",
+                "target": "Ich verstehe",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.239,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c07-boundary",
+            "segment_type": "coverage_or_claim_boundary",
+            "source": "compliance",
+            "eligible_for_prosody": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "tts_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "debug_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "cue_count": 0,
+            "cues": []
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c07-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_prosody": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "tts_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "debug_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "cue_count": 0,
+            "cues": []
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "c07-empathy",
+            "segment_type": "freeform_empathy",
+            "target": "Ich verstehe",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.239,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          }
+        ],
+        "tts_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+        "debug_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C08",
+      "case_title": "English longer explanation receives professional-human rhythm cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_cues": 4,
+        "max_cues": 4,
+        "min_pause_cues": 1,
+        "min_pitch_cues": 1,
+        "min_rate_cues": 1,
+        "min_emphasis_cues": 1,
+        "protected_segment_ids_unchanged": []
+      },
+      "prosody_naturalness": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 4,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-015-C08",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "cue_count": 4,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 0
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "c08-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+            "pause_after": "Here is the realistic way to look at it.",
+            "pause_mode": "transition",
+            "pitch_target": "Here is the realistic way",
+            "pitch_direction": "steady-low",
+            "rate_target": "first step short",
+            "rate_mode": "quick",
+            "emphasis_targets": [
+              "realistic"
+            ]
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c08-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+            "tts_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+            "debug_text": "Here is the **realistic** way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+            "cue_count": 4,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "c08-freeform",
+                "segment_type": "freeform_explanation",
+                "target": "Here is the realistic way",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.445,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "c08-freeform",
+                "segment_type": "freeform_explanation",
+                "after": "Here is the realistic way to look at it.",
+                "mode": "transition",
+                "duration_ms": 350,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "c08-freeform",
+                "segment_type": "freeform_explanation",
+                "target": "first step short",
+                "mode": "quick",
+                "ratio": 1.045,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "c08-freeform",
+                "segment_type": "freeform_explanation",
+                "target": "realistic",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              }
+            ]
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "c08-freeform",
+            "segment_type": "freeform_explanation",
+            "target": "Here is the realistic way",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.445,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "c08-freeform",
+            "segment_type": "freeform_explanation",
+            "after": "Here is the realistic way to look at it.",
+            "mode": "transition",
+            "duration_ms": 350,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "c08-freeform",
+            "segment_type": "freeform_explanation",
+            "target": "first step short",
+            "mode": "quick",
+            "ratio": 1.045,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "c08-freeform",
+            "segment_type": "freeform_explanation",
+            "target": "realistic",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          }
+        ],
+        "tts_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+        "debug_text": "Here is the **realistic** way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      }
+    }
+  ]
+}

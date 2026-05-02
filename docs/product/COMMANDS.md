@@ -178,6 +178,78 @@ Validate VOICE-011 Cartesia WebSocket smoke behavior without live provider calls
 python scripts\validate_voice_011_cartesia_websocket_smoke.py
 ```
 
+Run the VOICE-012 speech naturalness renderer:
+
+```powershell
+python scripts\run_voice_012_speech_naturalness.py
+```
+
+Validate VOICE-012 segment-aware speech naturalness:
+
+```powershell
+python scripts\validate_voice_012_speech_naturalness.py
+```
+
+Run the VOICE-013 ElevenLabs TTS smoke test in no-key fallback mode:
+
+```powershell
+python scripts\run_voice_013_elevenlabs_tts_smoke.py --live --force-key-missing
+```
+
+Validate VOICE-013 ElevenLabs smoke behavior without live provider calls:
+
+```powershell
+python scripts\validate_voice_013_elevenlabs_tts_smoke.py
+```
+
+Build the VOICE-014 local provider listening comparison:
+
+```powershell
+python scripts\run_voice_014_provider_listening_comparison.py
+```
+
+Validate VOICE-014 provider listening comparison:
+
+```powershell
+python scripts\validate_voice_014_provider_listening_comparison.py
+```
+
+Run the VOICE-015 provider-neutral prosody naturalness planner:
+
+```powershell
+python scripts\run_voice_015_prosody_naturalness.py
+```
+
+Validate VOICE-015 bounded prosody cues and protected-segment locks:
+
+```powershell
+python scripts\validate_voice_015_prosody_naturalness.py
+```
+
+Render VOICE-016 provider-specific prosody previews without provider calls:
+
+```powershell
+python scripts\run_voice_016_provider_prosody_rendering.py
+```
+
+Validate VOICE-016 provider-specific prosody rendering:
+
+```powershell
+python scripts\validate_voice_016_provider_prosody_rendering.py
+```
+
+Run the VOICE-017 plain-vs-prosody A/B harness in dry-run mode:
+
+```powershell
+python scripts\run_voice_017_live_ab_audio.py
+```
+
+Validate VOICE-017 dry-run and forced-missing-key fallback behavior:
+
+```powershell
+python scripts\validate_voice_017_live_ab_audio.py
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
@@ -219,6 +291,26 @@ Live VOICE-011 Cartesia WebSocket smoke testing requires `CARTESIA_API_KEY`, an 
 ```powershell
 python scripts\run_voice_011_cartesia_websocket_smoke.py --live
 ```
+
+Live VOICE-013 ElevenLabs TTS smoke testing requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\run_voice_013_elevenlabs_tts_smoke.py --live
+```
+
+Live VOICE-017 ElevenLabs plain-vs-prosody A/B testing requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\run_voice_017_live_ab_audio.py --provider elevenlabs --live --timeout-seconds 8
+```
+
+Live VOICE-017 Cartesia plain-vs-prosody A/B testing requires `CARTESIA_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\run_voice_017_live_ab_audio.py --provider cartesia --live --timeout-seconds 8
+```
+
+Live VOICE-017 with both providers in one run is intentionally blocked unless `--allow-both-live` is also set.
 
 ## Safety Rules
 

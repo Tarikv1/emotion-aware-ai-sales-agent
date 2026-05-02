@@ -1,0 +1,340 @@
+{
+  "voice_milestone": "VOICE-014",
+  "experiment_scope": "Structured local listening comparison between Cartesia VOICE-011 and ElevenLabs VOICE-013 using the same longer German and English synthetic sales-agent scripts.",
+  "case_file": "research\\experiments\\cases\\voice-014-provider-listening-comparison.json",
+  "source_artifacts": {
+    "cartesia": "research\\experiments\\generated\\VOICE-011-cartesia-websocket-smoke.json",
+    "elevenlabs": "research\\experiments\\generated\\VOICE-013-elevenlabs-tts-smoke.json"
+  },
+  "safety_gate": {
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "generated_audio_files_committed": false,
+    "rating_values_required_before_provider_claim": true
+  },
+  "rating_rubric": {
+    "scale": "1-5 human listening score",
+    "criteria": [
+      "naturalness",
+      "clarity",
+      "language_pronunciation",
+      "sales_call_pacing",
+      "low_muffling_or_artifacts",
+      "emotional_appropriateness",
+      "trustworthiness",
+      "overall_preference"
+    ],
+    "notes": "Scores should be recorded after listening to matched Cartesia and ElevenLabs samples for the same case."
+  },
+  "summary": {
+    "comparison_count": 4,
+    "languages": {
+      "de": 2,
+      "en": 2
+    },
+    "providers": [
+      "cartesia",
+      "elevenlabs"
+    ],
+    "complete_audio_pairs": 4,
+    "provider_audio_counts": {
+      "cartesia": 4,
+      "elevenlabs": 4
+    },
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "human_ratings_recorded": false,
+    "quality_claim_allowed": false
+  },
+  "comparisons": [
+    {
+      "comparison_id": "VOICE-014-C01",
+      "language": "de",
+      "scenario": "German objection handling",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+      "providers": [
+        {
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3 WebSocket",
+          "case_id": "VOICE-011-C01",
+          "audio_format": "wav",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 612306,
+          "first_audio_ms": 400.619,
+          "total_latency_ms": 4490.608,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-011-C01-de-cartesia-websocket.wav",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 612306,
+          "html_audio_src": "VOICE-011-C01-de-cartesia-websocket.wav"
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs HTTP Stream",
+          "case_id": "VOICE-013-C01",
+          "audio_format": "mp3",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 384985,
+          "first_audio_ms": 507.54,
+          "total_latency_ms": 1112.927,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-013-C01-de-elevenlabs-stream.mp3",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 384985,
+          "html_audio_src": "VOICE-013-C01-de-elevenlabs-stream.mp3"
+        }
+      ],
+      "timing_comparison": {
+        "first_audio_delta_ms_elevenlabs_minus_cartesia": 106.921,
+        "total_latency_delta_ms_elevenlabs_minus_cartesia": -3377.681,
+        "lower_first_audio_provider": "cartesia",
+        "lower_total_latency_provider": "elevenlabs"
+      },
+      "human_rating_template": {
+        "cartesia": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "elevenlabs": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "preferred_provider": null,
+        "notes": null
+      }
+    },
+    {
+      "comparison_id": "VOICE-014-C02",
+      "language": "de",
+      "scenario": "German bridge and handoff",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+      "providers": [
+        {
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3 WebSocket",
+          "case_id": "VOICE-011-C02",
+          "audio_format": "wav",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 621222,
+          "first_audio_ms": 330.179,
+          "total_latency_ms": 4988.674,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-011-C02-de-cartesia-websocket.wav",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 621222,
+          "html_audio_src": "VOICE-011-C02-de-cartesia-websocket.wav"
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs HTTP Stream",
+          "case_id": "VOICE-013-C02",
+          "audio_format": "mp3",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 397524,
+          "first_audio_ms": 258.46,
+          "total_latency_ms": 891.199,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-013-C02-de-elevenlabs-stream.mp3",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 397524,
+          "html_audio_src": "VOICE-013-C02-de-elevenlabs-stream.mp3"
+        }
+      ],
+      "timing_comparison": {
+        "first_audio_delta_ms_elevenlabs_minus_cartesia": -71.719,
+        "total_latency_delta_ms_elevenlabs_minus_cartesia": -4097.475,
+        "lower_first_audio_provider": "elevenlabs",
+        "lower_total_latency_provider": "elevenlabs"
+      },
+      "human_rating_template": {
+        "cartesia": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "elevenlabs": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "preferred_provider": null,
+        "notes": null
+      }
+    },
+    {
+      "comparison_id": "VOICE-014-C03",
+      "language": "en",
+      "scenario": "English B2B objection handling",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "tts_quality_script": "I would not want to overpromise that. Performance depends on the current workflow, the integrations, and how your team handles follow-up today. What I can do is keep this practical: if lead routing is a real pain point, a solutions specialist can review the workflow with you and tell you where there may be a fit, without asking you to commit on this call.",
+      "providers": [
+        {
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3 WebSocket",
+          "case_id": "VOICE-011-C03",
+          "audio_format": "wav",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 650944,
+          "first_audio_ms": 328.734,
+          "total_latency_ms": 4493.621,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-011-C03-en-cartesia-websocket.wav",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 650944,
+          "html_audio_src": "VOICE-011-C03-en-cartesia-websocket.wav"
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs HTTP Stream",
+          "case_id": "VOICE-013-C03",
+          "audio_format": "mp3",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 347787,
+          "first_audio_ms": 219.971,
+          "total_latency_ms": 843.897,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-013-C03-en-elevenlabs-stream.mp3",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 347787,
+          "html_audio_src": "VOICE-013-C03-en-elevenlabs-stream.mp3"
+        }
+      ],
+      "timing_comparison": {
+        "first_audio_delta_ms_elevenlabs_minus_cartesia": -108.763,
+        "total_latency_delta_ms_elevenlabs_minus_cartesia": -3649.724,
+        "lower_first_audio_provider": "elevenlabs",
+        "lower_total_latency_provider": "elevenlabs"
+      },
+      "human_rating_template": {
+        "cartesia": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "elevenlabs": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "preferred_provider": null,
+        "notes": null
+      }
+    },
+    {
+      "comparison_id": "VOICE-014-C04",
+      "language": "en",
+      "scenario": "English scheduling and close",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "tts_quality_script": "That works. I will keep it focused and make sure the specialist knows you only have a short window. The goal of the callback is simple: confirm whether the workflow is relevant, answer the integration questions we should not guess on this call, and let you decide whether it is worth a deeper conversation. If Thursday afternoon changes, you can decline or reschedule.",
+      "providers": [
+        {
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3 WebSocket",
+          "case_id": "VOICE-011-C04",
+          "audio_format": "wav",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 671750,
+          "first_audio_ms": 286.607,
+          "total_latency_ms": 4899.123,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-011-C04-en-cartesia-websocket.wav",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 671750,
+          "html_audio_src": "VOICE-011-C04-en-cartesia-websocket.wav"
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs HTTP Stream",
+          "case_id": "VOICE-013-C04",
+          "audio_format": "mp3",
+          "audio_file_created": true,
+          "recorded_audio_byte_size": 354474,
+          "first_audio_ms": 240.191,
+          "total_latency_ms": 793.956,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_path": "research\\experiments\\generated\\VOICE-013-C04-en-elevenlabs-stream.mp3",
+          "audio_exists": true,
+          "audio_byte_size_on_disk": 354474,
+          "html_audio_src": "VOICE-013-C04-en-elevenlabs-stream.mp3"
+        }
+      ],
+      "timing_comparison": {
+        "first_audio_delta_ms_elevenlabs_minus_cartesia": -46.416,
+        "total_latency_delta_ms_elevenlabs_minus_cartesia": -4105.167,
+        "lower_first_audio_provider": "elevenlabs",
+        "lower_total_latency_provider": "elevenlabs"
+      },
+      "human_rating_template": {
+        "cartesia": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "elevenlabs": {
+          "naturalness": null,
+          "clarity": null,
+          "language_pronunciation": null,
+          "sales_call_pacing": null,
+          "low_muffling_or_artifacts": null,
+          "emotional_appropriateness": null,
+          "trustworthiness": null,
+          "overall_preference": null
+        },
+        "preferred_provider": null,
+        "notes": null
+      }
+    }
+  ]
+}

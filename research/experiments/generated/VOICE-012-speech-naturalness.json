@@ -1,0 +1,907 @@
+{
+  "voice_milestone": "VOICE-012",
+  "experiment_scope": "Segment-aware speech naturalness for bilingual sales-agent TTS text. The layer may add rare mid-utterance fillers only to eligible freeform speech, never to scripted campaign questions or compliance-sensitive text.",
+  "case_file": "research\\experiments\\cases\\voice-012-speech-naturalness.json",
+  "summary": {
+    "case_count": 8,
+    "languages": {
+      "en": 4,
+      "de": 4
+    },
+    "filler_count": 5,
+    "eligible_segment_count": 7,
+    "protected_segment_count": 9,
+    "validation_passed": 8,
+    "validation_failed": 0,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  },
+  "runtime_boundary": {
+    "text_only": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "safe_default": "local deterministic transformation only"
+  },
+  "results": [
+    {
+      "case_id": "VOICE-012-C01",
+      "case_title": "English freeform objection handling receives one mid-utterance filler",
+      "campaign_id": "campaign-voice-012-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 1,
+        "protected_segment_ids_unchanged": []
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "human-professional-with-rare-casual-fillers",
+          "filler_frequency": "medium",
+          "max_fillers_per_response": 2,
+          "allow_casual_fillers": true,
+          "allow_hesitation_sounds": true,
+          "pause_markers_allowed": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "filler_pool": [
+          "um",
+          "uh",
+          "hm",
+          "you know",
+          "like"
+        ],
+        "filler_quota": 1,
+        "filler_count": 1,
+        "fillers_inserted": [
+          {
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "filler": "um",
+            "language": "en",
+            "position": "mid-utterance"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "I understand the concern. The important thing is that I do not want to promise something that depends on workflow details we have not checked yet."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "I understand the concern. The important thing is that I do not want to promise something that depends on workflow details we have not checked yet.",
+            "text_after": "I understand the concern. The important thing is, um, that I do not want to promise something that depends on workflow details we have not checked yet.",
+            "filler_inserted": "um"
+          }
+        ],
+        "tts_text": "I understand the concern. The important thing is, um, that I do not want to promise something that depends on workflow details we have not checked yet.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C02",
+      "case_title": "German freeform objection handling receives one mid-utterance filler",
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 1,
+        "protected_segment_ids_unchanged": []
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "warm-german-professional",
+          "filler_frequency": "low",
+          "max_fillers_per_response": 1,
+          "allow_casual_fillers": true,
+          "allow_hesitation_sounds": true,
+          "pause_markers_allowed": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "filler_pool": [
+          "ähm",
+          "äh",
+          "hm",
+          "also"
+        ],
+        "filler_quota": 1,
+        "filler_count": 1,
+        "fillers_inserted": [
+          {
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "filler": "ähm",
+            "language": "de",
+            "position": "mid-utterance"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "Ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was von Details abhaengt, die ein Fachberater sauber pruefen sollte."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "Ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was von Details abhaengt, die ein Fachberater sauber pruefen sollte.",
+            "text_after": "Ich verstehe den Punkt. Wichtig ist, ähm, dass ich Ihnen nichts verspreche, was von Details abhaengt, die ein Fachberater sauber pruefen sollte.",
+            "filler_inserted": "ähm"
+          }
+        ],
+        "tts_text": "Ich verstehe den Punkt. Wichtig ist, ähm, dass ich Ihnen nichts verspreche, was von Details abhaengt, die ein Fachberater sauber pruefen sollte.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C03",
+      "case_title": "English mixed response protects campaign qualification question",
+      "campaign_id": "campaign-voice-012-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 2,
+        "protected_segment_ids_unchanged": [
+          "c03-question"
+        ]
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "human-professional-with-rare-casual-fillers",
+          "filler_frequency": "medium",
+          "max_fillers_per_response": 2,
+          "allow_casual_fillers": true,
+          "allow_hesitation_sounds": true,
+          "pause_markers_allowed": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 3,
+        "eligible_segment_count": 2,
+        "protected_segment_count": 1,
+        "filler_pool": [
+          "um",
+          "uh",
+          "hm",
+          "you know",
+          "like"
+        ],
+        "filler_quota": 2,
+        "filler_count": 2,
+        "fillers_inserted": [
+          {
+            "segment_index": 0,
+            "segment_id": "c03-freeform-1",
+            "filler": "uh",
+            "language": "en",
+            "position": "mid-utterance"
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c03-freeform-2",
+            "filler": "you know",
+            "language": "en",
+            "position": "mid-utterance"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c03-freeform-1",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "text": "That makes sense. What I can do is keep this practical and only check whether the workflow is relevant before asking you to spend more time."
+          },
+          {
+            "segment_id": "c03-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Do you handle inbound lead routing?"
+          },
+          {
+            "segment_id": "c03-freeform-2",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "Once I know that, we can decide whether a short specialist callback is actually worth putting on the calendar."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c03-freeform-1",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "That makes sense. What I can do is keep this practical and only check whether the workflow is relevant before asking you to spend more time.",
+            "text_after": "That makes sense. What I can do is, uh, keep this practical and only check whether the workflow is relevant before asking you to spend more time.",
+            "filler_inserted": "uh"
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c03-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_fillers": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Do you handle inbound lead routing?",
+            "text_after": "Do you handle inbound lead routing?",
+            "filler_inserted": null
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c03-freeform-2",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "Once I know that, we can decide whether a short specialist callback is actually worth putting on the calendar.",
+            "text_after": "Once I know that, we can, you know, decide whether a short specialist callback is actually worth putting on the calendar.",
+            "filler_inserted": "you know"
+          }
+        ],
+        "tts_text": "That makes sense. What I can do is, uh, keep this practical and only check whether the workflow is relevant before asking you to spend more time. Do you handle inbound lead routing? Once I know that, we can, you know, decide whether a short specialist callback is actually worth putting on the calendar.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C04",
+      "case_title": "German mixed response protects company question and disclosure",
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 1,
+        "protected_segment_ids_unchanged": [
+          "c04-question",
+          "c04-disclosure"
+        ]
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "warm-german-professional",
+          "filler_frequency": "low",
+          "max_fillers_per_response": 1,
+          "allow_casual_fillers": true,
+          "allow_hesitation_sounds": true,
+          "pause_markers_allowed": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 3,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 2,
+        "filler_pool": [
+          "ähm",
+          "äh",
+          "hm",
+          "also"
+        ],
+        "filler_quota": 1,
+        "filler_count": 1,
+        "fillers_inserted": [
+          {
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "filler": "hm",
+            "language": "de",
+            "position": "mid-utterance"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "Das hilft mir, die Richtung besser einzuordnen. Ich moechte nur kurz klaeren, ob ein Rueckruf fuer Sie ueberhaupt sinnvoll waere."
+          },
+          {
+            "segment_id": "c04-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Haben Sie aktuell eine Zahnzusatzversicherung?"
+          },
+          {
+            "segment_id": "c04-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "Das hilft mir, die Richtung besser einzuordnen. Ich moechte nur kurz klaeren, ob ein Rueckruf fuer Sie ueberhaupt sinnvoll waere.",
+            "text_after": "Das hilft mir, die Richtung besser einzuordnen. Ich moechte, hm, nur kurz klaeren, ob ein Rueckruf fuer Sie ueberhaupt sinnvoll waere.",
+            "filler_inserted": "hm"
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c04-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_fillers": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "text_after": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "filler_inserted": null
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c04-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "eligible_for_fillers": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "text_after": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "filler_inserted": null
+          }
+        ],
+        "tts_text": "Das hilft mir, die Richtung besser einzuordnen. Ich moechte, hm, nur kurz klaeren, ob ein Rueckruf fuer Sie ueberhaupt sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C05",
+      "case_title": "German strict insurance boundary remains clean",
+      "campaign_id": "campaign-voice-012-de-insurance-strict",
+      "language": "de",
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": [
+          "c05-boundary",
+          "c05-question"
+        ]
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "strict-regulated-professional",
+          "filler_frequency": "low",
+          "max_fillers_per_response": 1,
+          "allow_casual_fillers": false,
+          "allow_hesitation_sounds": true,
+          "pause_markers_allowed": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 3,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 2,
+        "filler_pool": [
+          "ähm",
+          "äh",
+          "hm"
+        ],
+        "filler_quota": 0,
+        "filler_count": 0,
+        "fillers_inserted": [],
+        "input_segments": [
+          {
+            "segment_id": "c05-empathy",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind."
+          },
+          {
+            "segment_id": "c05-boundary",
+            "segment_type": "coverage_or_claim_boundary",
+            "source": "compliance",
+            "text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+          },
+          {
+            "segment_id": "c05-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c05-empathy",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+            "text_after": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+            "filler_inserted": null
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c05-boundary",
+            "segment_type": "coverage_or_claim_boundary",
+            "source": "compliance",
+            "eligible_for_fillers": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "text_after": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "filler_inserted": null
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c05-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_fillers": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "text_after": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "filler_inserted": null
+          }
+        ],
+        "tts_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C06",
+      "case_title": "German do-not-call and hangup lines remain clean",
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": [
+          "c06-do-not-call",
+          "c06-hangup"
+        ]
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "warm-german-professional",
+          "filler_frequency": "low",
+          "max_fillers_per_response": 1,
+          "allow_casual_fillers": true,
+          "allow_hesitation_sounds": true,
+          "pause_markers_allowed": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 2,
+        "eligible_segment_count": 0,
+        "protected_segment_count": 2,
+        "filler_pool": [
+          "ähm",
+          "äh",
+          "hm",
+          "also"
+        ],
+        "filler_quota": 0,
+        "filler_count": 0,
+        "fillers_inserted": [],
+        "input_segments": [
+          {
+            "segment_id": "c06-do-not-call",
+            "segment_type": "do_not_call",
+            "source": "policy_core",
+            "text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden."
+          },
+          {
+            "segment_id": "c06-hangup",
+            "segment_type": "hangup",
+            "source": "policy_core",
+            "text": "Auf Wiederhoeren."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c06-do-not-call",
+            "segment_type": "do_not_call",
+            "source": "policy_core",
+            "eligible_for_fillers": false,
+            "protected_reason": "protected_segment_type:do_not_call",
+            "text_before": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "text_after": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "filler_inserted": null
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c06-hangup",
+            "segment_type": "hangup",
+            "source": "policy_core",
+            "eligible_for_fillers": false,
+            "protected_reason": "protected_segment_type:hangup",
+            "text_before": "Auf Wiederhoeren.",
+            "text_after": "Auf Wiederhoeren.",
+            "filler_inserted": null
+          }
+        ],
+        "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C07",
+      "case_title": "Disabled campaign profile produces clean speech",
+      "campaign_id": "campaign-voice-012-en-clean-scripted",
+      "language": "en",
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": []
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "en",
+        "profile": {
+          "enabled": false,
+          "style": "clean-scripted",
+          "filler_frequency": "off",
+          "max_fillers_per_response": 0,
+          "allow_casual_fillers": false,
+          "allow_hesitation_sounds": false,
+          "pause_markers_allowed": false,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "filler_pool": [],
+        "filler_quota": 0,
+        "filler_count": 0,
+        "fillers_inserted": [],
+        "input_segments": [
+          {
+            "segment_id": "c07-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text": "The safest next step is to keep the appointment language exact and avoid adding conversational hesitation when this campaign asks for a clean script."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c07-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "eligible_for_fillers": true,
+            "protected_reason": null,
+            "text_before": "The safest next step is to keep the appointment language exact and avoid adding conversational hesitation when this campaign asks for a clean script.",
+            "text_after": "The safest next step is to keep the appointment language exact and avoid adding conversational hesitation when this campaign asks for a clean script.",
+            "filler_inserted": null
+          }
+        ],
+        "tts_text": "The safest next step is to keep the appointment language exact and avoid adding conversational hesitation when this campaign asks for a clean script.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-012-C08",
+      "case_title": "Appointment confirmation remains exact",
+      "campaign_id": "campaign-voice-012-en-clean-scripted",
+      "language": "en",
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": [
+          "c08-confirmation",
+          "c08-disclosure"
+        ]
+      },
+      "speech_naturalness": {
+        "speech_naturalness_id": "VOICE-012-segment-aware-naturalness",
+        "language": "en",
+        "profile": {
+          "enabled": false,
+          "style": "clean-scripted",
+          "filler_frequency": "off",
+          "max_fillers_per_response": 0,
+          "allow_casual_fillers": false,
+          "allow_hesitation_sounds": false,
+          "pause_markers_allowed": false,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "segment_count": 2,
+        "eligible_segment_count": 0,
+        "protected_segment_count": 2,
+        "filler_pool": [],
+        "filler_quota": 0,
+        "filler_count": 0,
+        "fillers_inserted": [],
+        "input_segments": [
+          {
+            "segment_id": "c08-confirmation",
+            "segment_type": "appointment_confirmation",
+            "source": "policy_core",
+            "text": "Confirmed. I will record Tuesday afternoon for the specialist callback."
+          },
+          {
+            "segment_id": "c08-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "text": "The appointment is not confirmed until the specialist accepts it."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c08-confirmation",
+            "segment_type": "appointment_confirmation",
+            "source": "policy_core",
+            "eligible_for_fillers": false,
+            "protected_reason": "protected_segment_type:appointment_confirmation",
+            "text_before": "Confirmed. I will record Tuesday afternoon for the specialist callback.",
+            "text_after": "Confirmed. I will record Tuesday afternoon for the specialist callback.",
+            "filler_inserted": null
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c08-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "eligible_for_fillers": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "The appointment is not confirmed until the specialist accepts it.",
+            "text_after": "The appointment is not confirmed until the specialist accepts it.",
+            "filler_inserted": null
+          }
+        ],
+        "tts_text": "Confirmed. I will record Tuesday afternoon for the specialist callback. The appointment is not confirmed until the specialist accepts it.",
+        "validation": {
+          "validator": "VOICE-012 segment protection and language check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "filler_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "notes": "Speech naturalness preserved protected segments and language-specific fillers."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "changes_allowed": "speech rhythm only; protected campaign, compliance, call-control, and safety text stay unchanged"
+        }
+      }
+    }
+  ]
+}

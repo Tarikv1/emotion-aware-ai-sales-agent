@@ -1,0 +1,46 @@
+{
+  "voice_milestone": "VOICE-016",
+  "experiment_scope": "Offline provider-specific rendering of VOICE-015 prosody cues for Cartesia and ElevenLabs. This checkpoint creates provider-ready text/request previews only; it does not call providers or generate audio.",
+  "source_artifact": "research/experiments/generated/VOICE-015-prosody-naturalness.json",
+  "providers": [
+    {
+      "provider_key": "cartesia",
+      "provider_name": "Cartesia Sonic 3",
+      "provider_rendering_mode": "ssml_like",
+      "model_id": "sonic-3",
+      "supported_cues": ["pause", "rate", "emphasis", "stretch"],
+      "unsupported_cues": ["pitch"],
+      "docs": [
+        "https://docs.cartesia.ai/build-with-cartesia/sonic-3/ssml-tags",
+        "https://docs.cartesia.ai/build-with-cartesia/sonic-3/volume-speed-emotion"
+      ]
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs Flash v2.5",
+      "provider_rendering_mode": "break_tags_and_request_settings",
+      "model_id": "eleven_flash_v2_5",
+      "supported_cues": ["pause", "rate", "stretch"],
+      "unsupported_cues": ["pitch", "emphasis"],
+      "docs": [
+        "https://elevenlabs.io/docs/product/prompting/pacing-and-emotion",
+        "https://help.elevenlabs.io/hc/en-us/articles/24352686926609-Do-pauses-and-SSML-phoneme-tags-work-with-the-API"
+      ],
+      "base_voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.0
+      }
+    }
+  ],
+  "rendering_policy": {
+    "safe_default": "offline-preview-only",
+    "render_per_segment": true,
+    "do_not_render_tags_in_protected_segments": true,
+    "do_not_send_debug_markdown": true,
+    "fallback_if_unsupported": "drop unsupported cue and record it",
+    "live_audio_checkpoint": "VOICE-017"
+  }
+}

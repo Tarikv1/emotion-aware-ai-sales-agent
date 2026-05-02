@@ -13,6 +13,7 @@ customer says something
   -> speech/text input
   -> realtime sales-agent policy core
   -> guarded response generation
+  -> optional segment-aware speech naturalness
   -> voice or text output
 ```
 
@@ -31,6 +32,8 @@ The response-generation layer decides:
 - whether the wording can be made more natural
 - whether the candidate wording stays inside guardrails
 - whether to use the candidate or fall back to the policy response
+
+The speech naturalness layer comes after this. It can add rare mid-utterance fillers to freeform voice output, but it must not alter the guarded response meaning or protected campaign/compliance segments. See `docs/product/VOICE_012_SPEECH_NATURALNESS_LAYER.md`.
 
 ## Why This Matters
 

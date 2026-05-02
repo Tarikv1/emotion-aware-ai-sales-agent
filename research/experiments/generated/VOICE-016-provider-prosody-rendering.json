@@ -1,0 +1,2513 @@
+{
+  "voice_milestone": "VOICE-016",
+  "experiment_scope": "Offline provider-specific rendering of VOICE-015 prosody cues for Cartesia and ElevenLabs. This checkpoint creates provider-ready text/request previews only; it does not call providers or generate audio.",
+  "case_file": "research\\experiments\\cases\\voice-016-provider-prosody-rendering.json",
+  "source_artifact": "research\\experiments\\generated\\VOICE-015-prosody-naturalness.json",
+  "providers": [
+    {
+      "provider_key": "cartesia",
+      "provider_name": "Cartesia Sonic 3",
+      "provider_rendering_mode": "ssml_like",
+      "model_id": "sonic-3",
+      "supported_cues": [
+        "pause",
+        "rate",
+        "emphasis",
+        "stretch"
+      ],
+      "unsupported_cues": [
+        "pitch"
+      ],
+      "docs": [
+        "https://docs.cartesia.ai/build-with-cartesia/sonic-3/ssml-tags",
+        "https://docs.cartesia.ai/build-with-cartesia/sonic-3/volume-speed-emotion"
+      ]
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs Flash v2.5",
+      "provider_rendering_mode": "break_tags_and_request_settings",
+      "model_id": "eleven_flash_v2_5",
+      "supported_cues": [
+        "pause",
+        "rate",
+        "stretch"
+      ],
+      "unsupported_cues": [
+        "pitch",
+        "emphasis"
+      ],
+      "docs": [
+        "https://elevenlabs.io/docs/product/prompting/pacing-and-emotion",
+        "https://help.elevenlabs.io/hc/en-us/articles/24352686926609-Do-pauses-and-SSML-phoneme-tags-work-with-the-API"
+      ],
+      "base_voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.0
+      }
+    }
+  ],
+  "rendering_policy": {
+    "safe_default": "offline-preview-only",
+    "render_per_segment": true,
+    "do_not_render_tags_in_protected_segments": true,
+    "do_not_send_debug_markdown": true,
+    "fallback_if_unsupported": "drop unsupported cue and record it",
+    "live_audio_checkpoint": "VOICE-017"
+  },
+  "summary": {
+    "case_count": 8,
+    "languages": {
+      "en": 4,
+      "de": 4
+    },
+    "provider_count": 2,
+    "providers": [
+      "cartesia",
+      "elevenlabs"
+    ],
+    "provider_mapped_cue_counts": {
+      "cartesia": {
+        "emphasis": 5,
+        "pause": 5,
+        "pitch": 0,
+        "rate": 5,
+        "stretch": 1
+      },
+      "elevenlabs": {
+        "emphasis": 0,
+        "pause": 5,
+        "pitch": 0,
+        "rate": 5,
+        "stretch": 1
+      }
+    },
+    "provider_unsupported_cue_counts": {
+      "cartesia": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 6,
+        "rate": 0,
+        "stretch": 0
+      },
+      "elevenlabs": {
+        "emphasis": 5,
+        "pause": 0,
+        "pitch": 6,
+        "rate": 0,
+        "stretch": 0
+      }
+    },
+    "protected_segment_provider_tag_count": 0,
+    "validation_passed": 8,
+    "validation_failed": 0,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false
+  },
+  "runtime_boundary": {
+    "offline_preview_only": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-015-C01",
+      "case_title": "English objection handling receives pause, pitch, rate, and emphasis cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+      "debug_text": "I understand your concern. The **important** thing is that we do not promise anything we cannot verify before looking at the workflow.",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "en",
+          "case_id": "VOICE-015-C01",
+          "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "rendered_text": "I understand your concern.<break time=\"187ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"0.960\"/>do not promise<speed ratio=\"1.000\"/> anything we cannot verify before looking at the workflow.",
+          "rendered_text_html_preview": "I understand your concern.&lt;break time=&quot;187ms&quot;/&gt; The &lt;volume ratio=&quot;1.080&quot;/&gt;important&lt;volume ratio=&quot;1.000&quot;/&gt; thing is that we &lt;speed ratio=&quot;0.960&quot;/&gt;do not promise&lt;speed ratio=&quot;1.000&quot;/&gt; anything we cannot verify before looking at the workflow.",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "rendered_text": "I understand your concern.<break time=\"187ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"0.960\"/>do not promise<speed ratio=\"1.000\"/> anything we cannot verify before looking at the workflow.",
+              "provider_tags_inserted": [
+                "<break time=\"187ms\"/>",
+                "<speed ratio=\"0.960\"/>",
+                "<speed ratio=\"1.000\"/>",
+                "<volume ratio=\"1.080\"/>",
+                "<volume ratio=\"1.000\"/>"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "after": "I understand your concern.",
+                  "mode": "thinking",
+                  "duration_ms": 187,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break",
+                  "rendered_duration_ms": 187
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "do not promise",
+                  "mode": "careful",
+                  "ratio": 0.96,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "speed_tag"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "important",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "rendered_as": "volume_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "I understand your concern",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.201,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "cartesia_direct_pitch_tag_not_used"
+                }
+              ]
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "after": "I understand your concern.",
+              "mode": "thinking",
+              "duration_ms": 187,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break",
+              "rendered_duration_ms": 187
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "do not promise",
+              "mode": "careful",
+              "ratio": 0.96,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "speed_tag"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "important",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "rendered_as": "volume_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "I understand your concern",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.201,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "cartesia_direct_pitch_tag_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 1,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 5,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "en",
+          "case_id": "VOICE-015-C01",
+          "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "rendered_text": "I understand your concern. <break time=\"0.187s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "rendered_text_html_preview": "I understand your concern. &lt;break time=&quot;0.187s&quot; /&gt; The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 0.96
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "rendered_text": "I understand your concern. <break time=\"0.187s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "provider_tags_inserted": [
+                "<break time=\"0.187s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "after": "I understand your concern.",
+                  "mode": "thinking",
+                  "duration_ms": 187,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "do not promise",
+                  "mode": "careful",
+                  "ratio": 0.96,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "request_voice_settings_speed"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "I understand your concern",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.201,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c01-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "important",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+                }
+              ]
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "after": "I understand your concern.",
+              "mode": "thinking",
+              "duration_ms": 187,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "do not promise",
+              "mode": "careful",
+              "ratio": 0.96,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "request_voice_settings_speed"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "I understand your concern",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.201,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "important",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 1,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C02",
+      "case_title": "German objection handling receives rare stretch plus bounded prosody cues",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "prosody_cue_count": 5,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 1
+      },
+      "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+      "debug_text": "Also..., ich verstehe den Punkt. **Wichtig** ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "de",
+          "case_id": "VOICE-015-C02",
+          "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "rendered_text": "Also<break time=\"314ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"0.926\"/>nichts verspreche<speed ratio=\"1.000\"/>, was ein Fachberater sauber pruefen sollte.",
+          "rendered_text_html_preview": "Also&lt;break time=&quot;314ms&quot;/&gt;, ich verstehe den Punkt. &lt;volume ratio=&quot;1.080&quot;/&gt;Wichtig&lt;volume ratio=&quot;1.000&quot;/&gt; ist, dass ich Ihnen &lt;speed ratio=&quot;0.926&quot;/&gt;nichts verspreche&lt;speed ratio=&quot;1.000&quot;/&gt;, was ein Fachberater sauber pruefen sollte.",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "rendered_text": "Also<break time=\"314ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"0.926\"/>nichts verspreche<speed ratio=\"1.000\"/>, was ein Fachberater sauber pruefen sollte.",
+              "provider_tags_inserted": [
+                "<break time=\"314ms\"/>",
+                "<speed ratio=\"0.926\"/>",
+                "<speed ratio=\"1.000\"/>",
+                "<volume ratio=\"1.080\"/>",
+                "<volume ratio=\"1.000\"/>"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "after": "Also",
+                  "mode": "thinking",
+                  "duration_ms": 314,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break",
+                  "rendered_duration_ms": 314
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "nichts verspreche",
+                  "mode": "careful",
+                  "ratio": 0.926,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "speed_tag"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "Wichtig",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "rendered_as": "volume_tag"
+                },
+                {
+                  "type": "stretch",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "Also",
+                  "variant": "Also...",
+                  "hold_ms": 187,
+                  "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                  "cue_id": "cue-05",
+                  "rendered_as": "merged_with_pause_break"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "ich verstehe den Punkt",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.179,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "cartesia_direct_pitch_tag_not_used"
+                }
+              ]
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "after": "Also",
+              "mode": "thinking",
+              "duration_ms": 314,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break",
+              "rendered_duration_ms": 314
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "nichts verspreche",
+              "mode": "careful",
+              "ratio": 0.926,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "speed_tag"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "Wichtig",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "rendered_as": "volume_tag"
+            },
+            {
+              "type": "stretch",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "Also",
+              "variant": "Also...",
+              "hold_ms": 187,
+              "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+              "cue_id": "cue-05",
+              "rendered_as": "merged_with_pause_break"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "ich verstehe den Punkt",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.179,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "cartesia_direct_pitch_tag_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 1,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 1
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 5,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "de",
+          "case_id": "VOICE-015-C02",
+          "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "rendered_text": "Also <break time=\"0.314s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "rendered_text_html_preview": "Also &lt;break time=&quot;0.314s&quot; /&gt;, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 0.926
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "rendered_text": "Also <break time=\"0.314s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "provider_tags_inserted": [
+                "<break time=\"0.314s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "after": "Also",
+                  "mode": "thinking",
+                  "duration_ms": 314,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "nichts verspreche",
+                  "mode": "careful",
+                  "ratio": 0.926,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "request_voice_settings_speed"
+                },
+                {
+                  "type": "stretch",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "Also",
+                  "variant": "Also...",
+                  "hold_ms": 187,
+                  "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                  "cue_id": "cue-05",
+                  "rendered_as": "covered_by_break_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "ich verstehe den Punkt",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.179,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c02-freeform",
+                  "segment_type": "freeform_objection_handling",
+                  "target": "Wichtig",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+                }
+              ]
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "after": "Also",
+              "mode": "thinking",
+              "duration_ms": 314,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "nichts verspreche",
+              "mode": "careful",
+              "ratio": 0.926,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "request_voice_settings_speed"
+            },
+            {
+              "type": "stretch",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "Also",
+              "variant": "Also...",
+              "hold_ms": 187,
+              "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+              "cue_id": "cue-05",
+              "rendered_as": "covered_by_break_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "ich verstehe den Punkt",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.179,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "target": "Wichtig",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 1
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 1,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C03",
+      "case_title": "English mixed response protects campaign question while freeform gets cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+      "debug_text": "That makes sense. I can keep this **practical** and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "en",
+          "case_id": "VOICE-015-C03",
+          "plain_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+          "rendered_text": "That makes sense.<break time=\"266ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"0.951\"/>before we schedule anything<speed ratio=\"1.000\"/>. Do you handle inbound lead routing?",
+          "rendered_text_html_preview": "That makes sense.&lt;break time=&quot;266ms&quot;/&gt; I can keep this &lt;volume ratio=&quot;1.080&quot;/&gt;practical&lt;volume ratio=&quot;1.000&quot;/&gt; and only check whether the workflow is relevant &lt;speed ratio=&quot;0.951&quot;/&gt;before we schedule anything&lt;speed ratio=&quot;1.000&quot;/&gt;. Do you handle inbound lead routing?",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+              "rendered_text": "That makes sense.<break time=\"266ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"0.951\"/>before we schedule anything<speed ratio=\"1.000\"/>.",
+              "provider_tags_inserted": [
+                "<break time=\"266ms\"/>",
+                "<speed ratio=\"0.951\"/>",
+                "<speed ratio=\"1.000\"/>",
+                "<volume ratio=\"1.080\"/>",
+                "<volume ratio=\"1.000\"/>"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "after": "That makes sense.",
+                  "mode": "transition",
+                  "duration_ms": 266,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break",
+                  "rendered_duration_ms": 266
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "before we schedule anything",
+                  "mode": "careful",
+                  "ratio": 0.951,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "speed_tag"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "practical",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "rendered_as": "volume_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "That makes sense",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.2,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "cartesia_direct_pitch_tag_not_used"
+                }
+              ]
+            },
+            {
+              "segment_id": "c03-question",
+              "segment_type": "campaign_qualification_question",
+              "protected_reason": "matches_campaign_qualification_question",
+              "eligible_for_prosody": false,
+              "plain_text": "Do you handle inbound lead routing?",
+              "rendered_text": "Do you handle inbound lead routing?",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "after": "That makes sense.",
+              "mode": "transition",
+              "duration_ms": 266,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break",
+              "rendered_duration_ms": 266
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "target": "before we schedule anything",
+              "mode": "careful",
+              "ratio": 0.951,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "speed_tag"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "target": "practical",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "rendered_as": "volume_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "target": "That makes sense",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.2,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "cartesia_direct_pitch_tag_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 1,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 5,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "en",
+          "case_id": "VOICE-015-C03",
+          "plain_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+          "rendered_text": "That makes sense. <break time=\"0.266s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+          "rendered_text_html_preview": "That makes sense. &lt;break time=&quot;0.266s&quot; /&gt; I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 0.951
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+              "rendered_text": "That makes sense. <break time=\"0.266s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+              "provider_tags_inserted": [
+                "<break time=\"0.266s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "after": "That makes sense.",
+                  "mode": "transition",
+                  "duration_ms": 266,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "before we schedule anything",
+                  "mode": "careful",
+                  "ratio": 0.951,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "request_voice_settings_speed"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "That makes sense",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.2,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c03-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "practical",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+                }
+              ]
+            },
+            {
+              "segment_id": "c03-question",
+              "segment_type": "campaign_qualification_question",
+              "protected_reason": "matches_campaign_qualification_question",
+              "eligible_for_prosody": false,
+              "plain_text": "Do you handle inbound lead routing?",
+              "rendered_text": "Do you handle inbound lead routing?",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "after": "That makes sense.",
+              "mode": "transition",
+              "duration_ms": 266,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "target": "before we schedule anything",
+              "mode": "careful",
+              "ratio": 0.951,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "request_voice_settings_speed"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "target": "That makes sense",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.2,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "target": "practical",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 1,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C04",
+      "case_title": "German mixed response protects qualification question and disclosure",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+      "debug_text": "Das hilft mir bei der Einordnung. Ich halte es **praktisch** und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "de",
+          "case_id": "VOICE-015-C04",
+          "plain_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "rendered_text": "Das hilft mir bei der Einordnung.<break time=\"284ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"0.950\"/>unverbindlicher Rueckruf<speed ratio=\"1.000\"/> fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "rendered_text_html_preview": "Das hilft mir bei der Einordnung.&lt;break time=&quot;284ms&quot;/&gt; Ich halte es &lt;volume ratio=&quot;1.080&quot;/&gt;praktisch&lt;volume ratio=&quot;1.000&quot;/&gt; und klaere nur, ob ein &lt;speed ratio=&quot;0.950&quot;/&gt;unverbindlicher Rueckruf&lt;speed ratio=&quot;1.000&quot;/&gt; fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+              "rendered_text": "Das hilft mir bei der Einordnung.<break time=\"284ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"0.950\"/>unverbindlicher Rueckruf<speed ratio=\"1.000\"/> fuer Sie sinnvoll waere.",
+              "provider_tags_inserted": [
+                "<break time=\"284ms\"/>",
+                "<speed ratio=\"0.950\"/>",
+                "<speed ratio=\"1.000\"/>",
+                "<volume ratio=\"1.080\"/>",
+                "<volume ratio=\"1.000\"/>"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "after": "Das hilft mir bei der Einordnung.",
+                  "mode": "transition",
+                  "duration_ms": 284,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break",
+                  "rendered_duration_ms": 284
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "unverbindlicher Rueckruf",
+                  "mode": "careful",
+                  "ratio": 0.95,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "speed_tag"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "praktisch",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "rendered_as": "volume_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "Das hilft mir",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.333,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "cartesia_direct_pitch_tag_not_used"
+                }
+              ]
+            },
+            {
+              "segment_id": "c04-question",
+              "segment_type": "campaign_qualification_question",
+              "protected_reason": "matches_campaign_qualification_question",
+              "eligible_for_prosody": false,
+              "plain_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "rendered_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            },
+            {
+              "segment_id": "c04-disclosure",
+              "segment_type": "required_disclosure",
+              "protected_reason": "matches_required_disclosure",
+              "eligible_for_prosody": false,
+              "plain_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "rendered_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "after": "Das hilft mir bei der Einordnung.",
+              "mode": "transition",
+              "duration_ms": 284,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break",
+              "rendered_duration_ms": 284
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "target": "unverbindlicher Rueckruf",
+              "mode": "careful",
+              "ratio": 0.95,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "speed_tag"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "target": "praktisch",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "rendered_as": "volume_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "target": "Das hilft mir",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.333,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "cartesia_direct_pitch_tag_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 1,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 5,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "de",
+          "case_id": "VOICE-015-C04",
+          "plain_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "rendered_text": "Das hilft mir bei der Einordnung. <break time=\"0.284s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "rendered_text_html_preview": "Das hilft mir bei der Einordnung. &lt;break time=&quot;0.284s&quot; /&gt; Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 0.95
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+              "rendered_text": "Das hilft mir bei der Einordnung. <break time=\"0.284s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+              "provider_tags_inserted": [
+                "<break time=\"0.284s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "after": "Das hilft mir bei der Einordnung.",
+                  "mode": "transition",
+                  "duration_ms": 284,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "unverbindlicher Rueckruf",
+                  "mode": "careful",
+                  "ratio": 0.95,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "request_voice_settings_speed"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "Das hilft mir",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.333,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c04-freeform",
+                  "segment_type": "freeform_transition",
+                  "target": "praktisch",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+                }
+              ]
+            },
+            {
+              "segment_id": "c04-question",
+              "segment_type": "campaign_qualification_question",
+              "protected_reason": "matches_campaign_qualification_question",
+              "eligible_for_prosody": false,
+              "plain_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "rendered_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            },
+            {
+              "segment_id": "c04-disclosure",
+              "segment_type": "required_disclosure",
+              "protected_reason": "matches_required_disclosure",
+              "eligible_for_prosody": false,
+              "plain_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "rendered_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "after": "Das hilft mir bei der Einordnung.",
+              "mode": "transition",
+              "duration_ms": 284,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "target": "unverbindlicher Rueckruf",
+              "mode": "careful",
+              "ratio": 0.95,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "request_voice_settings_speed"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "target": "Das hilft mir",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.333,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "target": "praktisch",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 1,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C05",
+      "case_title": "German do-not-call and hangup lines remain cue-free",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "prosody_cue_count": 0,
+      "prosody_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 0,
+        "rate": 0,
+        "stretch": 0
+      },
+      "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+      "debug_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "de",
+          "case_id": "VOICE-015-C05",
+          "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "rendered_text_html_preview": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c05-do-not-call",
+              "segment_type": "do_not_call",
+              "protected_reason": "protected_segment_type:do_not_call",
+              "eligible_for_prosody": false,
+              "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            },
+            {
+              "segment_id": "c05-hangup",
+              "segment_type": "hangup",
+              "protected_reason": "protected_segment_type:hangup",
+              "eligible_for_prosody": false,
+              "plain_text": "Auf Wiederhoeren.",
+              "rendered_text": "Auf Wiederhoeren.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [],
+          "unsupported_cues": [],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 0,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "de",
+          "case_id": "VOICE-015-C05",
+          "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "rendered_text_html_preview": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c05-do-not-call",
+              "segment_type": "do_not_call",
+              "protected_reason": "protected_segment_type:do_not_call",
+              "eligible_for_prosody": false,
+              "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            },
+            {
+              "segment_id": "c05-hangup",
+              "segment_type": "hangup",
+              "protected_reason": "protected_segment_type:hangup",
+              "eligible_for_prosody": false,
+              "plain_text": "Auf Wiederhoeren.",
+              "rendered_text": "Auf Wiederhoeren.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [],
+          "unsupported_cues": [],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 0,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C06",
+      "case_title": "Disabled campaign profile produces no prosody cues",
+      "campaign_id": "campaign-voice-015-en-clean-scripted",
+      "language": "en",
+      "prosody_cue_count": 0,
+      "prosody_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 0,
+        "rate": 0,
+        "stretch": 0
+      },
+      "plain_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+      "debug_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "en",
+          "case_id": "VOICE-015-C06",
+          "plain_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "rendered_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "rendered_text_html_preview": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c06-freeform",
+              "segment_type": "freeform_explanation",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "rendered_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [],
+          "unsupported_cues": [],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 0,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "en",
+          "case_id": "VOICE-015-C06",
+          "plain_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "rendered_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "rendered_text_html_preview": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c06-freeform",
+              "segment_type": "freeform_explanation",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "rendered_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [],
+          "unsupported_cues": [],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 0,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C07",
+      "case_title": "Strict German insurance allows only one empathy pitch cue before protected boundary",
+      "campaign_id": "campaign-voice-015-de-insurance-strict",
+      "language": "de",
+      "prosody_cue_count": 1,
+      "prosody_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 1,
+        "rate": 0,
+        "stretch": 0
+      },
+      "plain_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+      "debug_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "de",
+          "case_id": "VOICE-015-C07",
+          "plain_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "rendered_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "rendered_text_html_preview": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c07-empathy",
+              "segment_type": "freeform_empathy",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "rendered_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c07-empathy",
+                  "segment_type": "freeform_empathy",
+                  "target": "Ich verstehe",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.239,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "cartesia_direct_pitch_tag_not_used"
+                }
+              ]
+            },
+            {
+              "segment_id": "c07-boundary",
+              "segment_type": "coverage_or_claim_boundary",
+              "protected_reason": "matches_required_disclosure",
+              "eligible_for_prosody": false,
+              "plain_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "rendered_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            },
+            {
+              "segment_id": "c07-question",
+              "segment_type": "campaign_qualification_question",
+              "protected_reason": "matches_campaign_qualification_question",
+              "eligible_for_prosody": false,
+              "plain_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "rendered_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c07-empathy",
+              "segment_type": "freeform_empathy",
+              "target": "Ich verstehe",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.239,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "cartesia_direct_pitch_tag_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 0,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "de",
+          "case_id": "VOICE-015-C07",
+          "plain_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "rendered_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "rendered_text_html_preview": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c07-empathy",
+              "segment_type": "freeform_empathy",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "rendered_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c07-empathy",
+                  "segment_type": "freeform_empathy",
+                  "target": "Ich verstehe",
+                  "direction": "warm-soft",
+                  "relative_pitch_semitones": -0.239,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                }
+              ]
+            },
+            {
+              "segment_id": "c07-boundary",
+              "segment_type": "coverage_or_claim_boundary",
+              "protected_reason": "matches_required_disclosure",
+              "eligible_for_prosody": false,
+              "plain_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "rendered_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            },
+            {
+              "segment_id": "c07-question",
+              "segment_type": "campaign_qualification_question",
+              "protected_reason": "matches_campaign_qualification_question",
+              "eligible_for_prosody": false,
+              "plain_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "rendered_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "provider_tags_inserted": [],
+              "mapped_cues": [],
+              "unsupported_cues": []
+            }
+          ],
+          "mapped_cues": [],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c07-empathy",
+              "segment_type": "freeform_empathy",
+              "target": "Ich verstehe",
+              "direction": "warm-soft",
+              "relative_pitch_semitones": -0.239,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 0,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C08",
+      "case_title": "English longer explanation receives professional-human rhythm cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+      "debug_text": "Here is the **realistic** way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+      "provider_variants": [
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "provider_rendering_mode": "ssml_like",
+          "model_id": "sonic-3",
+          "language": "en",
+          "case_id": "VOICE-015-C08",
+          "plain_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "rendered_text": "Here is the <volume ratio=\"1.080\"/>realistic<volume ratio=\"1.000\"/> way to look at it.<break time=\"350ms\"/> We can keep the <speed ratio=\"1.045\"/>first step short<speed ratio=\"1.000\"/>, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "rendered_text_html_preview": "Here is the &lt;volume ratio=&quot;1.080&quot;/&gt;realistic&lt;volume ratio=&quot;1.000&quot;/&gt; way to look at it.&lt;break time=&quot;350ms&quot;/&gt; We can keep the &lt;speed ratio=&quot;1.045&quot;/&gt;first step short&lt;speed ratio=&quot;1.000&quot;/&gt;, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "voice_settings": {},
+          "segment_renderings": [
+            {
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "rendered_text": "Here is the <volume ratio=\"1.080\"/>realistic<volume ratio=\"1.000\"/> way to look at it.<break time=\"350ms\"/> We can keep the <speed ratio=\"1.045\"/>first step short<speed ratio=\"1.000\"/>, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "provider_tags_inserted": [
+                "<break time=\"350ms\"/>",
+                "<speed ratio=\"1.045\"/>",
+                "<speed ratio=\"1.000\"/>",
+                "<volume ratio=\"1.080\"/>",
+                "<volume ratio=\"1.000\"/>"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "after": "Here is the realistic way to look at it.",
+                  "mode": "transition",
+                  "duration_ms": 350,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break",
+                  "rendered_duration_ms": 350
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "target": "first step short",
+                  "mode": "quick",
+                  "ratio": 1.045,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "speed_tag"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "target": "realistic",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "rendered_as": "volume_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "target": "Here is the realistic way",
+                  "direction": "steady-low",
+                  "relative_pitch_semitones": -0.445,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "cartesia_direct_pitch_tag_not_used"
+                }
+              ]
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "after": "Here is the realistic way to look at it.",
+              "mode": "transition",
+              "duration_ms": 350,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break",
+              "rendered_duration_ms": 350
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "target": "first step short",
+              "mode": "quick",
+              "ratio": 1.045,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "speed_tag"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "target": "realistic",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "rendered_as": "volume_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "target": "Here is the realistic way",
+              "direction": "steady-low",
+              "relative_pitch_semitones": -0.445,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "cartesia_direct_pitch_tag_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 1,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 5,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        },
+        {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "en",
+          "case_id": "VOICE-015-C08",
+          "plain_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "rendered_text": "Here is the realistic way to look at it. <break time=\"0.35s\" /> We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "rendered_text_html_preview": "Here is the realistic way to look at it. &lt;break time=&quot;0.35s&quot; /&gt; We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.045
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "rendered_text": "Here is the realistic way to look at it. <break time=\"0.35s\" /> We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "provider_tags_inserted": [
+                "<break time=\"0.35s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "after": "Here is the realistic way to look at it.",
+                  "mode": "transition",
+                  "duration_ms": 350,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                },
+                {
+                  "type": "rate",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "target": "first step short",
+                  "mode": "quick",
+                  "ratio": 1.045,
+                  "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                  "cue_id": "cue-03",
+                  "rendered_as": "request_voice_settings_speed"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "target": "Here is the realistic way",
+                  "direction": "steady-low",
+                  "relative_pitch_semitones": -0.445,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                },
+                {
+                  "type": "emphasis",
+                  "segment_index": 0,
+                  "segment_id": "c08-freeform",
+                  "segment_type": "freeform_explanation",
+                  "target": "realistic",
+                  "strength": "medium",
+                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                  "cue_id": "cue-04",
+                  "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+                }
+              ]
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "after": "Here is the realistic way to look at it.",
+              "mode": "transition",
+              "duration_ms": 350,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            },
+            {
+              "type": "rate",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "target": "first step short",
+              "mode": "quick",
+              "ratio": 1.045,
+              "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+              "cue_id": "cue-03",
+              "rendered_as": "request_voice_settings_speed"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "target": "Here is the realistic way",
+              "direction": "steady-low",
+              "relative_pitch_semitones": -0.445,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            },
+            {
+              "type": "emphasis",
+              "segment_index": 0,
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "target": "realistic",
+              "strength": "medium",
+              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+              "cue_id": "cue-04",
+              "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 1,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 1,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "markdown_in_rendered_text": false,
+            "protected_segment_tags": [],
+            "protected_segment_changes": []
+          }
+        }
+      }
+    }
+  ]
+}

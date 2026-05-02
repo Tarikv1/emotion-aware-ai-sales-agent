@@ -149,6 +149,7 @@ After the live run:
 
 - listen to all four generated WAV files
 - record German and English ratings
+- compare plain guarded text against VOICE-012 naturalized text
 - compare WebSocket first-audio timing with the `500 ms` target
 - decide whether Cartesia remains the first TTS candidate
 - test ElevenLabs only if Cartesia quality or latency is not convincing

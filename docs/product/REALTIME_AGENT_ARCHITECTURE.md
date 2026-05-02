@@ -194,6 +194,29 @@ This is why the product needs a deterministic output-contract layer even when th
 
 See `docs/product/CALL_TERMINATION_POLICY.md` for the dedicated hang-up, transfer, bridge, and schedule-and-end rules.
 
+## Speech Naturalness Boundary
+
+The voice path can make approved text sound more human, but only after policy and guardrail decisions are already made.
+
+```text
+guarded final response
+  -> segment-aware speech naturalness
+  -> TTS adapter
+```
+
+The speech naturalness layer is not allowed to change meaning, strategy, call-control, or compliance content. It may add rare mid-utterance fillers only to eligible freeform speech.
+
+Protected segments stay exact:
+
+- campaign qualification questions
+- company scripts
+- required disclosures
+- legal, medical, coverage, or claim boundaries
+- do-not-call and hang-up lines
+- appointment confirmations
+
+See `docs/product/VOICE_012_SPEECH_NATURALNESS_LAYER.md`.
+
 ## Runtime Layers
 
 ### Layer 1: Real-Time Conversation Core

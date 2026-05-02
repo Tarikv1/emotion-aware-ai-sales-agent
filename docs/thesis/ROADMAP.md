@@ -158,6 +158,11 @@ Current integrated prototype evidence:
 - response generation remains guarded behind campaign claims, forbidden claims, disclosures, and fallback rules
 - ASR/TTS provider-readiness gate in `VOICE-007`, with cloud providers blocked until key/privacy/retention gates are documented
 - local no-key TTS smoke test in `VOICE-008`, with validated fallback when local voices are unavailable
+- segment-aware speech naturalness in `VOICE-012`, with protected campaign questions, disclosures, hang-up lines, and appointment confirmations kept exact
+- segment-aware prosody naturalness in `VOICE-015`, with bounded professional-human pause, rate, emphasis, pitch, and rare stretch cues outside protected text
+- provider-specific prosody rendering in `VOICE-016`, with offline Cartesia and ElevenLabs previews before live audio synthesis
+- guarded live-capable A/B audio harness in `VOICE-017`, with dry-run default and plain-vs-prosody provider inputs
+- first live VOICE-017 ElevenLabs A/B listening result, where the human listener strongly preferred prosody-shaped speech over plain speech in the two-case run
 
 Out of scope:
 
@@ -266,13 +271,21 @@ Immediate product artifact:
 - VOICE-009 vendor-specific TTS provider research
 - VOICE-010 Cartesia no-key-safe TTS smoke harness
 - VOICE-011 Cartesia WebSocket smoke harness with longer German/English dry-run samples
+- VOICE-012 speech naturalness layer for controlled mid-utterance fillers and protected scripted text
+- VOICE-013 ElevenLabs no-key-safe streaming TTS smoke harness
+- VOICE-014 provider listening comparison for Cartesia vs ElevenLabs
+- VOICE-015 provider-neutral prosody naturalness layer for professional-human rhythm and pitch cues
+- VOICE-016 provider-specific prosody rendering previews for Cartesia and ElevenLabs
+- VOICE-017 guarded live-capable A/B audio harness for plain vs prosody-shaped text
+- VOICE-017 first live ElevenLabs A/B result with prosody strongly preferred in the two-case human listening review
 
 Next voice checkpoint:
 
-- live Cartesia WebSocket latency and quality smoke test after local key and voice ID setup
-- environment-only API key and voice ID handling
-- synthetic prompts only
-- no customer audio upload
-- explicit timeout guardrails
-- text-only fallback preserved
-- listening review for longer German and English audio quality
+- expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence
+- compare original guarded text against filler-only and prosody-shaped text if the thesis needs a more detailed ablation
+- rate whether rare fillers, pause/rate/pitch cues, and bounded stretches improve human-likeness without reducing trust across more cases
+- optionally test Cartesia against the same VOICE-017 cases to see whether richer direct tags can match or beat the ElevenLabs result
+- verify campaign qualification questions and compliance statements remain clean in audio
+- keep environment-only API key and voice ID handling
+- use synthetic prompts only
+- upload no customer audio

@@ -16,3 +16,6 @@ __pycache__/
 research/experiments/generated/VOICE-008-*.wav
 research/experiments/generated/VOICE-010-*.wav
 research/experiments/generated/VOICE-011-*.wav
+research/experiments/generated/VOICE-013-*.mp3
+research/experiments/generated/VOICE-017-*.wav
+research/experiments/generated/VOICE-017-*.mp3

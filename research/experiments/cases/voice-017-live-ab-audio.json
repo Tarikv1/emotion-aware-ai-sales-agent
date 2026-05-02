@@ -1,0 +1,104 @@
+{
+  "voice_milestone": "VOICE-017",
+  "experiment_scope": "Guarded live-capable A/B audio harness comparing plain text against VOICE-016 prosody-shaped text. Default mode is dry-run and makes no provider calls.",
+  "source_artifact": "research/experiments/generated/VOICE-016-provider-prosody-rendering.json",
+  "selected_source_case_ids": [
+    "VOICE-015-C01",
+    "VOICE-015-C02",
+    "VOICE-015-C03",
+    "VOICE-015-C04"
+  ],
+  "providers": {
+    "elevenlabs": {
+      "provider_key": "elevenlabs",
+      "provider_id": "elevenlabs-stream",
+      "provider_name": "ElevenLabs",
+      "endpoint_type": "tts-http-stream",
+      "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+      "model_id": "eleven_flash_v2_5",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+      "language_voice_id_env_vars": {
+        "de": "ELEVENLABS_VOICE_ID_DE",
+        "en": "ELEVENLABS_VOICE_ID_EN"
+      },
+      "default_output_format": "mp3_44100_128",
+      "audio_extension": "mp3",
+      "enable_logging": false,
+      "base_voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.0
+      }
+    },
+    "cartesia": {
+      "provider_key": "cartesia",
+      "provider_id": "cartesia-sonic-3-websocket",
+      "provider_name": "Cartesia",
+      "endpoint_type": "tts-websocket",
+      "endpoint_url": "wss://api.cartesia.ai/tts/websocket",
+      "api_version": "2026-03-01",
+      "model_id": "sonic-3",
+      "api_key_env_var": "CARTESIA_API_KEY",
+      "default_voice_id_env_var": "CARTESIA_VOICE_ID",
+      "language_voice_id_env_vars": {
+        "de": "CARTESIA_VOICE_ID_DE",
+        "en": "CARTESIA_VOICE_ID_EN"
+      },
+      "default_output_format": {
+        "container": "raw",
+        "encoding": "pcm_s16le",
+        "sample_rate": 16000
+      },
+      "audio_extension": "wav",
+      "add_timestamps": true
+    }
+  },
+  "ab_variants": [
+    {
+      "variant_kind": "plain",
+      "label": "plain guarded text",
+      "input_source": "VOICE-016 plain_text"
+    },
+    {
+      "variant_kind": "prosody",
+      "label": "VOICE-016 provider-rendered prosody text",
+      "input_source": "VOICE-016 provider variant rendered_text"
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_provider_choice": true,
+    "live_both_providers_requires_flag": "--allow-both-live",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys or voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "naturalness",
+      "clarity",
+      "language pronunciation",
+      "sales-call pacing",
+      "low muffling or artifacts",
+      "emotional appropriateness without overacting",
+      "trustworthiness",
+      "plain vs prosody preference"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  }
+}

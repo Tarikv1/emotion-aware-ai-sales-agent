@@ -31,6 +31,13 @@ Only the customer-facing response text changes language.
 
 RESP-001 guarded response generation must preserve the same response language. It can improve wording, but it cannot replace a German policy response with English stock phrasing or vice versa.
 
+VOICE-012 speech naturalness follows the same rule. It may add rare mid-utterance fillers, but the filler inventory must match the campaign language:
+
+- German examples: `ähm`, `äh`, `hm`, `also`
+- English examples: `um`, `uh`, `hm`, `you know`, `like`
+
+Scripted questions, disclosures, compliance statements, hang-up lines, and appointment confirmations stay exact in both languages.
+
 ## Covered Realtime Scenarios
 
 LANG-001 currently covers paired German/English cases for:

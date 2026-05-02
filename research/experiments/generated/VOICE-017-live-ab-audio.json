@@ -1,0 +1,471 @@
+{
+  "voice_milestone": "VOICE-017",
+  "experiment_scope": "Guarded live-capable A/B audio harness comparing plain text against VOICE-016 prosody-shaped text. Default mode is dry-run and makes no provider calls.",
+  "case_file": "research\\experiments\\cases\\voice-017-live-ab-audio.json",
+  "source_artifact": "research\\experiments\\generated\\VOICE-016-provider-prosody-rendering.json",
+  "selected_source_case_ids": [
+    "VOICE-015-C01",
+    "VOICE-015-C02"
+  ],
+  "selected_provider_arg": "elevenlabs",
+  "providers": {
+    "elevenlabs": {
+      "provider_key": "elevenlabs",
+      "provider_id": "elevenlabs-stream",
+      "provider_name": "ElevenLabs",
+      "endpoint_type": "tts-http-stream",
+      "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+      "model_id": "eleven_flash_v2_5",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+      "language_voice_id_env_vars": {
+        "de": "ELEVENLABS_VOICE_ID_DE",
+        "en": "ELEVENLABS_VOICE_ID_EN"
+      },
+      "default_output_format": "mp3_44100_128",
+      "audio_extension": "mp3",
+      "enable_logging": false,
+      "base_voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.0
+      }
+    }
+  },
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_provider_choice": true,
+    "live_both_providers_requires_flag": "--allow-both-live",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys or voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "naturalness",
+      "clarity",
+      "language pronunciation",
+      "sales-call pacing",
+      "low muffling or artifacts",
+      "emotional appropriateness without overacting",
+      "trustworthiness",
+      "plain vs prosody preference"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  },
+  "summary": {
+    "case_count": 2,
+    "languages": {
+      "en": 1,
+      "de": 1
+    },
+    "provider_count": 1,
+    "providers": [
+      "elevenlabs"
+    ],
+    "ab_variant_count": 4,
+    "plain_variant_count": 2,
+    "prosody_variant_count": 2,
+    "live_call_requested": true,
+    "api_calls_made": 4,
+    "audio_files_created": 4,
+    "fallback_count": 0,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "timeout_seconds": 8.0,
+    "human_ratings_recorded": true,
+    "quality_claim_allowed": true,
+    "quality_claim_scope": "Informal human listening preference for this two-case ElevenLabs live A/B run only.",
+    "max_time_to_first_audio_ms": 1064.49,
+    "max_total_provider_latency_ms": 1224.288
+  },
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "provider_calls_made": true,
+    "requires_api_key": true,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "quality_claim_allowed_without_human_rating": false,
+    "human_listening_review_recorded": true
+  },
+  "human_listening_review": {
+    "review_recorded": true,
+    "review_type": "informal-human-listening-review",
+    "listener_count": 1,
+    "listener_role": "project owner / primary evaluator",
+    "provider": "elevenlabs",
+    "case_count": 2,
+    "preferred_variant": "prosody",
+    "preference_strength": "strong",
+    "listener_feedback_summary": "The listener reported that the prosody variants sounded much better than the plain variants.",
+    "quality_claim_allowed": true,
+    "claim_scope": "The project may claim that prosody was strongly preferred in this 2-case ElevenLabs live A/B run. This should not be generalized to all providers, voices, scripts, or customers yet."
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-017-C01",
+      "source_case_id": "VOICE-015-C01",
+      "case_title": "English objection handling receives pause, pitch, rate, and emphasis cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain",
+          "language": "en",
+          "source_case_id": "VOICE-015-C01",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
+          "api_key_present": true,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": true,
+          "synthetic_prompt_only": true,
+          "voice_clone_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "tts_input_chars": 130,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "VOICE-017-C01-en-elevenlabs-plain.mp3",
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-017-C01-en-elevenlabs-plain.mp3",
+          "audio_byte_size": 117909,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 1064.49,
+          "total_provider_latency_ms": 1224.288,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "prosody",
+          "language": "en",
+          "source_case_id": "VOICE-015-C01",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
+          "api_key_present": true,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": true,
+          "synthetic_prompt_only": true,
+          "voice_clone_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_text": "I understand your concern. <break time=\"0.187s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "tts_input_chars": 154,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 0.96
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I understand your concern. <break time=\"0.187s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 0.96
+              }
+            }
+          },
+          "audio_filename": "VOICE-017-C01-en-elevenlabs-prosody.mp3",
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-017-C01-en-elevenlabs-prosody.mp3",
+          "audio_byte_size": 130030,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 222.273,
+          "total_provider_latency_ms": 385.448,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_rating_required": true,
+        "human_ratings_recorded": true,
+        "quality_claim_allowed": true,
+        "preferred_variant": "prosody",
+        "listener_count": 1,
+        "review_type": "informal-human-listening-review",
+        "claim_scope": "Prosody was preferred for this case in the live ElevenLabs A/B run.",
+        "criteria": [
+          "naturalness",
+          "clarity",
+          "language pronunciation",
+          "sales-call pacing",
+          "low muffling or artifacts",
+          "emotional appropriateness without overacting",
+          "trustworthiness",
+          "plain vs prosody preference"
+        ]
+      }
+    },
+    {
+      "case_id": "VOICE-017-C02",
+      "source_case_id": "VOICE-015-C02",
+      "case_title": "German objection handling receives rare stretch plus bounded prosody cues",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+      "prosody_cue_count": 5,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 1
+      },
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain",
+          "language": "de",
+          "source_case_id": "VOICE-015-C02",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_DE",
+          "api_key_present": true,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": true,
+          "synthetic_prompt_only": true,
+          "voice_clone_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "tts_input_chars": 119,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_DE>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "VOICE-017-C02-de-elevenlabs-plain.mp3",
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-017-C02-de-elevenlabs-plain.mp3",
+          "audio_byte_size": 131284,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 224.958,
+          "total_provider_latency_ms": 424.449,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "prosody",
+          "language": "de",
+          "source_case_id": "VOICE-015-C02",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_DE",
+          "api_key_present": true,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": true,
+          "synthetic_prompt_only": true,
+          "voice_clone_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_text": "Also <break time=\"0.314s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "tts_input_chars": 143,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 0.926
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_DE>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Also <break time=\"0.314s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 0.926
+              }
+            }
+          },
+          "audio_filename": "VOICE-017-C02-de-elevenlabs-prosody.mp3",
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-017-C02-de-elevenlabs-prosody.mp3",
+          "audio_byte_size": 133791,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 250.08,
+          "total_provider_latency_ms": 424.065,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_rating_required": true,
+        "human_ratings_recorded": true,
+        "quality_claim_allowed": true,
+        "preferred_variant": "prosody",
+        "listener_count": 1,
+        "review_type": "informal-human-listening-review",
+        "claim_scope": "Prosody was preferred for this case in the live ElevenLabs A/B run.",
+        "criteria": [
+          "naturalness",
+          "clarity",
+          "language pronunciation",
+          "sales-call pacing",
+          "low muffling or artifacts",
+          "emotional appropriateness without overacting",
+          "trustworthiness",
+          "plain vs prosody preference"
+        ]
+      }
+    }
+  ]
+}

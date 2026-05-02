@@ -1,0 +1,312 @@
+{
+  "voice_milestone": "VOICE-012",
+  "experiment_scope": "Segment-aware speech naturalness for bilingual sales-agent TTS text. The layer may add rare mid-utterance fillers only to eligible freeform speech, never to scripted campaign questions or compliance-sensitive text.",
+  "campaigns": [
+    {
+      "campaign_id": "campaign-voice-012-en-b2b-software",
+      "client_name": "Synthetic B2B Software Client",
+      "product_name": "Lead routing workflow software",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hi, I am calling about lead-routing workflows. Do you have a minute?",
+      "qualification_questions": [
+        "Do you handle inbound lead routing?",
+        "What is the hardest part of that process?",
+        "If there is fit, would a specialist callback be useful?"
+      ],
+      "required_disclosures": [
+        "Integration details require specialist review."
+      ],
+      "speech_naturalness": {
+        "enabled": true,
+        "style": "human-professional-with-rare-casual-fillers",
+        "filler_frequency": "medium",
+        "max_fillers_per_response": 2,
+        "allow_casual_fillers": true,
+        "allow_hesitation_sounds": true,
+        "pause_markers_allowed": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "client_name": "Synthetic German Dental Insurance Call Center",
+      "product_name": "Dental insurance callback qualification",
+      "product_category": "insurance-dental",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Zahnzusatz-Information an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Haben Sie aktuell eine Zahnzusatzversicherung?",
+        "Ist Ihnen eher Beitrag, Leistung oder ein unverbindlicher Rueckruf wichtig?",
+        "Duerfen wir einen kurzen Rueckruf durch einen Fachberater vormerken?"
+      ],
+      "required_disclosures": [
+        "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+      ],
+      "speech_naturalness": {
+        "enabled": true,
+        "style": "warm-german-professional",
+        "filler_frequency": "low",
+        "max_fillers_per_response": 1,
+        "allow_casual_fillers": true,
+        "allow_hesitation_sounds": true,
+        "pause_markers_allowed": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-012-de-insurance-strict",
+      "client_name": "Synthetic German Serious-Illness Insurance Call Center",
+      "product_name": "Serious illness insurance callback qualification",
+      "product_category": "insurance-serious-illness",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Versicherungsinformation an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+      ],
+      "required_disclosures": [
+        "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+      ],
+      "speech_naturalness": {
+        "enabled": true,
+        "style": "strict-regulated-professional",
+        "filler_frequency": "low",
+        "max_fillers_per_response": 1,
+        "allow_casual_fillers": false,
+        "allow_hesitation_sounds": true,
+        "pause_markers_allowed": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-012-en-clean-scripted",
+      "client_name": "Synthetic Clean Script Client",
+      "product_name": "Strict scripted appointment flow",
+      "product_category": "service-appointment",
+      "customer_type": "b2c",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hello, I am calling about your service appointment. Do you have a minute?",
+      "qualification_questions": [
+        "Would Tuesday afternoon or Wednesday morning work better?"
+      ],
+      "required_disclosures": [
+        "The appointment is not confirmed until the specialist accepts it."
+      ],
+      "speech_naturalness": {
+        "enabled": false,
+        "style": "clean-scripted",
+        "filler_frequency": "off",
+        "max_fillers_per_response": 0,
+        "allow_casual_fillers": false,
+        "allow_hesitation_sounds": false,
+        "pause_markers_allowed": false
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "VOICE-012-C01",
+      "case_title": "English freeform objection handling receives one mid-utterance filler",
+      "campaign_id": "campaign-voice-012-en-b2b-software",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c01-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "I understand the concern. The important thing is that I do not want to promise something that depends on workflow details we have not checked yet."
+        }
+      ],
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 1,
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-012-C02",
+      "case_title": "German freeform objection handling receives one mid-utterance filler",
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c02-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "Ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was von Details abhaengt, die ein Fachberater sauber pruefen sollte."
+        }
+      ],
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 1,
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-012-C03",
+      "case_title": "English mixed response protects campaign qualification question",
+      "campaign_id": "campaign-voice-012-en-b2b-software",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c03-freeform-1",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "That makes sense. What I can do is keep this practical and only check whether the workflow is relevant before asking you to spend more time."
+        },
+        {
+          "segment_id": "c03-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Do you handle inbound lead routing?"
+        },
+        {
+          "segment_id": "c03-freeform-2",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "Once I know that, we can decide whether a short specialist callback is actually worth putting on the calendar."
+        }
+      ],
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 2,
+        "protected_segment_ids_unchanged": ["c03-question"]
+      }
+    },
+    {
+      "case_id": "VOICE-012-C04",
+      "case_title": "German mixed response protects company question and disclosure",
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c04-freeform",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "Das hilft mir, die Richtung besser einzuordnen. Ich moechte nur kurz klaeren, ob ein Rueckruf fuer Sie ueberhaupt sinnvoll waere."
+        },
+        {
+          "segment_id": "c04-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Haben Sie aktuell eine Zahnzusatzversicherung?"
+        },
+        {
+          "segment_id": "c04-disclosure",
+          "segment_type": "required_disclosure",
+          "source": "campaign_config",
+          "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+        }
+      ],
+      "expected": {
+        "min_fillers": 1,
+        "max_fillers": 1,
+        "protected_segment_ids_unchanged": ["c04-question", "c04-disclosure"]
+      }
+    },
+    {
+      "case_id": "VOICE-012-C05",
+      "case_title": "German strict insurance boundary remains clean",
+      "campaign_id": "campaign-voice-012-de-insurance-strict",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c05-empathy",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind."
+        },
+        {
+          "segment_id": "c05-boundary",
+          "segment_type": "coverage_or_claim_boundary",
+          "source": "compliance",
+          "text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+        },
+        {
+          "segment_id": "c05-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+        }
+      ],
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": ["c05-boundary", "c05-question"]
+      }
+    },
+    {
+      "case_id": "VOICE-012-C06",
+      "case_title": "German do-not-call and hangup lines remain clean",
+      "campaign_id": "campaign-voice-012-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c06-do-not-call",
+          "segment_type": "do_not_call",
+          "source": "policy_core",
+          "text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden."
+        },
+        {
+          "segment_id": "c06-hangup",
+          "segment_type": "hangup",
+          "source": "policy_core",
+          "text": "Auf Wiederhoeren."
+        }
+      ],
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": ["c06-do-not-call", "c06-hangup"]
+      }
+    },
+    {
+      "case_id": "VOICE-012-C07",
+      "case_title": "Disabled campaign profile produces clean speech",
+      "campaign_id": "campaign-voice-012-en-clean-scripted",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c07-freeform",
+          "segment_type": "freeform_explanation",
+          "source": "agent_freeform",
+          "text": "The safest next step is to keep the appointment language exact and avoid adding conversational hesitation when this campaign asks for a clean script."
+        }
+      ],
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-012-C08",
+      "case_title": "Appointment confirmation remains exact",
+      "campaign_id": "campaign-voice-012-en-clean-scripted",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c08-confirmation",
+          "segment_type": "appointment_confirmation",
+          "source": "policy_core",
+          "text": "Confirmed. I will record Tuesday afternoon for the specialist callback."
+        },
+        {
+          "segment_id": "c08-disclosure",
+          "segment_type": "required_disclosure",
+          "source": "campaign_config",
+          "text": "The appointment is not confirmed until the specialist accepts it."
+        }
+      ],
+      "expected": {
+        "min_fillers": 0,
+        "max_fillers": 0,
+        "protected_segment_ids_unchanged": ["c08-confirmation", "c08-disclosure"]
+      }
+    }
+  ]
+}
