@@ -15,3 +15,4 @@ __pycache__/
 # Machine-local generated voice smoke artifacts.
 research/experiments/generated/VOICE-008-*.wav
 research/experiments/generated/VOICE-010-*.wav
+research/experiments/generated/VOICE-011-*.wav

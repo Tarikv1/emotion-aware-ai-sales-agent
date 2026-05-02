@@ -1,0 +1,128 @@
+{
+  "voice_milestone": "VOICE-011",
+  "experiment_scope": "Guarded Cartesia Sonic 3 WebSocket streaming smoke test with longer German and English synthetic quality samples; default mode makes no provider call.",
+  "provider": {
+    "provider_id": "cartesia-sonic-3-websocket",
+    "provider_name": "Cartesia",
+    "endpoint_type": "tts-websocket",
+    "endpoint_url": "wss://api.cartesia.ai/tts/websocket",
+    "api_version": "2026-03-01",
+    "model_id": "sonic-3",
+    "api_key_env_var": "CARTESIA_API_KEY",
+    "default_voice_id_env_var": "CARTESIA_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "de": "CARTESIA_VOICE_ID_DE",
+      "en": "CARTESIA_VOICE_ID_EN"
+    },
+    "api_key_storage_rule": "environment-only-not-repo",
+    "api_key_value_logged": false,
+    "voice_id_value_logged": false,
+    "voice_clone_allowed": false,
+    "custom_voice_allowed": false,
+    "default_output_format": {
+      "container": "raw",
+      "encoding": "pcm_s16le",
+      "sample_rate": 16000
+    },
+    "add_timestamps": true,
+    "save": false
+  },
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_api_key_env": "CARTESIA_API_KEY",
+    "live_call_accepts_language_voice_id_envs": ["CARTESIA_VOICE_ID_DE", "CARTESIA_VOICE_ID_EN"],
+    "live_call_accepts_default_voice_id_env": "CARTESIA_VOICE_ID",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys or voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "naturalness",
+      "clarity",
+      "language pronunciation",
+      "sales-call pacing",
+      "muffled_or_artifacted_audio",
+      "emotional appropriateness without overacting"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-011-C01",
+      "case_title": "German longer objection-handling sample",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Nur wenn Sie garantieren können, dass die Geschwindigkeit bei mir stabil ist.",
+      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+      "transcript_chunks": [
+        "Ich verstehe den Punkt sehr gut. ",
+        "Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. ",
+        "Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. ",
+        "Wenn es nicht passt, müssen Sie nichts ändern."
+      ],
+      "audio_filename": "VOICE-011-C01-de-cartesia-websocket.wav"
+    },
+    {
+      "case_id": "VOICE-011-C02",
+      "case_title": "German longer bridge-and-handoff sample",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "product-detail-check",
+      "transcript": "Welche Konditionen wären das genau und wer ruft mich danach an?",
+      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+      "transcript_chunks": [
+        "Das ist eine gute Frage. ",
+        "Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. ",
+        "Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. ",
+        "Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe."
+      ],
+      "audio_filename": "VOICE-011-C02-de-cartesia-websocket.wav"
+    },
+    {
+      "case_id": "VOICE-011-C03",
+      "case_title": "English longer B2B objection-handling sample",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "Can you guarantee the performance will be better?",
+      "tts_quality_script": "I would not want to overpromise that. Performance depends on the current workflow, the integrations, and how your team handles follow-up today. What I can do is keep this practical: if lead routing is a real pain point, a solutions specialist can review the workflow with you and tell you where there may be a fit, without asking you to commit on this call.",
+      "transcript_chunks": [
+        "I would not want to overpromise that. ",
+        "Performance depends on the current workflow, the integrations, and how your team handles follow-up today. ",
+        "What I can do is keep this practical: if lead routing is a real pain point, a solutions specialist can review the workflow with you and tell you where there may be a fit, ",
+        "without asking you to commit on this call."
+      ],
+      "audio_filename": "VOICE-011-C03-en-cartesia-websocket.wav"
+    },
+    {
+      "case_id": "VOICE-011-C04",
+      "case_title": "English longer scheduling-and-close sample",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "scheduling",
+      "transcript": "Thursday afternoon could work, but I only have a short window.",
+      "tts_quality_script": "That works. I will keep it focused and make sure the specialist knows you only have a short window. The goal of the callback is simple: confirm whether the workflow is relevant, answer the integration questions we should not guess on this call, and let you decide whether it is worth a deeper conversation. If Thursday afternoon changes, you can decline or reschedule.",
+      "transcript_chunks": [
+        "That works. ",
+        "I will keep it focused and make sure the specialist knows you only have a short window. ",
+        "The goal of the callback is simple: confirm whether the workflow is relevant, answer the integration questions we should not guess on this call, and let you decide whether it is worth a deeper conversation. ",
+        "If Thursday afternoon changes, you can decline or reschedule."
+      ],
+      "audio_filename": "VOICE-011-C04-en-cartesia-websocket.wav"
+    }
+  ]
+}

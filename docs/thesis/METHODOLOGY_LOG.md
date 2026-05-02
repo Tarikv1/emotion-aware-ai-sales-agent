@@ -959,3 +959,43 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether longer German samples still sound muffled
   - whether a different German Cartesia voice performs better
   - whether ElevenLabs gives stronger German quality or latency for the same sales-agent text
+
+### 2026-05-02 - VOICE-011 Cartesia WebSocket dry-run harness
+
+- Objective: prepare a WebSocket-based Cartesia TTS test for longer German and English samples without requiring a live provider key yet
+- Action taken:
+  - added a Cartesia Sonic 3 WebSocket smoke runner
+  - added a validator that checks dry-run and simulated missing-key live fallback paths
+  - added four longer synthetic quality samples, two German and two English
+  - added language-specific voice ID support through `CARTESIA_VOICE_ID_DE` and `CARTESIA_VOICE_ID_EN`, with `CARTESIA_VOICE_ID` as a fallback
+  - generated dry-run JSON and Markdown artifacts
+  - ignored generated VOICE-011 WAV files in Git
+- Data used:
+  - existing `PROD-005` bilingual runtime campaigns
+  - official Cartesia WebSocket, realtime TTS quickstart, endpoint-comparison, and Sonic 3 documentation
+- Output created:
+  - `docs/product/VOICE_011_CARTESIA_WEBSOCKET_SMOKE_TEST.md`
+  - `research/experiments/VOICE-011-cartesia-websocket-smoke.md`
+  - `research/experiments/cases/voice-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke-report.md`
+  - `scripts/run_voice_011_cartesia_websocket_smoke.py`
+  - `scripts/validate_voice_011_cartesia_websocket_smoke.py`
+- What was learned:
+  - audio-quality comparison cannot be done honestly without generated audio and human listening review
+  - the WebSocket harness can still be validated safely before a live key is available
+  - language-specific voice IDs are important enough to be first-class environment gates
+  - provider timing and provider quality should be recorded separately
+- Error or risk recorded:
+  - WebSocket integration creates a new secret-handling surface, so request previews redact `X-API-Key` and voice IDs
+  - generated WAV files remain machine-local and ignored
+  - longer German scripts need real German characters for pronunciation testing, even though most project files stay ASCII by default
+  - dry-run reports must not claim naturalness, clarity, or muffling results
+- Why it matters for the thesis:
+  - it preserves the low-latency voice-agent research path while keeping provider integration safe and reproducible
+  - it documents that timing metrics can be automated, but perceptual voice quality requires human evaluation
+- Open questions:
+  - whether Cartesia WebSocket first-audio timing meets the `500 ms` target
+  - whether longer German audio still sounds muffled
+  - whether separate German and English voice IDs are enough, or multiple voices per language should be compared
+  - whether ElevenLabs should be tested next if Cartesia WebSocket quality or latency is weak

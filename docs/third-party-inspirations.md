@@ -232,10 +232,13 @@ one reusable sales-agent core
 - Where it affected the Emotion Aware project:
   - `docs/product/VOICE_009_TTS_PROVIDER_RESEARCH.md`
   - `docs/product/VOICE_010_CARTESIA_TTS_SMOKE_TEST.md`
+  - `docs/product/VOICE_011_CARTESIA_WEBSOCKET_SMOKE_TEST.md`
   - `scripts/evaluate_voice_009_tts_provider_research.py`
   - `scripts/run_voice_010_cartesia_tts_smoke.py`
+  - `scripts/run_voice_011_cartesia_websocket_smoke.py`
   - `scripts/validate_voice_009_tts_provider_research.py`
   - `scripts/validate_voice_010_cartesia_tts_smoke.py`
+  - `scripts/validate_voice_011_cartesia_websocket_smoke.py`
   - `research/experiments/cases/voice-009-tts-provider-research.json`
 - Product/runtime boundary:
   - VOICE-009 made no API calls, uploaded no audio, and stored no API key.

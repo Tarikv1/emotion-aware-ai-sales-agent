@@ -1,0 +1,690 @@
+{
+  "voice_milestone": "VOICE-011",
+  "experiment_scope": "Guarded Cartesia Sonic 3 WebSocket streaming smoke test with longer German and English synthetic quality samples; default mode makes no provider call.",
+  "case_file": "research\\experiments\\cases\\voice-011-cartesia-websocket-smoke.json",
+  "runtime_case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "provider": {
+    "provider_id": "cartesia-sonic-3-websocket",
+    "provider_name": "Cartesia",
+    "endpoint_type": "tts-websocket",
+    "endpoint_url": "wss://api.cartesia.ai/tts/websocket",
+    "api_version": "2026-03-01",
+    "model_id": "sonic-3",
+    "api_key_env_var": "CARTESIA_API_KEY",
+    "default_voice_id_env_var": "CARTESIA_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "de": "CARTESIA_VOICE_ID_DE",
+      "en": "CARTESIA_VOICE_ID_EN"
+    },
+    "api_key_storage_rule": "environment-only-not-repo",
+    "api_key_value_logged": false,
+    "voice_id_value_logged": false,
+    "voice_clone_allowed": false,
+    "custom_voice_allowed": false,
+    "default_output_format": {
+      "container": "raw",
+      "encoding": "pcm_s16le",
+      "sample_rate": 16000
+    },
+    "add_timestamps": true,
+    "save": false
+  },
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_api_key_env": "CARTESIA_API_KEY",
+    "live_call_accepts_language_voice_id_envs": [
+      "CARTESIA_VOICE_ID_DE",
+      "CARTESIA_VOICE_ID_EN"
+    ],
+    "live_call_accepts_default_voice_id_env": "CARTESIA_VOICE_ID",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys or voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "naturalness",
+      "clarity",
+      "language pronunciation",
+      "sales-call pacing",
+      "muffled_or_artifacted_audio",
+      "emotional appropriateness without overacting"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  },
+  "summary": {
+    "case_count": 4,
+    "languages": {
+      "de": 2,
+      "en": 2
+    },
+    "live_call_requested": false,
+    "websocket_connections_attempted": 0,
+    "api_calls_made": 0,
+    "audio_files_created": 0,
+    "fallback_count": 4,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "response_language_matches": 4,
+    "quality_script_languages_match": 4,
+    "audio_quality_human_rated": false,
+    "max_connection_established_ms": null,
+    "max_time_to_first_audio_chunk_ms": null,
+    "max_total_stream_latency_ms": 0
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-011-C01",
+      "case_title": "German longer objection-handling sample",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "campaign": {
+          "product_name": "Internet and mobile plan review",
+          "product_category": "telecom",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Nur wenn Sie garantieren können, dass die Geschwindigkeit bei mir stabil ist.",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "de",
+          "response_language": "de",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [
+            "human-handoff-prep"
+          ],
+          "live_path_subagents": [],
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "bridge_response": null,
+          "agent_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "cartesia_websocket": {
+        "voice_milestone": "VOICE-011",
+        "provider_id": "cartesia-sonic-3-websocket",
+        "endpoint_type": "tts-websocket",
+        "model_id": "sonic-3",
+        "language": "de",
+        "live_call_requested": false,
+        "api_key_env_var": "CARTESIA_API_KEY",
+        "selected_voice_id_env_var": "CARTESIA_VOICE_ID_DE",
+        "api_key_present": false,
+        "voice_id_present": false,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": false,
+        "synthetic_prompt_only": true,
+        "voice_clone_used": false,
+        "custom_voice_used": false,
+        "timeout_seconds": 8.0,
+        "request_preview": {
+          "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
+          "headers": {
+            "X-API-Key": "<redacted>",
+            "Cartesia-Version": "2026-03-01"
+          },
+          "model_id": "sonic-3",
+          "voice": {
+            "mode": "id",
+            "id": "<redacted-env:CARTESIA_VOICE_ID_DE>"
+          },
+          "language": "de",
+          "output_format": {
+            "container": "raw",
+            "encoding": "pcm_s16le",
+            "sample_rate": 16000
+          },
+          "add_timestamps": true,
+          "context_id": "<generated-per-case>",
+          "streaming_input_chunks": 4
+        },
+        "transcript_chars": 346,
+        "transcript_chunks": [
+          "Ich verstehe den Punkt sehr gut. ",
+          "Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. ",
+          "Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. ",
+          "Wenn es nicht passt, müssen Sie nichts ändern."
+        ],
+        "output_format": {
+          "container": "raw",
+          "encoding": "pcm_s16le",
+          "sample_rate": 16000
+        },
+        "fallback_provider": "text-only-tts-packet",
+        "websocket_connection_attempted": false,
+        "api_call_made": false,
+        "fallback_used": true,
+        "fallback_reason": "dry-run-mode",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "connection_established_ms": null,
+        "time_to_first_audio_chunk_ms": null,
+        "total_stream_latency_ms": 0,
+        "audio_chunk_count": 0,
+        "non_audio_event_count": 0,
+        "timestamp_event_count": 0,
+        "done_received": false,
+        "provider_error": null
+      },
+      "quality_review": {
+        "human_rating_required": true,
+        "rating_recorded": false,
+        "rating_scale": "1-5",
+        "criteria": [
+          "naturalness",
+          "clarity",
+          "language pronunciation",
+          "sales-call pacing",
+          "muffled_or_artifacted_audio",
+          "emotional appropriateness without overacting"
+        ],
+        "notes": "Dry-run and automated validation cannot judge audio quality. Rate after live WAV files exist."
+      }
+    },
+    {
+      "case_id": "VOICE-011-C02",
+      "case_title": "German longer bridge-and-handoff sample",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2c-energy",
+        "campaign": {
+          "product_name": "Household energy tariff review",
+          "product_category": "energy",
+          "customer_type": "b2c",
+          "language": "de"
+        },
+        "stage": "product-detail-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Welche Konditionen wären das genau und wer ruft mich danach an?",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "de",
+          "response_language": "de",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [],
+          "live_path_subagents": [],
+          "detected_emotion": "neutral",
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "bridge_response": null,
+          "agent_response": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "cartesia_websocket": {
+        "voice_milestone": "VOICE-011",
+        "provider_id": "cartesia-sonic-3-websocket",
+        "endpoint_type": "tts-websocket",
+        "model_id": "sonic-3",
+        "language": "de",
+        "live_call_requested": false,
+        "api_key_env_var": "CARTESIA_API_KEY",
+        "selected_voice_id_env_var": "CARTESIA_VOICE_ID_DE",
+        "api_key_present": false,
+        "voice_id_present": false,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": false,
+        "synthetic_prompt_only": true,
+        "voice_clone_used": false,
+        "custom_voice_used": false,
+        "timeout_seconds": 8.0,
+        "request_preview": {
+          "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
+          "headers": {
+            "X-API-Key": "<redacted>",
+            "Cartesia-Version": "2026-03-01"
+          },
+          "model_id": "sonic-3",
+          "voice": {
+            "mode": "id",
+            "id": "<redacted-env:CARTESIA_VOICE_ID_DE>"
+          },
+          "language": "de",
+          "output_format": {
+            "container": "raw",
+            "encoding": "pcm_s16le",
+            "sample_rate": 16000
+          },
+          "add_timestamps": true,
+          "context_id": "<generated-per-case>",
+          "streaming_input_chunks": 4
+        },
+        "transcript_chars": 363,
+        "transcript_chunks": [
+          "Das ist eine gute Frage. ",
+          "Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. ",
+          "Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. ",
+          "Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe."
+        ],
+        "output_format": {
+          "container": "raw",
+          "encoding": "pcm_s16le",
+          "sample_rate": 16000
+        },
+        "fallback_provider": "text-only-tts-packet",
+        "websocket_connection_attempted": false,
+        "api_call_made": false,
+        "fallback_used": true,
+        "fallback_reason": "dry-run-mode",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "connection_established_ms": null,
+        "time_to_first_audio_chunk_ms": null,
+        "total_stream_latency_ms": 0,
+        "audio_chunk_count": 0,
+        "non_audio_event_count": 0,
+        "timestamp_event_count": 0,
+        "done_received": false,
+        "provider_error": null
+      },
+      "quality_review": {
+        "human_rating_required": true,
+        "rating_recorded": false,
+        "rating_scale": "1-5",
+        "criteria": [
+          "naturalness",
+          "clarity",
+          "language pronunciation",
+          "sales-call pacing",
+          "muffled_or_artifacted_audio",
+          "emotional appropriateness without overacting"
+        ],
+        "notes": "Dry-run and automated validation cannot judge audio quality. Rate after live WAV files exist."
+      }
+    },
+    {
+      "case_id": "VOICE-011-C03",
+      "case_title": "English longer B2B objection-handling sample",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "tts_quality_script": "I would not want to overpromise that. Performance depends on the current workflow, the integrations, and how your team handles follow-up today. What I can do is keep this practical: if lead routing is a real pain point, a solutions specialist can review the workflow with you and tell you where there may be a fit, without asking you to commit on this call.",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign": {
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
+        },
+        "stage": "relevance-check",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Can you guarantee the performance will be better?",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "en",
+          "response_language": "en",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [
+            "human-handoff-prep"
+          ],
+          "live_path_subagents": [],
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "bridge_response": null,
+          "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "cartesia_websocket": {
+        "voice_milestone": "VOICE-011",
+        "provider_id": "cartesia-sonic-3-websocket",
+        "endpoint_type": "tts-websocket",
+        "model_id": "sonic-3",
+        "language": "en",
+        "live_call_requested": false,
+        "api_key_env_var": "CARTESIA_API_KEY",
+        "selected_voice_id_env_var": "CARTESIA_VOICE_ID_EN",
+        "api_key_present": false,
+        "voice_id_present": false,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": false,
+        "synthetic_prompt_only": true,
+        "voice_clone_used": false,
+        "custom_voice_used": false,
+        "timeout_seconds": 8.0,
+        "request_preview": {
+          "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
+          "headers": {
+            "X-API-Key": "<redacted>",
+            "Cartesia-Version": "2026-03-01"
+          },
+          "model_id": "sonic-3",
+          "voice": {
+            "mode": "id",
+            "id": "<redacted-env:CARTESIA_VOICE_ID_EN>"
+          },
+          "language": "en",
+          "output_format": {
+            "container": "raw",
+            "encoding": "pcm_s16le",
+            "sample_rate": 16000
+          },
+          "add_timestamps": true,
+          "context_id": "<generated-per-case>",
+          "streaming_input_chunks": 4
+        },
+        "transcript_chars": 357,
+        "transcript_chunks": [
+          "I would not want to overpromise that. ",
+          "Performance depends on the current workflow, the integrations, and how your team handles follow-up today. ",
+          "What I can do is keep this practical: if lead routing is a real pain point, a solutions specialist can review the workflow with you and tell you where there may be a fit, ",
+          "without asking you to commit on this call."
+        ],
+        "output_format": {
+          "container": "raw",
+          "encoding": "pcm_s16le",
+          "sample_rate": 16000
+        },
+        "fallback_provider": "text-only-tts-packet",
+        "websocket_connection_attempted": false,
+        "api_call_made": false,
+        "fallback_used": true,
+        "fallback_reason": "dry-run-mode",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "connection_established_ms": null,
+        "time_to_first_audio_chunk_ms": null,
+        "total_stream_latency_ms": 0,
+        "audio_chunk_count": 0,
+        "non_audio_event_count": 0,
+        "timestamp_event_count": 0,
+        "done_received": false,
+        "provider_error": null
+      },
+      "quality_review": {
+        "human_rating_required": true,
+        "rating_recorded": false,
+        "rating_scale": "1-5",
+        "criteria": [
+          "naturalness",
+          "clarity",
+          "language pronunciation",
+          "sales-call pacing",
+          "muffled_or_artifacted_audio",
+          "emotional appropriateness without overacting"
+        ],
+        "notes": "Dry-run and automated validation cannot judge audio quality. Rate after live WAV files exist."
+      }
+    },
+    {
+      "case_id": "VOICE-011-C04",
+      "case_title": "English longer scheduling-and-close sample",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "tts_quality_script": "That works. I will keep it focused and make sure the specialist knows you only have a short window. The goal of the callback is simple: confirm whether the workflow is relevant, answer the integration questions we should not guess on this call, and let you decide whether it is worth a deeper conversation. If Thursday afternoon changes, you can decline or reschedule.",
+      "voice_packet": {
+        "voice_run_id": "VOICE-001-dry-run",
+        "voice_milestone": "VOICE-001",
+        "provider": "dry-run",
+        "mode": "metadata-only",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "campaign": {
+          "product_name": "Lead routing workflow software",
+          "product_category": "software-b2b",
+          "customer_type": "b2b",
+          "language": "en"
+        },
+        "stage": "scheduling",
+        "input_type": "speech-final",
+        "silence_count": null,
+        "transcript": "Thursday afternoon could work, but I only have a short window.",
+        "decision": {
+          "case_id": "REALTIME-CLI-TURN",
+          "campaign_language": "en",
+          "response_language": "en",
+          "response_mode": "fast-response",
+          "first_response_latency_budget_ms": 700,
+          "first_response_latency_bucket": "under-1s",
+          "background_completion_budget_ms": null,
+          "background_modules": [],
+          "live_path_subagents": [],
+          "detected_emotion": "neutral",
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "bridge_response": null,
+          "agent_response": "Thanks. May I ask one quick clarifying question?",
+          "rationale": "Deterministic runtime policy selected the fastest safe response path.",
+          "first_response_latency_ms": 0,
+          "first_response_latency_observed_bucket": "under-1s"
+        },
+        "tts_text": "Thanks. May I ask one quick clarifying question?",
+        "voice": {
+          "name": "Neutral Synthetic Test Voice",
+          "style": "neutral-synthetic-test",
+          "consent_boundary": "synthetic-test-voice-only",
+          "cloned_voice": false
+        },
+        "latency_contract": {
+          "first_response_target_ms": 2000,
+          "tts_start_target_ms": 500,
+          "source_decision_latency_ms": 0,
+          "source_decision_latency_bucket": "under-1s"
+        },
+        "audio_output_path": null,
+        "trace": {
+          "source": "scripts/realtime_turn_cli.py",
+          "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+          "synthetic_output": true,
+          "requires_api_key": false
+        }
+      },
+      "cartesia_websocket": {
+        "voice_milestone": "VOICE-011",
+        "provider_id": "cartesia-sonic-3-websocket",
+        "endpoint_type": "tts-websocket",
+        "model_id": "sonic-3",
+        "language": "en",
+        "live_call_requested": false,
+        "api_key_env_var": "CARTESIA_API_KEY",
+        "selected_voice_id_env_var": "CARTESIA_VOICE_ID_EN",
+        "api_key_present": false,
+        "voice_id_present": false,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": false,
+        "synthetic_prompt_only": true,
+        "voice_clone_used": false,
+        "custom_voice_used": false,
+        "timeout_seconds": 8.0,
+        "request_preview": {
+          "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
+          "headers": {
+            "X-API-Key": "<redacted>",
+            "Cartesia-Version": "2026-03-01"
+          },
+          "model_id": "sonic-3",
+          "voice": {
+            "mode": "id",
+            "id": "<redacted-env:CARTESIA_VOICE_ID_EN>"
+          },
+          "language": "en",
+          "output_format": {
+            "container": "raw",
+            "encoding": "pcm_s16le",
+            "sample_rate": 16000
+          },
+          "add_timestamps": true,
+          "context_id": "<generated-per-case>",
+          "streaming_input_chunks": 4
+        },
+        "transcript_chars": 368,
+        "transcript_chunks": [
+          "That works. ",
+          "I will keep it focused and make sure the specialist knows you only have a short window. ",
+          "The goal of the callback is simple: confirm whether the workflow is relevant, answer the integration questions we should not guess on this call, and let you decide whether it is worth a deeper conversation. ",
+          "If Thursday afternoon changes, you can decline or reschedule."
+        ],
+        "output_format": {
+          "container": "raw",
+          "encoding": "pcm_s16le",
+          "sample_rate": 16000
+        },
+        "fallback_provider": "text-only-tts-packet",
+        "websocket_connection_attempted": false,
+        "api_call_made": false,
+        "fallback_used": true,
+        "fallback_reason": "dry-run-mode",
+        "audio_file_created": false,
+        "audio_output_path": null,
+        "audio_byte_size": 0,
+        "connection_established_ms": null,
+        "time_to_first_audio_chunk_ms": null,
+        "total_stream_latency_ms": 0,
+        "audio_chunk_count": 0,
+        "non_audio_event_count": 0,
+        "timestamp_event_count": 0,
+        "done_received": false,
+        "provider_error": null
+      },
+      "quality_review": {
+        "human_rating_required": true,
+        "rating_recorded": false,
+        "rating_scale": "1-5",
+        "criteria": [
+          "naturalness",
+          "clarity",
+          "language pronunciation",
+          "sales-call pacing",
+          "muffled_or_artifacted_audio",
+          "emotional appropriateness without overacting"
+        ],
+        "notes": "Dry-run and automated validation cannot judge audio quality. Rate after live WAV files exist."
+      }
+    }
+  ]
+}

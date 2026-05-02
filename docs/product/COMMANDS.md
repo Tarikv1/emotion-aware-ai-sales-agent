@@ -166,6 +166,18 @@ Validate Cartesia smoke behavior without live provider calls:
 python scripts\validate_voice_010_cartesia_tts_smoke.py
 ```
 
+Run the VOICE-011 Cartesia WebSocket smoke test in no-key fallback mode:
+
+```powershell
+python scripts\run_voice_011_cartesia_websocket_smoke.py --live --force-key-missing
+```
+
+Validate VOICE-011 Cartesia WebSocket smoke behavior without live provider calls:
+
+```powershell
+python scripts\validate_voice_011_cartesia_websocket_smoke.py
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
@@ -200,6 +212,12 @@ Live Cartesia TTS smoke testing requires `CARTESIA_API_KEY`, `CARTESIA_VOICE_ID`
 
 ```powershell
 python scripts\run_voice_010_cartesia_tts_smoke.py --live
+```
+
+Live VOICE-011 Cartesia WebSocket smoke testing requires `CARTESIA_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\run_voice_011_cartesia_websocket_smoke.py --live
 ```
 
 ## Safety Rules
