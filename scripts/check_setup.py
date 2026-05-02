@@ -1,0 +1,262 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import platform
+import sys
+from pathlib import Path
+from typing import Any
+
+
+PROJECT_NAME = "emotion-aware-ai-sales-agent"
+ROOT = Path(__file__).resolve().parents[1]
+MIN_PYTHON = (3, 10)
+
+REQUIRED_DIRS = [
+    ("dir.scripts", "scripts", "Script directory"),
+    ("dir.docs_product", "docs/product", "Product documentation"),
+    ("dir.docs_data", "docs/data", "Data documentation"),
+    ("dir.research_experiments", "research/experiments", "Experiment notes"),
+    ("dir.research_experiments_cases", "research/experiments/cases", "Experiment case files"),
+    ("dir.research_experiments_generated", "research/experiments/generated", "Generated experiment artifacts"),
+    ("dir.packages_prompts", "packages/prompts", "Prompt package"),
+    ("dir.data_public", "data/public", "Public data folder"),
+    ("dir.data_processed", "data/processed", "Processed data folder"),
+]
+
+OPTIONAL_DIRS = [
+    ("dir.data_private_restricted", "data/private-restricted", "Restricted data folder"),
+]
+
+REQUIRED_FILES = [
+    ("file.readme", "README.md", "Project README"),
+    ("file.program", "program.md", "Research program"),
+    ("file.docs_third_party_inspirations", "docs/third-party-inspirations.md", "Third-party inspiration and attribution notes"),
+    ("file.docs_product_commands", "docs/product/COMMANDS.md", "Product command map"),
+    ("file.docs_product_product_brief", "docs/product/PRODUCT_BRIEF.md", "Product brief"),
+    ("file.docs_product_client_mvp_workflow", "docs/product/CLIENT_MVP_WORKFLOW.md", "Client MVP workflow"),
+    ("file.docs_product_realtime_agent_architecture", "docs/product/REALTIME_AGENT_ARCHITECTURE.md", "Realtime architecture"),
+    ("file.docs_product_realtime_turn_cli", "docs/product/REALTIME_TURN_CLI.md", "Realtime CLI docs"),
+    ("file.docs_product_voice_007_provider_readiness", "docs/product/VOICE_007_PROVIDER_READINESS_GATE.md", "Voice provider readiness gate"),
+    ("file.docs_data_data_usage_policy", "docs/data/DATA_USAGE_POLICY.md", "Data usage policy"),
+    ("file.scripts_realtime_turn_cli", "scripts/realtime_turn_cli.py", "Realtime turn CLI"),
+    ("file.scripts_start_guarded_local_server", "scripts/start_guarded_local_server.py", "Guarded local server launcher"),
+    ("file.scripts_product_agent_output_contract", "scripts/product_agent_output_contract.py", "Product output contract"),
+    ("file.scripts_validate_product_agent_output_contract", "scripts/validate_product_agent_output_contract.py", "Output contract validator"),
+    ("file.scripts_evaluate_voice_provider_readiness", "scripts/evaluate_voice_provider_readiness.py", "Voice provider readiness evaluator"),
+    ("file.scripts_run_product_simulation", "scripts/run_product_simulation.py", "Product simulation runner"),
+    ("file.scripts_run_rule_baseline", "scripts/run_rule_baseline.py", "Rule baseline runner"),
+    ("file.scripts_read_relevant", "scripts/read_relevant.py", "Product-local relevant reader"),
+    ("file.scripts_validate_read_relevant", "scripts/validate_read_relevant.py", "Relevant reader validator"),
+]
+
+OPTIONAL_ENV_VARS = [
+    ("OPENAI_API_KEY", "Optional LLM product-agent runs"),
+    ("CARTESIA_API_KEY", "Optional live Cartesia TTS smoke tests"),
+    ("CARTESIA_VOICE_ID", "Optional live Cartesia TTS smoke tests"),
+]
+
+
+def build_check(check_id: str, status: str, severity: str, message: str, path: str | None = None) -> dict[str, Any]:
+    check: dict[str, Any] = {
+        "id": check_id,
+        "status": status,
+        "severity": severity,
+        "message": message,
+    }
+    if path is not None:
+        check["path"] = path
+    return check
+
+
+def check_python_version() -> dict[str, Any]:
+    current = sys.version_info
+    current_text = f"{current.major}.{current.minor}.{current.micro}"
+    minimum_text = ".".join(str(part) for part in MIN_PYTHON)
+    if (current.major, current.minor) >= MIN_PYTHON:
+        return build_check(
+            "python.version",
+            "pass",
+            "required",
+            f"Python {current_text} meets minimum {minimum_text}.",
+        )
+    return build_check(
+        "python.version",
+        "fail",
+        "required",
+        f"Python {current_text} is below minimum {minimum_text}.",
+    )
+
+
+def check_directories(root: Path) -> list[dict[str, Any]]:
+    checks = []
+    for check_id, relative_path, label in REQUIRED_DIRS:
+        path = root / relative_path
+        if path.is_dir():
+            checks.append(build_check(check_id, "pass", "required", f"{label} exists.", relative_path))
+        else:
+            checks.append(build_check(check_id, "fail", "required", f"{label} is missing.", relative_path))
+    for check_id, relative_path, label in OPTIONAL_DIRS:
+        path = root / relative_path
+        if path.is_dir():
+            checks.append(build_check(check_id, "pass", "optional", f"{label} exists.", relative_path))
+        else:
+            checks.append(
+                build_check(
+                    check_id,
+                    "pass",
+                    "optional",
+                    f"{label} is absent. Default setup does not require restricted private data.",
+                    relative_path,
+                )
+            )
+    return checks
+
+
+def check_files(root: Path) -> list[dict[str, Any]]:
+    checks = []
+    for check_id, relative_path, label in REQUIRED_FILES:
+        path = root / relative_path
+        if path.is_file():
+            checks.append(build_check(check_id, "pass", "required", f"{label} exists.", relative_path))
+        else:
+            checks.append(build_check(check_id, "fail", "required", f"{label} is missing.", relative_path))
+    return checks
+
+
+def check_write_path(root: Path) -> dict[str, Any]:
+    relative_path = "research/experiments/generated"
+    write_dir = root / relative_path
+    if not write_dir.is_dir():
+        return build_check(
+            "write.research_experiments_generated",
+            "fail",
+            "required",
+            "Generated experiment artifact directory is missing.",
+            relative_path,
+        )
+    if not os.access(write_dir, os.W_OK):
+        return build_check(
+            "write.research_experiments_generated",
+            "fail",
+            "required",
+            "Generated experiment artifact directory does not appear writable.",
+            relative_path,
+        )
+
+    return build_check(
+        "write.research_experiments_generated",
+        "pass",
+        "required",
+        "Generated experiment artifact directory is present and reports writable. No file was written.",
+        relative_path,
+    )
+
+
+def build_environment_report() -> list[dict[str, Any]]:
+    return [
+        {
+            "name": name,
+            "present": bool(os.environ.get(name)),
+            "required_for_default_setup": False,
+            "value_logged": False,
+            "used_for": description,
+        }
+        for name, description in OPTIONAL_ENV_VARS
+    ]
+
+
+def summarize_checks(checks: list[dict[str, Any]], strict: bool) -> tuple[str, dict[str, Any]]:
+    failures = [check for check in checks if check["status"] == "fail"]
+    warnings = [check for check in checks if check["status"] == "warning"]
+    status = "fail" if failures or (strict and warnings) else "pass"
+    return status, {
+        "check_count": len(checks),
+        "failures": len(failures),
+        "warnings": len(warnings),
+        "strict": strict,
+        "network_calls_made": False,
+        "secret_values_logged": False,
+    }
+
+
+def build_report(root: Path, strict: bool) -> dict[str, Any]:
+    checks = [
+        build_check(
+            "root.exists",
+            "pass" if root.is_dir() else "fail",
+            "required",
+            "Project root exists." if root.is_dir() else "Project root is missing.",
+            ".",
+        ),
+        check_python_version(),
+    ]
+    checks.extend(check_directories(root))
+    checks.extend(check_files(root))
+    checks.append(check_write_path(root))
+
+    status, summary = summarize_checks(checks, strict)
+    return {
+        "project": PROJECT_NAME,
+        "root": str(root),
+        "status": status,
+        "platform": {
+            "system": platform.system(),
+            "release": platform.release(),
+            "python": platform.python_version(),
+        },
+        "summary": summary,
+        "environment": build_environment_report(),
+        "checks": checks,
+    }
+
+
+def print_text_report(report: dict[str, Any]) -> None:
+    print(f"{report['project']} setup check")
+    print(f"Root: {report['root']}")
+    print(f"Status: {report['status']}")
+    print(
+        "Summary: "
+        f"{report['summary']['failures']} failure(s), "
+        f"{report['summary']['warnings']} warning(s), "
+        f"{report['summary']['check_count']} check(s)"
+    )
+    print("Network calls made: false")
+    print("Secret values logged: false")
+    print()
+    print("Environment gates:")
+    for entry in report["environment"]:
+        state = "present" if entry["present"] else "not set"
+        print(f"- {entry['name']}: {state}; value logged: false; default required: false")
+    print()
+    print("Checks:")
+    for check in report["checks"]:
+        path = f" [{check['path']}]" if "path" in check else ""
+        print(f"- {check['status'].upper()} {check['id']}{path}: {check['message']}")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Check local setup for the Emotion Aware AI Sales Agent product repo.")
+    parser.add_argument("--root", default=str(ROOT), help="Project root to check. Defaults to this repository root.")
+    parser.add_argument("--json", action="store_true", help="Print machine-readable JSON.")
+    parser.add_argument("--strict", action="store_true", help="Treat warnings as failures.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    root = Path(args.root).resolve()
+    report = build_report(root, args.strict)
+
+    if args.json:
+        print(json.dumps(report, indent=2))
+    else:
+        print_text_report(report)
+
+    raise SystemExit(0 if report["status"] == "pass" else 1)
+
+
+if __name__ == "__main__":
+    main()
