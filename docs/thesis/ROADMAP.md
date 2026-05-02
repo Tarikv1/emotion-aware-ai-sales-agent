@@ -168,6 +168,7 @@ Current integrated prototype evidence:
 - runtime voice-delivery bridge in `RESP-002`, which applies prosody/provider preview metadata after guarded response generation while keeping `final_response` unchanged
 - project self-containment policy plus local voice provider run-boundary and generated-audio asset-log docs for client-portable provider workflows
 - runtime live-capable TTS bridge in `RESP-003`, with dry-run default, explicit live opt-in, generated-audio asset logging, and protected-text fallback to exact `final_response`
+- first bilingual RESP-003 ElevenLabs live TTS run, with German and English audio created, no customer audio upload, no voice cloning, and sub-second provider latency in both cases
 
 Out of scope:
 
@@ -286,10 +287,11 @@ Immediate product artifact:
 - RESP-002 runtime voice-delivery bridge from guarded response to offline ElevenLabs/Cartesia provider preview
 - project-local self-containment, voice provider run-boundary, and generated-audio asset-log policies
 - RESP-003 runtime live-capable TTS bridge from validated voice-delivery packet to optional provider audio
+- RESP-003 first bilingual ElevenLabs live TTS result for German and English campaign responses
 
 Next voice checkpoint:
 
-- run a live RESP-003 provider test only after setting provider key and voice ID intentionally
+- record human listening review for the German and English RESP-003 audio files before making quality claims
 - connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
 - expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence

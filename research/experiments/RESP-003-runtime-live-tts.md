@@ -69,6 +69,50 @@ voice_cloning_used: false
 validation passed: true
 ```
 
+## First Live Bilingual Result
+
+Two live ElevenLabs calls were run after setting environment-only keys and voice IDs outside Git.
+
+German runtime TTS:
+
+```text
+campaign: campaign-prod-005-b2c-telecom
+language: de
+selected voice env var: ELEVENLABS_VOICE_ID_DE
+provider calls made: true
+audio file created: true
+audio byte size: 119581
+HTTP status: 200
+time to first audio: 723.09 ms
+total provider latency: 901.017 ms
+customer audio uploaded: false
+voice cloning used: false
+API key value logged: false
+voice ID value logged: false
+validation passed: true
+```
+
+English runtime TTS:
+
+```text
+campaign: campaign-prod-005-b2b-software
+language: en
+selected voice env var: ELEVENLABS_VOICE_ID_EN
+provider calls made: true
+audio file created: true
+audio byte size: 112894
+HTTP status: 200
+time to first audio: 488.206 ms
+total provider latency: 670.137 ms
+customer audio uploaded: false
+voice cloning used: false
+API key value logged: false
+voice ID value logged: false
+validation passed: true
+```
+
+Generated MP3 files remain local and ignored by Git. The JSON/Markdown evidence can be committed after secret scanning.
+
 ## Interpretation
 
 RESP-003 makes the runtime path live-TTS capable without making provider calls part of the default setup.

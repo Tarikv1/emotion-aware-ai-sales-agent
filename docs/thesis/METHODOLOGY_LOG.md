@@ -1471,3 +1471,49 @@ Use this file as a chronological research journal for the thesis implementation.
   - which provider and voice should be used for the next live RESP-003 run
   - how to connect generated audio to the local demo/playback loop without adding latency or unsafe provider defaults
   - how to represent multi-segment turns where a freeform bridge, campaign question, and disclosure may all be spoken in one response
+
+### 2026-05-02 - RESP-003 bilingual ElevenLabs live TTS run
+
+- Objective: verify that RESP-003 can generate live ElevenLabs audio for both German and English campaign responses using separate language-specific voice IDs
+- Action taken:
+  - ran RESP-003 live TTS for the German B2C telecom campaign
+  - ran RESP-003 live TTS for the English B2B software campaign
+  - verified generated JSON artifacts for safety flags, latency, audio output, and redacted provider metadata
+  - added a Git ignore rule for RESP-003 MP3 audio artifacts so generated audio stays local
+- Data used:
+  - German transcript: `Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.`
+  - English transcript: `That sounds expensive, and I am not sure it is worth changing our workflow.`
+  - environment-only `ELEVENLABS_API_KEY`
+  - environment-only `ELEVENLABS_VOICE_ID_DE`
+  - environment-only `ELEVENLABS_VOICE_ID_EN`
+- Output created:
+  - `research/experiments/generated/RESP-003-live-elevenlabs-de-result.json`
+  - `research/experiments/generated/RESP-003-live-elevenlabs-de-report.md`
+  - `research/experiments/generated/RESP-003-live-elevenlabs-en-result.json`
+  - `research/experiments/generated/RESP-003-live-elevenlabs-en-report.md`
+  - local ignored German MP3 audio artifact
+  - local ignored English MP3 audio artifact
+- Technical result:
+  - German live call: HTTP 200, audio created, 119581 bytes, time to first audio 723.09 ms, total provider latency 901.017 ms
+  - English live call: HTTP 200, audio created, 112894 bytes, time to first audio 488.206 ms, total provider latency 670.137 ms
+  - customer audio uploaded: false
+  - voice cloning used: false
+  - API key value logged: false
+  - voice ID value logged: false
+  - validation passed: true
+- What was learned:
+  - RESP-003 can route German and English runtime responses to language-specific ElevenLabs voice IDs
+  - technical provider latency was under one second in this two-case run
+  - generated audio evidence needs the same local-ignore treatment as earlier voice experiments
+- Error or risk recorded:
+  - the first attempt to let Codex run live calls could not see the environment variables because they were set in a different PowerShell process
+  - the workaround was to run the live commands in the same terminal where the environment variables were set
+  - audio quality is still not claimed because human listening review has not been recorded for these two RESP-003 files
+- Why it matters for the thesis:
+  - this provides the first bilingual live TTS evidence for the runtime response stack
+  - it shows a practical implementation detail: environment-scoped secrets are safer, but process boundaries can affect live-provider testing
+  - it keeps quality claims separate from technical success claims
+- Open questions:
+  - how the German and English audio sound in human listening review
+  - whether longer scripts keep latency and naturalness within the product target
+  - whether the same bilingual flow should be connected to the local browser demo next

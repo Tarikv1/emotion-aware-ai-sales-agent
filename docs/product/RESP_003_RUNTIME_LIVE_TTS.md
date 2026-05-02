@@ -146,6 +146,34 @@ voice_cloning_used: false
 validation passed: true
 ```
 
+## First Live Bilingual ElevenLabs Run
+
+The first live RESP-003 ElevenLabs run created one German and one English audio file.
+
+Technical result:
+
+```text
+German campaign: campaign-prod-005-b2c-telecom
+German voice env var: ELEVENLABS_VOICE_ID_DE
+German audio created: true
+German time to first audio: 723.09 ms
+German total provider latency: 901.017 ms
+
+English campaign: campaign-prod-005-b2b-software
+English voice env var: ELEVENLABS_VOICE_ID_EN
+English audio created: true
+English time to first audio: 488.206 ms
+English total provider latency: 670.137 ms
+
+customer audio uploaded: false
+voice cloning used: false
+API key value logged: false
+voice ID value logged: false
+validation passed: true
+```
+
+Audio quality is not claimed from this technical run. Human listening review is still required.
+
 ## Product Meaning
 
 RESP-003 is the first runtime bridge where the safe agent response can become audio.
