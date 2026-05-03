@@ -1,0 +1,59 @@
+{
+  "voice_milestone": "VOICE-019",
+  "experiment_scope": "Guarded live-capable A/B audio harness comparing VOICE-017-style prosody-shaped input against VOICE-018 professional-sales tuned input. Default mode is dry-run and makes no provider calls.",
+  "source_artifact": "research/experiments/generated/VOICE-018-sales-voice-tuning.json",
+  "provider_config_source": "research/experiments/cases/voice-017-live-ab-audio.json",
+  "selected_source_case_ids": [
+    "VOICE-015-C01",
+    "VOICE-015-C02",
+    "VOICE-015-C03",
+    "VOICE-015-C04"
+  ],
+  "ab_variants": [
+    {
+      "variant_kind": "prosody",
+      "label": "VOICE-017-style prosody-shaped provider input",
+      "input_source": "VOICE-018 sales_voice_variants.source_rendered_text"
+    },
+    {
+      "variant_kind": "sales_tuned",
+      "label": "VOICE-018 professional-sales tuned provider input",
+      "input_source": "VOICE-018 sales_voice_variants.sales_tuned_text"
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "live_call_requires_provider_choice": true,
+    "live_both_providers_requires_flag": "--allow-both-live",
+    "max_timeout_seconds": 10,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "fallback_provider": "text-only-sales-tuned-tts-packet",
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including API keys or voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "naturalness",
+      "sales-call pacing",
+      "pitch variation",
+      "emotional appropriateness without overacting",
+      "clarity",
+      "language pronunciation",
+      "AI-obviousness",
+      "low muffling or artifacts",
+      "trustworthiness",
+      "prosody vs sales_tuned preference"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  }
+}

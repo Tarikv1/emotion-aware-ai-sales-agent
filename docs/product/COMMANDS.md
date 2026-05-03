@@ -328,6 +328,18 @@ Validate VOICE-018 sales voice pacing, emotion intents, and protected-text locks
 python scripts\validate_voice_018_sales_voice_tuning.py
 ```
 
+Run the VOICE-019 prosody-vs-sales-tuned live-capable A/B harness in dry-run mode:
+
+```powershell
+python scripts\run_voice_019_sales_tuned_live_ab_audio.py
+```
+
+Validate VOICE-019 dry-run and forced-missing-key fallback behavior:
+
+```powershell
+python scripts\validate_voice_019_sales_tuned_live_ab_audio.py
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
@@ -389,6 +401,18 @@ python scripts\run_voice_017_live_ab_audio.py --provider cartesia --live --timeo
 ```
 
 Live VOICE-017 with both providers in one run is intentionally blocked unless `--allow-both-live` is also set.
+
+Live VOICE-019 ElevenLabs prosody-vs-sales-tuned A/B testing requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\run_voice_019_sales_tuned_live_ab_audio.py --provider elevenlabs --live --timeout-seconds 8 --limit 2
+```
+
+Live VOICE-019 Cartesia prosody-vs-sales-tuned A/B testing requires `CARTESIA_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
+
+```powershell
+python scripts\run_voice_019_sales_tuned_live_ab_audio.py --provider cartesia --live --timeout-seconds 8 --limit 2
+```
 
 Live RESP-003 runtime TTS with ElevenLabs requires the local provider boundary review, `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
 

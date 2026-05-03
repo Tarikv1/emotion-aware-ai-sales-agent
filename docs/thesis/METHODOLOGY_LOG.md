@@ -1665,3 +1665,55 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether VOICE-018 sounds better in live ElevenLabs and/or Cartesia audio
   - whether per-segment TTS calls are needed so protected text can keep neutral pace while freeform speech is faster
   - whether the listening rubric should explicitly score sales pace, pitch contour, and AI-obviousness
+
+### 2026-05-03 - VOICE-019 sales-tuned live A/B harness
+
+- Objective: prepare a safe live listening test comparing VOICE-017-style prosody-shaped input against VOICE-018 professional-sales tuned input
+- Action taken:
+  - added a VOICE-019 case config selecting the same four bilingual source cases used by VOICE-017
+  - added a live-capable runner that creates prosody and sales-tuned variants for ElevenLabs and Cartesia
+  - reused the VOICE-017 provider-call helpers and safety boundaries
+  - kept dry-run as the default behavior
+  - added forced-missing-key fallback validation for both providers
+  - added Git ignore rules for future VOICE-019 MP3/WAV live audio artifacts
+- Data used:
+  - `research/experiments/generated/VOICE-018-sales-voice-tuning.json`
+  - `research/experiments/cases/voice-017-live-ab-audio.json`
+- Output created:
+  - `scripts/run_voice_019_sales_tuned_live_ab_audio.py`
+  - `scripts/validate_voice_019_sales_tuned_live_ab_audio.py`
+  - `research/experiments/cases/voice-019-sales-tuned-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio-report.md`
+  - `docs/product/VOICE_019_SALES_TUNED_LIVE_AB_AUDIO.md`
+  - `research/experiments/VOICE-019-sales-tuned-live-ab-audio.md`
+- Dry-run result:
+  - cases: 4
+  - German cases: 2
+  - English cases: 2
+  - providers: ElevenLabs and Cartesia
+  - A/B variants: 16
+  - prosody variants: 8
+  - sales-tuned variants: 8
+  - API calls made: 0
+  - audio files created: 0
+  - fallback count: 16
+  - customer audio uploaded: false
+  - voice cloning used: false
+  - quality claim allowed: false
+- What was learned:
+  - the project can compare the previous prosody-shaped input against the new sales-tuned input without changing provider-key safety rules
+  - the dry-run packet is ready for a controlled live run once provider keys and voice IDs are set in the same terminal
+  - quality claims still need human listening review after audio exists
+- Error or risk recorded:
+  - live provider calls can create up to 8 calls per provider for the default four-case set, so the recommended first run uses `--limit 2`
+  - ElevenLabs request-level speed may still affect full utterances unless future runtime splitting is added
+  - dry-run validation proves structure and safety, not sound quality
+- Why it matters for the thesis:
+  - this creates a concrete experiment path from qualitative listening feedback to a controlled A/B audio evaluation
+  - it preserves privacy and provider-safety gates while allowing repeatable human listening comparison
+  - it supports honest reporting by separating dry-run readiness from live audio preference evidence
+- Open questions:
+  - whether sales-tuned audio is preferred over current prosody audio by the project owner
+  - whether Cartesia's richer speed/volume tags or ElevenLabs' voice settings produce better sales-call pacing
+  - whether a second listener should review the same A/B outputs before the thesis treats the result as stronger evidence
