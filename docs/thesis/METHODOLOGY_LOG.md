@@ -1717,3 +1717,28 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether sales-tuned audio is preferred over current prosody audio by the project owner
   - whether Cartesia's richer speed/volume tags or ElevenLabs' voice settings produce better sales-call pacing
   - whether a second listener should review the same A/B outputs before the thesis treats the result as stronger evidence
+
+### 2026-05-03 - Roadmap checkpoint discipline and deferred-idea queue
+
+- Objective: make the roadmap function as an operational checkpoint board rather than only a narrative planning document
+- Action taken:
+  - added roadmap operating rules for current phase tracking, checkpoint completion, and direction changes
+  - added a checkbox-based checkpoint board with current, next, and recently completed checkpoints
+  - added a deferred implementation queue for good ideas that are intentionally too early to build
+  - defined unlock conditions so deferred ideas can be resurfaced when their phase becomes active
+- Data used:
+  - project owner's request that future-too-early implementation ideas should be preserved and resurfaced later
+  - current voice/runtime, product-learning, and thesis-evidence roadmap state
+- Output created:
+  - updated `docs/thesis/ROADMAP.md`
+- What was learned:
+  - the project needs a lightweight planning memory because product discovery changes the order of work over time
+  - a fixed long-term plan would be too rigid, but an explicit checkpoint board can keep momentum without pretending the future is fully known
+  - deferred ideas are most useful when each one has an unlock condition, not just a vague "later" label
+- Why it matters for the thesis:
+  - it preserves the research and engineering decision trail more clearly
+  - it makes it easier to reconstruct why certain features were delayed, implemented, or reprioritized
+  - it supports honest methodology writing by showing that iteration was planned, tracked, and reviewed
+- Open questions:
+  - how often the roadmap should be committed during rapid experimentation
+  - whether later thesis writing should include the checkpoint board directly or summarize it as project-management methodology

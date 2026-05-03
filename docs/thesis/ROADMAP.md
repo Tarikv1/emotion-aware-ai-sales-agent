@@ -3,6 +3,70 @@
 This roadmap is the working steering document for the thesis and product project.
 It should be updated whenever the project direction changes, a phase completes, or a meaningful new constraint appears.
 
+## Roadmap Operating Rules
+
+This roadmap is also the project checkpoint board. It should answer three questions at any moment:
+
+- what phase we are in now
+- what checkpoint is active next
+- what earlier deferred ideas have become ready to implement
+
+Use these rules during future work:
+
+- Every meaningful experiment, runtime feature, product design step, or thesis documentation step should appear in the roadmap before or when it becomes active.
+- When a checkpoint is completed, mark it as done, record the next checkpoint, and update `METHODOLOGY_LOG.md` if the work teaches something thesis-relevant.
+- If Tarik changes the product direction, update the upcoming checkpoints instead of forcing the old plan.
+- If Codex recommends deferring an idea because it is too early, add it to the Deferred Implementation Queue with an unlock condition.
+- When starting a new phase or checkpoint, scan the Deferred Implementation Queue and explicitly surface any idea whose unlock condition is now true.
+- Keep the roadmap flexible: the current phase can change as product discovery changes, but completed checkpoints should remain visible as evidence of the path taken.
+
+Status convention:
+
+- `[x]` means completed.
+- `[ ]` means planned, current, or deferred; the wording of the item should say which one.
+- `Current` means this should be worked on before opening a new branch of effort.
+- `Next` means it should become current after the current checkpoint closes, unless Tarik changes direction.
+
+## Checkpoint Board
+
+Active phase: voice/runtime quality, product checkpoint discipline, and thesis evidence preservation.
+
+Current checkpoint:
+
+- [ ] Current: run `VOICE-019` live for ElevenLabs first, ideally with `--limit 2`, then record a human listening review before making any sales-tuned quality claim.
+
+Next checkpoints:
+
+- [ ] Next: decide whether `VOICE-020` should focus on provider/voice selection, provider settings, or a local playback/demo flow based on the `VOICE-019` listening result.
+- [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
+- [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
+- [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
+- [ ] Next: continue dataset-grounded thesis expansion once the current voice/runtime checkpoint is stable.
+
+Recently completed checkpoints:
+
+- [x] `VOICE-019` dry-run harness comparing `VOICE-017`-style prosody against `VOICE-018` sales-tuned input before live provider calls.
+- [x] `VOICE-018` offline professional-sales tuning after listening feedback found `RESP-003` clear but too slow and still obviously AI-generated.
+- [x] First bilingual `RESP-003` ElevenLabs live TTS result for German and English campaign responses.
+- [x] First bilingual `RESP-003` human listening review showing the next voice quality target: faster, less robotic, better pitch/emotion, while preserving clarity.
+- [x] Project-local self-containment, voice provider run-boundary, generated-audio asset-log, drift guard, and relevant-reader policies.
+
+## Deferred Implementation Queue
+
+Use this section whenever an idea is good but too early to build now.
+When a roadmap phase reaches an idea's unlock condition, Codex should explicitly surface it again and say: "This earlier deferred idea is now ready to implement."
+
+| Idea | Why Deferred | Unlock Condition | Relevant Phase | Status |
+|---|---|---|---|---|
+| Full-duplex real-time interruption handling | Too early before the stable voice loop and interruption policy are integrated into a live audio path | Live ASR/TTS loop exists, latency is measured, and barge-in behavior can be tested safely | Voice/runtime | Deferred |
+| Live-call sub-agent orchestration | Sub-agents should not block the 1-2 second customer-facing response path until the fast core is stable | Fast core, bridge responses, and background task boundaries are measured in runtime tests | Product runtime | Deferred |
+| Real customer audio ASR testing | Requires consent, privacy review, retention review, and client approval | Voice consent checklist, provider retention review, and synthetic-audio path are already stable | Voice/provider | Deferred |
+| Broad campaign library expansion | The core should first handle difficult universal sales situations before breadth becomes useful evidence | Difficulty-first sales gauntlet and reusable objection-handling checks are stable | Product learning | Deferred |
+| Third-language runtime support | German and English must be strong before proving language-pack extensibility | German/English campaign routing, voice quality, and validator coverage are stable | Bilingual/multilingual runtime | Deferred |
+| Detailed voice ablation study | Useful for thesis evidence, but premature before the live voice quality target is good enough to compare | Provider voice quality is acceptable enough that ablation differences are meaningful | Thesis evaluation | Deferred |
+| Cartesia-vs-ElevenLabs repeat comparison | Provider comparison should wait until the ElevenLabs live path and rubric are stable | `VOICE-019` ElevenLabs review is recorded and the same cases can be replayed fairly | Voice/provider | Deferred |
+| Sales-expert feedback dashboard | Too much interface work before the agent behavior and review rubrics stabilize | Sales-expert rating fields and product simulation logs are stable | Product MVP | Deferred |
+
 ## Current Direction
 
 Build and evaluate an emotion-aware AI sales agent that adapts persuasion strategy based on customer state.
