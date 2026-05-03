@@ -6,11 +6,9 @@
   "provider_config_source": "research\\experiments\\cases\\voice-017-live-ab-audio.json",
   "selected_source_case_ids": [
     "VOICE-015-C01",
-    "VOICE-015-C02",
-    "VOICE-015-C03",
-    "VOICE-015-C04"
+    "VOICE-015-C02"
   ],
-  "selected_provider_arg": "both",
+  "selected_provider_arg": "elevenlabs",
   "providers": {
     "elevenlabs": {
       "provider_key": "elevenlabs",
@@ -35,28 +33,6 @@
         "use_speaker_boost": true,
         "speed": 1.0
       }
-    },
-    "cartesia": {
-      "provider_key": "cartesia",
-      "provider_id": "cartesia-sonic-3-websocket",
-      "provider_name": "Cartesia",
-      "endpoint_type": "tts-websocket",
-      "endpoint_url": "wss://api.cartesia.ai/tts/websocket",
-      "api_version": "2026-03-01",
-      "model_id": "sonic-3",
-      "api_key_env_var": "CARTESIA_API_KEY",
-      "default_voice_id_env_var": "CARTESIA_VOICE_ID",
-      "language_voice_id_env_vars": {
-        "de": "CARTESIA_VOICE_ID_DE",
-        "en": "CARTESIA_VOICE_ID_EN"
-      },
-      "default_output_format": {
-        "container": "raw",
-        "encoding": "pcm_s16le",
-        "sample_rate": 16000
-      },
-      "audio_extension": "wav",
-      "add_timestamps": true
     }
   },
   "ab_variants": [
@@ -107,36 +83,35 @@
     "dry_run_rule": "Do not record quality scores in dry-run mode."
   },
   "summary": {
-    "case_count": 4,
+    "case_count": 2,
     "languages": {
-      "en": 2,
-      "de": 2
+      "en": 1,
+      "de": 1
     },
-    "provider_count": 2,
+    "provider_count": 1,
     "providers": [
-      "elevenlabs",
-      "cartesia"
+      "elevenlabs"
     ],
-    "ab_variant_count": 16,
-    "prosody_variant_count": 8,
-    "sales_tuned_variant_count": 8,
-    "live_call_requested": false,
-    "api_calls_made": 0,
-    "audio_files_created": 0,
-    "fallback_count": 16,
+    "ab_variant_count": 4,
+    "prosody_variant_count": 2,
+    "sales_tuned_variant_count": 2,
+    "live_call_requested": true,
+    "api_calls_made": 4,
+    "audio_files_created": 4,
+    "fallback_count": 0,
     "customer_audio_uploaded": false,
     "synthetic_prompts_only": true,
     "voice_cloning_used": false,
     "timeout_seconds": 8.0,
     "human_ratings_recorded": false,
     "quality_claim_allowed": false,
-    "max_time_to_first_audio_ms": null,
-    "max_total_provider_latency_ms": 0
+    "max_time_to_first_audio_ms": 1875.891,
+    "max_total_provider_latency_ms": 2058.027
   },
   "runtime_boundary": {
     "default_mode": "dry-run",
-    "provider_calls_made": false,
-    "requires_api_key": false,
+    "provider_calls_made": true,
+    "requires_api_key": true,
     "customer_audio_uploaded": false,
     "voice_cloning_used": false,
     "quality_claim_allowed_without_human_rating": false
@@ -169,12 +144,12 @@
           "source_case_id": "VOICE-015-C01",
           "api_key_env_var": "ELEVENLABS_API_KEY",
           "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
+          "api_key_present": true,
+          "voice_id_present": true,
           "api_key_value_logged": false,
           "voice_id_value_logged": false,
           "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
+          "generated_text_sent_to_provider": true,
           "synthetic_prompt_only": true,
           "voice_clone_used": false,
           "custom_voice_used": false,
@@ -215,17 +190,17 @@
             }
           },
           "audio_filename": "VOICE-019-C01-en-elevenlabs-prosody.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-019-C01-en-elevenlabs-prosody.mp3",
+          "audio_byte_size": 139643,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 1875.891,
+          "total_provider_latency_ms": 2058.027,
           "provider_error": null,
           "provider_error_summary": {
             "type": null,
@@ -245,12 +220,12 @@
           "source_case_id": "VOICE-015-C01",
           "api_key_env_var": "ELEVENLABS_API_KEY",
           "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
+          "api_key_present": true,
+          "voice_id_present": true,
           "api_key_value_logged": false,
           "voice_id_value_logged": false,
           "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
+          "generated_text_sent_to_provider": true,
           "synthetic_prompt_only": true,
           "voice_clone_used": false,
           "custom_voice_used": false,
@@ -297,167 +272,17 @@
             }
           },
           "audio_filename": "VOICE-019-C01-en-elevenlabs-sales_tuned.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "prosody",
-          "source_checkpoint": "VOICE-017-style-prosody",
-          "language": "en",
-          "source_case_id": "VOICE-015-C01",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "I understand your concern.<break time=\"187ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"0.960\"/>do not promise<speed ratio=\"1.000\"/> anything we cannot verify before looking at the workflow.",
-          "tts_input_chars": 241,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.0,
-            "emotion_intents": [],
-            "pitch_intents": [],
-            "tuned_segment_count": 0
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_EN>"
-            },
-            "language": "en",
-            "transcript": "I understand your concern.<break time=\"187ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"0.960\"/>do not promise<speed ratio=\"1.000\"/> anything we cannot verify before looking at the workflow.",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C01-en-cartesia-prosody.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "sales_tuned",
-          "source_checkpoint": "VOICE-018",
-          "language": "en",
-          "source_case_id": "VOICE-015-C01",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "<speed ratio=\"1.141\"/>I understand your concern.<break time=\"141ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"1.061\"/>do not promise<speed ratio=\"1.141\"/> anything we cannot verify before looking at the workflow.<speed ratio=\"1.000\"/>",
-          "tts_input_chars": 285,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.141,
-            "emotion_intents": [
-              "confident-low-pressure"
-            ],
-            "pitch_intents": [
-              "steady-confident"
-            ],
-            "tuned_segment_count": 1,
-            "pause_compression_count": 1,
-            "source_prosody_cue_count": 4
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_EN>"
-            },
-            "language": "en",
-            "transcript": "<speed ratio=\"1.141\"/>I understand your concern.<break time=\"141ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"1.061\"/>do not promise<speed ratio=\"1.141\"/> anything we cannot verify before looking at the workflow.<speed ratio=\"1.000\"/>",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C01-en-cartesia-sales_tuned.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-019-C01-en-elevenlabs-sales_tuned.mp3",
+          "audio_byte_size": 118745,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 204.556,
+          "total_provider_latency_ms": 366.039,
           "provider_error": null,
           "provider_error_summary": {
             "type": null,
@@ -511,12 +336,12 @@
           "source_case_id": "VOICE-015-C02",
           "api_key_env_var": "ELEVENLABS_API_KEY",
           "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
+          "api_key_present": true,
+          "voice_id_present": true,
           "api_key_value_logged": false,
           "voice_id_value_logged": false,
           "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
+          "generated_text_sent_to_provider": true,
           "synthetic_prompt_only": true,
           "voice_clone_used": false,
           "custom_voice_used": false,
@@ -557,17 +382,17 @@
             }
           },
           "audio_filename": "VOICE-019-C02-de-elevenlabs-prosody.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-019-C02-de-elevenlabs-prosody.mp3",
+          "audio_byte_size": 138807,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 855.454,
+          "total_provider_latency_ms": 1030.56,
           "provider_error": null,
           "provider_error_summary": {
             "type": null,
@@ -587,12 +412,12 @@
           "source_case_id": "VOICE-015-C02",
           "api_key_env_var": "ELEVENLABS_API_KEY",
           "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
+          "api_key_present": true,
+          "voice_id_present": true,
           "api_key_value_logged": false,
           "voice_id_value_logged": false,
           "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
+          "generated_text_sent_to_provider": true,
           "synthetic_prompt_only": true,
           "voice_clone_used": false,
           "custom_voice_used": false,
@@ -639,851 +464,17 @@
             }
           },
           "audio_filename": "VOICE-019-C02-de-elevenlabs-sales_tuned.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "prosody",
-          "source_checkpoint": "VOICE-017-style-prosody",
-          "language": "de",
-          "source_case_id": "VOICE-015-C02",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "Also<break time=\"314ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"0.926\"/>nichts verspreche<speed ratio=\"1.000\"/>, was ein Fachberater sauber pruefen sollte.",
-          "tts_input_chars": 230,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.0,
-            "emotion_intents": [],
-            "pitch_intents": [],
-            "tuned_segment_count": 0
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_DE>"
-            },
-            "language": "de",
-            "transcript": "Also<break time=\"314ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"0.926\"/>nichts verspreche<speed ratio=\"1.000\"/>, was ein Fachberater sauber pruefen sollte.",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C02-de-cartesia-prosody.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "sales_tuned",
-          "source_checkpoint": "VOICE-018",
-          "language": "de",
-          "source_case_id": "VOICE-015-C02",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "<speed ratio=\"1.142\"/>Also<break time=\"235ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"1.062\"/>nichts verspreche<speed ratio=\"1.142\"/>, was ein Fachberater sauber pruefen sollte.<speed ratio=\"1.000\"/>",
-          "tts_input_chars": 274,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.142,
-            "emotion_intents": [
-              "confident-low-pressure"
-            ],
-            "pitch_intents": [
-              "steady-confident"
-            ],
-            "tuned_segment_count": 1,
-            "pause_compression_count": 1,
-            "source_prosody_cue_count": 5
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_DE>"
-            },
-            "language": "de",
-            "transcript": "<speed ratio=\"1.142\"/>Also<break time=\"235ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"1.062\"/>nichts verspreche<speed ratio=\"1.142\"/>, was ein Fachberater sauber pruefen sollte.<speed ratio=\"1.000\"/>",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C02-de-cartesia-sales_tuned.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        }
-      ],
-      "quality_review": {
-        "human_rating_required": true,
-        "human_ratings_recorded": false,
-        "quality_claim_allowed": false,
-        "criteria": [
-          "naturalness",
-          "sales-call pacing",
-          "pitch variation",
-          "emotional appropriateness without overacting",
-          "clarity",
-          "language pronunciation",
-          "AI-obviousness",
-          "low muffling or artifacts",
-          "trustworthiness",
-          "prosody vs sales_tuned preference"
-        ]
-      }
-    },
-    {
-      "case_id": "VOICE-019-C03",
-      "source_case_id": "VOICE-015-C03",
-      "case_title": "English mixed response protects campaign question while freeform gets cues",
-      "campaign_id": "campaign-voice-015-en-b2b-software",
-      "language": "en",
-      "prosody_cue_count": 4,
-      "prosody_cue_counts": {
-        "emphasis": 1,
-        "pause": 1,
-        "pitch": 1,
-        "rate": 1,
-        "stretch": 0
-      },
-      "ab_results": [
-        {
-          "provider_key": "elevenlabs",
-          "provider_id": "elevenlabs-stream",
-          "provider_name": "ElevenLabs",
-          "endpoint_type": "tts-http-stream",
-          "model_id": "eleven_flash_v2_5",
-          "variant_kind": "prosody",
-          "source_checkpoint": "VOICE-017-style-prosody",
-          "language": "en",
-          "source_case_id": "VOICE-015-C03",
-          "api_key_env_var": "ELEVENLABS_API_KEY",
-          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "That makes sense. <break time=\"0.266s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
-          "tts_input_chars": 180,
-          "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.75,
-            "style": 0.0,
-            "use_speaker_boost": true,
-            "speed": 1.0
-          },
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.0,
-            "emotion_intents": [],
-            "pitch_intents": [],
-            "tuned_segment_count": 0
-          },
-          "request_preview": {
-            "method": "POST",
-            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
-            "headers": {
-              "xi-api-key": "<redacted>",
-              "Content-Type": "application/json"
-            },
-            "body": {
-              "text": "That makes sense. <break time=\"0.266s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
-              "model_id": "eleven_flash_v2_5",
-              "language_code": "en",
-              "voice_settings": {
-                "stability": 0.45,
-                "similarity_boost": 0.75,
-                "style": 0.0,
-                "use_speaker_boost": true,
-                "speed": 1.0
-              }
-            }
-          },
-          "audio_filename": "VOICE-019-C03-en-elevenlabs-prosody.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "elevenlabs",
-          "provider_id": "elevenlabs-stream",
-          "provider_name": "ElevenLabs",
-          "endpoint_type": "tts-http-stream",
-          "model_id": "eleven_flash_v2_5",
-          "variant_kind": "sales_tuned",
-          "source_checkpoint": "VOICE-018",
-          "language": "en",
-          "source_case_id": "VOICE-015-C03",
-          "api_key_env_var": "ELEVENLABS_API_KEY",
-          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "That makes sense. <break time=\"0.222s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
-          "tts_input_chars": 180,
-          "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.75,
-            "style": 0.0,
-            "use_speaker_boost": true,
-            "speed": 1.1
-          },
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.1,
-            "emotion_intents": [
-              "curious-efficient"
-            ],
-            "pitch_intents": [
-              "slight-rise"
-            ],
-            "tuned_segment_count": 1,
-            "pause_compression_count": 1,
-            "source_prosody_cue_count": 4
-          },
-          "request_preview": {
-            "method": "POST",
-            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
-            "headers": {
-              "xi-api-key": "<redacted>",
-              "Content-Type": "application/json"
-            },
-            "body": {
-              "text": "That makes sense. <break time=\"0.222s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
-              "model_id": "eleven_flash_v2_5",
-              "language_code": "en",
-              "voice_settings": {
-                "stability": 0.45,
-                "similarity_boost": 0.75,
-                "style": 0.0,
-                "use_speaker_boost": true,
-                "speed": 1.1
-              }
-            }
-          },
-          "audio_filename": "VOICE-019-C03-en-elevenlabs-sales_tuned.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "prosody",
-          "source_checkpoint": "VOICE-017-style-prosody",
-          "language": "en",
-          "source_case_id": "VOICE-015-C03",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "That makes sense.<break time=\"266ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"0.951\"/>before we schedule anything<speed ratio=\"1.000\"/>. Do you handle inbound lead routing?",
-          "tts_input_chars": 267,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.0,
-            "emotion_intents": [],
-            "pitch_intents": [],
-            "tuned_segment_count": 0
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_EN>"
-            },
-            "language": "en",
-            "transcript": "That makes sense.<break time=\"266ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"0.951\"/>before we schedule anything<speed ratio=\"1.000\"/>. Do you handle inbound lead routing?",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C03-en-cartesia-prosody.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "sales_tuned",
-          "source_checkpoint": "VOICE-018",
-          "language": "en",
-          "source_case_id": "VOICE-015-C03",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_EN",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "<speed ratio=\"1.100\"/>That makes sense.<break time=\"200ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"1.020\"/>before we schedule anything<speed ratio=\"1.100\"/>.<speed ratio=\"1.000\"/> Do you handle inbound lead routing?",
-          "tts_input_chars": 311,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.1,
-            "emotion_intents": [
-              "curious-efficient"
-            ],
-            "pitch_intents": [
-              "slight-rise"
-            ],
-            "tuned_segment_count": 1,
-            "pause_compression_count": 1,
-            "source_prosody_cue_count": 4
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_EN>"
-            },
-            "language": "en",
-            "transcript": "<speed ratio=\"1.100\"/>That makes sense.<break time=\"200ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"1.020\"/>before we schedule anything<speed ratio=\"1.100\"/>.<speed ratio=\"1.000\"/> Do you handle inbound lead routing?",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C03-en-cartesia-sales_tuned.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        }
-      ],
-      "quality_review": {
-        "human_rating_required": true,
-        "human_ratings_recorded": false,
-        "quality_claim_allowed": false,
-        "criteria": [
-          "naturalness",
-          "sales-call pacing",
-          "pitch variation",
-          "emotional appropriateness without overacting",
-          "clarity",
-          "language pronunciation",
-          "AI-obviousness",
-          "low muffling or artifacts",
-          "trustworthiness",
-          "prosody vs sales_tuned preference"
-        ]
-      }
-    },
-    {
-      "case_id": "VOICE-019-C04",
-      "source_case_id": "VOICE-015-C04",
-      "case_title": "German mixed response protects qualification question and disclosure",
-      "campaign_id": "campaign-voice-015-de-b2c-dental",
-      "language": "de",
-      "prosody_cue_count": 4,
-      "prosody_cue_counts": {
-        "emphasis": 1,
-        "pause": 1,
-        "pitch": 1,
-        "rate": 1,
-        "stretch": 0
-      },
-      "ab_results": [
-        {
-          "provider_key": "elevenlabs",
-          "provider_id": "elevenlabs-stream",
-          "provider_name": "ElevenLabs",
-          "endpoint_type": "tts-http-stream",
-          "model_id": "eleven_flash_v2_5",
-          "variant_kind": "prosody",
-          "source_checkpoint": "VOICE-017-style-prosody",
-          "language": "de",
-          "source_case_id": "VOICE-015-C04",
-          "api_key_env_var": "ELEVENLABS_API_KEY",
-          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "Das hilft mir bei der Einordnung. <break time=\"0.284s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-          "tts_input_chars": 272,
-          "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.75,
-            "style": 0.0,
-            "use_speaker_boost": true,
-            "speed": 1.0
-          },
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.0,
-            "emotion_intents": [],
-            "pitch_intents": [],
-            "tuned_segment_count": 0
-          },
-          "request_preview": {
-            "method": "POST",
-            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_DE>/stream?output_format=mp3_44100_128&enable_logging=false",
-            "headers": {
-              "xi-api-key": "<redacted>",
-              "Content-Type": "application/json"
-            },
-            "body": {
-              "text": "Das hilft mir bei der Einordnung. <break time=\"0.284s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-              "model_id": "eleven_flash_v2_5",
-              "language_code": "de",
-              "voice_settings": {
-                "stability": 0.45,
-                "similarity_boost": 0.75,
-                "style": 0.0,
-                "use_speaker_boost": true,
-                "speed": 1.0
-              }
-            }
-          },
-          "audio_filename": "VOICE-019-C04-de-elevenlabs-prosody.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "elevenlabs",
-          "provider_id": "elevenlabs-stream",
-          "provider_name": "ElevenLabs",
-          "endpoint_type": "tts-http-stream",
-          "model_id": "eleven_flash_v2_5",
-          "variant_kind": "sales_tuned",
-          "source_checkpoint": "VOICE-018",
-          "language": "de",
-          "source_case_id": "VOICE-015-C04",
-          "api_key_env_var": "ELEVENLABS_API_KEY",
-          "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "Das hilft mir bei der Einordnung. <break time=\"0.22s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-          "tts_input_chars": 271,
-          "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.75,
-            "style": 0.0,
-            "use_speaker_boost": true,
-            "speed": 1.088
-          },
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.088,
-            "emotion_intents": [
-              "curious-efficient"
-            ],
-            "pitch_intents": [
-              "slight-rise"
-            ],
-            "tuned_segment_count": 1,
-            "pause_compression_count": 1,
-            "source_prosody_cue_count": 4
-          },
-          "request_preview": {
-            "method": "POST",
-            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_DE>/stream?output_format=mp3_44100_128&enable_logging=false",
-            "headers": {
-              "xi-api-key": "<redacted>",
-              "Content-Type": "application/json"
-            },
-            "body": {
-              "text": "Das hilft mir bei der Einordnung. <break time=\"0.22s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-              "model_id": "eleven_flash_v2_5",
-              "language_code": "de",
-              "voice_settings": {
-                "stability": 0.45,
-                "similarity_boost": 0.75,
-                "style": 0.0,
-                "use_speaker_boost": true,
-                "speed": 1.088
-              }
-            }
-          },
-          "audio_filename": "VOICE-019-C04-de-elevenlabs-sales_tuned.mp3",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "prosody",
-          "source_checkpoint": "VOICE-017-style-prosody",
-          "language": "de",
-          "source_case_id": "VOICE-015-C04",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "Das hilft mir bei der Einordnung.<break time=\"284ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"0.950\"/>unverbindlicher Rueckruf<speed ratio=\"1.000\"/> fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-          "tts_input_chars": 359,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.0,
-            "emotion_intents": [],
-            "pitch_intents": [],
-            "tuned_segment_count": 0
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_DE>"
-            },
-            "language": "de",
-            "transcript": "Das hilft mir bei der Einordnung.<break time=\"284ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"0.950\"/>unverbindlicher Rueckruf<speed ratio=\"1.000\"/> fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C04-de-cartesia-prosody.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
-          "provider_error": null,
-          "provider_error_summary": {
-            "type": null,
-            "code": null,
-            "message": null
-          }
-        },
-        {
-          "provider_key": "cartesia",
-          "provider_id": "cartesia-sonic-3-websocket",
-          "provider_name": "Cartesia",
-          "endpoint_type": "tts-websocket",
-          "model_id": "sonic-3",
-          "variant_kind": "sales_tuned",
-          "source_checkpoint": "VOICE-018",
-          "language": "de",
-          "source_case_id": "VOICE-015-C04",
-          "api_key_env_var": "CARTESIA_API_KEY",
-          "selected_voice_id_env_var": "CARTESIA_VOICE_ID_DE",
-          "api_key_present": false,
-          "voice_id_present": false,
-          "api_key_value_logged": false,
-          "voice_id_value_logged": false,
-          "customer_audio_uploaded": false,
-          "generated_text_sent_to_provider": false,
-          "synthetic_prompt_only": true,
-          "voice_clone_used": false,
-          "custom_voice_used": false,
-          "timeout_seconds": 8.0,
-          "tts_input_text": "<speed ratio=\"1.088\"/>Das hilft mir bei der Einordnung.<break time=\"200ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"1.008\"/>unverbindlicher Rueckruf<speed ratio=\"1.088\"/> fuer Sie sinnvoll waere.<speed ratio=\"1.000\"/> Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-          "tts_input_chars": 403,
-          "voice_settings": {},
-          "sales_tuned_metadata": {
-            "average_speed_ratio": 1.088,
-            "emotion_intents": [
-              "curious-efficient"
-            ],
-            "pitch_intents": [
-              "slight-rise"
-            ],
-            "tuned_segment_count": 1,
-            "pause_compression_count": 1,
-            "source_prosody_cue_count": 4
-          },
-          "request_preview": {
-            "url": "wss://api.cartesia.ai/tts/websocket?cartesia_version=2026-03-01",
-            "headers": {
-              "X-API-Key": "<redacted>",
-              "Cartesia-Version": "2026-03-01"
-            },
-            "model_id": "sonic-3",
-            "voice": {
-              "mode": "id",
-              "id": "<redacted-env:CARTESIA_VOICE_ID_DE>"
-            },
-            "language": "de",
-            "transcript": "<speed ratio=\"1.088\"/>Das hilft mir bei der Einordnung.<break time=\"200ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"1.008\"/>unverbindlicher Rueckruf<speed ratio=\"1.088\"/> fuer Sie sinnvoll waere.<speed ratio=\"1.000\"/> Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
-            "output_format": {
-              "container": "raw",
-              "encoding": "pcm_s16le",
-              "sample_rate": 16000
-            },
-            "add_timestamps": true,
-            "context_id": "<generated-per-call>",
-            "streaming_input_chunks": 1
-          },
-          "audio_filename": "VOICE-019-C04-de-cartesia-sales_tuned.wav",
-          "api_call_made": false,
-          "fallback_used": true,
-          "fallback_reason": "dry-run-mode",
-          "audio_file_created": false,
-          "audio_output_path": null,
-          "audio_byte_size": 0,
-          "http_status": null,
-          "response_content_type": null,
-          "request_id_present": false,
-          "time_to_first_audio_ms": null,
-          "total_provider_latency_ms": 0,
+          "api_call_made": true,
+          "fallback_used": false,
+          "fallback_reason": null,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-019-C02-de-elevenlabs-sales_tuned.mp3",
+          "audio_byte_size": 121671,
+          "http_status": 200,
+          "response_content_type": "audio/mpeg",
+          "request_id_present": true,
+          "time_to_first_audio_ms": 265.652,
+          "total_provider_latency_ms": 432.612,
           "provider_error": null,
           "provider_error_summary": {
             "type": null,

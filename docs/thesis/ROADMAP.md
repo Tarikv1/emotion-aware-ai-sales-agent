@@ -29,15 +29,15 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: voice/runtime quality, product checkpoint discipline, and thesis evidence preservation.
+Active phase: voice/runtime quality and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: run `VOICE-019` live for ElevenLabs first, ideally with `--limit 2`, then record a human listening review before making any sales-tuned quality claim.
+- [ ] Current: design `VOICE-020` for emotional delivery, less rigid openings, controlled randomness, contractions/fillers, and provider-aware ElevenLabs voice settings while preserving campaign-safe protected text.
 
 Next checkpoints:
 
-- [ ] Next: decide whether `VOICE-020` should focus on provider/voice selection, provider settings, or a local playback/demo flow based on the `VOICE-019` listening result.
+- [ ] Next: implement and validate `VOICE-020` as an offline/live-capable voice-emotion tuning checkpoint.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
 - [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
@@ -46,6 +46,7 @@ Next checkpoints:
 Recently completed checkpoints:
 
 - [x] `VOICE-019` dry-run harness comparing `VOICE-017`-style prosody against `VOICE-018` sales-tuned input before live provider calls.
+- [x] `VOICE-019` first live ElevenLabs limited run with English/German prosody-vs-sales-tuned audio; owner preferred sales-tuned in both languages, while noting rigid openings and insufficient emotional expressiveness.
 - [x] `VOICE-018` offline professional-sales tuning after listening feedback found `RESP-003` clear but too slow and still obviously AI-generated.
 - [x] First bilingual `RESP-003` ElevenLabs live TTS result for German and English campaign responses.
 - [x] First bilingual `RESP-003` human listening review showing the next voice quality target: faster, less robotic, better pitch/emotion, while preserving clarity.

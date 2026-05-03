@@ -6,23 +6,23 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
 
 ## Summary
 
-- Cases: `4`
-- German cases: `2`
-- English cases: `2`
-- Providers: `elevenlabs, cartesia`
-- A/B variants: `16`
-- Prosody variants: `8`
-- Sales-tuned variants: `8`
-- Live call requested: `False`
-- API calls made: `0`
-- Audio files created: `0`
-- Fallback count: `16`
+- Cases: `2`
+- German cases: `1`
+- English cases: `1`
+- Providers: `elevenlabs`
+- A/B variants: `4`
+- Prosody variants: `2`
+- Sales-tuned variants: `2`
+- Live call requested: `True`
+- API calls made: `4`
+- Audio files created: `4`
+- Fallback count: `0`
 - Customer audio uploaded: `False`
 - Voice cloning used: `False`
 - Human ratings recorded: `False`
 - Quality claim allowed: `False`
-- Max time to first audio: `None`
-- Max total provider latency: `0 ms`
+- Max time to first audio: `1875.891`
+- Max total provider latency: `2058.027 ms`
 
 ## Case Results
 
@@ -32,41 +32,23 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
 - Language: `en`
 - Source prosody cues: `4`
 - `elevenlabs` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
+  audio created: `True`
+  audio path: `research\experiments\generated\VOICE-019-C01-en-elevenlabs-prosody.mp3`
+  API call made: `True`
+  fallback reason: `not needed`
   source checkpoint: `VOICE-017-style-prosody`
   sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
+  time to first audio: `1875.891`
+  total latency: `2058.027 ms`
 - `elevenlabs` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
+  audio created: `True`
+  audio path: `research\experiments\generated\VOICE-019-C01-en-elevenlabs-sales_tuned.mp3`
+  API call made: `True`
+  fallback reason: `not needed`
   source checkpoint: `VOICE-018`
   sales speed: `1.141`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-017-style-prosody`
-  sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-018`
-  sales speed: `1.141`
-  time to first audio: `None`
-  total latency: `0 ms`
+  time to first audio: `204.556`
+  total latency: `366.039 ms`
 
 ### VOICE-019-C02: German objection handling receives rare stretch plus bounded prosody cues
 
@@ -74,122 +56,20 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
 - Language: `de`
 - Source prosody cues: `5`
 - `elevenlabs` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
+  audio created: `True`
+  audio path: `research\experiments\generated\VOICE-019-C02-de-elevenlabs-prosody.mp3`
+  API call made: `True`
+  fallback reason: `not needed`
   source checkpoint: `VOICE-017-style-prosody`
   sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
+  time to first audio: `855.454`
+  total latency: `1030.56 ms`
 - `elevenlabs` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
+  audio created: `True`
+  audio path: `research\experiments\generated\VOICE-019-C02-de-elevenlabs-sales_tuned.mp3`
+  API call made: `True`
+  fallback reason: `not needed`
   source checkpoint: `VOICE-018`
   sales speed: `1.142`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-017-style-prosody`
-  sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-018`
-  sales speed: `1.142`
-  time to first audio: `None`
-  total latency: `0 ms`
-
-### VOICE-019-C03: English mixed response protects campaign question while freeform gets cues
-
-- Source case: `VOICE-015-C03`
-- Language: `en`
-- Source prosody cues: `4`
-- `elevenlabs` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-017-style-prosody`
-  sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `elevenlabs` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-018`
-  sales speed: `1.1`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-017-style-prosody`
-  sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-018`
-  sales speed: `1.1`
-  time to first audio: `None`
-  total latency: `0 ms`
-
-### VOICE-019-C04: German mixed response protects qualification question and disclosure
-
-- Source case: `VOICE-015-C04`
-- Language: `de`
-- Source prosody cues: `4`
-- `elevenlabs` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-017-style-prosody`
-  sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `elevenlabs` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-018`
-  sales speed: `1.088`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `prosody`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-017-style-prosody`
-  sales speed: `1.0`
-  time to first audio: `None`
-  total latency: `0 ms`
-- `cartesia` `sales_tuned`:
-  audio created: `False`
-  audio path: `not created`
-  API call made: `False`
-  fallback reason: `dry-run-mode`
-  source checkpoint: `VOICE-018`
-  sales speed: `1.088`
-  time to first audio: `None`
-  total latency: `0 ms`
+  time to first audio: `265.652`
+  total latency: `432.612 ms`

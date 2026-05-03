@@ -1742,3 +1742,50 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - how often the roadmap should be committed during rapid experimentation
   - whether later thesis writing should include the checkpoint board directly or summarize it as project-management methodology
+
+### 2026-05-04 - VOICE-019 first live ElevenLabs listening review
+
+- Objective: evaluate whether `VOICE-018` sales-tuned provider input improves live ElevenLabs audio over the previous `VOICE-017`-style prosody input
+- Action taken:
+  - ran `VOICE-019` live for ElevenLabs with `--limit 2`
+  - generated English and German A/B audio files for prosody versus sales-tuned variants
+  - collected project-owner listening feedback for both languages
+  - updated the roadmap so `VOICE-020` targets emotional delivery and controlled human speech variation
+- Data used:
+  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio-report.md`
+  - generated local MP3 files ignored by Git
+  - project-owner listening judgment
+- Output created:
+  - updated `research/experiments/VOICE-019-sales-tuned-live-ab-audio.md`
+  - updated `docs/thesis/ROADMAP.md`
+- Live run result:
+  - cases: 2
+  - languages: English and German
+  - provider: ElevenLabs
+  - API calls made: 4
+  - audio files created: 4
+  - fallbacks: 0
+  - customer audio uploaded: false
+  - voice cloning used: false
+  - max time to first audio: 1875.891 ms
+  - max total provider latency: 2058.027 ms
+- Human listening result:
+  - English preferred variant: sales-tuned
+  - German preferred variant: sales-tuned
+  - sales-tuned was judged much better than the previous prosody variant in both languages
+  - the beginning still sounded rigid enough to trigger a "this is a robot" reaction
+  - the audio improved after the phrase "the important thing is"
+  - remaining issues include insufficient emotional expressiveness, too much prepared-script feeling, insufficient controlled randomness in spacing and voicing, and not enough campaign-safe conversational texture such as contractions, light fillers, and natural pauses
+- What was learned:
+  - the project should continue from the sales-tuned direction rather than reverting to the older prosody-only direction
+  - the next voice-quality problem is not only speed; it is emotional delivery and human-like variation
+  - opening phrases are especially important because they shape the listener's immediate robot-detection reaction
+- Why it matters for the thesis:
+  - this records human evaluation evidence after a live provider run while keeping the claim narrow and honest
+  - it shows an iterative path from dry-run safety to live audio generation to qualitative listening feedback
+  - it identifies concrete next variables for voice naturalness experiments: emotion, openings, spacing randomness, contractions, fillers, and protected-text boundaries
+- Open questions:
+  - whether ElevenLabs provider settings can express emotion strongly enough without changing the generated text
+  - whether some emotional naturalness must be handled by text/segment generation before TTS
+  - how to preserve compliance-safe exact wording while adding human-like speech texture around non-protected segments
