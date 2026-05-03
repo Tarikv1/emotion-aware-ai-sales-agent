@@ -33,6 +33,8 @@ The local no-key TTS smoke path has been tested. Windows SAPI was reachable, but
 
 The Emotion Aware repo should stay self-contained for client portability. If the project depends on a checklist, template, workflow, script, schema, or review gate, that material must be adapted into this repo rather than referenced from `D:\Codex\shared` or another active workspace project.
 
+`GUARD-001` now provides a project-local drift guard for that rule. It checks for missing required guard files, conflict markers, secret-like values, unignored generated audio, and hidden dependencies on other local workspace projects. It reports and fails; it does not auto-edit files.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.

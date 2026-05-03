@@ -1547,3 +1547,38 @@ Use this file as a chronological research journal for the thesis implementation.
   - what speed range sounds like a professional sales agent without becoming pushy
   - whether provider voice settings alone can improve naturalness, or whether wording/prosody markup needs to change too
   - how to score trust and artifacts more clearly in later listening rubrics
+
+### 2026-05-03 - GUARD-001 project drift guard
+
+- Objective: prevent the Emotion Aware product repo from quietly drifting into hidden external dependencies, leaked secrets, or unsafe generated artifacts
+- Action taken:
+  - added a project-local drift guard runner
+  - added a validator with dirty and clean fixtures
+  - wired the guard into setup checks and the product command map
+  - documented that the guard reports failures but does not automatically edit files
+- Data used:
+  - current Emotion Aware repo structure
+  - existing self-containment policy
+  - generated voice/audio artifact patterns
+  - known local-workspace inspiration and internal-tool documentation boundaries
+- Output created:
+  - `scripts/check_project_drift.py`
+  - `scripts/validate_project_drift_guard.py`
+  - `docs/product/PROJECT_DRIFT_GUARD.md`
+- What was learned:
+  - the first validator run failed correctly because the guard runner did not exist yet
+  - the first guard run found a real missing documentation file from the new checkpoint
+  - the guard also surfaced the difference between product dependency risk and allowed provenance/internal-tool notes
+  - generated audio needs explicit ignore or curation rules because provider outputs are easy to create during voice experiments
+- Error or risk recorded:
+  - a guard that auto-fixes files too early could hide important architectural decisions
+  - broad external-path checks can create noise unless allowed documentation areas are clearly separated from runtime dependencies
+  - secret scanning should report locations and rules, not values
+- Why it matters for the thesis:
+  - it preserves reproducibility and portability as the project grows from experiments toward a client-ready product
+  - it documents another engineering-control layer created because of issues encountered during iterative voice/provider work
+  - it supports honest reporting of privacy, dependency, and artifact-handling practices
+- Open questions:
+  - whether GUARD-001 should later run in CI or remain local until the deployment target is clearer
+  - whether deployment preflight should reuse this guard or become a stricter separate gate
+  - whether remediation suggestions should be added while keeping automatic fixes disabled

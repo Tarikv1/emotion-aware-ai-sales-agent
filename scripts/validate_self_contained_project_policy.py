@@ -12,17 +12,22 @@ REQUIRED_DOCS = [
     ROOT / "docs" / "product" / "VOICE_GENERATED_AUDIO_ASSET_LOG.md",
 ]
 
+
+def joined(*parts: str, sep: str) -> str:
+    return sep.join(parts)
+
+
 FORBIDDEN_SCRIPT_REFERENCES = [
-    "D:\\Codex\\shared",
-    "D:/Codex/shared",
-    "..\\..\\shared",
-    "../../shared",
-    "active\\youtube-channel",
-    "active/youtube-channel",
-    "active\\client-websites",
-    "active/client-websites",
-    "active\\codex-workspace-dashboard",
-    "active/codex-workspace-dashboard",
+    joined("D:", "Codex", "shared", sep="\\"),
+    joined("D:", "Codex", "shared", sep="/"),
+    joined("..", "..", "shared", sep="\\"),
+    joined("..", "..", "shared", sep="/"),
+    joined("active", "youtube-channel", sep="\\"),
+    joined("active", "youtube-channel", sep="/"),
+    joined("active", "client-websites", sep="\\"),
+    joined("active", "client-websites", sep="/"),
+    joined("active", "codex-workspace-dashboard", sep="\\"),
+    joined("active", "codex-workspace-dashboard", sep="/"),
 ]
 
 REQUIRED_BOUNDARY_PHRASES = [

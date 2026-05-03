@@ -34,6 +34,24 @@ Validate that required project policies are local to Emotion Aware and scripts d
 python scripts\validate_self_contained_project_policy.py
 ```
 
+Detect project drift such as missing guard docs, conflict markers, secret-like values, unignored generated audio, or hidden dependencies on another local workspace project:
+
+```powershell
+python scripts\check_project_drift.py
+```
+
+Machine-readable drift check:
+
+```powershell
+python scripts\check_project_drift.py --json
+```
+
+Validate the drift guard itself:
+
+```powershell
+python scripts\validate_project_drift_guard.py
+```
+
 ## Relevant File Reading
 
 Use this when a file is large and you only need the useful part. It reads local repo files only, blocks secret/private paths, makes no network calls, and returns small slices.

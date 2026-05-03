@@ -21,6 +21,7 @@ Engineering blast radius:
 - Which existing checkpoints could regress?
 - Does default setup remain offline and no-key-safe?
 - Does the change need a new validator or setup check?
+- Does `python scripts\check_project_drift.py` pass with no hidden dependency, secret, conflict-marker, or generated-audio drift?
 
 Security/privacy:
 
