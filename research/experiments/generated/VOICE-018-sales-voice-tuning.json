@@ -1,0 +1,1511 @@
+{
+  "voice_milestone": "VOICE-018",
+  "experiment_scope": "Offline professional-sales voice tuning on top of VOICE-016 provider previews. The checkpoint increases sales-call pacing, adds emotion/pitch intent metadata, compresses pauses, and preserves protected text exactly.",
+  "case_file": "research\\experiments\\cases\\voice-018-sales-voice-tuning.json",
+  "source_artifact": "research\\experiments\\generated\\VOICE-016-provider-prosody-rendering.json",
+  "sales_voice_profile": {
+    "profile_id": "professional-sales-v1",
+    "style": "professional-sales",
+    "goal": "faster, more emotionally contoured sales delivery without casual overacting",
+    "tune_only_when_source_has_prosody_cues": true,
+    "speed_bounds": {
+      "min": 1.0,
+      "max": 1.16
+    },
+    "pause_bounds_ms": {
+      "min": 90,
+      "max": 280
+    },
+    "segment_type_speed_ranges": {
+      "freeform_objection_handling": [
+        1.11,
+        1.16
+      ],
+      "freeform_transition": [
+        1.08,
+        1.13
+      ],
+      "freeform_explanation": [
+        1.1,
+        1.15
+      ],
+      "freeform_empathy": [
+        1.03,
+        1.08
+      ]
+    },
+    "emotion_intents_by_segment_type": {
+      "freeform_objection_handling": "confident-low-pressure",
+      "freeform_transition": "curious-efficient",
+      "freeform_explanation": "confident-practical",
+      "freeform_empathy": "warm-reassuring"
+    },
+    "protected_emotion_intent": "neutral-clear",
+    "provider_policy": {
+      "cartesia": "eligible segments may use speed tags and compressed break tags",
+      "elevenlabs": "eligible responses may use request-level speed plus compressed break tags; protected text remains exact",
+      "unsupported_pitch": "record pitch/emotion intent as metadata until provider-specific live tests prove safe"
+    }
+  },
+  "summary": {
+    "case_count": 8,
+    "languages": {
+      "en": 4,
+      "de": 4
+    },
+    "provider_count": 2,
+    "providers": [
+      "cartesia",
+      "elevenlabs"
+    ],
+    "sales_tuned_variant_count": 16,
+    "segment_count": 28,
+    "tuned_segment_count": 12,
+    "protected_segment_count": 14,
+    "pause_compression_count": 10,
+    "average_eligible_speed_ratio": 1.11,
+    "max_speed_ratio": 1.142,
+    "emotion_intents": [
+      "confident-low-pressure",
+      "confident-practical",
+      "curious-efficient",
+      "warm-reassuring"
+    ],
+    "pitch_intents": [
+      "slight-rise",
+      "steady-confident",
+      "warm-soft"
+    ],
+    "protected_segment_text_changes": 0,
+    "validation_passed": 16,
+    "validation_failed": 0,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "quality_claim_allowed": false
+  },
+  "runtime_boundary": {
+    "offline_preview_only": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "quality_claim_allowed_without_human_rating": false
+  },
+  "cases": [
+    {
+      "case_id": "VOICE-015-C01",
+      "case_title": "English objection handling receives pause, pitch, rate, and emphasis cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "I understand your concern. The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+      "debug_text": "I understand your concern. The **important** thing is that we do not promise anything we cannot verify before looking at the workflow.",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "I understand your concern.<break time=\"187ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"0.960\"/>do not promise<speed ratio=\"1.000\"/> anything we cannot verify before looking at the workflow.",
+          "sales_tuned_text": "<speed ratio=\"1.141\"/>I understand your concern.<break time=\"141ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"1.061\"/>do not promise<speed ratio=\"1.141\"/> anything we cannot verify before looking at the workflow.<speed ratio=\"1.000\"/>",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "I understand your concern.<break time=\"187ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"0.960\"/>do not promise<speed ratio=\"1.000\"/> anything we cannot verify before looking at the workflow.",
+              "sales_tuned_text": "<speed ratio=\"1.141\"/>I understand your concern.<break time=\"141ms\"/> The <volume ratio=\"1.080\"/>important<volume ratio=\"1.000\"/> thing is that we <speed ratio=\"1.061\"/>do not promise<speed ratio=\"1.141\"/> anything we cannot verify before looking at the workflow.<speed ratio=\"1.000\"/>",
+              "speed_ratio": 1.141,
+              "emotion_intent": "confident-low-pressure",
+              "pitch_intent": "steady-confident",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 187,
+                  "tuned_ms": 141,
+                  "scale": 0.753
+                },
+                {
+                  "operation": "retune_careful_phrase_speed",
+                  "original_ratio": 0.96,
+                  "tuned_ratio": 1.061
+                },
+                {
+                  "operation": "restore_outer_sales_speed",
+                  "original_ratio": 1.0,
+                  "tuned_ratio": 1.141
+                },
+                {
+                  "operation": "wrap_segment_sales_speed",
+                  "tuned_ratio": 1.141,
+                  "nested_speed_tags_seen": 2
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.141,
+          "max_speed_ratio": 1.141,
+          "emotion_intents": [
+            "confident-low-pressure"
+          ],
+          "pitch_intents": [
+            "steady-confident"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "I understand your concern. <break time=\"0.187s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "sales_tuned_text": "I understand your concern. <break time=\"0.144s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.141
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c01-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "I understand your concern. <break time=\"0.187s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "sales_tuned_text": "I understand your concern. <break time=\"0.144s\" /> The important thing is that we do not promise anything we cannot verify before looking at the workflow.",
+              "speed_ratio": 1.141,
+              "emotion_intent": "confident-low-pressure",
+              "pitch_intent": "steady-confident",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 187,
+                  "tuned_ms": 144,
+                  "scale": 0.769
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.141,
+          "max_speed_ratio": 1.141,
+          "emotion_intents": [
+            "confident-low-pressure"
+          ],
+          "pitch_intents": [
+            "steady-confident"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C02",
+      "case_title": "German objection handling receives rare stretch plus bounded prosody cues",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "prosody_cue_count": 5,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 1
+      },
+      "plain_text": "Also, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+      "debug_text": "Also..., ich verstehe den Punkt. **Wichtig** ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Also<break time=\"314ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"0.926\"/>nichts verspreche<speed ratio=\"1.000\"/>, was ein Fachberater sauber pruefen sollte.",
+          "sales_tuned_text": "<speed ratio=\"1.142\"/>Also<break time=\"235ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"1.062\"/>nichts verspreche<speed ratio=\"1.142\"/>, was ein Fachberater sauber pruefen sollte.<speed ratio=\"1.000\"/>",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Also<break time=\"314ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"0.926\"/>nichts verspreche<speed ratio=\"1.000\"/>, was ein Fachberater sauber pruefen sollte.",
+              "sales_tuned_text": "<speed ratio=\"1.142\"/>Also<break time=\"235ms\"/>, ich verstehe den Punkt. <volume ratio=\"1.080\"/>Wichtig<volume ratio=\"1.000\"/> ist, dass ich Ihnen <speed ratio=\"1.062\"/>nichts verspreche<speed ratio=\"1.142\"/>, was ein Fachberater sauber pruefen sollte.<speed ratio=\"1.000\"/>",
+              "speed_ratio": 1.142,
+              "emotion_intent": "confident-low-pressure",
+              "pitch_intent": "steady-confident",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 314,
+                  "tuned_ms": 235,
+                  "scale": 0.748
+                },
+                {
+                  "operation": "retune_careful_phrase_speed",
+                  "original_ratio": 0.926,
+                  "tuned_ratio": 1.062
+                },
+                {
+                  "operation": "restore_outer_sales_speed",
+                  "original_ratio": 1.0,
+                  "tuned_ratio": 1.142
+                },
+                {
+                  "operation": "wrap_segment_sales_speed",
+                  "tuned_ratio": 1.142,
+                  "nested_speed_tags_seen": 2
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.142,
+          "max_speed_ratio": 1.142,
+          "emotion_intents": [
+            "confident-low-pressure"
+          ],
+          "pitch_intents": [
+            "steady-confident"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Also <break time=\"0.314s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "sales_tuned_text": "Also <break time=\"0.226s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.142
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c02-freeform",
+              "segment_type": "freeform_objection_handling",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Also <break time=\"0.314s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "sales_tuned_text": "Also <break time=\"0.226s\" />, ich verstehe den Punkt. Wichtig ist, dass ich Ihnen nichts verspreche, was ein Fachberater sauber pruefen sollte.",
+              "speed_ratio": 1.142,
+              "emotion_intent": "confident-low-pressure",
+              "pitch_intent": "steady-confident",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 314,
+                  "tuned_ms": 226,
+                  "scale": 0.719
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.142,
+          "max_speed_ratio": 1.142,
+          "emotion_intents": [
+            "confident-low-pressure"
+          ],
+          "pitch_intents": [
+            "steady-confident"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C03",
+      "case_title": "English mixed response protects campaign question while freeform gets cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "That makes sense. I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+      "debug_text": "That makes sense. I can keep this **practical** and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "That makes sense.<break time=\"266ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"0.951\"/>before we schedule anything<speed ratio=\"1.000\"/>. Do you handle inbound lead routing?",
+          "sales_tuned_text": "<speed ratio=\"1.100\"/>That makes sense.<break time=\"200ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"1.020\"/>before we schedule anything<speed ratio=\"1.100\"/>.<speed ratio=\"1.000\"/> Do you handle inbound lead routing?",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "That makes sense.<break time=\"266ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"0.951\"/>before we schedule anything<speed ratio=\"1.000\"/>.",
+              "sales_tuned_text": "<speed ratio=\"1.100\"/>That makes sense.<break time=\"200ms\"/> I can keep this <volume ratio=\"1.080\"/>practical<volume ratio=\"1.000\"/> and only check whether the workflow is relevant <speed ratio=\"1.020\"/>before we schedule anything<speed ratio=\"1.100\"/>.<speed ratio=\"1.000\"/>",
+              "speed_ratio": 1.1,
+              "emotion_intent": "curious-efficient",
+              "pitch_intent": "slight-rise",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 266,
+                  "tuned_ms": 200,
+                  "scale": 0.751
+                },
+                {
+                  "operation": "retune_careful_phrase_speed",
+                  "original_ratio": 0.951,
+                  "tuned_ratio": 1.02
+                },
+                {
+                  "operation": "restore_outer_sales_speed",
+                  "original_ratio": 1.0,
+                  "tuned_ratio": 1.1
+                },
+                {
+                  "operation": "wrap_segment_sales_speed",
+                  "tuned_ratio": 1.1,
+                  "nested_speed_tags_seen": 2
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            },
+            {
+              "segment_id": "c03-question",
+              "segment_type": "campaign_qualification_question",
+              "protected": true,
+              "protected_reason": "matches_campaign_qualification_question",
+              "tuned": false,
+              "source_text": "Do you handle inbound lead routing?",
+              "sales_tuned_text": "Do you handle inbound lead routing?",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.1,
+          "max_speed_ratio": 1.1,
+          "emotion_intents": [
+            "curious-efficient"
+          ],
+          "pitch_intents": [
+            "slight-rise"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "That makes sense. <break time=\"0.266s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+          "sales_tuned_text": "That makes sense. <break time=\"0.222s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything. Do you handle inbound lead routing?",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.1
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c03-freeform",
+              "segment_type": "freeform_transition",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "That makes sense. <break time=\"0.266s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+              "sales_tuned_text": "That makes sense. <break time=\"0.222s\" /> I can keep this practical and only check whether the workflow is relevant before we schedule anything.",
+              "speed_ratio": 1.1,
+              "emotion_intent": "curious-efficient",
+              "pitch_intent": "slight-rise",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 266,
+                  "tuned_ms": 222,
+                  "scale": 0.834
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            },
+            {
+              "segment_id": "c03-question",
+              "segment_type": "campaign_qualification_question",
+              "protected": true,
+              "protected_reason": "matches_campaign_qualification_question",
+              "tuned": false,
+              "source_text": "Do you handle inbound lead routing?",
+              "sales_tuned_text": "Do you handle inbound lead routing?",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.1,
+          "max_speed_ratio": 1.1,
+          "emotion_intents": [
+            "curious-efficient"
+          ],
+          "pitch_intents": [
+            "slight-rise"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C04",
+      "case_title": "German mixed response protects qualification question and disclosure",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "Das hilft mir bei der Einordnung. Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+      "debug_text": "Das hilft mir bei der Einordnung. Ich halte es **praktisch** und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Das hilft mir bei der Einordnung.<break time=\"284ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"0.950\"/>unverbindlicher Rueckruf<speed ratio=\"1.000\"/> fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "sales_tuned_text": "<speed ratio=\"1.088\"/>Das hilft mir bei der Einordnung.<break time=\"200ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"1.008\"/>unverbindlicher Rueckruf<speed ratio=\"1.088\"/> fuer Sie sinnvoll waere.<speed ratio=\"1.000\"/> Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Das hilft mir bei der Einordnung.<break time=\"284ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"0.950\"/>unverbindlicher Rueckruf<speed ratio=\"1.000\"/> fuer Sie sinnvoll waere.",
+              "sales_tuned_text": "<speed ratio=\"1.088\"/>Das hilft mir bei der Einordnung.<break time=\"200ms\"/> Ich halte es <volume ratio=\"1.080\"/>praktisch<volume ratio=\"1.000\"/> und klaere nur, ob ein <speed ratio=\"1.008\"/>unverbindlicher Rueckruf<speed ratio=\"1.088\"/> fuer Sie sinnvoll waere.<speed ratio=\"1.000\"/>",
+              "speed_ratio": 1.088,
+              "emotion_intent": "curious-efficient",
+              "pitch_intent": "slight-rise",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 284,
+                  "tuned_ms": 200,
+                  "scale": 0.703
+                },
+                {
+                  "operation": "retune_careful_phrase_speed",
+                  "original_ratio": 0.95,
+                  "tuned_ratio": 1.008
+                },
+                {
+                  "operation": "restore_outer_sales_speed",
+                  "original_ratio": 1.0,
+                  "tuned_ratio": 1.088
+                },
+                {
+                  "operation": "wrap_segment_sales_speed",
+                  "tuned_ratio": 1.088,
+                  "nested_speed_tags_seen": 2
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            },
+            {
+              "segment_id": "c04-question",
+              "segment_type": "campaign_qualification_question",
+              "protected": true,
+              "protected_reason": "matches_campaign_qualification_question",
+              "tuned": false,
+              "source_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "sales_tuned_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            },
+            {
+              "segment_id": "c04-disclosure",
+              "segment_type": "required_disclosure",
+              "protected": true,
+              "protected_reason": "matches_required_disclosure",
+              "tuned": false,
+              "source_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "sales_tuned_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.088,
+          "max_speed_ratio": 1.088,
+          "emotion_intents": [
+            "curious-efficient"
+          ],
+          "pitch_intents": [
+            "slight-rise"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Das hilft mir bei der Einordnung. <break time=\"0.284s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "sales_tuned_text": "Das hilft mir bei der Einordnung. <break time=\"0.22s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.088
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c04-freeform",
+              "segment_type": "freeform_transition",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Das hilft mir bei der Einordnung. <break time=\"0.284s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+              "sales_tuned_text": "Das hilft mir bei der Einordnung. <break time=\"0.22s\" /> Ich halte es praktisch und klaere nur, ob ein unverbindlicher Rueckruf fuer Sie sinnvoll waere.",
+              "speed_ratio": 1.088,
+              "emotion_intent": "curious-efficient",
+              "pitch_intent": "slight-rise",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 284,
+                  "tuned_ms": 220,
+                  "scale": 0.773
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            },
+            {
+              "segment_id": "c04-question",
+              "segment_type": "campaign_qualification_question",
+              "protected": true,
+              "protected_reason": "matches_campaign_qualification_question",
+              "tuned": false,
+              "source_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "sales_tuned_text": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            },
+            {
+              "segment_id": "c04-disclosure",
+              "segment_type": "required_disclosure",
+              "protected": true,
+              "protected_reason": "matches_required_disclosure",
+              "tuned": false,
+              "source_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "sales_tuned_text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.088,
+          "max_speed_ratio": 1.088,
+          "emotion_intents": [
+            "curious-efficient"
+          ],
+          "pitch_intents": [
+            "slight-rise"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C05",
+      "case_title": "German do-not-call and hangup lines remain cue-free",
+      "campaign_id": "campaign-voice-015-de-b2c-dental",
+      "language": "de",
+      "prosody_cue_count": 0,
+      "prosody_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 0,
+        "rate": 0,
+        "stretch": 0
+      },
+      "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+      "debug_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": false,
+          "source_rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "sales_tuned_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c05-do-not-call",
+              "segment_type": "do_not_call",
+              "protected": true,
+              "protected_reason": "protected_segment_type:do_not_call",
+              "tuned": false,
+              "source_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "sales_tuned_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            },
+            {
+              "segment_id": "c05-hangup",
+              "segment_type": "hangup",
+              "protected": true,
+              "protected_reason": "protected_segment_type:hangup",
+              "tuned": false,
+              "source_text": "Auf Wiederhoeren.",
+              "sales_tuned_text": "Auf Wiederhoeren.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 0,
+          "pause_compression_count": 0,
+          "average_speed_ratio": 1.0,
+          "max_speed_ratio": 1.0,
+          "emotion_intents": [],
+          "pitch_intents": [],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": false,
+          "source_rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "sales_tuned_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c05-do-not-call",
+              "segment_type": "do_not_call",
+              "protected": true,
+              "protected_reason": "protected_segment_type:do_not_call",
+              "tuned": false,
+              "source_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "sales_tuned_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            },
+            {
+              "segment_id": "c05-hangup",
+              "segment_type": "hangup",
+              "protected": true,
+              "protected_reason": "protected_segment_type:hangup",
+              "tuned": false,
+              "source_text": "Auf Wiederhoeren.",
+              "sales_tuned_text": "Auf Wiederhoeren.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 0,
+          "pause_compression_count": 0,
+          "average_speed_ratio": 1.0,
+          "max_speed_ratio": 1.0,
+          "emotion_intents": [],
+          "pitch_intents": [],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C06",
+      "case_title": "Disabled campaign profile produces no prosody cues",
+      "campaign_id": "campaign-voice-015-en-clean-scripted",
+      "language": "en",
+      "prosody_cue_count": 0,
+      "prosody_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 0,
+        "rate": 0,
+        "stretch": 0
+      },
+      "plain_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+      "debug_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": false,
+          "source_rendered_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "sales_tuned_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c06-freeform",
+              "segment_type": "freeform_explanation",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": false,
+              "source_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "sales_tuned_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 0,
+          "pause_compression_count": 0,
+          "average_speed_ratio": 1.0,
+          "max_speed_ratio": 1.0,
+          "emotion_intents": [],
+          "pitch_intents": [],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": false,
+          "source_rendered_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "sales_tuned_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c06-freeform",
+              "segment_type": "freeform_explanation",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": false,
+              "source_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "sales_tuned_text": "The safest next step is to keep the appointment language exact and avoid delivery cues when this campaign asks for a clean script.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 0,
+          "pause_compression_count": 0,
+          "average_speed_ratio": 1.0,
+          "max_speed_ratio": 1.0,
+          "emotion_intents": [],
+          "pitch_intents": [],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C07",
+      "case_title": "Strict German insurance allows only one empathy pitch cue before protected boundary",
+      "campaign_id": "campaign-voice-015-de-insurance-strict",
+      "language": "de",
+      "prosody_cue_count": 1,
+      "prosody_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 1,
+        "rate": 0,
+        "stretch": 0
+      },
+      "plain_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+      "debug_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "sales_tuned_text": "<speed ratio=\"1.068\"/>Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.<speed ratio=\"1.000\"/> Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c07-empathy",
+              "segment_type": "freeform_empathy",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "sales_tuned_text": "<speed ratio=\"1.068\"/>Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.<speed ratio=\"1.000\"/>",
+              "speed_ratio": 1.068,
+              "emotion_intent": "warm-reassuring",
+              "pitch_intent": "warm-soft",
+              "pause_compression_count": 0,
+              "operations": [
+                {
+                  "operation": "wrap_segment_sales_speed",
+                  "tuned_ratio": 1.068,
+                  "nested_speed_tags_seen": 0
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            },
+            {
+              "segment_id": "c07-boundary",
+              "segment_type": "coverage_or_claim_boundary",
+              "protected": true,
+              "protected_reason": "matches_required_disclosure",
+              "tuned": false,
+              "source_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "sales_tuned_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            },
+            {
+              "segment_id": "c07-question",
+              "segment_type": "campaign_qualification_question",
+              "protected": true,
+              "protected_reason": "matches_campaign_qualification_question",
+              "tuned": false,
+              "source_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "sales_tuned_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 0,
+          "average_speed_ratio": 1.068,
+          "max_speed_ratio": 1.068,
+          "emotion_intents": [
+            "warm-reassuring"
+          ],
+          "pitch_intents": [
+            "warm-soft"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "sales_tuned_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.068
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c07-empathy",
+              "segment_type": "freeform_empathy",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "sales_tuned_text": "Ich verstehe, dass Sie bei so einem Thema vorsichtig sind.",
+              "speed_ratio": 1.068,
+              "emotion_intent": "warm-reassuring",
+              "pitch_intent": "warm-soft",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            },
+            {
+              "segment_id": "c07-boundary",
+              "segment_type": "coverage_or_claim_boundary",
+              "protected": true,
+              "protected_reason": "matches_required_disclosure",
+              "tuned": false,
+              "source_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "sales_tuned_text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            },
+            {
+              "segment_id": "c07-question",
+              "segment_type": "campaign_qualification_question",
+              "protected": true,
+              "protected_reason": "matches_campaign_qualification_question",
+              "tuned": false,
+              "source_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "sales_tuned_text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+              "speed_ratio": 1.0,
+              "emotion_intent": "neutral-clear",
+              "pitch_intent": "steady-neutral",
+              "pause_compression_count": 0,
+              "operations": [],
+              "provider_hint": "Protected or cue-free segment kept exact."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 0,
+          "average_speed_ratio": 1.068,
+          "max_speed_ratio": 1.068,
+          "emotion_intents": [
+            "warm-reassuring"
+          ],
+          "pitch_intents": [
+            "warm-soft"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-015-C08",
+      "case_title": "English longer explanation receives professional-human rhythm cues",
+      "campaign_id": "campaign-voice-015-en-b2b-software",
+      "language": "en",
+      "prosody_cue_count": 4,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 0
+      },
+      "plain_text": "Here is the realistic way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+      "debug_text": "Here is the **realistic** way to look at it. We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+      "sales_voice_variants": [
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "cartesia",
+          "provider_name": "Cartesia Sonic 3",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Here is the <volume ratio=\"1.080\"/>realistic<volume ratio=\"1.000\"/> way to look at it.<break time=\"350ms\"/> We can keep the <speed ratio=\"1.045\"/>first step short<speed ratio=\"1.000\"/>, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "sales_tuned_text": "<speed ratio=\"1.122\"/>Here is the <volume ratio=\"1.080\"/>realistic<volume ratio=\"1.000\"/> way to look at it.<break time=\"247ms\"/> We can keep the <speed ratio=\"1.122\"/>first step short<speed ratio=\"1.122\"/>, check the routing problem, and then decide whether a specialist callback is actually useful.<speed ratio=\"1.000\"/>",
+          "voice_settings": {},
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Here is the <volume ratio=\"1.080\"/>realistic<volume ratio=\"1.000\"/> way to look at it.<break time=\"350ms\"/> We can keep the <speed ratio=\"1.045\"/>first step short<speed ratio=\"1.000\"/>, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "sales_tuned_text": "<speed ratio=\"1.122\"/>Here is the <volume ratio=\"1.080\"/>realistic<volume ratio=\"1.000\"/> way to look at it.<break time=\"247ms\"/> We can keep the <speed ratio=\"1.122\"/>first step short<speed ratio=\"1.122\"/>, check the routing problem, and then decide whether a specialist callback is actually useful.<speed ratio=\"1.000\"/>",
+              "speed_ratio": 1.122,
+              "emotion_intent": "confident-practical",
+              "pitch_intent": "steady-confident",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 350,
+                  "tuned_ms": 247,
+                  "scale": 0.705
+                },
+                {
+                  "operation": "retune_quick_phrase_speed",
+                  "original_ratio": 1.045,
+                  "tuned_ratio": 1.122
+                },
+                {
+                  "operation": "restore_outer_sales_speed",
+                  "original_ratio": 1.0,
+                  "tuned_ratio": 1.122
+                },
+                {
+                  "operation": "wrap_segment_sales_speed",
+                  "tuned_ratio": 1.122,
+                  "nested_speed_tags_seen": 2
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.122,
+          "max_speed_ratio": 1.122,
+          "emotion_intents": [
+            "confident-practical"
+          ],
+          "pitch_intents": [
+            "steady-confident"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        },
+        {
+          "sales_voice_tuning_id": "VOICE-018-professional-sales-voice-tuning",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "case_active_for_tuning": true,
+          "source_rendered_text": "Here is the realistic way to look at it. <break time=\"0.35s\" /> We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "sales_tuned_text": "Here is the realistic way to look at it. <break time=\"0.28s\" /> We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.122
+          },
+          "segment_delivery_plan": [
+            {
+              "segment_id": "c08-freeform",
+              "segment_type": "freeform_explanation",
+              "protected": false,
+              "protected_reason": null,
+              "tuned": true,
+              "source_text": "Here is the realistic way to look at it. <break time=\"0.35s\" /> We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "sales_tuned_text": "Here is the realistic way to look at it. <break time=\"0.28s\" /> We can keep the first step short, check the routing problem, and then decide whether a specialist callback is actually useful.",
+              "speed_ratio": 1.122,
+              "emotion_intent": "confident-practical",
+              "pitch_intent": "steady-confident",
+              "pause_compression_count": 1,
+              "operations": [
+                {
+                  "operation": "compress_pause",
+                  "original_ms": 350,
+                  "tuned_ms": 280,
+                  "scale": 0.822
+                }
+              ],
+              "provider_hint": "Professional-sales pacing metadata; live provider mapping still requires explicit TTS checkpoint."
+            }
+          ],
+          "tuned_segment_count": 1,
+          "pause_compression_count": 1,
+          "average_speed_ratio": 1.122,
+          "max_speed_ratio": 1.122,
+          "emotion_intents": [
+            "confident-practical"
+          ],
+          "pitch_intents": [
+            "steady-confident"
+          ],
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline sales-voice tuning preview only; live audio belongs to a later explicit provider checkpoint",
+          "validation": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      ],
+      "validation": {
+        "passed": true,
+        "provider_validations": {
+          "cartesia": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          },
+          "elevenlabs": {
+            "passed": true,
+            "protected_segment_text_changes": [],
+            "speed_out_of_bounds": [],
+            "missing_emotion_intents": []
+          }
+        }
+      }
+    }
+  ]
+}

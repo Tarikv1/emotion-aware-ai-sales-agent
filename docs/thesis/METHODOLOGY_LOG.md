@@ -1612,3 +1612,56 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - whether a future CI check should enforce the policy validator
   - whether the reader should later produce compact summaries for repeated thesis-writing sessions
+
+### 2026-05-03 - VOICE-018 professional-sales voice tuning
+
+- Objective: respond to listening feedback that the live bilingual TTS was clear but too slow, flat, and still obviously AI-generated for real sales leads
+- Action taken:
+  - added an offline sales voice tuning layer on top of VOICE-016 provider previews
+  - increased eligible freeform speech speed with bounded professional-sales ratios
+  - compressed existing break tags to reduce robotic slowness
+  - added emotion and pitch intent metadata for later provider tests
+  - kept protected campaign, disclosure, do-not-call, hang-up, and sensitive text exact
+  - added a validator and generated JSON/Markdown evidence
+- Data used:
+  - `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
+  - first VOICE-017 and RESP-003 listening feedback
+  - existing protected-segment taxonomy from VOICE-012 through VOICE-016
+- Output created:
+  - `scripts/sales_voice_tuning.py`
+  - `scripts/run_voice_018_sales_voice_tuning.py`
+  - `scripts/validate_voice_018_sales_voice_tuning.py`
+  - `research/experiments/cases/voice-018-sales-voice-tuning.json`
+  - `research/experiments/generated/VOICE-018-sales-voice-tuning.json`
+  - `research/experiments/generated/VOICE-018-sales-voice-tuning-report.md`
+  - `docs/product/VOICE_018_SALES_VOICE_TUNING.md`
+- Technical result:
+  - cases: 8
+  - German cases: 4
+  - English cases: 4
+  - sales-tuned variants: 16
+  - tuned segments: 12
+  - protected segments: 14
+  - pause compressions: 10
+  - average eligible speed ratio: 1.11
+  - max speed ratio: 1.142
+  - protected text changes: 0
+  - provider calls made: false
+  - customer audio uploaded: false
+  - voice cloning used: false
+- What was learned:
+  - speed and emotion can be tuned as structured delivery metadata before live provider calls
+  - protected scripted/compliance text can remain exact while eligible freeform speech receives sales-call pacing
+  - the current artifact is a provider-input improvement, not an audio quality claim
+- Error or risk recorded:
+  - request-level provider speed, especially for ElevenLabs, may affect all text in a single provider call unless the runtime later splits segments
+  - pitch and emotion intent remain metadata until provider-specific live tests prove a safe mapping
+  - human listening review is still required before claiming the tuned voice is better
+- Why it matters for the thesis:
+  - it turns qualitative listening feedback into a measurable, reproducible engineering iteration
+  - it preserves the thesis distinction between text safety, delivery planning, provider rendering, live synthesis, and human listening evaluation
+  - it documents a realistic product limitation: live voice naturalness requires iterative tuning beyond correct response content
+- Open questions:
+  - whether VOICE-018 sounds better in live ElevenLabs and/or Cartesia audio
+  - whether per-segment TTS calls are needed so protected text can keep neutral pace while freeform speech is faster
+  - whether the listening rubric should explicitly score sales pace, pitch contour, and AI-obviousness

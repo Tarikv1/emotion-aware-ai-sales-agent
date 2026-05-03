@@ -169,6 +169,7 @@ Current integrated prototype evidence:
 - provider-specific prosody rendering in `VOICE-016`, with offline Cartesia and ElevenLabs previews before live audio synthesis
 - guarded live-capable A/B audio harness in `VOICE-017`, with dry-run default and plain-vs-prosody provider inputs
 - first live VOICE-017 ElevenLabs A/B listening result, where the human listener strongly preferred prosody-shaped speech over plain speech in the two-case run
+- offline professional-sales voice tuning in `VOICE-018`, with faster bounded pacing, emotion/pitch intent metadata, compressed pauses, and protected-text locks before the next live audio run
 - runtime voice-delivery bridge in `RESP-002`, which applies prosody/provider preview metadata after guarded response generation while keeping `final_response` unchanged
 - project self-containment policy plus local voice provider run-boundary and generated-audio asset-log docs for client-portable provider workflows
 - runtime live-capable TTS bridge in `RESP-003`, with dry-run default, explicit live opt-in, generated-audio asset logging, and protected-text fallback to exact `final_response`
@@ -289,6 +290,7 @@ Immediate product artifact:
 - VOICE-016 provider-specific prosody rendering previews for Cartesia and ElevenLabs
 - VOICE-017 guarded live-capable A/B audio harness for plain vs prosody-shaped text
 - VOICE-017 first live ElevenLabs A/B result with prosody strongly preferred in the two-case human listening review
+- VOICE-018 offline professional-sales tuning after listening feedback found RESP-003 clear but too slow and still obviously AI-generated
 - RESP-002 runtime voice-delivery bridge from guarded response to offline ElevenLabs/Cartesia provider preview
 - project-local self-containment, voice provider run-boundary, and generated-audio asset-log policies
 - RESP-003 runtime live-capable TTS bridge from validated voice-delivery packet to optional provider audio
@@ -297,7 +299,7 @@ Immediate product artifact:
 
 Next voice checkpoint:
 
-- improve RESP-003/VOICE delivery speed and emotional contour, then rerun bilingual live listening review
+- run a live A/B listening pass comparing current prosody-shaped input against VOICE-018 professional-sales tuned input
 - connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
 - expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence

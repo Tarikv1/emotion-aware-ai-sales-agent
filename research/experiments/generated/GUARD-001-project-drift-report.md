@@ -6,7 +6,7 @@
 - Issues: 0
 - Failures: 0
 - Warnings: 0
-- Files scanned: 301
+- Files scanned: 309
 - Auto fixes applied: false
 
 ## Issues

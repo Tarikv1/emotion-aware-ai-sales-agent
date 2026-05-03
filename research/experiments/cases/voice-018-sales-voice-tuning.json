@@ -1,0 +1,62 @@
+{
+  "voice_milestone": "VOICE-018",
+  "experiment_scope": "Offline professional-sales voice tuning on top of VOICE-016 provider previews. The checkpoint increases sales-call pacing, adds emotion/pitch intent metadata, compresses pauses, and preserves protected text exactly.",
+  "source_artifact": "research/experiments/generated/VOICE-016-provider-prosody-rendering.json",
+  "selected_source_case_ids": [
+    "VOICE-015-C01",
+    "VOICE-015-C02",
+    "VOICE-015-C03",
+    "VOICE-015-C04",
+    "VOICE-015-C05",
+    "VOICE-015-C06",
+    "VOICE-015-C07",
+    "VOICE-015-C08"
+  ],
+  "providers": ["cartesia", "elevenlabs"],
+  "sales_voice_profile": {
+    "profile_id": "professional-sales-v1",
+    "style": "professional-sales",
+    "goal": "faster, more emotionally contoured sales delivery without casual overacting",
+    "tune_only_when_source_has_prosody_cues": true,
+    "speed_bounds": {
+      "min": 1.0,
+      "max": 1.16
+    },
+    "pause_bounds_ms": {
+      "min": 90,
+      "max": 280
+    },
+    "segment_type_speed_ranges": {
+      "freeform_objection_handling": [1.11, 1.16],
+      "freeform_transition": [1.08, 1.13],
+      "freeform_explanation": [1.1, 1.15],
+      "freeform_empathy": [1.03, 1.08]
+    },
+    "emotion_intents_by_segment_type": {
+      "freeform_objection_handling": "confident-low-pressure",
+      "freeform_transition": "curious-efficient",
+      "freeform_explanation": "confident-practical",
+      "freeform_empathy": "warm-reassuring"
+    },
+    "protected_emotion_intent": "neutral-clear",
+    "provider_policy": {
+      "cartesia": "eligible segments may use speed tags and compressed break tags",
+      "elevenlabs": "eligible responses may use request-level speed plus compressed break tags; protected text remains exact",
+      "unsupported_pitch": "record pitch/emotion intent as metadata until provider-specific live tests prove safe"
+    }
+  },
+  "expected": {
+    "case_count": 8,
+    "provider_count": 2,
+    "sales_tuned_variant_count": 16,
+    "min_tuned_segments": 12,
+    "min_average_eligible_speed_ratio": 1.08,
+    "max_speed_ratio": 1.16,
+    "min_pause_compressions": 10,
+    "protected_segment_text_changes": 0,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  }
+}

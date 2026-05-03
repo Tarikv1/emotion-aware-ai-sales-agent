@@ -316,6 +316,18 @@ Validate VOICE-017 dry-run and forced-missing-key fallback behavior:
 python scripts\validate_voice_017_live_ab_audio.py
 ```
 
+Run the VOICE-018 offline professional-sales voice tuning preview:
+
+```powershell
+python scripts\run_voice_018_sales_voice_tuning.py
+```
+
+Validate VOICE-018 sales voice pacing, emotion intents, and protected-text locks:
+
+```powershell
+python scripts\validate_voice_018_sales_voice_tuning.py
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
