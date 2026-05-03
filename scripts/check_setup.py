@@ -34,6 +34,7 @@ REQUIRED_FILES = [
     ("file.readme", "README.md", "Project README"),
     ("file.program", "program.md", "Research program"),
     ("file.docs_third_party_inspirations", "docs/third-party-inspirations.md", "Third-party inspiration and attribution notes"),
+    ("file.docs_product_review_gates", "docs/product-review-gates.md", "Product review gates"),
     ("file.docs_product_commands", "docs/product/COMMANDS.md", "Product command map"),
     ("file.docs_product_product_brief", "docs/product/PRODUCT_BRIEF.md", "Product brief"),
     ("file.docs_product_client_mvp_workflow", "docs/product/CLIENT_MVP_WORKFLOW.md", "Client MVP workflow"),

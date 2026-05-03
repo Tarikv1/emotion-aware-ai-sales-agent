@@ -70,6 +70,56 @@ one reusable sales-agent core
   - Keep using this as methodology inspiration for sales-agent evaluations.
   - Do not add autonomous self-improvement loops without explicit review and rollback design.
 
+## garrytan/gstack
+
+- Source: https://github.com/garrytan/gstack
+- License observed: MIT.
+- Checked: 2026-05-03. Workspace source notes: `D:\Codex\shared\docs\gstack-adapted-workflows.md`.
+- Reuse label: adapted pattern.
+- What we learned/adapted:
+  - Use product office-hours, engineering review, CSO security review, and QA-only review gates before large product/runtime changes.
+  - Keep publish, send, deploy, provider, memory, and customer-data actions review-gated.
+- Directly copied material: none. The workspace templates were rewritten in local style.
+- Where it affected the Emotion Aware project:
+  - `docs/product-review-gates.md`
+  - project-local product, engineering, security/privacy, and QA review prompts
+- Product/runtime boundary:
+  - Developer workflow only.
+  - gstack is not installed in this product.
+  - The shared workspace templates are inspiration only, not required Emotion Aware workflow files.
+  - No gstack setup, telemetry, auto-update, ngrok, Supabase, browser daemon, or global skill installation was added.
+- Security/privacy notes:
+  - The review templates are local Markdown only.
+  - They do not send data to the internet.
+  - They reinforce review gates for provider/network/customer-data behavior.
+- Follow-up:
+  - Keep required review gates product-local.
+
+## abhigyanpatwari/GitNexus
+
+- Source: https://github.com/abhigyanpatwari/GitNexus
+- License observed: PolyForm Noncommercial.
+- Checked: 2026-05-03. Workspace source notes: `D:\Codex\shared\docs\gitnexus-adapted-impact-analysis.md`.
+- Reuse label: avoid until reviewed.
+- What we learned/adapted:
+  - The source repo/package itself is not approved for product reuse because the license is noncommercial.
+  - Before editing shared or runtime-sensitive files, run a local blast-radius check to find likely dependents.
+  - Treat impact analysis as review evidence, not as proof that a change is safe.
+- Directly copied material: none. The local analyzer is an original dependency-free helper.
+- Where it affected the Emotion Aware project:
+  - `docs/product-review-gates.md`
+  - optional workspace impact-helper note
+- Product/runtime boundary:
+  - Internal developer support only.
+  - GitNexus is not installed and is not a product dependency.
+  - The optional Codex HQ impact command is not required for product setup or customer handoff.
+  - Because the source license is noncommercial, do not copy code or use the package in the commercial product path without legal review.
+- Security/privacy notes:
+  - The adapted analyzer is local-only, read-only, and skips secret-like paths.
+  - No network, MCP, native parser, or embedding service is used.
+- Follow-up:
+  - Keep this as optional workspace tooling unless a product-local developer command is truly needed.
+
 ## Shubhamsaboo/awesome-llm-apps
 
 - Source: https://github.com/Shubhamsaboo/awesome-llm-apps
@@ -296,6 +346,8 @@ one reusable sales-agent core
 - Sources added:
   - `1jehuang/jcode`
   - `karpathy/autoresearch`
+  - `garrytan/gstack`
+  - `abhigyanpatwari/GitNexus`
   - `Shubhamsaboo/awesome-llm-apps`
   - `safishamsi/graphify`
   - `jamiepine/voicebox`

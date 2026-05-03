@@ -113,6 +113,20 @@ validation passed: true
 
 Generated MP3 files remain local and ignored by Git. The JSON/Markdown evidence can be committed after secret scanning.
 
+## Human Listening Review
+
+Tarik reviewed the German and English RESP-003 audio on 2026-05-03.
+
+Summary:
+
+```text
+The audio is clear and pronunciation is good, but it still sounds obviously AI-generated.
+It is too slow for a sales-agent call.
+Use with real leads right now: no.
+```
+
+Detailed review: `research/experiments/generated/RESP-003-bilingual-human-listening-review.md`
+
 ## Interpretation
 
 RESP-003 makes the runtime path live-TTS capable without making provider calls part of the default setup.

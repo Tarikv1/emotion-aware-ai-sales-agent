@@ -169,6 +169,7 @@ Current integrated prototype evidence:
 - project self-containment policy plus local voice provider run-boundary and generated-audio asset-log docs for client-portable provider workflows
 - runtime live-capable TTS bridge in `RESP-003`, with dry-run default, explicit live opt-in, generated-audio asset logging, and protected-text fallback to exact `final_response`
 - first bilingual RESP-003 ElevenLabs live TTS run, with German and English audio created, no customer audio upload, no voice cloning, and sub-second provider latency in both cases
+- first bilingual RESP-003 human listening review, finding clear pronunciation but voice still too slow and obviously AI-generated for real leads
 
 Out of scope:
 
@@ -288,10 +289,11 @@ Immediate product artifact:
 - project-local self-containment, voice provider run-boundary, and generated-audio asset-log policies
 - RESP-003 runtime live-capable TTS bridge from validated voice-delivery packet to optional provider audio
 - RESP-003 first bilingual ElevenLabs live TTS result for German and English campaign responses
+- RESP-003 human listening review showing the next voice quality target: faster, less robotic, better pitch/emotion, while preserving clarity
 
 Next voice checkpoint:
 
-- record human listening review for the German and English RESP-003 audio files before making quality claims
+- improve RESP-003/VOICE delivery speed and emotional contour, then rerun bilingual live listening review
 - connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
 - expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence

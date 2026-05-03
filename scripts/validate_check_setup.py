@@ -59,6 +59,7 @@ def main() -> None:
         "dir.docs_product",
         "dir.research_experiments_generated",
         "file.docs_third_party_inspirations",
+        "file.docs_product_review_gates",
         "file.docs_product_product_brief",
         "file.scripts_realtime_turn_cli",
         "file.scripts_start_guarded_local_server",
