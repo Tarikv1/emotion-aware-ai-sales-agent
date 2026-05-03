@@ -1582,3 +1582,33 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether GUARD-001 should later run in CI or remain local until the deployment target is clearer
   - whether deployment preflight should reuse this guard or become a stricter separate gate
   - whether remediation suggestions should be added while keeping automatic fixes disabled
+
+### 2026-05-03 - CTX-001 automatic relevant-reader policy
+
+- Objective: make the project-local relevant reader the default first step for large documentation reads, so future work can find the right context without reading entire long files by habit
+- Action taken:
+  - added a context-reading policy document
+  - added a project validator that confirms the policy, command map, reader, and project instructions stay wired together
+  - updated `AGENTS.md` so future project sessions see the rule directly
+  - added the validator to setup checks and product review gates
+- Data used:
+  - current `scripts/read_relevant.py` behavior
+  - `docs/product/COMMANDS.md` relevant-file-reading command examples
+  - project need for self-contained, context-efficient documentation workflows
+- Output created:
+  - `docs/product/CONTEXT_READING_POLICY.md`
+  - `scripts/validate_context_reading_policy.py`
+- What was learned:
+  - the relevant reader already existed and passed validation
+  - setup validation already tracked the reader files, but the project did not yet have an explicit automatic-use rule
+  - the durable place for this rule is project-local `AGENTS.md`, backed by a validator
+- Error or risk recorded:
+  - this is not a background watcher and cannot force every future model call to use the reader
+  - the rule should stay flexible for code files, schemas, validators, and cases where whole-file consistency matters
+- Why it matters for the thesis:
+  - it documents a practical context-management improvement during iterative system development
+  - it helps preserve reliable thesis/product documentation work as the repo grows
+  - it supports reproducible project-local workflows rather than depending on external workspace memory tools
+- Open questions:
+  - whether a future CI check should enforce the policy validator
+  - whether the reader should later produce compact summaries for repeated thesis-writing sessions

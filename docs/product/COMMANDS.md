@@ -56,6 +56,8 @@ python scripts\validate_project_drift_guard.py
 
 Use this when a file is large and you only need the useful part. It reads local repo files only, blocks secret/private paths, makes no network calls, and returns small slices.
 
+Project working rule: use `scripts/read_relevant.py` before full-file reads for large Markdown docs, thesis logs, roadmaps, command maps, generated reports, policy files, and review-gate files. Start with `outline`, `section`, `find`, or `slice`, then do a full read only when the smaller read is not enough.
+
 Show headings and lightweight symbols:
 
 ```powershell
@@ -84,6 +86,12 @@ Validate the reader:
 
 ```powershell
 python scripts\validate_read_relevant.py
+```
+
+Validate that the automatic context-reading rule is still wired into project instructions and docs:
+
+```powershell
+python scripts\validate_context_reading_policy.py
 ```
 
 ## Core Product Contract

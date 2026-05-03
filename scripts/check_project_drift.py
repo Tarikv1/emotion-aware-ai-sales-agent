@@ -14,10 +14,12 @@ PROJECT_NAME = "emotion-aware-ai-sales-agent"
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_FILES = [
+    "AGENTS.md",
     "README.md",
     "docs/third-party-inspirations.md",
     "docs/product-review-gates.md",
     "docs/product/COMMANDS.md",
+    "docs/product/CONTEXT_READING_POLICY.md",
     "docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md",
     "docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
@@ -25,6 +27,7 @@ REQUIRED_FILES = [
     "docs/thesis/ROADMAP.md",
     "docs/thesis/METHODOLOGY_LOG.md",
     "scripts/check_project_drift.py",
+    "scripts/validate_context_reading_policy.py",
     "scripts/validate_project_drift_guard.py",
 ]
 

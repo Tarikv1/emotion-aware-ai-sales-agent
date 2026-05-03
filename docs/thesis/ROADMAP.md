@@ -35,6 +35,8 @@ The Emotion Aware repo should stay self-contained for client portability. If the
 
 `GUARD-001` now provides a project-local drift guard for that rule. It checks for missing required guard files, conflict markers, secret-like values, unignored generated audio, and hidden dependencies on other local workspace projects. It reports and fails; it does not auto-edit files.
 
+`CTX-001` now makes the project-local relevant reader the default first step for large documentation reads. Future project work should use `scripts/read_relevant.py` with `outline`, `section`, `find`, or `slice` before reading full large Markdown docs, thesis logs, roadmaps, command maps, generated reports, policy files, or review-gate files.
+
 ## Dual Track Principle
 
 The thesis track and product track should reinforce each other without being confused.

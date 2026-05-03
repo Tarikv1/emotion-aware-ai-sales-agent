@@ -30,6 +30,13 @@ one reusable sales-agent core
 - Use `docs/product-review-gates.md` before larger product/runtime changes, provider work, memory/transcript/customer-data flows, or customer setup changes.
 - Track Emotion-Aware-relevant external inspirations in `docs/third-party-inspirations.md`.
 
+## Context Reading Rule
+
+- Use `scripts/read_relevant.py` before full-file reads for large Markdown docs, thesis logs, roadmaps, command maps, generated reports, policy files, and review-gate files.
+- Prefer the smallest useful mode first: `outline`, `section`, `find`, or `slice`.
+- Full-file reads are still correct for short files, code files with important imports/contracts, whole-document consistency checks, or cases where the relevant-reader output shows more context is needed.
+- Validate this behavior with `python scripts\validate_context_reading_policy.py`.
+
 ## Privacy
 
 - Do not store secrets, API keys, raw private customer data, raw restricted transcripts, or private audio here.

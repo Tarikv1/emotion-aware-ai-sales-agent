@@ -31,6 +31,7 @@ OPTIONAL_DIRS = [
 ]
 
 REQUIRED_FILES = [
+    ("file.agents", "AGENTS.md", "Project-local Codex instructions"),
     ("file.readme", "README.md", "Project README"),
     ("file.program", "program.md", "Research program"),
     ("file.docs_third_party_inspirations", "docs/third-party-inspirations.md", "Third-party inspiration and attribution notes"),
@@ -38,6 +39,7 @@ REQUIRED_FILES = [
     ("file.docs_product_commands", "docs/product/COMMANDS.md", "Product command map"),
     ("file.docs_product_product_brief", "docs/product/PRODUCT_BRIEF.md", "Product brief"),
     ("file.docs_product_client_mvp_workflow", "docs/product/CLIENT_MVP_WORKFLOW.md", "Client MVP workflow"),
+    ("file.docs_product_context_reading_policy", "docs/product/CONTEXT_READING_POLICY.md", "Context reading policy"),
     ("file.docs_product_project_self_containment", "docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md", "Project self-containment policy"),
     ("file.docs_product_project_drift_guard", "docs/product/PROJECT_DRIFT_GUARD.md", "Project drift guard"),
     ("file.docs_product_voice_provider_run_boundary", "docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md", "Voice provider run boundary"),
@@ -87,6 +89,7 @@ REQUIRED_FILES = [
     ("file.scripts_run_rule_baseline", "scripts/run_rule_baseline.py", "Rule baseline runner"),
     ("file.scripts_read_relevant", "scripts/read_relevant.py", "Product-local relevant reader"),
     ("file.scripts_validate_read_relevant", "scripts/validate_read_relevant.py", "Relevant reader validator"),
+    ("file.scripts_validate_context_reading_policy", "scripts/validate_context_reading_policy.py", "Context reading policy validator"),
 ]
 
 OPTIONAL_ENV_VARS = [
