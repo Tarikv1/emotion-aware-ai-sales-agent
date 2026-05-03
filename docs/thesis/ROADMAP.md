@@ -33,7 +33,7 @@ Active phase: voice/runtime quality and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: design `VOICE-020` for emotional delivery, less rigid openings, controlled randomness, contractions/fillers, and provider-aware ElevenLabs voice settings while preserving campaign-safe protected text.
+- [ ] Current: design `VOICE-020` for emotional delivery, less rigid openings, controlled randomness, bundled expressive gestures, contractions/fillers, and provider-aware ElevenLabs voice settings while preserving campaign-safe protected text.
 
 Next checkpoints:
 

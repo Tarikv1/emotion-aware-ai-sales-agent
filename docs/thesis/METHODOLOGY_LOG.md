@@ -1789,3 +1789,25 @@ Use this file as a chronological research journal for the thesis implementation.
   - whether ElevenLabs provider settings can express emotion strongly enough without changing the generated text
   - whether some emotional naturalness must be handled by text/segment generation before TTS
   - how to preserve compliance-safe exact wording while adding human-like speech texture around non-protected segments
+
+### 2026-05-04 - VOICE-020 expressive gesture design constraint
+
+- Objective: refine the next voice-naturalness checkpoint before implementation
+- Action taken:
+  - recorded that `VOICE-020` should not apply voice effects as isolated one-at-a-time toggles
+  - updated the roadmap current checkpoint to include bundled expressive gestures
+- Data used:
+  - project-owner feedback that realistic speech often combines effects, such as a filler word with a slight upward pitch, rather than applying pause, filler, and pitch as separate mechanical steps
+- Output created:
+  - updated `docs/thesis/ROADMAP.md`
+- What was learned:
+  - human-like voice tuning should operate on grouped expressive gestures, not only independent scalar controls
+  - realistic delivery may require coordinated bundles such as filler plus pitch lift, short pause plus softened restart, emphasis plus faster follow-through, or uncertainty marker plus lower confidence tone
+  - the gesture layer must still avoid protected campaign questions, compliance statements, appointment confirmations, and hang-up lines unless the campaign explicitly allows variation
+- Why it matters for the thesis:
+  - it makes the voice-naturalness method more defensible by treating speech delivery as coordinated behavior rather than disconnected effects
+  - it gives `VOICE-020` a clearer design target: emotional and conversational realism with guardrails
+- Open questions:
+  - which gesture bundles improve human-likeness without reducing trust
+  - whether each campaign should choose an allowed gesture palette
+  - how to evaluate bundled gestures separately from provider voice quality
