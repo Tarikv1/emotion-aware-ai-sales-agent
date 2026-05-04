@@ -52,6 +52,7 @@ Live provider calls require:
 RESP-003 receives a RESP-002 packet and selects TTS input safely:
 
 - freeform prosody-eligible text can use `voice_delivery.provider_rendering.rendered_text`
+- provider-rendered text may include VOICE-022 spoken normalization, such as English contractions or conservative German spoken forms
 - protected text uses `final_response`
 - do-not-call, human handoff, claim-boundary, hang-up, appointment confirmation, campaign questions, and compliance statements do not get provider prosody tags
 

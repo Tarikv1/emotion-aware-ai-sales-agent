@@ -42,6 +42,8 @@ Derived transcripts, labels, summaries, and examples must be reviewed before the
 
 Safe derived artifacts may be committed only when they contain no raw private audio, no direct identifiers, no sensitive personal details, and no confidential client information.
 
+The working pipeline for this boundary is documented in `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md`.
+
 ## Export Review Gate
 
 Nothing derived from private call-center audio may leave `data/private/` until it passes a local export review.
@@ -68,6 +70,8 @@ Allowed learning signal:
 - handoff and escalation patterns
 - call outcome patterns
 - anonymized phrase templates after review
+- human-agent success patterns
+- human-agent failure patterns that become avoid rules
 
 Disallowed learning signal:
 

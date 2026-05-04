@@ -274,3 +274,63 @@ Record important thesis and implementation decisions here with enough context to
   - the first product workflow should focus on call initiation, qualification questions, interest detection, and scheduling
   - the thesis baseline remains relevant because strategy adaptation supports qualification and objection handling
   - calendar/availability integration becomes a product requirement
+
+### DEC-016 - Treat English/German voice naturalness as speech mechanics, not stereotypes
+
+- Date: 2026-05-04
+- Status: accepted
+- Decision: design future English and German speech-realism profiles around fillers, pauses, breath, rhythm, repairs, and warmth cues, while keeping language mechanics separate from campaign persona and cultural stereotypes
+- Why:
+  - the agent needs to sound less robotic in both English and German
+  - human speech uses language-specific timing, filler, and interaction patterns
+  - random fillers would reduce trust and could make the system sound fake
+  - stereotype-like language behavior would be product-risky and academically weak
+- Alternatives considered:
+  - use one generic filler system for all languages
+  - rely only on provider voice remixing and avoid local speech-realism rules
+  - make the voice more casual without language-specific constraints
+- Consequences:
+  - `VOICE-023` should use language-aware profiles
+  - protected campaign text remains exact and filler-free
+  - English and German profile rules should cite `SPEECH_REALISM_REFERENCES.md`
+  - future listening evaluation should include naturalness, trust, professionalism, and overacting risk
+
+### DEC-017 - Maintain a central thesis reference registry
+
+- Date: 2026-05-04
+- Status: accepted
+- Decision: keep a thesis-level source registry that separates academic sources, dataset sources, provider documentation, sales-practice articles, privacy references, and open-source inspiration
+- Why:
+  - many useful sources were found across different checkpoints
+  - chat history is not a reliable bibliography
+  - not all sources have the same evidential weight
+  - thesis writing needs fast access to source URLs and usage boundaries
+- Alternatives considered:
+  - keep references only inside each experiment note
+  - put all sources into `SPEECH_REALISM_REFERENCES.md`
+  - rely on `third-party-inspirations.md` only
+- Consequences:
+  - `THESIS_REFERENCE_REGISTRY.md` becomes the first stop for source lookup
+  - `SPEECH_REALISM_REFERENCES.md` stays focused on speech-realism literature
+  - product engineering implications belong in product docs such as `VOICE_023_SPEECH_REALISM_LAYER.md`
+  - final thesis citations still need formatting and source verification before submission
+
+### DEC-018 - Use visible thesis traceability checks instead of a hidden Git hook
+
+- Date: 2026-05-04
+- Status: accepted
+- Decision: add explicit local scripts that check source-reference coverage and thesis-documentation coverage before GitHub checkpoints, but do not install a Git hook by default
+- Why:
+  - the project is both a product and a thesis workspace
+  - meaningful changes should remain explainable later during thesis writing
+  - hidden hooks are local-only, easy to forget across machines, and can become frustrating if they block work invisibly
+  - visible scripts make the rule auditable and portable
+- Alternatives considered:
+  - rely on manual memory during each push
+  - install a pre-push hook immediately
+  - auto-edit thesis docs from a script
+- Consequences:
+  - `check_thesis_reference_registry.py` should pass before pushing source-backed work
+  - `check_thesis_update_gate.py` should pass before GitHub checkpoints
+  - scripts report and recommend, but do not auto-write thesis content
+  - an optional hook can be added later if the command-based workflow proves stable

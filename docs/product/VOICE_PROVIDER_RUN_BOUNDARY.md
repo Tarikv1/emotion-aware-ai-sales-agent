@@ -51,6 +51,23 @@ Every live voice-provider run should record:
 - Cost-bearing commands must be explicitly approved before use.
 - Provider terms, data retention, and logging behavior must be reviewed before production use.
 
+## Voice Design Boundary
+
+Voice Design checkpoints such as `VOICE-020` may prepare synthetic prompts, synthetic preview text, settings candidates, and listening rubrics.
+
+They must not:
+
+- require an API key by default
+- call a provider by default
+- upload private call-center audio
+- use customer voices as provider input
+- clone any person's voice
+- move private identifiers into generated artifacts
+
+Private call-center audio may later inform local abstract tuning notes only after review.
+
+Local voice IDs may be stored in ignored `config/local/voice_ids.json` to avoid repeated environment setup. API keys must remain environment-only.
+
 ## Consent Checklist
 
 Before using any real person's voice or customer audio:
@@ -85,7 +102,7 @@ For `RESP-003` runtime live-capable TTS:
 - live provider calls require `--live`
 - generated text must come from a validated `RESP-002` packet
 - protected text should use the exact guarded `final_response`
-- provider-rendered prosody text may be used only for eligible freeform segments
+- spoken-normalized and provider-rendered text may be used only for eligible freeform segments
 - generated-audio asset metadata must be included in the result packet
 - human listening review is required before making quality claims
 

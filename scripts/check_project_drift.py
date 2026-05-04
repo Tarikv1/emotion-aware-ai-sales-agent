@@ -25,11 +25,22 @@ REQUIRED_FILES = [
     "docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "docs/product/PROJECT_DRIFT_GUARD.md",
     "docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md",
+    "docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md",
     "docs/thesis/ROADMAP.md",
     "docs/thesis/METHODOLOGY_LOG.md",
+    "docs/thesis/DECISION_LOG.md",
+    "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
+    "docs/thesis/THESIS_WRITING_GUIDE.md",
     "data/private/.gitignore",
     "scripts/check_project_drift.py",
+    "scripts/check_thesis_reference_registry.py",
+    "scripts/validate_thesis_reference_registry.py",
+    "scripts/check_thesis_update_gate.py",
+    "scripts/validate_thesis_update_gate.py",
     "scripts/validate_private_data_boundary.py",
+    "scripts/check_private_call_learning_pipeline.py",
+    "scripts/init_private_call_learning_workspace.py",
+    "scripts/validate_private_call_learning_pipeline.py",
     "scripts/validate_context_reading_policy.py",
     "scripts/validate_project_drift_guard.py",
 ]
@@ -87,6 +98,7 @@ SKIP_DIR_PREFIXES = {
     ("data", "private"),
     ("data", "private-restricted"),
     ("data", "processed"),
+    ("config", "local"),
 }
 
 AUDIO_EXTENSIONS = {".mp3", ".wav"}

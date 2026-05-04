@@ -1,0 +1,1092 @@
+{
+  "voice_milestone": "VOICE-022",
+  "experiment_scope": "Segment-aware spoken-text normalization for bilingual sales-agent TTS. The layer may rewrite safe freeform wording into more natural spoken English or German, while preserving protected campaign questions, disclosures, compliance text, call-control lines, and exact company scripts.",
+  "case_file": "research\\experiments\\cases\\voice-022-spoken-text-normalization.json",
+  "summary": {
+    "case_count": 8,
+    "languages": {
+      "en": 4,
+      "de": 4
+    },
+    "profile_styles": [
+      "clean-scripted",
+      "professional-spoken",
+      "professional-spoken-german",
+      "strict-regulated-professional"
+    ],
+    "normalization_count": 11,
+    "eligible_segment_count": 6,
+    "protected_segment_count": 9,
+    "protected_segment_change_count": 0,
+    "validation_passed": 8,
+    "validation_failed": 0,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  },
+  "runtime_boundary": {
+    "text_only": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "safe_default": "local deterministic spoken-text normalization only"
+  },
+  "results": [
+    {
+      "case_id": "VOICE-022-C01",
+      "case_title": "English freeform response gets natural contractions",
+      "campaign_id": "campaign-voice-022-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_normalizations": 3,
+        "max_normalizations": 3,
+        "required_fragments": [
+          "I'll",
+          "You're",
+          "It's"
+        ],
+        "forbidden_fragments": [
+          "I will",
+          "You are",
+          "It is"
+        ],
+        "protected_segment_ids_unchanged": []
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 17,
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "normalization_count": 3,
+        "normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling"
+          },
+          {
+            "rule_id": "en-you-are",
+            "before": "You are",
+            "after": "You're",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling"
+          },
+          {
+            "rule_id": "en-it-is",
+            "before": "It is",
+            "after": "It's",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "I will keep this simple. You are right to ask. It is only useful if we can make the next step practical."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c01-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "I will keep this simple. You are right to ask. It is only useful if we can make the next step practical.",
+            "text_after": "I'll keep this simple. You're right to ask. It's only useful if we can make the next step practical.",
+            "normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              },
+              {
+                "rule_id": "en-you-are",
+                "before": "You are",
+                "after": "You're"
+              },
+              {
+                "rule_id": "en-it-is",
+                "before": "It is",
+                "after": "It's"
+              }
+            ]
+          }
+        ],
+        "tts_text": "I'll keep this simple. You're right to ask. It's only useful if we can make the next step practical.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C02",
+      "case_title": "German freeform response gets safe spoken equivalents",
+      "campaign_id": "campaign-voice-022-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_normalizations": 3,
+        "max_normalizations": 3,
+        "required_fragments": [
+          "Ich hab",
+          "Wenn's",
+          "gibt's"
+        ],
+        "forbidden_fragments": [
+          "Ich habe",
+          "Wenn es",
+          "gibt es"
+        ],
+        "protected_segment_ids_unchanged": []
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken-german",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 5,
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "normalization_count": 3,
+        "normalizations": [
+          {
+            "rule_id": "de-ich-habe",
+            "before": "Ich habe",
+            "after": "Ich hab",
+            "language": "de",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_transition"
+          },
+          {
+            "rule_id": "de-wenn-es",
+            "before": "Wenn es",
+            "after": "Wenn's",
+            "language": "de",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_transition"
+          },
+          {
+            "rule_id": "de-gibt-es",
+            "before": "gibt es",
+            "after": "gibt's",
+            "language": "de",
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_transition"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "Ich habe den Punkt verstanden. Wenn es fuer Sie passt, gibt es einen einfachen naechsten Schritt."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c02-freeform",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "Ich habe den Punkt verstanden. Wenn es fuer Sie passt, gibt es einen einfachen naechsten Schritt.",
+            "text_after": "Ich hab den Punkt verstanden. Wenn's fuer Sie passt, gibt's einen einfachen naechsten Schritt.",
+            "normalizations": [
+              {
+                "rule_id": "de-ich-habe",
+                "before": "Ich habe",
+                "after": "Ich hab"
+              },
+              {
+                "rule_id": "de-wenn-es",
+                "before": "Wenn es",
+                "after": "Wenn's"
+              },
+              {
+                "rule_id": "de-gibt-es",
+                "before": "gibt es",
+                "after": "gibt's"
+              }
+            ]
+          }
+        ],
+        "tts_text": "Ich hab den Punkt verstanden. Wenn's fuer Sie passt, gibt's einen einfachen naechsten Schritt.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C03",
+      "case_title": "English mixed response protects campaign question",
+      "campaign_id": "campaign-voice-022-en-b2b-software",
+      "language": "en",
+      "expected": {
+        "min_normalizations": 2,
+        "max_normalizations": 2,
+        "required_fragments": [
+          "That's",
+          "I'm",
+          "Do you handle inbound lead routing?"
+        ],
+        "forbidden_fragments": [
+          "That is",
+          "I am"
+        ],
+        "protected_segment_ids_unchanged": [
+          "c03-question"
+        ]
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 17,
+        "segment_count": 2,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 1,
+        "normalization_count": 2,
+        "normalizations": [
+          {
+            "rule_id": "en-i-am",
+            "before": "I am",
+            "after": "I'm",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_explanation"
+          },
+          {
+            "rule_id": "en-that-is",
+            "before": "That is",
+            "after": "That's",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_explanation"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text": "That is a fair concern. I am not trying to push you into a long call."
+          },
+          {
+            "segment_id": "c03-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Do you handle inbound lead routing?"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c03-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "That is a fair concern. I am not trying to push you into a long call.",
+            "text_after": "That's a fair concern. I'm not trying to push you into a long call.",
+            "normalizations": [
+              {
+                "rule_id": "en-i-am",
+                "before": "I am",
+                "after": "I'm"
+              },
+              {
+                "rule_id": "en-that-is",
+                "before": "That is",
+                "after": "That's"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c03-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Do you handle inbound lead routing?",
+            "text_after": "Do you handle inbound lead routing?",
+            "normalizations": []
+          }
+        ],
+        "tts_text": "That's a fair concern. I'm not trying to push you into a long call. Do you handle inbound lead routing?",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C04",
+      "case_title": "German mixed response protects qualification question and disclosure",
+      "campaign_id": "campaign-voice-022-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_normalizations": 2,
+        "max_normalizations": 2,
+        "required_fragments": [
+          "Ich hab",
+          "wenn's",
+          "Haben Sie aktuell eine Zahnzusatzversicherung?",
+          "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+        ],
+        "forbidden_fragments": [
+          "Ich habe"
+        ],
+        "protected_segment_ids_unchanged": [
+          "c04-question",
+          "c04-disclosure"
+        ]
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken-german",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 5,
+        "segment_count": 3,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 2,
+        "normalization_count": 2,
+        "normalizations": [
+          {
+            "rule_id": "de-ich-habe",
+            "before": "Ich habe",
+            "after": "Ich hab",
+            "language": "de",
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_empathy"
+          },
+          {
+            "rule_id": "de-wenn-es",
+            "before": "wenn es",
+            "after": "wenn's",
+            "language": "de",
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_empathy"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "text": "Ich habe verstanden, dass es fuer Sie nur sinnvoll ist, wenn es kurz bleibt."
+          },
+          {
+            "segment_id": "c04-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Haben Sie aktuell eine Zahnzusatzversicherung?"
+          },
+          {
+            "segment_id": "c04-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c04-freeform",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "Ich habe verstanden, dass es fuer Sie nur sinnvoll ist, wenn es kurz bleibt.",
+            "text_after": "Ich hab verstanden, dass es fuer Sie nur sinnvoll ist, wenn's kurz bleibt.",
+            "normalizations": [
+              {
+                "rule_id": "de-ich-habe",
+                "before": "Ich habe",
+                "after": "Ich hab"
+              },
+              {
+                "rule_id": "de-wenn-es",
+                "before": "wenn es",
+                "after": "wenn's"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c04-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "text_after": "Haben Sie aktuell eine Zahnzusatzversicherung?",
+            "normalizations": []
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c04-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "text_after": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+            "normalizations": []
+          }
+        ],
+        "tts_text": "Ich hab verstanden, dass es fuer Sie nur sinnvoll ist, wenn's kurz bleibt. Haben Sie aktuell eine Zahnzusatzversicherung? Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C05",
+      "case_title": "Strict German insurance boundary remains exact",
+      "campaign_id": "campaign-voice-022-de-insurance-strict",
+      "language": "de",
+      "expected": {
+        "min_normalizations": 1,
+        "max_normalizations": 1,
+        "required_fragments": [
+          "Ich hab",
+          "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+        ],
+        "forbidden_fragments": [],
+        "protected_segment_ids_unchanged": [
+          "c05-boundary",
+          "c05-question"
+        ]
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "strict-regulated-professional",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 2,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 5,
+        "segment_count": 3,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 2,
+        "normalization_count": 1,
+        "normalizations": [
+          {
+            "rule_id": "de-ich-habe",
+            "before": "Ich habe",
+            "after": "Ich hab",
+            "language": "de",
+            "segment_index": 0,
+            "segment_id": "c05-freeform",
+            "segment_type": "freeform_empathy"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "c05-freeform",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "text": "Ich habe verstanden, dass Sie bei so einem Thema vorsichtig sind."
+          },
+          {
+            "segment_id": "c05-boundary",
+            "segment_type": "coverage_or_claim_boundary",
+            "source": "compliance",
+            "text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+          },
+          {
+            "segment_id": "c05-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c05-freeform",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "Ich habe verstanden, dass Sie bei so einem Thema vorsichtig sind.",
+            "text_after": "Ich hab verstanden, dass Sie bei so einem Thema vorsichtig sind.",
+            "normalizations": [
+              {
+                "rule_id": "de-ich-habe",
+                "before": "Ich habe",
+                "after": "Ich hab"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c05-boundary",
+            "segment_type": "coverage_or_claim_boundary",
+            "source": "compliance",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "text_after": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.",
+            "normalizations": []
+          },
+          {
+            "segment_index": 2,
+            "segment_id": "c05-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "text_after": "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+            "normalizations": []
+          }
+        ],
+        "tts_text": "Ich hab verstanden, dass Sie bei so einem Thema vorsichtig sind. Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen. Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C06",
+      "case_title": "Do-not-call and hangup lines remain exact in German",
+      "campaign_id": "campaign-voice-022-de-b2c-dental",
+      "language": "de",
+      "expected": {
+        "min_normalizations": 0,
+        "max_normalizations": 0,
+        "required_fragments": [
+          "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+          "Auf Wiederhoeren."
+        ],
+        "forbidden_fragments": [],
+        "protected_segment_ids_unchanged": [
+          "c06-do-not-call",
+          "c06-hangup"
+        ]
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken-german",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 5,
+        "segment_count": 2,
+        "eligible_segment_count": 0,
+        "protected_segment_count": 2,
+        "normalization_count": 0,
+        "normalizations": [],
+        "input_segments": [
+          {
+            "segment_id": "c06-do-not-call",
+            "segment_type": "do_not_call",
+            "source": "policy_core",
+            "text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden."
+          },
+          {
+            "segment_id": "c06-hangup",
+            "segment_type": "hangup",
+            "source": "policy_core",
+            "text": "Auf Wiederhoeren."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c06-do-not-call",
+            "segment_type": "do_not_call",
+            "source": "policy_core",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "protected_segment_type:do_not_call",
+            "text_before": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "text_after": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden.",
+            "normalizations": []
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c06-hangup",
+            "segment_type": "hangup",
+            "source": "policy_core",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "protected_segment_type:hangup",
+            "text_before": "Auf Wiederhoeren.",
+            "text_after": "Auf Wiederhoeren.",
+            "normalizations": []
+          }
+        ],
+        "tts_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C07",
+      "case_title": "Disabled campaign profile produces exact clean speech",
+      "campaign_id": "campaign-voice-022-en-clean-scripted",
+      "language": "en",
+      "expected": {
+        "min_normalizations": 0,
+        "max_normalizations": 0,
+        "required_fragments": [
+          "I will keep the appointment language exact"
+        ],
+        "forbidden_fragments": [
+          "I'll"
+        ],
+        "protected_segment_ids_unchanged": []
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "en",
+        "profile": {
+          "enabled": false,
+          "style": "clean-scripted",
+          "english_contractions": false,
+          "german_spoken_forms": false,
+          "max_rewrites_per_response": 0,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 0,
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "normalization_count": 0,
+        "normalizations": [],
+        "input_segments": [
+          {
+            "segment_id": "c07-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text": "I will keep the appointment language exact because this campaign asks for a clean script."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c07-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "I will keep the appointment language exact because this campaign asks for a clean script.",
+            "text_after": "I will keep the appointment language exact because this campaign asks for a clean script.",
+            "normalizations": []
+          }
+        ],
+        "tts_text": "I will keep the appointment language exact because this campaign asks for a clean script.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-022-C08",
+      "case_title": "English appointment confirmation remains exact",
+      "campaign_id": "campaign-voice-022-en-clean-scripted",
+      "language": "en",
+      "expected": {
+        "min_normalizations": 0,
+        "max_normalizations": 0,
+        "required_fragments": [
+          "Confirmed. I will record Tuesday afternoon for the specialist callback.",
+          "The appointment is not confirmed until the specialist accepts it."
+        ],
+        "forbidden_fragments": [
+          "I'll"
+        ],
+        "protected_segment_ids_unchanged": [
+          "c08-confirmation",
+          "c08-disclosure"
+        ]
+      },
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "en",
+        "profile": {
+          "enabled": false,
+          "style": "clean-scripted",
+          "english_contractions": false,
+          "german_spoken_forms": false,
+          "max_rewrites_per_response": 0,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 0,
+        "segment_count": 2,
+        "eligible_segment_count": 0,
+        "protected_segment_count": 2,
+        "normalization_count": 0,
+        "normalizations": [],
+        "input_segments": [
+          {
+            "segment_id": "c08-confirmation",
+            "segment_type": "appointment_confirmation",
+            "source": "policy_core",
+            "text": "Confirmed. I will record Tuesday afternoon for the specialist callback."
+          },
+          {
+            "segment_id": "c08-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "text": "The appointment is not confirmed until the specialist accepts it."
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c08-confirmation",
+            "segment_type": "appointment_confirmation",
+            "source": "policy_core",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "protected_segment_type:appointment_confirmation",
+            "text_before": "Confirmed. I will record Tuesday afternoon for the specialist callback.",
+            "text_after": "Confirmed. I will record Tuesday afternoon for the specialist callback.",
+            "normalizations": []
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c08-disclosure",
+            "segment_type": "required_disclosure",
+            "source": "campaign_config",
+            "eligible_for_spoken_normalization": false,
+            "protected_reason": "matches_required_disclosure",
+            "text_before": "The appointment is not confirmed until the specialist accepts it.",
+            "text_after": "The appointment is not confirmed until the specialist accepts it.",
+            "normalizations": []
+          }
+        ],
+        "tts_text": "Confirmed. I will record Tuesday afternoon for the specialist callback. The appointment is not confirmed until the specialist accepts it.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      }
+    }
+  ]
+}

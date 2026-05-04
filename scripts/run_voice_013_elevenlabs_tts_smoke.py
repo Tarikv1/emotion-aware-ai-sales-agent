@@ -19,6 +19,7 @@ from generate_voice_response import (
 )
 from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
 from run_realtime_turn_simulation import load_realtime_cases
+from local_voice_config import local_voice_id_for_provider
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -88,6 +89,9 @@ def resolve_voice_id(provider: dict[str, Any], language: str, force_key_missing:
     default_voice = os.environ.get(default_env)
     if default_voice:
         return default_voice, default_env
+    local_voice, local_source = local_voice_id_for_provider(provider, language)
+    if local_voice:
+        return local_voice, local_source or language_env
     return None, language_env
 
 

@@ -39,6 +39,7 @@ def write_text(path: Path, text: str) -> None:
 def render_report(packet: dict) -> str:
     delivery = packet["voice_delivery"]
     provider = delivery["provider_rendering"]
+    spoken = delivery["spoken_text_normalization"]
     prosody = delivery["prosody"]
     validation = delivery["validation"]
     decision = packet["decision_snapshot"]
@@ -57,6 +58,7 @@ def render_report(packet: dict) -> str:
         f"- Strategy: `{decision['selected_strategy']}`",
         f"- Call control: `{decision['call_control']}`",
         f"- Final response unchanged: `{delivery['final_response_unchanged']}`",
+        f"- Spoken-text normalizations: `{spoken['normalization_count']}`",
         f"- Provider calls made: `{delivery['provider_calls_made']}`",
         f"- Requires API key: `{delivery['requires_api_key']}`",
         f"- Customer audio uploaded: `{delivery['customer_audio_uploaded']}`",
@@ -73,6 +75,22 @@ def render_report(packet: dict) -> str:
                 f"  type: `{segment['segment_type']}`",
                 f"  eligible for prosody: `{segment['allow_prosody']}`",
             ]
+        )
+    lines.extend(
+        [
+            "",
+            "## Spoken Text Normalization",
+            "",
+            f"- Validation passed: `{spoken['validation']['passed']}`",
+            f"- Eligible segments: `{spoken['eligible_segment_count']}`",
+            f"- Protected segments: `{spoken['protected_segment_count']}`",
+            f"- Normalization count: `{spoken['normalization_count']}`",
+            f"- Spoken TTS text: {spoken['tts_text']}",
+        ]
+    )
+    for operation in spoken["normalizations"]:
+        lines.append(
+            f"- `{operation['rule_id']}` on `{operation['segment_id']}`: `{operation['before']}` -> `{operation['after']}`"
         )
     lines.extend(
         [

@@ -28,6 +28,7 @@ one reusable sales-agent core
 ```
 
 - Use `docs/product-review-gates.md` before larger product/runtime changes, provider work, memory/transcript/customer-data flows, or customer setup changes.
+- Use `docs/adaptive-sales-agent-reasoning.md` for OpenMythos-inspired bounded review loops around sales drafts, claims, emotion-aware tone, objection handling, and escalation. This is product-local documentation only, not an OpenMythos runtime dependency.
 - Track Emotion-Aware-relevant external inspirations in `docs/third-party-inspirations.md`.
 
 ## Context Reading Rule

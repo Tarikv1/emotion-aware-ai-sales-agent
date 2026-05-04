@@ -52,11 +52,73 @@ Validate the drift guard itself:
 python scripts\validate_project_drift_guard.py
 ```
 
+Check that external source URLs used in docs, research cases, scripts, and prompt/runtime notes are captured in the thesis reference registry or third-party inspiration log:
+
+```powershell
+python scripts\check_thesis_reference_registry.py
+```
+
+Validate the thesis reference registry guard:
+
+```powershell
+python scripts\validate_thesis_reference_registry.py
+```
+
+Check that product, research, runtime, prompt, data, or workflow changes are accompanied by thesis-tracking documentation before a GitHub checkpoint:
+
+```powershell
+python scripts\check_thesis_update_gate.py
+```
+
+Validate the thesis update gate:
+
+```powershell
+python scripts\validate_thesis_update_gate.py
+```
+
 Validate the private call-center data boundary without scanning private file contents:
 
 ```powershell
 python scripts\validate_private_data_boundary.py
 ```
+
+Check the private call-center learning scaffold without scanning private file contents:
+
+```powershell
+python scripts\check_private_call_learning_pipeline.py
+```
+
+Validate the private call-center learning checker and policy:
+
+```powershell
+python scripts\validate_private_call_learning_pipeline.py
+```
+
+Preview the ignored private-call learning workspace folders:
+
+```powershell
+python scripts\init_private_call_learning_workspace.py --dry-run
+```
+
+Create the ignored private-call learning workspace folders when private audio is ready:
+
+```powershell
+python scripts\init_private_call_learning_workspace.py
+```
+
+Validate local voice-ID config resolution without printing raw voice IDs:
+
+```powershell
+python scripts\validate_local_voice_config.py
+```
+
+Optional local ElevenLabs voice IDs can be stored in ignored config:
+
+```powershell
+Copy-Item config\local\voice_ids.example.json config\local\voice_ids.json
+```
+
+Then edit `config\local\voice_ids.json` locally. Do not put API keys in this file.
 
 ## Relevant File Reading
 
@@ -346,6 +408,49 @@ Validate VOICE-019 dry-run and forced-missing-key fallback behavior:
 python scripts\validate_voice_019_sales_tuned_live_ab_audio.py
 ```
 
+Build the VOICE-020 ElevenLabs-first voice design packet without provider calls:
+
+```powershell
+python scripts\run_voice_020_elevenlabs_voice_design.py
+```
+
+Validate VOICE-020 voice-design prompts, settings candidates, protected-text locks, and private-data boundary:
+
+```powershell
+python scripts\validate_voice_020_elevenlabs_voice_design.py
+```
+
+Run the VOICE-021 custom ElevenLabs voice comparison harness in dry-run mode:
+
+```powershell
+python scripts\run_voice_021_custom_voice_comparison.py
+```
+
+Validate VOICE-021 custom voice comparison safety and local voice-ID redaction:
+
+```powershell
+python scripts\validate_voice_021_custom_voice_comparison.py
+```
+
+Run a limited live VOICE-021 comparison after setting `ELEVENLABS_API_KEY` in the current shell:
+
+```powershell
+python scripts\run_voice_021_custom_voice_comparison.py --live --language en --limit-scripts 1 --timeout-seconds 8
+python scripts\run_voice_021_custom_voice_comparison.py --live --language de --limit-scripts 1 --timeout-seconds 8
+```
+
+Run the VOICE-022 bilingual spoken-text normalization layer:
+
+```powershell
+python scripts\run_voice_022_spoken_text_normalization.py
+```
+
+Validate VOICE-022 English contractions, German spoken equivalents, runtime integration, and protected-text locks:
+
+```powershell
+python scripts\validate_voice_022_spoken_text_normalization.py
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
@@ -448,6 +553,9 @@ python scripts\generate_runtime_tts_delivery.py `
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.
 - Default validation should not require `OPENAI_API_KEY`, `CARTESIA_API_KEY`, or `CARTESIA_VOICE_ID`.
+- Local voice IDs may be stored in ignored `config\local\voice_ids.json`; API keys remain environment-only.
+- Raw private call-center audio and raw transcripts must stay under ignored `data\private\` and must not be uploaded to providers by default.
+- Only redacted, minimized, human-reviewed sales-pattern notes may leave `data\private\`.
 - Use `--live` only when provider, consent, retention, and logging assumptions have been reviewed.
 - Keep generated artifacts under `research\experiments\generated` unless a script documents another output path.
 - Keep required checklists, templates, workflows, and scripts inside this repository. Do not make Emotion Aware depend on `D:\Codex\shared` or another active project folder.

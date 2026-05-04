@@ -37,12 +37,16 @@ def parse_stdout_json(completed: subprocess.CompletedProcess[str]) -> dict:
         raise AssertionError(f"Expected JSON stdout, got: {completed.stdout!r}") from exc
 
 
-def run_resp_003(transcript: str, extra_args: list[str] | None = None) -> dict:
+def run_resp_003(
+    transcript: str,
+    extra_args: list[str] | None = None,
+    campaign: str = "campaign-prod-005-b2c-telecom",
+) -> dict:
     args = [
         sys.executable,
         str(RUNNER),
         "--campaign",
-        "campaign-prod-005-b2c-telecom",
+        campaign,
         "--stage",
         "relevance-check",
         "--transcript",
@@ -77,6 +81,7 @@ def validate_common_payload(payload: dict) -> None:
     assert_condition(delivery["synthetic_prompt_only"] is True, delivery)
     assert_condition(delivery["timeout_seconds"] <= 10, delivery)
     assert_condition(delivery["validation"]["passed"] is True, delivery["validation"])
+    assert_condition(payload["voice_delivery"]["spoken_text_normalization"]["validation"]["passed"] is True, payload["voice_delivery"])
     assert_condition(delivery["asset_log"]["run_boundary"]["api_key_location"] == "environment-only", delivery["asset_log"])
     assert_condition(delivery["asset_log"]["inputs"]["customer_audio_uploaded"] is False, delivery["asset_log"])
     assert_condition(delivery["asset_log"]["inputs"]["voice_cloning_used"] is False, delivery["asset_log"])
@@ -107,9 +112,23 @@ def validate_missing_key_live_fallback(payload: dict) -> None:
 def validate_protected_text(payload: dict) -> None:
     delivery = payload["tts_delivery"]
     assert_condition(payload["voice_delivery"]["segments"][0]["segment_type"] == "do_not_call", payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["spoken_text_normalization"]["normalization_count"] == 0, payload["voice_delivery"])
     assert_condition(delivery["tts_input_source"] == "final_response", delivery)
     assert_condition(delivery["tts_input_text"] == payload["final_response"], delivery)
     assert_condition(delivery["provider_rendering_used"] is False, delivery)
+
+
+def validate_spoken_normalized_tts(payload: dict, required_fragments: list[str], forbidden_fragments: list[str]) -> None:
+    delivery = payload["tts_delivery"]
+    spoken = payload["voice_delivery"]["spoken_text_normalization"]
+    assert_condition(spoken["normalization_count"] >= len(required_fragments), spoken)
+    assert_condition(delivery["tts_input_source"] == "provider_rendered_text", delivery)
+    assert_condition(delivery["provider_rendering_used"] is True, delivery)
+    assert_condition(delivery["tts_input_text"] != payload["final_response"], delivery)
+    for fragment in required_fragments:
+        assert_condition(fragment in delivery["tts_input_text"], f"Missing TTS spoken fragment: {fragment}")
+    for fragment in forbidden_fragments:
+        assert_condition(fragment not in delivery["tts_input_text"], f"Forbidden TTS fragment remained: {fragment}")
 
 
 def assert_no_secret_text(text: str, label: str) -> None:
@@ -136,6 +155,31 @@ def main() -> None:
     protected_payload = run_resp_003("Rufen Sie mich bitte nicht mehr an.")
     validate_common_payload(protected_payload)
     validate_protected_text(protected_payload)
+
+    german_candidate = "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt."
+    spoken_payload = run_resp_003(
+        "Das klingt zu teuer.",
+        extra_args=["--candidate-response", german_candidate],
+    )
+    validate_common_payload(spoken_payload)
+    validate_spoken_normalized_tts(
+        spoken_payload,
+        ["Ich hab", "Wenn's", "gibt's"],
+        ["Ich habe", "Wenn es", "gibt es"],
+    )
+
+    english_candidate = "I will keep this simple. You are right to ask. It is only useful if there is a practical next step."
+    english_spoken_payload = run_resp_003(
+        "That sounds expensive.",
+        campaign="campaign-prod-005-b2b-software",
+        extra_args=["--candidate-response", english_candidate],
+    )
+    validate_common_payload(english_spoken_payload)
+    validate_spoken_normalized_tts(
+        english_spoken_payload,
+        ["I'll", "You're", "It's", "there's"],
+        ["I will", "You are", "It is", "there is"],
+    )
 
     assert_condition(RESULT_PATH.exists(), "RESP-003 JSON result file was not created.")
     assert_condition(REPORT_PATH.exists(), "RESP-003 Markdown report was not created.")

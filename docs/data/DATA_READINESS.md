@@ -70,6 +70,8 @@ Do not treat these as phase-1 requirements:
 - Switchboard
 - CALLHOME
 - negotiation datasets such as Deal or No Deal or CraigslistBargain
+- Spoken BNC2014
+- DGD / FOLK
 
 These may be useful later for realism, turn-taking, or strategy experiments, but they add complexity too early and are not required for the first believable thesis baseline.
 
@@ -99,6 +101,12 @@ Unknowns to confirm:
 - label mapping into the thesis emotion taxonomy
 - whether each dataset will be used for training, validation, analysis, or only strategy design
 
+Current source registry:
+
+- `docs/thesis/THESIS_REFERENCE_REGISTRY.md`
+
+This registry records official or likely source URLs for IEMOCAP, MELD, Persuasion for Good, provider docs, speech-realism references, privacy sources, and product-grounding articles.
+
 ### Private call-center recordings
 
 Status: not currently available in hand
@@ -126,6 +134,10 @@ For now, build the first baseline so that:
 - the emotion layer can be evaluated independently
 - the strategy layer can be kept small and explicit
 - later German private-data adaptation can be added as a documented extension
+
+The voice track now also needs English/German speech-realism references. These references should inform naturalness rules for pauses, fillers, breath, and warmth, but they should not be treated as stereotypes or as a replacement for campaign persona. The working source note is `docs/thesis/SPEECH_REALISM_REFERENCES.md`.
+
+Engineering implications for that work live in `docs/product/VOICE_023_SPEECH_REALISM_LAYER.md`.
 
 ## Phase 1 Working Assumptions
 

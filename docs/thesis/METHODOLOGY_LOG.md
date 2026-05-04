@@ -16,6 +16,112 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-04 - TRACE-001 pre-push thesis traceability gates
+
+- Objective: make thesis documentation updates and source reference capture harder to forget before GitHub checkpoints.
+- Action taken: added local guard scripts for thesis reference coverage and thesis-update coverage, plus validators and command-map documentation.
+- Data used: existing project docs, research cases, provider/source URLs, current Git status, and thesis tracking files.
+- Output created: `check_thesis_reference_registry.py`, `check_thesis_update_gate.py`, corresponding validators, command-map entries, and source-registry additions for missed provider links.
+- What was learned: a useful guard must distinguish real source URLs from generated artifacts, local demo URLs, and provider API endpoints; otherwise it creates noisy failures that people will learn to ignore.
+- Why it matters for the thesis: the writing phase should not depend on chat memory. Sources, decisions, and errors/fixes need to remain visible in project files as the implementation changes.
+- Open questions: whether to later add an optional local pre-push hook after the visible command-based gate has proven useful.
+
+### 2026-05-04 - VOICE-021 live custom voice listening review
+
+Context:
+
+- Tarik ran the full `VOICE-021` live comparison for English and German original-vs-improved ElevenLabs custom voices.
+- All 8 audio files were created successfully.
+- The improved English and German voices were clearly preferred over the first versions.
+
+Human listening feedback:
+
+- Improved versions for both German and English are definitely much better.
+- Pace seems acceptable.
+- Pitch variation seems acceptable, but still not fully natural.
+- Emotional responsiveness may be slightly too high, but still usable.
+- No muffling was noticed.
+- Pronunciation seems good.
+- The remaining realism gap is thinking behavior: humans often fill pauses with short hesitation sounds or filler words instead of leaving a clean break.
+- Current thinking time is not long enough.
+- Pitch variance is improving, but still does not yet feel fully natural.
+
+Interpretation:
+
+- The next improvement should not simply increase emotion.
+- The next useful checkpoint should add controlled cognitive hesitation: short thinking fillers inside pauses, longer bounded thinking breaks, and less theatrical pitch movement.
+- This should remain blocked for protected campaign questions, disclosures, compliance, handoff, hangup, and exact company-script segments.
+
+Next checkpoint implication:
+
+- Design `VOICE-023` as a thinking-filler and natural hesitation layer for eligible freeform speech, with English and German support.
+
+### 2026-05-04 - VOICE-021 ElevenLabs custom voice comparison setup
+
+Context:
+
+- Tarik created first-version and improved-version ElevenLabs voices for English and German.
+- The improved versions came from the naturalness/remixing prompt work around `VOICE-020`.
+- We needed a safe way to compare all four voices without putting raw voice IDs into tracked files.
+
+Action:
+
+- Stored the four raw voice IDs in ignored `config/local/voice_ids.json`.
+- Extended the local voice config helper to resolve named voice candidates.
+- Added `research/experiments/cases/voice-021-elevenlabs-custom-voice-comparison.json`.
+- Added `scripts/run_voice_021_custom_voice_comparison.py`.
+- Added `scripts/validate_voice_021_custom_voice_comparison.py`.
+- Generated the dry-run packet and report for the four-way comparison.
+- Added documentation in `docs/product/VOICE_021_ELEVENLABS_CUSTOM_VOICE_COMPARISON.md`.
+
+Result:
+
+- Dry-run comparison contains 4 candidates, 4 scripts, and 8 planned audio outputs.
+- No provider calls were made.
+- No audio was created yet.
+- Generated artifacts do not include raw voice IDs.
+- Customer audio upload and voice cloning remain false.
+
+Interpretation:
+
+- `VOICE-021` creates the decision point for choosing the default English and German voices.
+- The live step still needs `ELEVENLABS_API_KEY` and human listening ratings before making quality claims.
+- This keeps voice selection separate from response quality, spoken-text normalization, and provider prosody rendering.
+
+### 2026-05-04 - VOICE-022 bilingual spoken-text normalization
+
+Context:
+
+- Listening feedback showed that even improved provider voices could sound robotic when they read written phrasing too literally.
+- A concrete example was English `I will`, which a human sales agent would often say as `I'll`.
+- The same issue needed German handling, but German spoken normalization had to stay conservative and professional.
+
+Action:
+
+- Added `scripts/spoken_text_normalization.py`.
+- Added `scripts/run_voice_022_spoken_text_normalization.py`.
+- Added `scripts/validate_voice_022_spoken_text_normalization.py`.
+- Added `research/experiments/cases/voice-022-spoken-text-normalization.json`.
+- Generated `research/experiments/generated/VOICE-022-spoken-text-normalization.json`.
+- Generated `research/experiments/generated/VOICE-022-spoken-text-normalization-report.md`.
+- Documented the layer in `docs/product/VOICE_022_SPOKEN_TEXT_NORMALIZATION.md`.
+- Wired VOICE-022 into `RESP-002` before prosody and provider rendering.
+- Extended `RESP-003` validation so optional live TTS uses spoken-normalized/provider-rendered text only for eligible freeform segments.
+
+Result:
+
+- VOICE-022 covers 8 cases: 4 English and 4 German.
+- The layer produced 11 normalizations across eligible freeform segments.
+- Protected segment changes stayed at 0.
+- RESP-002 and RESP-003 validators pass with both English and German spoken-normalized candidate responses.
+- The guarded `final_response` remains unchanged.
+
+Interpretation:
+
+- This is a text-preparation layer, not a provider-specific voice-design replacement.
+- It complements ElevenLabs voice design/remixing by making the provider input less written and less robotic.
+- It preserves the vertical-agnostic architecture because the behavior is controlled through campaign/runtime segment metadata rather than hard-coded product assumptions.
+
 ### 2026-05-01 - VOICE-008 local TTS smoke test
 
 - Objective: test the next no-key audible-output path before integrating a real cloud TTS provider
@@ -1895,3 +2001,219 @@ Use this file as a chronological research journal for the thesis implementation.
 - Open questions:
   - whether the first export review should be manual-only or assisted by a local redaction script
   - which fields belong in a future minimized private-call pattern schema
+
+### 2026-05-04 - VOICE-020 ElevenLabs voice design packet
+
+- Objective: turn `VOICE-019` listening feedback into a provider-aware ElevenLabs voice design checkpoint before creating or selecting new voices
+- Action taken:
+  - added an offline `VOICE-020` case/config file with English and German sales-agent voice prompts
+  - added settings candidates for realtime-balanced, emotional-opening, clarity-safe, and expressive-quality tests
+  - added bundled emotional delivery gestures instead of one-effect-at-a-time voice tweaks
+  - added protected-text locks for campaign questions, disclosures, claim/legal/medical boundaries, appointment confirmations, handoff, and hang-up lines
+  - added a runner and validator that create a deterministic design packet without API keys, provider calls, generated audio, private audio upload, or voice cloning
+  - documented official ElevenLabs sources as provider documentation inspiration, not copied code
+- Data used:
+  - `VOICE-018` sales-tuned delivery metadata
+  - `VOICE-019` live listening feedback
+  - official ElevenLabs voice, Voice Design, TTS best-practice, settings, privacy, and commercial-use docs
+  - project-owner clarification that private call-center audio may only inform local abstract tuning notes for future voice adjustment
+- Output created:
+  - `research/experiments/cases/voice-020-elevenlabs-voice-design.json`
+  - `research/experiments/generated/VOICE-020-elevenlabs-voice-design.json`
+  - `research/experiments/generated/VOICE-020-elevenlabs-voice-design-report.md`
+  - `docs/product/VOICE_020_ELEVENLABS_VOICE_DESIGN.md`
+  - `research/experiments/VOICE-020-elevenlabs-voice-design.md`
+  - `scripts/run_voice_020_elevenlabs_voice_design.py`
+  - `scripts/validate_voice_020_elevenlabs_voice_design.py`
+- Dry-run result:
+  - voice design profiles: 2
+  - languages: English and German
+  - settings candidates: 4
+  - emotional delivery bundles: 5
+  - provider calls made: false
+  - API key required: false
+  - private audio uploaded: false
+  - voice cloning used: false
+  - generated audio created: false
+- What was learned:
+  - the next useful voice work is a deliberate ElevenLabs voice-candidate test, not random provider experimentation
+  - voice quality needs both provider voice selection and runtime delivery rules
+  - private call-center audio can be useful later as local pattern evidence, but not as provider training/upload material
+- Why it matters for the thesis:
+  - it records how qualitative listening feedback becomes a reproducible experimental design
+  - it separates product speech content, protected campaign text, provider voice design, and privacy boundaries
+  - it gives future thesis writing a clean example of iterative engineering after an audio-quality failure mode
+- Open questions:
+  - whether ElevenLabs Voice Design or Voice Library voices produce better German and English sales-agent quality
+  - whether the `emotional-opening` settings candidate reduces the immediate robot-detection reaction without sounding theatrical
+  - whether provider settings alone are enough, or whether response segmentation must control protected and freeform text separately
+
+### 2026-05-04 - VOICE-020 Voice Design UI and local voice-ID refinement
+
+- Objective: adapt `VOICE-020` to the actual ElevenLabs Voice Design page and reduce repeated manual voice-ID setup
+- Action taken:
+  - added Voice Design UI candidates for `loudness` and `guidance_scale`
+  - updated English and German prompts to explicitly request clean full-band quality and avoid telephone-filtered, muffled, distant, compressed, or low-bandwidth sound
+  - increased the runtime speed candidates because current Voice Design previews sounded too slow for sales usefulness
+  - added longer synthetic preview text inspired by the ElevenLabs generated example, while keeping it product-owned and campaign-safe
+  - added ignored local config support at `config/local/voice_ids.json`
+  - wired local voice-ID lookup into ElevenLabs live paths used by `VOICE-013`, `VOICE-017`/`VOICE-019`, and `RESP-003`
+  - kept environment variables as the override path and kept API keys environment-only
+- Data used:
+  - project-owner screenshot of ElevenLabs Voice Design showing `loudness`, `guidance_scale`, and generated preview text behavior
+  - project-owner feedback that generated Voice Design voices sounded robotic, phone-like/muffled, and too slow
+- Output created:
+  - `config/local/.gitignore`
+  - `config/local/voice_ids.example.json`
+  - `scripts/local_voice_config.py`
+  - `scripts/validate_local_voice_config.py`
+  - updates to `VOICE-020` config, docs, generated report, setup checks, and command map
+- What was learned:
+  - ElevenLabs Voice Design quality must be guided at voice-creation time, not only at runtime TTS time
+  - the project needs separate controls for voice-generation UI settings and runtime TTS settings
+  - voice IDs are lower sensitivity than API keys, but still belong in local ignored config because client/provider choices may change
+- Why it matters for the thesis:
+  - it documents a practical provider-interface adaptation after observing real tool behavior
+  - it records another voice-quality failure mode: telephone-like/muffled generation and overly slow speech
+  - it preserves reproducibility without committing account-specific voice IDs
+- Open questions:
+  - which guidance-scale range produces the least robotic result without drifting away from the sales-agent persona
+  - whether full-band prompt wording is enough to remove the phone-like effect
+  - whether ElevenLabs Voice Library voices outperform Voice Design voices for German sales delivery
+
+### 2026-05-04 - VOICE-020 Voice Remixing prompts
+
+- Objective: use ElevenLabs Voice Remixing as a provider-side naturalization step before building more local pacing logic
+- Action taken:
+  - added official ElevenLabs Voice Remixing as a `VOICE-020` source
+  - added extensive English and German remix prompts for created/owned sales voices
+  - targeted pacing, emotion, pitch, audio quality, timbre, and bundled conversational microtexture
+  - included custom remix scripts for English and German opening/objection-handling samples
+  - documented prompt strength guidance: start with `Medium`, then try `High` if changes are too subtle
+- Data used:
+  - project-owner discovery that ElevenLabs Voice Remixing can transform existing voices with prompt categories such as pacing, emotion, pitch, and audio quality
+  - official ElevenLabs Voice Remixing docs
+  - previous owner feedback about roboticness, stale pacing, insufficient fillers, insufficient contractions/connectors, and unbundled voice effects
+- Output created:
+  - updated `research/experiments/cases/voice-020-elevenlabs-voice-design.json`
+  - updated `research/experiments/generated/VOICE-020-elevenlabs-voice-design.json`
+  - updated `research/experiments/generated/VOICE-020-elevenlabs-voice-design-report.md`
+  - updated `docs/product/VOICE_020_ELEVENLABS_VOICE_DESIGN.md`
+- What was learned:
+  - Remixing can reduce local workload by improving the base voice before runtime synthesis
+  - Remixing does not replace runtime delivery control because protected text, campaign-specific pacing, and turn-by-turn variation still need product-side rules
+  - bundled speech effects should be requested at the provider level as natural voice behavior, not as isolated pause/filler/pitch toggles
+- Why it matters for the thesis:
+  - it shows the prototype adapting to provider capabilities instead of overbuilding local logic too early
+  - it creates a cleaner separation between base voice quality and runtime sales-agent behavior
+  - it records a practical method for iterating voice naturalness with human listening feedback
+- Open questions:
+  - whether Medium or High remix strength best balances voice identity and naturalness
+  - whether German remixing improves native rhythm enough for the first real-client context
+  - which naturalness issues remain after remixing and therefore must be handled in runtime delivery
+
+### 2026-05-04 - PRIVATE-CALL-LEARNING-001 local-only private call learning scaffold
+
+- Objective: prepare for future private call-center audio without letting raw recordings, raw transcripts, customer identifiers, or sensitive details drift into Git, providers, RAG, generated reports, or fine-tuning datasets
+- Action taken:
+  - added a machine-readable private-call learning pipeline case
+  - added a checker and validator that verify the scaffold without reading private file contents
+  - added an initializer for ignored local `data/private/` subfolders
+  - documented pattern-mining-first learning, redaction, human review, safe export, and retention/deletion boundaries
+  - updated setup, drift, command, roadmap, and data policy references so future sessions treat this as an active project boundary
+- Data used:
+  - no private recordings
+  - no private transcripts
+  - project-owner requirements that future call-center audio stays local, raw audio is not uploaded, identifiers are ignored as learning signal, and both successful and unsuccessful sales calls can teach useful patterns
+- Output created:
+  - `research/experiments/cases/private-call-learning-001.json`
+  - `research/experiments/generated/PRIVATE-CALL-LEARNING-001.json`
+  - `research/experiments/generated/PRIVATE-CALL-LEARNING-001-report.md`
+  - `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md`
+  - `research/experiments/PRIVATE-CALL-LEARNING-001.md`
+  - `scripts/check_private_call_learning_pipeline.py`
+  - `scripts/init_private_call_learning_workspace.py`
+  - `scripts/validate_private_call_learning_pipeline.py`
+- Dry-run result:
+  - network calls made: false
+  - raw private content read: false
+  - secret values logged: false
+  - raw audio provider upload allowed: false
+  - raw audio Git tracking allowed: false
+  - customer identifier learning allowed: false
+  - fine-tuning enabled by default: false
+- What was learned:
+  - private call-center data should first become human-reviewed sales-pattern notes, not immediate fine-tuning material
+  - successful calls can teach target behavior, while failed calls should become avoid-patterns and guardrails
+  - raw transcripts inherit the same privacy risk as raw audio and must not become normal generated artifacts
+- Why it matters for the thesis:
+  - it creates a defensible private-data methodology before data arrives
+  - it separates reproducible public experiments from restricted local product-learning evidence
+  - it records the privacy and retention constraints that will shape later RAG or fine-tuning claims
+- Open questions:
+  - which local ASR and speaker-segmentation approach is accurate enough for German call-center audio
+  - what redaction quality threshold is required before pattern notes can leave `data/private/`
+  - whether sales-expert review should label success/failure patterns before RAG is built
+
+### 2026-05-04 - SPEECH-STYLE-001 English/German speech realism references
+
+- Objective: preserve internet-researched speech-pattern references for thesis writing and future `VOICE-023` design
+- Action taken:
+  - created a thesis reference note for spontaneous speech, disfluency, filler particles, pauses, breath behavior, and audible warmth
+  - updated the thesis outline and writing guide so the reference note is discoverable during thesis drafting
+  - updated dataset readiness notes to treat Spoken BNC2014 and DGD/FOLK as candidate speech-realism references, not immediate phase-1 datasets
+  - updated the roadmap so `VOICE-023` uses language-aware speech-realism references while keeping protected text exact
+- Sources recorded:
+  - Clark and Fox Tree (2002) on English `uh` and `um` as speech-planning delay signals
+  - Spoken BNC2014 for contemporary spoken English conversation reference
+  - DGD/FOLK for spontaneous German interaction reference
+  - Muhlack, Trouvain, and Jessen (2023) on German filler particles
+  - Belz (2023) on filler-particle terminology and phonetic classification
+  - GAT 2 as a German conversation-analysis transcription reference for pauses, breath, lengthening, and laughter notation
+  - Trouvain, Werner, and Moebius (2020) plus Werner, Trouvain, and Moebius (2022) on breath and pause variability
+  - Barthel and Quene (2015) on acoustic cues of smiled speech
+- What was learned:
+  - fillers should be modeled as timing and planning signals, not as random noise
+  - English and German need different filler inventories and discourse-marker tendencies
+  - breathing and pause variability are part of perceived naturalness
+  - audible warmth can be modeled cautiously, but it must not become theatrical or manipulative
+  - language mechanics must remain separate from cultural stereotypes and campaign persona
+- Why it matters for the thesis:
+  - it gives the voice-naturalness design a research trail instead of relying only on subjective listening impressions
+  - it supports a future methodology section explaining why fillers, pauses, and prosody are controlled rather than random
+  - it creates sources for a related-work discussion on spontaneous speech and speech realism
+- Open questions:
+  - whether to validate the English profile against Spoken BNC2014 before implementation or after the first `VOICE-023` prototype
+  - whether DGD/FOLK access terms allow enough inspection for German profile refinement
+  - how to evaluate smile/warmth cues without making the sales agent sound overexcited
+
+### 2026-05-04 - REF-001 thesis reference registry and expanded writing map
+
+- Objective: preserve the broader source trail from earlier project work and make the thesis outline/writing guide reflect the actual project scope
+- Action taken:
+  - added `THESIS_REFERENCE_REGISTRY.md` as a central source map
+  - expanded `THESIS_OUTLINE.md` from a short skeleton into a chapter-by-chapter evidence map
+  - expanded `THESIS_WRITING_GUIDE.md` with writing workflow, source rules, evidence rules, and limitations to preserve
+  - moved `VOICE-023` engineering implications out of the speech-reference file into `docs/product/VOICE_023_SPEECH_REALISM_LAYER.md`
+  - added source candidates for IEMOCAP, MELD, and Persuasion for Good to the dataset manifest
+  - recovered sales-objection source URLs for Apollo, Salesgenie, Proposify, and B2B Vic
+- Sources organized:
+  - public datasets: IEMOCAP, MELD, Persuasion for Good
+  - speech realism: English/German disfluency, pause, breath, and smiled-speech references
+  - privacy/data governance: European Commission and EDPB GDPR references
+  - voice providers: Cartesia, ElevenLabs, OpenAI, Azure, Google Cloud, AWS Polly, Deepgram, and Piper
+  - sales-objection product sources: Apollo, Salesgenie, Proposify, B2B Vic
+  - open-source/process inspirations: project-attributed GitHub repositories already tracked in `third-party-inspirations.md`
+- What was learned:
+  - the thesis needs a source registry separate from individual product docs
+  - not every source has the same academic weight
+  - provider docs should support engineering choices, not quality claims
+  - sales-practice articles can ground product categories, but should not be treated as peer-reviewed evidence
+- Why it matters for the thesis:
+  - it prevents citations and source provenance from being lost in chat history
+  - it makes the final writing process easier by mapping each chapter to evidence files
+  - it keeps product inspiration, academic evidence, provider documentation, and private-data rules separate
+- Open questions:
+  - final citation style required by the university
+  - exact local archive provenance and license terms for downloaded datasets
+  - final legal sources for German outbound calling, insurance sales, and call recording

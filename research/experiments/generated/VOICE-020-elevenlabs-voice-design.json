@@ -1,0 +1,416 @@
+{
+  "voice_milestone": "VOICE-020",
+  "experiment_scope": "Offline ElevenLabs-first voice design packet for human-like sales-agent delivery. This checkpoint creates voice prompts, settings candidates, emotional delivery bundles, and protected-text locks before creating or selecting voices in ElevenLabs.",
+  "case_file": "research\\experiments\\cases\\voice-020-elevenlabs-voice-design.json",
+  "source_artifacts": [
+    {
+      "path": "research\\experiments\\generated\\VOICE-018-sales-voice-tuning.json",
+      "exists": true,
+      "used_as_private_data_source": false
+    },
+    {
+      "path": "research\\experiments\\generated\\VOICE-019-sales-tuned-live-ab-audio.json",
+      "exists": true,
+      "used_as_private_data_source": false
+    },
+    {
+      "path": "research\\experiments\\VOICE-019-sales-tuned-live-ab-audio.md",
+      "exists": true,
+      "used_as_private_data_source": false
+    }
+  ],
+  "official_sources": [
+    {
+      "source_id": "elevenlabs-voices-overview",
+      "url": "https://elevenlabs.io/docs/overview/capabilities/voices",
+      "use": "Voice types, Voice Design, Voice Design with Eleven v3, Voice Remixing, and API/free-tier boundaries."
+    },
+    {
+      "source_id": "elevenlabs-voice-design",
+      "url": "https://elevenlabs.io/docs/eleven-creative/voices/voice-design",
+      "use": "Prompt-based generated voice design workflow and voice prompt guidance."
+    },
+    {
+      "source_id": "elevenlabs-tts-best-practices",
+      "url": "https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices",
+      "use": "Text shaping, pacing, punctuation, and delivery guidance for speech synthesis."
+    },
+    {
+      "source_id": "elevenlabs-voice-settings",
+      "url": "https://elevenlabs.io/docs/api-reference/voices/settings/get",
+      "use": "Voice settings fields including stability, similarity boost, style, speed, and speaker boost."
+    },
+    {
+      "source_id": "elevenlabs-agent-privacy",
+      "url": "https://elevenlabs.io/docs/eleven-agents/customization/privacy",
+      "use": "Agent privacy configuration and retention awareness for future live agent work."
+    },
+    {
+      "source_id": "elevenlabs-commercial-use",
+      "url": "https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform",
+      "use": "Commercial-use boundary for generated content on paid plans."
+    },
+    {
+      "source_id": "elevenlabs-voice-remixing",
+      "url": "https://elevenlabs.io/docs/overview/capabilities/voice-remixing",
+      "use": "Prompt-based transformation of owned voices for pacing, emotion/style, pitch/timbre, and audio quality."
+    }
+  ],
+  "listening_feedback_basis": {
+    "preferred_voice_019_variant": "sales_tuned",
+    "languages_reviewed": [
+      "en",
+      "de"
+    ],
+    "positive_feedback": [
+      "sales-tuned variants were preferred over prosody-only variants",
+      "the audio became stronger after the opening sentence",
+      "clarity and pronunciation were usable for continued testing"
+    ],
+    "remaining_issues": [
+      "the beginning still sounded rigid and AI-generated",
+      "pace remained too steady",
+      "pitch and emotion were too flat",
+      "delivery still sounded like reading from a prepared script",
+      "more controlled randomness, contractions, light fillers, and bundled expressive gestures are needed",
+      "Voice Design previews can sound telephone-filtered or muffled, so clean full-band voice quality should be requested explicitly",
+      "Voice Design previews are too slow for a useful sales agent, so the target voice and runtime settings should bias faster than normal"
+    ]
+  },
+  "private_call_center_boundary": {
+    "raw_private_audio_location": "data/private/",
+    "raw_private_audio_provider_upload_allowed": false,
+    "customer_voice_upload_allowed": false,
+    "voice_cloning_allowed": false,
+    "allowed_use": "Private call-center audio may later inform local abstract tuning notes such as preferred pace, opening warmth, objection rhythm, and emotional contour. It must not be uploaded or copied into provider prompts.",
+    "forbidden_use": [
+      "uploading raw private audio to ElevenLabs",
+      "using customer voices as voice-design input",
+      "cloning any person without a later explicit legal and consent workflow",
+      "moving private identifiers into prompt, report, or generated artifacts"
+    ]
+  },
+  "voice_design_ui_candidates": [
+    {
+      "candidate_id": "clean-natural-medium-guidance",
+      "recommended_use": "Default Voice Design generation attempt.",
+      "loudness": 0.6,
+      "guidance_scale": 0.48,
+      "expected_effect": "Enough prompt adherence to avoid phone/robot tone, with enough freedom to create a less rigid voice."
+    },
+    {
+      "candidate_id": "creative-less-robotic",
+      "recommended_use": "Use if generated voices still sound too robotic or too scripted.",
+      "loudness": 0.58,
+      "guidance_scale": 0.34,
+      "expected_effect": "More creative variation and less prompt-locked stiffness, with higher risk of drifting from sales-agent traits."
+    },
+    {
+      "candidate_id": "prompt-faithful-clean-sales",
+      "recommended_use": "Use if voices drift too much from the professional sales-agent persona.",
+      "loudness": 0.64,
+      "guidance_scale": 0.62,
+      "expected_effect": "More faithful to the clean professional sales prompt, with higher risk of sounding controlled or less spontaneous."
+    }
+  ],
+  "voice_remixing_prompts": [
+    {
+      "remix_prompt_id": "elevenlabs-remix-en-sales-naturalizer-v1",
+      "language": "en",
+      "recommended_prompt_strength": "Medium",
+      "fallback_prompt_strength_if_too_subtle": "High",
+      "categories": [
+        "Pacing",
+        "Emotion",
+        "Pitch",
+        "Audio Quality",
+        "Timbre"
+      ],
+      "prompt": "Remix this voice into a highly natural English-speaking professional sales consultant. Preserve the speaker identity, but make the delivery less robotic, less scripted, and less evenly paced. The voice should sound clean, close, full-band, and studio-quality, not phone-filtered, muffled, compressed, distant, or low-bandwidth. Add natural human rhythm: some phrases should move a little faster when the speaker is confident or explaining something useful, while empathy phrases and important points should slow down briefly. Avoid one fixed speed across the whole sentence. Add subtle pitch movement and emotional responsiveness, especially in openings and objection handling. The speaker should occasionally sound like they are thinking live, with tiny conversational texture, but never like an actor exaggerating. Combine effects naturally: a short filler such as 'so' or 'okay' can carry a slight upward pitch and be followed by a short pause; a reassuring phrase can soften in tone and then continue with firmer confidence; an important keyword can receive slight emphasis and then return to faster sales pacing. Keep the tone warm, calm, confident, trustworthy, and professional. Do not make it seductive, theatrical, announcer-like, radio-ad-like, influencer-like, tired, elderly, aggressive, pushy, or overly cheerful. Do not make the voice slower. The final voice should feel like a trained human sales consultant speaking live in a real conversation, not reading a script at a constant rhythm.",
+      "custom_script": "Hi there, thanks for taking the call. My name is Mara, and I will keep this quick. [short pause] So, before I explain anything, I just want to check whether this is actually relevant for you. If it is not, no problem. But if it is, I can walk you through the useful part in plain language. [thoughtful pause] I understand the concern about cost; the important thing is that we do not push anything that does not fit. What I can do is ask one or two quick questions, and then we will know whether it makes sense to continue.",
+      "success_criteria": [
+        "opening does not trigger an immediate robot-detection reaction",
+        "pace varies naturally across phrases",
+        "voice is faster than normal but still clear",
+        "filler-like microtexture sounds bundled with pitch or pause instead of pasted in",
+        "audio quality is clean and not phone-filtered",
+        "tone remains professional and sales-useful"
+      ]
+    },
+    {
+      "remix_prompt_id": "elevenlabs-remix-de-sales-naturalizer-v1",
+      "language": "de",
+      "recommended_prompt_strength": "Medium",
+      "fallback_prompt_strength_if_too_subtle": "High",
+      "categories": [
+        "Pacing",
+        "Emotion",
+        "Pitch",
+        "Audio Quality",
+        "Timbre"
+      ],
+      "prompt": "Remix this voice into a highly natural German-speaking professional sales consultant for Germany. Preserve the speaker identity, but make the delivery less robotic, less scripted, and less evenly paced. The voice should sound clean, close, full-band, and studio-quality, not phone-filtered, muffled, compressed, distant, or low-bandwidth. Add natural German conversational rhythm: some phrases should move a little faster when the speaker is confident or explaining something useful, while empathy phrases and important points should slow down briefly. Avoid one fixed speed across the whole sentence. Add subtle pitch movement and emotional responsiveness, especially in openings and objection handling. The speaker should occasionally sound like they are thinking live, with tiny conversational texture, but never like an actor exaggerating. Combine effects naturally: a short connector such as 'also', 'okay', or 'genau' can carry a slight upward pitch and be followed by a short pause; a reassuring phrase can soften in tone and then continue with firmer confidence; an important keyword can receive slight emphasis and then return to faster sales pacing. Keep the tone warm, calm, confident, trustworthy, and professional. Do not make it seductive, theatrical, advertisement-like, newsreader-like, influencer-like, tired, elderly, aggressive, pushy, or overly cheerful. Do not make the voice slower. The final voice should feel like a trained human German sales consultant speaking live in a real conversation, not reading a script at a constant rhythm.",
+      "custom_script": "Guten Tag, danke, dass Sie kurz rangehen. Mein Name ist Lena, und ich mache es wirklich kurz. [kurze Pause] Also, bevor ich Ihnen etwas erklaere, moechte ich nur pruefen, ob das Thema fuer Sie ueberhaupt relevant ist. Wenn nicht, ist das voellig in Ordnung. Wenn ja, kann ich Ihnen den wichtigen Teil klar und ohne Druck erklaeren. [nachdenkliche Pause] Ich verstehe den Punkt mit den Kosten; wichtig ist, dass es zu Ihrer Situation passt. Ich stelle Ihnen ein oder zwei kurze Fragen, und dann wissen wir, ob es Sinn ergibt weiterzumachen.",
+      "success_criteria": [
+        "opening sounds native and not immediately AI-like",
+        "pace varies naturally across German phrases",
+        "voice is faster than normal but still clear",
+        "connector microtexture sounds bundled with pitch or pause instead of pasted in",
+        "audio quality is clean and not phone-filtered",
+        "tone remains professional and sales-useful"
+      ]
+    }
+  ],
+  "voice_design_profiles": [
+    {
+      "profile_id": "elevenlabs-sales-agent-en-v1",
+      "language": "en",
+      "recommended_voice_name": "Mara - Warm Sales Guide",
+      "voice_design_prompt": "Native English professional call-center sales agent. Warm, present, emotionally responsive, and confident without sounding pushy. Clean full-band studio-quality voice, not telephone-filtered, muffled, compressed, distant, or low-bandwidth. Sounds like a real trained sales consultant in a live conversation, not a narrator, announcer, podcast host, or customer-support bot. Natural pitch movement, faster-than-normal sales-call pace, relaxed but precise articulation, light conversational texture, and believable thinking pauses. Handles objections with calm confidence and empathy. Avoid robotic flatness, theatrical excitement, exaggerated friendliness, fear pressure, overacting, and a slow scripted reading style.",
+      "preview_text": "Hi there, thanks for taking the call. My name is Mara, and I will keep this quick. [short pause] So, before I explain anything, I just want to check whether this is actually relevant for you. If it is not, no problem. But if it is, I can walk you through the useful part in plain language. I understand the concern about cost; the important thing is that we do not push anything that does not fit.",
+      "target_traits": [
+        "warm professional",
+        "sales-call confident",
+        "emotionally responsive",
+        "not overexcited",
+        "not script-reading",
+        "clean full-band voice quality",
+        "faster-than-normal sales pace",
+        "comfortable with objection handling"
+      ],
+      "avoid_traits": [
+        "announcer voice",
+        "radio ad voice",
+        "robotic flatness",
+        "flat synthetic assistant",
+        "telephone-filtered or muffled quality",
+        "slow scripted reading style",
+        "overly casual influencer tone",
+        "fear pressure",
+        "rushed telemarketer tone"
+      ]
+    },
+    {
+      "profile_id": "elevenlabs-sales-agent-de-v1",
+      "language": "de",
+      "recommended_voice_name": "Lena - Ruhig und Klar",
+      "voice_design_prompt": "Native German professional call-center sales agent for Germany. Warm, clear, emotionally responsive, and confident without sounding aggressive. Clean full-band studio-quality voice, not telephone-filtered, muffled, compressed, distant, or low-bandwidth. Sounds like a real trained sales consultant in a live conversation, not a narrator, advertisement voice, newsreader, or generic AI assistant. Natural German intonation, faster-than-normal sales-call pace, precise but relaxed articulation, light conversational texture, and believable thinking pauses. Handles hesitation and objections with calm confidence and empathy. Avoid robotic flatness, overacting, exaggerated cheerfulness, fear pressure, and a slow scripted reading style.",
+      "preview_text": "Guten Tag, danke, dass Sie kurz rangehen. Mein Name ist Lena, und ich mache es wirklich kurz. [kurze Pause] Bevor ich Ihnen etwas erklaere, moechte ich nur pruefen, ob das Thema fuer Sie ueberhaupt relevant ist. Wenn nicht, ist das voellig in Ordnung. Wenn ja, kann ich Ihnen den wichtigen Teil klar und ohne Druck erklaeren. Ich verstehe den Punkt mit den Kosten; wichtig ist, dass es zu Ihrer Situation passt.",
+      "target_traits": [
+        "native German phone delivery",
+        "warm professional",
+        "sales-call confident",
+        "emotionally responsive",
+        "clear articulation",
+        "clean full-band voice quality",
+        "faster-than-normal sales pace",
+        "not script-reading",
+        "comfortable with hesitation and objections"
+      ],
+      "avoid_traits": [
+        "advertisement voice",
+        "newsreader voice",
+        "robotic flatness",
+        "flat synthetic assistant",
+        "telephone-filtered or muffled quality",
+        "slow scripted reading style",
+        "overly cheerful tone",
+        "fear pressure",
+        "rushed telemarketer tone"
+      ]
+    }
+  ],
+  "settings_matrix": [
+    {
+      "candidate_id": "realtime-balanced",
+      "recommended_use": "First live test for normal realtime sales calls.",
+      "model_family": "flash_or_turbo_realtime",
+      "stability": 0.43,
+      "similarity_boost": 0.78,
+      "style": 0.22,
+      "speed": 1.12,
+      "use_speaker_boost": false,
+      "expected_effect": "More emotion and variation than VOICE-019 while staying fast enough for conversational latency.",
+      "latency_risk": "low-to-medium"
+    },
+    {
+      "candidate_id": "emotional-opening",
+      "recommended_use": "A/B test for openings, empathy, and objection handling where robot-detection risk is highest.",
+      "model_family": "flash_or_turbo_realtime",
+      "stability": 0.34,
+      "similarity_boost": 0.76,
+      "style": 0.34,
+      "speed": 1.14,
+      "use_speaker_boost": false,
+      "expected_effect": "More expressive opening and less rigid first sentence, with careful monitoring for instability.",
+      "latency_risk": "medium"
+    },
+    {
+      "candidate_id": "clarity-safe",
+      "recommended_use": "Protected or compliance-adjacent speech when exactness and trust matter more than expressiveness.",
+      "model_family": "flash_or_turbo_realtime",
+      "stability": 0.58,
+      "similarity_boost": 0.82,
+      "style": 0.12,
+      "speed": 1.07,
+      "use_speaker_boost": false,
+      "expected_effect": "Cleaner, steadier delivery for campaign questions, disclosures, and appointment confirmations.",
+      "latency_risk": "low"
+    },
+    {
+      "candidate_id": "expressive-quality",
+      "recommended_use": "Offline or non-realtime quality exploration when latency is less important.",
+      "model_family": "eleven_v3_quality_test",
+      "stability": 0.3,
+      "similarity_boost": 0.75,
+      "style": 0.45,
+      "speed": 1.12,
+      "use_speaker_boost": true,
+      "expected_effect": "Best chance at emotional range and human-like delivery, but not the default realtime path.",
+      "latency_risk": "high"
+    }
+  ],
+  "emotional_delivery_bundles": [
+    {
+      "bundle_id": "opening-warm-fast",
+      "trigger": "first agent turn or re-opening after silence",
+      "allowed_segment_types": [
+        "approved_opening_when_campaign_allows_variation",
+        "freeform_transition"
+      ],
+      "combined_effects": [
+        "slightly warmer first phrase",
+        "brief natural pause after greeting",
+        "slightly faster follow-through",
+        "small upward pitch on the relevance-check phrase"
+      ],
+      "blocked_in_protected_text": true
+    },
+    {
+      "bundle_id": "empathy-then-confidence",
+      "trigger": "customer sounds hesitant, skeptical, annoyed, or worried",
+      "allowed_segment_types": [
+        "freeform_empathy",
+        "freeform_objection_handling"
+      ],
+      "combined_effects": [
+        "soft acknowledgement",
+        "short pause",
+        "lower-pressure tone",
+        "confident but faster explanation after the pause"
+      ],
+      "blocked_in_protected_text": true
+    },
+    {
+      "bundle_id": "thinking-microtexture",
+      "trigger": "agent needs a small human thinking beat in non-protected freeform speech",
+      "allowed_segment_types": [
+        "freeform_transition",
+        "freeform_explanation"
+      ],
+      "combined_effects": [
+        "rare light filler such as 'so' or 'okay'",
+        "slight pitch lift on the filler",
+        "120-240 ms pause",
+        "resume with clearer emphasis on the useful point"
+      ],
+      "blocked_in_protected_text": true
+    },
+    {
+      "bundle_id": "important-point-emphasis",
+      "trigger": "agent must make the key safe value point clear",
+      "allowed_segment_types": [
+        "freeform_explanation",
+        "freeform_objection_handling"
+      ],
+      "combined_effects": [
+        "slight emphasis on one keyword",
+        "shorter spacing before the keyword",
+        "small slowdown immediately after the keyword",
+        "return to faster sales pace"
+      ],
+      "blocked_in_protected_text": true
+    },
+    {
+      "bundle_id": "respectful-exit",
+      "trigger": "customer refuses, asks to stop, or shows clear disinterest",
+      "allowed_segment_types": [
+        "freeform_wrapup",
+        "hangup_when_campaign_allows_variation"
+      ],
+      "combined_effects": [
+        "slower respectful tone",
+        "no filler",
+        "no persuasion escalation",
+        "clear close"
+      ],
+      "blocked_in_protected_text": true
+    }
+  ],
+  "protected_text_rules": {
+    "exact_text_lock": true,
+    "filler_words_allowed": false,
+    "contractions_allowed": false,
+    "random_spacing_allowed": false,
+    "emotional_overrides_allowed": false,
+    "allowed_delivery": "neutral-clear",
+    "segment_types": [
+      "campaign_qualification_question",
+      "company_script",
+      "required_disclosure",
+      "compliance_statement",
+      "legal_or_medical_boundary",
+      "coverage_or_claim_boundary",
+      "claim_boundary",
+      "appointment_confirmation",
+      "do_not_call",
+      "hangup",
+      "sensitive_escalation",
+      "human_handoff_exact_script"
+    ]
+  },
+  "dashboard_steps": [
+    "Create or select voice candidates for profiles: elevenlabs-sales-agent-en-v1, elevenlabs-sales-agent-de-v1.",
+    "Use synthetic preview text only; do not upload private call audio or customer voices.",
+    "Try Voice Design UI candidates first: clean-natural-medium-guidance, creative-less-robotic, prompt-faithful-clean-sales.",
+    "Remix selected voices with prompts: elevenlabs-remix-en-sales-naturalizer-v1, elevenlabs-remix-de-sales-naturalizer-v1.",
+    "Test voice settings candidates: realtime-balanced, emotional-opening, clarity-safe, expressive-quality.",
+    "Listen first to openings, then objection handling, then protected-text clarity.",
+    "Keep human ratings separate from provider latency and response-content quality.",
+    "Promote a voice only after English and German samples both pass the listening rubric."
+  ],
+  "summary": {
+    "voice_design_profile_count": 2,
+    "languages": [
+      "de",
+      "en"
+    ],
+    "voice_design_ui_candidate_count": 3,
+    "voice_remixing_prompt_count": 2,
+    "settings_candidate_count": 4,
+    "emotional_delivery_bundle_count": 5,
+    "protected_segment_type_count": 12,
+    "official_source_count": 7,
+    "source_artifacts_available": 3,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "quality_claim_allowed": false,
+    "private_audio_uploaded": false,
+    "private_audio_copied_to_generated_artifacts": false,
+    "ready_for_elevenlabs_dashboard_voice_creation": true
+  },
+  "runtime_boundary": {
+    "offline_design_only": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "private_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "quality_claim_allowed_without_human_rating": false,
+    "provider_input_allowed_now": "synthetic voice-design prompts and synthetic preview text only"
+  }
+}

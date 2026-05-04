@@ -16,6 +16,12 @@ REQUIRED_POLICY_PHRASES = {
         "Training Signal Boundary",
         "Nothing derived from private call-center audio may leave `data/private/` until it passes a local export review.",
     ],
+    "docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md": [
+        "Raw private audio never leaves `data/private/`",
+        "Private identifiers are not training signal",
+        "Pattern-mining first, fine-tuning later",
+        "No safe export before redaction and human review",
+    ],
     "docs/data/DATA_USAGE_POLICY.md": [
         "Store private raw call-center audio in `data/private/`",
         "Treat private identifiers as non-training signal.",
@@ -83,6 +89,10 @@ def validate_guard_does_not_scan_private_data() -> None:
     assert_condition(
         '"docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md"' in guard_text,
         "Project drift guard must require the private call-center data policy.",
+    )
+    assert_condition(
+        '"docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md"' in guard_text,
+        "Project drift guard must require the private call learning pipeline policy.",
     )
 
 

@@ -6,6 +6,7 @@ from typing import Any
 
 from prosody_naturalness import apply_prosody_naturalness
 from provider_prosody_rendering import render_provider_variant, validate_variant
+from spoken_text_normalization import apply_spoken_text_normalization
 
 
 RUNTIME_VOICE_DELIVERY_ID = "RESP-002-runtime-voice-delivery"
@@ -128,14 +129,41 @@ def build_provider_result_shape(
     }
 
 
+def build_spoken_segments(
+    segments: list[dict[str, Any]],
+    spoken_text_normalization: dict[str, Any],
+) -> list[dict[str, Any]]:
+    spoken_segments = []
+    output_by_id = {
+        segment.get("segment_id"): segment
+        for segment in spoken_text_normalization.get("output_segments", [])
+    }
+    for segment in segments:
+        spoken_segment = deepcopy(segment)
+        output_segment = output_by_id.get(segment.get("segment_id"))
+        if output_segment is not None:
+            spoken_segment["text"] = output_segment["text_after"]
+            spoken_segment["spoken_text_before"] = output_segment["text_before"]
+            spoken_segment["spoken_text_after"] = output_segment["text_after"]
+            spoken_segment["spoken_normalizations"] = output_segment["normalizations"]
+            spoken_segment["eligible_for_spoken_normalization"] = output_segment[
+                "eligible_for_spoken_normalization"
+            ]
+            spoken_segment["spoken_protected_reason"] = output_segment["protected_reason"]
+        spoken_segments.append(spoken_segment)
+    return spoken_segments
+
+
 def validate_delivery(
     packet: dict[str, Any],
     segments: list[dict[str, Any]],
+    spoken_text_normalization: dict[str, Any],
     prosody: dict[str, Any],
     provider_rendering: dict[str, Any],
 ) -> dict[str, Any]:
     final_response = packet["final_response"]
-    final_response_unchanged = prosody["tts_text"] == final_response
+    final_response_unchanged = segments[0].get("text") == final_response
+    tts_text_equals_final_response = prosody["tts_text"] == final_response
     protected_segment_ids = {
         segment["segment_id"]
         for segment in segments
@@ -155,10 +183,15 @@ def validate_delivery(
         1 for cue in prosody["prosody_plan"] if cue.get("segment_id") in protected_segment_ids
     )
     provider_validation = validate_variant(provider_rendering)
+    protected_segment_change_count = len(
+        spoken_text_normalization["validation"].get("protected_segment_changes", [])
+    )
     passed = (
         final_response_unchanged
+        and spoken_text_normalization["validation"]["passed"]
         and prosody["validation"]["passed"]
         and provider_validation["passed"]
+        and protected_segment_change_count == 0
         and cue_in_protected_segment_count == 0
         and provider_rendering["api_call_made"] is False
         and provider_rendering["customer_audio_uploaded"] is False
@@ -168,8 +201,11 @@ def validate_delivery(
         "validator": "RESP-002 guarded response voice delivery check",
         "passed": passed,
         "final_response_unchanged": final_response_unchanged,
+        "tts_text_equals_final_response": tts_text_equals_final_response,
+        "spoken_text_normalization_passed": spoken_text_normalization["validation"]["passed"],
         "prosody_validation_passed": prosody["validation"]["passed"],
         "provider_validation": provider_validation,
+        "protected_segment_change_count": protected_segment_change_count,
         "cue_in_protected_segment_count": cue_in_protected_segment_count,
         "notes": (
             "Runtime voice delivery preserved guarded text and kept provider rendering offline."
@@ -189,10 +225,23 @@ def build_runtime_voice_delivery(
     segments = build_delivery_segments(guarded_packet, campaign)
     provider = provider_for_key(provider_key)
     seed_value = seed or f"{guarded_packet.get('response_generation_id')}:{campaign.get('campaign_id')}:{guarded_packet.get('stage')}:{guarded_packet.get('transcript')}"
-    prosody = apply_prosody_naturalness(campaign, segments, language=language, seed=seed_value)
+    spoken_text_normalization = apply_spoken_text_normalization(
+        campaign,
+        segments,
+        language=language,
+        seed=seed_value,
+    )
+    spoken_segments = build_spoken_segments(segments, spoken_text_normalization)
+    prosody = apply_prosody_naturalness(campaign, spoken_segments, language=language, seed=seed_value)
     provider_result = build_provider_result_shape(guarded_packet, campaign, prosody, language)
     provider_rendering = render_provider_variant(provider_result, provider)
-    validation = validate_delivery(guarded_packet, segments, prosody, provider_rendering)
+    validation = validate_delivery(
+        guarded_packet,
+        segments,
+        spoken_text_normalization,
+        prosody,
+        provider_rendering,
+    )
 
     return {
         "runtime_voice_delivery_id": RUNTIME_VOICE_DELIVERY_ID,
@@ -207,12 +256,14 @@ def build_runtime_voice_delivery(
         "voice_cloning_used": False,
         "generated_audio_created": False,
         "segments": segments,
+        "spoken_segments": spoken_segments,
+        "spoken_text_normalization": spoken_text_normalization,
         "prosody": prosody,
         "provider_rendering": provider_rendering,
         "validation": validation,
         "runtime_boundary": {
             "position": "after RESP-001 guarded response generation and before live TTS",
-            "changes_allowed": "delivery metadata and provider-specific TTS input only",
+            "changes_allowed": "delivery metadata, safe spoken freeform TTS wording, and provider-specific TTS input only",
             "changes_forbidden": [
                 "changing final_response",
                 "changing call_control",

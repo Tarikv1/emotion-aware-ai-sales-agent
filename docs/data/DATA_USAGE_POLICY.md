@@ -12,6 +12,7 @@ Do not claim that a result came only from public datasets if private call-center
 Prefer reproducible public-data experiments for the main baseline whenever possible.
 Treat private call-center recordings as restricted local assets, not general project files.
 Raw private call-center audio belongs in `data/private/` only.
+The private call learning scaffold in `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md` defines the current pattern-mining-first workflow.
 
 ## Approved Data Categories
 
@@ -67,6 +68,7 @@ Anonymize or pseudonymize working copies whenever practical before downstream pr
 Treat private identifiers as non-training signal.
 Only reviewed, minimized, non-identifying sales-pattern artifacts may leave `data/private/`.
 Do not move names, addresses, phone numbers, emails, account numbers, payment details, dates of birth, health details, exact locations, or comparable identifying details into `data/processed/`, RAG files, fine-tuning files, examples, reports, or Git.
+Fine-tuning is disabled by default until a separate checkpoint proves legal scope, privacy handling, retention, minimization, and training-data quality.
 
 ## Experiment Labels
 

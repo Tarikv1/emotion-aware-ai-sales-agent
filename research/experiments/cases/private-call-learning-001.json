@@ -1,0 +1,118 @@
+{
+  "pipeline_id": "PRIVATE-CALL-LEARNING-001",
+  "title": "Local-only private call-center learning scaffold",
+  "source_label": "private-restricted",
+  "purpose": "Define a safe future workflow for learning sales patterns from private call-center recordings without learning customer identifiers or exporting raw private content.",
+  "private_root": "data/private",
+  "required_private_subdirs": [
+    "raw-audio",
+    "transcripts-raw",
+    "speaker-segments",
+    "transcripts-redacted",
+    "outcome-labels",
+    "pattern-notes",
+    "quarantine",
+    "deletion-manifests"
+  ],
+  "boundary": {
+    "raw_audio_provider_upload_allowed": false,
+    "raw_audio_git_tracking_allowed": false,
+    "raw_private_audio_read_by_default": false,
+    "customer_identifier_learning_allowed": false,
+    "fine_tuning_enabled_by_default": false,
+    "safe_export_requires_redaction": true,
+    "safe_export_requires_human_review": true,
+    "deletion_manifest_required_after_source_removal": true
+  },
+  "stages": [
+    {
+      "stage_id": "ingest_raw_audio_local_only",
+      "input_location": "data/private/raw-audio",
+      "output_location": "data/private/raw-audio",
+      "rule": "Store raw call recordings locally only. Do not copy raw audio into generated artifacts, docs, prompts, provider uploads, or Git-tracked folders."
+    },
+    {
+      "stage_id": "local_transcription",
+      "input_location": "data/private/raw-audio",
+      "output_location": "data/private/transcripts-raw",
+      "rule": "Transcribe locally by default. Raw transcripts inherit the same private boundary as audio."
+    },
+    {
+      "stage_id": "speaker_segmentation",
+      "input_location": "data/private/transcripts-raw",
+      "output_location": "data/private/speaker-segments",
+      "rule": "Separate customer and human sales-agent turns before pattern mining."
+    },
+    {
+      "stage_id": "pii_sensitive_redaction",
+      "input_location": "data/private/speaker-segments",
+      "output_location": "data/private/transcripts-redacted",
+      "rule": "Remove or mask direct identifiers and sensitive personal details before anything becomes learning material."
+    },
+    {
+      "stage_id": "outcome_labeling",
+      "input_location": "data/private/transcripts-redacted",
+      "output_location": "data/private/outcome-labels",
+      "rule": "Label outcomes such as sale, appointment, not interested, callback, transfer, refusal, or compliance stop."
+    },
+    {
+      "stage_id": "pattern_mining",
+      "input_location": "data/private/transcripts-redacted",
+      "output_location": "data/private/pattern-notes",
+      "rule": "Mine reusable sales behavior, customer objections, emotion shifts, successful response patterns, and failure patterns."
+    },
+    {
+      "stage_id": "human_review",
+      "input_location": "data/private/pattern-notes",
+      "output_location": "data/private/pattern-notes",
+      "rule": "Review extracted patterns before they are used for RAG, prompts, evaluation, or future tuning."
+    },
+    {
+      "stage_id": "safe_learning_export",
+      "input_location": "data/private/pattern-notes",
+      "output_location": "data/processed",
+      "rule": "Export only minimized, non-identifying sales-learning notes after redaction and human review."
+    },
+    {
+      "stage_id": "retention_or_deletion",
+      "input_location": "data/private",
+      "output_location": "data/private/deletion-manifests",
+      "rule": "When raw source files are no longer needed, delete them locally and record a deletion manifest without recording private content."
+    }
+  ],
+  "learning_outputs": [
+    "positive_sales_pattern",
+    "negative_sales_pattern",
+    "customer_objection_pattern",
+    "human_agent_success_pattern",
+    "human_agent_failure_pattern",
+    "safety_or_compliance_constraint",
+    "emotion_transition_pattern",
+    "interest_state_transition",
+    "handoff_or_escalation_pattern",
+    "timing_or_pacing_pattern"
+  ],
+  "disallowed_learning_outputs": [
+    "customer_name",
+    "phone_number",
+    "address",
+    "email",
+    "date_of_birth",
+    "policy_number",
+    "payment_detail",
+    "exact_health_fact",
+    "exact_financial_fact",
+    "exact_location"
+  ],
+  "rag_policy": {
+    "enabled_for_raw_private_data": false,
+    "enabled_for_reviewed_pattern_notes": true,
+    "requires_source_label": true,
+    "source_label": "private-restricted-derived"
+  },
+  "fine_tuning_policy": {
+    "enabled_by_default": false,
+    "requires_separate_checkpoint": true,
+    "minimum_gate": "redacted, minimized, consent/client-scope reviewed, retention-reviewed, quality-reviewed, and human-approved training examples only"
+  }
+}

@@ -1,0 +1,761 @@
+{
+  "voice_milestone": "VOICE-021",
+  "experiment_scope": "ElevenLabs custom-voice comparison for owner-created English and German sales voices. The tracked case file stores only candidate names and local config keys; actual voice IDs stay in ignored config/local/voice_ids.json.",
+  "case_file": "research\\experiments\\cases\\voice-021-elevenlabs-custom-voice-comparison.json",
+  "provider": {
+    "provider_key": "elevenlabs",
+    "provider_name": "ElevenLabs",
+    "model_id": "eleven_flash_v2_5",
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "audio_extension": "mp3",
+    "default_output_format": "mp3_44100_128",
+    "base_voice_settings": {
+      "stability": 0.42,
+      "similarity_boost": 0.78,
+      "style": 0.18,
+      "use_speaker_boost": true,
+      "speed": 1.06
+    },
+    "provider_id": "elevenlabs-stream",
+    "endpoint_type": "tts-http-stream",
+    "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+    "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "de": "ELEVENLABS_VOICE_ID_DE",
+      "en": "ELEVENLABS_VOICE_ID_EN"
+    },
+    "enable_logging": false
+  },
+  "voice_candidates": [
+    {
+      "candidate_id": "english_v1",
+      "language": "en",
+      "version": "v1_original",
+      "label": "English v1 original",
+      "local_voice_config_key": "elevenlabs.candidates.english_v1",
+      "expected_role": "baseline English voice before remix improvement"
+    },
+    {
+      "candidate_id": "english_v2_improved",
+      "language": "en",
+      "version": "v2_improved",
+      "label": "English v2 improved",
+      "local_voice_config_key": "elevenlabs.candidates.english_v2_improved",
+      "expected_role": "remixed English voice after naturalness prompt pass"
+    },
+    {
+      "candidate_id": "german_v1",
+      "language": "de",
+      "version": "v1_original",
+      "label": "German v1 original",
+      "local_voice_config_key": "elevenlabs.candidates.german_v1",
+      "expected_role": "baseline German voice before remix improvement"
+    },
+    {
+      "candidate_id": "german_v2_improved",
+      "language": "de",
+      "version": "v2_improved",
+      "label": "German v2 improved",
+      "local_voice_config_key": "elevenlabs.candidates.german_v2_improved",
+      "expected_role": "remixed German voice after naturalness prompt pass"
+    }
+  ],
+  "listening_scripts": [
+    {
+      "script_id": "en-opening-objection",
+      "language": "en",
+      "script_title": "English opening plus objection handling",
+      "text_source": "synthetic VOICE-022-style spoken-normalized sales text",
+      "text": "Hi, this is Mara calling about a quick workflow review. I'll keep it short. The important thing is that we're not trying to push a long demo; we're just checking whether there's a practical reason to have a specialist call you back."
+    },
+    {
+      "script_id": "en-empathy-bridge",
+      "language": "en",
+      "script_title": "English empathy plus bridge response",
+      "text_source": "synthetic VOICE-022-style spoken-normalized sales text",
+      "text": "I get why you'd be skeptical. If there's no clear fit, we shouldn't waste your time. But if the routing issue is still happening, a short specialist callback can at least show whether it's worth looking at."
+    },
+    {
+      "script_id": "de-opening-objection",
+      "language": "de",
+      "script_title": "German opening plus objection handling",
+      "text_source": "synthetic VOICE-022-style spoken-normalized sales text",
+      "text": "Hallo, hier ist Mara wegen eines kurzen Vertrags-Checks. Ich hab verstanden, dass Sie keine lange Beratung moechten. Wenn's fuer Sie passt, klaeren wir nur kurz, ob ein Spezialisten-Rueckruf sinnvoll waere."
+    },
+    {
+      "script_id": "de-empathy-bridge",
+      "language": "de",
+      "script_title": "German empathy plus bridge response",
+      "text_source": "synthetic VOICE-022-style spoken-normalized sales text",
+      "text": "Ich verstehe den Einwand. Gibt's vor allem Sorge wegen Preis, Zeitpunkt oder den genauen Bedingungen? Ich halte es kurz und verspreche nichts, was ein Fachberater pruefen muss."
+    }
+  ],
+  "comparison_groups": [
+    {
+      "group_id": "english-original-vs-improved",
+      "language": "en",
+      "candidate_ids": [
+        "english_v1",
+        "english_v2_improved"
+      ],
+      "question": "Does the improved English voice reduce robotic opening and improve sales-call naturalness?"
+    },
+    {
+      "group_id": "german-original-vs-improved",
+      "language": "de",
+      "candidate_ids": [
+        "german_v1",
+        "german_v2_improved"
+      ],
+      "question": "Does the improved German voice reduce robotic opening and improve German sales-call naturalness?"
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "max_timeout_seconds": 10,
+    "api_key_location": "environment-only",
+    "voice_id_location": "ignored config/local/voice_ids.json or environment override",
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including raw voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "first-five-seconds robot sensor",
+      "naturalness",
+      "sales-call pacing",
+      "pace variation",
+      "pitch variation",
+      "emotional responsiveness",
+      "clarity",
+      "language pronunciation",
+      "low muffling or artifacts",
+      "trustworthiness",
+      "sales usefulness",
+      "original vs improved preference",
+      "would use with real leads"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  },
+  "expected": {
+    "candidate_count": 4,
+    "script_count": 4,
+    "comparison_group_count": 2,
+    "dry_run_result_count": 8,
+    "languages": [
+      "de",
+      "en"
+    ],
+    "provider_calls_made_by_default": false,
+    "raw_voice_ids_in_artifacts": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  },
+  "summary": {
+    "candidate_count": 4,
+    "script_count": 4,
+    "comparison_group_count": 2,
+    "result_count": 8,
+    "languages": {
+      "de": 4,
+      "en": 4
+    },
+    "live_call_requested": true,
+    "api_calls_made": 8,
+    "audio_files_created": 8,
+    "fallback_count": 0,
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "raw_voice_ids_logged": false,
+    "timeout_seconds": 8.0,
+    "human_ratings_recorded": false,
+    "quality_claim_allowed": false,
+    "max_time_to_first_audio_ms": 251.186,
+    "max_total_provider_latency_ms": 605.661
+  },
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "provider_calls_made": true,
+    "requires_api_key": true,
+    "api_key_location": "environment-only",
+    "voice_id_location": "ignored local config or explicit environment override",
+    "raw_voice_ids_logged": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "quality_claim_allowed_without_human_rating": false
+  },
+  "results": [
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "english_v1",
+      "voice_candidate_label": "English v1 original",
+      "voice_candidate_version": "v1_original",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.english_v1",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "en-opening-objection",
+      "script_title": "English opening plus objection handling",
+      "language": "en",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "Hi, this is Mara calling about a quick workflow review. I'll keep it short. The important thing is that we're not trying to push a long demo; we're just checking whether there's a practical reason to have a specialist call you back.",
+      "tts_input_chars": 232,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.english_v1>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "Hi, this is Mara calling about a quick workflow review. I'll keep it short. The important thing is that we're not trying to push a long demo; we're just checking whether there's a practical reason to have a specialist call you back.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-en-english_v1-en-opening-objection.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-en-english_v1-en-opening-objection.mp3",
+      "audio_byte_size": 201919,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 251.186,
+      "total_provider_latency_ms": 605.661,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "english_v2_improved",
+      "voice_candidate_label": "English v2 improved",
+      "voice_candidate_version": "v2_improved",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.english_v2_improved",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "en-opening-objection",
+      "script_title": "English opening plus objection handling",
+      "language": "en",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "Hi, this is Mara calling about a quick workflow review. I'll keep it short. The important thing is that we're not trying to push a long demo; we're just checking whether there's a practical reason to have a specialist call you back.",
+      "tts_input_chars": 232,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.english_v2_improved>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "Hi, this is Mara calling about a quick workflow review. I'll keep it short. The important thing is that we're not trying to push a long demo; we're just checking whether there's a practical reason to have a specialist call you back.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-en-english_v2_improved-en-opening-objection.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-en-english_v2_improved-en-opening-objection.mp3",
+      "audio_byte_size": 178095,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 216.408,
+      "total_provider_latency_ms": 535.638,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "english_v1",
+      "voice_candidate_label": "English v1 original",
+      "voice_candidate_version": "v1_original",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.english_v1",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "en-empathy-bridge",
+      "script_title": "English empathy plus bridge response",
+      "language": "en",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "I get why you'd be skeptical. If there's no clear fit, we shouldn't waste your time. But if the routing issue is still happening, a short specialist callback can at least show whether it's worth looking at.",
+      "tts_input_chars": 206,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.english_v1>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "I get why you'd be skeptical. If there's no clear fit, we shouldn't waste your time. But if the routing issue is still happening, a short specialist callback can at least show whether it's worth looking at.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-en-english_v1-en-empathy-bridge.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-en-english_v1-en-empathy-bridge.mp3",
+      "audio_byte_size": 176841,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 234.805,
+      "total_provider_latency_ms": 550.792,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "english_v2_improved",
+      "voice_candidate_label": "English v2 improved",
+      "voice_candidate_version": "v2_improved",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.english_v2_improved",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "en-empathy-bridge",
+      "script_title": "English empathy plus bridge response",
+      "language": "en",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "I get why you'd be skeptical. If there's no clear fit, we shouldn't waste your time. But if the routing issue is still happening, a short specialist callback can at least show whether it's worth looking at.",
+      "tts_input_chars": 206,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.english_v2_improved>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "I get why you'd be skeptical. If there's no clear fit, we shouldn't waste your time. But if the routing issue is still happening, a short specialist callback can at least show whether it's worth looking at.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-en-english_v2_improved-en-empathy-bridge.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-en-english_v2_improved-en-empathy-bridge.mp3",
+      "audio_byte_size": 160959,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 232.458,
+      "total_provider_latency_ms": 524.7,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "german_v1",
+      "voice_candidate_label": "German v1 original",
+      "voice_candidate_version": "v1_original",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.german_v1",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "de-opening-objection",
+      "script_title": "German opening plus objection handling",
+      "language": "de",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "Hallo, hier ist Mara wegen eines kurzen Vertrags-Checks. Ich hab verstanden, dass Sie keine lange Beratung moechten. Wenn's fuer Sie passt, klaeren wir nur kurz, ob ein Spezialisten-Rueckruf sinnvoll waere.",
+      "tts_input_chars": 206,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.german_v1>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "Hallo, hier ist Mara wegen eines kurzen Vertrags-Checks. Ich hab verstanden, dass Sie keine lange Beratung moechten. Wenn's fuer Sie passt, klaeren wir nur kurz, ob ein Spezialisten-Rueckruf sinnvoll waere.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "de",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-de-german_v1-de-opening-objection.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-de-german_v1-de-opening-objection.mp3",
+      "audio_byte_size": 175169,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 241.27,
+      "total_provider_latency_ms": 575.985,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "german_v2_improved",
+      "voice_candidate_label": "German v2 improved",
+      "voice_candidate_version": "v2_improved",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.german_v2_improved",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "de-opening-objection",
+      "script_title": "German opening plus objection handling",
+      "language": "de",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "Hallo, hier ist Mara wegen eines kurzen Vertrags-Checks. Ich hab verstanden, dass Sie keine lange Beratung moechten. Wenn's fuer Sie passt, klaeren wir nur kurz, ob ein Spezialisten-Rueckruf sinnvoll waere.",
+      "tts_input_chars": 206,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.german_v2_improved>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "Hallo, hier ist Mara wegen eines kurzen Vertrags-Checks. Ich hab verstanden, dass Sie keine lange Beratung moechten. Wenn's fuer Sie passt, klaeren wir nur kurz, ob ein Spezialisten-Rueckruf sinnvoll waere.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "de",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-de-german_v2_improved-de-opening-objection.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-de-german_v2_improved-de-opening-objection.mp3",
+      "audio_byte_size": 191470,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 245.255,
+      "total_provider_latency_ms": 587.543,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "german_v1",
+      "voice_candidate_label": "German v1 original",
+      "voice_candidate_version": "v1_original",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.german_v1",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "de-empathy-bridge",
+      "script_title": "German empathy plus bridge response",
+      "language": "de",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "Ich verstehe den Einwand. Gibt's vor allem Sorge wegen Preis, Zeitpunkt oder den genauen Bedingungen? Ich halte es kurz und verspreche nichts, was ein Fachberater pruefen muss.",
+      "tts_input_chars": 176,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.german_v1>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "Ich verstehe den Einwand. Gibt's vor allem Sorge wegen Preis, Zeitpunkt oder den genauen Bedingungen? Ich halte es kurz und verspreche nichts, was ein Fachberater pruefen muss.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "de",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-de-german_v1-de-empathy-bridge.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-de-german_v1-de-empathy-bridge.mp3",
+      "audio_byte_size": 157615,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 220.56,
+      "total_provider_latency_ms": 520.617,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "german_v2_improved",
+      "voice_candidate_label": "German v2 improved",
+      "voice_candidate_version": "v2_improved",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.german_v2_improved",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "de-empathy-bridge",
+      "script_title": "German empathy plus bridge response",
+      "language": "de",
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "Ich verstehe den Einwand. Gibt's vor allem Sorge wegen Preis, Zeitpunkt oder den genauen Bedingungen? Ich halte es kurz und verspreche nichts, was ein Fachberater pruefen muss.",
+      "tts_input_chars": 176,
+      "voice_settings": {
+        "stability": 0.42,
+        "similarity_boost": 0.78,
+        "style": 0.18,
+        "use_speaker_boost": true,
+        "speed": 1.06
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.german_v2_improved>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "Ich verstehe den Einwand. Gibt's vor allem Sorge wegen Preis, Zeitpunkt oder den genauen Bedingungen? Ich halte es kurz und verspreche nichts, was ein Fachberater pruefen muss.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "de",
+          "voice_settings": {
+            "stability": 0.42,
+            "similarity_boost": 0.78,
+            "style": 0.18,
+            "use_speaker_boost": true,
+            "speed": 1.06
+          }
+        }
+      },
+      "audio_filename": "VOICE-021-de-german_v2_improved-de-empathy-bridge.mp3",
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-021-de-german_v2_improved-de-empathy-bridge.mp3",
+      "audio_byte_size": 167228,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 225.391,
+      "total_provider_latency_ms": 532.39,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    }
+  ]
+}

@@ -12,6 +12,32 @@ one reusable sales-agent core
   + explicit guardrails, consent, provider gates, and human escalation paths
 ```
 
+## kyegomez/OpenMythos
+
+- Source: https://github.com/kyegomez/OpenMythos
+- License observed: MIT.
+- Checked: 2026-05-04. GitHub page and license viewed; local audit clone checked at commit `8c68c1fcc75b86d9f7231efbc492e83955332442`.
+- Reuse label: adapted pattern.
+- What we learned/adapted:
+  - Prelude, loop, and coda as a bounded review workflow.
+  - Adaptive review depth based on risk and uncertainty.
+  - Stable context reinjection to keep the active SalesCampaign profile, allowed claims, consent gates, and escalation rules visible.
+  - Shared always-on checks plus routed specialist checks for objection handling, emotion-aware tone, claim safety, compliance, channel fit, and escalation.
+  - Benchmark discipline before claiming workflow or agent-quality improvement.
+- Directly copied material: none.
+- Where it affected the Emotion Aware project:
+  - `docs/adaptive-sales-agent-reasoning.md`
+  - `docs/product-review-gates.md`
+- Product/runtime boundary:
+  - Documentation and review workflow only.
+  - No OpenMythos package, PyTorch code, Hugging Face datasets, tokenizer, training script, model weight, or model runtime was added.
+  - The product architecture remains one reusable sales-agent core plus configurable SalesCampaign profiles.
+- Security/privacy notes:
+  - No customer data, prospect data, transcripts, credentials, or private files are sent to OpenMythos or Hugging Face.
+  - Any future Hugging Face provider or dataset use requires a separate source, license, cost, and privacy review.
+- Follow-up:
+  - If this becomes executable, build it as product-local tooling with explicit halting criteria and no autonomous send/publish behavior.
+
 ## 1jehuang/jcode
 
 - Source: https://github.com/1jehuang/jcode
@@ -302,6 +328,33 @@ one reusable sales-agent core
   - Cloned, custom, or customer-like voices remain blocked until consent/legal review.
 - Follow-up:
   - Before production use, complete provider terms, text retention, latency, consent, and disclosure reviews.
+
+## Official ElevenLabs Voice Design Sources For VOICE-020
+
+- Source:
+  - ElevenLabs voices overview: https://elevenlabs.io/docs/overview/capabilities/voices
+  - ElevenLabs Voice Design docs: https://elevenlabs.io/docs/eleven-creative/voices/voice-design
+  - ElevenLabs TTS best practices: https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices
+  - ElevenLabs voice settings API docs: https://elevenlabs.io/docs/api-reference/voices/settings/get
+  - ElevenLabs agent privacy docs: https://elevenlabs.io/docs/eleven-agents/customization/privacy
+  - ElevenLabs generated-content commercial-use help: https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform
+  - ElevenLabs Voice Remixing docs: https://elevenlabs.io/docs/overview/capabilities/voice-remixing
+- License observed: official/provider documentation and product terms; not treated as open-source code.
+- Checked: 2026-05-04.
+- Reuse label: adapted pattern.
+- What we learned/adapted:
+  - Use Voice Design prompts to specify language, persona, emotional range, pacing, and what to avoid before live provider testing.
+  - Use Voice Remixing after voice creation to improve owned voices for pacing, emotion/style, pitch/timbre, and audio quality before local runtime randomization.
+  - Separate realtime settings candidates from higher-quality expressive candidates because latency and naturalness are a tradeoff.
+  - Keep provider usage limited to synthetic agent text and synthetic preview prompts unless a later privacy/legal workflow allows more.
+  - Treat paid commercial use as plausible for generated ElevenLabs output while still preserving project privacy, consent, and prohibited-use boundaries.
+- Directly copied material: none. Provider facts were summarized into project-owned JSON/Markdown reports.
+- Where it affected the Emotion Aware project:
+  - `docs/product/VOICE_020_ELEVENLABS_VOICE_DESIGN.md`
+  - `research/experiments/VOICE-020-elevenlabs-voice-design.md`
+  - `research/experiments/cases/voice-020-elevenlabs-voice-design.json`
+  - `scripts/run_voice_020_elevenlabs_voice_design.py`
+  - `scripts/validate_voice_020_elevenlabs_voice_design.py`
 
 ## Workspace-Local Process Patterns Adapted Into This Repo
 

@@ -65,3 +65,4 @@ Use that folder to record decisions, methodology changes, and experiment rationa
 The main steering document is `docs/thesis/ROADMAP.md`.
 The product-facing brief is `docs/product/PRODUCT_BRIEF.md`.
 Use `docs/product-review-gates.md` before larger product/runtime changes, provider work, or customer setup changes.
+Use `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md` before any future private call-center pattern mining, RAG export, or fine-tuning work.

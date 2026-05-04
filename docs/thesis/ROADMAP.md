@@ -33,11 +33,10 @@ Active phase: voice/runtime quality and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: design `VOICE-020` for emotional delivery, less rigid openings, controlled randomness, bundled expressive gestures, contractions/fillers, and provider-aware ElevenLabs voice settings while preserving campaign-safe protected text.
+- [ ] Current: design `VOICE-023` as a controlled thinking-filler and natural hesitation layer for eligible freeform speech, using English and German speech-realism references while keeping protected text exact.
 
 Next checkpoints:
 
-- [ ] Next: implement and validate `VOICE-020` as an offline/live-capable voice-emotion tuning checkpoint.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
 - [ ] Next: design `RAG-001` as a source-tracked sales knowledge base and retrieval layer for sales process, persuasion tactics, objection handling, emotional adaptation, and campaign-safe examples.
@@ -46,6 +45,14 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `TRACE-001` pre-push thesis traceability automation, including source-reference coverage and thesis-update gates before GitHub checkpoints.
+- [x] `REF-001` central thesis reference registry and expanded thesis writing map, collecting dataset, provider, privacy, sales-objection, speech-realism, and open-source inspiration sources.
+- [x] `SPEECH-STYLE-001` thesis reference capture for English/German speech realism, including fillers, pauses, breath cues, smiled speech, and the guardrail against language stereotypes.
+- [x] `PRIVATE-CALL-LEARNING-001` local-only private call-center learning scaffold, with raw audio kept under `data/private/`, pattern-mining before fine-tuning, redaction and human-review gates before export, and positive/negative sales-pattern learning documented.
+- [x] `VOICE-021` live custom ElevenLabs voice comparison. Improved English and German voices were clearly preferred; remaining gap is believable thinking behavior, bounded hesitation, and more natural pitch movement.
+- [x] `VOICE-021` dry-run custom ElevenLabs voice comparison harness for English/German original-vs-improved voices, using local-only voice IDs and redacted generated artifacts.
+- [x] `VOICE-022` bilingual spoken-text normalization for English contractions and conservative German spoken forms, wired into `RESP-002` and `RESP-003` while preserving guarded `final_response` and protected text.
+- [x] `VOICE-020` offline ElevenLabs-first voice design packet with English/German voice prompts, settings candidates, emotional delivery bundles, protected-text locks, and private-audio tuning boundaries.
 - [x] `VOICE-019` dry-run harness comparing `VOICE-017`-style prosody against `VOICE-018` sales-tuned input before live provider calls.
 - [x] `VOICE-019` first live ElevenLabs limited run with English/German prosody-vs-sales-tuned audio; owner preferred sales-tuned in both languages, while noting rigid openings and insufficient emotional expressiveness.
 - [x] `VOICE-018` offline professional-sales tuning after listening feedback found `RESP-003` clear but too slow and still obviously AI-generated.
@@ -68,7 +75,7 @@ When a roadmap phase reaches an idea's unlock condition, Codex should explicitly
 | Detailed voice ablation study | Useful for thesis evidence, but premature before the live voice quality target is good enough to compare | Provider voice quality is acceptable enough that ablation differences are meaningful | Thesis evaluation | Deferred |
 | Cartesia-vs-ElevenLabs repeat comparison | Provider comparison should wait until the ElevenLabs live path and rubric are stable | `VOICE-019` ElevenLabs review is recorded and the same cases can be replayed fairly | Voice/provider | Deferred |
 | Sales-expert feedback dashboard | Too much interface work before the agent behavior and review rubrics stabilize | Sales-expert rating fields and product simulation logs are stable | Product MVP | Deferred |
-| Private call-center pattern mining and fine-tuning | Too early before lawful data access, consent/privacy review, anonymization or pseudonymization design, retention rules, export review, and baseline behavior are stable | Client-approved dataset exists under local-only `data/private/`; legal basis and data-processing roles are documented; private identifiers are removed as non-training signal; sensitive fields are minimized; pattern-mining pipeline works on restricted local data; RAG baseline has been evaluated | Private-data learning | Deferred |
+| Private call-center learning on real recordings and later fine-tuning | The local-only scaffold now exists, but real recordings, local transcription, redaction, labeling quality, retention/deletion handling, and training-data review are not implemented yet | Client-approved audio exists under local-only `data/private/`; local ASR and speaker segmentation work without provider upload; private identifiers are removed as non-training signal; sensitive fields are minimized; pattern notes pass human review; RAG baseline has been evaluated before any fine-tuning | Private-data learning | Deferred |
 
 ## Current Direction
 
@@ -91,6 +98,10 @@ The product runtime priority is low latency. The live call path should be a fast
 The live call path also needs explicit call-control decisions. The agent should know when to continue, bridge, transfer, end, or schedule-and-end rather than treating every customer response as an invitation for another question.
 
 The active runtime path now treats language as a campaign-level runtime property. German and English behavior should remain one product architecture: the reusable sales-agent core reads the selected `SalesCampaign`, preserves `campaign_language` and `response_language`, and the voice layer speaks the selected response language.
+
+Speech realism should now be language-aware without becoming stereotype-driven. `SPEECH_REALISM_REFERENCES.md` records sources for English and German fillers, pauses, breath cues, and audible warmth. `VOICE-023` should use those references to create bounded speech profiles while keeping campaign persona separate from language mechanics.
+
+The thesis reference trail is centralized in `THESIS_REFERENCE_REGISTRY.md`. Future source-backed work should add sources there or point to the specific detailed source note.
 
 Runtime debugging lessons should be preserved for the thesis. When language routing, latency, interruption, or guardrail bugs are found and fixed, the issue and fix should be summarized in `METHODOLOGY_LOG.md` so the final thesis can discuss limitations and iteration honestly.
 
@@ -360,6 +371,10 @@ Immediate product artifact:
 - VOICE-017 first live ElevenLabs A/B result with prosody strongly preferred in the two-case human listening review
 - VOICE-018 offline professional-sales tuning after listening feedback found RESP-003 clear but too slow and still obviously AI-generated
 - VOICE-019 dry-run harness comparing VOICE-017-style prosody against VOICE-018 sales-tuned input before live provider calls
+- VOICE-021 dry-run ElevenLabs custom voice comparison for English/German original-vs-improved voices with local-only voice IDs
+- VOICE-021 live comparison result: improved English/German voices preferred; next target is thinking-time fillers and less theatrical pitch behavior
+- VOICE-022 bilingual spoken-text normalization for English contractions and conservative German spoken forms, wired into RESP-002/RESP-003 with protected-text locks
+- PRIVATE-CALL-LEARNING-001 local-only private call learning scaffold for future positive/negative sales-pattern mining without exporting raw audio or identifiers
 - RESP-002 runtime voice-delivery bridge from guarded response to offline ElevenLabs/Cartesia provider preview
 - project-local self-containment, voice provider run-boundary, and generated-audio asset-log policies
 - RESP-003 runtime live-capable TTS bridge from validated voice-delivery packet to optional provider audio
@@ -368,7 +383,7 @@ Immediate product artifact:
 
 Next voice checkpoint:
 
-- run VOICE-019 live for ElevenLabs first, ideally with `--limit 2`, then record human listening review before making any sales-tuned quality claim
+- design and implement VOICE-023 for controlled thinking fillers inside pauses, longer bounded thinking time, and less theatrical pitch movement in eligible freeform English/German speech
 - connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
 - expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence

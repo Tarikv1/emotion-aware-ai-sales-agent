@@ -33,6 +33,8 @@ The output keeps all RESP-001 fields and adds:
 ```text
 runtime_voice_delivery_id
 voice_delivery.segments
+voice_delivery.spoken_segments
+voice_delivery.spoken_text_normalization
 voice_delivery.prosody
 voice_delivery.provider_rendering
 voice_delivery.validation
@@ -53,6 +55,8 @@ Eligible for prosody:
 - freeform bridge responses
 - freeform empathy
 - freeform explanations
+
+Eligible freeform text may also receive spoken-text normalization before prosody. This lets `I will` become `I'll` in English or `Ich habe` become `Ich hab` in German for provider-facing TTS text.
 
 Protected from prosody:
 
@@ -105,6 +109,7 @@ Result:
 ```text
 provider preview: elevenlabs
 final_response_unchanged: true
+spoken_text_normalization validation: true
 provider_calls_made: false
 requires_api_key: false
 customer_audio_uploaded: false
@@ -122,5 +127,5 @@ This keeps the architecture clean:
 
 - policy decides what can be said
 - RESP-001 decides guarded wording
-- RESP-002 decides how the approved wording should be delivered by voice
+- RESP-002 decides how the approved wording should be spoken and delivered by voice
 - live TTS remains a separate explicit provider step

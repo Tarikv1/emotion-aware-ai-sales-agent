@@ -37,45 +37,62 @@ def parse_stdout_json(completed: subprocess.CompletedProcess[str]) -> dict:
         raise AssertionError(f"Expected JSON stdout, got: {completed.stdout!r}") from exc
 
 
-def run_resp_002(transcript: str, stage: str = "relevance-check", provider: str = "elevenlabs") -> dict:
+def run_resp_002(
+    transcript: str,
+    stage: str = "relevance-check",
+    provider: str = "elevenlabs",
+    campaign: str = "campaign-prod-005-b2c-telecom",
+    extra_args: list[str] | None = None,
+) -> dict:
+    args = [
+        sys.executable,
+        str(RUNNER),
+        "--campaign",
+        campaign,
+        "--stage",
+        stage,
+        "--transcript",
+        transcript,
+        "--cases",
+        str(CASES_PATH),
+        "--provider",
+        provider,
+        "--out",
+        str(RESULT_PATH),
+        "--report-out",
+        str(REPORT_PATH),
+    ]
+    if extra_args:
+        args.extend(extra_args)
     completed = run_command(
-        [
-            sys.executable,
-            str(RUNNER),
-            "--campaign",
-            "campaign-prod-005-b2c-telecom",
-            "--stage",
-            stage,
-            "--transcript",
-            transcript,
-            "--cases",
-            str(CASES_PATH),
-            "--provider",
-            provider,
-            "--out",
-            str(RESULT_PATH),
-            "--report-out",
-            str(REPORT_PATH),
-        ]
+        args
     )
     assert_condition(completed.returncode == 0, completed.stderr)
     return parse_stdout_json(completed)
 
 
-def run_resp_001(transcript: str, stage: str = "relevance-check") -> dict:
+def run_resp_001(
+    transcript: str,
+    stage: str = "relevance-check",
+    campaign: str = "campaign-prod-005-b2c-telecom",
+    extra_args: list[str] | None = None,
+) -> dict:
+    args = [
+        sys.executable,
+        str(RESP_001_RUNNER),
+        "--campaign",
+        campaign,
+        "--stage",
+        stage,
+        "--transcript",
+        transcript,
+        "--cases",
+        str(CASES_PATH),
+    ]
+    if extra_args:
+        args.extend(extra_args)
     completed = run_command(
-        [
-            sys.executable,
-            str(RESP_001_RUNNER),
-            "--campaign",
-            "campaign-prod-005-b2c-telecom",
-            "--stage",
-            stage,
-            "--transcript",
-            transcript,
-            "--cases",
-            str(CASES_PATH),
-        ]
+        args
     )
     assert_condition(completed.returncode == 0, completed.stderr)
     return parse_stdout_json(completed)
@@ -92,6 +109,7 @@ def validate_common_payload(payload: dict, resp_001_payload: dict) -> None:
     assert_condition(voice_delivery["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["validation"]["passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["spoken_text_normalization"]["validation"]["passed"] is True, voice_delivery)
     assert_condition(
         voice_delivery["provider_rendering"]["protected_segment_provider_tag_count"] == 0,
         voice_delivery["provider_rendering"],
@@ -102,6 +120,10 @@ def validate_freeform_payload(payload: dict) -> None:
     delivery = payload["voice_delivery"]
     assert_condition(delivery["segments"][0]["segment_type"] == "freeform_objection_handling", delivery["segments"])
     assert_condition(delivery["segments"][0]["eligible_for_prosody"] is True, delivery["segments"])
+    assert_condition(
+        delivery["spoken_text_normalization"]["eligible_segment_count"] == 1,
+        delivery["spoken_text_normalization"],
+    )
     assert_condition(delivery["prosody"]["cue_count"] > 0, delivery["prosody"])
     assert_condition(delivery["provider_rendering"]["provider_key"] == "elevenlabs", delivery["provider_rendering"])
     assert_condition(
@@ -115,9 +137,23 @@ def validate_protected_payload(payload: dict, expected_segment_type: str) -> Non
     segment = delivery["segments"][0]
     assert_condition(segment["segment_type"] == expected_segment_type, segment)
     assert_condition(segment["eligible_for_prosody"] is False, segment)
+    assert_condition(delivery["spoken_text_normalization"]["normalization_count"] == 0, delivery["spoken_text_normalization"])
     assert_condition(delivery["prosody"]["cue_count"] == 0, delivery["prosody"])
     assert_condition(delivery["provider_rendering"]["provider_tag_count"] == 0, delivery["provider_rendering"])
     assert_condition(delivery["provider_rendering"]["rendered_text"] == payload["final_response"], delivery["provider_rendering"])
+
+
+def validate_spoken_normalized_payload(payload: dict, required_fragments: list[str], forbidden_fragments: list[str]) -> None:
+    delivery = payload["voice_delivery"]
+    spoken = delivery["spoken_text_normalization"]
+    assert_condition(delivery["segments"][0]["eligible_for_prosody"] is True, delivery["segments"])
+    assert_condition(spoken["normalization_count"] >= len(required_fragments), spoken)
+    assert_condition(payload["final_response"] != spoken["tts_text"], "Final response should remain unnormalized.")
+    assert_condition(delivery["provider_rendering"]["plain_text"] == spoken["tts_text"], delivery["provider_rendering"])
+    for fragment in required_fragments:
+        assert_condition(fragment in spoken["tts_text"], f"Missing spoken fragment: {fragment}")
+    for fragment in forbidden_fragments:
+        assert_condition(fragment not in spoken["tts_text"], f"Forbidden spoken fragment remained: {fragment}")
 
 
 def assert_no_secret_text(text: str, label: str) -> None:
@@ -135,6 +171,41 @@ def main() -> None:
     freeform_resp_001 = run_resp_001(freeform_transcript)
     validate_common_payload(freeform_payload, freeform_resp_001)
     validate_freeform_payload(freeform_payload)
+
+    german_candidate = "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt."
+    german_spoken_payload = run_resp_002(
+        "Das klingt zu teuer.",
+        extra_args=["--candidate-response", german_candidate],
+    )
+    validate_common_payload(
+        german_spoken_payload,
+        run_resp_001("Das klingt zu teuer.", extra_args=["--candidate-response", german_candidate]),
+    )
+    validate_spoken_normalized_payload(
+        german_spoken_payload,
+        ["Ich hab", "Wenn's", "gibt's"],
+        ["Ich habe", "Wenn es", "gibt es"],
+    )
+
+    english_candidate = "I will keep this simple. You are right to ask. It is only useful if there is a practical next step."
+    english_spoken_payload = run_resp_002(
+        "That sounds expensive.",
+        campaign="campaign-prod-005-b2b-software",
+        extra_args=["--candidate-response", english_candidate],
+    )
+    validate_common_payload(
+        english_spoken_payload,
+        run_resp_001(
+            "That sounds expensive.",
+            campaign="campaign-prod-005-b2b-software",
+            extra_args=["--candidate-response", english_candidate],
+        ),
+    )
+    validate_spoken_normalized_payload(
+        english_spoken_payload,
+        ["I'll", "You're", "It's", "there's"],
+        ["I will", "You are", "It is", "there is"],
+    )
 
     do_not_call_transcript = "Rufen Sie mich bitte nicht mehr an."
     do_not_call_payload = run_resp_002(do_not_call_transcript)
