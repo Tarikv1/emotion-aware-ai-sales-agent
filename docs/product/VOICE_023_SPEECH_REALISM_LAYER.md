@@ -173,6 +173,21 @@ Related voice checkpoints:
 - `VOICE-021`: custom voice comparison
 - `VOICE-022`: spoken text normalization
 
+Implementation artifacts:
+
+- `scripts/speech_realism.py`
+- `scripts/run_voice_023_speech_realism.py`
+- `scripts/validate_voice_023_speech_realism.py`
+- `research/experiments/cases/voice-023-speech-realism.json`
+- `research/experiments/generated/VOICE-023-speech-realism.json`
+- `research/experiments/generated/VOICE-023-speech-realism-report.md`
+
+Runtime position:
+
+- `RESP-002` now applies VOICE-023 after VOICE-022 spoken-text normalization and before VOICE-015/016 prosody/provider rendering.
+- `final_response`, call control, selected strategy, and protected segment text remain unchanged.
+- Current German provider-facing fillers are limited to `hm` and `also` until live audio tests prove whether umlaut forms such as `aeh`/`aehm` or actual `äh`/`ähm` render better.
+
 ## Product Meaning
 
 VOICE-023 should make the agent sound more live and responsive while preserving the core product architecture:

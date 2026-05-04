@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-04 - VOICE-023 speech realism layer
+
+- Objective: make eligible English/German freeform TTS text sound less robotic by adding bounded thinking-filler bundles without changing protected campaign or compliance text.
+- Action taken: added `speech_realism.py`, a VOICE-023 runner, case set, validator, generated report, and RESP-002 runtime integration after spoken-text normalization and before prosody/provider rendering.
+- Data used: synthetic English/German voice cases, current RESP-002/RESP-003 runtime packets, existing speech-realism references, and protected segment rules from earlier voice checkpoints.
+- Output created: `VOICE-023-speech-realism.json`, `VOICE-023-speech-realism-report.md`, and runtime `speech_realism` packets inside voice delivery.
+- What was learned: German language validation cannot treat `um` as an English filler because `um` is also a normal German preposition. The guard now avoids that false positive and currently limits German provider-facing fillers to `hm` and `also` until live provider listening tests confirm better forms.
+- Why it matters for the thesis: this checkpoint turns subjective listening feedback about robotic pacing into a testable, bilingual, guardrailed speech-realism layer.
+- Open questions: whether live ElevenLabs output should prefer visible fillers, provider pauses, voice-setting emotion controls, or a smaller combination of all three.
+
 ### 2026-05-04 - TRACE-001 pre-push thesis traceability gates
 
 - Objective: make thesis documentation updates and source reference capture harder to forget before GitHub checkpoints.

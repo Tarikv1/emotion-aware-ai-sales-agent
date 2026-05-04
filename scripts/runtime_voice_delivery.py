@@ -6,6 +6,7 @@ from typing import Any
 
 from prosody_naturalness import apply_prosody_naturalness
 from provider_prosody_rendering import render_provider_variant, validate_variant
+from speech_realism import apply_speech_realism
 from spoken_text_normalization import apply_spoken_text_normalization
 
 
@@ -154,10 +155,36 @@ def build_spoken_segments(
     return spoken_segments
 
 
+def build_realistic_segments(
+    segments: list[dict[str, Any]],
+    speech_realism: dict[str, Any],
+) -> list[dict[str, Any]]:
+    realistic_segments = []
+    output_by_id = {
+        segment.get("segment_id"): segment
+        for segment in speech_realism.get("output_segments", [])
+    }
+    for segment in segments:
+        realistic_segment = deepcopy(segment)
+        output_segment = output_by_id.get(segment.get("segment_id"))
+        if output_segment is not None:
+            realistic_segment["text"] = output_segment["text_after"]
+            realistic_segment["speech_realism_text_before"] = output_segment["text_before"]
+            realistic_segment["speech_realism_text_after"] = output_segment["text_after"]
+            realistic_segment["speech_realism_bundles"] = output_segment["bundles"]
+            realistic_segment["eligible_for_speech_realism"] = output_segment[
+                "eligible_for_speech_realism"
+            ]
+            realistic_segment["speech_realism_protected_reason"] = output_segment["protected_reason"]
+        realistic_segments.append(realistic_segment)
+    return realistic_segments
+
+
 def validate_delivery(
     packet: dict[str, Any],
     segments: list[dict[str, Any]],
     spoken_text_normalization: dict[str, Any],
+    speech_realism: dict[str, Any],
     prosody: dict[str, Any],
     provider_rendering: dict[str, Any],
 ) -> dict[str, Any]:
@@ -186,12 +213,17 @@ def validate_delivery(
     protected_segment_change_count = len(
         spoken_text_normalization["validation"].get("protected_segment_changes", [])
     )
+    speech_realism_protected_segment_change_count = len(
+        speech_realism["validation"].get("protected_segment_changes", [])
+    )
     passed = (
         final_response_unchanged
         and spoken_text_normalization["validation"]["passed"]
+        and speech_realism["validation"]["passed"]
         and prosody["validation"]["passed"]
         and provider_validation["passed"]
         and protected_segment_change_count == 0
+        and speech_realism_protected_segment_change_count == 0
         and cue_in_protected_segment_count == 0
         and provider_rendering["api_call_made"] is False
         and provider_rendering["customer_audio_uploaded"] is False
@@ -203,9 +235,11 @@ def validate_delivery(
         "final_response_unchanged": final_response_unchanged,
         "tts_text_equals_final_response": tts_text_equals_final_response,
         "spoken_text_normalization_passed": spoken_text_normalization["validation"]["passed"],
+        "speech_realism_passed": speech_realism["validation"]["passed"],
         "prosody_validation_passed": prosody["validation"]["passed"],
         "provider_validation": provider_validation,
         "protected_segment_change_count": protected_segment_change_count,
+        "speech_realism_protected_segment_change_count": speech_realism_protected_segment_change_count,
         "cue_in_protected_segment_count": cue_in_protected_segment_count,
         "notes": (
             "Runtime voice delivery preserved guarded text and kept provider rendering offline."
@@ -232,13 +266,23 @@ def build_runtime_voice_delivery(
         seed=seed_value,
     )
     spoken_segments = build_spoken_segments(segments, spoken_text_normalization)
-    prosody = apply_prosody_naturalness(campaign, spoken_segments, language=language, seed=seed_value)
+    customer_state = guarded_packet.get("customer_state") or guarded_packet.get("turn_state") or {}
+    speech_realism = apply_speech_realism(
+        campaign,
+        spoken_segments,
+        language=language,
+        seed=seed_value,
+        customer_state=customer_state,
+    )
+    realistic_segments = build_realistic_segments(spoken_segments, speech_realism)
+    prosody = apply_prosody_naturalness(campaign, realistic_segments, language=language, seed=seed_value)
     provider_result = build_provider_result_shape(guarded_packet, campaign, prosody, language)
     provider_rendering = render_provider_variant(provider_result, provider)
     validation = validate_delivery(
         guarded_packet,
         segments,
         spoken_text_normalization,
+        speech_realism,
         prosody,
         provider_rendering,
     )
@@ -257,7 +301,9 @@ def build_runtime_voice_delivery(
         "generated_audio_created": False,
         "segments": segments,
         "spoken_segments": spoken_segments,
+        "realistic_segments": realistic_segments,
         "spoken_text_normalization": spoken_text_normalization,
+        "speech_realism": speech_realism,
         "prosody": prosody,
         "provider_rendering": provider_rendering,
         "validation": validation,

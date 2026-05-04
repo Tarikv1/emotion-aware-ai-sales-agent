@@ -146,10 +146,12 @@ def validate_protected_payload(payload: dict, expected_segment_type: str) -> Non
 def validate_spoken_normalized_payload(payload: dict, required_fragments: list[str], forbidden_fragments: list[str]) -> None:
     delivery = payload["voice_delivery"]
     spoken = delivery["spoken_text_normalization"]
+    speech_realism = delivery.get("speech_realism")
+    delivery_tts_text = speech_realism["tts_text"] if speech_realism else spoken["tts_text"]
     assert_condition(delivery["segments"][0]["eligible_for_prosody"] is True, delivery["segments"])
     assert_condition(spoken["normalization_count"] >= len(required_fragments), spoken)
     assert_condition(payload["final_response"] != spoken["tts_text"], "Final response should remain unnormalized.")
-    assert_condition(delivery["provider_rendering"]["plain_text"] == spoken["tts_text"], delivery["provider_rendering"])
+    assert_condition(delivery["provider_rendering"]["plain_text"] == delivery_tts_text, delivery["provider_rendering"])
     for fragment in required_fragments:
         assert_condition(fragment in spoken["tts_text"], f"Missing spoken fragment: {fragment}")
     for fragment in forbidden_fragments:

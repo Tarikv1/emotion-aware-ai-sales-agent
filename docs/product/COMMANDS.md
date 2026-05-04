@@ -451,6 +451,18 @@ Validate VOICE-022 English contractions, German spoken equivalents, runtime inte
 python scripts\validate_voice_022_spoken_text_normalization.py
 ```
 
+Run the VOICE-023 speech-realism layer:
+
+```powershell
+python scripts\run_voice_023_speech_realism.py
+```
+
+Validate VOICE-023 bounded thinking fillers, English/German language fit, runtime integration, and protected-text locks:
+
+```powershell
+python scripts\validate_voice_023_speech_realism.py
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:

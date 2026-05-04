@@ -334,3 +334,21 @@ Record important thesis and implementation decisions here with enough context to
   - `check_thesis_update_gate.py` should pass before GitHub checkpoints
   - scripts report and recommend, but do not auto-write thesis content
   - an optional hook can be added later if the command-based workflow proves stable
+
+### DEC-019 - Insert speech realism after spoken-text normalization and before prosody
+
+- Date: 2026-05-04
+- Status: accepted
+- Decision: apply VOICE-023 after VOICE-022 spoken-text normalization, then pass the resulting realistic freeform text into prosody and provider rendering
+- Why:
+  - fillers and thinking behavior should operate on the text that will actually be spoken
+  - protected text must already be identified and preserved before naturalness layers run
+  - prosody should see the final delivery text so pauses and provider tags align with filler placement
+- Alternatives considered:
+  - add fillers before spoken-text normalization
+  - fold VOICE-023 into VOICE-015 prosody only as metadata
+  - rely only on ElevenLabs voice design/remixing instead of local guardrails
+- Consequences:
+  - provider `plain_text` may differ from VOICE-022 `tts_text` when VOICE-023 inserts safe fillers
+  - validators must compare provider input against the latest runtime delivery layer, not only the spoken-normalization layer
+  - `final_response` remains unchanged and is still the guarded source of truth

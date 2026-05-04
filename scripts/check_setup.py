@@ -116,6 +116,9 @@ REQUIRED_FILES = [
     ("file.scripts_spoken_text_normalization", "scripts/spoken_text_normalization.py", "Spoken text normalization module"),
     ("file.scripts_run_voice_022_spoken_text_normalization", "scripts/run_voice_022_spoken_text_normalization.py", "Spoken text normalization runner"),
     ("file.scripts_validate_voice_022_spoken_text_normalization", "scripts/validate_voice_022_spoken_text_normalization.py", "Spoken text normalization validator"),
+    ("file.scripts_speech_realism", "scripts/speech_realism.py", "Speech realism module"),
+    ("file.scripts_run_voice_023_speech_realism", "scripts/run_voice_023_speech_realism.py", "Speech realism runner"),
+    ("file.scripts_validate_voice_023_speech_realism", "scripts/validate_voice_023_speech_realism.py", "Speech realism validator"),
     ("file.scripts_runtime_voice_delivery", "scripts/runtime_voice_delivery.py", "Runtime voice delivery module"),
     ("file.scripts_generate_runtime_voice_delivery", "scripts/generate_runtime_voice_delivery.py", "Runtime voice delivery runner"),
     ("file.scripts_validate_resp_002_runtime_voice_delivery", "scripts/validate_resp_002_runtime_voice_delivery.py", "Runtime voice delivery validator"),
@@ -130,6 +133,7 @@ REQUIRED_FILES = [
     ("file.scripts_validate_context_reading_policy", "scripts/validate_context_reading_policy.py", "Context reading policy validator"),
     ("file.research_private_call_learning_001", "research/experiments/PRIVATE-CALL-LEARNING-001.md", "Private call learning experiment note"),
     ("file.research_case_private_call_learning_001", "research/experiments/cases/private-call-learning-001.json", "Private call learning pipeline case"),
+    ("file.research_case_voice_023_speech_realism", "research/experiments/cases/voice-023-speech-realism.json", "VOICE-023 speech realism case file"),
 ]
 
 OPTIONAL_ENV_VARS = [

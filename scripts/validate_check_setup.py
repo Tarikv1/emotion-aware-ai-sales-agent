@@ -107,10 +107,14 @@ def main() -> None:
         "file.scripts_spoken_text_normalization",
         "file.scripts_run_voice_022_spoken_text_normalization",
         "file.scripts_validate_voice_022_spoken_text_normalization",
+        "file.scripts_speech_realism",
+        "file.scripts_run_voice_023_speech_realism",
+        "file.scripts_validate_voice_023_speech_realism",
         "file.scripts_realtime_turn_cli",
         "file.scripts_start_guarded_local_server",
         "file.research_private_call_learning_001",
         "file.research_case_private_call_learning_001",
+        "file.research_case_voice_023_speech_realism",
         "write.research_experiments_generated",
     ]:
         assert_condition(required_check in checks_by_id, f"Missing setup check: {required_check}")

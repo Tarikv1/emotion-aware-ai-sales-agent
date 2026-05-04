@@ -1,0 +1,213 @@
+{
+  "voice_milestone": "VOICE-023",
+  "experiment_scope": "Language-aware speech realism for eligible freeform sales-agent speech. The layer may add bounded thinking fillers and bundled delivery metadata, but it must preserve campaign questions, compliance/disclosure text, call-control lines, and exact company scripts.",
+  "campaigns": [
+    {
+      "campaign_id": "campaign-voice-023-en-b2b-software",
+      "client_name": "Synthetic B2B Software Client",
+      "product_name": "Lead routing workflow software",
+      "product_category": "software-b2b",
+      "customer_type": "b2b",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hi, I am calling about lead-routing workflows. Do you have a minute?",
+      "qualification_questions": [
+        "Do you handle inbound lead routing?",
+        "What is the hardest part of that process?",
+        "If there is fit, would a specialist callback be useful?"
+      ],
+      "required_disclosures": [
+        "Integration details require specialist review."
+      ],
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 2,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-023-de-b2c-dental",
+      "client_name": "Synthetic German Dental Insurance Call Center",
+      "product_name": "Dental insurance callback qualification",
+      "product_category": "insurance-dental",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Zahnzusatz-Information an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Haben Sie aktuell eine Zahnzusatzversicherung?",
+        "Ist Ihnen eher Beitrag, Leistung oder ein unverbindlicher Rueckruf wichtig?",
+        "Duerfen wir einen kurzen Rueckruf durch einen Fachberater vormerken?"
+      ],
+      "required_disclosures": [
+        "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+      ],
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human-german",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 2,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-023-de-insurance-strict",
+      "client_name": "Synthetic German Serious-Illness Insurance Call Center",
+      "product_name": "Serious illness insurance callback qualification",
+      "product_category": "insurance-serious-illness",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Versicherungsinformation an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Duerfen wir einen unverbindlichen Rueckruf durch einen Fachberater vormerken?"
+      ],
+      "required_disclosures": [
+        "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+      ],
+      "speech_realism": {
+        "enabled": true,
+        "style": "regulated-professional-human",
+        "filler_frequency": "very-low",
+        "max_bundles_per_response": 1,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": false
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "VOICE-023-C01",
+      "case_title": "English freeform objection response gets one bounded thinking bundle",
+      "campaign_id": "campaign-voice-023-en-b2b-software",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c01-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "That's a fair concern. The important thing is that the next step only makes sense if it is practical for your team, and I can keep it short."
+        }
+      ],
+      "expected": {
+        "min_bundle_count": 1,
+        "max_bundle_count": 1,
+        "required_bundle_types": ["thinking_filler"],
+        "allowed_fillers": ["um", "uh", "hm"],
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-023-C02",
+      "case_title": "German freeform transition gets German-only thinking bundle",
+      "campaign_id": "campaign-voice-023-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c02-freeform",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "Ich hab den Punkt verstanden. Wichtig ist, dass der naechste Schritt fuer Sie kurz und unverbindlich bleibt, und dann kann ein Fachberater sauber pruefen, ob es passt."
+        }
+      ],
+      "expected": {
+        "min_bundle_count": 1,
+        "max_bundle_count": 1,
+        "required_bundle_types": ["thinking_filler"],
+        "allowed_fillers": ["aehm", "aeh", "hm", "also"],
+        "forbidden_fragments": [" um ", " uh ", " you know "],
+        "protected_segment_ids_unchanged": []
+      }
+    },
+    {
+      "case_id": "VOICE-023-C03",
+      "case_title": "Mixed German response protects question and disclosure",
+      "campaign_id": "campaign-voice-023-de-b2c-dental",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c03-freeform",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "Ich verstehe, dass Sie bei Versicherungen vorsichtig sind. Wichtig ist, dass wir hier nichts versprechen und nur einen unverbindlichen Rueckruf vormerken."
+        },
+        {
+          "segment_id": "c03-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Haben Sie aktuell eine Zahnzusatzversicherung?"
+        },
+        {
+          "segment_id": "c03-disclosure",
+          "segment_type": "required_disclosure",
+          "source": "campaign_config",
+          "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+        }
+      ],
+      "expected": {
+        "min_bundle_count": 1,
+        "max_bundle_count": 1,
+        "required_bundle_types": ["thinking_filler"],
+        "protected_segment_ids_unchanged": ["c03-question", "c03-disclosure"]
+      }
+    },
+    {
+      "case_id": "VOICE-023-C04",
+      "case_title": "Stop or angry state suppresses fillers",
+      "campaign_id": "campaign-voice-023-en-b2b-software",
+      "language": "en",
+      "customer_state": {
+        "emotion": "angry",
+        "stop_or_refusal": true
+      },
+      "segments": [
+        {
+          "segment_id": "c04-hangup",
+          "segment_type": "hangup",
+          "source": "call_control",
+          "text": "Understood. I will not continue the call. Have a good day."
+        },
+        {
+          "segment_id": "c04-freeform",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "I understand. The important thing is that I respect that and do not keep pushing."
+        }
+      ],
+      "expected": {
+        "min_bundle_count": 0,
+        "max_bundle_count": 0,
+        "protected_segment_ids_unchanged": ["c04-hangup"]
+      }
+    },
+    {
+      "case_id": "VOICE-023-C05",
+      "case_title": "Strict insurance boundary stays filler-free",
+      "campaign_id": "campaign-voice-023-de-insurance-strict",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c05-freeform",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "Ich verstehe, dass das ein sensibles Thema ist. Wichtig ist, dass wir keine Gesundheitsdetails abfragen und keine Zusagen machen."
+        },
+        {
+          "segment_id": "c05-boundary",
+          "segment_type": "coverage_or_claim_boundary",
+          "source": "compliance",
+          "text": "Ich kann keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen."
+        }
+      ],
+      "expected": {
+        "min_bundle_count": 1,
+        "max_bundle_count": 1,
+        "protected_segment_ids_unchanged": ["c05-boundary"]
+      }
+    }
+  ]
+}

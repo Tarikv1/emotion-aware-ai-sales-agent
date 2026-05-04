@@ -33,7 +33,7 @@ Active phase: voice/runtime quality and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: design `VOICE-023` as a controlled thinking-filler and natural hesitation layer for eligible freeform speech, using English and German speech-realism references while keeping protected text exact.
+- [ ] Current: run `VOICE-024` live listening comparison for VOICE-023 speech-realism output after dry-run/runtime validators stay green.
 
 Next checkpoints:
 
@@ -45,6 +45,7 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `VOICE-023` offline speech-realism layer with English/German bounded thinking-filler bundles, protected-text locks, customer stop/anger suppression, and RESP-002/RESP-003 runtime integration.
 - [x] `TRACE-001` pre-push thesis traceability automation, including source-reference coverage and thesis-update gates before GitHub checkpoints.
 - [x] `REF-001` central thesis reference registry and expanded thesis writing map, collecting dataset, provider, privacy, sales-objection, speech-realism, and open-source inspiration sources.
 - [x] `SPEECH-STYLE-001` thesis reference capture for English/German speech realism, including fillers, pauses, breath cues, smiled speech, and the guardrail against language stereotypes.
