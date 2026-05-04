@@ -23,6 +23,7 @@ REQUIRED_DIRS = [
     ("dir.research_experiments_generated", "research/experiments/generated", "Generated experiment artifacts"),
     ("dir.packages_prompts", "packages/prompts", "Prompt package"),
     ("dir.data_public", "data/public", "Public data folder"),
+    ("dir.data_private", "data/private", "Local-only private call-center data folder"),
     ("dir.data_processed", "data/processed", "Processed data folder"),
 ]
 
@@ -58,6 +59,8 @@ REQUIRED_FILES = [
     ("file.docs_product_resp_002_runtime_voice_delivery", "docs/product/RESP_002_RUNTIME_VOICE_DELIVERY.md", "Runtime voice delivery"),
     ("file.docs_product_resp_003_runtime_live_tts", "docs/product/RESP_003_RUNTIME_LIVE_TTS.md", "Runtime live TTS delivery"),
     ("file.docs_data_data_usage_policy", "docs/data/DATA_USAGE_POLICY.md", "Data usage policy"),
+    ("file.docs_data_private_call_center_policy", "docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md", "Private call-center data policy"),
+    ("file.data_private_gitignore", "data/private/.gitignore", "Private data local ignore rule"),
     ("file.scripts_realtime_turn_cli", "scripts/realtime_turn_cli.py", "Realtime turn CLI"),
     ("file.scripts_start_guarded_local_server", "scripts/start_guarded_local_server.py", "Guarded local server launcher"),
     ("file.scripts_product_agent_output_contract", "scripts/product_agent_output_contract.py", "Product output contract"),
@@ -65,6 +68,7 @@ REQUIRED_FILES = [
     ("file.scripts_validate_self_contained_project_policy", "scripts/validate_self_contained_project_policy.py", "Self-contained project policy validator"),
     ("file.scripts_check_project_drift", "scripts/check_project_drift.py", "Project drift guard"),
     ("file.scripts_validate_project_drift_guard", "scripts/validate_project_drift_guard.py", "Project drift guard validator"),
+    ("file.scripts_validate_private_data_boundary", "scripts/validate_private_data_boundary.py", "Private data boundary validator"),
     ("file.scripts_evaluate_voice_provider_readiness", "scripts/evaluate_voice_provider_readiness.py", "Voice provider readiness evaluator"),
     ("file.scripts_speech_naturalness", "scripts/speech_naturalness.py", "Speech naturalness renderer"),
     ("file.scripts_validate_voice_012_speech_naturalness", "scripts/validate_voice_012_speech_naturalness.py", "Speech naturalness validator"),

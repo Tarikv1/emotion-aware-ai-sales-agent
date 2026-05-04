@@ -24,9 +24,12 @@ REQUIRED_FILES = [
     "docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "docs/product/PROJECT_DRIFT_GUARD.md",
+    "docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md",
     "docs/thesis/ROADMAP.md",
     "docs/thesis/METHODOLOGY_LOG.md",
+    "data/private/.gitignore",
     "scripts/check_project_drift.py",
+    "scripts/validate_private_data_boundary.py",
     "scripts/validate_context_reading_policy.py",
     "scripts/validate_project_drift_guard.py",
 ]
@@ -81,6 +84,7 @@ SKIP_DIRS = {
 
 SKIP_DIR_PREFIXES = {
     ("data", "public"),
+    ("data", "private"),
     ("data", "private-restricted"),
     ("data", "processed"),
 }

@@ -13,6 +13,7 @@ It is a detection layer, not an auto-editor. The guard reports issues and exits 
 - secret-like values are not committed into project files
 - generated voice/audio artifacts are ignored unless explicitly curated
 - product files do not silently depend on another local workspace project
+- `data/private/` exists for raw private call-center audio and is ignored/skipped so private files are not scanned or surfaced in reports
 
 ## Self-Containment Rule
 

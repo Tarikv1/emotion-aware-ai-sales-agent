@@ -39,6 +39,8 @@ one reusable sales-agent core
 
 ## Privacy
 
-- Do not store secrets, API keys, raw private customer data, raw restricted transcripts, or private audio here.
+- Do not store secrets, API keys, raw private customer data, raw restricted transcripts, or private audio in tracked files.
+- Raw private call-center audio belongs only in `data/private/`, which is local-only and ignored by Git. Do not move it into tracked docs, generated artifacts, prompts, reports, or provider upload flows.
 - Data under `data/private-restricted/` is sensitive by default.
+- Data under `data/private/` is more sensitive by default: assume it never leaves Tarik's local machine unless a later explicit, reviewed, legally valid export workflow says otherwise.
 - Live provider/network behavior must stay opt-in and documented.

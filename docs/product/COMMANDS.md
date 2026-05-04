@@ -52,6 +52,12 @@ Validate the drift guard itself:
 python scripts\validate_project_drift_guard.py
 ```
 
+Validate the private call-center data boundary without scanning private file contents:
+
+```powershell
+python scripts\validate_private_data_boundary.py
+```
+
 ## Relevant File Reading
 
 Use this when a file is large and you only need the useful part. It reads local repo files only, blocks secret/private paths, makes no network calls, and returns small slices.

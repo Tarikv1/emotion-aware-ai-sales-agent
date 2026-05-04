@@ -1811,3 +1811,87 @@ Use this file as a chronological research journal for the thesis implementation.
   - which gesture bundles improve human-likeness without reducing trust
   - whether each campaign should choose an allowed gesture palette
   - how to evaluate bundled gestures separately from provider voice quality
+
+### 2026-05-04 - Sales knowledge RAG before private-data fine-tuning
+
+- Objective: decide how the agent should learn sales process knowledge before any private call-center data is available
+- Action taken:
+  - recorded `RAG-001` as a future source-tracked sales knowledge base and retrieval layer
+  - deferred private call-center pattern mining and fine-tuning until data governance and baseline gates are ready
+  - kept the product architecture as one reusable sales-agent core plus campaign profiles, guarded responses, voice delivery, and a future sales knowledge layer
+- Data used:
+  - project-owner direction that real sales agents are trained, so the AI agent should also learn from sales training material and later actual call-center calls
+  - project-owner preference to postpone fine-tuning until private call-center sales data is available
+  - GDPR/privacy constraint that private call data may include personal data, voice data, sensitive inferences, and legally restricted processing purposes
+- Output created:
+  - updated `docs/thesis/ROADMAP.md`
+- What was learned:
+  - RAG is the right first learning layer because it can use source-tracked sales knowledge without permanently changing model behavior
+  - fine-tuning should come later, after the project has lawful access to private call-center data and a clear purpose for the trained behavior
+  - private call-center data should first be used for analysis: repeated actions, repeated speech, objection patterns, successful transitions, escalation points, and winning/losing conversation structures
+  - fine-tuning should not be raw data ingestion; it should use curated, minimized, permissioned examples derived from analysis
+- Why it matters for the thesis:
+  - it creates a defensible learning progression: public/source-tracked sales knowledge, then retrieval evaluation, then restricted private-data analysis, then possible fine-tuning
+  - it separates knowledge access from model-weight adaptation, which makes evaluation and privacy boundaries clearer
+  - it supports an honest thesis discussion of why private data improves product realism but requires stronger governance than public datasets
+- Open questions:
+  - which public or owned sales training materials can be used with clear rights
+  - what legal basis, consent, processor/controller role, retention policy, and data-processing agreement would apply to private call-center data
+  - whether call audio should ever be used directly, or whether transcripts with minimization and pseudonymization are sufficient
+  - how to evaluate RAG-assisted responses against fine-tuned responses without leaking private data into reports or Git
+
+### 2026-05-04 - Private call-center audio local storage boundary
+
+- Objective: make the raw private call-center audio boundary explicit before any real private audio enters the project
+- Action taken:
+  - designated `data/private/` as the only local storage folder for raw private call-center audio and raw private call assets
+  - added a project-local ignore rule so private files under `data/private/` do not go to GitHub
+  - added a private call-center data policy document
+  - updated setup checks so the local private-data folder and ignore rule are part of project health
+  - updated the drift guard to skip scanning `data/private/` contents, preventing accidental inspection or reporting of private files
+- Data used:
+  - project-owner requirement that call-center audio files should live inside `D:\Codex\active\emotion-aware-ai-sales-agent\data\private`
+  - project-owner requirement that those files never leave local folders or go to the repository
+- Output created:
+  - `data/private/.gitignore`
+  - `docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md`
+  - updates to `.gitignore`, `README.md`, `AGENTS.md`, `docs/data/DATA_USAGE_POLICY.md`, `docs/thesis/ROADMAP.md`, `scripts/check_setup.py`, `scripts/validate_check_setup.py`, and `scripts/check_project_drift.py`
+- What was learned:
+  - private call-center audio needs a named local path, not only a general "restricted data" concept
+  - the project should allow safe local private-data work while keeping raw private audio out of Git, generated artifacts, provider calls, and thesis deliverables
+  - local setup checks should protect the folder boundary before real data arrives
+- Why it matters for the thesis:
+  - it preserves a defensible separation between reproducible public evidence and restricted private data
+  - it supports later private-data pattern mining and fine-tuning without weakening privacy boundaries
+  - it creates an auditable methodology trail for why private audio was stored locally and excluded from the repository
+- Open questions:
+  - whether future private transcripts should also remain under `data/private/` by default
+  - whether a separate local manifest format is needed before the first real call-center audio import
+
+### 2026-05-04 - Private identifiers are not training signal
+
+- Objective: prevent private personal details inside call recordings from becoming model/RAG/fine-tuning material
+- Action taken:
+  - added an explicit rule that private identifiers are not training signal
+  - added an export review gate for anything derived from private call-center audio before it can leave `data/private/`
+  - added a validator that checks the private-data policy, ignore rules, and drift-guard skip rule without scanning private file contents
+- Data used:
+  - project-owner concern that real call recordings may contain names, addresses, phone numbers, and other private details that are not useful sales-learning signal
+  - GDPR-oriented data-minimization principle that personal data should be limited to what is necessary for the processing purpose
+- Output created:
+  - `scripts/validate_private_data_boundary.py`
+  - updates to `docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md`
+  - updates to `docs/data/DATA_USAGE_POLICY.md`
+  - updates to `docs/product/COMMANDS.md`
+  - setup and drift-guard validation updates
+- What was learned:
+  - private call-center learning should extract patterns, not identities
+  - the useful signal is objection type, emotion state, sales strategy, response pattern, turn structure, and outcome
+  - identifiers, exact private facts, and sensitive details should stay in `data/private/` and be removed before any artifact is used for RAG, fine-tuning, reports, or Git
+- Why it matters for the thesis:
+  - it keeps later private-data experiments methodologically defensible
+  - it separates sales-behavior learning from personal-data retention
+  - it supports a clear public/private evidence boundary in the final write-up
+- Open questions:
+  - whether the first export review should be manual-only or assisted by a local redaction script
+  - which fields belong in a future minimized private-call pattern schema

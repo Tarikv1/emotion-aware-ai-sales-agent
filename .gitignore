@@ -4,6 +4,9 @@ data/public/*
 data/private-restricted/*
 !data/private-restricted/.gitkeep
 
+data/private/*
+!data/private/.gitignore
+
 data/processed/*
 !data/processed/.gitkeep
 

@@ -17,6 +17,7 @@ emotion-aware-ai-sales-agent/
     shared/
   data/
     public/
+    private/
     private-restricted/
     processed/
   research/
@@ -36,6 +37,7 @@ emotion-aware-ai-sales-agent/
 - `services/`: implementation modules for the pipeline once architecture choices become concrete.
 - `packages/shared/`: shared types, prompts, schemas, and helper code.
 - `data/public/`: public datasets and public-data metadata.
+- `data/private/`: local-only private call-center audio and raw private call assets. This folder is ignored by Git except for its local ignore rule.
 - `data/private-restricted/`: placeholders and manifests for restricted local data. Do not commit sensitive raw data.
 - `data/processed/`: cleaned, derived, or intermediate data safe to keep under project rules.
 - `research/notes/`: evolving thinking, open questions, and working notes.

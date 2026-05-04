@@ -40,6 +40,7 @@ Next checkpoints:
 - [ ] Next: implement and validate `VOICE-020` as an offline/live-capable voice-emotion tuning checkpoint.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
+- [ ] Next: design `RAG-001` as a source-tracked sales knowledge base and retrieval layer for sales process, persuasion tactics, objection handling, emotional adaptation, and campaign-safe examples.
 - [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
 - [ ] Next: continue dataset-grounded thesis expansion once the current voice/runtime checkpoint is stable.
 
@@ -67,6 +68,7 @@ When a roadmap phase reaches an idea's unlock condition, Codex should explicitly
 | Detailed voice ablation study | Useful for thesis evidence, but premature before the live voice quality target is good enough to compare | Provider voice quality is acceptable enough that ablation differences are meaningful | Thesis evaluation | Deferred |
 | Cartesia-vs-ElevenLabs repeat comparison | Provider comparison should wait until the ElevenLabs live path and rubric are stable | `VOICE-019` ElevenLabs review is recorded and the same cases can be replayed fairly | Voice/provider | Deferred |
 | Sales-expert feedback dashboard | Too much interface work before the agent behavior and review rubrics stabilize | Sales-expert rating fields and product simulation logs are stable | Product MVP | Deferred |
+| Private call-center pattern mining and fine-tuning | Too early before lawful data access, consent/privacy review, anonymization or pseudonymization design, retention rules, export review, and baseline behavior are stable | Client-approved dataset exists under local-only `data/private/`; legal basis and data-processing roles are documented; private identifiers are removed as non-training signal; sensitive fields are minimized; pattern-mining pipeline works on restricted local data; RAG baseline has been evaluated | Private-data learning | Deferred |
 
 ## Current Direction
 
