@@ -66,7 +66,7 @@ A chunk can enter `next_promotion_candidates` only if it meets all of these cond
 - has approved RAG topic IDs or no topic-mapping review flag
 - has no unresolved source-excerpt dependency
 - has no secret-like text flag
-- has no pressure, manipulation, protected-attribute, false-certainty, or compliance-risk flag
+- has no protected-attribute, false-certainty, or compliance-risk flag
 - can be represented as project-owned paraphrased knowledge with source IDs and chunk IDs
 - stays vertical-agnostic or is clearly campaign-configurable
 - preserves campaign guardrails, consent handling, protected scripts, required disclosures, and human escalation
