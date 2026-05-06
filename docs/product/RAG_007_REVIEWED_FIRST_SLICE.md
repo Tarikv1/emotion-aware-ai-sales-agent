@@ -42,6 +42,22 @@ python scripts\validate_rag_007_reviewed_first_slice.py
 - `result.json`
 - `report.md`
 
+## Current Reviewed Slice Run
+
+The 2026-05-06 run against the refreshed RAG-006 packet produced:
+
+- `9` reviewed knowledge items
+- `5` response-wording items
+- `4` voice-delivery items
+- `0` auto-promoted chunks
+- source excerpt text stored: `false`
+- runtime retrieval disabled
+- chunk import disabled
+- provider and NotebookLM calls made: `false`
+- private customer data used: `false`
+
+The slice is vertical-agnostic and campaign-guardrail-compatible. It prepares reviewed knowledge for a later retrieval-policy checkpoint but does not make the runtime sales agent use RAG.
+
 ## Product Boundary
 
 Architecture block:

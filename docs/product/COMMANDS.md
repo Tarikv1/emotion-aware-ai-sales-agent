@@ -162,6 +162,138 @@ Validate that the automatic context-reading rule is still wired into project ins
 python scripts\validate_context_reading_policy.py
 ```
 
+## RAG Source Intake
+
+Run the RAG-001 NotebookLM source-intake bridge in local dry-run mode:
+
+```powershell
+python scripts\run_rag_001_notebooklm_source_intake.py
+```
+
+Default RAG-001 output folder:
+
+```text
+research\experiments\generated\RAG-001-notebooklm-source-intake-bridge\
+```
+
+Validate RAG-001 source taxonomy, source manifest rules, NotebookLM extraction prompt, source-tracked chunks, and no-private-data/no-provider boundary:
+
+```powershell
+python scripts\validate_rag_001_notebooklm_source_intake.py
+```
+
+Run the RAG-002 NotebookLM extraction automation bridge to create bounded per-topic report prompts, optional JSON prompts, and import folders:
+
+```powershell
+python scripts\run_rag_002_notebooklm_extraction_automation.py
+```
+
+Use `prompts\00-configure-chat-custom-instructions.md` in NotebookLM Configure Chat > Custom before creating reports. Keep NotebookLM response length set to `Longer`.
+
+For each topic, use `01-create-report-file.md` inside NotebookLM Reports / Create report first. Use `02-chat-json-extraction.md` only if a stricter JSON handoff is needed after the report exists.
+
+Default RAG-002 output folder:
+
+```text
+research\experiments\generated\RAG-002-notebooklm-extraction-automation-bridge\
+```
+
+Validate RAG-002 prompt character limits, exhaustive-report wording, completion markers, and small-batch rejection:
+
+```powershell
+python scripts\validate_rag_002_notebooklm_extraction_automation.py
+```
+
+Run the RAG-003 report import-readiness audit after NotebookLM reports have been exported or pasted into the RAG-002 imports folder:
+
+```powershell
+python scripts\run_rag_003_report_import_readiness.py
+```
+
+Default RAG-003 output folder:
+
+```text
+research\experiments\generated\RAG-003-report-import-readiness\
+```
+
+Validate RAG-003 report scanning, topic coverage, source-ID mapping detection, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_003_report_import_readiness.py
+```
+
+Run RAG-004 source manifest normalization after RAG-003 shows all report topics are covered:
+
+```powershell
+python scripts\run_rag_004_source_manifest_normalization.py
+```
+
+Default RAG-004 output folder:
+
+```text
+research\experiments\generated\RAG-004-source-manifest-normalization\
+```
+
+Validate RAG-004 stable source-ID generation, metadata-review flags, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_004_source_manifest_normalization.py
+```
+
+Run RAG-005 chunk normalization after RAG-004 creates the source manifest:
+
+```powershell
+python scripts\run_rag_005_chunk_normalization.py
+```
+
+Default RAG-005 output folder:
+
+```text
+research\experiments\generated\RAG-005-chunk-normalization\
+```
+
+Validate RAG-005 chunk extraction, source-ID mapping, topic review flags, source-excerpt suppression, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_005_chunk_normalization.py
+```
+
+Run RAG-006 chunk review packet generation after RAG-005 creates chunk candidates:
+
+```powershell
+python scripts\run_rag_006_chunk_review_packet.py
+```
+
+Default RAG-006 output folder:
+
+```text
+research\experiments\generated\RAG-006-chunk-review-packet\
+```
+
+Validate RAG-006 source-mapping queues, topic-review queues, quote-review queues, first-slice candidates, and no-runtime-retrieval/no-promotion boundary:
+
+```powershell
+python scripts\validate_rag_006_chunk_review_packet.py
+```
+
+Run RAG-007 reviewed first-slice promotion after RAG-006 creates review queues:
+
+```powershell
+python scripts\run_rag_007_reviewed_first_slice.py
+```
+
+Default RAG-007 output folder:
+
+```text
+research\experiments\generated\RAG-007-reviewed-first-slice\
+```
+
+Validate RAG-007 reviewed paraphrases, selected chunk IDs, pressure-tactic exclusions, no-source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_007_reviewed_first_slice.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:
@@ -463,6 +595,396 @@ Validate VOICE-023 bounded thinking fillers, English/German language fit, runtim
 python scripts\validate_voice_023_speech_realism.py
 ```
 
+Run the VOICE-024 speech-realism A/B harness in dry-run mode:
+
+```powershell
+python scripts\run_voice_024_speech_realism_live_ab.py
+```
+
+Default VOICE-024 output folder:
+
+```text
+research\experiments\generated\VOICE-024-speech-realism-live-ab\
+```
+
+Validate VOICE-024 dry-run safety, forced-missing-key fallback, local voice-ID redaction, and protected-text locks:
+
+```powershell
+python scripts\validate_voice_024_speech_realism_live_ab.py
+```
+
+Run the VOICE-025 boundary-aware filler-placement checkpoint:
+
+```powershell
+python scripts\run_voice_025_filler_placement.py
+```
+
+Default VOICE-025 output folder:
+
+```text
+research\experiments\generated\VOICE-025-filler-placement\
+```
+
+Validate VOICE-025 English/German filler placement and protected German campaign text:
+
+```powershell
+python scripts\validate_voice_025_filler_placement.py
+```
+
+Run the VOICE-026 interaction-prosody checkpoint:
+
+```powershell
+python scripts\run_voice_026_interaction_prosody.py
+```
+
+Default VOICE-026 output folder:
+
+```text
+research\experiments\generated\VOICE-026-interaction-prosody\
+```
+
+Validate VOICE-026 bilingual lookup acknowledgements, neutral backchannels, sales pace cues, unsafe-agreement guards, and protected campaign text:
+
+```powershell
+python scripts\validate_voice_026_interaction_prosody.py
+```
+
+Run the VOICE-027 live-capable A/B harness comparing VOICE-025 baseline vs VOICE-026 interaction prosody:
+
+```powershell
+python scripts\run_voice_027_interaction_prosody_live_ab.py
+```
+
+Default VOICE-027 output folder:
+
+```text
+research\experiments\generated\VOICE-027-interaction-prosody-live-ab\
+```
+
+Validate VOICE-027 dry-run safety, forced-missing-key fallback, local voice-ID redaction, protected-text locks, and unsafe-agreement guards:
+
+```powershell
+python scripts\validate_voice_027_interaction_prosody_live_ab.py
+```
+
+Run the VOICE-028 controlled delivery imperfections checkpoint:
+
+```powershell
+python scripts\run_voice_028_controlled_imperfections.py
+```
+
+Default VOICE-028 output folder:
+
+```text
+research\experiments\generated\VOICE-028-controlled-imperfections\
+```
+
+Validate VOICE-028 English/German controlled imperfections, protected-text locks, unsafe-claim suppression, and no-provider boundary:
+
+```powershell
+python scripts\validate_voice_028_controlled_imperfections.py
+```
+
+Run the VOICE-029 local speech-profile checkpoint on synthetic fixtures:
+
+```powershell
+python scripts\run_voice_029_local_speech_profile.py
+```
+
+Default VOICE-029 output folder:
+
+```text
+research\experiments\generated\VOICE-029-local-speech-profile-learning\
+```
+
+Validate VOICE-029 local speech profile extraction, private-read guard, workspace initializer, and no-provider/no-cloning boundary:
+
+```powershell
+python scripts\validate_voice_029_local_speech_profile.py
+```
+
+Preview the ignored private personal speech-learning workspace:
+
+```powershell
+python scripts\init_personal_speech_learning_workspace.py --dry-run
+```
+
+Create the ignored private personal speech-learning workspace when redacted local transcripts are ready:
+
+```powershell
+python scripts\init_personal_speech_learning_workspace.py
+```
+
+Run VOICE-029 on reviewed local redacted transcripts only. Outputs remain inside `data\private\`:
+
+```powershell
+python scripts\run_voice_029_local_speech_profile.py `
+  --input-dir data\private\tarik-speech-samples\transcripts-redacted `
+  --allow-private-read
+```
+
+Start the VOICE-030B localhost recorder for Tarik speech samples. Browser uploads are encoded to WAV locally and saved under `data\private\tarik-speech-samples\raw-audio\`:
+
+```powershell
+python scripts\run_voice_030b_local_speech_capture.py --serve
+```
+
+Import an existing local audio file into the same private raw-audio folder:
+
+```powershell
+python scripts\run_voice_030b_local_speech_capture.py `
+  --import-file C:\path\to\sample.wav `
+  --language en `
+  --label "tarik local speech sample"
+```
+
+Validate VOICE-030B local capture/import, localhost-only serving, and no-provider/no-transcription/no-cloning boundary:
+
+```powershell
+python scripts\validate_voice_030b_local_speech_capture.py
+```
+
+Validate VOICE-030C private learning queue, automatic WAV analysis hook, non-WAV conversion status, Turkish-native speaker context, and no-runtime/no-provider boundary:
+
+```powershell
+python scripts\validate_voice_030c_private_learning_queue.py
+```
+
+Run VOICE-030D private feature review on local Tarik speech-sample features only. Outputs remain inside `data\private\`:
+
+```powershell
+python scripts\run_voice_030d_private_feature_review.py --allow-private-read
+```
+
+Validate VOICE-030D private review summaries, diagnostic-only pause metrics, no-runtime/no-provider boundary, and private-read guard:
+
+```powershell
+python scripts\validate_voice_030d_private_feature_review.py
+```
+
+Run VOICE-031 reviewed feature-to-runtime mapping gate on a synthetic public fixture:
+
+```powershell
+python scripts\run_voice_031_feature_runtime_mapping.py
+```
+
+Default VOICE-031 output folder:
+
+```text
+research\experiments\generated\VOICE-031-feature-runtime-mapping\
+```
+
+Run VOICE-031 on a reviewed private VOICE-030D summary only. Outputs remain inside `data\private\`:
+
+```powershell
+python scripts\run_voice_031_feature_runtime_mapping.py `
+  --summary-json data\private\tarik-speech-samples\derived\review\voice-030d-feature-review-summary.json `
+  --allow-private-review-read
+```
+
+Validate VOICE-031 proposal-only mapping, blocked pause metrics, private-read guard, private-output guard, and WhatsApp reminder:
+
+```powershell
+python scripts\validate_voice_031_feature_runtime_mapping.py
+```
+
+Put exported WhatsApp `.ogg` voice notes here:
+
+```text
+data\private\tarik-speech-samples\whatsapp-voice-notes\
+```
+
+Convert local WhatsApp `.ogg` voice notes to WAV under `data\private\` and queue successful WAVs into VOICE-030C:
+
+```powershell
+python scripts\run_voice_032_local_audio_conversion.py
+```
+
+If `ffmpeg` is missing, VOICE-032 records `converter_missing_needs_local_ffmpeg` instead of failing silently.
+
+Validate VOICE-032 OGG-first local conversion, missing-ffmpeg status, private boundary, and VOICE-030C queue integration:
+
+```powershell
+python scripts\validate_voice_032_local_audio_conversion.py
+```
+
+Check whether private Tarik speech samples are ready for a VOICE-030D review without reading raw audio content:
+
+```powershell
+python scripts\run_voice_033_private_sample_readiness.py --allow-private-metadata-read
+```
+
+Private VOICE-033 output folder:
+
+```text
+data\private\tarik-speech-samples\derived\readiness\
+```
+
+Validate VOICE-033 private metadata-only readiness statuses, thresholds, recommendations, and no-audio-content boundary:
+
+```powershell
+python scripts\validate_voice_033_private_sample_readiness.py
+```
+
+Run the VOICE-034 pacing calibration V2 checkpoint:
+
+```powershell
+python scripts\run_voice_034_pacing_calibration.py
+```
+
+Default VOICE-034 output folder:
+
+```text
+research\experiments\generated\VOICE-034-pacing-calibration-v2\
+```
+
+Validate VOICE-034 English/German pacing calibration, German word-gap reduction, protected-text locks, and no-provider boundary:
+
+```powershell
+python scripts\validate_voice_034_pacing_calibration.py
+```
+
+Run the VOICE-035 connected-speech phrase-flow checkpoint:
+
+```powershell
+python scripts\run_voice_035_connected_speech.py
+```
+
+Default VOICE-035 output folder:
+
+```text
+research\experiments\generated\VOICE-035-connected-speech\
+```
+
+Validate VOICE-035 English/German phrase-flow joins, VOICE-034 speed-bound preservation, protected-text locks, and no-provider boundary:
+
+```powershell
+python scripts\validate_voice_035_connected_speech.py
+```
+
+Run the VOICE-036 listening-feedback calibration checkpoint:
+
+```powershell
+python scripts\run_voice_036_listening_calibration.py
+```
+
+Default VOICE-036 output folder:
+
+```text
+research\experiments\generated\VOICE-036-listening-calibration\
+```
+
+Validate VOICE-036 German connected-speech relaxation, emphasis-target guard, protected-text locks, and no-provider boundary:
+
+```powershell
+python scripts\validate_voice_036_listening_calibration.py
+```
+
+Run the VOICE-037 emotion-transition smoothing checkpoint:
+
+```powershell
+python scripts\run_voice_037_emotion_smoothing.py
+```
+
+Default VOICE-037 output folder:
+
+```text
+research\experiments\generated\VOICE-037-emotion-smoothing\
+```
+
+Validate VOICE-037 emotional inertia, provider stability/style bounds, protected-text locks, and no-provider boundary:
+
+```powershell
+python scripts\validate_voice_037_emotion_smoothing.py
+```
+
+Run the VOICE-038 semantic emphasis/rhythm diagnosis for the preferred English voice:
+
+```powershell
+python scripts\run_voice_038_semantic_emphasis_diagnosis.py
+```
+
+Default VOICE-038 output folder:
+
+```text
+research\experiments\generated\VOICE-038-semantic-emphasis-diagnosis\
+```
+
+Validate VOICE-038 dry-run safety, forced-missing-key fallback, semantic variants, and no-provider/private-data boundary:
+
+```powershell
+python scripts\validate_voice_038_semantic_emphasis_diagnosis.py
+```
+
+Run the VOICE-039 runtime semantic-emphasis checkpoint through RESP-002/RESP-003 in dry-run mode:
+
+```powershell
+python scripts\run_voice_039_runtime_semantic_emphasis.py
+```
+
+Default VOICE-039 output folder:
+
+```text
+research\experiments\generated\VOICE-039-runtime-semantic-emphasis\
+```
+
+Validate VOICE-039 runtime promotion, protected-text locks, German language lock, and no-provider/private-data boundary:
+
+```powershell
+python scripts\validate_voice_039_runtime_semantic_emphasis.py
+```
+
+Run the VOICE-040 low-pressure focus checkpoint through RESP-002/RESP-003 in dry-run mode:
+
+```powershell
+python scripts\run_voice_040_low_pressure_focus.py
+```
+
+Default VOICE-040 output folder:
+
+```text
+research\experiments\generated\VOICE-040-low-pressure-focus\
+```
+
+Validate VOICE-040 low-pressure phrase correction, protected-text locks, German language lock, and no-provider/private-data boundary:
+
+```powershell
+python scripts\validate_voice_040_low_pressure_focus.py
+```
+
+Run the VOICE-030A raw WAV audio reader on synthetic fixtures:
+
+```powershell
+python scripts\run_voice_030_raw_audio_reader.py
+```
+
+Default VOICE-030A output folder:
+
+```text
+research\experiments\generated\VOICE-030A-raw-audio-local-reader\
+```
+
+Validate VOICE-030A local WAV feature extraction, private-read guard, and no-transcription/no-provider/no-cloning boundary:
+
+```powershell
+python scripts\validate_voice_030_raw_audio_reader.py
+```
+
+Run VOICE-030A on private WAV recordings only. Outputs remain inside `data\private\`:
+
+```powershell
+python scripts\run_voice_030_raw_audio_reader.py `
+  --input-dir data\private\tarik-speech-samples\raw-audio `
+  --allow-private-read
+```
+
+Run a limited live VOICE-027 comparison after setting `ELEVENLABS_API_KEY` in the current shell and confirming local ignored voice IDs exist:
+
+```powershell
+python scripts\run_voice_027_interaction_prosody_live_ab.py --live --language en --limit-scripts 1 --timeout-seconds 8
+python scripts\run_voice_027_interaction_prosody_live_ab.py --live --language de --limit-scripts 1 --timeout-seconds 8
+```
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
@@ -482,6 +1004,12 @@ python scripts\start_guarded_local_server.py `
 ## Explicit Opt-In Provider Commands
 
 These commands can contact external providers. Do not run them as default setup checks.
+
+Live VOICE-024 audio generation requires `ELEVENLABS_API_KEY` in the current shell and local voice IDs in ignored config:
+
+```powershell
+python scripts\run_voice_024_speech_realism_live_ab.py --live --timeout-seconds 8
+```
 
 Live LLM product-agent evaluation requires an environment-only API key:
 
@@ -524,6 +1052,24 @@ python scripts\run_voice_017_live_ab_audio.py --provider cartesia --live --timeo
 ```
 
 Live VOICE-017 with both providers in one run is intentionally blocked unless `--allow-both-live` is also set.
+
+Live VOICE-038 semantic emphasis/rhythm diagnosis requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, and an English voice ID in `ELEVENLABS_VOICE_ID_EN` or ignored local config:
+
+```powershell
+python scripts\run_voice_038_semantic_emphasis_diagnosis.py --live --timeout-seconds 8
+```
+
+Live VOICE-039 full-runtime semantic-emphasis listening check requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, `--limit-cases`, and an English voice ID in `ELEVENLABS_VOICE_ID_EN` or ignored local config:
+
+```powershell
+python scripts\run_voice_039_runtime_semantic_emphasis.py --live --provider elevenlabs --limit-cases 1 --timeout-seconds 8
+```
+
+Live VOICE-040 low-pressure focus listening check requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, `--limit-cases`, and an English voice ID in `ELEVENLABS_VOICE_ID_EN` or ignored local config:
+
+```powershell
+python scripts\run_voice_040_low_pressure_focus.py --live --provider elevenlabs --limit-cases 1 --timeout-seconds 8
+```
 
 Live VOICE-019 ElevenLabs prosody-vs-sales-tuned A/B testing requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
 

@@ -16,6 +16,384 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-06 - RAG-007 reviewed first slice
+
+- Objective: move from RAG-006 review queues to one manually reviewed, source-tracked first knowledge slice without enabling runtime retrieval.
+- Action taken: added a failing RAG-007 validator first, implemented `scripts/rag_reviewed_first_slice.py`, added `scripts/run_rag_007_reviewed_first_slice.py`, generated the reviewed-slice JSON/Markdown artifact, documented the checkpoint, and added it to setup gates.
+- Data used: the RAG-006 review packet, the RAG-005 chunk-normalization result, and the RAG-004 source manifest under `research/experiments/generated`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, raw source text import, chunk import, or runtime retrieval was used.
+- Output created: `docs/product/RAG_007_REVIEWED_FIRST_SLICE.md`, `research/experiments/cases/rag-007-reviewed-first-slice.json`, `research/experiments/generated/RAG-007-reviewed-first-slice/result.json`, `research/experiments/generated/RAG-007-reviewed-first-slice/report.md`, `scripts/rag_reviewed_first_slice.py`, `scripts/run_rag_007_reviewed_first_slice.py`, and `scripts/validate_rag_007_reviewed_first_slice.py`.
+- What was learned: the first safe slice should combine response-wording guidance and voice-delivery guidance, but voice/prosody rules must stay non-diagnostic. Tone mismatch is only a weak uncertainty signal that can trigger a gentle clarification; it cannot override explicit customer intent, compliance, campaign scripts, refusal handling, or human escalation.
+- Why it matters for the thesis: RAG-007 documents a human-review gate between source extraction and any retrieval/runtime use, showing that persuasion and voice guidance are treated as reviewed, bounded knowledge rather than automatically trusted model memory.
+- Open questions: what retrieval policy should query these reviewed items, how retrieved items should be cited in decision traces, and which campaign guardrails must block or override retrieval before any runtime use.
+
+### 2026-05-06 - Vinh Giang communication report import and RAG refresh
+
+- Objective: add Tarik's new NotebookLM extraction from the Vinh Giang YouTube communication corpus into the existing review-only RAG pipeline.
+- Action taken: saved the NotebookLM output as `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md`, regenerated RAG-003, RAG-004, RAG-005, and RAG-006 outputs, and updated the product docs plus roadmap with refreshed counts.
+- Data used: Tarik's pasted NotebookLM report covering `40` Vinh Giang YouTube sources. No direct YouTube download, NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, runtime retrieval, or chunk import was used.
+- Output created: refreshed `research/experiments/generated/RAG-003-report-import-readiness/result.json`, `research/experiments/generated/RAG-004-source-manifest-normalization/result.json`, `research/experiments/generated/RAG-005-chunk-normalization/result.json`, `research/experiments/generated/RAG-006-chunk-review-packet/result.json`, corresponding Markdown reports, and the imported Vinh Giang Markdown report file.
+- What was learned: the Vinh Giang report added `11` mapped chunk candidates around voice delivery, pacing, pausing, resonance, concise response structure, PREP, 3-2-1, empathy echo, emotion reflection, and "Yes, And" objection framing. The refreshed pipeline now has `11` reports, `95` source candidates, `121` chunk candidates, `58` mapped chunks, `63` source-mapping chunks, `8` topic-mapping chunks, and `80` quote-review chunks. The first-slice queue now begins with several Vinh-derived response wording candidates because they are source-mapped and topic-clean.
+- Error or correction preserved: the Vinh report used `source_excerpt_present: true`; RAG-005 originally only detected fields named `source_excerpt` or `short_excerpt`. A failing validator case was added, then the parser was corrected so explicit `source_excerpt_present` fields also become quote-review flags without storing source excerpt text.
+- Why it matters for the thesis: this records a realistic iterative RAG expansion loop where a new expert communication source pack enters the same gated pipeline, improves the candidate pool for voice/response naturalness, and still remains review-only before any autonomous persuasive behavior can use it.
+- Open questions: whether the first reviewed promotion slice should start with Vinh-derived response wording (`Yes, And`, `3-2-1`, PREP), voice delivery guidance, or broader ethical persuasion chunks, and whether Tarik can later provide exact YouTube URLs for source metadata completeness.
+
+### 2026-05-06 - RAG-006 chunk review packet
+
+- Objective: reduce the human review burden after RAG-005 by grouping chunk candidates into source-mapping, topic-mapping, quote-review, and first-slice review queues without promoting knowledge into runtime.
+- Action taken: added a failing RAG-006 validator first, implemented `scripts/rag_chunk_review_packet.py`, added `scripts/run_rag_006_chunk_review_packet.py`, generated the real review-packet JSON/Markdown report, tightened source suggestions to avoid weak fuzzy matches, documented the checkpoint, and added it to setup/drift gates.
+- Data used: the RAG-005 chunk-normalization result under `research/experiments/generated/RAG-005-chunk-normalization/result.json` and the RAG-004 source manifest under `research/experiments/generated/RAG-004-source-manifest-normalization/result.json`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, raw source text import, chunk import, or runtime retrieval was used.
+- Output created: `docs/product/RAG_006_CHUNK_REVIEW_PACKET.md`, `research/experiments/cases/rag-006-chunk-review-packet.json`, `research/experiments/generated/RAG-006-chunk-review-packet/result.json`, `research/experiments/generated/RAG-006-chunk-review-packet/report.md`, `scripts/rag_chunk_review_packet.py`, `scripts/run_rag_006_chunk_review_packet.py`, and `scripts/validate_rag_006_chunk_review_packet.py`.
+- What was learned: the `110` RAG-005 candidates can be reduced into `46` source-title review groups for the `63` source-mapping chunks, `8` topic-mapping rows, `69` quote-review rows, and `20` first-slice review candidates. The first clean review slice currently leans toward ethical persuasion and speech/prosody because those have mapped source IDs and no topic-mapping flags, but they still require quote, safety, compliance, and campaign-guardrail review.
+- Error or correction preserved: the first validator failed because the module was missing. The first implementation exposed an over-strict validator assertion that accidentally rejected the allowed `source_excerpt_present` flag; the test was corrected to reject raw excerpt text instead. The first real review packet also produced weak fuzzy source suggestions, so the suggestion threshold was tightened to keep hints conservative and human-reviewed.
+- Why it matters for the thesis: this checkpoint shows that RAG construction is not just retrieval engineering. For a persuasive sales agent, knowledge ingestion needs review queues, conservative mapping hints, quote/copyright boundaries, and an explicit no-promotion state before the agent can safely use extracted sales tactics.
+- Open questions: which source-title groups should be resolved first, whether Tarik wants ethical persuasion or speech/prosody as the first reviewed promotion slice, and what minimum metadata/review fields should be required before `RAG-007`.
+
+### 2026-05-06 - RAG-005 chunk normalization
+
+- Objective: convert Tarik's imported NotebookLM report appendices into source-tracked, review-only RAG chunk candidates without enabling runtime retrieval.
+- Action taken: added and verified a RAG-005 validator contract, implemented `scripts/rag_chunk_normalization.py`, added `scripts/run_rag_005_chunk_normalization.py`, generated a real metadata-only chunk-candidate JSON/Markdown report, documented the checkpoint, and added it to setup/drift gates.
+- Data used: Tarik's manually imported NotebookLM Markdown reports under `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports` and the RAG-004 source manifest under `research/experiments/generated/RAG-004-source-manifest-normalization/result.json`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, raw source text import, chunk import, or runtime retrieval was used.
+- Output created: `docs/product/RAG_005_CHUNK_NORMALIZATION.md`, `research/experiments/cases/rag-005-chunk-normalization.json`, `research/experiments/generated/RAG-005-chunk-normalization/result.json`, `research/experiments/generated/RAG-005-chunk-normalization/report.md`, `scripts/rag_chunk_normalization.py`, `scripts/run_rag_005_chunk_normalization.py`, and `scripts/validate_rag_005_chunk_normalization.py`.
+- What was learned: the imported reports contain `110` candidate sales-knowledge chunks. `47` mapped automatically to RAG-004 source IDs, `63` need source-mapping review, `8` used narrower NotebookLM topic labels that were routed back to approved report topics with review flags, and `69` chunks contained source-excerpt references that were represented only as `source_excerpt_present` flags. No secret-like chunk fields were detected, and source excerpt text was not copied forward.
+- Error or correction preserved: the first validator failed because the RAG-005 module was missing. After a partial module existed, the validator caught unstable chunk ordering because file sorting placed `closing.md` before `cold-calling.md`; chunk ordering was corrected to follow the project RAG topic taxonomy. A second correction preserved off-taxonomy NotebookLM topic labels as `original_topic_id` while assigning candidates to approved taxonomy topics and flagging them for review.
+- Why it matters for the thesis: this checkpoint records a practical, auditable middle layer between NotebookLM-assisted research extraction and any autonomous sales-agent memory. It shows that RAG ingestion needs source mapping, topic normalization, quote/copyright review, and human approval before a persuasive sales agent can safely use extracted tactics.
+- Open questions: which unmapped sources should be merged or added to the RAG-004 manifest, which `110` chunks are safe enough to promote first, and whether `RAG-006` should start with objection handling, ethical persuasion, active listening, or speech/prosody.
+
+### 2026-05-06 - RAG-004 source manifest normalization
+
+- Objective: convert the source-title references inside Tarik's imported NotebookLM reports into stable local source IDs before any chunk import or runtime retrieval.
+- Action taken: added a failing RAG-004 validator first, implemented `scripts/rag_source_manifest_normalization.py`, added `scripts/run_rag_004_source_manifest_normalization.py`, generated a metadata-only source manifest and Markdown review report, documented the checkpoint, and added it to setup/drift gates.
+- Data used: Tarik's manually imported NotebookLM Markdown reports under `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, raw source text, chunk import, or runtime retrieval was used.
+- Output created: `docs/product/RAG_004_SOURCE_MANIFEST_NORMALIZATION.md`, `research/experiments/cases/rag-004-source-manifest-normalization.json`, `research/experiments/generated/RAG-004-source-manifest-normalization/result.json`, `research/experiments/generated/RAG-004-source-manifest-normalization/report.md`, `scripts/rag_source_manifest_normalization.py`, `scripts/run_rag_004_source_manifest_normalization.py`, and `scripts/validate_rag_004_source_manifest_normalization.py`.
+- What was learned: the imported report set contains a broad source universe. The first real run produced `74` source candidates from `10` reports, with every source candidate linked to at least one RAG topic, no secret-like source titles, no provider calls, no runtime retrieval, and no chunk import. All source candidates still require human metadata review for URLs, authors/channels, source types, language, rights status, and thesis citation notes.
+- Error or correction preserved: the first validator failed because the RAG-004 module was missing. The first real scanner then over-collected noisy appendix rows, producing `237` candidates including non-source fields. The extractor was tightened twice: first to ignore obvious JSON/field fragments and then to parse source-coverage sections instead of all RAG appendix tables. A final hygiene pass removed obvious false positives such as customer phrases, `404` pages, and single-word concepts.
+- Why it matters for the thesis: this creates an auditable source-normalization step between NotebookLM-assisted extraction and a future source-tracked sales knowledge base. It also records that automated source extraction from AI-generated reports is useful but must remain human-reviewed before it can support thesis references or product RAG behavior.
+- Open questions: which of the `74` source candidates should be merged or removed, how Tarik wants to fill missing URL/author metadata, and whether the first chunk-normalization pass should start with objection handling, ethical persuasion, active listening, or speech/prosody.
+
+### 2026-05-06 - RAG-003 NotebookLM report import-readiness audit
+
+- Objective: verify whether Tarik's imported NotebookLM report artifacts are complete enough for later RAG normalization without confusing report files, pasted chat continuations, and gap-check results with runtime-ready knowledge.
+- Action taken: added a failing RAG-003 validator first, implemented `scripts/rag_report_import_readiness.py`, added `scripts/run_rag_003_report_import_readiness.py`, generated a real import-readiness JSON/Markdown audit, documented the checkpoint, and added it to setup/drift gates.
+- Data used: Tarik's manually imported NotebookLM Markdown reports under `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, or runtime retrieval was used.
+- Output created: `docs/product/RAG_003_REPORT_IMPORT_READINESS.md`, `research/experiments/cases/rag-003-report-import-readiness.json`, `research/experiments/generated/RAG-003-report-import-readiness/result.json`, `research/experiments/generated/RAG-003-report-import-readiness/report.md`, `scripts/rag_report_import_readiness.py`, `scripts/run_rag_003_report_import_readiness.py`, and `scripts/validate_rag_003_report_import_readiness.py`.
+- What was learned: the imported report set covers all ten active RAG topics, all reports contain `END: COMPLETE`, no report contains `NEED_CONTINUATION`, and no secret-like string was detected. After Tarik added a voice/prosody source-coverage addendum, every report has source coverage and a RAG-ready appendix. The set is useful research intake, but not ready for automatic import because source titles still need stable source IDs, pasted gap-check/chat continuations need normalization, and source excerpts need quote review.
+- Error or correction preserved: the first RAG-003 validator failed because the module was missing, then the implementation failed because the duplicate-section regex used inline flags in the middle of an alternation. The regex was corrected before running the real import audit.
+- Why it matters for the thesis: this creates a repeatable evidence gate between NotebookLM-assisted extraction and product RAG behavior. It also preserves a realistic data-ingestion issue: AI-generated reports may be complete at the topic level while still requiring source normalization, copyright/quote review, and human-governed promotion before use by an autonomous sales agent.
+- Open questions: which source-ID manifest format should be used for the real sources, how aggressively pasted gap-check continuations should be split into separate chunk candidates, and which reviewed topic should become the first runtime retrieval experiment.
+
+### 2026-05-06 - RAG-002 NotebookLM extraction automation bridge
+
+- Objective: reduce the tedious manual NotebookLM extraction loop by generating bounded per-topic prompts and rejecting incomplete or tiny sample-batch outputs before RAG promotion.
+- Action taken: added a failing RAG-002 validator first, implemented `scripts/rag_notebooklm_automation.py`, added `scripts/run_rag_002_notebooklm_extraction_automation.py`, generated two prompts per topic, added an import drop zone, and documented the coverage gate.
+- Data used: synthetic source-slot metadata only. No real YouTube links, websites, books, private customer data, call-center audio, transcripts, provider calls, NotebookLM API calls, API keys, or raw source text were used in the default run.
+- Output created: `docs/product/RAG_002_NOTEBOOKLM_EXTRACTION_AUTOMATION_BRIDGE.md`, `research/experiments/cases/rag-002-notebooklm-extraction-automation-bridge.json`, `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/result.json`, `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/report.md`, generated per-topic prompt files, `scripts/rag_notebooklm_automation.py`, `scripts/run_rag_002_notebooklm_extraction_automation.py`, and `scripts/validate_rag_002_notebooklm_extraction_automation.py`.
+- What was learned: NotebookLM should be treated as a source-grounded extraction helper with explicit completion contracts. The local project must not accept "small batch" answers as training material unless coverage is complete or source material is explicitly insufficient.
+- Error or correction preserved: the initial validator failed because the RAG-002 automation module was missing, then failed because the runner was missing. After Tarik tested the first generated prompt in NotebookLM, the output contained useful chunks but compressed the "tailored report" into short JSON fields because the prompt said to return exactly one JSON object. RAG-002 was corrected twice: first to generate Configure Chat custom instructions plus a two-part chat output, then to match Tarik's actual intended workflow by generating a NotebookLM Reports / Create report prompt as the first per-topic artifact.
+- Why it matters for the thesis: this creates an auditable method for converting large curated sales/source notebooks into structured, source-tracked RAG candidates while controlling prompt length, coverage completeness, and copyright/privacy boundaries.
+- Open questions: whether real NotebookLM outputs from Tarik's source notebooks pass the coverage gate on the first primary prompt or require gap-check prompts for some topics.
+
+### 2026-05-06 - RAG-001 NotebookLM source-intake bridge
+
+- Objective: create the first source-tracked intake bridge for a sales RAG knowledge base, using NotebookLM as an extraction helper rather than permanent product memory.
+- Action taken: added a failing RAG-001 validator first, implemented `scripts/rag_knowledge_base.py`, added `scripts/run_rag_001_notebooklm_source_intake.py`, created a 10-topic source manifest template, generated a NotebookLM extraction prompt, validated source-tracked demo chunks, and added a local RAG workspace README.
+- Data used: synthetic demo source slots and synthetic demo chunks only. No real YouTube links, websites, books, private customer data, call-center audio, transcripts, provider calls, NotebookLM API calls, API keys, or raw source text were used in the default run.
+- Output created: `docs/product/RAG_001_NOTEBOOKLM_SOURCE_INTAKE_BRIDGE.md`, `data/rag/README.md`, `research/experiments/cases/rag-001-notebooklm-source-intake-bridge.json`, `research/experiments/generated/RAG-001-notebooklm-source-intake-bridge/result.json`, `research/experiments/generated/RAG-001-notebooklm-source-intake-bridge/report.md`, `scripts/rag_knowledge_base.py`, `scripts/run_rag_001_notebooklm_source_intake.py`, and `scripts/validate_rag_001_notebooklm_source_intake.py`.
+- What was learned: RAG should start as a source-management and extraction-quality problem before runtime retrieval. The first durable value is the schema: every future sales lesson must have a topic, source ID, when-to-use boundary, when-not-to-use boundary, compliance note, and citation note.
+- Error or correction preserved: the initial validator failed because the RAG module was missing, then failed because the product doc was missing. This kept the checkpoint honest: code, docs, source traceability, and thesis trace had to land together.
+- Why it matters for the thesis: this creates a repeatable method for transforming public sources into auditable sales-agent knowledge while avoiding untracked chat memory, copied source text, and unsafe NotebookLM dependency lock-in.
+- Open questions: when Tarik has NotebookLM extraction notes for the real collected sources, which chunks should be promoted into a runtime retrieval experiment first: objection handling, semantic emphasis, or ethical persuasion.
+
+### 2026-05-06 - VOICE-040 low-pressure focus correction
+
+- Objective: correct the VOICE-039 listening issue where `You don't need to change anything today` could receive awkward TTS emphasis even though the selected English voice candidate is now strong enough to keep.
+- Action taken: added a failing VOICE-040 validator first, implemented `scripts/voice_low_pressure_focus.py`, wired it into `RESP-002` after VOICE-039, added a live-capable runner/case set, and updated RESP validators plus setup/drift guards.
+- Data used: synthetic English B2B software and German B2C telecom runtime turns only. No customer/private audio, transcription, voice cloning, provider call, API key logging, or raw voice-ID logging was used in the default run.
+- Output created: `docs/product/VOICE_040_LOW_PRESSURE_FOCUS.md`, `research/experiments/cases/voice-040-low-pressure-focus.json`, `research/experiments/generated/VOICE-040-low-pressure-focus/result.json`, `research/experiments/generated/VOICE-040-low-pressure-focus/report.md`, `scripts/voice_low_pressure_focus.py`, `scripts/run_voice_040_low_pressure_focus.py`, and `scripts/validate_voice_040_low_pressure_focus.py`.
+- What was learned: after the voice identity improved, the remaining voice problem became narrower: a sentence can be safe and strategically correct while still creating unnatural emphasis targets for TTS. Rewriting the provider-facing phrase to `No changes needed today` keeps the low-pressure sales meaning while reducing awkward emphasis opportunities.
+- Error or correction preserved: the VOICE-039 live review showed that adding semantic emphasis is not enough if a phrase contains too many tempting stress points. VOICE-040 fixes the delivery wording only for eligible English freeform TTS text, while preserving the guarded `final_response`, protected text, German text, and provider/private-data boundaries.
+- Why it matters for the thesis: this checkpoint shows a human-in-the-loop refinement cycle where subjective listening feedback is converted into a narrow, testable runtime correction rather than a broad rewrite of the sales policy or response logic.
+- Open questions: whether a live VOICE-040 listening check confirms that the phrase now sounds natural in the longer guarded response.
+
+### 2026-05-06 - VOICE-039 runtime semantic-emphasis promotion
+
+- Objective: promote the preferred `VOICE-038` clear/simple wording pattern into the full guarded runtime path and test it with a longer script before another live listening review.
+- Action taken: added a failing VOICE-039 validator first, implemented `scripts/voice_semantic_emphasis.py`, wired it into `RESP-002` after emotion smoothing and before `RESP-003`, added a live-capable longer-script runner, and updated RESP validators plus setup/drift guards.
+- Data used: synthetic English B2B software and German B2C telecom runtime turns only. No customer/private audio, transcription, voice cloning, provider call, API key logging, or raw voice-ID logging was used in the default run.
+- Output created: `docs/product/VOICE_039_RUNTIME_SEMANTIC_EMPHASIS.md`, `research/experiments/cases/voice-039-runtime-semantic-emphasis.json`, `research/experiments/generated/VOICE-039-runtime-semantic-emphasis/result.json`, `research/experiments/generated/VOICE-039-runtime-semantic-emphasis/report.md`, `research/experiments/generated/VOICE-039-runtime-semantic-emphasis/live-result.json`, `research/experiments/generated/VOICE-039-runtime-semantic-emphasis/live-report.md`, `scripts/voice_semantic_emphasis.py`, `scripts/run_voice_039_runtime_semantic_emphasis.py`, and `scripts/validate_voice_039_runtime_semantic_emphasis.py`.
+- What was learned: the VOICE-038 clear/simple phrase can be promoted as provider-facing TTS text while preserving the original guarded `final_response`. The layer rewrites only eligible English freeform text, leaves protected text locked, and leaves German text untouched.
+- Error or correction preserved: the validator first failed because the module was missing, then the runner failed because the guarded-response builder required `silence_count`; the runner was corrected to pass the same default used by RESP scripts. The validator was also adjusted to accept lower-case `we` when connected-speech joins the promoted phrase after a comma. A live-gated run inside the Codex shell safely fell back with `missing-elevenlabs-api-key`, confirming that the provider boundary works when the current shell lacks the API key.
+- Why it matters for the thesis: this checkpoint records how qualitative listening feedback becomes a narrow runtime candidate with explicit safety boundaries, rather than an unconstrained rewrite of sales policy text.
+- Open questions: whether the live longer-script RESP-003 check confirms that the promoted clear/simple wording sounds natural with the preferred English voice in the full guarded response path.
+
+### 2026-05-06 - VOICE-038 live listening review
+
+- Objective: evaluate whether semantic-emphasis variants with the current preferred English voice improve the previously weak "worth your time" phrase.
+- Action taken: Tarik ran the live VOICE-038 ElevenLabs audio generation, listened to all six English MP3 variants, and gave qualitative feedback.
+- Data used: synthetic English listening text only. No customer/private audio, transcription, voice cloning, or raw secret/voice-ID logging was used.
+- Output created: `research/experiments/generated/VOICE-038-semantic-emphasis-diagnosis/audio/` MP3 files and `research/experiments/generated/VOICE-038-semantic-emphasis-diagnosis/human-listening-review.md`.
+- What was learned: all six variants sounded good and several steps better than earlier English voice outputs. Tarik found it hard to pick a single winner because emphasis, rhythm, and pronunciation were generally strong. The preferred variants were `clear_opening_simple_clause` and `baseline_original_clause`.
+- Interpretation: changing the English voice candidate was one of the strongest improvements so far. The next step should not be more broad voice hunting or random filler/pacing changes. The safer runtime candidate is the clear/simple wording pattern, while the baseline remains useful as a control because it also now performs well with the preferred voice.
+- Why it matters for the thesis: this records a human-in-the-loop listening evaluation where the project separated voice identity quality from semantic wording quality and used controlled audio variants to guide the next runtime step.
+- Open questions: whether to promote the clear/simple wording pattern into runtime as the default response shaping rule and keep the baseline as a comparison fallback.
+
+### 2026-05-06 - VOICE-038 semantic emphasis diagnosis scaffold
+
+- Objective: turn Tarik's listening feedback on the preferred English voice into a controlled semantic-emphasis and rhythm diagnosis before changing runtime behavior.
+- Action taken: added a failing VOICE-038 validator first, then implemented `scripts/run_voice_038_semantic_emphasis_diagnosis.py`, a focused English case file, a product doc, command-map entries, setup/drift guard entries, and a default dry-run report folder.
+- Data used: synthetic English listening text only. The target failure phrase is "whether reviewing options is worth your time." No provider call was made during the default run, and no customer/private audio, transcription, voice cloning, or raw secret/voice-ID logging was used.
+- Output created: `docs/product/VOICE_038_SEMANTIC_EMPHASIS_DIAGNOSIS.md`, `research/experiments/cases/voice-038-semantic-emphasis-diagnosis.json`, `research/experiments/generated/VOICE-038-semantic-emphasis-diagnosis/results.json`, `research/experiments/generated/VOICE-038-semantic-emphasis-diagnosis/report.md`, `scripts/run_voice_038_semantic_emphasis_diagnosis.py`, and `scripts/validate_voice_038_semantic_emphasis_diagnosis.py`.
+- What was learned: after switching voice candidates, the remaining English issue is specific enough to isolate with text variants instead of broad filler/pacing changes. VOICE-038 compares baseline wording, simpler wording, phrase chunking, benefit-first wording, semantic focus questions, and an opening alternative.
+- Error or correction preserved: the checkpoint intentionally does not promote any wording into runtime yet. A human listening review is required because a TTS provider may emphasize text differently than the written semantics imply.
+- Why it matters for the thesis: this records a clean diagnosis step between subjective listening feedback and runtime design, showing how product voice quality is improved through controlled ablation rather than guesswork.
+- Open questions: which VOICE-038 variant sounds most natural with the preferred English candidate, and whether the winning pattern should become a runtime semantic-emphasis rule.
+
+### 2026-05-06 - RESP-003 new English voice candidate check
+
+- Objective: test whether the persistent English roboticness after VOICE-037 was caused primarily by the selected ElevenLabs English voice identity rather than the local prosody pipeline.
+- Action taken: Tarik ran a live RESP-003 English runtime TTS check with a newly selected English ElevenLabs voice ID supplied through environment/local ignored voice configuration. The runtime path kept the current guarded response and voice-delivery layers active.
+- Data used: synthetic English B2B software runtime text only. No customer/private audio, transcription, voice cloning, or raw provider secret logging was used.
+- Output created: generated RESP-003 live audio artifacts under the local generated experiment workspace, plus a local-only ignored voice-ID config update.
+- What was learned: changing the English voice candidate substantially reduced the obvious robotic voice quality. Tarik estimated that the roboticness was roughly 95% gone and that sales trust was good enough to keep working with this candidate. The remaining issue is narrower: the opening sounded slightly unclear, and the natural rhythm/emphasis broke around the clause "whether reviewing options is worth your time."
+- Error or correction preserved: updating `config/local/voice_ids.json` from Windows PowerShell wrote UTF-8 with a BOM. Python rejected the file during VOICE-027 with `JSONDecodeError: Unexpected UTF-8 BOM`. The local voice-config loader was hardened to accept `utf-8-sig`, and a regression check was added so ignored local voice config remains usable after PowerShell edits.
+- Why it matters for the thesis: this checkpoint separates provider/voice identity effects from local prosody-rule effects and preserves a practical engineering failure from the voice-evaluation workflow.
+- Open questions: whether this English candidate should become the preferred MVP voice, and whether a later semantic emphasis layer should choose important words or simplify fragile clauses before provider rendering.
+
+### 2026-05-06 - VOICE-037 emotion-transition smoothing
+
+- Objective: convert Tarik's listening feedback about sharp vocal emotion jumps into a bounded runtime correction.
+- Action taken: added a failing VOICE-037 validator first, implemented `scripts/voice_emotion_smoothing.py`, wired the layer into `RESP-002` after VOICE-036, added a standalone runner/case set/report path, and updated RESP-002/RESP-003 validators plus setup/drift guards.
+- Data used: synthetic German B2C telecom and English B2B software runtime turns only. A synthetic direct test also checks that theatrical or excited-high cues are blocked/capped. No customer/private audio, transcription, provider call, generated audio, or voice cloning was used.
+- Output created: `docs/product/VOICE_037_EMOTION_TRANSITION_SMOOTHING.md`, `research/experiments/cases/voice-037-emotion-smoothing.json`, `research/experiments/generated/VOICE-037-emotion-smoothing/results.json`, `research/experiments/generated/VOICE-037-emotion-smoothing/report.md`, `scripts/voice_emotion_smoothing.py`, `scripts/run_voice_037_emotion_smoothing.py`, and `scripts/validate_voice_037_emotion_smoothing.py`.
+- What was learned: emotional expressiveness needs inertia. The runtime should avoid instant jumps between warm, confident, low, or theatrical delivery states, and provider settings should smooth the transition before adding more filler or rewriting text.
+- Error or correction preserved: previous voice layers improved pace and phrase flow but did not govern emotional continuity. VOICE-037 adds that missing boundary by raising provider stability within a bounded range and capping style/exaggeration while preserving speed and rendered words.
+- Why it matters for the thesis: this checkpoint records how qualitative listening feedback becomes a measurable delivery-control layer, separating sales policy, spoken wording, provider rendering, and live listening evaluation.
+- Open questions: whether a fresh live RESP-003 listening check with VOICE-037 confirms smoother emotional motion without making the voice flatter or more robotic.
+
+### 2026-05-06 - VOICE-036 listening-feedback calibration
+
+- Objective: convert Tarik's VOICE-035 live listening feedback into a bounded runtime correction without changing the guarded sales answer.
+- Action taken: added a failing VOICE-036 validator first, implemented `scripts/voice_listening_calibration.py`, filtered weak emphasis targets before provider rendering, relaxed German connected speech after VOICE-035, added a standalone runner/case set/report path, and updated RESP-002/RESP-003 validators plus setup/drift guards.
+- Data used: synthetic German B2C telecom and English B2B software runtime turns only. The listening feedback came from live ElevenLabs outputs generated from synthetic prompts with local ignored voice IDs. No customer/private audio, transcription, or voice cloning was used.
+- Output created: `docs/product/VOICE_036_LISTENING_CALIBRATION.md`, `research/experiments/cases/voice-036-listening-calibration.json`, `research/experiments/generated/VOICE-036-listening-calibration/results.json`, `research/experiments/generated/VOICE-036-listening-calibration/report.md`, `research/experiments/generated/RESP-003/voice-035-listening-check/human-listening-review.md`, `scripts/voice_listening_calibration.py`, `scripts/run_voice_036_listening_calibration.py`, and `scripts/validate_voice_036_listening_calibration.py`.
+- What was learned: connected speech can improve English phrase flow but over-compress German if the breath cue is removed entirely. Emphasis should be conservative; wrong emphasis is worse than no emphasis.
+- Error or correction preserved: VOICE-035's German output was too fast/compressed for clear review. VOICE-036 restores a tiny `0.08s` breath and relaxes German speed to `1.065` for eligible freeform text only.
+- Why it matters for the thesis: this checkpoint shows a listening-evaluation loop where a previous naturalness fix created a new intelligibility issue, then a narrower follow-up layer corrected the issue while preserving safety boundaries.
+- Open questions: whether a fresh live RESP-003 listening check with VOICE-036 confirms German intelligibility and whether English still needs semantic emphasis modeling beyond the conservative guard.
+
+### 2026-05-06 - RESP-003 VOICE-035 live listening check
+
+- Objective: evaluate whether VOICE-035 connected-speech phrase flow improved the English/German live audio after VOICE-034 pacing calibration.
+- Action taken: Tarik ran the German and English RESP-003 live ElevenLabs commands with VOICE-035 active, listened to both MP3 outputs, and gave qualitative feedback.
+- Data used: synthetic German B2C telecom and English B2B software runtime turns only. No customer/private audio, transcription, or voice cloning was used.
+- Output created: `research/experiments/generated/RESP-003/voice-035-listening-check/de-live.json`, `research/experiments/generated/RESP-003/voice-035-listening-check/en-live.json`, their generated MP3 files under `research/experiments/generated/RESP-003/voice-035-listening-check/audio/`, and `research/experiments/generated/RESP-003/voice-035-listening-check/human-listening-review.md`.
+- What was learned: German was too fast/compressed to judge pauses or fillers clearly. English sounded better than before, but still somewhat robotic, likely because emphasis can land on the wrong words.
+- Interpretation: the next layer should not add more filler by default. It should relax German connected speech and add an emphasis-target guard.
+- Why it matters for the thesis: this is an example of human-in-the-loop voice evaluation producing a concrete, reproducible follow-up checkpoint.
+- Open questions: whether VOICE-036 resolves the German intelligibility issue without reducing the connected-speech improvement.
+
+### 2026-05-05 - VOICE-035 connected speech phrase flow
+
+- Objective: address Tarik's VOICE-034 listening feedback that both English and German still sounded slightly robotic because spoken phrases felt too isolated, with weak word-to-word flow and written punctuation artifacts.
+- Action taken: added a failing VOICE-035 validator first, implemented `scripts/voice_connected_speech.py`, wired it into `RESP-002` after VOICE-034 pacing calibration, added a standalone runner/case set/report path, and updated RESP-002/RESP-003 validators and setup/drift guards.
+- Data used: synthetic German B2C telecom and English B2B software runtime turns only. No provider key, generated audio, customer/private audio, transcription, or voice cloning was used.
+- Output created: `docs/product/VOICE_035_CONNECTED_SPEECH_PHRASE_FLOW.md`, `research/experiments/cases/voice-035-connected-speech-phrase-flow.json`, `research/experiments/generated/VOICE-035-connected-speech/results.json`, `research/experiments/generated/VOICE-035-connected-speech/report.md`, `scripts/voice_connected_speech.py`, `scripts/run_voice_035_connected_speech.py`, and `scripts/validate_voice_035_connected_speech.py`.
+- What was learned: connected speech should be treated as a separate provider-facing delivery layer, not as a change to the guarded sales answer or a change to speed bounds. VOICE-034 owns speed/break calibration; VOICE-035 owns safe phrase-flow joins for eligible freeform TTS text.
+- Error or correction preserved: the implementation intentionally avoids broad cultural/accent imitation. English and German rules target punctuation and filler/bridge boundaries only, keeping protected campaign, compliance, handoff, hangup, and do-not-call text exact.
+- Why it matters for the thesis: this checkpoint records a concrete example of listening-driven iterative design: after pacing improved, the next naturalness bottleneck became connected-speech realism.
+- Open questions: whether a short live RESP-003 listening check confirms that VOICE-035 improves naturalness without making English or German too rushed, and whether further tuning should happen in provider voice settings rather than more text rewriting.
+
+### 2026-05-05 - RESP-003 VOICE-034 live listening check
+
+- Objective: evaluate whether VOICE-034 pacing calibration improved German and English RESP-003 audio enough to avoid further pacing-bound changes.
+- Action taken: Tarik reran RESP-003 live generation with local improved ElevenLabs voice IDs after removing environment voice-ID overrides, listened to the German and English outputs, and provided qualitative feedback.
+- Data used: synthetic German B2C telecom and English B2B software runtime turns only. The run used live ElevenLabs TTS, local voice IDs from ignored config, no customer/private audio, no transcription, and no voice cloning.
+- Output created: `research/experiments/generated/RESP-003/voice-034-listening-check/de-live-local-config.json`, `research/experiments/generated/RESP-003/voice-034-listening-check/en-live-local-config.json`, and `research/experiments/generated/RESP-003/voice-034-listening-check/human-listening-review.md`.
+- What was learned: German pacing and word gaps sound good, and English pacing and pause timing also sound good. On second listen, German still has some robotic quality too, so the remaining issue is bilingual rather than English-only.
+- Interpretation: the remaining issue is probably not simple latency, pause length, or speaking speed. Tarik described it as a lack of natural connected speech: humans tend to link the end of one word into the start of the next, giving spoken language a flowing rhythm rather than isolated written-word spacing. VOICE-035 should therefore handle English and German phrase flow together.
+- Why it matters for the thesis: this is a useful example of iterative listening evaluation. A successful pacing fix exposed a more specific naturalness limitation: connected-speech realism and phrase flow.
+- Open questions: whether bilingual `VOICE-035` should encode connected-speech hints as provider text normalization, phrase grouping metadata, punctuation shaping, or provider-side prompt/voice-setting guidance.
+
+### 2026-05-05 - VOICE-034 pacing calibration V2
+
+- Objective: tighten runtime voice pacing after listening feedback found the German outputs had too much gap between words and the overall sales-agent pace still needed more movement.
+- Action taken: added a failing VOICE-034 validator first, implemented `scripts/voice_pacing_calibration.py`, wired it into `RESP-002` after provider rendering, added a standalone runner and bilingual/protected case set, and documented the checkpoint.
+- Data used: synthetic English/German runtime cases from `PROD-005` only. No provider key, generated audio, customer/private audio, transcription, or voice cloning was used.
+- Output created: `docs/product/VOICE_034_PACING_CALIBRATION_V2.md`, `research/experiments/cases/voice-034-pacing-calibration-v2.json`, `research/experiments/generated/VOICE-034-pacing-calibration-v2/results.json`, `research/experiments/generated/VOICE-034-pacing-calibration-v2/report.md`, `scripts/voice_pacing_calibration.py`, `scripts/run_voice_034_pacing_calibration.py`, and `scripts/validate_voice_034_pacing_calibration.py`.
+- What was learned: pacing should be calibrated as provider-facing delivery metadata after the response is safe, not by rewriting the sales answer. German needed a tighter gap profile than English, while protected campaign and compliance text should keep exact delivery.
+- Error or correction preserved: the first standalone runner used the older `build_guarded_response_packet` call shape and missed the newer `silence_count` argument. The runner now passes `silence_count` with a default of `0`, keeping VOICE-034 compatible with the current call-control/silence API.
+- Why it matters for the thesis: this records how human listening feedback becomes a reproducible bounded runtime intervention, separating subjective audio-quality iteration from policy-owned sales text.
+- Open questions: whether the next live/listening run confirms the tighter German gaps, and whether pacing bounds should be adjusted before working on voice identity, emotion strength, or filler placement again.
+
+### 2026-05-05 - VOICE-033 private speech sample readiness
+
+- Objective: create a private metadata-only checkpoint that tells us when Tarik's local speech samples are ready for VOICE-030D.
+- Action taken: added a failing VOICE-033 validator first, implemented `scripts/private_sample_readiness.py`, added the private readiness runner, documented thresholds and commands, and updated roadmap/check guards.
+- Data used: synthetic private metadata fixtures only during validation. No real private Tarik audio, WhatsApp recording, customer audio, provider key, transcription, voice clone, or runtime personalization was used.
+- Output created: `docs/product/VOICE_033_PRIVATE_SAMPLE_READINESS.md`, `research/experiments/cases/voice-033-private-sample-readiness.json`, `scripts/private_sample_readiness.py`, `scripts/run_voice_033_private_sample_readiness.py`, and `scripts/validate_voice_033_private_sample_readiness.py`.
+- What was learned: the project needs a readiness gate between collecting private samples and running aggregate review. The useful decision signal is not just raw file count; it is analyzed feature count, conversion backlog, failed queue records, and source/language coverage.
+- Why it matters for the thesis: this creates a reproducible stopping rule for when private speech-learning evidence is mature enough to review, while preserving local-only privacy and avoiding premature personalization.
+- Open questions: when Tarik wants to run the first real VOICE-033 check, and whether the first VOICE-030D review should happen around 10 analyzed samples or wait closer to the stronger 100-sample target.
+
+### 2026-05-05 - VOICE-032 local WhatsApp OGG conversion gate
+
+- Objective: make WhatsApp voice-note imports practical without uploading private audio or broadening the converter before it is needed.
+- Action taken: added a failing VOICE-032 validator first, implemented `scripts/private_audio_conversion.py`, added the OGG-first conversion runner, created a local ignored WhatsApp drop-folder README, documented the command workflow, and wired successful WAV conversions into VOICE-030C.
+- Data used: synthetic fake `.ogg` fixtures and a fake local converter during validation. No real WhatsApp recording, private Tarik recording, customer audio, provider key, transcription, voice clone, or runtime personalization was used.
+- Output created: `docs/product/VOICE_032_LOCAL_AUDIO_CONVERSION.md`, `research/experiments/cases/voice-032-local-audio-conversion.json`, `scripts/private_audio_conversion.py`, `scripts/run_voice_032_local_audio_conversion.py`, and `scripts/validate_voice_032_local_audio_conversion.py`.
+- What was learned: WhatsApp exports voice notes as `.ogg`, so the safest immediate conversion scope is OGG-first rather than broad multimedia support. Missing local tooling should become an explicit status, `converter_missing_needs_local_ffmpeg`, instead of a confusing failure.
+- Error or correction preserved: the first validator version tried to delete a synthetic `.ogg` fixture between test scenarios and hit a Windows access-denied file cleanup issue. The validator now uses fresh private fixture folders per scenario, matching the earlier Windows file-lock lesson from raw audio tests.
+- Why it matters for the thesis: this checkpoint documents a privacy-preserving path for expanding owner speech samples from real-world local voice-note exports while preserving local-only processing and human review before runtime learning.
+- Open questions: whether Tarik will want to mix WhatsApp samples into the first VOICE-030D review, and whether local ffmpeg should be installed or bundled later for smoother private conversion.
+
+### 2026-05-05 - VOICE-031 feature-to-runtime mapping gate
+
+- Objective: create a safe bridge from reviewed private speech features to future runtime voice settings without automatically changing the speaking agent.
+- Action taken: added a failing VOICE-031 validator first, implemented `scripts/voice_feature_runtime_mapping.py`, added a synthetic/public runner, added private-summary read and private-output guards, documented the checkpoint, and recorded the deferred WhatsApp voice-note reminder.
+- Data used: synthetic VOICE-030D-style aggregate feature fixtures only during validation. No real private Tarik audio, WhatsApp voice note, customer audio, provider key, transcript, voice clone, or runtime personalization was used.
+- Output created: `docs/product/VOICE_031_FEATURE_RUNTIME_MAPPING.md`, `research/experiments/cases/voice-031-feature-runtime-mapping.json`, `scripts/voice_feature_runtime_mapping.py`, `scripts/run_voice_031_feature_runtime_mapping.py`, and `scripts/validate_voice_031_feature_runtime_mapping.py`.
+- What was learned: private speech-learning needs a proposal gate between aggregate review and runtime behavior. Speech-burst count, energy variation, and mean speech RMS can be represented as review-only hints, while pause ratio and pause duration remain diagnostic-only because long owner pauses may reflect formulation time.
+- Why it matters for the thesis: this preserves a reproducible privacy and safety boundary before personalization, and it documents how subjective voice-naturalness feedback becomes auditable runtime configuration rather than automatic copying of one speaker.
+- Open questions: when enough owner samples exist, whether reviewed `VOICE-031` proposals should adjust provider speed, expressiveness, filler placement, or campaign voice profiles first.
+
+### 2026-05-05 - VOICE-030D private feature review summary
+
+- Objective: create a private human-review summary for VOICE-030C acoustic features before any runtime voice-setting work.
+- Action taken: added a failing VOICE-030D validator first, implemented `scripts/run_voice_030d_private_feature_review.py`, added a private review case, created private JSON/Markdown output paths, and documented the command workflow.
+- Data used: synthetic private validation feature fixtures only during validation. The runner is ready for Tarik's real private feature set, but real private review output should stay under `data/private/`.
+- Output created: `docs/product/VOICE_030D_PRIVATE_FEATURE_REVIEW.md`, `research/experiments/cases/voice-030d-private-feature-review.json`, `scripts/run_voice_030d_private_feature_review.py`, and `scripts/validate_voice_030d_private_feature_review.py`.
+- What was learned: feature review should summarize runtime candidates separately from diagnostic evidence. Pause-ratio and pause-duration metrics are useful context for understanding owner recordings, but should not become agent pacing targets.
+- Why it matters for the thesis: this checkpoint shows the privacy-preserving bridge from raw owner speech, to acoustic features, to human-reviewed candidate signals without automatically tuning the deployed voice.
+- Open questions: whether speech-burst count, energy variation, and mean speech RMS are sufficient for useful runtime tuning, and how to combine them with future local ASR transcript-pattern summaries.
+
+### 2026-05-05 - VOICE-030C private learning queue
+
+- Objective: make Tarik speech-sample learning more automatic while preserving the local-only private boundary and preventing unreviewed runtime personalization.
+- Action taken: added a failing VOICE-030C validator first, implemented `scripts/private_speech_learning_queue.py`, wired `scripts/run_voice_030b_local_speech_capture.py` to call the queue after each saved recording/import, and documented the checkpoint.
+- Data used: synthetic validation WAV and synthetic fake WebM fixture only. No real private Tarik recording was opened, no customer audio was used, and no provider key, ASR provider, TTS provider, LLM provider, transcript generation, voice cloning, or runtime personalization was used.
+- Output created: `docs/product/VOICE_030C_PRIVATE_LEARNING_QUEUE.md`, `research/experiments/cases/voice-030c-private-learning-queue.json`, `scripts/private_speech_learning_queue.py`, and `scripts/validate_voice_030c_private_learning_queue.py`.
+- What was learned: capture-time automation is useful only if it produces reviewable private queue states. WAV samples can be analyzed immediately; non-WAV samples should be queued for local conversion instead of silently failing or being sent to a provider.
+- Speaker-context boundary: Tarik is a native Turkish speaker with high English proficiency. His speech can influence timing, filler placement, repair style, thinking pauses, sentence rhythm, and clear English delivery patterns, while the system should avoid cloning or overfitting the product voice to one speaker identity.
+- Learning-signal correction: long owner pauses can reflect formulation time during complex instruction-giving, not desirable agent behavior. VOICE-030C now keeps `pause_ratio`, `average_pause_ms`, `longest_pause_ms`, and `silence_seconds` as diagnostic-only features and excludes them from runtime-learning candidates.
+- Why it matters for the thesis: this creates an auditable transition from raw private owner speech samples to abstract delivery features while preserving human review before runtime use.
+- Open questions: how many owner samples are enough to produce stable timing/rhythm guidance, how to combine VOICE-030C acoustic features with future local ASR transcript features, and how strongly owner-style signals should influence campaign-specific voice profiles.
+
+### 2026-05-05 - VOICE-030B local speech capture/import
+
+- Objective: create an intentional local storage path for Tarik speech recordings after metadata-only search did not find reusable Codex/ChatGPT microphone recordings on disk.
+- Action taken: added a failing validator first, implemented `scripts/run_voice_030b_local_speech_capture.py`, added a localhost browser recorder, added existing-file import, wrote a private JSONL manifest, and documented the command workflow.
+- Data used: synthetic validation WAV only. No real private Tarik recording, customer audio, provider key, ASR provider, TTS provider, LLM provider, transcript generation, or voice cloning was used.
+- Output created: `docs/product/VOICE_030B_LOCAL_SPEECH_CAPTURE.md`, `research/experiments/cases/voice-030b-local-speech-capture.json`, `scripts/run_voice_030b_local_speech_capture.py`, and `scripts/validate_voice_030b_local_speech_capture.py`.
+- What was learned: relying on desktop-app voice-input caches is not dependable; a product-grade personal speech-learning path needs explicit local capture/import with a private manifest and no public artifact.
+- Why it matters for the thesis: this preserves an auditable privacy boundary between raw owner speech samples, later local feature extraction/transcription, and eventual reviewed runtime personalization.
+- Open questions: whether browser WebM samples should be locally converted to WAV before VOICE-030A analysis, which local ASR option should be used next, and how reviewed owner-style patterns should be weighted against professional sales-agent delivery.
+- Follow-up correction: after inspecting the recorder, browser capture was changed from WebM/Opus `MediaRecorder` output to local browser-side WAV encoding through Web Audio before upload. New HTTP recorder samples should now be directly usable by VOICE-030A, while already captured WebM files remain private historical inputs for later conversion if needed.
+
+### 2026-05-05 - VOICE-030A raw audio local reader
+
+- Objective: implement the first raw-audio learning step for Tarik speech samples while keeping transcription, provider calls, voice cloning, and runtime personalization out of scope.
+- Action taken: added a failing VOICE-030A validator and synthetic WAV case first, implemented `scripts/raw_audio_speech_features.py`, added `scripts/run_voice_030_raw_audio_reader.py`, generated synthetic WAV fixtures under `.tmp`, extracted pause/rhythm/energy features, and documented the private-audio boundary.
+- Data used: synthetic WAV fixtures only. No private recordings, provider keys, customer audio upload, ASR, TTS, LLM provider, transcript generation, or voice cloning were used.
+- Output created: `docs/product/VOICE_030A_RAW_AUDIO_LOCAL_READER.md`, `research/experiments/cases/voice-030-raw-audio-local-reader.json`, `research/experiments/generated/VOICE-030A-raw-audio-local-reader/results.json`, `research/experiments/generated/VOICE-030A-raw-audio-local-reader/report.md`, `scripts/raw_audio_speech_features.py`, `scripts/run_voice_030_raw_audio_reader.py`, and `scripts/validate_voice_030_raw_audio_reader.py`.
+- What was learned: raw audio can already provide useful delivery signals such as pause ratio, pause count, speech bursts, and energy variation without transcription. VOICE-030A should stay WAV-only until a local decoder/conversion path is reviewed.
+- Error or correction preserved: the first parallel validation/generation run collided on a shared `.tmp` synthetic audio folder on Windows and produced a file-lock error. The runner now uses process-scoped synthetic audio folders to avoid cross-process deletion conflicts.
+- Why it matters for the thesis: this separates acoustic delivery-pattern learning from transcript/semantic learning and provides a privacy-preserving bridge from raw audio to abstract speech features.
+- Open questions: whether Tarik's captured recordings are WAV or need local conversion; which local ASR tool should follow `VOICE-030B`; and how audio features should be combined with VOICE-029 transcript-pattern features after human review.
+
+### 2026-05-05 - VOICE-029 local speech profile learning scaffold
+
+- Objective: start the local-only path for learning abstract delivery patterns from Tarik's speech style without reading raw audio, exporting private transcripts, cloning a voice, or calling providers.
+- Action taken: added a failing validator and synthetic case first, implemented `scripts/personal_speech_profile.py`, added `scripts/run_voice_029_local_speech_profile.py`, added a private workspace initializer, generated a synthetic aggregate profile/report, and documented the privacy boundary.
+- Data used: synthetic English/German speech-style fixture text only. No private recordings, provider keys, customer audio, raw transcript export, ASR provider, TTS provider, LLM provider, or voice cloning were used.
+- Output created: `docs/product/VOICE_029_LOCAL_SPEECH_PROFILE_LEARNING.md`, `research/experiments/cases/voice-029-local-speech-profile-learning.json`, `research/experiments/generated/VOICE-029-local-speech-profile-learning/results.json`, `research/experiments/generated/VOICE-029-local-speech-profile-learning/report.md`, `scripts/personal_speech_profile.py`, `scripts/run_voice_029_local_speech_profile.py`, `scripts/validate_voice_029_local_speech_profile.py`, and `scripts/init_personal_speech_learning_workspace.py`.
+- What was learned: personal speech learning should begin as aggregate pattern extraction, not raw audio training. The profile can count filler markers, repair markers, contractions, pause markers, and sentence rhythm without copying private wording.
+- Why it matters for the thesis: this creates a privacy-preserving methodological boundary between raw speech data, redacted local transcripts, abstract profile features, and later reviewed runtime configuration.
+- Open questions: how to transcribe Tarik's actual recordings locally, how much of the resulting profile should influence runtime voice delivery, and whether owner-style learning improves naturalness without making the agent sound less professional.
+
+### 2026-05-05 - VOICE-028 controlled delivery imperfections
+
+- Objective: implement a bounded English/German layer for professional delivery imperfections so the voice agent does not sound perfectly machine-rendered.
+- Action taken: added a failing VOICE-028 validator and bilingual case set first, implemented `scripts/speech_imperfections.py`, added the offline runner/report, wired the layer into `RESP-002` after interaction prosody and before provider-neutral prosody, and updated setup/drift guards.
+- Data used: synthetic English/German freeform and protected-text cases, prior human listening feedback about robotic perfection, existing protected-segment rules, and existing unsafe-claim/stop-intent suppression logic. No provider key, private call-center audio, Tarik speech sample, customer audio upload, or voice cloning was used.
+- Output created: `docs/product/VOICE_028_CONTROLLED_IMPERFECTIONS.md`, `research/experiments/cases/voice-028-controlled-imperfections.json`, `research/experiments/generated/VOICE-028-controlled-imperfections/results.json`, `research/experiments/generated/VOICE-028-controlled-imperfections/report.md`, `scripts/speech_imperfections.py`, `scripts/run_voice_028_controlled_imperfections.py`, and `scripts/validate_voice_028_controlled_imperfections.py`.
+- What was learned: speech imperfections need to be opt-in, sparse, language-aware, and placed at thought boundaries. They should not appear in protected campaign questions, disclosures, unsafe claim handling, stop-intent responses, anger, or handoff contexts.
+- Why it matters for the thesis: this turns subjective listening feedback about AI-perfect delivery into a reproducible bilingual runtime layer with explicit safety constraints and measurable offline validation.
+- Open questions: whether live audio rendering makes these imperfections feel natural or whether the provider exaggerates them; whether future personal speech-pattern learning can improve placement without copying private speech or creating a voice clone.
+
+### 2026-05-05 - VOICE-027 interaction-prosody live A/B harness
+
+- Objective: create a live-capable listening harness that isolates whether `VOICE-026` interaction prosody improves perceived English/German sales-agent voice quality over the current `VOICE-025` boundary-aware baseline.
+- Action taken: added a failing validator and bilingual case set first, implemented `scripts/run_voice_027_interaction_prosody_live_ab.py`, reused the VOICE-024 provider safety pattern, added dry-run and forced-missing-key validation, and documented the checkpoint.
+- Data used: synthetic English/German sales scripts, existing improved local ElevenLabs voice candidates from ignored config when available, public provider interface behavior already captured in project docs, and existing protected-segment rules. No private call-center audio, customer identifiers, provider keys, or voice cloning were used.
+- Output created: `docs/product/VOICE_027_INTERACTION_PROSODY_LIVE_AB.md`, `research/experiments/cases/voice-027-interaction-prosody-live-ab.json`, `scripts/run_voice_027_interaction_prosody_live_ab.py`, and `scripts/validate_voice_027_interaction_prosody_live_ab.py`.
+- What was learned: the live-comparison shell can isolate a single speech-behavior layer while preserving strict provider boundaries. The dry-run packet verifies that `with_voice_026` adds interaction markers and the baseline does not, without making provider calls. Tarik then listened to limited live English/German outputs and reported that the result sounds much better than earlier voice checkpoints, with pacing now the main remaining issue.
+- Why it matters for the thesis: this prepares a controlled listening experiment for the speech-realism chapter: same voice, same provider, same script, same speech-realism baseline, one isolated interaction-prosody variable.
+- Output created after listening: `research/experiments/generated/VOICE-027-interaction-prosody-live-ab/human-listening-review.md`.
+- Open questions: how much faster the sales-call pace should become before clarity, trust, or German pronunciation begins to degrade.
+
+### 2026-05-04 - VOICE-026 interaction prosody implementation
+
+- Objective: implement the next speech-realism checkpoint by separating listener backchannels, lookup acknowledgements, and bounded sales-pace cues from speaker fillers.
+- Action taken: added a failing VOICE-026 validator and bilingual case set first, implemented `scripts/speech_interaction.py`, added the offline runner/report, wired the layer into `RESP-002` after speech realism and before provider-neutral prosody, and updated setup/drift guards.
+- Data used: public speech-realism references captured in `SPEECH_REALISM_REFERENCES.md`, synthetic English/German sales cases, and existing protected-segment rules. No private call-center audio, customer identifiers, provider keys, or live TTS calls were used.
+- Output created: `research/experiments/generated/VOICE-026-interaction-prosody/results.json`, `research/experiments/generated/VOICE-026-interaction-prosody/report.md`, `docs/product/VOICE_026_INTERACTION_PROSODY.md`, `scripts/speech_interaction.py`, `scripts/run_voice_026_interaction_prosody.py`, and `scripts/validate_voice_026_interaction_prosody.py`.
+- What was learned: natural speech behavior needs typed interaction cues rather than more random fillers. Lookup acknowledgements, neutral backchannels, and pace variation can improve perceived responsiveness, but protected campaign text and unsafe-claim contexts must block agreement-style markers.
+- Error or correction preserved: `RESP-003` validation originally checked spoken English contractions case-sensitively; after VOICE-025 inserted `Well,` before `You're`, the provider-facing text correctly became `you're`. The validator was updated to check contraction presence case-insensitively while keeping forbidden full forms blocked.
+- Why it matters for the thesis: this creates a testable bridge from literature review and listening feedback into the runtime architecture, with bilingual rules and a listening rubric covering naturalness, trust, confidence, warmth, pace, interruption safety, sales usefulness, and protected-text safety.
+- Open questions: the next live ElevenLabs comparison should test whether these cues improve perceived human-likeness without making the agent sound over-emotional or falsely agreeable.
+
+### 2026-05-04 - SPEECH-STYLE-003 final broad speech-realism literature sweep
+
+- Objective: perform one last broader speech-science search before implementing `VOICE-026`, so the next voice checkpoint is informed by speech behavior beyond fillers and German/English discourse markers.
+- Action taken: reviewed additional sources on general prosody, acoustic emotion, vocal first impressions, turn-taking distributions, conversational-system timing, entrainment/accommodation, spoken corpora, connected-speech reductions, text normalization, German spontaneous-speech reductions, acoustic charisma, and speech-synthesis evaluation.
+- Data used: public scholarly/provider/corpus sources only; no private call-center audio, customer identifiers, provider keys, or restricted corpus examples.
+- Output created: expanded `docs/thesis/SPEECH_REALISM_REFERENCES.md` and `docs/thesis/THESIS_REFERENCE_REGISTRY.md`.
+- What was learned: the planned `VOICE-026` direction still holds, but it should evaluate more than "does it sound natural?" It should separate naturalness, trust, confidence, warmth, pace, interruption safety, sales usefulness, and protected-text safety.
+- Why it matters for the thesis: this broadens the voice work from a filler-word experiment into a speech-behavior design layer grounded in prosody, turn-taking, entrainment, connected speech, and TTS evaluation literature.
+- Open questions: whether adaptive entrainment to customer pace/energy should become a later `VOICE-03x` checkpoint after latency, interruption, and protected-text behavior are stable.
+
+### 2026-05-04 - SPEECH-STYLE-002 deep English/German speech-pattern review
+
+- Objective: run a broader web/literature checkpoint before the next voice implementation so the product does not keep fixing robotic speech one symptom at a time.
+- Action taken: searched and triaged sources on English disfluencies, English discourse markers, German fillers/discourse markers, German backchannels, turn-taking latency, speech-synthesis filled-pause placement, provider prosody controls, breath/smiled speech, and sales/call-center vocal cues.
+- Data used: public scholarly/provider sources only; no private call-center audio, raw customer data, provider keys, or restricted transcripts.
+- Output created: expanded `docs/thesis/SPEECH_REALISM_REFERENCES.md`, updated `docs/thesis/THESIS_REFERENCE_REGISTRY.md`, and added a deep-dive follow-up section to `docs/product/VOICE_025_FILLER_PLACEMENT.md`.
+- What was learned: the remaining realism gap is not just filler placement. Speaker fillers, discourse markers, listener backchannels, turn-taking latency, speech rate, pitch/intonation, and provider prosody controls must be modeled as separate but coordinated layers.
+- Why it matters for the thesis: this creates a stronger literature-backed transition from listening feedback to a planned `VOICE-026` interaction-prosody/backchannel checkpoint, while preserving the non-stereotype bilingual design principle.
+- Open questions: whether `VOICE-026` should first be offline-only or immediately include a live ElevenLabs comparison after the new interaction markers and pace/prosody controls pass validation.
+
+### 2026-05-04 - VOICE-025 boundary-aware filler placement implementation
+
+- Objective: fix unnatural English/German filler placement while preserving the shared vertical-agnostic sales-agent runtime and protected campaign text boundaries.
+- Action taken: added a failing VOICE-025 validator first, changed `scripts/speech_realism.py` from mid-clause insertion to boundary-aware insertion, added German-specific `also`, `ähm`, `äh`, and `hm` placement rules, added a VOICE-025 runner/case set/report, updated setup checks, and regenerated the VOICE-023/VOICE-025 offline reports in organized generated folders.
+- Data used: VOICE-024 listening feedback, VOICE-025 filler-placement research, German filler-particle and German turn-beginning sources, and synthetic English/German sales-response cases.
+- Output created: `research/experiments/generated/VOICE-025-filler-placement/results.json`, `research/experiments/generated/VOICE-025-filler-placement/report.md`, `docs/product/VOICE_025_FILLER_PLACEMENT.md`, `scripts/run_voice_025_filler_placement.py`, and `scripts/validate_voice_025_filler_placement.py`.
+- What was learned: the old rule could split fluent clause frames such as `the important thing is that` and `Wichtig ist, dass`; the new rule moves fillers before the planning sentence or to a sentence boundary. German needed its own profile rather than translated English markers, especially for `also`, `äh`, and `ähm`.
+- Why it matters for the thesis: this is a clear example of using human listening feedback plus linguistic literature to refine an AI voice behavior layer under guardrails.
+- Open questions: the next live audio test should compare whether German `äh`/`ähm` are rendered naturally by ElevenLabs or whether some German campaigns should prefer `also`/pause-only cues.
+
+### 2026-05-04 - VOICE-025 filler-placement research
+
+- Objective: ground the next speech-realism refinement in evidence about where fillers belong in spoken interaction, rather than adding filler words randomly.
+- Action taken: reviewed the current `speech_realism.py` insertion logic, checked the VOICE-024 case that produced unnatural English placement, inspected the Obscura safe-browser wrapper constraints, and searched scholarly/provider sources on filled pauses, discourse boundaries, turn beginnings, confidence perception, German filler particles, and ElevenLabs pacing controls.
+- Data used: VOICE-024 human listening feedback, `scripts/speech_realism.py`, `voice-024-speech-realism-live-ab.json`, Obscura safe-wrapper docs, and public web sources captured in `SPEECH_REALISM_REFERENCES.md`.
+- Output created: updated `docs/thesis/SPEECH_REALISM_REFERENCES.md` and `docs/thesis/THESIS_REFERENCE_REGISTRY.md` with filler-placement, confidence-perception, German turn-beginning, and provider-control references.
+- What was learned: the current pattern-based insertion can create unnatural mid-clause examples such as placing `um` after "The important thing is" before `that`; the next design should prefer pre-answer, sentence-boundary, discourse-transition, repair/reformulation, or pause-only cues. Obscura remains a development-only research tool and the approved wrapper could not run a live fetch in this session because the verified Docker image was unavailable.
+- Why it matters for the thesis: this creates a literature-backed bridge from subjective listening feedback to a testable VOICE-025 rule change, while preserving the bilingual, non-stereotype framing.
+- Open questions: whether VOICE-025 should implement all placement modes at once or first compare a small A/B/C set: current VOICE-023, boundary-aware fillers, and pause-only thinking cues.
+
+### 2026-05-04 - VOICE-024 speech-realism live A/B harness
+
+- Objective: isolate whether VOICE-023 speech realism improves perceived English/German sales-agent audio when the voice, provider, script, and timeout stay constant.
+- Action taken: added a VOICE-024 case set, dry-run/live-capable ElevenLabs A/B runner, validator, product documentation, setup/drift guard entries, organized run-folder defaults, and generated JSON/report artifacts.
+- Data used: synthetic English/German sales responses, improved ElevenLabs local voice IDs from ignored config, VOICE-022 spoken text normalization, VOICE-023 speech realism, and VOICE-015/016 prosody/provider rendering.
+- Output created: `research/experiments/generated/VOICE-024-speech-realism-live-ab/results.json`, `research/experiments/generated/VOICE-024-speech-realism-live-ab/report.md`, and ignored MP3 files under `research/experiments/generated/VOICE-024-speech-realism-live-ab/audio/`.
+- What was learned: this Codex terminal did not have `ELEVENLABS_API_KEY`, so live MP3 generation happened in Tarik's key-bearing terminal; the resulting live packet and 8 MP3 files were organized under the VOICE-024 run folder.
+- Human listening feedback: German `with_voice_023` outputs sounded clearly better to Tarik, with the caveat that his German fluency may affect confidence. English outputs are close to the intended direction and the concept feels strong, but filler words sometimes appear in the wrong place.
+- Error or correction preserved: the first raw voice-ID artifact scanner was too broad and incorrectly flagged metadata such as language labels; it was tightened to scan only actual voice-ID fields.
+- Error or correction preserved: validator runs now use isolated `.tmp` output paths so they do not overwrite live listening reports or remove previously generated MP3 files.
+- Why it matters for the thesis: VOICE-024 gives the thesis an ablation-style listening experiment, separating provider/custom-voice quality from the local speech-realism layer.
+- Open questions: whether `VOICE-025` should refine filler placement by moving English fillers to pre-answer or sentence-boundary positions, reducing mid-clause fillers, and comparing filler placement against pause-only thinking cues.
+
 ### 2026-05-04 - VOICE-023 speech realism layer
 
 - Objective: make eligible English/German freeform TTS text sound less robotic by adding bounded thinking-filler bundles without changing protected campaign or compliance text.
