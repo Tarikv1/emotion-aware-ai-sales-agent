@@ -50,13 +50,15 @@ The 2026-05-06 run against the refreshed RAG-006 packet produced:
 - `5` response-wording items
 - `4` voice-delivery items
 - `0` auto-promoted chunks
+- `9` selected from the RAG-006 quote queue after explicit manual quote clearance
+- `9` manual quote clearances recorded as project-owned paraphrases with no source excerpt text copied
 - source excerpt text stored: `false`
 - runtime retrieval disabled
 - chunk import disabled
 - provider and NotebookLM calls made: `false`
 - private customer data used: `false`
 
-The slice is vertical-agnostic and campaign-guardrail-compatible. It prepares reviewed knowledge for a later retrieval-policy checkpoint but does not make the runtime sales agent use RAG.
+The slice is vertical-agnostic and campaign-guardrail-compatible. It prepares reviewed knowledge for a later retrieval-policy checkpoint but does not make the runtime sales agent use RAG. RAG-007 does not treat RAG-006 quote-queue membership as runtime readiness; selected quote-queue chunks must be manually cleared as paraphrased, source-tracked review artifacts first.
 
 ## Product Boundary
 

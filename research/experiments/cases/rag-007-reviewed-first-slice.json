@@ -9,6 +9,13 @@
   "chunk_import_enabled": false,
   "auto_promotion_enabled": false,
   "metadata_only": true,
+  "manual_review_gate": {
+    "selected_from_rag006_first_slice_candidates_only": false,
+    "quote_queue_candidates_allowed_after_manual_clearance": true,
+    "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+    "source_excerpt_text_copied": false,
+    "runtime_use_allowed": false
+  },
   "selected_lanes": [
     "response_wording",
     "voice_delivery"
@@ -26,6 +33,7 @@
   ],
   "notes": [
     "This checkpoint resolves quote-dependent candidates by storing project-owned paraphrases.",
+    "Selected RAG-006 quote queue candidates require explicit manual quote clearance before they can enter this reviewed artifact.",
     "It rejects pressure tactics and sensitive demographic personalization from the first slice.",
     "It does not import chunks into runtime memory or enable retrieval.",
     "A guarded retrieval policy is required before runtime use."

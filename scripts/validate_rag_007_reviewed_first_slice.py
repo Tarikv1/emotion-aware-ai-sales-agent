@@ -39,6 +39,7 @@ PRESSURE_CHUNK_IDS = {
     "rag005-chunk-077",
     "rag005-chunk-087",
 }
+EXPECTED_QUOTE_CLEARANCE_RESOLUTION = "project_owned_paraphrase_no_source_excerpt_text"
 
 
 def assert_condition(condition: bool, message: Any) -> None:
@@ -282,6 +283,8 @@ def validate_reviewed_payload(payload: dict[str, Any], report: str) -> None:
     assert_condition(summary["external_provider_calls_made"] is False, summary)
     assert_condition(summary["notebooklm_api_used"] is False, summary)
     assert_condition(summary["private_customer_data_used"] is False, summary)
+    assert_condition(summary["selected_from_quote_queue_count"] == len(EXPECTED_CHUNK_IDS), summary)
+    assert_condition(summary["manual_quote_clearance_count"] == len(EXPECTED_CHUNK_IDS), summary)
     assert_condition(boundaries["runtime_retrieval_enabled"] is False, boundaries)
     assert_condition(boundaries["retrieval_eligible_now"] is False, boundaries)
     assert_condition(boundaries["chunk_import_enabled"] is False, boundaries)
@@ -309,6 +312,17 @@ def validate_reviewed_payload(payload: dict[str, Any], report: str) -> None:
         assert_condition(item.get("runtime_eligible_now") is False, item)
         assert_condition(item.get("retrieval_eligible_now") is False, item)
         assert_condition(item.get("review_verdict") == "manual_first_slice_paraphrased", item)
+        assert_condition(item.get("quote_dependency_resolved") is True, item)
+        assert_condition("quote_review_queue" in item.get("rag006_locations", []), item)
+        clearance = item.get("manual_review_clearance")
+        assert_condition(isinstance(clearance, dict), item)
+        assert_condition(clearance.get("quote_clearance_required") is True, clearance)
+        assert_condition(
+            clearance.get("quote_clearance_resolution") == EXPECTED_QUOTE_CLEARANCE_RESOLUTION,
+            clearance,
+        )
+        assert_condition(clearance.get("source_excerpt_text_copied") is False, clearance)
+        assert_condition(clearance.get("runtime_use_allowed") is False, clearance)
 
     chunk_098 = next(item for item in items if item["source_chunk_ids"][0] == "rag005-chunk-098")
     chunk_098_text = json.dumps(chunk_098).lower()

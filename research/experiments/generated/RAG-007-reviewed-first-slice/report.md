@@ -9,6 +9,9 @@ RAG-007 creates a manually reviewed, paraphrased first knowledge slice. Runtime 
 - Response wording items: `5`
 - Voice delivery items: `4`
 - Auto-promoted chunks: `0`
+- Selected from RAG-006 first-slice queue: `4`
+- Selected from RAG-006 quote queue after manual clearance: `9`
+- Manual quote clearances: `9`
 - Runtime retrieval enabled: `False`
 - Retrieval eligible now: `False`
 - Chunk import enabled: `False`
@@ -36,6 +39,7 @@ RAG-007 creates a manually reviewed, paraphrased first knowledge slice. Runtime 
 ## Review Rules
 
 - All items are project-owned paraphrases.
+- Quote-queue items require manual clearance and keep source excerpt text out of the artifact.
 - Quote-dependent source text is not copied forward.
 - Campaign guardrails, customer refusal, compliance text, and human escalation override every item.
 - Tone mismatch is treated as uncertainty that can justify a gentle clarification, not as a certain hidden state.

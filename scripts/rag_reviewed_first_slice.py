@@ -7,6 +7,7 @@ from typing import Any
 
 
 RAG_REVIEWED_FIRST_SLICE_ID = "RAG-007-reviewed-first-slice"
+QUOTE_CLEARANCE_RESOLUTION = "project_owned_paraphrase_no_source_excerpt_text"
 
 SELECTED_KNOWLEDGE_RULES: list[dict[str, Any]] = [
     {
@@ -93,6 +94,26 @@ SELECTED_KNOWLEDGE_RULES: list[dict[str, Any]] = [
 ]
 
 SELECTED_CHUNK_IDS = tuple(rule["source_chunk_ids"][0] for rule in SELECTED_KNOWLEDGE_RULES)
+
+
+def quote_clearance_record() -> dict[str, str]:
+    return {
+        "quote_clearance_resolution": QUOTE_CLEARANCE_RESOLUTION,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text.",
+    }
+
+
+MANUAL_QUOTE_CLEARANCE_BY_CHUNK = {
+    "rag005-chunk-017": quote_clearance_record(),
+    "rag005-chunk-020": quote_clearance_record(),
+    "rag005-chunk-022": quote_clearance_record(),
+    "rag005-chunk-024": quote_clearance_record(),
+    "rag005-chunk-025": quote_clearance_record(),
+    "rag005-chunk-091": quote_clearance_record(),
+    "rag005-chunk-098": quote_clearance_record(),
+    "rag005-chunk-099": quote_clearance_record(),
+    "rag005-chunk-101": quote_clearance_record(),
+}
 PRESSURE_TACTIC_CHUNK_IDS = {
     "rag005-chunk-071",
     "rag005-chunk-075",
@@ -226,6 +247,10 @@ def build_knowledge_item(
             f"Selected chunk still needs review before RAG-007: {chunk_id}; "
             f"blocked_locations={sorted(blocked_locations)}"
         )
+    quote_clearance_required = "quote_review_queue" in locations
+    quote_clearance = MANUAL_QUOTE_CLEARANCE_BY_CHUNK.get(chunk_id)
+    if quote_clearance_required and not quote_clearance:
+        raise ValueError(f"Selected quote-queue chunk has no manual RAG-007 clearance: {chunk_id}")
 
     chunk = rag005_chunks[chunk_id]
     source_ids = []
@@ -254,6 +279,23 @@ def build_knowledge_item(
         "topic_ids": list(chunk.get("topic_ids", [])),
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": True,
+        "manual_review_clearance": {
+            "selected_from_first_slice_candidates": "first_slice_candidates" in locations,
+            "selected_from_quote_queue": quote_clearance_required,
+            "quote_clearance_required": quote_clearance_required,
+            "quote_clearance_resolution": (
+                quote_clearance["quote_clearance_resolution"]
+                if quote_clearance_required
+                else "not_required"
+            ),
+            "source_excerpt_text_copied": False,
+            "runtime_use_allowed": False,
+            "clearance_note": (
+                quote_clearance["clearance_note"]
+                if quote_clearance_required
+                else "No quote clearance was needed for this selected chunk."
+            ),
+        },
         "project_rule": rule["project_rule"],
         "safe_application": rule["safe_application"],
         "do_not_use_when": rule["do_not_use_when"],
@@ -286,6 +328,18 @@ def build_reviewed_first_slice(
         for rule in SELECTED_KNOWLEDGE_RULES
     ]
     lane_counts = Counter(item["lane"] for item in knowledge_items)
+    selected_from_first_slice_count = sum(
+        1 for item in knowledge_items if "first_slice_candidates" in item["rag006_locations"]
+    )
+    selected_from_quote_queue_count = sum(
+        1 for item in knowledge_items if "quote_review_queue" in item["rag006_locations"]
+    )
+    manual_quote_clearance_count = sum(
+        1
+        for item in knowledge_items
+        if item["manual_review_clearance"]["quote_clearance_required"]
+        and item["manual_review_clearance"]["quote_clearance_resolution"] == QUOTE_CLEARANCE_RESOLUTION
+    )
 
     summary = {
         "selected_chunk_count": len(SELECTED_CHUNK_IDS),
@@ -295,6 +349,9 @@ def build_reviewed_first_slice(
             "voice_delivery": lane_counts["voice_delivery"],
         },
         "auto_promoted_chunk_count": 0,
+        "selected_from_first_slice_candidates_count": selected_from_first_slice_count,
+        "selected_from_quote_queue_count": selected_from_quote_queue_count,
+        "manual_quote_clearance_count": manual_quote_clearance_count,
         "runtime_retrieval_enabled": False,
         "retrieval_eligible_now": False,
         "chunk_import_enabled": False,
@@ -346,6 +403,9 @@ def render_reviewed_first_slice_report(payload: dict[str, Any]) -> str:
         f"- Response wording items: `{summary['lane_counts']['response_wording']}`",
         f"- Voice delivery items: `{summary['lane_counts']['voice_delivery']}`",
         f"- Auto-promoted chunks: `{summary['auto_promoted_chunk_count']}`",
+        f"- Selected from RAG-006 first-slice queue: `{summary['selected_from_first_slice_candidates_count']}`",
+        f"- Selected from RAG-006 quote queue after manual clearance: `{summary['selected_from_quote_queue_count']}`",
+        f"- Manual quote clearances: `{summary['manual_quote_clearance_count']}`",
         f"- Runtime retrieval enabled: `{summary['runtime_retrieval_enabled']}`",
         f"- Retrieval eligible now: `{summary['retrieval_eligible_now']}`",
         f"- Chunk import enabled: `{summary['chunk_import_enabled']}`",
@@ -375,6 +435,7 @@ def render_reviewed_first_slice_report(payload: dict[str, Any]) -> str:
             "## Review Rules",
             "",
             "- All items are project-owned paraphrases.",
+            "- Quote-queue items require manual clearance and keep source excerpt text out of the artifact.",
             "- Quote-dependent source text is not copied forward.",
             "- Campaign guardrails, customer refusal, compliance text, and human escalation override every item.",
             "- Tone mismatch is treated as uncertainty that can justify a gentle clarification, not as a certain hidden state.",
