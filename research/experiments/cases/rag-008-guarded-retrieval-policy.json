@@ -1,0 +1,74 @@
+{
+  "retrieval_policy_id": "RAG-008-guarded-retrieval-policy",
+  "title": "Guarded retrieval policy dry-run cases",
+  "description": "Synthetic cases for checking whether the reviewed RAG-007 slice can produce safe candidate packets while runtime retrieval stays disabled.",
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "max_results": 3,
+  "query_cases": [
+    {
+      "case_id": "ordinary_objection_yes_and",
+      "query": "The customer is worried about price and timing. Acknowledge the concern and continue without pressure.",
+      "lane_filter": "response_wording",
+      "context_flags": ["ordinary_objection"],
+      "expected_behavior": "retrieve",
+      "expected_knowledge_ids": ["rag007-response-yes-and-objection-framing"]
+    },
+    {
+      "case_id": "broad_question_structure",
+      "query": "The customer asks for a broad explanation. Keep it concise with three points, two options, or a point reason example.",
+      "lane_filter": "response_wording",
+      "context_flags": ["broad_question"],
+      "expected_behavior": "retrieve",
+      "expected_knowledge_ids": [
+        "rag007-response-3-2-1-structure",
+        "rag007-response-prep-structure"
+      ]
+    },
+    {
+      "case_id": "tone_uncertainty_clarification",
+      "query": "The customer says yes but sounds hesitant and uncertain. Use a gentle clarification.",
+      "lane_filter": "voice_delivery",
+      "context_flags": ["tone_uncertainty"],
+      "expected_behavior": "retrieve",
+      "expected_knowledge_ids": ["rag007-voice-tone-mismatch-uncertainty"]
+    },
+    {
+      "case_id": "customer_refusal_blocks",
+      "query": "The customer says no and asks the agent to stop contacting them.",
+      "lane_filter": "any",
+      "context_flags": ["customer_refusal", "do_not_call"],
+      "expected_behavior": "block"
+    },
+    {
+      "case_id": "protected_script_blocks",
+      "query": "The next sentence is a required disclosure and protected campaign script.",
+      "lane_filter": "any",
+      "context_flags": ["protected_script", "required_disclosure"],
+      "expected_behavior": "block"
+    },
+    {
+      "case_id": "human_escalation_blocks",
+      "query": "The customer asks for a human manager.",
+      "lane_filter": "any",
+      "context_flags": ["human_escalation"],
+      "expected_behavior": "block"
+    },
+    {
+      "case_id": "pressure_sensitive_blocks",
+      "query": "The agent wants urgency language to push the customer past hesitation.",
+      "lane_filter": "any",
+      "context_flags": ["pressure_sensitive"],
+      "expected_behavior": "block"
+    },
+    {
+      "case_id": "private_data_request_blocks",
+      "query": "Retrieve guidance from restricted customer recordings.",
+      "lane_filter": "any",
+      "context_flags": ["private_data_requested"],
+      "expected_behavior": "block"
+    }
+  ]
+}
