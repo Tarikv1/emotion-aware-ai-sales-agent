@@ -294,6 +294,24 @@ Validate RAG-007 reviewed paraphrases, selected chunk IDs, pressure-tactic exclu
 python scripts\validate_rag_007_reviewed_first_slice.py
 ```
 
+Run RAG-008 guarded retrieval policy dry-run after RAG-007 creates the reviewed first slice:
+
+```powershell
+python scripts\run_rag_008_guarded_retrieval_policy.py
+```
+
+Default RAG-008 output folder:
+
+```text
+research\experiments\generated\RAG-008-guarded-retrieval-policy\
+```
+
+Validate RAG-008 deterministic candidate packets, hard-block contexts, citation traces, advisory-only voice/prosody guidance, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_008_guarded_retrieval_policy.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

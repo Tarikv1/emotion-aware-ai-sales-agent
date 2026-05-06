@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-06 - RAG-008 guarded retrieval policy dry-run
+
+- Objective: test whether the manually reviewed RAG-007 slice can produce safe retrieval candidate packets without enabling runtime retrieval.
+- Action taken: added a failing RAG-008 validator first, implemented `scripts/rag_guarded_retrieval_policy.py`, added `scripts/run_rag_008_guarded_retrieval_policy.py`, added synthetic dry-run cases, generated JSON/Markdown artifacts, documented the checkpoint, and added it to setup gates.
+- Data used: the RAG-007 reviewed first-slice artifact and synthetic RAG-008 cases under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, raw source text import, chunk import, or runtime retrieval was used.
+- Output created: `docs/product/RAG_008_GUARDED_RETRIEVAL_POLICY.md`, `research/experiments/cases/rag-008-guarded-retrieval-policy.json`, `research/experiments/generated/RAG-008-guarded-retrieval-policy/result.json`, `research/experiments/generated/RAG-008-guarded-retrieval-policy/report.md`, `scripts/rag_guarded_retrieval_policy.py`, `scripts/run_rag_008_guarded_retrieval_policy.py`, and `scripts/validate_rag_008_guarded_retrieval_policy.py`.
+- What was learned: the first reviewed slice can support deterministic candidate packets for ordinary objections, broad-answer structure, and tone-uncertainty clarification, but hard context flags must block retrieval before style guidance is considered. Voice/prosody rules belong in the packet only as advisory delivery guidance; tone remains a weak signal and cannot become emotion certainty.
+- Why it matters for the thesis: RAG-008 records a concrete middle gate between reviewed knowledge and runtime use. It shows that a persuasive sales RAG layer needs retrieval blocking, citation traces, advisory-only voice guidance, and no-runtime defaults before it can be evaluated as part of an autonomous agent.
+- Open questions: what `RAG-009` runtime integration gate should require before the sales agent can consult reviewed retrieval, how retrieved packet citations should appear in runtime traces, and whether product/campaign guardrails should always run before and after retrieval.
+
 ### 2026-05-06 - RAG-007 reviewed first slice
 
 - Objective: move from RAG-006 review queues to one manually reviewed, source-tracked first knowledge slice without enabling runtime retrieval.

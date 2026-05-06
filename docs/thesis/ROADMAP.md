@@ -33,7 +33,7 @@ Active phase: source-tracked RAG foundation, voice/runtime quality, and thesis e
 
 Current checkpoint:
 
-- [ ] Current: design the guarded RAG retrieval policy that can query only reviewed knowledge slices, keep campaign guardrails authoritative, and keep runtime retrieval disabled until validation proves filtering, citation, and refusal behavior.
+- [ ] Current: design `RAG-009` runtime integration gates for reviewed retrieval, including campaign guardrail order, trace logging, no-match fallback, human review, and the condition that runtime retrieval stays disabled until this gate passes.
 
 Next checkpoints:
 
@@ -49,12 +49,13 @@ Next checkpoints:
 - [ ] Next: implement provider pacing tuning using VOICE-027/VOICE-028 feedback as the baseline and changing pacing only before touching markers, emotion, or voice identity again.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
-- [ ] Next: after guarded retrieval-policy design, test a dry-run retrieval packet against only `RAG-007` reviewed knowledge while keeping runtime retrieval disabled until filtering, citation, and campaign-guardrail behavior pass validation.
+- [ ] Next: after `RAG-009` design, decide whether to wire reviewed retrieval into a runtime-off integration harness or keep RAG as review-only while strengthening universal objection handling.
 - [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
 - [ ] Next: continue dataset-grounded thesis expansion once the current voice/runtime checkpoint is stable.
 
 Recently completed checkpoints:
 
+- [x] `RAG-008` guarded retrieval policy dry-run, which queried only the `RAG-007` reviewed first slice with `8` synthetic cases, produced candidate packets for `3` retrieved cases, blocked `5` hard-guard contexts, retrieved `7` packets across `6` unique knowledge items, kept Vinh-informed voice/prosody guidance advisory only, stored no source excerpt text, made no provider or NotebookLM calls, used no private customer data, auto-promoted `0` chunks, and kept runtime retrieval plus chunk import disabled.
 - [x] `RAG-007` reviewed first slice, which promoted `9` manually reviewed, project-owned paraphrased knowledge items from RAG-006/RAG-005 into a review artifact only: `5` response-wording items and `4` voice-delivery items. The selected chunks were RAG-006 quote-queue candidates, so RAG-007 records `9` manual quote clearances before any retrieval-policy work. It excluded pressure tactics and sensitive demographic personalization, rewrote tone-mismatch guidance as uncertainty plus clarification rather than emotion certainty, stored no source excerpt text, made no provider or NotebookLM calls, used no private customer data, and kept runtime retrieval plus chunk import disabled.
 - [x] Vinh Giang communication/voice report import and RAG refresh, which added a new NotebookLM report covering `40` Vinh Giang YouTube sources, regenerated RAG-003 through RAG-006, increased the report set to `11`, increased source candidates to `95`, increased chunk candidates to `121`, mapped chunks to `58`, and kept runtime retrieval plus chunk import disabled.
 - [x] `RAG-006` chunk review packet, which grouped the refreshed `121` RAG-005 candidates into `46` source-title review groups covering `63` source-mapping chunks, `8` topic-mapping rows, `80` quote-review rows, and `20` first-slice review candidates. It tightened source suggestions to higher-confidence review hints only, auto-promoted `0` chunks, stored no source excerpt text, made no provider/NotebookLM calls, and kept runtime retrieval plus chunk import disabled.
