@@ -1,0 +1,384 @@
+{
+  "retrieval_policy_id": "RAG-008-guarded-retrieval-policy",
+  "inputs": {
+    "rag007_result_path": "research/experiments/generated/RAG-007-reviewed-first-slice/result.json",
+    "case_path": "research/experiments/cases/rag-008-guarded-retrieval-policy.json",
+    "rag007_reviewed_slice_id": "RAG-007-reviewed-first-slice"
+  },
+  "summary": {
+    "query_case_count": 8,
+    "retrieval_case_count": 3,
+    "blocked_case_count": 5,
+    "retrieved_item_count": 7,
+    "unique_retrieved_knowledge_count": 6,
+    "runtime_retrieval_enabled": false,
+    "retrieval_used_in_runtime": false,
+    "chunk_import_enabled": false,
+    "auto_promoted_chunk_count": 0,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false,
+    "source_excerpt_text_stored": false,
+    "only_reviewed_rag007_used": true
+  },
+  "policy": {
+    "max_results": 3,
+    "matching": "deterministic_keyword_overlap",
+    "hard_block_flags": {
+      "customer_refusal": "customer_refusal_overrides_retrieval",
+      "do_not_call": "do_not_call_overrides_retrieval",
+      "protected_script": "protected_script_text_must_not_change",
+      "required_disclosure": "required_disclosure_text_must_not_change",
+      "human_escalation": "human_escalation_overrides_retrieval",
+      "pressure_sensitive": "pressure_sensitive_context_blocks_style_retrieval",
+      "private_data_requested": "private_data_request_blocks_retrieval"
+    },
+    "voice_delivery_scope": "advisory_only",
+    "runtime_use_allowed": false
+  },
+  "retrieved_knowledge_ids": [
+    "rag007-response-3-2-1-structure",
+    "rag007-response-declarative-clarity",
+    "rag007-response-empathy-echo",
+    "rag007-response-prep-structure",
+    "rag007-response-yes-and-objection-framing",
+    "rag007-voice-tone-mismatch-uncertainty"
+  ],
+  "case_results": [
+    {
+      "case_id": "ordinary_objection_yes_and",
+      "lane_filter": "response_wording",
+      "context_flags": [
+        "ordinary_objection"
+      ],
+      "retrieval_decision": "candidate_packet_created",
+      "block_reason": "",
+      "retrieved_items": [
+        {
+          "knowledge_id": "rag007-response-yes-and-objection-framing",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-017"
+          ],
+          "source_ids": [
+            "rag004-source-086"
+          ],
+          "project_rule": "Acknowledge the customer's concern before moving to a useful next step; do not use agreement language to blur factual or compliance boundaries.",
+          "guardrail_notes": "Campaign facts, compliance language, refusal handling, human escalation, and do-not-call policy override this wording rule.",
+          "match_reasons": [
+            "keyword_overlap:acknowledge",
+            "keyword_overlap:concern",
+            "keyword_overlap:customer",
+            "keyword_overlap:price",
+            "keyword_overlap:timing",
+            "keyword_overlap:without"
+          ],
+          "match_score": 6,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-086",
+              "source_chunk_ids": [
+                "rag005-chunk-017"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag007-response-empathy-echo",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-022"
+          ],
+          "source_ids": [
+            "rag004-source-002"
+          ],
+          "project_rule": "Reflect a customer's key concern or emotional phrase sparingly before responding, so the reply shows listening without mechanical repetition.",
+          "guardrail_notes": "The echo is not an emotion diagnosis and must not override explicit customer intent.",
+          "match_reasons": [
+            "keyword_overlap:concern",
+            "keyword_overlap:customer",
+            "keyword_overlap:without"
+          ],
+          "match_score": 3,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-002",
+              "source_chunk_ids": [
+                "rag005-chunk-022"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag007-response-prep-structure",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-024"
+          ],
+          "source_ids": [
+            "rag004-source-013"
+          ],
+          "project_rule": "For a persuasive explanation, state the point, give the reason, add one concrete example, and return to the point.",
+          "guardrail_notes": "Examples must be campaign-approved and truthful; the structure cannot invent claims or guarantees.",
+          "match_reasons": [
+            "keyword_overlap:continue",
+            "keyword_overlap:customer"
+          ],
+          "match_score": 2,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-013",
+              "source_chunk_ids": [
+                "rag005-chunk-024"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        }
+      ]
+    },
+    {
+      "case_id": "broad_question_structure",
+      "lane_filter": "response_wording",
+      "context_flags": [
+        "broad_question"
+      ],
+      "retrieval_decision": "candidate_packet_created",
+      "block_reason": "",
+      "retrieved_items": [
+        {
+          "knowledge_id": "rag007-response-3-2-1-structure",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-025"
+          ],
+          "source_ids": [
+            "rag004-source-032"
+          ],
+          "project_rule": "When an answer could sprawl, constrain it into a small numbered structure such as three points, two options, or one key takeaway.",
+          "guardrail_notes": "Numbered structure cannot remove mandatory disclosures, uncertainty statements, or escalation language.",
+          "match_reasons": [
+            "keyword_overlap:asks",
+            "keyword_overlap:broad",
+            "keyword_overlap:concise",
+            "keyword_overlap:customer",
+            "keyword_overlap:options",
+            "keyword_overlap:points",
+            "keyword_overlap:three",
+            "keyword_overlap:two"
+          ],
+          "match_score": 8,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-032",
+              "source_chunk_ids": [
+                "rag005-chunk-025"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag007-response-prep-structure",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-024"
+          ],
+          "source_ids": [
+            "rag004-source-013"
+          ],
+          "project_rule": "For a persuasive explanation, state the point, give the reason, add one concrete example, and return to the point.",
+          "guardrail_notes": "Examples must be campaign-approved and truthful; the structure cannot invent claims or guarantees.",
+          "match_reasons": [
+            "keyword_overlap:customer",
+            "keyword_overlap:example",
+            "keyword_overlap:explanation",
+            "keyword_overlap:point",
+            "keyword_overlap:reason"
+          ],
+          "match_score": 5,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-013",
+              "source_chunk_ids": [
+                "rag005-chunk-024"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag007-response-declarative-clarity",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-020"
+          ],
+          "source_ids": [
+            "rag004-source-016"
+          ],
+          "project_rule": "Use short declarative statements when clarity matters, especially after an objection or broad question.",
+          "guardrail_notes": "This rule shapes freeform wording only and must not shorten required disclosures or campaign scripts.",
+          "match_reasons": [
+            "keyword_overlap:broad",
+            "keyword_overlap:concise",
+            "keyword_overlap:keep"
+          ],
+          "match_score": 3,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-016",
+              "source_chunk_ids": [
+                "rag005-chunk-020"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        }
+      ]
+    },
+    {
+      "case_id": "tone_uncertainty_clarification",
+      "lane_filter": "voice_delivery",
+      "context_flags": [
+        "tone_uncertainty"
+      ],
+      "retrieval_decision": "candidate_packet_created",
+      "block_reason": "",
+      "retrieved_items": [
+        {
+          "knowledge_id": "rag007-voice-tone-mismatch-uncertainty",
+          "lane": "voice_delivery",
+          "source_chunk_ids": [
+            "rag005-chunk-098"
+          ],
+          "source_ids": [
+            "rag004-source-063",
+            "rag004-source-094"
+          ],
+          "project_rule": "If words and vocal delivery appear misaligned, treat that as uncertainty and ask a gentle clarification instead of assuming hidden emotion or intent.",
+          "guardrail_notes": "The agent must not claim it knows the customer's real emotion from tone; tone is only a weak signal for choosing a low-pressure clarification.",
+          "match_reasons": [
+            "keyword_overlap:clarification",
+            "keyword_overlap:customer",
+            "keyword_overlap:gentle",
+            "keyword_overlap:hesitant",
+            "keyword_overlap:says",
+            "keyword_overlap:sounds"
+          ],
+          "match_score": 6,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-063",
+              "source_chunk_ids": [
+                "rag005-chunk-098"
+              ]
+            },
+            {
+              "source_id": "rag004-source-094",
+              "source_chunk_ids": [
+                "rag005-chunk-098"
+              ]
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": true,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        }
+      ]
+    },
+    {
+      "case_id": "customer_refusal_blocks",
+      "lane_filter": "any",
+      "context_flags": [
+        "customer_refusal",
+        "do_not_call"
+      ],
+      "retrieval_decision": "blocked",
+      "block_reason": "customer_refusal_overrides_retrieval",
+      "retrieved_items": []
+    },
+    {
+      "case_id": "protected_script_blocks",
+      "lane_filter": "any",
+      "context_flags": [
+        "protected_script",
+        "required_disclosure"
+      ],
+      "retrieval_decision": "blocked",
+      "block_reason": "protected_script_text_must_not_change",
+      "retrieved_items": []
+    },
+    {
+      "case_id": "human_escalation_blocks",
+      "lane_filter": "any",
+      "context_flags": [
+        "human_escalation"
+      ],
+      "retrieval_decision": "blocked",
+      "block_reason": "human_escalation_overrides_retrieval",
+      "retrieved_items": []
+    },
+    {
+      "case_id": "pressure_sensitive_blocks",
+      "lane_filter": "any",
+      "context_flags": [
+        "pressure_sensitive"
+      ],
+      "retrieval_decision": "blocked",
+      "block_reason": "pressure_sensitive_context_blocks_style_retrieval",
+      "retrieved_items": []
+    },
+    {
+      "case_id": "private_data_request_blocks",
+      "lane_filter": "any",
+      "context_flags": [
+        "private_data_requested"
+      ],
+      "retrieval_decision": "blocked",
+      "block_reason": "private_data_request_blocks_retrieval",
+      "retrieved_items": []
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_used_in_runtime": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "only_reviewed_rag007_used": true,
+    "runtime_policy_required_before_live_use": true
+  }
+}
