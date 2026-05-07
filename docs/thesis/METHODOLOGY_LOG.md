@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-011 blocker cleanup packet
+
+- Objective: narrow the remaining source-mapping and quote-clearance cleanup work before any runtime integration work.
+- Action taken: added the RAG-011 blocker cleanup builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-009 all-source review coverage artifact and RAG-006 chunk review packet under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, or runtime retrieval was used.
+- Output created: `docs/product/RAG_011_BLOCKER_CLEANUP_PACKET.md`, `research/experiments/cases/rag-011-blocker-cleanup-packet.json`, `research/experiments/generated/RAG-011-blocker-cleanup-packet/result.json`, `research/experiments/generated/RAG-011-blocker-cleanup-packet/report.md`, `scripts/rag_blocker_cleanup_packet.py`, `scripts/run_rag_011_blocker_cleanup_packet.py`, and `scripts/validate_rag_011_blocker_cleanup_packet.py`.
+- What was learned: the remaining blockers are still `63` source-mapping chunks and `42` quote-clearance chunks. RAG-011 found `3` high-confidence source-mapping proposal groups covering `5` chunks and created `12` quote-clearance review cards, for `17` possible blocker reductions after human acceptance. It intentionally resolved `0` blockers now.
+- Why it matters for the thesis: RAG-011 separates cleanup planning from automatic knowledge admission. It shows that a source-tracked sales RAG can prioritize human review work while preserving no-runtime, no-private-data, no-source-excerpt, and no-auto-promotion boundaries.
+- Open questions: whether `RAG-012` should apply only the `5` source-mapping proposals first, only the `12` quote-clearance cards first, or a mixed human-accepted cleanup slice that records exact accepted/rejected decisions.
+
 ### 2026-05-07 - RAG-010 reviewed expansion slice
 
 - Objective: manually review the four clean RAG-009 next-promotion candidates before considering any runtime integration work.

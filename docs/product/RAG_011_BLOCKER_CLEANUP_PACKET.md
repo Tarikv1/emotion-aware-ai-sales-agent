@@ -35,6 +35,17 @@ python scripts\validate_rag_011_blocker_cleanup_packet.py
 - `result.json`
 - `report.md`
 
+## Current Official Run
+
+- Source-mapping blockers: `63`
+- Source-mapping candidate groups: `3`
+- Source-mapping candidate chunks: `5`
+- Quote-clearance blockers: `42`
+- Quote-clearance review cards: `12`
+- Potential blocker reduction after human acceptance: `17`
+- `blockers_resolved_now`: `0`
+- Auto-promoted chunks: `0`
+
 ## Cleanup Rules
 
 - Source mapping proposals are included only when the RAG-006 suggestion score meets the configured threshold.

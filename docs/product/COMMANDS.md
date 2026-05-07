@@ -348,6 +348,24 @@ Validate RAG-010 reviewed paraphrases, cadence-as-weak-context guardrails, no so
 python scripts\validate_rag_010_reviewed_expansion_slice.py
 ```
 
+Run RAG-011 blocker cleanup packet after RAG-009/RAG-010 identify remaining source-mapping and quote-clearance blockers:
+
+```powershell
+python scripts\run_rag_011_blocker_cleanup_packet.py
+```
+
+Default RAG-011 output folder:
+
+```text
+research\experiments\generated\RAG-011-blocker-cleanup-packet\
+```
+
+Validate RAG-011 cleanup proposals, quote-clearance cards, no blocker mutation, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_011_blocker_cleanup_packet.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:
