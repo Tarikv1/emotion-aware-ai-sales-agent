@@ -1,0 +1,1097 @@
+{
+  "experiment_id": "RESP-003-bilingual-live-tts-ab",
+  "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "quality_claim_allowed_without_human_rating": false
+  },
+  "summary": {
+    "case_count": 6,
+    "matched_pair_count": 3,
+    "english_case_count": 3,
+    "german_case_count": 3,
+    "provider_count": 1,
+    "providers": [
+      "elevenlabs"
+    ],
+    "ab_variant_count": 12,
+    "plain_variant_count": 6,
+    "shaped_variant_count": 6,
+    "live_call_requested": false,
+    "api_calls_made": 0,
+    "audio_files_created": 0,
+    "fallback_count": 12,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "human_listening_review_recorded": false,
+    "quality_claim_allowed": false,
+    "all_shaped_inputs_differ_from_plain": true,
+    "max_time_to_first_audio_ms": null,
+    "max_total_provider_latency_ms": 0
+  },
+  "cases": [
+    {
+      "case_id": "RESP-003-AB-DE-OBJECTION",
+      "source_case_id": "RESP-002-PARITY-DE-OBJECTION",
+      "pair_id": "objection",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Das klingt zu teuer.",
+      "final_response": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+      "runtime_tts_input_source": "provider_rendered_text",
+      "runtime_tts_input_text": "Ich hab verstanden, also Wenn's passt, gibt's einen kurzen naechsten Schritt.",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "provider_rendering_changed": true,
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain_guarded",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "language": "de",
+          "source_case_id": "RESP-002-PARITY-DE-OBJECTION",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "final_response",
+          "tts_input_text": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+          "tts_input_chars": 75,
+          "provider_rendering_used": false,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-DE-OBJECTION-de-elevenlabs-plain_guarded.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "shaped_runtime",
+          "source_checkpoint": "RESP-002 shaped provider-rendered TTS input",
+          "language": "de",
+          "source_case_id": "RESP-002-PARITY-DE-OBJECTION",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Ich hab verstanden, also Wenn's passt, gibt's einen kurzen naechsten Schritt.",
+          "tts_input_chars": 77,
+          "provider_rendering_used": true,
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.133
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Ich hab verstanden, also Wenn's passt, gibt's einen kurzen naechsten Schritt.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.56,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.133
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-DE-OBJECTION-de-elevenlabs-shaped_runtime.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_listening_review_required": true,
+        "human_listening_review_recorded": false,
+        "quality_claim_allowed": false,
+        "criteria": [
+          "naturalness",
+          "sales-call pacing",
+          "clarity",
+          "language pronunciation",
+          "AI-obviousness",
+          "emotional appropriateness without pretending to know internal state",
+          "trustworthiness",
+          "plain guarded vs RESP-002 shaped preference"
+        ]
+      }
+    },
+    {
+      "case_id": "RESP-003-AB-EN-OBJECTION",
+      "source_case_id": "RESP-002-PARITY-EN-OBJECTION",
+      "pair_id": "objection",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "That sounds expensive.",
+      "final_response": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+      "runtime_tts_input_source": "provider_rendered_text",
+      "runtime_tts_input_text": "I'll keep this simple, so, you're right to ask, and it's only useful if there's a practical next step.",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "provider_rendering_changed": true,
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain_guarded",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "language": "en",
+          "source_case_id": "RESP-002-PARITY-EN-OBJECTION",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "final_response",
+          "tts_input_text": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+          "tts_input_chars": 99,
+          "provider_rendering_used": false,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-EN-OBJECTION-en-elevenlabs-plain_guarded.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "shaped_runtime",
+          "source_checkpoint": "RESP-002 shaped provider-rendered TTS input",
+          "language": "en",
+          "source_case_id": "RESP-002-PARITY-EN-OBJECTION",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'll keep this simple, so, you're right to ask, and it's only useful if there's a practical next step.",
+          "tts_input_chars": 102,
+          "provider_rendering_used": true,
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.13
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I'll keep this simple, so, you're right to ask, and it's only useful if there's a practical next step.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.56,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.13
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-EN-OBJECTION-en-elevenlabs-shaped_runtime.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_listening_review_required": true,
+        "human_listening_review_recorded": false,
+        "quality_claim_allowed": false,
+        "criteria": [
+          "naturalness",
+          "sales-call pacing",
+          "clarity",
+          "language pronunciation",
+          "AI-obviousness",
+          "emotional appropriateness without pretending to know internal state",
+          "trustworthiness",
+          "plain guarded vs RESP-002 shaped preference"
+        ]
+      }
+    },
+    {
+      "case_id": "RESP-003-AB-DE-TRUST",
+      "source_case_id": "RESP-002-PARITY-DE-TRUST",
+      "pair_id": "trust",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Ich kenne Sie nicht. Warum sollte ich Ihnen glauben?",
+      "final_response": "Ich habe verstanden. Wenn es hilft, geht es nur um eine kurze Einordnung.",
+      "runtime_tts_input_source": "provider_rendered_text",
+      "runtime_tts_input_text": "Ich hab verstanden. <break time=\"0.158s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "provider_rendering_changed": true,
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain_guarded",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "language": "de",
+          "source_case_id": "RESP-002-PARITY-DE-TRUST",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "final_response",
+          "tts_input_text": "Ich habe verstanden. Wenn es hilft, geht es nur um eine kurze Einordnung.",
+          "tts_input_chars": 73,
+          "provider_rendering_used": false,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Ich habe verstanden. Wenn es hilft, geht es nur um eine kurze Einordnung.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-DE-TRUST-de-elevenlabs-plain_guarded.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "shaped_runtime",
+          "source_checkpoint": "RESP-002 shaped provider-rendered TTS input",
+          "language": "de",
+          "source_case_id": "RESP-002-PARITY-DE-TRUST",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Ich hab verstanden. <break time=\"0.158s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
+          "tts_input_chars": 94,
+          "provider_rendering_used": true,
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.148
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Ich hab verstanden. <break time=\"0.158s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.56,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.148
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-DE-TRUST-de-elevenlabs-shaped_runtime.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_listening_review_required": true,
+        "human_listening_review_recorded": false,
+        "quality_claim_allowed": false,
+        "criteria": [
+          "naturalness",
+          "sales-call pacing",
+          "clarity",
+          "language pronunciation",
+          "AI-obviousness",
+          "emotional appropriateness without pretending to know internal state",
+          "trustworthiness",
+          "plain guarded vs RESP-002 shaped preference"
+        ]
+      }
+    },
+    {
+      "case_id": "RESP-003-AB-EN-TRUST",
+      "source_case_id": "RESP-002-PARITY-EN-TRUST",
+      "pair_id": "trust",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "I do not know your company. Why should I trust this?",
+      "final_response": "I am not asking you to decide now. That is why I will keep it brief.",
+      "runtime_tts_input_source": "provider_rendered_text",
+      "runtime_tts_input_text": "I'm not asking you to decide now. <break time=\"0.24s\" /> That's why I'll keep it brief.",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "provider_rendering_changed": true,
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain_guarded",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "language": "en",
+          "source_case_id": "RESP-002-PARITY-EN-TRUST",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "final_response",
+          "tts_input_text": "I am not asking you to decide now. That is why I will keep it brief.",
+          "tts_input_chars": 68,
+          "provider_rendering_used": false,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I am not asking you to decide now. That is why I will keep it brief.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-EN-TRUST-en-elevenlabs-plain_guarded.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "shaped_runtime",
+          "source_checkpoint": "RESP-002 shaped provider-rendered TTS input",
+          "language": "en",
+          "source_case_id": "RESP-002-PARITY-EN-TRUST",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'm not asking you to decide now. <break time=\"0.24s\" /> That's why I'll keep it brief.",
+          "tts_input_chars": 87,
+          "provider_rendering_used": true,
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.149
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I'm not asking you to decide now. <break time=\"0.24s\" /> That's why I'll keep it brief.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.56,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.149
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-EN-TRUST-en-elevenlabs-shaped_runtime.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_listening_review_required": true,
+        "human_listening_review_recorded": false,
+        "quality_claim_allowed": false,
+        "criteria": [
+          "naturalness",
+          "sales-call pacing",
+          "clarity",
+          "language pronunciation",
+          "AI-obviousness",
+          "emotional appropriateness without pretending to know internal state",
+          "trustworthiness",
+          "plain guarded vs RESP-002 shaped preference"
+        ]
+      }
+    },
+    {
+      "case_id": "RESP-003-AB-DE-NEXT-STEP",
+      "source_case_id": "RESP-002-PARITY-DE-NEXT-STEP",
+      "pair_id": "next_step",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Vielleicht, aber ich will mich nicht festlegen.",
+      "final_response": "Ich habe verstanden. Wenn es passt, macht es Sinn, einen kurzen Rueckruf zu planen.",
+      "runtime_tts_input_source": "provider_rendered_text",
+      "runtime_tts_input_text": "Ich hab verstanden, also Wenn's passt, macht's Sinn, einen kurzen Rueckruf zu planen.",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "provider_rendering_changed": true,
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain_guarded",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "language": "de",
+          "source_case_id": "RESP-002-PARITY-DE-NEXT-STEP",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "final_response",
+          "tts_input_text": "Ich habe verstanden. Wenn es passt, macht es Sinn, einen kurzen Rueckruf zu planen.",
+          "tts_input_chars": 83,
+          "provider_rendering_used": false,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Ich habe verstanden. Wenn es passt, macht es Sinn, einen kurzen Rueckruf zu planen.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-DE-NEXT-STEP-de-elevenlabs-plain_guarded.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "shaped_runtime",
+          "source_checkpoint": "RESP-002 shaped provider-rendered TTS input",
+          "language": "de",
+          "source_case_id": "RESP-002-PARITY-DE-NEXT-STEP",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Ich hab verstanden, also Wenn's passt, macht's Sinn, einen kurzen Rueckruf zu planen.",
+          "tts_input_chars": 85,
+          "provider_rendering_used": true,
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.125
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "Ich hab verstanden, also Wenn's passt, macht's Sinn, einen kurzen Rueckruf zu planen.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "de",
+              "voice_settings": {
+                "stability": 0.56,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.125
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-DE-NEXT-STEP-de-elevenlabs-shaped_runtime.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_listening_review_required": true,
+        "human_listening_review_recorded": false,
+        "quality_claim_allowed": false,
+        "criteria": [
+          "naturalness",
+          "sales-call pacing",
+          "clarity",
+          "language pronunciation",
+          "AI-obviousness",
+          "emotional appropriateness without pretending to know internal state",
+          "trustworthiness",
+          "plain guarded vs RESP-002 shaped preference"
+        ]
+      }
+    },
+    {
+      "case_id": "RESP-003-AB-EN-NEXT-STEP",
+      "source_case_id": "RESP-002-PARITY-EN-NEXT-STEP",
+      "pair_id": "next_step",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "Maybe, but I do not want to commit.",
+      "final_response": "I would suggest one simple next step. We will keep it practical, and you are free to say no.",
+      "runtime_tts_input_source": "provider_rendered_text",
+      "runtime_tts_input_text": "I'd suggest one simple next step. <break time=\"0.232s\" /> Um, we'll keep it practical, and you're free to say no.",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "provider_rendering_changed": true,
+      "ab_results": [
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "plain_guarded",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "language": "en",
+          "source_case_id": "RESP-002-PARITY-EN-NEXT-STEP",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "final_response",
+          "tts_input_text": "I would suggest one simple next step. We will keep it practical, and you are free to say no.",
+          "tts_input_chars": 92,
+          "provider_rendering_used": false,
+          "voice_settings": {
+            "stability": 0.45,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.0
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I would suggest one simple next step. We will keep it practical, and you are free to say no.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.45,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.0
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-EN-NEXT-STEP-en-elevenlabs-plain_guarded.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        },
+        {
+          "provider_key": "elevenlabs",
+          "provider_id": "elevenlabs-stream",
+          "provider_name": "ElevenLabs",
+          "endpoint_type": "tts-http-stream",
+          "model_id": "eleven_flash_v2_5",
+          "variant_kind": "shaped_runtime",
+          "source_checkpoint": "RESP-002 shaped provider-rendered TTS input",
+          "language": "en",
+          "source_case_id": "RESP-002-PARITY-EN-NEXT-STEP",
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "api_key_present": false,
+          "voice_id_present": true,
+          "api_key_value_logged": false,
+          "voice_id_value_logged": false,
+          "customer_audio_uploaded": false,
+          "generated_text_sent_to_provider": false,
+          "synthetic_prompt_only": true,
+          "voice_cloning_used": false,
+          "custom_voice_used": false,
+          "timeout_seconds": 8.0,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'd suggest one simple next step. <break time=\"0.232s\" /> Um, we'll keep it practical, and you're free to say no.",
+          "tts_input_chars": 113,
+          "provider_rendering_used": true,
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.134
+          },
+          "request_preview": {
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false",
+            "headers": {
+              "xi-api-key": "<redacted>",
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "text": "I'd suggest one simple next step. <break time=\"0.232s\" /> Um, we'll keep it practical, and you're free to say no.",
+              "model_id": "eleven_flash_v2_5",
+              "language_code": "en",
+              "voice_settings": {
+                "stability": 0.56,
+                "similarity_boost": 0.75,
+                "style": 0.0,
+                "use_speaker_boost": true,
+                "speed": 1.134
+              }
+            }
+          },
+          "audio_filename": "RESP-003-AB-EN-NEXT-STEP-en-elevenlabs-shaped_runtime.mp3",
+          "api_call_made": false,
+          "fallback_used": true,
+          "fallback_reason": "dry-run-mode",
+          "audio_file_created": false,
+          "audio_output_path": null,
+          "audio_byte_size": 0,
+          "http_status": null,
+          "response_content_type": null,
+          "request_id_present": false,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "provider_error": null,
+          "provider_error_summary": {
+            "type": null,
+            "code": null,
+            "message": null
+          }
+        }
+      ],
+      "quality_review": {
+        "human_listening_review_required": true,
+        "human_listening_review_recorded": false,
+        "quality_claim_allowed": false,
+        "criteria": [
+          "naturalness",
+          "sales-call pacing",
+          "clarity",
+          "language pronunciation",
+          "AI-obviousness",
+          "emotional appropriateness without pretending to know internal state",
+          "trustworthiness",
+          "plain guarded vs RESP-002 shaped preference"
+        ]
+      }
+    }
+  ]
+}

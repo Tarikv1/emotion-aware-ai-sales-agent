@@ -283,6 +283,8 @@ REQUIRED_FILES = [
     ("file.scripts_runtime_tts_delivery", "scripts/runtime_tts_delivery.py", "Runtime live TTS delivery module"),
     ("file.scripts_generate_runtime_tts_delivery", "scripts/generate_runtime_tts_delivery.py", "Runtime live TTS delivery runner"),
     ("file.scripts_validate_resp_003_runtime_live_tts", "scripts/validate_resp_003_runtime_live_tts.py", "Runtime live TTS delivery validator"),
+    ("file.scripts_run_resp_003_bilingual_live_tts_ab", "scripts/run_resp_003_bilingual_live_tts_ab.py", "Runtime bilingual live TTS A/B runner"),
+    ("file.scripts_validate_resp_003_bilingual_live_tts_ab", "scripts/validate_resp_003_bilingual_live_tts_ab.py", "Runtime bilingual live TTS A/B validator"),
     ("file.scripts_run_product_simulation", "scripts/run_product_simulation.py", "Product simulation runner"),
     ("file.scripts_run_rule_baseline", "scripts/run_rule_baseline.py", "Rule baseline runner"),
     ("file.scripts_read_relevant", "scripts/read_relevant.py", "Product-local relevant reader"),

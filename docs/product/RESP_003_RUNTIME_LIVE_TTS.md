@@ -103,6 +103,22 @@ Validate:
 python scripts\validate_resp_003_runtime_live_tts.py
 ```
 
+## Bilingual Runtime A/B
+
+RESP-003 also has a matched bilingual A/B harness for the current runtime path:
+
+```powershell
+python scripts\run_resp_003_bilingual_live_tts_ab.py
+python scripts\validate_resp_003_bilingual_live_tts_ab.py
+```
+
+The harness compares:
+
+- `plain_guarded`: the guarded `final_response`
+- `shaped_runtime`: the RESP-002 provider-rendered TTS input selected by RESP-003
+
+It uses the same German/English matched objection, trust-repair, and next-step scenarios as the RESP-002 parity suite. Default mode is dry-run. Live provider calls still require `--live`, environment-only provider keys and voice IDs, no customer audio upload, no voice cloning, and human listening review before any quality claim.
+
 ## Live Command Shape
 
 ElevenLabs:
@@ -145,6 +161,27 @@ fallback_reason: dry-run-mode
 customer_audio_uploaded: false
 voice_cloning_used: false
 validation passed: true
+```
+
+The current bilingual runtime A/B artifact uses three German/English scenario pairs in dry-run mode.
+
+Result:
+
+```text
+cases: 6
+matched scenario pairs: 3
+provider: elevenlabs
+A/B variants: 12
+plain variants: 6
+shaped variants: 6
+live call requested: false
+API calls made: 0
+audio files created: 0
+fallback count: 12
+customer audio uploaded: false
+voice cloning used: false
+human listening review recorded: false
+quality claim allowed: false
 ```
 
 ## First Live Bilingual ElevenLabs Run

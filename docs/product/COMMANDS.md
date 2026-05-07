@@ -674,6 +674,18 @@ Validate RESP-003 runtime live-capable TTS delivery without provider calls:
 python scripts\validate_resp_003_runtime_live_tts.py
 ```
 
+Run matched English/German RESP-003 plain-guarded vs shaped-runtime TTS A/B in dry-run mode:
+
+```powershell
+python scripts\run_resp_003_bilingual_live_tts_ab.py
+```
+
+Validate RESP-003 bilingual live-capable TTS A/B without provider calls:
+
+```powershell
+python scripts\validate_resp_003_bilingual_live_tts_ab.py
+```
+
 Evaluate provider readiness without API calls or audio upload:
 
 ```powershell

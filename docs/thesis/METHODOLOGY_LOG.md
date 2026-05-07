@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RESP-003 bilingual runtime TTS A/B harness
+
+- Objective: prepare a matched English/German listening comparison for the current runtime voice path instead of relying only on offline delivery metadata.
+- Action taken: added a RESP-003 live-capable A/B runner and validator comparing plain guarded `final_response` text with RESP-002 shaped provider-ready TTS input across objection, trust-repair, and next-step scenarios.
+- Data used: local synthetic campaign fixtures and current RESP-001/RESP-002/RESP-003 runtime packets only. No TTS provider call, customer audio upload, voice cloning, generated audio, private customer data, or API key was used.
+- Output created: `research/experiments/generated/RESP-003-bilingual-live-tts-ab/`.
+- What was learned: all six matched runtime cases produce a shaped TTS input that differs from plain guarded text while preserving dry-run provider boundaries and requiring human listening review before quality claims.
+- Why it matters for the thesis: the next audio review can compare the actual runtime voice path side by side in both languages, rather than testing earlier voice artifacts or metadata alone.
+- Open questions: whether the first live provider run should use ElevenLabs only or repeat the matched A/B with Cartesia after the ElevenLabs listening review.
+
 ### 2026-05-07 - RESP-002 bilingual voice parity suite
 
 - Objective: ensure English voice-delivery improvements are evaluated in parallel with German improvements.
