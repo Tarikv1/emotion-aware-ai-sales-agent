@@ -384,6 +384,24 @@ Validate RAG-012 accepted source mappings, project-owned quote-clearance rewrite
 python scripts\validate_rag_012_accepted_cleanup.py
 ```
 
+Run RAG-013 cleanup strategy after RAG-012 records accepted cleanup decisions:
+
+```powershell
+python scripts\run_rag_013_cleanup_strategy.py
+```
+
+Default RAG-013 output folder:
+
+```text
+research\experiments\generated\RAG-013-cleanup-strategy\
+```
+
+Validate RAG-013 remaining cleanup counts, source-mapping batches, quote-clearance lane counts, recommended next checkpoint, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_013_cleanup_strategy.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

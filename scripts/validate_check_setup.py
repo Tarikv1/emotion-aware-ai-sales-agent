@@ -105,6 +105,7 @@ def main() -> None:
         "file.docs_product_rag_010_reviewed_expansion_slice",
         "file.docs_product_rag_011_blocker_cleanup_packet",
         "file.docs_product_rag_012_accepted_cleanup",
+        "file.docs_product_rag_013_cleanup_strategy",
         "file.docs_data_private_call_center_policy",
         "file.docs_data_private_call_learning_pipeline",
         "file.data_private_gitignore",
@@ -132,6 +133,7 @@ def main() -> None:
         "file.scripts_rag_reviewed_expansion_slice",
         "file.scripts_rag_blocker_cleanup_packet",
         "file.scripts_rag_accepted_cleanup",
+        "file.scripts_rag_cleanup_strategy",
         "file.scripts_run_rag_001_notebooklm_source_intake",
         "file.scripts_validate_rag_001_notebooklm_source_intake",
         "file.scripts_run_rag_002_notebooklm_extraction_automation",
@@ -156,6 +158,8 @@ def main() -> None:
         "file.scripts_validate_rag_011_blocker_cleanup_packet",
         "file.scripts_run_rag_012_accepted_cleanup",
         "file.scripts_validate_rag_012_accepted_cleanup",
+        "file.scripts_run_rag_013_cleanup_strategy",
+        "file.scripts_validate_rag_013_cleanup_strategy",
         "file.scripts_local_voice_config",
         "file.scripts_validate_local_voice_config",
         "file.scripts_read_relevant",
@@ -259,6 +263,7 @@ def main() -> None:
         "file.research_case_rag_010_reviewed_expansion_slice",
         "file.research_case_rag_011_blocker_cleanup_packet",
         "file.research_case_rag_012_accepted_cleanup",
+        "file.research_case_rag_013_cleanup_strategy",
         "write.research_experiments_generated",
     ]:
         assert_condition(required_check in checks_by_id, f"Missing setup check: {required_check}")

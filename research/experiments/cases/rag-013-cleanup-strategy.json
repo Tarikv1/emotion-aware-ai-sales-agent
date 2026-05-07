@@ -1,0 +1,23 @@
+{
+  "cleanup_strategy_id": "RAG-013-cleanup-strategy",
+  "title": "RAG cleanup strategy",
+  "description": "Partitions the remaining RAG cleanup work after RAG-012 without applying new cleanup decisions or enabling runtime retrieval.",
+  "default_rag012_result": "research/experiments/generated/RAG-012-accepted-cleanup/result.json",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "default_rag006_packet": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+  "recommended_next_checkpoint": "RAG-014-source-mapped-quote-followup",
+  "max_source_mapping_groups": 12,
+  "max_quote_clearance_examples": 12,
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "RAG-013 is a strategy packet only.",
+    "It does not resolve blockers by itself.",
+    "RAG-014 should clear or reject the five quote follow-ups created by RAG-012 accepted source mappings.",
+    "A later clean-candidate re-audit is required before any runtime-off retrieval harness.",
+    "Runtime retrieval remains disabled."
+  ]
+}

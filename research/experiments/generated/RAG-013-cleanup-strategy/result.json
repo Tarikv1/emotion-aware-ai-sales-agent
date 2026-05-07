@@ -1,0 +1,563 @@
+{
+  "cleanup_strategy_id": "RAG-013-cleanup-strategy",
+  "recommended_next_checkpoint": "RAG-014-source-mapped-quote-followup",
+  "inputs": {
+    "rag012_result_path": "research/experiments/generated/RAG-012-accepted-cleanup/result.json",
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "rag006_packet_path": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+    "case_path": "research/experiments/cases/rag-013-cleanup-strategy.json"
+  },
+  "summary": {
+    "remaining_source_mapping_chunk_count": 58,
+    "remaining_source_mapping_group_count": 43,
+    "remaining_original_quote_clearance_count": 30,
+    "quote_follow_up_from_accepted_source_mappings": 5,
+    "known_cleanup_work_count_before_runtime": 93,
+    "latent_quote_followup_after_remaining_source_mapping": 21,
+    "cleanup_decisions_applied_now": 0,
+    "auto_promoted_chunk_count": 0,
+    "quote_clearance_lane_counts": {
+      "ethical_persuasion": 11,
+      "voice_delivery": 19
+    },
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false
+  },
+  "strategy_stages": [
+    {
+      "checkpoint_id": "RAG-014-source-mapped-quote-followup",
+      "cleanup_lane": "source_mapped_quote_followup",
+      "target_chunk_count": 5,
+      "objective": "Clear or reject the quote dependencies created by RAG-012 accepted source mappings.",
+      "why_first": "This is the smallest bounded cleanup set and it prevents metadata-cleaned chunks from being mistaken for runtime-ready knowledge.",
+      "runtime_retrieval_enabled": false
+    },
+    {
+      "checkpoint_id": "RAG-015-source-mapping-batches",
+      "cleanup_lane": "source_mapping",
+      "target_chunk_count": 58,
+      "objective": "Review remaining source-title groups and map them to existing or newly reviewed source records.",
+      "why_second": "One reviewed source decision can unlock multiple chunks, but it can also create quote-clearance follow-up work.",
+      "runtime_retrieval_enabled": false
+    },
+    {
+      "checkpoint_id": "RAG-016-quote-clearance-batches",
+      "cleanup_lane": "quote_clearance",
+      "target_chunk_count": 51,
+      "objective": "Rewrite or reject remaining quote-dependent candidates as project-owned rules.",
+      "why_third": "Quote clearance requires human wording and safety review after source metadata is known.",
+      "runtime_retrieval_enabled": false
+    },
+    {
+      "checkpoint_id": "RAG-017-clean-candidate-reaudit",
+      "cleanup_lane": "pre_runtime_audit",
+      "target_chunk_count": 0,
+      "objective": "Re-audit clean candidates before any runtime-off retrieval harness is considered.",
+      "why_final": "The project needs one clean accounting pass before retrieval policy can consume new knowledge.",
+      "runtime_retrieval_enabled": false
+    }
+  ],
+  "source_mapped_quote_followups": [
+    {
+      "chunk_id": "rag005-chunk-081",
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-025"
+      ],
+      "accepted_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "cleanup_lane": "source_mapped_quote_followup",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "reason": "Source mapping is accepted, but quote dependency is still unresolved.",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-084",
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-025"
+      ],
+      "accepted_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "cleanup_lane": "source_mapped_quote_followup",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "reason": "Source mapping is accepted, but quote dependency is still unresolved.",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-005",
+      "source_title": "Sell Better - Jason Bay",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-051"
+      ],
+      "accepted_canonical_title": "Jason Bay (Sell Better)",
+      "cleanup_lane": "source_mapped_quote_followup",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "reason": "Source mapping is accepted, but quote dependency is still unresolved.",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-006",
+      "source_title": "Sell Better - Jason Bay",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-051"
+      ],
+      "accepted_canonical_title": "Jason Bay (Sell Better)",
+      "cleanup_lane": "source_mapped_quote_followup",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "reason": "Source mapping is accepted, but quote dependency is still unresolved.",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-003",
+      "source_title": "Cognism Cold Calling Scripts",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-028"
+      ],
+      "accepted_canonical_title": "Cognism Hub/Scripts",
+      "cleanup_lane": "source_mapped_quote_followup",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "reason": "Source mapping is accepted, but quote dependency is still unresolved.",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "source_mapping_batches": [
+    {
+      "source_title": "Discovery Masterclass: Everything You Need to Run a Perfect Discovery Call",
+      "remaining_chunk_ids": [
+        "rag005-chunk-032",
+        "rag005-chunk-033",
+        "rag005-chunk-035",
+        "rag005-chunk-041",
+        "rag005-chunk-042"
+      ],
+      "remaining_chunk_count": 5,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Never Split The Difference / Chris Voss Summary Cheat-Sheet",
+      "remaining_chunk_ids": [
+        "rag005-chunk-043",
+        "rag005-chunk-044",
+        "rag005-chunk-055",
+        "rag005-chunk-059"
+      ],
+      "remaining_chunk_count": 4,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Social Influence Dialogue Systems",
+      "remaining_chunk_ids": [
+        "rag005-chunk-114",
+        "rag005-chunk-116",
+        "rag005-chunk-118"
+      ],
+      "remaining_chunk_count": 3,
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "24 Techniques for Closing the Sale",
+      "remaining_chunk_ids": [
+        "rag005-chunk-011",
+        "rag005-chunk-015"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Einwandbehandlung im Verkauf (zu teuer, keine Zeit & Co.) (\\#derLÖSER)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-065",
+        "rag005-chunk-068"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Master B2B Sales Negotiation in 46 Minutes",
+      "remaining_chunk_ids": [
+        "rag005-chunk-046",
+        "rag005-chunk-051"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Never Split the Difference",
+      "remaining_chunk_ids": [
+        "rag005-chunk-049",
+        "rag005-chunk-052"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Telefonakquise - Der Leitfaden | Kaltakquise (\\#derLÖSER)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-062",
+        "rag005-chunk-067"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "Telefonakquise-Leitfaden: 11 Vorlagen, Beispiele (Pipedrive)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-064",
+        "rag005-chunk-069"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "10 Sales Training Methodologies Compared (2026) | Salesmotion",
+      "remaining_chunk_ids": [
+        "rag005-chunk-037"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "16 Best Closing Techniques",
+      "remaining_chunk_ids": [
+        "rag005-chunk-016"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "source_title": "18 Steps to a Successful Discovery Call \\+ Free Discovery Call Checklist",
+      "remaining_chunk_ids": [
+        "rag005-chunk-034"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "candidate_source_id": "",
+      "candidate_canonical_title": "",
+      "candidate_score": 0.0,
+      "review_action": "map_to_existing_source_or_create_reviewed_source",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "quote_clearance_examples": [
+    {
+      "chunk_id": "rag005-chunk-077",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-078",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-079",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-080",
+      "source_title": "Cognitive Dissonance Theory: A Crash Course",
+      "source_ids": [
+        "rag004-source-030"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-082",
+      "source_title": "Persuasion | Psychology Today",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-083",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-085",
+      "source_title": "Persuasion | Psychology Today",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-086",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-087",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-088",
+      "source_title": "Persuasion | Psychology Today",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-089",
+      "source_title": "The Ethics of Manipulation",
+      "source_ids": [
+        "rag004-source-083"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "cleanup_lane": "ethical_persuasion",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-090",
+      "source_title": "How to Speak | Patrick Winston",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "cleanup_lane": "voice_delivery",
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "strategy_only_no_cleanup_mutation": true
+  }
+}

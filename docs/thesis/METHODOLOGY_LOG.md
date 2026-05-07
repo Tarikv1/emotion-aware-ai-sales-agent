@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-013 cleanup strategy
+
+- Objective: choose the cleanup order for the remaining RAG blockers after RAG-012 before any runtime retrieval work.
+- Action taken: added the RAG-013 cleanup strategy builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-012 accepted cleanup artifact, RAG-009 all-source review coverage artifact, and RAG-006 chunk review packet under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, or runtime retrieval was used.
+- Output created: `docs/product/RAG_013_CLEANUP_STRATEGY.md`, `research/experiments/cases/rag-013-cleanup-strategy.json`, `research/experiments/generated/RAG-013-cleanup-strategy/result.json`, `research/experiments/generated/RAG-013-cleanup-strategy/report.md`, `scripts/rag_cleanup_strategy.py`, `scripts/run_rag_013_cleanup_strategy.py`, and `scripts/validate_rag_013_cleanup_strategy.py`.
+- What was learned: after RAG-012, the active cleanup queue is `58` source-mapping chunks, `30` original quote-clearance chunks, and `5` quote follow-ups created by accepted source mappings. The known cleanup work count before runtime is therefore `93`, with `21` additional latent quote follow-ups likely to appear behind remaining source mappings.
+- Why it matters for the thesis: RAG-013 records that retrieval readiness is not only about having reviewed rules; the project must track staged cleanup dependencies so metadata review, quote clearance, and final runtime admission remain separate.
+- Open questions: whether `RAG-014` should clear all five source-mapped quote follow-ups in one slice or reject unsafe pressure-oriented chunks while preserving only low-pressure, vertical-agnostic guidance.
+
 ### 2026-05-07 - RAG-012 accepted cleanup
 
 - Objective: apply the human-accepted first cleanup slice from RAG-011 while keeping RAG review separate from runtime retrieval.
