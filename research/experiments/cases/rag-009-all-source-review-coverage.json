@@ -1,0 +1,33 @@
+{
+  "review_coverage_id": "RAG-009-all-source-review-coverage",
+  "title": "All-source RAG review coverage gate",
+  "description": "Configuration for accounting for every RAG-004 source and every RAG-005 chunk before runtime retrieval is considered.",
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "max_next_promotion_candidates": 25,
+  "reject_patterns": [
+    "hidden emotion with certainty",
+    "guarantee hidden intent",
+    "sensitive demographic",
+    "protected attribute",
+    "rewrite required disclosure",
+    "ignore refusal",
+    "push past hesitation",
+    "pressure tactic",
+    "create urgency",
+    "creating time pressure",
+    "simulate human suffering",
+    "lie about its identity"
+  ],
+  "review_lanes": [
+    "reviewed_rag007",
+    "candidate_next_manual_review",
+    "blocked_source_mapping",
+    "blocked_topic_mapping",
+    "blocked_quote_clearance",
+    "rejected_safety",
+    "deferred_review"
+  ]
+}
