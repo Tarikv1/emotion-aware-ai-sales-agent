@@ -330,6 +330,24 @@ Validate RAG-009 all-source/source-chunk accounting, blocked queues, next-promot
 python scripts\validate_rag_009_all_source_review_coverage.py
 ```
 
+Run RAG-010 reviewed expansion slice after RAG-009 creates clean next-promotion candidates:
+
+```powershell
+python scripts\run_rag_010_reviewed_expansion_slice.py
+```
+
+Default RAG-010 output folder:
+
+```text
+research\experiments\generated\RAG-010-reviewed-expansion-slice\
+```
+
+Validate RAG-010 reviewed paraphrases, cadence-as-weak-context guardrails, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_010_reviewed_expansion_slice.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

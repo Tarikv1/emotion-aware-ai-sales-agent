@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-010 reviewed expansion slice
+
+- Objective: manually review the four clean RAG-009 next-promotion candidates before considering any runtime integration work.
+- Action taken: added the RAG-010 reviewed expansion builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-009 all-source review coverage artifact under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, or runtime retrieval was used.
+- Output created: `docs/product/RAG_010_REVIEWED_EXPANSION_SLICE.md`, `research/experiments/cases/rag-010-reviewed-expansion-slice.json`, `research/experiments/generated/RAG-010-reviewed-expansion-slice/result.json`, `research/experiments/generated/RAG-010-reviewed-expansion-slice/report.md`, `scripts/rag_reviewed_expansion_slice.py`, `scripts/run_rag_010_reviewed_expansion_slice.py`, and `scripts/validate_rag_010_reviewed_expansion_slice.py`.
+- What was learned: all `4` clean RAG-009 candidates can be promoted as project-owned paraphrases if bounded carefully. Impact discovery, "so what" clarification, and timing checks are useful only as low-pressure evidence gathering. Cadence detection is useful only as advisory voice/prosody context and must not become hidden-emotion or intent inference.
+- Why it matters for the thesis: RAG-010 shows how retrieved sales-knowledge candidates can be converted into safer, vertical-agnostic agent rules before runtime use. It also preserves a key emotion-aware boundary: vocal signals may guide pacing or a clarification question, but they cannot become certainty about a customer's internal state.
+- Open questions: whether `RAG-011` should reduce the `63` source-mapping blockers first, reduce the `42` quote-clearance blockers first, or run a small blocker-cleanup slice across both queues before any runtime-off integration harness.
+
 ### 2026-05-07 - RAG-009 all-source review coverage
 
 - Objective: confirm that every imported RAG source and chunk is accounted for before any runtime retrieval work continues.

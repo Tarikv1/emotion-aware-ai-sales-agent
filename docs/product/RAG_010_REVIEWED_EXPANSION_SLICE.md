@@ -35,6 +35,16 @@ python scripts\validate_rag_010_reviewed_expansion_slice.py
 - `result.json`
 - `report.md`
 
+## Current Official Run
+
+- Selected chunks: `4`
+- Knowledge items: `4`
+- Response wording items: `3`
+- Voice delivery items: `1`
+- Voice/prosody advisory items: `1`
+- Rejected candidates: `0`
+- Auto-promoted chunks: `0`
+
 ## Reviewed Candidates
 
 | Chunk ID | Decision | Product rewrite |
