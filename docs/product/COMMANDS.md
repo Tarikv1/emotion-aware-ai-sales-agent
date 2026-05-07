@@ -638,6 +638,19 @@ Validate RESP-002 guarded response voice delivery:
 python scripts\validate_resp_002_runtime_voice_delivery.py
 ```
 
+Run and validate English/German RESP-002 voice parity:
+
+```powershell
+python scripts\run_resp_002_bilingual_voice_parity.py
+python scripts\validate_resp_002_bilingual_voice_parity.py
+```
+
+Outputs:
+
+```text
+research\experiments\generated\RESP-002-bilingual-voice-parity\
+```
+
 Validate the 200-note call pattern learning checkpoint:
 
 ```powershell

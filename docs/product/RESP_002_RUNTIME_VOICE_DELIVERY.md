@@ -119,6 +119,17 @@ Validate:
 python scripts\validate_resp_002_runtime_voice_delivery.py
 ```
 
+## Bilingual Voice Parity
+
+English and German delivery quality should improve in parallel. RESP-002 therefore has a paired local parity check:
+
+```powershell
+python scripts\run_resp_002_bilingual_voice_parity.py
+python scripts\validate_resp_002_bilingual_voice_parity.py
+```
+
+The parity check requires one English and one German freeform sales response to show concrete spoken-text normalization, prosody cues, pacing calibration, emotion smoothing, provider-rendering changes, and preserved protected-text boundaries. Counts do not need to match exactly because English and German speech mechanics differ.
+
 ## Current Result
 
 The current generated artifact uses a German B2C telecom price-objection turn.

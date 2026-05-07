@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RESP-002 bilingual voice parity gate
+
+- Objective: ensure English voice-delivery improvements are evaluated in parallel with German improvements.
+- Action taken: added a paired local RESP-002 parity runner and validator for one German and one English freeform sales response.
+- Data used: local synthetic campaign fixtures only. No TTS provider call, customer audio upload, voice cloning, generated audio, private customer data, or API key was used.
+- Output created: `research/experiments/generated/RESP-002-bilingual-voice-parity/`.
+- What was learned: both English and German currently show spoken normalization, prosody cues, pacing calibration, emotion smoothing, provider-rendering changes, and protected-text preservation in the offline voice-delivery path.
+- Why it matters for the thesis: bilingual voice quality can now be reported with a reproducible side-by-side gate instead of relying on German-heavy test coverage.
+- Open questions: whether later live listening tests should require matched English/German audio samples for every new VOICE layer before accepting the layer.
+
 ### 2026-05-07 - RESP-001 retrieval A/B evaluation
 
 - Objective: compare the deterministic policy response, always-on core sales delivery playbook, and opt-in live RAG on the same frozen realtime cases.
