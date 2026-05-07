@@ -2,7 +2,7 @@
 
 ## Purpose
 
-RAG-008 tests a guarded retrieval policy over the manually reviewed RAG-007 first slice. It creates deterministic candidate packets for review only.
+RAG-008 tests a guarded retrieval policy over the RAG-017 runtime knowledge registry. It creates deterministic candidate packets for review only.
 
 This is not runtime RAG. Runtime retrieval remains disabled.
 
@@ -13,7 +13,7 @@ This is not runtime RAG. Runtime retrieval remains disabled.
 - tone uncertainty can retrieve the voice-delivery clarification rule as advisory guidance
 - refusal, do-not-call, protected script, disclosure, escalation, pressure-sensitive, and private-data contexts block retrieval
 
-Voice and prosody candidates are included only when they are already part of the reviewed RAG-007 slice. They are advisory delivery guidance and cannot alter protected text, consent handling, compliance language, campaign facts, or human escalation.
+Voice and prosody candidates are included only when they are already accepted into the RAG-017 registry. They are advisory delivery guidance and cannot alter protected text, consent handling, compliance language, campaign facts, or human escalation.
 
 ## Commands
 
@@ -47,7 +47,7 @@ one reusable sales-agent core
   + explicit guardrails and human escalation paths
 ```
 
-The dry-run policy uses only RAG-007 reviewed knowledge items and synthetic case prompts. It does not import chunks, auto-promote chunks, call providers, call NotebookLM, read private customer data, store source excerpt text, or connect retrieval to the runtime sales agent.
+The dry-run policy uses only RAG-017 registry items and synthetic case prompts. It does not import chunks, auto-promote chunks, call providers, call NotebookLM, read private customer data, store source excerpt text, or connect retrieval to the runtime sales agent.
 
 ## Readiness Meaning
 

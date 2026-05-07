@@ -15,12 +15,12 @@ RUNNER = ROOT / "scripts" / "run_rag_008_guarded_retrieval_policy.py"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "rag-008-guarded-retrieval-policy.json"
 DOC_PATH = ROOT / "docs" / "product" / "RAG_008_GUARDED_RETRIEVAL_POLICY.md"
 TMP_DIR = ROOT / ".tmp" / "rag-008-validation"
-TMP_RAG007 = TMP_DIR / "rag007-result.json"
+TMP_REGISTRY = TMP_DIR / "registry-result.json"
 TMP_CASE = TMP_DIR / "case.json"
 RESULT_PATH = TMP_DIR / "result.json"
 REPORT_PATH = TMP_DIR / "report.md"
 EXPECTED_ID = "RAG-008-guarded-retrieval-policy"
-EXPECTED_RAG007_ID = "RAG-007-reviewed-first-slice"
+EXPECTED_REGISTRY_ID = "RAG-017-runtime-knowledge-registry"
 EXPECTED_KNOWLEDGE_IDS = {
     "rag007-response-yes-and-objection-framing",
     "rag007-response-declarative-clarity",
@@ -31,6 +31,10 @@ EXPECTED_KNOWLEDGE_IDS = {
     "rag007-voice-tone-mismatch-uncertainty",
     "rag007-voice-trustworthy-not-forced-friendly",
     "rag007-voice-bounded-vocal-toolbox",
+    "rag010-response-impact-bridge",
+    "rag012-guardrail-anti-manipulation",
+    "rag016a-response-autonomy-reminder",
+    "rag016b-voice-no-hidden-emotion-claims",
 }
 BLOCKED_CASE_IDS = {
     "customer_refusal_blocks",
@@ -46,56 +50,56 @@ def assert_condition(condition: bool, message: Any) -> None:
         raise AssertionError(message)
 
 
-def reviewed_item(
-    knowledge_id: str,
+def registry_item(
+    registry_id: str,
     lane: str,
     source_chunk_id: str,
     source_id: str,
-    project_rule: str,
+    advisory_rule_text: str,
     safe_application: str,
-    do_not_use_when: str,
-    guardrail_notes: str,
+    do_not_use: str,
+    guardrails: str,
 ) -> dict[str, Any]:
     return {
-        "knowledge_id": knowledge_id,
+        "registry_id": registry_id,
+        "knowledge_id": registry_id,
         "lane": lane,
+        "category": lane,
         "source_chunk_ids": [source_chunk_id],
         "source_ids": [source_id],
-        "source_titles": [f"Reviewed source {source_id}"],
-        "source_metadata": {
-            source_id: {
-                "source_id": source_id,
-                "canonical_title": f"Reviewed source {source_id}",
-                "metadata_status": "needs_human_review",
-                "rights_status": "needs_review",
-            }
-        },
-        "topic_ids": [lane],
-        "review_verdict": "manual_first_slice_paraphrased",
-        "quote_dependency_resolved": True,
-        "manual_review_clearance": {
-            "selected_from_first_slice_candidates": True,
-            "selected_from_quote_queue": True,
-            "quote_clearance_required": True,
-            "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
-            "source_excerpt_text_copied": False,
-            "runtime_use_allowed": False,
-        },
-        "project_rule": project_rule,
+        "advisory_rule_text": advisory_rule_text,
+        "project_rule": advisory_rule_text,
         "safe_application": safe_application,
-        "do_not_use_when": do_not_use_when,
-        "guardrail_notes": guardrail_notes,
-        "rag006_locations": ["quote_review_queue"],
-        "runtime_eligible_now": False,
-        "retrieval_eligible_now": False,
+        "do_not_use": do_not_use,
+        "do_not_use_when": do_not_use,
+        "guardrails": guardrails,
+        "guardrail_notes": guardrails,
+        "runtime_registry_eligible": True,
+        "retrieval_scope": "advisory_only",
+        "retrieval_used_in_runtime": False,
+        "protected_text_change_allowed": False,
+        "voice_or_prosody_advisory_only": lane == "voice_delivery",
+        "hard_limits": {
+            "hidden_emotion_inference_allowed": False,
+            "protected_trait_inference_allowed": False,
+            "pressure_or_urgency_escalation_allowed": False,
+            "protected_text_change_allowed": False,
+        },
+        "citation_trace": [
+            {
+                "source_id": source_id,
+                "source_chunk_ids": [source_chunk_id],
+                "artifact_id": "fixture",
+            }
+        ],
     }
 
 
 def write_fixture_inputs() -> None:
     shutil.rmtree(TMP_DIR, ignore_errors=True)
     TMP_DIR.mkdir(parents=True, exist_ok=True)
-    knowledge_items = [
-        reviewed_item(
+    registry_items = [
+        registry_item(
             "rag007-response-yes-and-objection-framing",
             "response_wording",
             "rag005-chunk-017",
@@ -105,7 +109,7 @@ def write_fixture_inputs() -> None:
             "Do not use for refusals, do-not-call requests, or false compliance claims.",
             "Compliance language, refusal handling, and campaign facts override this rule.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-response-declarative-clarity",
             "response_wording",
             "rag005-chunk-020",
@@ -115,7 +119,7 @@ def write_fixture_inputs() -> None:
             "Do not make the agent clipped, dismissive, or aggressive.",
             "This shapes freeform wording only and cannot shorten required disclosures.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-response-empathy-echo",
             "response_wording",
             "rag005-chunk-022",
@@ -125,7 +129,7 @@ def write_fixture_inputs() -> None:
             "Do not repeat profanity, private details, or every phrase.",
             "The echo is not an emotion diagnosis and cannot override explicit intent.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-response-prep-structure",
             "response_wording",
             "rag005-chunk-024",
@@ -135,7 +139,7 @@ def write_fixture_inputs() -> None:
             "Do not use for simple yes/no answers or urgent refusal handling.",
             "Examples must be campaign-approved and truthful.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-response-3-2-1-structure",
             "response_wording",
             "rag005-chunk-025",
@@ -145,7 +149,37 @@ def write_fixture_inputs() -> None:
             "Do not use when numbering would sound evasive.",
             "Numbering cannot remove mandatory disclosures or escalation language.",
         ),
-        reviewed_item(
+        registry_item(
+            "rag010-response-impact-bridge",
+            "response_wording",
+            "rag005-chunk-029",
+            "rag004-source-050",
+            "Ask one neutral impact question tied to a customer-stated issue.",
+            "Use for discovery when a business issue needs a measurable consequence.",
+            "Do not invent urgency or financial loss.",
+            "Impact questions must stay evidence-seeking and low-pressure.",
+        ),
+        registry_item(
+            "rag012-guardrail-anti-manipulation",
+            "safety_guardrail",
+            "rag005-chunk-074",
+            "rag004-source-055",
+            "Block trickery, shame, gaslighting, or repeated pressure.",
+            "Use before any persuasive wording or follow-up suggestion.",
+            "Do not weaken for conversion goals.",
+            "This guardrail overrides campaign pressure.",
+        ),
+        registry_item(
+            "rag016a-response-autonomy-reminder",
+            "response_wording",
+            "rag005-chunk-082",
+            "rag004-source-065",
+            "Explicitly preserve the customer's freedom to say no, pause, compare, or choose no next step.",
+            "Use when the customer is hesitant or worried about being pushed.",
+            "Do not use autonomy language as reverse psychology.",
+            "Honor the customer's choice.",
+        ),
+        registry_item(
             "rag007-voice-yes-and-posture",
             "voice_delivery",
             "rag005-chunk-091",
@@ -155,7 +189,7 @@ def write_fixture_inputs() -> None:
             "Do not sound agreeable when correcting false claims or honoring refusal.",
             "Delivery guidance only; it does not change guarded text.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-voice-tone-mismatch-uncertainty",
             "voice_delivery",
             "rag005-chunk-098",
@@ -165,7 +199,7 @@ def write_fixture_inputs() -> None:
             "Do not override consent, refusal, factual statements, compliance, or stated preferences.",
             "Tone is only a weak signal; never claim hidden emotion certainty.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-voice-trustworthy-not-forced-friendly",
             "voice_delivery",
             "rag005-chunk-099",
@@ -175,7 +209,7 @@ def write_fixture_inputs() -> None:
             "Do not use exaggerated cheer or overfamiliar phrasing in serious contexts.",
             "Campaign persona can adjust warmth, but trust and clarity remain default.",
         ),
-        reviewed_item(
+        registry_item(
             "rag007-voice-bounded-vocal-toolbox",
             "voice_delivery",
             "rag005-chunk-101",
@@ -185,25 +219,33 @@ def write_fixture_inputs() -> None:
             "Do not imitate a source speaker identity, accent, or theatrical performance.",
             "Protected scripts and compliance text must stay exact.",
         ),
+        registry_item(
+            "rag016b-voice-no-hidden-emotion-claims",
+            "voice_delivery",
+            "rag005-chunk-107",
+            "rag004-source-017",
+            "Use acoustic or multimodal uncertainty only to choose lower-pressure delivery, never to claim a hidden emotion.",
+            "Use when delivery should slow down or ask a gentle clarification.",
+            "Do not infer inner state, urgency, consent, refusal, or buying intent.",
+            "Voice guidance cannot alter protected text.",
+        ),
     ]
-    rag007 = {
-        "reviewed_slice_id": EXPECTED_RAG007_ID,
+    registry = {
+        "runtime_knowledge_registry_id": EXPECTED_REGISTRY_ID,
         "summary": {
-            "knowledge_item_count": len(knowledge_items),
-            "runtime_retrieval_enabled": False,
-            "retrieval_eligible_now": False,
-            "chunk_import_enabled": False,
+            "registry_item_count": len(registry_items),
+            "runtime_retrieval_enabled_by_default": False,
+            "retrieval_used_in_runtime": False,
             "source_excerpt_text_stored": False,
             "private_customer_data_used": False,
         },
-        "knowledge_items": knowledge_items,
+        "registry_items": registry_items,
         "boundaries": {
-            "runtime_retrieval_enabled": False,
-            "retrieval_eligible_now": False,
-            "chunk_import_enabled": False,
+            "default_runtime_retrieval_enabled": False,
+            "requires_explicit_runtime_enablement": True,
+            "external_vector_db_used": False,
+            "embedding_provider_used": False,
             "source_excerpt_text_stored": False,
-            "private_customer_data_allowed": False,
-            "reads_data_private": False,
         },
     }
     cases = {
@@ -278,7 +320,7 @@ def write_fixture_inputs() -> None:
             },
         ],
     }
-    TMP_RAG007.write_text(json.dumps(rag007, indent=2), encoding="utf-8")
+    TMP_REGISTRY.write_text(json.dumps(registry, indent=2), encoding="utf-8")
     TMP_CASE.write_text(json.dumps(cases, indent=2), encoding="utf-8")
 
 
@@ -304,12 +346,12 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     combined_text = json.dumps(payload, sort_keys=True) + "\n" + report
 
     assert_condition(payload["retrieval_policy_id"] == EXPECTED_ID, payload)
-    assert_condition(payload["inputs"]["rag007_reviewed_slice_id"] == EXPECTED_RAG007_ID, payload["inputs"])
+    assert_condition(payload["inputs"]["registry_id"] == EXPECTED_REGISTRY_ID, payload["inputs"])
     assert_condition(summary["query_case_count"] == 8, summary)
     assert_condition(summary["retrieval_case_count"] == 3, summary)
     assert_condition(summary["blocked_case_count"] == 5, summary)
     assert_condition(summary["retrieved_item_count"] >= 3, summary)
-    assert_condition(summary["runtime_retrieval_enabled"] is False, summary)
+    assert_condition(summary["runtime_retrieval_enabled_by_default"] is False, summary)
     assert_condition(summary["retrieval_used_in_runtime"] is False, summary)
     assert_condition(summary["chunk_import_enabled"] is False, summary)
     assert_condition(summary["provider_calls_made"] is False, summary)
@@ -317,8 +359,8 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     assert_condition(summary["private_customer_data_used"] is False, summary)
     assert_condition(summary["reads_data_private"] is False, summary)
     assert_condition(summary["source_excerpt_text_stored"] is False, summary)
-    assert_condition(summary["only_reviewed_rag007_used"] is True, summary)
-    assert_condition(boundaries["runtime_retrieval_enabled"] is False, boundaries)
+    assert_condition(summary["only_runtime_registry_used"] is True, summary)
+    assert_condition(boundaries["default_runtime_retrieval_enabled"] is False, boundaries)
     assert_condition(boundaries["retrieval_used_in_runtime"] is False, boundaries)
     assert_condition(boundaries["chunk_import_enabled"] is False, boundaries)
     assert_condition(boundaries["auto_promote_allowed"] is False, boundaries)
@@ -327,7 +369,7 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     assert_condition(boundaries["notebooklm_api_allowed"] is False, boundaries)
     assert_condition(boundaries["private_customer_data_allowed"] is False, boundaries)
     assert_condition(boundaries["reads_data_private"] is False, boundaries)
-    assert_condition(boundaries["only_reviewed_rag007_used"] is True, boundaries)
+    assert_condition(boundaries["only_runtime_registry_used"] is True, boundaries)
 
     assert_condition('"source_excerpt_text":' not in combined_text, combined_text)
     assert_condition("data/private" not in combined_text.replace("\\", "/"), combined_text)
@@ -362,7 +404,7 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
 
     tone = results_by_id["tone_uncertainty_clarification"]
     tone_ids = {item["knowledge_id"] for item in tone["retrieved_items"]}
-    assert_condition(tone_ids == {"rag007-voice-tone-mismatch-uncertainty"}, tone)
+    assert_condition("rag007-voice-tone-mismatch-uncertainty" in tone_ids, tone)
     tone_text = json.dumps(tone).lower()
     assert_condition("weak signal" in tone_text, tone)
     assert_condition("emotion certainty" in tone_text, tone)
@@ -396,7 +438,7 @@ def validate_module_contract() -> None:
 
     assert_condition(RAG_GUARDED_RETRIEVAL_POLICY_ID == EXPECTED_ID, RAG_GUARDED_RETRIEVAL_POLICY_ID)
     write_fixture_inputs()
-    payload = build_guarded_retrieval_policy(TMP_RAG007, TMP_CASE, root=ROOT)
+    payload = build_guarded_retrieval_policy(TMP_REGISTRY, TMP_CASE, root=ROOT)
     report = render_guarded_retrieval_policy_report(payload)
     validate_payload(payload, report)
 
@@ -410,8 +452,8 @@ def validate_runner_contract() -> None:
         [
             sys.executable,
             str(RUNNER),
-            "--rag007-result",
-            str(TMP_RAG007),
+            "--registry",
+            str(TMP_REGISTRY),
             "--case",
             str(TMP_CASE),
             "--out",

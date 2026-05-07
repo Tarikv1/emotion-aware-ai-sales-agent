@@ -1,0 +1,38 @@
+{
+  "voice_delivery_decision_slice_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+  "title": "RAG voice-delivery quote-clearance decision slice",
+  "description": "Accepts the remaining RAG-016A voice/prosody candidates as project-owned advisory-only delivery rules without enabling runtime retrieval.",
+  "accepted_by": "project_owner_current_session",
+  "default_rag016a_result": "research/experiments/generated/RAG-016A-quote-clearance-decision-slice/result.json",
+  "accepted_quote_clearance_chunk_ids": [
+    "rag005-chunk-090",
+    "rag005-chunk-092",
+    "rag005-chunk-093",
+    "rag005-chunk-094",
+    "rag005-chunk-096",
+    "rag005-chunk-100",
+    "rag005-chunk-102",
+    "rag005-chunk-103",
+    "rag005-chunk-104",
+    "rag005-chunk-105",
+    "rag005-chunk-106",
+    "rag005-chunk-107",
+    "rag005-chunk-108",
+    "rag005-chunk-109",
+    "rag005-chunk-111",
+    "rag005-chunk-112",
+    "rag005-chunk-113",
+    "rag005-chunk-115",
+    "rag005-chunk-119"
+  ],
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "RAG-016B accepts only project-owned paraphrases from remaining voice-delivery cards.",
+    "All accepted rules are advisory-only and cannot infer hidden emotion or alter protected text.",
+    "Source-mapping blockers and latent quote follow-ups stay excluded."
+  ]
+}

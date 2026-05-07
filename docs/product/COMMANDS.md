@@ -294,7 +294,7 @@ Validate RAG-007 reviewed paraphrases, selected chunk IDs, pressure-tactic exclu
 python scripts\validate_rag_007_reviewed_first_slice.py
 ```
 
-Run RAG-008 guarded retrieval policy dry-run after RAG-007 creates the reviewed first slice:
+Run RAG-008 guarded retrieval policy dry-run after RAG-017 creates the runtime knowledge registry:
 
 ```powershell
 python scripts\run_rag_008_guarded_retrieval_policy.py
@@ -474,6 +474,36 @@ Validate RAG-016A accepted ethical-persuasion rules, remaining voice-delivery bl
 python scripts\validate_rag_016a_quote_clearance_decision_slice.py
 ```
 
+Run RAG-016B voice-delivery decision slice after RAG-016A:
+
+```powershell
+python scripts\run_rag_016b_voice_delivery_decision_slice.py
+```
+
+Validate RAG-016B accepted voice/prosody advisory-only rules and blocker exclusions:
+
+```powershell
+python scripts\validate_rag_016b_voice_delivery_decision_slice.py
+```
+
+Run RAG-017 runtime knowledge registry after accepted RAG slices through RAG-016B:
+
+```powershell
+python scripts\run_rag_017_runtime_knowledge_registry.py
+```
+
+Validate RAG-017 registry scope, opt-in boundary, and excluded source-mapping blockers:
+
+```powershell
+python scripts\validate_rag_017_runtime_knowledge_registry.py
+```
+
+Validate RAG-018 guarded runtime retrieval integration:
+
+```powershell
+python scripts\validate_rag_018_guarded_runtime_retrieval.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:
@@ -537,6 +567,18 @@ python scripts\generate_guarded_response.py `
   --transcript "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?" `
   --out research\experiments\generated\RESP-001-guarded-response-result.json `
   --report-out research\experiments\generated\RESP-001-guarded-response-report.md
+```
+
+Opt in to local guarded retrieval for the same response path:
+
+```powershell
+python scripts\generate_guarded_response.py `
+  --campaign campaign-prod-005-b2c-telecom `
+  --stage relevance-check `
+  --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
+  --retrieval-enabled `
+  --retrieval-registry research\experiments\generated\RAG-017-runtime-knowledge-registry\result.json `
+  --retrieval-max-results 4
 ```
 
 Generate a runtime voice-delivery packet from the guarded response path:

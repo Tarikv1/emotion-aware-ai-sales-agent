@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-016B through RAG-018 guarded live retrieval
+
+- Objective: finish the remaining voice/prosody RAG review and enable local guarded retrieval as an explicit opt-in runtime path.
+- Action taken: added RAG-016B voice-delivery acceptance, RAG-017 runtime knowledge registry, RAG-018 guarded runtime retrieval validation, and RESP-001 retrieval metadata/CLI integration.
+- Data used: existing accepted RAG artifacts through RAG-016A and local generated review artifacts only. No new sources, NotebookLM API call, LLM call, embedding provider, vector database, TTS/ASR provider call, private customer data, raw audio, API key, or source excerpt text was used.
+- Output created: `docs/product/RAG_016B_VOICE_DELIVERY_DECISION_SLICE.md`, `docs/product/RAG_017_RUNTIME_KNOWLEDGE_REGISTRY.md`, `docs/product/RAG_018_GUARDED_RUNTIME_RETRIEVAL.md`, RAG-016B/RAG-017 generated artifacts, new validators, and guarded-response retrieval flags.
+- What was learned: the remaining `19` voice-delivery candidates can be preserved as advisory-only project-owned rules if hidden-emotion inference, protected-trait inference, pressure escalation, and protected-text changes are hard-blocked. The runtime registry contains `59` accepted items and keeps `58` source-mapping chunks, `43` source-mapping groups, and `21` latent quote follow-ups excluded.
+- Why it matters for the thesis: this creates the first live retrieval path without weakening the safety architecture. Retrieval is local, deterministic, traceable, opt-in, and subordinate to campaign guardrails, refusal handling, protected text, and human escalation.
+- Open questions: which reviewed campaigns should explicitly enable retrieval first, and whether future source-mapping cleanup should expand the registry or remain advisory-only until more live-call evaluation exists.
+
 ### 2026-05-07 - RAG-016A quote-clearance decision slice
 
 - Objective: accept the first RAG-016 quote-clearance decision slice by converting the ethical-persuasion batch into project-owned low-pressure response rules and one rational-agency safety guardrail.

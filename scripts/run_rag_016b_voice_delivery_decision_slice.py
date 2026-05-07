@@ -5,24 +5,27 @@ import argparse
 import json
 from pathlib import Path
 
-from rag_guarded_retrieval_policy import build_guarded_retrieval_policy, render_guarded_retrieval_policy_report
+from rag_voice_delivery_quote_clearance_decision_slice import (
+    build_voice_delivery_decision_slice,
+    render_voice_delivery_decision_slice_report,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_REGISTRY = ROOT / "research" / "experiments" / "generated" / "RAG-017-runtime-knowledge-registry" / "result.json"
-DEFAULT_CASE = ROOT / "research" / "experiments" / "cases" / "rag-008-guarded-retrieval-policy.json"
-DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-008-guarded-retrieval-policy"
+DEFAULT_RAG016A_RESULT = ROOT / "research" / "experiments" / "generated" / "RAG-016A-quote-clearance-decision-slice" / "result.json"
+DEFAULT_CASE = ROOT / "research" / "experiments" / "cases" / "rag-016b-voice-delivery-decision-slice.json"
+DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-016B-voice-delivery-decision-slice"
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "report.md"
 PRIVATE_PATH_PARTS = (("data", "private"), ("data", "private-restricted"))
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Build the RAG-008 guarded retrieval dry-run policy packet.")
-    parser.add_argument("--registry", default=str(DEFAULT_REGISTRY), help="RAG-017 runtime knowledge registry JSON path.")
-    parser.add_argument("--case", default=str(DEFAULT_CASE), help="RAG-008 synthetic case JSON path.")
-    parser.add_argument("--out", default=str(DEFAULT_RESULT), help="Output JSON policy result path.")
-    parser.add_argument("--report-out", default=str(DEFAULT_REPORT), help="Output Markdown policy report path.")
+    parser = argparse.ArgumentParser(description="Build the RAG-016B voice-delivery decision slice.")
+    parser.add_argument("--rag016a-result", default=str(DEFAULT_RAG016A_RESULT), help="RAG-016A decision JSON path.")
+    parser.add_argument("--case", default=str(DEFAULT_CASE), help="RAG-016B case/config JSON path.")
+    parser.add_argument("--out", default=str(DEFAULT_RESULT), help="Output JSON decision slice path.")
+    parser.add_argument("--report-out", default=str(DEFAULT_REPORT), help="Output Markdown report path.")
     return parser.parse_args()
 
 
@@ -43,23 +46,23 @@ def resolve_path(path_value: str) -> Path:
     try:
         resolved.relative_to(root)
     except ValueError as exc:
-        raise ValueError(f"RAG-008 path must stay inside project root: {path_value}") from exc
+        raise ValueError(f"RAG-016B path must stay inside project root: {path_value}") from exc
     if _contains_private_path_parts(resolved):
-        raise ValueError(f"RAG-008 path is restricted: {path_value}")
+        raise ValueError(f"RAG-016B path is restricted: {path_value}")
     return resolved
 
 
 def main() -> None:
     args = parse_args()
-    registry = resolve_path(args.registry)
+    rag016a_result = resolve_path(args.rag016a_result)
     case_path = resolve_path(args.case)
     out_path = resolve_path(args.out)
     report_path = resolve_path(args.report_out)
-    payload = build_guarded_retrieval_policy(registry, case_path, root=ROOT)
+    payload = build_voice_delivery_decision_slice(rag016a_result, case_path, root=ROOT)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    report_path.write_text(render_guarded_retrieval_policy_report(payload), encoding="utf-8")
+    report_path.write_text(render_voice_delivery_decision_slice_report(payload), encoding="utf-8")
     print(json.dumps(payload["summary"], indent=2, ensure_ascii=False))
 
 
