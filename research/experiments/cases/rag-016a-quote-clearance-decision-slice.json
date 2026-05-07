@@ -1,0 +1,34 @@
+{
+  "quote_clearance_decision_slice_id": "RAG-016A-quote-clearance-decision-slice",
+  "title": "RAG quote-clearance decision slice",
+  "description": "Accepts the ethical-persuasion RAG-016 batch as project-owned low-pressure guidance without enabling runtime retrieval.",
+  "recommended_next_checkpoint": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+  "selected_priority_batch": "batch_1_ethical_persuasion_response_wording",
+  "accepted_by": "project_owner_current_session",
+  "default_rag016_result": "research/experiments/generated/RAG-016-quote-clearance-batches/result.json",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "accepted_quote_clearance_chunk_ids": [
+    "rag005-chunk-077",
+    "rag005-chunk-078",
+    "rag005-chunk-079",
+    "rag005-chunk-080",
+    "rag005-chunk-082",
+    "rag005-chunk-083",
+    "rag005-chunk-085",
+    "rag005-chunk-086",
+    "rag005-chunk-087",
+    "rag005-chunk-088",
+    "rag005-chunk-089"
+  ],
+  "rejected_quote_clearance_chunk_ids": [],
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "RAG-016A accepts only project-owned paraphrases from the ethical-persuasion batch.",
+    "Voice-delivery quote-clearance cards remain pending.",
+    "Runtime retrieval remains disabled."
+  ]
+}

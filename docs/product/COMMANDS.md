@@ -456,6 +456,24 @@ Validate RAG-016 quote-clearance chunk counts, ethical-persuasion and voice-deli
 python scripts\validate_rag_016_quote_clearance_batches.py
 ```
 
+Run RAG-016A quote-clearance decision slice after RAG-016 creates the review batches:
+
+```powershell
+python scripts\run_rag_016a_quote_clearance_decision_slice.py
+```
+
+Default RAG-016A output folder:
+
+```text
+research\experiments\generated\RAG-016A-quote-clearance-decision-slice\
+```
+
+Validate RAG-016A accepted ethical-persuasion rules, remaining voice-delivery blockers, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_016a_quote_clearance_decision_slice.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:
