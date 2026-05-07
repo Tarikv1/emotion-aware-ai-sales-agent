@@ -123,9 +123,54 @@ Detailed notes live in `docs/thesis/SPEECH_REALISM_REFERENCES.md`.
 - Type: practitioner/video source pack and RAG extraction source
 - YouTube channel: https://www.youtube.com/@askvinh/videos
 - Official site: https://www.vinhgiang.com/
+- Free resources page: https://www.vinhgiang.com/resources/
+- Channel metadata cross-check: https://vidiq.com/youtube-stats/channel/UC9K9Wnz6t4cLnCdTzAVrXqQ/
 - Project use: imported through NotebookLM as a communication, vocal delivery, pacing, pausing, resonance, concise-response, rapport, and storytelling source pack for RAG voice/response review.
 - Current project status: the NotebookLM report is stored under `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/` and is included in refreshed RAG-003 through RAG-006 outputs.
-- Thesis caution: use as practitioner training material, not academic evidence. Exact per-video URLs and publication metadata still need review before final citation.
+- Thesis caution: use as practitioner training material, not academic evidence. No transcript text or video wording should be copied into runtime or thesis prose without separate quote clearance.
+
+Per-video metadata reviewed on 2026-05-07:
+
+- "10 Communication Skills That Will Make You Rich!" - YouTube: https://www.youtube.com/watch?v=uZRMykRmJRg - published 2025-11-14.
+- "10 Speaking Techniques That Made Me A Top 1% Speaker" - YouTube: https://www.youtube.com/watch?v=TbB7hSBVKDM - published 2025-10-24.
+- "13 Years of Communication Skills Knowledge in 53 minutes" - YouTube: https://www.youtube.com/watch?v=g0kzHjmvuYQ - published 2024-11-13.
+- "2 Steps To Have Better Conversations" - YouTube: https://www.youtube.com/watch?v=fzW_vPrluU0 - published 2024-01-05.
+- "3 Powerful Ways To Tell Stories Without Boring People" - YouTube: https://www.youtube.com/watch?v=xJBLuSHpPL0 - published 2024-05-15.
+- "30 Day Plan to Master Your Communication [Complete Beginner's Guide] + FREE Workbook PDF" - YouTube: https://www.youtube.com/watch?v=U40qvUiefQo - published 2025-05-28.
+- "33 Minutes Of Communication Skills Advice I Wish I Knew In My 20s" - YouTube: https://www.youtube.com/watch?v=DOdcGwUQvJM - published 2024-09-20.
+- "43 minutes straight of SOLID communication skills advice" - YouTube: https://www.youtube.com/watch?v=6-shbSFc48E - published 2024-08-07.
+- "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else" - YouTube: https://www.youtube.com/watch?v=PY-QiUZBFlw - published 2025-06-26.
+- "5 communication hacks that will dramatically improve your confidence!" - YouTube: https://www.youtube.com/watch?v=8_-ZaOKBB9Y - published 2025-05-14.
+- "7 Communication Cheat Codes To Speak Like A Pro!" - YouTube: https://www.youtube.com/watch?v=CBbapaz9v2E - published 2025-12-05.
+- "7 POWERFUL Storytelling Secrets to Level Up Your Communication Skills" - YouTube: https://www.youtube.com/watch?v=YzbzIzgvRLY - published 2024-10-31.
+- "9 Habits for Clearer Speaking (I Wish I Knew Sooner)" - metadata cross-check pending exact watch URL; channel cross-check lists this title as published through the Vinh Giang channel.
+- "Communication Is Hard Until You Structure Your Thinking First!" - YouTube: https://www.youtube.com/watch?v=WVxCGgmmOmY - published 2026-02-20.
+- "EASY 3-Step Exercise To INSTANTLY Improve Your Articulation!" - YouTube: https://www.youtube.com/watch?v=S5f0FKhPax0 - published 2024-08-12.
+- "Give me 14 minutes and I'll help you think & speak faster" - YouTube: https://www.youtube.com/watch?v=DN5OnGxSWuY - published 2025-02-05.
+- "How To Build Rapport FAST And Skip The Boring Small Talk" - YouTube: https://www.youtube.com/watch?v=B3plIDYxCbo - published 2025-03-26.
+- "How To Change Your Communication Style Without Judgement From Others!" - metadata cross-check pending exact watch URL.
+- "How To Make A Strong First Impression (That Lasts)" - YouTube: https://www.youtube.com/watch?v=YPnbERnTCkI - published 2026-04-03.
+- "How To Move From Small Talk To Deep Conversation (#AskVinh Q&A Ep. 5)" - YouTube: https://www.youtube.com/watch?v=Nv6p-l60gxI - published 2024-03-20.
+- "How to AVOID awkward small talk" - YouTube: https://www.youtube.com/watch?v=B7rQmzXj6tc - published 2024-02-05.
+- "How to Answer Unexpected Questions Calmly & Confidently (In ANY Situation!)" - YouTube: https://www.youtube.com/watch?v=_NY-Mw97UsU - published 2024-05-29.
+- "How to Build INSTANT Rapport With Strangers!" - YouTube: https://www.youtube.com/watch?v=V6hHNh97FIs - published 2025-07-30.
+- "How to Communicate Effectively During Arguments (Without Making it Worse!)" - YouTube: https://www.youtube.com/watch?v=jMG6Q0MGdMc - published 2024-12-12.
+- "How to Force Yourself To Speak Coherently" - YouTube: https://www.youtube.com/watch?v=aUBPWT-D5_U - published 2025-08-07.
+- "How to Talk to ANYONE (Once You Know Their Color!)" - YouTube: https://www.youtube.com/watch?v=ikbcrpowlIs - published 2025-09-12.
+- "How to Trick Your Brain Into Speaking Better INSTANTLY!" - YouTube: https://www.youtube.com/watch?v=VrUBS3xX0s4 - published 2025-10-10.
+- "How to Turn That Difficult Conversation You Need to Have on EASY Mode" - metadata cross-check pending exact watch URL; podcast metadata lists a corresponding Public Speaking Foundations item dated 2025-07-10.
+- "Listen to this if you want to level up your communication skills in 2026..." - YouTube: https://www.youtube.com/watch?v=LI57EB_T38c - published 2025-02-20.
+- "Never Tell Stories Like This..." - metadata cross-check pending exact watch URL; current channel mirrors list this title but no verified watch URL was resolved during this pass.
+- "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day" - YouTube: https://www.youtube.com/watch?v=BEuwA7Cbbuc - published 2025-03-05.
+- "Speak Better Than 99% of People (Everything You Need To Know)" - metadata cross-check pending exact watch URL; title may differ from the current public YouTube title.
+- "Speaking Is Hard Until You Understand This!" - YouTube: https://www.youtube.com/watch?v=QNsvsnkUOL0 - published 2026-02-13.
+- "The 3-2-1 Speaking Trick That Forces You To Stop Rambling!" - YouTube: https://www.youtube.com/watch?v=5m-C5mwpmxU - published 2025-04-24.
+- "The Laziest Way To Be A Top 1% Communicator" - YouTube: https://www.youtube.com/watch?v=IMslBEcYXhk - published 2025-11-21.
+- "The ONLY 3 Ingredients You Need To Be A Better Storyteller!" - YouTube: https://www.youtube.com/watch?v=5HfeNDleTS4 - published 2025-10-03.
+- "The Only 8 Minutes You Need To Become A Better Communicator" - metadata cross-check pending exact watch URL; channel metadata lists this title as published 2026-04-10.
+- "The Only Video You Need To Fix Your Communication Skills" - metadata cross-check pending exact watch URL; podcast/search metadata lists a corresponding item dated 2026-02-06.
+- "Watch This If You Hate Small Talk" - metadata cross-check pending exact watch URL.
+- "Why Nobody Listens To You (and how to fix it)" - YouTube: https://www.youtube.com/watch?v=QBXLNEMv5so - published 2025-08-14.
 
 Core references:
 

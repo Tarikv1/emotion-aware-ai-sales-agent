@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - Vinh/AskVinh per-video source metadata cleanup
+
+- Objective: replace the prior title-only Vinh/AskVinh RAG source caveat with explicit per-video metadata where public search could verify it.
+- Action taken: compared the `40` titles in the imported Vinh Giang NotebookLM report against public YouTube/search metadata, added verified watch URLs and publication dates to the thesis reference registry, and marked unresolved title-only items explicitly instead of treating them as verified.
+- Data used: public YouTube/search metadata, Vinh Giang official channel/resources pages, and existing local RAG import metadata. No transcript text, video downloads, private data, provider calls, or runtime retrieval changes were used.
+- Output created: expanded Vinh/AskVinh section in `docs/thesis/THESIS_REFERENCE_REGISTRY.md`.
+- What was learned: most imported Vinh RAG titles can be tied to concrete watch URLs, but several titles either changed, are not indexed cleanly, or appear only through podcast/channel mirrors. Those should remain title-only pending exact watch URL confirmation.
+- Why it matters for the thesis: this improves provenance for practitioner-source RAG claims while preserving the boundary that Vinh material is communication-training inspiration, not academic evidence or copied runtime wording.
+- Open questions: whether to use a YouTube metadata tool/API later to resolve the remaining pending titles without relying on search snippets or third-party transcript mirrors.
+
 ### 2026-05-07 - RAG-019 sales communication source expansion
 
 - Objective: add a broader public-source sales communication layer to the guarded RAG without copying scripts or enabling unreviewed retrieval.
