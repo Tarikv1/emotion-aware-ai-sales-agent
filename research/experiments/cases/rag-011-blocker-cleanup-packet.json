@@ -1,0 +1,21 @@
+{
+  "blocker_cleanup_packet_id": "RAG-011-blocker-cleanup-packet",
+  "title": "RAG blocker cleanup packet",
+  "description": "Creates human-review cleanup proposals for source-mapping and quote-clearance blockers without reclassifying chunks or enabling runtime retrieval.",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "default_rag006_packet": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+  "min_source_suggestion_score": 0.55,
+  "max_quote_clearance_cards": 12,
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "Source mapping proposals require human acceptance before any later reclassification.",
+    "Quote-clearance cards require project-owned paraphrases or remain blocked.",
+    "This checkpoint does not resolve blockers by itself.",
+    "It does not import chunks into runtime memory or enable retrieval.",
+    "A later runtime integration gate is required before any runtime use."
+  ]
+}
