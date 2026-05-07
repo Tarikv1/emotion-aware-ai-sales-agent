@@ -1,0 +1,35 @@
+{
+  "reviewed_expansion_slice_id": "RAG-010-reviewed-expansion-slice",
+  "title": "Reviewed RAG expansion slice",
+  "description": "Manually reviews the four clean RAG-009 next-promotion candidates into project-owned paraphrases without runtime retrieval.",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "manual_review_gate": {
+    "selected_from_rag009_next_promotion_candidates_only": true,
+    "quote_queue_candidates_allowed": false,
+    "quote_clearance_resolution": "not_required_clean_rag009_candidate",
+    "source_excerpt_text_copied": false,
+    "runtime_use_allowed": false
+  },
+  "selected_chunk_ids": [
+    "rag005-chunk-029",
+    "rag005-chunk-030",
+    "rag005-chunk-031",
+    "rag005-chunk-036"
+  ],
+  "selected_lanes": [
+    "response_wording",
+    "voice_delivery"
+  ],
+  "notes": [
+    "This checkpoint reviews clean RAG-009 next-promotion candidates only.",
+    "Operational impact, so-what, and deadline qualification guidance must stay low-pressure and evidence-seeking.",
+    "Cadence detection is retained only as weak advisory delivery context, not emotion inference.",
+    "It does not import chunks into runtime memory or enable retrieval.",
+    "A later runtime integration gate is required before any runtime use."
+  ]
+}
