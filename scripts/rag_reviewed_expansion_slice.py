@@ -113,17 +113,26 @@ def _selected_chunk_ids_from_case(case_config: dict[str, Any]) -> list[str]:
 
 
 def _candidate_rows(rag009_payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    coverage_rows: dict[str, dict[str, Any]] = {}
+    for candidate in rag009_payload.get("chunk_coverage", []):
+        chunk_id = str(candidate.get("chunk_id", "")).strip()
+        if chunk_id:
+            coverage_rows[chunk_id] = dict(candidate)
+
     rows: dict[str, dict[str, Any]] = {}
     for candidate in rag009_payload.get("next_promotion_candidates", []):
         chunk_id = str(candidate.get("chunk_id", "")).strip()
         if chunk_id:
-            rows[chunk_id] = dict(candidate)
+            row = dict(coverage_rows.get(chunk_id, candidate))
+            row["listed_as_next_promotion_candidate"] = True
+            rows[chunk_id] = row
     if rows:
         return rows
-    for candidate in rag009_payload.get("chunk_coverage", []):
-        chunk_id = str(candidate.get("chunk_id", "")).strip()
-        if chunk_id and candidate.get("status") == "candidate_next_manual_review":
-            rows[chunk_id] = dict(candidate)
+    for chunk_id, candidate in coverage_rows.items():
+        if candidate.get("status") == "candidate_next_manual_review":
+            row = dict(candidate)
+            row["listed_as_next_promotion_candidate"] = True
+            rows[chunk_id] = row
     return rows
 
 

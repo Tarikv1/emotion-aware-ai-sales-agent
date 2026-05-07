@@ -91,6 +91,18 @@ def write_fixture_inputs() -> dict[str, Path]:
             voice_or_prosody_advisory_only=True,
         ),
     ]
+    compact_candidates = [
+        {
+            "chunk_id": candidate["chunk_id"],
+            "source_ids": candidate["source_ids"],
+            "topic_ids": candidate["topic_ids"],
+            "principle": candidate["principle"],
+            "application": candidate["application"],
+            "voice_or_prosody_advisory_only": candidate["voice_or_prosody_advisory_only"],
+            "runtime_use_allowed": False,
+        }
+        for candidate in candidates
+    ]
     rag009 = {
         "review_coverage_id": "RAG-009-all-source-review-coverage",
         "summary": {
@@ -107,7 +119,7 @@ def write_fixture_inputs() -> dict[str, Path]:
             "reads_data_private": False,
             "source_excerpt_text_stored": False,
         },
-        "next_promotion_candidates": candidates,
+        "next_promotion_candidates": compact_candidates,
         "chunk_coverage": candidates,
     }
     case = {
