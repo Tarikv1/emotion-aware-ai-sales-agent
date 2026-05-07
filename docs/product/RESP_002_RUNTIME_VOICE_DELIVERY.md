@@ -32,6 +32,7 @@ The output keeps all RESP-001 fields and adds:
 
 ```text
 runtime_voice_delivery_id
+voice_delivery.core_delivery_pack
 voice_delivery.segments
 voice_delivery.spoken_segments
 voice_delivery.realistic_segments
@@ -79,6 +80,12 @@ Protected from prosody:
 - required disclosures
 - campaign qualification questions
 - company-provided scripts
+
+## Core Delivery Pack
+
+RESP-002 attaches the core delivery intelligence pack metadata. The pack improves provider-facing speech planning while keeping `final_response` unchanged.
+
+The pack allows observable empathy and delivery shaping. It blocks hidden emotional certainty claims and protected text rewrites.
 
 ## Provider Policy
 

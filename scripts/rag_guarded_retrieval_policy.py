@@ -192,6 +192,17 @@ def retrieve_for_case(case: dict[str, Any], items: list[dict[str, Any]], max_res
     case_id = str(case.get("case_id", ""))
     lane_filter = str(case.get("lane_filter", "any"))
     context_flags = [str(flag) for flag in case.get("context_flags", []) if flag]
+    min_score = int(case.get("min_score", 1))
+    allowed_source_artifact_ids = {
+        str(value)
+        for value in case.get("allowed_source_artifact_ids", [])
+        if str(value).strip()
+    }
+    allowed_lanes = {
+        str(value)
+        for value in case.get("allowed_lanes", [])
+        if str(value).strip()
+    }
     block_reason = first_block_reason(context_flags)
     if block_reason:
         return {
@@ -201,16 +212,33 @@ def retrieve_for_case(case: dict[str, Any], items: list[dict[str, Any]], max_res
             "retrieval_decision": "blocked",
             "block_reason": block_reason,
             "retrieved_items": [],
+            "rejected_items": [],
         }
 
     query_tokens = tokens(str(case.get("query", "")))
     scored: list[tuple[int, str, dict[str, Any]]] = []
+    rejected_items: list[dict[str, Any]] = []
     for item in items:
-        if not lane_allowed(str(item.get("lane", "")), lane_filter):
+        item_lane = str(item.get("lane", ""))
+        item_artifact = str(item.get("source_artifact_id", ""))
+        if not lane_allowed(item_lane, lane_filter):
+            continue
+        if allowed_lanes and item_lane not in allowed_lanes:
+            rejected_items.append({"knowledge_id": item.get("knowledge_id"), "reason": "lane_not_allowed", "lane": item_lane})
+            continue
+        if allowed_source_artifact_ids and item_artifact not in allowed_source_artifact_ids:
+            rejected_items.append(
+                {
+                    "knowledge_id": item.get("knowledge_id"),
+                    "reason": "source_artifact_not_allowed",
+                    "source_artifact_id": item_artifact,
+                }
+            )
             continue
         item_tokens = tokens(searchable_text(item))
         score = len(query_tokens & item_tokens)
-        if score <= 0:
+        if score < min_score:
+            rejected_items.append({"knowledge_id": item.get("knowledge_id"), "reason": "below_min_score", "match_score": score})
             continue
         candidate = build_candidate(item, query_tokens, item_tokens, score)
         scored.append((score, str(item.get("knowledge_id", "")), candidate))
@@ -224,6 +252,12 @@ def retrieve_for_case(case: dict[str, Any], items: list[dict[str, Any]], max_res
         "retrieval_decision": "candidate_packet_created" if retrieved_items else "no_match",
         "block_reason": "",
         "retrieved_items": retrieved_items,
+        "rejected_items": rejected_items[:20],
+        "relevance_gate": {
+            "min_score": min_score,
+            "allowed_lanes": sorted(allowed_lanes),
+            "allowed_source_artifact_ids": sorted(allowed_source_artifact_ids),
+        },
     }
 
 

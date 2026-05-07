@@ -14,11 +14,26 @@ RAG-017 may include the RAG-019 public sales communication source expansion afte
 --retrieval-enabled
 --retrieval-registry <path-to-rag-017-result.json>
 --retrieval-max-results <n>
+--retrieval-min-score <n>
+--retrieval-target-latency-ms <n>
+--retrieval-acceptable-latency-ms <n>
 ```
 
 When retrieval is disabled, the output still includes retrieval metadata with `enabled=false` and `retrieval_used_in_runtime=false`.
 
 When retrieval is enabled, advisory items may influence response metadata and hints only if the guarded response passes validation and the context is not blocked.
+
+## Retrieval Timing And Gates
+
+Live retrieval runs before candidate response composition only when `--retrieval-enabled` is set.
+
+Latency budget:
+
+- target: under 150 ms
+- acceptable: under 300 ms
+- fallback: skip retrieval and use the core playbook, or use a short stall-for-time bridge only when the call state allows it
+
+Retrieved hints are used only when they pass the configured relevance threshold and campaign/source gate. Campaign facts, product facts, pricing, discounts, compliance text, allowed claims, forbidden claims, and client scripts override generic RAG advice.
 
 ## Hard Blocks
 

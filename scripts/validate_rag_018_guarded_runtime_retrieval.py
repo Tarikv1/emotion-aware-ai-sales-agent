@@ -90,6 +90,37 @@ def main() -> None:
     assert_condition(retrieval["retrieved_item_ids"], retrieval)
     assert_condition(retrieval["citation_trace"], retrieval)
     assert_condition(enabled_payload["validation"]["passed"] is True, enabled_payload["validation"])
+    assert_condition("latency" in retrieval, retrieval)
+    assert_condition(retrieval["latency"]["target_ms"] == 150, retrieval["latency"])
+    assert_condition(retrieval["latency"]["acceptable_ms"] == 300, retrieval["latency"])
+    assert_condition(retrieval["latency"]["elapsed_ms"] < 300, retrieval["latency"])
+    assert_condition(retrieval["relevance_gate"]["min_score"] >= 1, retrieval["relevance_gate"])
+    assert_condition(all(item["match_score"] >= retrieval["relevance_gate"]["min_score"] for item in retrieval["advisory_hints"]), retrieval)
+    assert_condition(retrieval["campaign_fact_grounding"]["campaign_facts_override_rag"] is True, retrieval)
+
+    high_threshold_run = run_command(
+        [
+            sys.executable,
+            str(GUARDED_RESPONSE),
+            "--campaign",
+            "campaign-prod-005-b2c-telecom",
+            "--stage",
+            "relevance-check",
+            "--transcript",
+            "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+            "--cases",
+            str(CASES_PATH),
+            "--retrieval-enabled",
+            "--retrieval-registry",
+            str(REGISTRY_PATH),
+            "--retrieval-min-score",
+            "99",
+        ]
+    )
+    assert_condition(high_threshold_run.returncode == 0, high_threshold_run.stderr)
+    high_threshold_payload = parse_stdout_json(high_threshold_run)
+    assert_condition(high_threshold_payload["retrieval"]["status"] == "no_match", high_threshold_payload["retrieval"])
+    assert_condition(high_threshold_payload["retrieval"]["retrieval_used_in_runtime"] is False, high_threshold_payload["retrieval"])
 
     blocked_run = run_command(
         [

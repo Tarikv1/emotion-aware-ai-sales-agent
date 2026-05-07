@@ -576,6 +576,13 @@ python scripts\run_realtime_turn_simulation.py `
 
 ## Guarded Response And Voice Safety
 
+Build and validate the core sales delivery playbook:
+
+```powershell
+python scripts\run_core_sales_delivery_playbook.py
+python scripts\validate_core_sales_delivery_playbook.py
+```
+
 Generate a guarded response packet from the realtime decision path:
 
 ```powershell
@@ -596,7 +603,10 @@ python scripts\generate_guarded_response.py `
   --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
   --retrieval-enabled `
   --retrieval-registry research\experiments\generated\RAG-017-runtime-knowledge-registry\result.json `
-  --retrieval-max-results 4
+  --retrieval-max-results 4 `
+  --retrieval-min-score 1 `
+  --retrieval-target-latency-ms 150 `
+  --retrieval-acceptable-latency-ms 300
 ```
 
 Generate a runtime voice-delivery packet from the guarded response path:
@@ -614,6 +624,12 @@ Validate RESP-002 guarded response voice delivery:
 
 ```powershell
 python scripts\validate_resp_002_runtime_voice_delivery.py
+```
+
+Validate the 200-note call pattern learning checkpoint:
+
+```powershell
+python scripts\validate_call_pattern_learning_checkpoint.py
 ```
 
 Generate a runtime TTS-delivery packet in dry-run mode:

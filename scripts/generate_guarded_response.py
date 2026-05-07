@@ -4,6 +4,7 @@ import json
 import time
 from pathlib import Path
 
+from core_sales_delivery_playbook import build_core_sales_delivery_pack
 from rag_guarded_retrieval_policy import (
     BLOCKING_CONTEXT_FLAGS,
     load_json as load_retrieval_json,
@@ -19,6 +20,9 @@ DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "prod-005-rea
 RESPONSE_GENERATION_ID = "RESP-001-local-guarded"
 PROVIDER = "local-guarded-composer"
 DEFAULT_RETRIEVAL_REGISTRY = ROOT / "research" / "experiments" / "generated" / "RAG-017-runtime-knowledge-registry" / "result.json"
+DEFAULT_RETRIEVAL_TARGET_MS = 150
+DEFAULT_RETRIEVAL_ACCEPTABLE_MS = 300
+DEFAULT_RETRIEVAL_MIN_SCORE = 1
 
 UNIVERSAL_FORBIDDEN_CLAIMS = [
     "guarantee",
@@ -79,6 +83,20 @@ def build_guardrails(campaign: dict) -> dict:
     }
 
 
+def build_campaign_fact_grounding(campaign: dict) -> dict:
+    return {
+        "campaign_facts_override_rag": True,
+        "campaign_id": campaign.get("campaign_id"),
+        "product_name": campaign.get("product_name"),
+        "allowed_claims": campaign.get("allowed_claims", []),
+        "forbidden_claims": campaign.get("forbidden_claims", []),
+        "required_disclosures": campaign.get("required_disclosures", []),
+        "discount_terms": campaign.get("discount_terms", []),
+        "deadline_terms": campaign.get("deadline_terms", []),
+        "conflict_rule": "If RAG advice conflicts with campaign facts, ignore the RAG hint.",
+    }
+
+
 def campaign_summary(campaign: dict) -> dict:
     return {
         "campaign_id": campaign.get("campaign_id"),
@@ -107,7 +125,18 @@ def signal_reference(decision: dict) -> str:
     return references.get(difficulty, "the concern")
 
 
-def compose_german_candidate_response(decision: dict, campaign: dict, transcript: str) -> str:
+def hint_mentions(hints: list[dict] | None, *needles: str) -> bool:
+    text = json.dumps(hints or [], ensure_ascii=False).lower()
+    return any(needle.lower() in text for needle in needles)
+
+
+def compose_german_candidate_response(
+    decision: dict,
+    campaign: dict,
+    transcript: str,
+    core_pack: dict | None = None,
+    advisory_hints: list[dict] | None = None,
+) -> str:
     difficulty = decision.get("sales_difficulty")
     next_action = decision.get("next_action")
     handoff_role = "Spezialisten"
@@ -119,6 +148,11 @@ def compose_german_candidate_response(decision: dict, campaign: dict, transcript
         )
 
     if difficulty == "price-objection":
+        if hint_mentions(advisory_hints, "freedom", "pause", "compare", "objection"):
+            return (
+                "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen "
+                "oder darum, ob sich der Aufwand lohnt?"
+            )
         return (
             "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen "
             "oder darum, ob sich der Aufwand lohnt?"
@@ -184,9 +218,21 @@ def compose_unknown_follow_up(transcript: str) -> str:
     return "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
 
 
-def compose_candidate_response(decision: dict, campaign: dict, transcript: str) -> str:
+def compose_candidate_response(
+    decision: dict,
+    campaign: dict,
+    transcript: str,
+    core_pack: dict | None = None,
+    advisory_hints: list[dict] | None = None,
+) -> str:
     if normalize_response_language(campaign.get("language")) == "de":
-        return compose_german_candidate_response(decision, campaign, transcript)
+        return compose_german_candidate_response(
+            decision,
+            campaign,
+            transcript,
+            core_pack=core_pack,
+            advisory_hints=advisory_hints,
+        )
 
     difficulty = decision.get("sales_difficulty")
     next_action = decision.get("next_action")
@@ -199,6 +245,11 @@ def compose_candidate_response(decision: dict, campaign: dict, transcript: str) 
         )
 
     if difficulty == "price-objection":
+        if hint_mentions(advisory_hints, "freedom", "pause", "compare", "objection"):
+            return (
+                "That makes sense. Is your bigger concern the monthly price, the contract terms, "
+                "or whether reviewing options is worth your time?"
+            )
         return (
             "That makes sense. Is your bigger concern the monthly price, the contract terms, "
             "or whether reviewing options is worth your time?"
@@ -266,13 +317,25 @@ def disabled_retrieval_packet() -> dict:
         "enabled": False,
         "status": "disabled",
         "blocked_reason": "retrieval_not_enabled",
+        "retrieval_decision": "disabled",
+        "retrieval_position": "not_run",
         "retrieval_used_in_runtime": False,
         "influenced_response": False,
         "retrieved_item_ids": [],
         "citation_trace": [],
         "advisory_hints": [],
+        "rejected_items": [],
+        "relevance_gate": {"min_score": DEFAULT_RETRIEVAL_MIN_SCORE},
+        "campaign_fact_grounding": {"campaign_facts_override_rag": True},
+        "used_hint_count": 0,
         "max_results": 0,
         "registry_path": "",
+        "context_flags": [],
+        "latency": {
+            "target_ms": DEFAULT_RETRIEVAL_TARGET_MS,
+            "acceptable_ms": DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
+            "elapsed_ms": 0,
+        },
     }
 
 
@@ -321,6 +384,7 @@ def summarize_retrieval_items(items: list[dict]) -> list[dict]:
                 "lane": item["lane"],
                 "hint": item.get("project_rule", ""),
                 "guardrail": item.get("guardrail_notes", ""),
+                "match_score": item.get("match_score", 0),
                 "voice_delivery_advisory_only": item.get("voice_delivery_advisory_only", False),
             }
         )
@@ -332,10 +396,13 @@ def build_retrieval_packet(
     enabled: bool,
     registry_path: Path | None,
     max_results: int,
+    min_score: int,
+    target_ms: int,
+    acceptable_ms: int,
     decision: dict,
     transcript: str,
-    candidate_response: str,
-    validation: dict,
+    query_text: str,
+    campaign_fact_grounding: dict,
 ) -> dict:
     if not enabled:
         return disabled_retrieval_packet()
@@ -344,16 +411,22 @@ def build_retrieval_packet(
         packet.update({"enabled": True, "status": "blocked", "blocked_reason": "missing_registry_path"})
         return packet
 
+    retrieval_start = time.perf_counter()
     flags = retrieval_context_flags(decision, transcript)
     case = {
         "case_id": "guarded-response-runtime",
-        "query": retrieval_query(decision, transcript, candidate_response),
+        "query": retrieval_query(decision, transcript, query_text),
         "lane_filter": "any",
         "context_flags": flags,
+        "min_score": min_score,
+        "allowed_lanes": ["response_wording", "ethical_persuasion", "voice_delivery"],
     }
     registry_payload = load_retrieval_json(registry_path)
     registry_items = validate_registry_payload(registry_payload)
     result = retrieve_for_case(case, registry_items, max_results)
+    elapsed_ms = int((time.perf_counter() - retrieval_start) * 1000)
+    if elapsed_ms > acceptable_ms and result["retrieval_decision"] != "blocked":
+        result = {**result, "retrieval_decision": "latency_fallback", "retrieved_items": []}
     retrieved_items = result["retrieved_items"]
     retrieved_item_ids = [item["knowledge_id"] for item in retrieved_items]
     citation_trace = [
@@ -364,35 +437,52 @@ def build_retrieval_packet(
 
     if result["retrieval_decision"] == "blocked":
         status = "blocked"
-        used = False
-        influenced = False
+    elif result["retrieval_decision"] == "latency_fallback":
+        status = "latency_fallback"
     elif not retrieved_items:
         status = "no_match"
-        used = False
-        influenced = False
-    elif validation["fallback_used"]:
-        status = "retrieved_not_used"
-        used = False
-        influenced = False
     else:
-        status = "influenced"
-        used = True
-        influenced = True
+        status = "retrieved"
 
     return {
         "enabled": True,
         "status": status,
         "blocked_reason": result.get("block_reason", ""),
         "retrieval_decision": result["retrieval_decision"],
-        "retrieval_used_in_runtime": used,
-        "influenced_response": influenced,
-        "retrieved_item_ids": retrieved_item_ids if used else ([] if status == "blocked" else retrieved_item_ids),
-        "citation_trace": citation_trace if used else ([] if status == "blocked" else citation_trace),
-        "advisory_hints": summarize_retrieval_items(retrieved_items) if used else [],
+        "retrieval_position": "before_candidate_composition",
+        "retrieval_used_in_runtime": False,
+        "influenced_response": False,
+        "retrieved_item_ids": retrieved_item_ids if status != "blocked" else [],
+        "citation_trace": citation_trace if status != "blocked" else [],
+        "advisory_hints": summarize_retrieval_items(retrieved_items) if status == "retrieved" else [],
+        "rejected_items": result.get("rejected_items", []),
+        "relevance_gate": result.get("relevance_gate", {"min_score": min_score}),
+        "campaign_fact_grounding": campaign_fact_grounding,
+        "used_hint_count": 0,
         "max_results": max_results,
         "registry_path": str(registry_path),
         "context_flags": flags,
+        "latency": {"target_ms": target_ms, "acceptable_ms": acceptable_ms, "elapsed_ms": elapsed_ms},
     }
+
+
+def finalize_retrieval_packet(retrieval: dict, validation: dict, candidate_response: str, policy_response: str) -> dict:
+    finalized = dict(retrieval)
+    used = (
+        finalized.get("enabled") is True
+        and finalized.get("status") == "retrieved"
+        and validation["fallback_used"] is False
+        and bool(finalized.get("advisory_hints"))
+        and candidate_response != policy_response
+    )
+    finalized["retrieval_used_in_runtime"] = used
+    finalized["influenced_response"] = used
+    finalized["used_hint_count"] = len(finalized.get("advisory_hints", [])) if used else 0
+    if used:
+        finalized["status"] = "influenced"
+    elif finalized.get("status") == "retrieved":
+        finalized["status"] = "retrieved_not_used"
+    return finalized
 
 
 def build_guarded_response_packet(
@@ -405,6 +495,9 @@ def build_guarded_response_packet(
     retrieval_enabled: bool = False,
     retrieval_registry_path: Path | None = None,
     retrieval_max_results: int = 3,
+    retrieval_min_score: int = DEFAULT_RETRIEVAL_MIN_SCORE,
+    retrieval_target_latency_ms: int = DEFAULT_RETRIEVAL_TARGET_MS,
+    retrieval_acceptable_latency_ms: int = DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
 ) -> dict:
     case = build_turn_case(campaign["campaign_id"], stage, transcript, input_type, silence_count)
     decision = run_turn_decision(case, campaign)
@@ -419,6 +512,9 @@ def build_guarded_response_packet(
         retrieval_enabled=retrieval_enabled,
         retrieval_registry_path=retrieval_registry_path,
         retrieval_max_results=retrieval_max_results,
+        retrieval_min_score=retrieval_min_score,
+        retrieval_target_latency_ms=retrieval_target_latency_ms,
+        retrieval_acceptable_latency_ms=retrieval_acceptable_latency_ms,
     )
 
 
@@ -433,23 +529,38 @@ def apply_guarded_response_to_decision(
     retrieval_enabled: bool = False,
     retrieval_registry_path: Path | None = None,
     retrieval_max_results: int = 3,
+    retrieval_min_score: int = DEFAULT_RETRIEVAL_MIN_SCORE,
+    retrieval_target_latency_ms: int = DEFAULT_RETRIEVAL_TARGET_MS,
+    retrieval_acceptable_latency_ms: int = DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
 ) -> dict:
     policy_response = decision["agent_response"]
     guardrails = build_guardrails(campaign)
 
     generation_start = time.perf_counter()
-    candidate_response = candidate_response_override or compose_candidate_response(decision, campaign, transcript)
-    validation = validate_candidate_response(candidate_response, guardrails)
-    final_response = policy_response if validation["fallback_used"] else candidate_response
+    core_pack = build_core_sales_delivery_pack()
+    campaign_fact_grounding = build_campaign_fact_grounding(campaign)
     retrieval = build_retrieval_packet(
         enabled=retrieval_enabled,
         registry_path=retrieval_registry_path,
         max_results=retrieval_max_results,
+        min_score=retrieval_min_score,
+        target_ms=retrieval_target_latency_ms,
+        acceptable_ms=retrieval_acceptable_latency_ms,
         decision=decision,
         transcript=transcript,
-        candidate_response=candidate_response,
-        validation=validation,
+        query_text=policy_response,
+        campaign_fact_grounding=campaign_fact_grounding,
     )
+    candidate_response = candidate_response_override or compose_candidate_response(
+        decision,
+        campaign,
+        transcript,
+        core_pack=core_pack,
+        advisory_hints=retrieval.get("advisory_hints", []),
+    )
+    validation = validate_candidate_response(candidate_response, guardrails)
+    final_response = policy_response if validation["fallback_used"] else candidate_response
+    retrieval = finalize_retrieval_packet(retrieval, validation, candidate_response, policy_response)
     generation_latency_ms = int((time.perf_counter() - generation_start) * 1000)
 
     return {
@@ -468,6 +579,12 @@ def apply_guarded_response_to_decision(
         "final_response": final_response,
         "validation": validation,
         "retrieval": retrieval,
+        "core_pack": {
+            "core_pack_id": core_pack["core_pack_id"],
+            "campaign_facts_override_rag": core_pack["campaign_facts_override_rag"],
+            "ethical_persuasion_allowed": core_pack["persuasion_boundary"]["ethical_persuasion_allowed"],
+            "hidden_state_certainty_allowed": core_pack["emotion_boundary"]["hidden_state_certainty_allowed"],
+        },
         "guardrails": guardrails,
         "decision_snapshot": {
             "response_mode": decision.get("response_mode"),
@@ -565,6 +682,19 @@ def parse_args() -> argparse.Namespace:
         help="RAG-017 runtime knowledge registry JSON path.",
     )
     parser.add_argument("--retrieval-max-results", type=int, default=3, help="Maximum advisory retrieval items.")
+    parser.add_argument("--retrieval-min-score", type=int, default=DEFAULT_RETRIEVAL_MIN_SCORE, help="Minimum deterministic retrieval match score.")
+    parser.add_argument(
+        "--retrieval-target-latency-ms",
+        type=int,
+        default=DEFAULT_RETRIEVAL_TARGET_MS,
+        help="Target live retrieval latency budget.",
+    )
+    parser.add_argument(
+        "--retrieval-acceptable-latency-ms",
+        type=int,
+        default=DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
+        help="Acceptable live retrieval latency ceiling before fallback.",
+    )
     parser.add_argument("--out", help="Optional path to write JSON output.")
     parser.add_argument("--report-out", help="Optional path to write a Markdown report.")
     return parser.parse_args()
@@ -587,6 +717,9 @@ def main() -> None:
         retrieval_enabled=args.retrieval_enabled,
         retrieval_registry_path=retrieval_registry,
         retrieval_max_results=args.retrieval_max_results,
+        retrieval_min_score=args.retrieval_min_score,
+        retrieval_target_latency_ms=args.retrieval_target_latency_ms,
+        retrieval_acceptable_latency_ms=args.retrieval_acceptable_latency_ms,
     )
 
     out_path = resolve_project_path(args.out)

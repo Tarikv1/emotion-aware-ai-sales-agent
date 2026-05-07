@@ -4,6 +4,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
+from core_sales_delivery_playbook import build_core_sales_delivery_pack
 from prosody_naturalness import apply_prosody_naturalness
 from provider_prosody_rendering import render_provider_variant, validate_variant
 from speech_imperfections import apply_speech_imperfections
@@ -60,6 +61,18 @@ FREEFORM_DIFFICULTIES = {
     "timing-delay": "freeform_empathy",
     "voicemail": "freeform_explanation",
 }
+
+
+def build_core_delivery_pack_metadata(core_pack: dict[str, Any]) -> dict[str, Any]:
+    emotion = core_pack["emotion_boundary"]
+    return {
+        "core_pack_id": core_pack["core_pack_id"],
+        "final_response_policy_owned": True,
+        "observable_empathy_allowed": emotion["observable_empathy_allowed"],
+        "hidden_state_certainty_allowed": emotion["hidden_state_certainty_allowed"],
+        "speech_delivery_rule_count": len(core_pack["delivery_pack"]["speech_delivery_rules"]),
+        "voice_layer_contract": core_pack["delivery_pack"]["voice_layer_contract"],
+    }
 
 
 def response_language(packet: dict[str, Any], campaign: dict[str, Any]) -> str:
@@ -373,6 +386,7 @@ def build_runtime_voice_delivery(
     seed: str | None = None,
 ) -> dict[str, Any]:
     language = response_language(guarded_packet, campaign)
+    core_pack = build_core_sales_delivery_pack()
     segments = build_delivery_segments(guarded_packet, campaign)
     provider = provider_for_key(provider_key)
     seed_value = seed or f"{guarded_packet.get('response_generation_id')}:{campaign.get('campaign_id')}:{guarded_packet.get('stage')}:{guarded_packet.get('transcript')}"
@@ -491,6 +505,7 @@ def build_runtime_voice_delivery(
         "customer_audio_uploaded": False,
         "voice_cloning_used": False,
         "generated_audio_created": False,
+        "core_delivery_pack": build_core_delivery_pack_metadata(core_pack),
         "segments": segments,
         "spoken_segments": spoken_segments,
         "realistic_segments": realistic_segments,

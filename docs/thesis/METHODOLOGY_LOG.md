@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - Core playbook live RAG implementation slice
+
+- Objective: implement the first working slice of the hybrid teach-now, retrieve-live, learn-later architecture.
+- Action taken: added the core sales/delivery playbook, retrieval-before-composition gates, retrieval latency metadata, campaign-fact grounding, core delivery pack handoff, and a 200-note call-pattern learning checkpoint.
+- Data used: local project RAG registry, local campaign fixtures, generated artifacts, and synthetic validator notes only. No provider call, private call read, external vector DB, embedding provider, or LLM call was used.
+- Output created: core playbook artifacts, guarded response retrieval metadata, voice delivery metadata, and local checkpoint validator output.
+- What was learned: live RAG can stay deterministic and fast in the local path while becoming a real pre-composition input. The safest first delivery integration is metadata handoff into RESP-002 while keeping `final_response` unchanged.
+- Why it matters for the thesis: the agent can now combine distilled fixed behavior with guarded contextual retrieval while preserving campaign facts and batch-only learning boundaries.
+- Open questions: whether to enable stall-for-time fallback in v1 live calls and whether the first relevance threshold should increase after live tests.
+
 ### 2026-05-07 - Core sales, delivery, live RAG architecture decision
 
 - Objective: decide how the agent should use the existing RAG corpus before live calls without hard-coding the full registry or relying only on retrieval.
