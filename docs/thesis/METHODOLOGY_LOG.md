@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-015 source-mapping batches
+
+- Objective: organize all remaining source-mapping blockers into human-review batches after RAG-014, without adding new resources or enabling runtime retrieval.
+- Action taken: added the RAG-015 source-mapping batch builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-014 source-mapped quote follow-up artifact, RAG-013 cleanup strategy artifact, RAG-006 chunk review packet, and RAG-009 all-source review coverage artifact under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, runtime retrieval, or new source gathering was used.
+- Output created: `docs/product/RAG_015_SOURCE_MAPPING_BATCHES.md`, `research/experiments/cases/rag-015-source-mapping-batches.json`, `research/experiments/generated/RAG-015-source-mapping-batches/result.json`, `research/experiments/generated/RAG-015-source-mapping-batches/report.md`, `scripts/rag_source_mapping_batches.py`, `scripts/run_rag_015_source_mapping_batches.py`, and `scripts/validate_rag_015_source_mapping_batches.py`.
+- What was learned: adding new source material later is feasible because the RAG intake/refresh path already exists, so RAG-015 can proceed on the current corpus. The remaining source-mapping queue has `43` source-title groups and `58` chunks, with `3` high-impact groups, `6` medium groups, `34` singleton groups, `7` candidate source suggestions, and `21` latent quote follow-ups after future mapping.
+- Why it matters for the thesis: RAG-015 separates source-accounting readiness from source-decision acceptance. This preserves the thesis claim that retrieved knowledge needs staged provenance cleanup before runtime admission.
+- Open questions: which RAG-015 source-mapping groups should be human-accepted first, and whether RAG-016 should focus on the `30` original quote-clearance chunks before returning to source-mapping acceptance.
+
 ### 2026-05-07 - RAG-014 source-mapped quote follow-up
 
 - Objective: clear the five quote follow-ups created by RAG-012 accepted source mappings before moving to broader source-mapping batches.

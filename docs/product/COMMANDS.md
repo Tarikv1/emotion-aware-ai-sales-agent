@@ -420,6 +420,24 @@ Validate RAG-014 accepted project-owned paraphrases, rejected pressure/control c
 python scripts\validate_rag_014_source_mapped_quote_followup.py
 ```
 
+Run RAG-015 source-mapping batches after RAG-014 clears the accepted-source follow-up queue:
+
+```powershell
+python scripts\run_rag_015_source_mapping_batches.py
+```
+
+Default RAG-015 output folder:
+
+```text
+research\experiments\generated\RAG-015-source-mapping-batches\
+```
+
+Validate RAG-015 source-mapping group/chunk counts, priority batches, latent quote-follow-up counts, no source-mapping decisions, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_015_source_mapping_batches.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

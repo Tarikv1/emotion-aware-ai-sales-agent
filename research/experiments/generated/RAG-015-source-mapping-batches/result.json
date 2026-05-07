@@ -1,0 +1,1046 @@
+{
+  "source_mapping_batches_id": "RAG-015-source-mapping-batches",
+  "recommended_next_checkpoint": "RAG-016-quote-clearance-batches",
+  "inputs": {
+    "rag014_result_path": "research/experiments/generated/RAG-014-source-mapped-quote-followup/result.json",
+    "rag013_result_path": "research/experiments/generated/RAG-013-cleanup-strategy/result.json",
+    "rag006_packet_path": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "case_path": "research/experiments/cases/rag-015-source-mapping-batches.json"
+  },
+  "summary": {
+    "source_mapping_group_count": 43,
+    "source_mapping_chunk_count": 58,
+    "high_impact_group_count": 3,
+    "medium_group_count": 6,
+    "singleton_group_count": 34,
+    "candidate_source_suggestion_group_count": 6,
+    "candidate_source_suggestion_count": 7,
+    "latent_quote_followup_after_source_mapping": 21,
+    "cleanup_decisions_applied_now": 0,
+    "source_mapping_blockers_resolved_now": 0,
+    "source_mapping_blockers_remaining_after_rag015": 58,
+    "auto_promoted_chunk_count": 0,
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false
+  },
+  "priority_batches": [
+    {
+      "batch_id": "batch_1_high_impact_groups",
+      "group_count": 3,
+      "chunk_count": 12,
+      "latent_quote_followup_chunk_count": 3,
+      "candidate_source_suggestion_group_count": 0,
+      "objective": "Review larger source-title groups first because one source decision can unblock multiple chunks.",
+      "runtime_retrieval_enabled": false
+    },
+    {
+      "batch_id": "batch_2_medium_groups",
+      "group_count": 6,
+      "chunk_count": 12,
+      "latent_quote_followup_chunk_count": 6,
+      "candidate_source_suggestion_group_count": 0,
+      "objective": "Review two-chunk groups after larger groups to reduce blocker count efficiently.",
+      "runtime_retrieval_enabled": false
+    },
+    {
+      "batch_id": "batch_3_suggested_singletons",
+      "group_count": 6,
+      "chunk_count": 6,
+      "latent_quote_followup_chunk_count": 3,
+      "candidate_source_suggestion_group_count": 6,
+      "objective": "Review singleton chunks with candidate source suggestions before unsuggested singletons.",
+      "runtime_retrieval_enabled": false
+    },
+    {
+      "batch_id": "batch_4_unsuggested_singletons",
+      "group_count": 28,
+      "chunk_count": 28,
+      "latent_quote_followup_chunk_count": 9,
+      "candidate_source_suggestion_group_count": 0,
+      "objective": "Manually map or create source metadata for singleton chunks without source suggestions.",
+      "runtime_retrieval_enabled": false
+    }
+  ],
+  "source_mapping_review_groups": [
+    {
+      "priority_batch": "batch_1_high_impact_groups",
+      "source_title": "Discovery Masterclass: Everything You Need to Run a Perfect Discovery Call",
+      "remaining_chunk_ids": [
+        "rag005-chunk-032",
+        "rag005-chunk-033",
+        "rag005-chunk-035",
+        "rag005-chunk-041",
+        "rag005-chunk-042"
+      ],
+      "remaining_chunk_count": 5,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_1_high_impact_groups",
+      "source_title": "Never Split The Difference / Chris Voss Summary Cheat-Sheet",
+      "remaining_chunk_ids": [
+        "rag005-chunk-043",
+        "rag005-chunk-044",
+        "rag005-chunk-055",
+        "rag005-chunk-059"
+      ],
+      "remaining_chunk_count": 4,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_1_high_impact_groups",
+      "source_title": "Social Influence Dialogue Systems",
+      "remaining_chunk_ids": [
+        "rag005-chunk-114",
+        "rag005-chunk-116",
+        "rag005-chunk-118"
+      ],
+      "remaining_chunk_count": 3,
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-114",
+        "rag005-chunk-116",
+        "rag005-chunk-118"
+      ],
+      "latent_quote_followup_chunk_count": 3,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_2_medium_groups",
+      "source_title": "24 Techniques for Closing the Sale",
+      "remaining_chunk_ids": [
+        "rag005-chunk-011",
+        "rag005-chunk-015"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_2_medium_groups",
+      "source_title": "Einwandbehandlung im Verkauf (zu teuer, keine Zeit & Co.) (\\#derLÖSER)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-065",
+        "rag005-chunk-068"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-065",
+        "rag005-chunk-068"
+      ],
+      "latent_quote_followup_chunk_count": 2,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_2_medium_groups",
+      "source_title": "Master B2B Sales Negotiation in 46 Minutes",
+      "remaining_chunk_ids": [
+        "rag005-chunk-046",
+        "rag005-chunk-051"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_2_medium_groups",
+      "source_title": "Never Split the Difference",
+      "remaining_chunk_ids": [
+        "rag005-chunk-049",
+        "rag005-chunk-052"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_2_medium_groups",
+      "source_title": "Telefonakquise - Der Leitfaden | Kaltakquise (\\#derLÖSER)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-062",
+        "rag005-chunk-067"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-062",
+        "rag005-chunk-067"
+      ],
+      "latent_quote_followup_chunk_count": 2,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_2_medium_groups",
+      "source_title": "Telefonakquise-Leitfaden: 11 Vorlagen, Beispiele (Pipedrive)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-064",
+        "rag005-chunk-069"
+      ],
+      "remaining_chunk_count": 2,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-064",
+        "rag005-chunk-069"
+      ],
+      "latent_quote_followup_chunk_count": 2,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_3_suggested_singletons",
+      "source_title": "Cognism Cold Calling Hub - Frida Ottosson",
+      "remaining_chunk_ids": [
+        "rag005-chunk-004"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_suggestions": [
+        {
+          "source_id": "rag004-source-028",
+          "canonical_title": "Cognism Hub/Scripts",
+          "score": 0.47,
+          "review_only": true
+        }
+      ],
+      "candidate_source_suggestion_count": 1,
+      "review_mode": "candidate_source_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-004"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_3_suggested_singletons",
+      "source_title": "Elite Sales Performance",
+      "remaining_chunk_ids": [
+        "rag005-chunk-013"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [
+        {
+          "source_id": "rag004-source-073",
+          "canonical_title": "Salesforce",
+          "score": 0.452,
+          "review_only": true
+        }
+      ],
+      "candidate_source_suggestion_count": 1,
+      "review_mode": "candidate_source_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_3_suggested_singletons",
+      "source_title": "Josh Braun - Knowledge Gap",
+      "remaining_chunk_ids": [
+        "rag005-chunk-007"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_suggestions": [
+        {
+          "source_id": "rag004-source-054",
+          "canonical_title": "Josh Braun 30MPC",
+          "score": 0.52,
+          "review_only": true
+        }
+      ],
+      "candidate_source_suggestion_count": 1,
+      "review_mode": "candidate_source_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-007"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_3_suggested_singletons",
+      "source_title": "MELD: A Multimodal Multi-Party Dataset for Emotion Recognition...",
+      "remaining_chunk_ids": [
+        "rag005-chunk-120"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "candidate_source_suggestions": [
+        {
+          "source_id": "rag004-source-017",
+          "canonical_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+          "score": 0.47,
+          "review_only": true
+        }
+      ],
+      "candidate_source_suggestion_count": 1,
+      "review_mode": "candidate_source_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-120"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_3_suggested_singletons",
+      "source_title": "Pipedrive: Consultative Selling",
+      "remaining_chunk_ids": [
+        "rag005-chunk-038"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [
+        {
+          "source_id": "rag004-source-069",
+          "canonical_title": "Pipedrive Blog",
+          "score": 0.451,
+          "review_only": true
+        }
+      ],
+      "candidate_source_suggestion_count": 1,
+      "review_mode": "candidate_source_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_3_suggested_singletons",
+      "source_title": "Voss Transcript",
+      "remaining_chunk_ids": [
+        "rag005-chunk-048"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [
+        {
+          "source_id": "rag004-source-023",
+          "canonical_title": "Andy Luttrell Transcript",
+          "score": 0.464,
+          "review_only": true
+        },
+        {
+          "source_id": "rag004-source-088",
+          "canonical_title": "Thomas Pelzl YouTube Transcript",
+          "score": 0.46,
+          "review_only": true
+        }
+      ],
+      "candidate_source_suggestion_count": 2,
+      "review_mode": "candidate_source_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "10 Sales Training Methodologies Compared (2026) | Salesmotion",
+      "remaining_chunk_ids": [
+        "rag005-chunk-037"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "16 Best Closing Techniques",
+      "remaining_chunk_ids": [
+        "rag005-chunk-016"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "18 Steps to a Successful Discovery Call \\+ Free Discovery Call Checklist",
+      "remaining_chunk_ids": [
+        "rag005-chunk-034"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "30MPC - Mr. Miyagi Method",
+      "remaining_chunk_ids": [
+        "rag005-chunk-002"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-002"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "30MPC Perfect Script Masterclass",
+      "remaining_chunk_ids": [
+        "rag005-chunk-001"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-001"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Am TELEFON richtig VERKAUFEN | So geht AKQUISE (Felix Thönnessen)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-070"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-070"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Chris Voss - The Decision Lab",
+      "remaining_chunk_ids": [
+        "rag005-chunk-047"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Chris Voss: FBI Hostage Negotiator Teaches Us How to Sell | EP 106",
+      "remaining_chunk_ids": [
+        "rag005-chunk-058"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Close: 18 Steps to Discovery",
+      "remaining_chunk_ids": [
+        "rag005-chunk-040"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "DailyDialog: A Manually Labelled Multi-turn Dialogue Dataset...",
+      "remaining_chunk_ids": [
+        "rag005-chunk-110"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-110"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Four Levers Negotiating",
+      "remaining_chunk_ids": [
+        "rag005-chunk-045"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Getting More",
+      "remaining_chunk_ids": [
+        "rag005-chunk-050"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Getting More by Stuart Diamond: Summary & Notes",
+      "remaining_chunk_ids": [
+        "rag005-chunk-054"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Getting More Summary",
+      "remaining_chunk_ids": [
+        "rag005-chunk-060"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Getting to Yes",
+      "remaining_chunk_ids": [
+        "rag005-chunk-056"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "GoEmotions: A Dataset of Fine-Grained Emotions",
+      "remaining_chunk_ids": [
+        "rag005-chunk-121"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-121"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Gong: 8 Things for Discovery",
+      "remaining_chunk_ids": [
+        "rag005-chunk-028"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Grant Cardone - Phone Closing",
+      "remaining_chunk_ids": [
+        "rag005-chunk-010"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "High Ticket Sales in 1 Call",
+      "remaining_chunk_ids": [
+        "rag005-chunk-009"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "How To Close Every Sale (2024)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-012"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Kaltakquise am Telefon - so öffnest du deinen Gesprächspartner [in 4 Schritten] (Thomas Pelzl)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-061"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-061"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Kaltakquise Telefon - Der Einstieg - Wie öffne ich den Entscheider? (Lars Krüger)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-066"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-066"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Never Split the Difference: 3 SALES Tips (+ examples)",
+      "remaining_chunk_ids": [
+        "rag005-chunk-053"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Precision Cold Calling - Josh Braun",
+      "remaining_chunk_ids": [
+        "rag005-chunk-008"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-008"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Salesmotion: 10 Sales Methodologies",
+      "remaining_chunk_ids": [
+        "rag005-chunk-039"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Social Influence Dialogue Systems: A Survey...",
+      "remaining_chunk_ids": [
+        "rag005-chunk-117"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [
+        "rag005-chunk-117"
+      ],
+      "latent_quote_followup_chunk_count": 1,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "The Upward Spiral",
+      "remaining_chunk_ids": [
+        "rag005-chunk-057"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "priority_batch": "batch_4_unsuggested_singletons",
+      "source_title": "Ultimate Sales Training",
+      "remaining_chunk_ids": [
+        "rag005-chunk-014"
+      ],
+      "remaining_chunk_count": 1,
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "candidate_source_suggestions": [],
+      "candidate_source_suggestion_count": 0,
+      "review_mode": "source_metadata_creation_or_manual_mapping_review",
+      "review_action": "human_review_source_mapping_before_reclassification",
+      "latent_quote_followup_chunk_ids": [],
+      "latent_quote_followup_chunk_count": 0,
+      "auto_apply_allowed": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "source_mapping_decisions_applied": false,
+    "runtime_integration_gate_required_before_use": true
+  }
+}

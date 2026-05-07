@@ -1,0 +1,26 @@
+{
+  "source_mapping_batches_id": "RAG-015-source-mapping-batches",
+  "title": "RAG source-mapping batches",
+  "description": "Organizes all remaining RAG source-mapping blockers into human-review batches without applying mapping decisions or enabling runtime retrieval.",
+  "default_rag014_result": "research/experiments/generated/RAG-014-source-mapped-quote-followup/result.json",
+  "default_rag013_result": "research/experiments/generated/RAG-013-cleanup-strategy/result.json",
+  "default_rag006_packet": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "priority_rules": [
+    "Batch 1: source-title groups with three or more chunks.",
+    "Batch 2: source-title groups with two chunks.",
+    "Batch 3: singleton groups with candidate source suggestions.",
+    "Batch 4: singleton groups without candidate source suggestions."
+  ],
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "RAG-015 is a batch packet only.",
+    "No source mappings are accepted by this checkpoint.",
+    "Candidate source suggestions are review hints only.",
+    "Runtime retrieval remains disabled."
+  ]
+}
