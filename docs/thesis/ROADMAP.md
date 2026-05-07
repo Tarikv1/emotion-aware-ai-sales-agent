@@ -33,7 +33,7 @@ Active phase: source-tracked RAG foundation, voice/runtime quality, and thesis e
 
 Current checkpoint:
 
-- [ ] Current: run `RAG-014` to clear or reject the `5` quote follow-ups created by RAG-012 accepted source mappings, still with runtime retrieval disabled.
+- [ ] Current: run `RAG-015` source-mapping batches for the remaining `58` source-mapping chunks across `43` source-title groups, still with runtime retrieval disabled.
 
 Next checkpoints:
 
@@ -49,14 +49,14 @@ Next checkpoints:
 - [ ] Next: implement provider pacing tuning using VOICE-027/VOICE-028 feedback as the baseline and changing pacing only before touching markers, emotion, or voice identity again.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
-- [ ] Next: run `RAG-015` source-mapping batches for the remaining `58` source-mapping chunks across `43` source-title groups.
-- [ ] Next: run `RAG-016` quote-clearance batches for the remaining `30` original quote-clearance chunks plus follow-ups created by source-mapping review.
+- [ ] Next: run `RAG-016` quote-clearance batches for the remaining `30` original quote-clearance chunks plus any future follow-ups created by source-mapping review.
 - [ ] Next: run `RAG-017` clean-candidate re-audit before deciding whether to wire reviewed retrieval into a runtime-off integration harness or keep RAG as review-only while strengthening universal objection handling.
 - [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
 - [ ] Next: continue dataset-grounded thesis expansion once the current voice/runtime checkpoint is stable.
 
 Recently completed checkpoints:
 
+- [x] `RAG-014` source-mapped quote follow-up review, which cleared all `5` quote follow-ups created by RAG-012 accepted source mappings. It accepted `4` project-owned response-wording paraphrases: neutral pain reflection, consent-based schedule confirmation, cost-of-inaction check, and prior-investment validation. It rejected `1` fixed rep talk-time dominance candidate as a pressure/control tactic, leaves `0` source-mapped quote follow-ups remaining, stores no source excerpt text, makes no provider or NotebookLM calls, uses no private customer data, auto-promotes `0` chunks, and keeps runtime retrieval plus chunk import disabled.
 - [x] `RAG-013` cleanup strategy, which partitioned the remaining RAG cleanup work after RAG-012 without applying new cleanup decisions. It reports `58` remaining source-mapping chunks across `43` source-title groups, `30` remaining original quote-clearance chunks, `5` quote follow-ups from accepted source mappings, `93` known cleanup items before runtime, and `21` latent quote follow-ups behind remaining source mapping. It recommends `RAG-014-source-mapped-quote-followup` first, then source-mapping batches, quote-clearance batches, and a clean-candidate re-audit. It stores no source excerpt text, makes no provider or NotebookLM calls, uses no private customer data, auto-promotes `0` chunks, applies `0` cleanup decisions now, and keeps runtime retrieval plus chunk import disabled.
 - [x] `RAG-012` accepted cleanup, which recorded Tarik-approved cleanup decisions from RAG-011 without mutating older artifacts. It accepted `3` source-mapping proposal groups covering `5` chunks, accepted `12` quote-clearance cards as project-owned paraphrases, reduced source-mapping blockers from `63` to `58`, reduced the original quote-clearance queue from `42` to `30`, flagged `5` accepted source-mapping chunks for quote-clearance follow-up, stored no source excerpt text, made no provider or NotebookLM calls, used no private customer data, auto-promoted `0` chunks, and kept runtime retrieval plus chunk import disabled.
 - [x] `RAG-011` blocker cleanup packet, which kept the remaining `63` source-mapping blockers and `42` quote-clearance blockers unchanged but narrowed the next cleanup slice to `3` high-confidence source-mapping proposal groups covering `5` chunks plus `12` quote-clearance cards. It reports `17` possible blocker reductions after human acceptance, resolves `0` blockers now, stores no source excerpt text, makes no provider or NotebookLM calls, uses no private customer data, auto-promotes `0` chunks, and keeps runtime retrieval plus chunk import disabled.

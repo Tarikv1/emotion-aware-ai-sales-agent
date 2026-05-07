@@ -402,6 +402,24 @@ Validate RAG-013 remaining cleanup counts, source-mapping batches, quote-clearan
 python scripts\validate_rag_013_cleanup_strategy.py
 ```
 
+Run RAG-014 source-mapped quote follow-up review after RAG-013 identifies the five follow-up cards:
+
+```powershell
+python scripts\run_rag_014_source_mapped_quote_followup.py
+```
+
+Default RAG-014 output folder:
+
+```text
+research\experiments\generated\RAG-014-source-mapped-quote-followup\
+```
+
+Validate RAG-014 accepted project-owned paraphrases, rejected pressure/control candidate, zero remaining source-mapped quote follow-ups, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_014_source_mapped_quote_followup.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-014 source-mapped quote follow-up
+
+- Objective: clear the five quote follow-ups created by RAG-012 accepted source mappings before moving to broader source-mapping batches.
+- Action taken: added the RAG-014 source-mapped quote follow-up builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-013 cleanup strategy artifact and RAG-009 all-source review coverage artifact under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, or runtime retrieval was used.
+- Output created: `docs/product/RAG_014_SOURCE_MAPPED_QUOTE_FOLLOWUP.md`, `research/experiments/cases/rag-014-source-mapped-quote-followup.json`, `research/experiments/generated/RAG-014-source-mapped-quote-followup/result.json`, `research/experiments/generated/RAG-014-source-mapped-quote-followup/report.md`, `scripts/rag_source_mapped_quote_followup.py`, `scripts/run_rag_014_source_mapped_quote_followup.py`, and `scripts/validate_rag_014_source_mapped_quote_followup.py`.
+- What was learned: four source-mapped quote follow-ups can be safely preserved as low-pressure, vertical-agnostic response-wording rules. The fixed talk-time dominance candidate should be rejected because it optimizes control over listening. The source-mapped follow-up queue is now `0`.
+- Why it matters for the thesis: RAG-014 shows that source cleanup can create a second quote-clearance dependency, and that the system needs explicit accept/reject review before any retrieved knowledge becomes runtime-eligible.
+- Open questions: which `RAG-015` source-title groups should be reviewed first, and how many new quote-clearance follow-ups will be created by the remaining source-mapping decisions.
+
 ### 2026-05-07 - RAG-013 cleanup strategy
 
 - Objective: choose the cleanup order for the remaining RAG blockers after RAG-012 before any runtime retrieval work.

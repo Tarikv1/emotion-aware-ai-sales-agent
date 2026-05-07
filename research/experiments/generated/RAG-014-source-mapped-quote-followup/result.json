@@ -1,0 +1,201 @@
+{
+  "source_mapped_quote_followup_id": "RAG-014-source-mapped-quote-followup",
+  "inputs": {
+    "rag013_result_path": "research/experiments/generated/RAG-013-cleanup-strategy/result.json",
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "case_path": "research/experiments/cases/rag-014-source-mapped-quote-followup.json"
+  },
+  "review": {
+    "accepted_by": "project_owner_current_session",
+    "review_scope": "RAG-013 source-mapped quote follow-up cards listed in the RAG-014 case file.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "followup_candidate_count": 5,
+    "accepted_followup_count": 4,
+    "rejected_followup_count": 1,
+    "accepted_quote_clearance_item_count": 4,
+    "rejected_quote_clearance_item_count": 1,
+    "source_mapped_quote_followups_cleared_by_acceptance": 4,
+    "source_mapped_quote_followups_rejected": 1,
+    "source_mapped_quote_followups_remaining_after_review": 0,
+    "cleanup_decisions_applied_now": 5,
+    "auto_promoted_chunk_count": 0,
+    "accepted_lane_counts": {
+      "response_wording": 4
+    },
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false
+  },
+  "accepted_quote_clearance_items": [
+    {
+      "knowledge_id": "rag014-response-neutral-pain-reflection",
+      "chunk_id": "rag005-chunk-003",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-028"
+      ],
+      "source_title": "Cognism Cold Calling Scripts",
+      "accepted_canonical_title": "Cognism Hub/Scripts",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "original_candidate_principle": "Mirroring Pain",
+      "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "source_mapping_resolved": true,
+      "source_mapped_followup_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "When a customer names a problem, reflect one short neutral phrase back as a clarification question before moving deeper.",
+      "safe_application": "Use once to verify the problem in the customer's words and invite elaboration only if they want to explain.",
+      "do_not_use_when": "Do not parrot the customer, use repetitive mirroring, or keep probing after a short answer, correction, or refusal.",
+      "guardrail_notes": "Reflection must clarify, not extract disclosure. The customer can correct the phrase or decline to expand.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "source_mapped_project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag014-response-consent-based-schedule-confirmation",
+      "chunk_id": "rag005-chunk-006",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-051"
+      ],
+      "source_title": "Sell Better - Jason Bay",
+      "accepted_canonical_title": "Jason Bay (Sell Better)",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "original_candidate_principle": "Triple Confirmation",
+      "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "source_mapping_resolved": true,
+      "source_mapped_followup_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "After a customer voluntarily agrees to a meeting or callback, confirm the date, time, channel, and expected next step in one concise check.",
+      "safe_application": "Use only after explicit agreement, and optionally ask whether a reminder or calendar invite is helpful.",
+      "do_not_use_when": "Do not stack confirmations before consent, imply commitment that was not given, or maximize attendance through pressure.",
+      "guardrail_notes": "Confirmation protects clarity and consent; it cannot become a compliance workaround or pressure loop.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "source_mapped_project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag014-response-cost-of-inaction-check",
+      "chunk_id": "rag005-chunk-081",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-025"
+      ],
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "accepted_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Status Quo Bias & Inertia",
+      "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "source_mapping_resolved": true,
+      "source_mapped_followup_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "When a customer has confirmed a problem and prefers to wait, ask neutrally whether keeping the current path has a cost worth considering.",
+      "safe_application": "Use as one cost-of-inaction check tied only to customer-confirmed facts and campaign-approved impacts.",
+      "do_not_use_when": "Do not invent hidden costs, fear-monger, shame indecision, or use this when the customer sounds anxious or overwhelmed.",
+      "guardrail_notes": "The agent may surface tradeoffs, but the customer owns the timing and can choose no next step.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "source_mapped_project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag014-response-validate-prior-investment",
+      "chunk_id": "rag005-chunk-084",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-025"
+      ],
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "accepted_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Endowment Effect & IKEA Effect",
+      "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "source_mapping_resolved": true,
+      "source_mapped_followup_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Validate the customer's prior effort before comparing future tradeoffs.",
+      "safe_application": "Use when a customer has invested time, money, work, or reputation into a current tool, provider, or process.",
+      "do_not_use_when": "Do not call their valuation irrational, dismiss the current setup, attack past decisions, or force a pivot.",
+      "guardrail_notes": "After validation, compare only campaign-approved ROI, effort, risk, and fit tradeoffs.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "source_mapped_project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "rejected_followup_items": [
+    {
+      "chunk_id": "rag005-chunk-005",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-051"
+      ],
+      "source_title": "Sell Better - Jason Bay",
+      "accepted_canonical_title": "Jason Bay (Sell Better)",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "original_candidate_principle": "Rep Talk-Time Dominance",
+      "review_verdict": "rejected_pressure_or_control_tactic",
+      "rejection_category": "pressure_or_control_tactic",
+      "rejection_reason": "Fixed rep talk-time dominance optimizes control over listening and does not fit a low-pressure, vertical-agnostic sales-agent core.",
+      "replacement_guidance": "Favor customer-led listening, concise answers, and campaign-stage-specific discovery instead of a fixed agent talk-time target.",
+      "quote_dependency_resolved": false,
+      "source_mapping_resolved": true,
+      "followup_resolved_by_rejection": true,
+      "project_owned_rule_created": false,
+      "human_rejection_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "runtime_integration_gate_required_before_use": true
+  }
+}
