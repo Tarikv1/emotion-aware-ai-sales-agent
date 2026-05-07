@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-009 all-source review coverage
+
+- Objective: confirm that every imported RAG source and chunk is accounted for before any runtime retrieval work continues.
+- Action taken: added the RAG-009 all-source coverage builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-004 source manifest, RAG-005 chunk normalization result, RAG-006 review packet, and RAG-007 reviewed first-slice artifact under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, or runtime retrieval was used.
+- Output created: `docs/product/RAG_009_ALL_SOURCE_REVIEW_COVERAGE.md`, `research/experiments/cases/rag-009-all-source-review-coverage.json`, `research/experiments/generated/RAG-009-all-source-review-coverage/result.json`, `research/experiments/generated/RAG-009-all-source-review-coverage/report.md`, `scripts/rag_all_source_review_coverage.py`, `scripts/run_rag_009_all_source_review_coverage.py`, and `scripts/validate_rag_009_all_source_review_coverage.py`.
+- What was learned: the full RAG inventory currently has `95` sources and `121` chunk candidates; `9` chunks are already manually reviewed, `4` are clean next-promotion candidates, `63` need source mapping, `42` need quote clearance, and `3` are safety rejections. The Vinh-informed voice/prosody material is included in coverage but remains advisory and non-runtime.
+- Why it matters for the thesis: RAG-009 turns "include all sources before retrieval" into a measurable gate. It separates source accounting from runtime use, showing that a vertical-agnostic sales-agent RAG layer needs inventory coverage, manual promotion, quote clearance, and safety rejection before it can become part of an autonomous workflow.
+- Open questions: whether the four clean next-promotion candidates should become a RAG-010 reviewed slice, how aggressively the project should resolve the `63` source-mapping blocks, and whether runtime-off integration should wait until quote clearance is materially smaller.
+
 ### 2026-05-06 - RAG-008 guarded retrieval policy dry-run
 
 - Objective: test whether the manually reviewed RAG-007 slice can produce safe retrieval candidate packets without enabling runtime retrieval.

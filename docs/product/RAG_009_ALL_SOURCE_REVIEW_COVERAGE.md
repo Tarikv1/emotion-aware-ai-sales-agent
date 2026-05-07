@@ -36,6 +36,17 @@ python scripts\validate_rag_009_all_source_review_coverage.py
 - `result.json`
 - `report.md`
 
+## Current Official Run
+
+- Sources accounted for: `95`
+- Chunks accounted for: `121`
+- Reviewed RAG-007 chunks: `9`
+- Next promotion candidates: `4`
+- Blocked for source mapping: `63`
+- Blocked for quote clearance: `42`
+- Rejected for safety: `3`
+- Auto-promoted chunks: `0`
+
 ## Product Boundary
 
 RAG-009 keeps the architecture unchanged:

@@ -312,6 +312,24 @@ Validate RAG-008 deterministic candidate packets, hard-block contexts, citation 
 python scripts\validate_rag_008_guarded_retrieval_policy.py
 ```
 
+Run RAG-009 all-source review coverage after RAG-004 through RAG-007 artifacts exist:
+
+```powershell
+python scripts\run_rag_009_all_source_review_coverage.py
+```
+
+Default RAG-009 output folder:
+
+```text
+research\experiments\generated\RAG-009-all-source-review-coverage\
+```
+
+Validate RAG-009 all-source/source-chunk accounting, blocked queues, next-promotion candidates, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_009_all_source_review_coverage.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:
