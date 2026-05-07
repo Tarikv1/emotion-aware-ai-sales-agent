@@ -16,6 +16,8 @@ No LLM/API call was made. The provider is a local deterministic composer used to
 - Call control: `continue-call`
 - Validation passed: `True`
 - Fallback used: `False`
+- Retrieval status: `disabled`
+- Retrieval used in runtime: `False`
 
 ## Responses
 
@@ -27,6 +29,8 @@ No LLM/API call was made. The provider is a local deterministic composer used to
 
 - Forbidden-claim matches: `none`
 - Notes: Candidate passed local guardrail validation.
+- Retrieved item IDs: `none`
+- Retrieval block reason: `retrieval_not_enabled`
 
 ## Fallback Rule
 

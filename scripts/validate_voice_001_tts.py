@@ -63,7 +63,7 @@ def main() -> None:
     assert "OPENAI_API_KEY" not in serialized
     assert "Authorization: Bearer" not in serialized
 
-    audio_path = ROOT / "research" / "experiments" / "generated" / f"VOICE-001-sapi-check-{os.getpid()}.wav"
+    audio_path = ROOT / ".tmp" / "VOICE-001" / f"VOICE-001-sapi-check-{os.getpid()}.wav"
     sapi_result = run_voice_process(
         "--campaign",
         "campaign-prod-005-b2c-telecom",

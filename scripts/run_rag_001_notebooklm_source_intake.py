@@ -25,7 +25,7 @@ DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "report.md"
 
 
 def load_case(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def render_report(payload: dict[str, Any]) -> str:

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "run_voice_input_turn.py"
-GENERATED_DIR = ROOT / "research" / "experiments" / "generated"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-002"
 AUDIO_PATH = GENERATED_DIR / "VOICE-002-customer-placeholder.wav"
 TRANSCRIPT = "Nur wenn Sie garantieren koennen, dass es stabil ist."
 

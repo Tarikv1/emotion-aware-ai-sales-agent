@@ -8,8 +8,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "run_voice_008_local_tts_smoke.py"
-OUT_JSON = ROOT / "research" / "experiments" / "generated" / "VOICE-008-local-tts-smoke.json"
-REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-008-local-tts-smoke-report.md"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-008"
+OUT_JSON = GENERATED_DIR / "VOICE-008-local-tts-smoke.json"
+REPORT_OUT = GENERATED_DIR / "VOICE-008-local-tts-smoke-report.md"
 
 
 SECRET_PATTERN = re.compile(

@@ -9,8 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "evaluate_voice_provider_readiness.py"
 CANDIDATES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-007-provider-readiness-candidates.json"
-OUT_JSON = ROOT / "research" / "experiments" / "generated" / "VOICE-007-provider-readiness.json"
-REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-007-provider-readiness-report.md"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-007"
+OUT_JSON = GENERATED_DIR / "VOICE-007-provider-readiness.json"
+REPORT_OUT = GENERATED_DIR / "VOICE-007-provider-readiness-report.md"
 
 
 SECRET_PATTERN = re.compile(

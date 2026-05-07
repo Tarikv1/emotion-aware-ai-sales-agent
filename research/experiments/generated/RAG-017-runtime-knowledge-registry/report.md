@@ -4,8 +4,8 @@ RAG-017 creates a local opt-in registry from already accepted project-owned RAG 
 
 ## Summary
 
-- Registry items: `59`
-- Voice-delivery advisory items: `30`
+- Registry items: `90`
+- Voice-delivery advisory items: `32`
 - Runtime retrieval enabled by default: `False`
 - Source-mapping blocker chunks excluded: `58`
 - Source-mapping blocker groups excluded: `43`
@@ -19,6 +19,7 @@ RAG-017 creates a local opt-in registry from already accepted project-owned RAG 
 - `RAG-014-source-mapped-quote-followup`
 - `RAG-016A-quote-clearance-decision-slice`
 - `RAG-016B-voice-delivery-quote-clearance-decision-slice`
+- `RAG-019-sales-communication-source-expansion`
 
 ## Runtime Boundary
 

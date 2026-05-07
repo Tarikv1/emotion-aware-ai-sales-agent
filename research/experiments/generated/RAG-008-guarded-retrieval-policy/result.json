@@ -1,17 +1,17 @@
 {
   "retrieval_policy_id": "RAG-008-guarded-retrieval-policy",
   "inputs": {
-    "rag007_result_path": "research/experiments/generated/RAG-007-reviewed-first-slice/result.json",
+    "registry_result_path": "research/experiments/generated/RAG-017-runtime-knowledge-registry/result.json",
     "case_path": "research/experiments/cases/rag-008-guarded-retrieval-policy.json",
-    "rag007_reviewed_slice_id": "RAG-007-reviewed-first-slice"
+    "registry_id": "RAG-017-runtime-knowledge-registry"
   },
   "summary": {
     "query_case_count": 8,
     "retrieval_case_count": 3,
     "blocked_case_count": 5,
-    "retrieved_item_count": 7,
-    "unique_retrieved_knowledge_count": 6,
-    "runtime_retrieval_enabled": false,
+    "retrieved_item_count": 9,
+    "unique_retrieved_knowledge_count": 9,
+    "runtime_retrieval_enabled_by_default": false,
     "retrieval_used_in_runtime": false,
     "chunk_import_enabled": false,
     "auto_promoted_chunk_count": 0,
@@ -20,7 +20,7 @@
     "private_customer_data_used": false,
     "reads_data_private": false,
     "source_excerpt_text_stored": false,
-    "only_reviewed_rag007_used": true
+    "only_runtime_registry_used": true
   },
   "policy": {
     "max_results": 3,
@@ -39,11 +39,14 @@
   },
   "retrieved_knowledge_ids": [
     "rag007-response-3-2-1-structure",
-    "rag007-response-declarative-clarity",
-    "rag007-response-empathy-echo",
     "rag007-response-prep-structure",
     "rag007-response-yes-and-objection-framing",
-    "rag007-voice-tone-mismatch-uncertainty"
+    "rag007-voice-tone-mismatch-uncertainty",
+    "rag010-response-real-timing-check",
+    "rag010-voice-cadence-as-weak-context",
+    "rag016a-response-autonomy-reminder",
+    "rag016a-response-concise-benefit-set",
+    "rag016b-voice-no-acoustic-certainty"
   ],
   "case_results": [
     {
@@ -57,6 +60,7 @@
       "retrieved_items": [
         {
           "knowledge_id": "rag007-response-yes-and-objection-framing",
+          "registry_id": "rag007-response-yes-and-objection-framing",
           "lane": "response_wording",
           "source_chunk_ids": [
             "rag005-chunk-017"
@@ -80,7 +84,8 @@
               "source_id": "rag004-source-086",
               "source_chunk_ids": [
                 "rag005-chunk-017"
-              ]
+              ],
+              "artifact_id": "RAG-007-reviewed-first-slice"
             }
           ],
           "retrieval_scope": "advisory_only",
@@ -90,28 +95,32 @@
           "retrieval_used_in_runtime": false
         },
         {
-          "knowledge_id": "rag007-response-empathy-echo",
+          "knowledge_id": "rag010-response-real-timing-check",
+          "registry_id": "rag010-response-real-timing-check",
           "lane": "response_wording",
           "source_chunk_ids": [
-            "rag005-chunk-022"
+            "rag005-chunk-031"
           ],
           "source_ids": [
-            "rag004-source-002"
+            "rag004-source-074"
           ],
-          "project_rule": "Reflect a customer's key concern or emotional phrase sparingly before responding, so the reply shows listening without mechanical repetition.",
-          "guardrail_notes": "The echo is not an emotion diagnosis and must not override explicit customer intent.",
+          "project_rule": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+          "guardrail_notes": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
           "match_reasons": [
-            "keyword_overlap:concern",
+            "keyword_overlap:about",
             "keyword_overlap:customer",
+            "keyword_overlap:pressure",
+            "keyword_overlap:timing",
             "keyword_overlap:without"
           ],
-          "match_score": 3,
+          "match_score": 5,
           "citation_trace": [
             {
-              "source_id": "rag004-source-002",
+              "source_id": "rag004-source-074",
               "source_chunk_ids": [
-                "rag005-chunk-022"
-              ]
+                "rag005-chunk-031"
+              ],
+              "artifact_id": "RAG-010-reviewed-expansion-slice"
             }
           ],
           "retrieval_scope": "advisory_only",
@@ -121,27 +130,31 @@
           "retrieval_used_in_runtime": false
         },
         {
-          "knowledge_id": "rag007-response-prep-structure",
+          "knowledge_id": "rag016a-response-autonomy-reminder",
+          "registry_id": "rag016a-response-autonomy-reminder",
           "lane": "response_wording",
           "source_chunk_ids": [
-            "rag005-chunk-024"
+            "rag005-chunk-082"
           ],
           "source_ids": [
-            "rag004-source-013"
+            "rag004-source-065"
           ],
-          "project_rule": "For a persuasive explanation, state the point, give the reason, add one concrete example, and return to the point.",
-          "guardrail_notes": "Examples must be campaign-approved and truthful; the structure cannot invent claims or guarantees.",
+          "project_rule": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+          "guardrail_notes": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
           "match_reasons": [
-            "keyword_overlap:continue",
-            "keyword_overlap:customer"
+            "keyword_overlap:about",
+            "keyword_overlap:customer",
+            "keyword_overlap:pressure",
+            "keyword_overlap:worried"
           ],
-          "match_score": 2,
+          "match_score": 4,
           "citation_trace": [
             {
-              "source_id": "rag004-source-013",
+              "source_id": "rag004-source-065",
               "source_chunk_ids": [
-                "rag005-chunk-024"
-              ]
+                "rag005-chunk-082"
+              ],
+              "artifact_id": "RAG-016A-quote-clearance-decision-slice"
             }
           ],
           "retrieval_scope": "advisory_only",
@@ -163,6 +176,7 @@
       "retrieved_items": [
         {
           "knowledge_id": "rag007-response-3-2-1-structure",
+          "registry_id": "rag007-response-3-2-1-structure",
           "lane": "response_wording",
           "source_chunk_ids": [
             "rag005-chunk-025"
@@ -188,7 +202,45 @@
               "source_id": "rag004-source-032",
               "source_chunk_ids": [
                 "rag005-chunk-025"
-              ]
+              ],
+              "artifact_id": "RAG-007-reviewed-first-slice"
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": false,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag016a-response-concise-benefit-set",
+          "registry_id": "rag016a-response-concise-benefit-set",
+          "lane": "response_wording",
+          "source_chunk_ids": [
+            "rag005-chunk-085"
+          ],
+          "source_ids": [
+            "rag004-source-065"
+          ],
+          "project_rule": "Keep benefit framing concise by naming only the few campaign-approved points that match the customer's stated priority.",
+          "guardrail_notes": "Concision is a comprehension aid, not a reason to omit material information.",
+          "match_reasons": [
+            "keyword_overlap:asks",
+            "keyword_overlap:concise",
+            "keyword_overlap:customer",
+            "keyword_overlap:explanation",
+            "keyword_overlap:keep",
+            "keyword_overlap:points",
+            "keyword_overlap:reason"
+          ],
+          "match_score": 7,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-065",
+              "source_chunk_ids": [
+                "rag005-chunk-085"
+              ],
+              "artifact_id": "RAG-016A-quote-clearance-decision-slice"
             }
           ],
           "retrieval_scope": "advisory_only",
@@ -199,6 +251,7 @@
         },
         {
           "knowledge_id": "rag007-response-prep-structure",
+          "registry_id": "rag007-response-prep-structure",
           "lane": "response_wording",
           "source_chunk_ids": [
             "rag005-chunk-024"
@@ -221,38 +274,8 @@
               "source_id": "rag004-source-013",
               "source_chunk_ids": [
                 "rag005-chunk-024"
-              ]
-            }
-          ],
-          "retrieval_scope": "advisory_only",
-          "voice_delivery_advisory_only": false,
-          "protected_text_change_allowed": false,
-          "runtime_use_allowed": false,
-          "retrieval_used_in_runtime": false
-        },
-        {
-          "knowledge_id": "rag007-response-declarative-clarity",
-          "lane": "response_wording",
-          "source_chunk_ids": [
-            "rag005-chunk-020"
-          ],
-          "source_ids": [
-            "rag004-source-016"
-          ],
-          "project_rule": "Use short declarative statements when clarity matters, especially after an objection or broad question.",
-          "guardrail_notes": "This rule shapes freeform wording only and must not shorten required disclosures or campaign scripts.",
-          "match_reasons": [
-            "keyword_overlap:broad",
-            "keyword_overlap:concise",
-            "keyword_overlap:keep"
-          ],
-          "match_score": 3,
-          "citation_trace": [
-            {
-              "source_id": "rag004-source-016",
-              "source_chunk_ids": [
-                "rag005-chunk-020"
-              ]
+              ],
+              "artifact_id": "RAG-007-reviewed-first-slice"
             }
           ],
           "retrieval_scope": "advisory_only",
@@ -274,6 +297,7 @@
       "retrieved_items": [
         {
           "knowledge_id": "rag007-voice-tone-mismatch-uncertainty",
+          "registry_id": "rag007-voice-tone-mismatch-uncertainty",
           "lane": "voice_delivery",
           "source_chunk_ids": [
             "rag005-chunk-098"
@@ -298,13 +322,83 @@
               "source_id": "rag004-source-063",
               "source_chunk_ids": [
                 "rag005-chunk-098"
-              ]
+              ],
+              "artifact_id": "RAG-007-reviewed-first-slice"
             },
             {
               "source_id": "rag004-source-094",
               "source_chunk_ids": [
                 "rag005-chunk-098"
-              ]
+              ],
+              "artifact_id": "RAG-007-reviewed-first-slice"
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": true,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag010-voice-cadence-as-weak-context",
+          "registry_id": "rag010-voice-cadence-as-weak-context",
+          "lane": "voice_delivery",
+          "source_chunk_ids": [
+            "rag005-chunk-036"
+          ],
+          "source_ids": [
+            "rag004-source-073"
+          ],
+          "project_rule": "Treat customer speech pace as a weak context cue for response pacing or a gentle check-in, not as proof of hidden emotion or intent.",
+          "guardrail_notes": "This is advisory delivery guidance only. It must not alter protected text, override explicit customer words, or personalize based on sensitive traits.",
+          "match_reasons": [
+            "keyword_overlap:clarification",
+            "keyword_overlap:customer",
+            "keyword_overlap:gentle",
+            "keyword_overlap:hesitant"
+          ],
+          "match_score": 4,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-073",
+              "source_chunk_ids": [
+                "rag005-chunk-036"
+              ],
+              "artifact_id": "RAG-010-reviewed-expansion-slice"
+            }
+          ],
+          "retrieval_scope": "advisory_only",
+          "voice_delivery_advisory_only": true,
+          "protected_text_change_allowed": false,
+          "runtime_use_allowed": false,
+          "retrieval_used_in_runtime": false
+        },
+        {
+          "knowledge_id": "rag016b-voice-no-acoustic-certainty",
+          "registry_id": "rag016b-voice-no-acoustic-certainty",
+          "lane": "voice_delivery",
+          "source_chunk_ids": [
+            "rag005-chunk-106"
+          ],
+          "source_ids": [
+            "rag004-source-078"
+          ],
+          "project_rule": "Treat acoustic signals as uncertain delivery context, not as proof of emotion, truthfulness, or buying intent.",
+          "guardrail_notes": "Explicit customer words and policy decisions override acoustic cues.",
+          "match_reasons": [
+            "keyword_overlap:clarification",
+            "keyword_overlap:customer",
+            "keyword_overlap:gentle",
+            "keyword_overlap:uncertain"
+          ],
+          "match_score": 4,
+          "citation_trace": [
+            {
+              "source_id": "rag004-source-078",
+              "source_chunk_ids": [
+                "rag005-chunk-106"
+              ],
+              "artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice"
             }
           ],
           "retrieval_scope": "advisory_only",
@@ -369,7 +463,7 @@
     }
   ],
   "boundaries": {
-    "runtime_retrieval_enabled": false,
+    "default_runtime_retrieval_enabled": false,
     "retrieval_used_in_runtime": false,
     "chunk_import_enabled": false,
     "auto_promote_allowed": false,
@@ -378,7 +472,7 @@
     "notebooklm_api_allowed": false,
     "private_customer_data_allowed": false,
     "reads_data_private": false,
-    "only_reviewed_rag007_used": true,
-    "runtime_policy_required_before_live_use": true
+    "only_runtime_registry_used": true,
+    "explicit_runtime_enablement_required_before_live_use": true
   }
 }

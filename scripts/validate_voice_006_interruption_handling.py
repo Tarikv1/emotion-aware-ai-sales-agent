@@ -11,7 +11,7 @@ from voice_interruption_policy import classify_interruption_candidate
 ROOT = Path(__file__).resolve().parents[1]
 SIMULATION_SCRIPT = ROOT / "scripts" / "run_voice_006_interruption_simulation.py"
 VOICE_004_SCRIPT = ROOT / "scripts" / "run_browser_speech_demo.py"
-GENERATED_DIR = ROOT / "research" / "experiments" / "generated"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-006"
 RESULTS_OUT = GENERATED_DIR / "VOICE-006-interruption-results.json"
 REPORT_OUT = GENERATED_DIR / "VOICE-006-interruption-report.md"
 HTML_OUT = GENERATED_DIR / "VOICE-006-browser-speech-demo.html"

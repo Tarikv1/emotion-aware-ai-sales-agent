@@ -8,8 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "compare_asr_providers.py"
 PROVIDERS_PATH = ROOT / "research" / "experiments" / "cases" / "voice-003-asr-provider-candidates.json"
-OUT_JSON = ROOT / "research" / "experiments" / "generated" / "VOICE-003-asr-provider-comparison.json"
-REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-003-asr-provider-comparison-report.md"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-003"
+OUT_JSON = GENERATED_DIR / "VOICE-003-asr-provider-comparison.json"
+REPORT_OUT = GENERATED_DIR / "VOICE-003-asr-provider-comparison-report.md"
 
 
 def run_comparison() -> dict:

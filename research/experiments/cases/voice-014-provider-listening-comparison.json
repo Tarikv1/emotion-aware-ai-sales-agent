@@ -2,8 +2,8 @@
   "voice_milestone": "VOICE-014",
   "experiment_scope": "Structured local listening comparison between Cartesia VOICE-011 and ElevenLabs VOICE-013 using the same longer German and English synthetic sales-agent scripts.",
   "source_artifacts": {
-    "cartesia": "research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json",
-    "elevenlabs": "research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json"
+    "cartesia": "research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke.json",
+    "elevenlabs": "research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke.json"
   },
   "safety_gate": {
     "provider_calls_made": false,

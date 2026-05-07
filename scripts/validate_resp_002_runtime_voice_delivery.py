@@ -100,6 +100,7 @@ def run_resp_001(
 
 def validate_common_payload(payload: dict, resp_001_payload: dict) -> None:
     voice_delivery = payload["voice_delivery"]
+    core_delivery = voice_delivery["core_delivery_pack"]
     assert_condition(payload["runtime_voice_delivery_id"] == "RESP-002-runtime-voice-delivery", payload)
     assert_condition(payload["response_generation_id"] == "RESP-001-local-guarded", payload)
     assert_condition(payload["final_response"] == resp_001_payload["final_response"], "RESP-002 must not change final_response.")
@@ -109,6 +110,11 @@ def validate_common_payload(payload: dict, resp_001_payload: dict) -> None:
     assert_condition(voice_delivery["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["validation"]["passed"] is True, voice_delivery["validation"])
+    assert_condition(core_delivery["core_pack_id"] == "CORE-sales-delivery-playbook", core_delivery)
+    assert_condition(core_delivery["final_response_policy_owned"] is True, core_delivery)
+    assert_condition(core_delivery["observable_empathy_allowed"] is True, core_delivery)
+    assert_condition(core_delivery["hidden_state_certainty_allowed"] is False, core_delivery)
+    assert_condition(voice_delivery["final_response_unchanged"] is True, voice_delivery)
     assert_condition(voice_delivery["spoken_text_normalization"]["validation"]["passed"] is True, voice_delivery)
     assert_condition(voice_delivery["speech_interaction"]["validation"]["passed"] is True, voice_delivery)
     assert_condition(voice_delivery["speech_imperfections"]["validation"]["passed"] is True, voice_delivery)

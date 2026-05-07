@@ -16,6 +16,7 @@ DEFAULT_INCLUDED_ARTIFACT_KEYS = (
     "RAG-014-source-mapped-quote-followup",
     "RAG-016A-quote-clearance-decision-slice",
     "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+    "RAG-019-sales-communication-source-expansion",
 )
 
 ARTIFACT_ID_KEYS = (
@@ -25,6 +26,7 @@ ARTIFACT_ID_KEYS = (
     "source_mapped_quote_followup_id",
     "quote_clearance_decision_slice_id",
     "voice_delivery_decision_slice_id",
+    "sales_communication_source_expansion_id",
 )
 
 COMMON_HARD_LIMITS = {
@@ -120,6 +122,10 @@ def _source_ids(item: dict[str, Any]) -> list[str]:
     return [str(value).strip() for value in item.get("source_ids", []) if str(value).strip()]
 
 
+def _source_urls(item: dict[str, Any]) -> list[str]:
+    return [str(value).strip() for value in item.get("source_urls", []) if str(value).strip()]
+
+
 def _trace_source_title(item: dict[str, Any]) -> str:
     source_titles = item.get("source_titles", [])
     if source_titles:
@@ -137,6 +143,7 @@ def normalize_registry_item(item: dict[str, Any], source_artifact_id: str) -> di
         raise ValueError(f"RAG-017 item from {source_artifact_id} is missing knowledge_id.")
     source_chunk_ids = _source_chunk_ids(item)
     source_ids = _source_ids(item)
+    source_urls = _source_urls(item)
     if not source_chunk_ids or not source_ids:
         raise ValueError(f"RAG-017 item is missing trace fields: {registry_id}")
     lane = str(item.get("lane", "")).strip()
@@ -161,14 +168,16 @@ def normalize_registry_item(item: dict[str, Any], source_artifact_id: str) -> di
             "review_verdict": str(item.get("review_verdict", "")),
             "quote_dependency_resolved": bool(item.get("quote_dependency_resolved", True)),
             "source_title": _trace_source_title(item),
+            "source_urls": source_urls,
         },
         "citation_trace": [
             {
                 "source_id": source_id,
                 "source_chunk_ids": source_chunk_ids,
                 "artifact_id": source_artifact_id,
+                **({"source_url": source_urls[index]} if index < len(source_urls) else {}),
             }
-            for source_id in source_ids
+            for index, source_id in enumerate(source_ids)
         ],
         "runtime_registry_eligible": True,
         "retrieval_scope": "advisory_only",

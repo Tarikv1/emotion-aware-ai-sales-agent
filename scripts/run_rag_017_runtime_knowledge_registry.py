@@ -23,6 +23,7 @@ DEFAULT_ARTIFACT_PATHS = {
     "RAG-014-source-mapped-quote-followup": ROOT / "research" / "experiments" / "generated" / "RAG-014-source-mapped-quote-followup" / "result.json",
     "RAG-016A-quote-clearance-decision-slice": ROOT / "research" / "experiments" / "generated" / "RAG-016A-quote-clearance-decision-slice" / "result.json",
     "RAG-016B-voice-delivery-quote-clearance-decision-slice": ROOT / "research" / "experiments" / "generated" / "RAG-016B-voice-delivery-decision-slice" / "result.json",
+    "RAG-019-sales-communication-source-expansion": ROOT / "research" / "experiments" / "generated" / "RAG-019-sales-communication-source-expansion" / "result.json",
 }
 PRIVATE_PATH_PARTS = (("data", "private"), ("data", "private-restricted"))
 

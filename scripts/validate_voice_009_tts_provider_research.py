@@ -10,8 +10,9 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "evaluate_voice_009_tts_provider_research.py"
 CANDIDATES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-009-tts-provider-research.json"
-OUT_JSON = ROOT / "research" / "experiments" / "generated" / "VOICE-009-tts-provider-research.json"
-REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-009-tts-provider-research-report.md"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-009"
+OUT_JSON = GENERATED_DIR / "VOICE-009-tts-provider-research.json"
+REPORT_OUT = GENERATED_DIR / "VOICE-009-tts-provider-research-report.md"
 
 
 SECRET_PATTERN = re.compile(

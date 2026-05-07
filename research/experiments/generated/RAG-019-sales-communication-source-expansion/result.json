@@ -1,0 +1,1787 @@
+{
+  "sales_communication_source_expansion_id": "RAG-019-sales-communication-source-expansion",
+  "inputs": {
+    "case_path": "research/experiments/cases/rag-019-sales-communication-source-expansion.json"
+  },
+  "acceptance": {
+    "accepted_by": "project_owner_requested_public_source_expansion",
+    "acceptance_scope": "Paraphrased advisory-only sales communication rules from public web sources; no copied scripts, no source excerpts, no private data.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "source_count": 25,
+    "knowledge_item_count": 31,
+    "covered_requested_topic_count": 15,
+    "lane_counts": {
+      "response_wording": 22,
+      "safety_guardrail": 7,
+      "voice_delivery": 2
+    },
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "copied_scripts_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false
+  },
+  "covered_requested_topics": [
+    "cold_calling",
+    "objection_handling",
+    "closing_techniques",
+    "consultative_selling",
+    "sales_psychology",
+    "emotional_intelligence_in_sales",
+    "negotiation",
+    "voice_and_speech_delivery",
+    "conversation_design",
+    "call_center_communication",
+    "persuasion_frameworks",
+    "storytelling_for_sales",
+    "german_sales_communication",
+    "real_sales_call_breakdowns",
+    "ethics_and_compliance"
+  ],
+  "source_registry": [
+    {
+      "source_id": "rag019-source-001",
+      "title": "Gong Labs cold-call openers from 300M calls",
+      "url": "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls",
+      "source_type": "sales-practice and conversation-intelligence source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-002",
+      "title": "Huthwaite SPIN methodology",
+      "url": "https://www.huthwaiteinternational.com/spin-methodology",
+      "source_type": "sales methodology source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-003",
+      "title": "Apollo common sales objections",
+      "url": "https://www.apollo.io/insights/common-sales-objections",
+      "source_type": "sales-practice source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-004",
+      "title": "Apollo handling objections in sales",
+      "url": "https://www.apollo.io/insights/handling-objections-in-sales",
+      "source_type": "sales-practice source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-005",
+      "title": "Influence at Work Cialdini Code of Ethics",
+      "url": "https://www.influenceatwork.com/about-iaw/",
+      "source_type": "persuasion ethics source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-006",
+      "title": "Influence at Work principles overview",
+      "url": "https://www.influenceatwork.com/",
+      "source_type": "persuasion framework source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-007",
+      "title": "Kahneman and Tversky prospect theory record",
+      "url": "https://www.econometricsociety.org/publications/econometrica/browse/1979/03/01/prospect-theory-analysis-decision-under-risk",
+      "source_type": "academic source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "bibliographic/abstract page; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-008",
+      "title": "Stanford Encyclopedia of Philosophy: The Ethics of Manipulation",
+      "url": "https://plato.stanford.edu/entries/ethics-manipulation/",
+      "source_type": "academic/philosophy source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "SEP terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-009",
+      "title": "FBI Law Enforcement Bulletin active listening skills for crisis negotiators",
+      "url": "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators",
+      "source_type": "law-enforcement communication source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public government source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-010",
+      "title": "World Economic Forum / Quartz tactical empathy interview with Chris Voss",
+      "url": "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/",
+      "source_type": "negotiation-practice source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-011",
+      "title": "Harvard Program on Negotiation anchoring in negotiation",
+      "url": "https://www.pon.harvard.edu/daily/negotiation-skills-daily/what-is-anchoring-in-negotiation/",
+      "source_type": "negotiation source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-012",
+      "title": "Google conversation design: turn-taking",
+      "url": "https://developers.google.com/assistant/conversation-design/learn-about-conversation",
+      "source_type": "conversation-design source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "developer documentation; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-013",
+      "title": "Microsoft Copilot Studio graceful fallbacks and handoffs",
+      "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-fallbacks",
+      "source_type": "conversation-design source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "Microsoft Learn documentation; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-014",
+      "title": "Amazon Nova Sonic barge-in documentation",
+      "url": "https://docs.aws.amazon.com/nova/latest/nova2-userguide/sonic-barge-in.html",
+      "source_type": "voice-agent documentation",
+      "reuse_label": "adapted pattern",
+      "license_observed": "AWS documentation; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-015",
+      "title": "ICMI communication with angry customers",
+      "url": "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers",
+      "source_type": "call-center communication source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-016",
+      "title": "HubSpot service recovery strategies",
+      "url": "https://blog.hubspot.com/service/service-recovery",
+      "source_type": "customer-service source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-017",
+      "title": "Zendesk escalation management",
+      "url": "https://www.zendesk.com/blog/escalation-management/",
+      "source_type": "customer-service source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-018",
+      "title": "FTC Telemarketing Sales Rule compliance guide",
+      "url": "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule",
+      "source_type": "legal/compliance source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public government source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-019",
+      "title": "FTC Keep your AI claims in check",
+      "url": "https://www.ftc.gov/business-guidance/blog/2023/02/keep-your-ai-claims-check",
+      "source_type": "AI marketing compliance source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public government source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-020",
+      "title": "FTC AI deception for sale",
+      "url": "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale",
+      "source_type": "AI deception compliance source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public government source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-021",
+      "title": "Bundesnetzagentur unerlaubte Telefonwerbung",
+      "url": "https://www.bundesnetzagentur.de/DE/Vportal/TK/Aerger/Faelle/UEW/start.html",
+      "source_type": "German telemarketing compliance source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public regulator source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-022",
+      "title": "Germany UWG Section 7",
+      "url": "https://www.gesetze-im-internet.de/uwg_2004/__7.html",
+      "source_type": "German legal source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public legal source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-023",
+      "title": "Germany UWG Section 7a",
+      "url": "https://www.gesetze-im-internet.de/uwg_2004/__7a.html",
+      "source_type": "German legal source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public legal source; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-024",
+      "title": "IHK Ulm telephone advertising guidance",
+      "url": "https://www.ihk.de/ulm/recht-und-steuern/wettbewerbsrecht/wettbewerbsrecht/telefon-werbung-4239498",
+      "source_type": "German business-law guidance",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-07"
+    },
+    {
+      "source_id": "rag019-source-025",
+      "title": "Stanford GSB business storytelling case",
+      "url": "https://www.gsb.stanford.edu/faculty-research/case-studies/how-harness-stories-business",
+      "source_type": "storytelling source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "case-study page; no copied material",
+      "checked_date": "2026-05-07"
+    }
+  ],
+  "knowledge_items": [
+    {
+      "knowledge_id": "rag019-cold-call-permission-opener",
+      "chunk_id": "rag019-chunk-001",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-001"
+      ],
+      "source_urls": [
+        "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+      ],
+      "source_titles": [
+        "Gong Labs cold-call openers from 300M calls"
+      ],
+      "topic_ids": [
+        "cold_calling",
+        "permission_based_openers",
+        "pattern_interrupts"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Open outbound calls with concrete context, name that it is a cold call when appropriate, and ask permission before giving the short reason for the call.",
+      "safe_application": "Use when an opted-in or otherwise lawful outbound call needs a concise, transparent opener.",
+      "do_not_use_when": "Do not use permission language to continue after a refusal, do-not-call request, protected disclosure, or legal consent gap.",
+      "guardrail_notes": "Permission is real only if the customer can decline without renewed pressure.",
+      "source_chunk_ids": [
+        "rag019-chunk-001"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-cold-call-context-before-pitch",
+      "chunk_id": "rag019-chunk-002",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-001"
+      ],
+      "source_urls": [
+        "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+      ],
+      "source_titles": [
+        "Gong Labs cold-call openers from 300M calls"
+      ],
+      "topic_ids": [
+        "cold_calling",
+        "openers",
+        "call_control"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Lead with why this call might be relevant before pitching features or asking discovery questions.",
+      "safe_application": "Use peer segment, prior request, product category, or customer-stated context that is true and campaign-approved.",
+      "do_not_use_when": "Do not imply familiarity, referral, relationship, or social proof that is not verified.",
+      "guardrail_notes": "Context reduces confusion; it must not manufacture trust.",
+      "source_chunk_ids": [
+        "rag019-chunk-002"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-cold-call-not-interested-boundary",
+      "chunk_id": "rag019-chunk-003",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-018"
+      ],
+      "source_urls": [
+        "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule"
+      ],
+      "source_titles": [
+        "FTC Telemarketing Sales Rule compliance guide"
+      ],
+      "topic_ids": [
+        "cold_calling",
+        "not_interested_handling",
+        "opt_out_handling"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Treat not-interested, stop-calling, and similar refusal language as a boundary before any objection-handling playbook.",
+      "safe_application": "Use to end the sales path, confirm opt-out when required, and avoid repeat-pressure behavior.",
+      "do_not_use_when": "Do not reinterpret a refusal as a hidden objection or buying signal.",
+      "guardrail_notes": "Compliance and customer refusal override call-control goals.",
+      "source_chunk_ids": [
+        "rag019-chunk-003"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-diagnose-before-answering",
+      "chunk_id": "rag019-chunk-004",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-004"
+      ],
+      "source_urls": [
+        "https://www.apollo.io/insights/common-sales-objections",
+        "https://www.apollo.io/insights/handling-objections-in-sales"
+      ],
+      "source_titles": [
+        "Apollo common sales objections",
+        "Apollo handling objections in sales"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "price_objections",
+        "timing_objections",
+        "trust_objections"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+      "safe_application": "Use for price, timing, authority, trust, competitor, and status-quo concerns when the customer has not refused contact.",
+      "do_not_use_when": "Do not stack rebuttals, challenge the customer's judgment, or argue past the stated concern.",
+      "guardrail_notes": "Objection handling should reduce uncertainty, not defeat resistance.",
+      "source_chunk_ids": [
+        "rag019-chunk-004"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-price-value-gap",
+      "chunk_id": "rag019-chunk-005",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-002"
+      ],
+      "source_urls": [
+        "https://www.apollo.io/insights/common-sales-objections",
+        "https://www.huthwaiteinternational.com/spin-methodology"
+      ],
+      "source_titles": [
+        "Apollo common sales objections",
+        "Huthwaite SPIN methodology"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "price_objections",
+        "consultative_selling"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Handle price concerns by clarifying expected value, current cost, and risk-reduction needs before mentioning discounts.",
+      "safe_application": "Use approved ROI, total-cost, pilot, or comparison material only after the customer confirms the relevant concern.",
+      "do_not_use_when": "Do not invent savings, hide fees, pressure with scarcity, or use discounting as the first response.",
+      "guardrail_notes": "Price framing must stay truthful and customer-specific.",
+      "source_chunk_ids": [
+        "rag019-chunk-005"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-timing-priority-fit",
+      "chunk_id": "rag019-chunk-006",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-002"
+      ],
+      "source_urls": [
+        "https://www.apollo.io/insights/common-sales-objections",
+        "https://www.huthwaiteinternational.com/spin-methodology"
+      ],
+      "source_titles": [
+        "Apollo common sales objections",
+        "Huthwaite SPIN methodology"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "timing_objections",
+        "urgency_vs_pressure"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "For timing objections, ask what current priority or constraint makes now difficult and offer a lower-commitment next step only if useful.",
+      "safe_application": "Use callbacks, pilots, or one-page summaries when the customer wants to revisit later.",
+      "do_not_use_when": "Do not manufacture urgency, imply penalty for waiting, or keep pushing after the customer declines.",
+      "guardrail_notes": "Urgency must come from customer-stated impact, not campaign pressure.",
+      "source_chunk_ids": [
+        "rag019-chunk-006"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-trust-competitor-proof",
+      "chunk_id": "rag019-chunk-007",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-005"
+      ],
+      "source_urls": [
+        "https://www.apollo.io/insights/common-sales-objections",
+        "https://www.influenceatwork.com/about-iaw/"
+      ],
+      "source_titles": [
+        "Apollo common sales objections",
+        "Influence at Work Cialdini Code of Ethics"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "trust_objections",
+        "competitor_objections",
+        "social_proof"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Answer trust and competitor objections with verified proof, relevant comparison criteria, and an invitation to test fit.",
+      "safe_application": "Use truthful customer examples, references, security documents, or side-by-side criteria that the campaign has approved.",
+      "do_not_use_when": "Do not disparage competitors, invent authority, inflate adoption, or imply unsupported superiority.",
+      "guardrail_notes": "Proof must inform the buyer's judgment instead of borrowing trust deceptively.",
+      "source_chunk_ids": [
+        "rag019-chunk-007"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-send-info-clarify",
+      "chunk_id": "rag019-chunk-008",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-002",
+        "rag019-source-003"
+      ],
+      "source_urls": [
+        "https://www.huthwaiteinternational.com/spin-methodology",
+        "https://www.apollo.io/insights/common-sales-objections"
+      ],
+      "source_titles": [
+        "Huthwaite SPIN methodology",
+        "Apollo common sales objections"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "send_me_info",
+        "qualification_questions"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "When the customer says send me information, ask which decision question the information should answer and agree the smallest useful follow-up.",
+      "safe_application": "Use to avoid irrelevant info dumps and to create a customer-owned next step.",
+      "do_not_use_when": "Do not block the customer's request for information or make the follow-up mandatory.",
+      "guardrail_notes": "The customer can still choose email-only or no follow-up.",
+      "source_chunk_ids": [
+        "rag019-chunk-008"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-current-provider",
+      "chunk_id": "rag019-chunk-009",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-002"
+      ],
+      "source_urls": [
+        "https://www.apollo.io/insights/common-sales-objections",
+        "https://www.huthwaiteinternational.com/spin-methodology"
+      ],
+      "source_titles": [
+        "Apollo common sales objections",
+        "Huthwaite SPIN methodology"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "we_already_have_someone",
+        "competitor_objections"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "For current-provider objections, acknowledge the status quo and ask whether there is one gap, risk, or upcoming change worth comparing.",
+      "safe_application": "Use when the customer is open to a brief fit check or future benchmark.",
+      "do_not_use_when": "Do not undermine the current provider with speculation or push for a switch.",
+      "guardrail_notes": "The comparison must be permission-based and evidence-led.",
+      "source_chunk_ids": [
+        "rag019-chunk-009"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-objection-internal-buyer-enablement",
+      "chunk_id": "rag019-chunk-010",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-004"
+      ],
+      "source_urls": [
+        "https://www.apollo.io/insights/common-sales-objections",
+        "https://www.apollo.io/insights/handling-objections-in-sales"
+      ],
+      "source_titles": [
+        "Apollo common sales objections",
+        "Apollo handling objections in sales"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "need_to_think",
+        "ask_partner_or_boss",
+        "decision_friction"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "When the customer needs to think or ask someone else, support internal evaluation with concise approved material and a no-pressure check-in option.",
+      "safe_application": "Use stakeholder summaries, comparison criteria, risk notes, or appointment setting when the customer wants help aligning with others.",
+      "do_not_use_when": "Do not treat another decision-maker as an obstacle to bypass or push for a solo decision.",
+      "guardrail_notes": "Buyer enablement should lower decision friction while preserving deliberation.",
+      "source_chunk_ids": [
+        "rag019-chunk-010"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-closing-obtain-commitment-not-hard-close",
+      "chunk_id": "rag019-chunk-011",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-002"
+      ],
+      "source_urls": [
+        "https://www.huthwaiteinternational.com/spin-methodology"
+      ],
+      "source_titles": [
+        "Huthwaite SPIN methodology"
+      ],
+      "topic_ids": [
+        "closing_techniques",
+        "soft_closing",
+        "trial_closing",
+        "closing_without_pressure"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Close by obtaining a mutual commitment to a useful next action, not by forcing a final yes before fit is clear.",
+      "safe_application": "Use soft checks, trial summaries, appointment setting, or explicit next-step offers after discovery and fit framing.",
+      "do_not_use_when": "Do not assume consent, lock the customer into a purchase, or make protected text sound optional.",
+      "guardrail_notes": "A close is valid only when the customer understands and accepts the next step.",
+      "source_chunk_ids": [
+        "rag019-chunk-011"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-closing-buying-signals-observable-only",
+      "chunk_id": "rag019-chunk-012",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-002",
+        "rag019-source-009"
+      ],
+      "source_urls": [
+        "https://www.huthwaiteinternational.com/spin-methodology",
+        "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+      ],
+      "source_titles": [
+        "Huthwaite SPIN methodology",
+        "FBI Law Enforcement Bulletin active listening skills for crisis negotiators"
+      ],
+      "topic_ids": [
+        "closing_techniques",
+        "detecting_buying_signals",
+        "emotional_intelligence_in_sales"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Treat buying signals as observable customer statements, questions, or requested next steps, not as hidden emotion or inferred intent.",
+      "safe_application": "Use when the customer asks about implementation, price specifics, timing, decision process, or next steps.",
+      "do_not_use_when": "Do not infer readiness from tone, silence, politeness, accent, emotion labels, or demographic assumptions.",
+      "guardrail_notes": "Explicit customer words and policy rules override model interpretation.",
+      "source_chunk_ids": [
+        "rag019-chunk-012"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-spin-consultative-question-flow",
+      "chunk_id": "rag019-chunk-013",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-002"
+      ],
+      "source_urls": [
+        "https://www.huthwaiteinternational.com/spin-methodology"
+      ],
+      "source_titles": [
+        "Huthwaite SPIN methodology"
+      ],
+      "topic_ids": [
+        "consultative_selling",
+        "spin_selling",
+        "problem_discovery",
+        "implication_questions",
+        "need_payoff_questions"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use a consultative question flow: understand situation, identify problem, explore implication, then ask the customer to describe the value of solving it.",
+      "safe_application": "Use in discovery calls and qualification where the customer has time and permission has been established.",
+      "do_not_use_when": "Do not interrogate, ask sensitive personal questions, or continue discovery after refusal.",
+      "guardrail_notes": "The flow is a flexible reasoning aid, not a rigid script.",
+      "source_chunk_ids": [
+        "rag019-chunk-013"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-solution-framing-stated-needs-only",
+      "chunk_id": "rag019-chunk-014",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-002"
+      ],
+      "source_urls": [
+        "https://www.huthwaiteinternational.com/spin-methodology"
+      ],
+      "source_titles": [
+        "Huthwaite SPIN methodology"
+      ],
+      "topic_ids": [
+        "consultative_selling",
+        "solution_framing",
+        "qualification_questions"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Frame the solution only against needs, constraints, and outcomes the customer has stated or confirmed.",
+      "safe_application": "Use after discovery to summarize fit and invite correction.",
+      "do_not_use_when": "Do not project pain points, private motives, or urgency onto the customer.",
+      "guardrail_notes": "Customer correction beats the agent's framing.",
+      "source_chunk_ids": [
+        "rag019-chunk-014"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-psychology-truthful-social-proof-authority",
+      "chunk_id": "rag019-chunk-015",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-005",
+        "rag019-source-006"
+      ],
+      "source_urls": [
+        "https://www.influenceatwork.com/about-iaw/",
+        "https://www.influenceatwork.com/"
+      ],
+      "source_titles": [
+        "Influence at Work Cialdini Code of Ethics",
+        "Influence at Work principles overview"
+      ],
+      "topic_ids": [
+        "sales_psychology",
+        "social_proof",
+        "trust_building",
+        "authority",
+        "ethical_persuasion"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use social proof and authority only when they are truthful, relevant, and educational for the customer's decision.",
+      "safe_application": "Use verified similar-customer examples, genuine credentials, and relevant evidence from approved campaign materials.",
+      "do_not_use_when": "Do not invent popularity, fake expertise, hide limits, or imply the customer should comply because others did.",
+      "guardrail_notes": "Trust-building must be evidence-based and autonomy-preserving.",
+      "source_chunk_ids": [
+        "rag019-chunk-015"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+      "chunk_id": "rag019-chunk-016",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-007",
+        "rag019-source-008"
+      ],
+      "source_urls": [
+        "https://www.econometricsociety.org/publications/econometrica/browse/1979/03/01/prospect-theory-analysis-decision-under-risk",
+        "https://plato.stanford.edu/entries/ethics-manipulation/"
+      ],
+      "source_titles": [
+        "Kahneman and Tversky prospect theory record",
+        "Stanford Encyclopedia of Philosophy: The Ethics of Manipulation"
+      ],
+      "topic_ids": [
+        "sales_psychology",
+        "loss_aversion",
+        "urgency_vs_pressure",
+        "ethical_persuasion"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Frame cost of inaction only with real, relevant tradeoffs and avoid fear amplification.",
+      "safe_application": "Use confirmed operational, financial, service, or time costs when the customer has asked to compare options.",
+      "do_not_use_when": "Do not heighten fear, shame, guilt, scarcity, or imagined losses to bypass judgment.",
+      "guardrail_notes": "Loss framing is allowed only as transparent decision support.",
+      "source_chunk_ids": [
+        "rag019-chunk-016"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+      "chunk_id": "rag019-chunk-017",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-005",
+        "rag019-source-006"
+      ],
+      "source_urls": [
+        "https://www.influenceatwork.com/about-iaw/",
+        "https://www.influenceatwork.com/"
+      ],
+      "source_titles": [
+        "Influence at Work Cialdini Code of Ethics",
+        "Influence at Work principles overview"
+      ],
+      "topic_ids": [
+        "sales_psychology",
+        "reciprocity",
+        "commitment_and_consistency",
+        "ethical_persuasion"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Offer useful value and small next steps without creating obligation, guilt, or consistency pressure.",
+      "safe_application": "Use optional checklists, summaries, demos, or reminders that the customer can accept or decline.",
+      "do_not_use_when": "Do not frame value as a favor owed back or use prior small yeses to force a larger yes.",
+      "guardrail_notes": "Commitment must be explicit, informed, and reversible unless a legal contract says otherwise.",
+      "source_chunk_ids": [
+        "rag019-chunk-017"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-ei-active-listening-before-influence",
+      "chunk_id": "rag019-chunk-018",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-009"
+      ],
+      "source_urls": [
+        "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+      ],
+      "source_titles": [
+        "FBI Law Enforcement Bulletin active listening skills for crisis negotiators"
+      ],
+      "topic_ids": [
+        "emotional_intelligence_in_sales",
+        "active_listening",
+        "empathy",
+        "mirroring"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Before influencing, show listening through concise paraphrase, summary, or a relevant clarification question.",
+      "safe_application": "Use when the customer expresses frustration, skepticism, confusion, or complex requirements.",
+      "do_not_use_when": "Do not over-reflect, diagnose feelings, or use listening phrases as filler before a pitch.",
+      "guardrail_notes": "Listening must change the next response when the customer corrects the agent.",
+      "source_chunk_ids": [
+        "rag019-chunk-018"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-ei-labeling-with-tentative-language",
+      "chunk_id": "rag019-chunk-019",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-009",
+        "rag019-source-010"
+      ],
+      "source_urls": [
+        "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators",
+        "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/"
+      ],
+      "source_titles": [
+        "FBI Law Enforcement Bulletin active listening skills for crisis negotiators",
+        "World Economic Forum / Quartz tactical empathy interview with Chris Voss"
+      ],
+      "topic_ids": [
+        "emotional_intelligence_in_sales",
+        "labeling_emotions",
+        "tactical_empathy",
+        "handling_skepticism"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use tentative labels for observable concerns and invite correction instead of stating what the customer feels.",
+      "safe_application": "Use phrases that reflect stated concerns such as budget, risk, time, trust, or confusion.",
+      "do_not_use_when": "Do not claim to know hidden emotions, motives, vulnerability, or protected traits.",
+      "guardrail_notes": "The safest label is about the issue, not the person's internal state.",
+      "source_chunk_ids": [
+        "rag019-chunk-019"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-ei-annoyed-customer-deescalation",
+      "chunk_id": "rag019-chunk-020",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-015",
+        "rag019-source-016"
+      ],
+      "source_urls": [
+        "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers",
+        "https://blog.hubspot.com/service/service-recovery"
+      ],
+      "source_titles": [
+        "ICMI communication with angry customers",
+        "HubSpot service recovery strategies"
+      ],
+      "topic_ids": [
+        "emotional_intelligence_in_sales",
+        "calming_annoyed_customers",
+        "call_center_communication",
+        "service_recovery"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "When a customer is annoyed, slow down, let the issue be stated, summarize the problem, then move to one concrete remedy or escalation path.",
+      "safe_application": "Use for complaints, service failures, repeated-contact frustration, and support-to-sales handoffs.",
+      "do_not_use_when": "Do not match anger, debate tone, blame the customer, or pivot to a sale before recovery.",
+      "guardrail_notes": "Recovery and escalation override conversion goals.",
+      "source_chunk_ids": [
+        "rag019-chunk-020"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-negotiation-calibrated-questions",
+      "chunk_id": "rag019-chunk-021",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-010"
+      ],
+      "source_urls": [
+        "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/"
+      ],
+      "source_titles": [
+        "World Economic Forum / Quartz tactical empathy interview with Chris Voss"
+      ],
+      "topic_ids": [
+        "negotiation",
+        "tactical_empathy",
+        "calibrated_questions",
+        "how_am_i_supposed_to_do_that"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use calibrated how/what questions to explore constraints and invite the customer into problem solving.",
+      "safe_application": "Use in negotiation when price, scope, timing, or authority constraints need joint clarification.",
+      "do_not_use_when": "Do not use calibrated questions as traps, sarcasm, dominance moves, or ways to avoid valid opt-outs.",
+      "guardrail_notes": "A calibrated question should make the constraint clearer, not corner the customer.",
+      "source_chunk_ids": [
+        "rag019-chunk-021"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-negotiation-anchoring-transparent-reference",
+      "chunk_id": "rag019-chunk-022",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-011",
+        "rag019-source-008"
+      ],
+      "source_urls": [
+        "https://www.pon.harvard.edu/daily/negotiation-skills-daily/what-is-anchoring-in-negotiation/",
+        "https://plato.stanford.edu/entries/ethics-manipulation/"
+      ],
+      "source_titles": [
+        "Harvard Program on Negotiation anchoring in negotiation",
+        "Stanford Encyclopedia of Philosophy: The Ethics of Manipulation"
+      ],
+      "topic_ids": [
+        "negotiation",
+        "anchoring",
+        "price_negotiation",
+        "discount_resistance",
+        "concession_strategy"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use anchors and reference points only when the basis is transparent, relevant, and open to challenge.",
+      "safe_application": "Use approved benchmarks, current spend, list prices, implementation scope, or value ranges with clear assumptions.",
+      "do_not_use_when": "Do not inflate anchors, hide assumptions, create fake concessions, or use silence as pressure.",
+      "guardrail_notes": "Discount resistance should explain value and constraints, not punish negotiation.",
+      "source_chunk_ids": [
+        "rag019-chunk-022"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-voice-delivery-clarity-over-performance",
+      "chunk_id": "rag019-chunk-023",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag019-source-012",
+        "rag019-source-015"
+      ],
+      "source_urls": [
+        "https://developers.google.com/assistant/conversation-design/learn-about-conversation",
+        "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+      ],
+      "source_titles": [
+        "Google conversation design: turn-taking",
+        "ICMI communication with angry customers"
+      ],
+      "topic_ids": [
+        "voice_and_speech_delivery",
+        "tone",
+        "pacing",
+        "pauses",
+        "confidence_in_speech"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Tune tone, pacing, pauses, and articulation for comprehension and calm turn-taking rather than performance.",
+      "safe_application": "Use for delivery metadata after text guardrails pass.",
+      "do_not_use_when": "Do not add theatrical hesitation, exaggerated warmth, fake intimacy, or urgency emphasis.",
+      "guardrail_notes": "Delivery guidance cannot change protected words or claim emotional insight.",
+      "source_chunk_ids": [
+        "rag019-chunk-023"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-conversation-turn-taking-one-question",
+      "chunk_id": "rag019-chunk-024",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-012"
+      ],
+      "source_urls": [
+        "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+      ],
+      "source_titles": [
+        "Google conversation design: turn-taking"
+      ],
+      "topic_ids": [
+        "conversation_design",
+        "turn_taking",
+        "call_control",
+        "clarification_questions"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Ask one clear question at a time and stop speaking after the question so the customer can take the turn.",
+      "safe_application": "Use for discovery, qualification, repair, appointment setting, and next-step confirmation.",
+      "do_not_use_when": "Do not chain multiple questions to control the call or prevent objections.",
+      "guardrail_notes": "Call control means structure, not domination.",
+      "source_chunk_ids": [
+        "rag019-chunk-024"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-conversation-barge-in-respect",
+      "chunk_id": "rag019-chunk-025",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag019-source-014",
+        "rag019-source-012"
+      ],
+      "source_urls": [
+        "https://docs.aws.amazon.com/nova/latest/nova2-userguide/sonic-barge-in.html",
+        "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+      ],
+      "source_titles": [
+        "Amazon Nova Sonic barge-in documentation",
+        "Google conversation design: turn-taking"
+      ],
+      "topic_ids": [
+        "conversation_design",
+        "interruption_handling",
+        "barge_in_behavior",
+        "dialogue_state_tracking"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "When the customer interrupts, stop or shorten the current output, preserve context, and process the new customer turn.",
+      "safe_application": "Use for voice-agent streaming behavior and interruption event handling.",
+      "do_not_use_when": "Do not talk over the customer, resume a pitch automatically, or ignore corrections.",
+      "guardrail_notes": "Interruptions are valid customer control signals.",
+      "source_chunk_ids": [
+        "rag019-chunk-025"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-conversation-repair-fallback-handoff",
+      "chunk_id": "rag019-chunk-026",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-013"
+      ],
+      "source_urls": [
+        "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-fallbacks"
+      ],
+      "source_titles": [
+        "Microsoft Copilot Studio graceful fallbacks and handoffs"
+      ],
+      "topic_ids": [
+        "conversation_design",
+        "repair_strategies",
+        "graceful_fallback_responses",
+        "human_escalation"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "When the agent cannot understand or fulfill the request, state the limitation, ask a focused clarification, or offer a human handoff.",
+      "safe_application": "Use for ambiguous input, unsupported requests, tool failure, or repeated misunderstanding.",
+      "do_not_use_when": "Do not hallucinate capability, loop generic apologies, or dead-end the customer.",
+      "guardrail_notes": "Fallbacks must give the customer a usable next action.",
+      "source_chunk_ids": [
+        "rag019-chunk-026"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-call-center-escalation-service-recovery",
+      "chunk_id": "rag019-chunk-027",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-016",
+        "rag019-source-017",
+        "rag019-source-015"
+      ],
+      "source_urls": [
+        "https://blog.hubspot.com/service/service-recovery",
+        "https://www.zendesk.com/blog/escalation-management/",
+        "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+      ],
+      "source_titles": [
+        "HubSpot service recovery strategies",
+        "Zendesk escalation management",
+        "ICMI communication with angry customers"
+      ],
+      "topic_ids": [
+        "call_center_communication",
+        "escalation_handling",
+        "angry_customer_handling",
+        "service_recovery"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "For service-recovery calls, acknowledge the issue, take ownership within policy, find the root cause, solve or escalate, and set a follow-up expectation.",
+      "safe_application": "Use when a customer complaint or support issue appears during a sales or retention call.",
+      "do_not_use_when": "Do not upsell during unresolved recovery or transfer without preserving context.",
+      "guardrail_notes": "Escalation quality matters more than keeping the prospect on the phone.",
+      "source_chunk_ids": [
+        "rag019-chunk-027"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-storytelling-problem-solution-proof",
+      "chunk_id": "rag019-chunk-028",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag019-source-025"
+      ],
+      "source_urls": [
+        "https://www.gsb.stanford.edu/faculty-research/case-studies/how-harness-stories-business"
+      ],
+      "source_titles": [
+        "Stanford GSB business storytelling case"
+      ],
+      "topic_ids": [
+        "storytelling_for_sales",
+        "problem_solution_story",
+        "customer_success_story",
+        "before_after_bridge",
+        "concise_story_structure"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use concise sales stories with a real situation, clear tension, concrete action, and verified outcome.",
+      "safe_application": "Use customer-success, before-after, analogy, or problem-solution stories only when approved and relevant.",
+      "do_not_use_when": "Do not fabricate customers, overstate outcomes, copy public case-study wording, or use emotional narrative to hide limitations.",
+      "guardrail_notes": "Stories should make evidence memorable, not replace evidence.",
+      "source_chunk_ids": [
+        "rag019-chunk-028"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-german-sales-formal-consent-first",
+      "chunk_id": "rag019-chunk-029",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-021",
+        "rag019-source-022",
+        "rag019-source-023",
+        "rag019-source-024"
+      ],
+      "source_urls": [
+        "https://www.bundesnetzagentur.de/DE/Vportal/TK/Aerger/Faelle/UEW/start.html",
+        "https://www.gesetze-im-internet.de/uwg_2004/__7.html",
+        "https://www.gesetze-im-internet.de/uwg_2004/__7a.html",
+        "https://www.ihk.de/ulm/recht-und-steuern/wettbewerbsrecht/wettbewerbsrecht/telefon-werbung-4239498"
+      ],
+      "source_titles": [
+        "Bundesnetzagentur unerlaubte Telefonwerbung",
+        "Germany UWG Section 7",
+        "Germany UWG Section 7a",
+        "IHK Ulm telephone advertising guidance"
+      ],
+      "topic_ids": [
+        "german_sales_communication",
+        "telefonakquise",
+        "kaltakquise",
+        "sie_form",
+        "telemarketing_rules"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "For German sales calls, use formal Sie language and run consent/legal eligibility checks before any Telefonakquise or Kaltakquise wording.",
+      "safe_application": "Use polite, direct German wording only after the campaign has confirmed lawful call basis and documentation requirements.",
+      "do_not_use_when": "Do not call German consumers for advertising without prior explicit consent, do not hide caller identity, and do not treat B2B presumed interest as a blanket permission.",
+      "guardrail_notes": "German compliance controls override sales scripting and voice style.",
+      "source_chunk_ids": [
+        "rag019-chunk-029"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-real-call-breakdowns-training-only",
+      "chunk_id": "rag019-chunk-030",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-001"
+      ],
+      "source_urls": [
+        "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+      ],
+      "source_titles": [
+        "Gong Labs cold-call openers from 300M calls"
+      ],
+      "topic_ids": [
+        "real_sales_call_breakdowns",
+        "live_cold_calls",
+        "sales_call_reviews",
+        "roleplays",
+        "failed_sales_call_analysis"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use public sales-call breakdowns as pattern evidence only; convert lessons into project-owned rules rather than copying scripts or talk tracks.",
+      "safe_application": "Use for training labels such as opener type, objection category, turn structure, and failure pattern.",
+      "do_not_use_when": "Do not store full call transcripts, copied roleplay scripts, private recordings, or speaker-identifying material in runtime RAG.",
+      "guardrail_notes": "Real-call evidence needs source, consent, privacy, and quote-clearance review before reuse.",
+      "source_chunk_ids": [
+        "rag019-chunk-030"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+      "chunk_id": "rag019-chunk-031",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag019-source-018",
+        "rag019-source-019",
+        "rag019-source-020"
+      ],
+      "source_urls": [
+        "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule",
+        "https://www.ftc.gov/business-guidance/blog/2023/02/keep-your-ai-claims-check",
+        "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale"
+      ],
+      "source_titles": [
+        "FTC Telemarketing Sales Rule compliance guide",
+        "FTC Keep your AI claims in check",
+        "FTC AI deception for sale"
+      ],
+      "topic_ids": [
+        "ethics_and_compliance",
+        "ai_disclosure",
+        "truthful_claims",
+        "avoiding_manipulation",
+        "vulnerable_customer_protection"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "project_rule": "Use AI disclosure when required by campaign or law, make only substantiated claims, and avoid designs that imitate humans to deceive.",
+      "safe_application": "Use before opening scripts, voice-clone behavior, product claims, earnings/performance claims, and customer-facing AI positioning.",
+      "do_not_use_when": "Do not hide that the caller is AI where disclosure is required, imply human identity, exaggerate AI capability, or target vulnerable customers with pressure.",
+      "guardrail_notes": "Truthful claims and disclosure obligations override persuasion, voice naturalness, and conversion goals.",
+      "source_chunk_ids": [
+        "rag019-chunk-031"
+      ],
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "copied_scripts_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false,
+    "runtime_registry_gate_required_before_use": true
+  }
+}

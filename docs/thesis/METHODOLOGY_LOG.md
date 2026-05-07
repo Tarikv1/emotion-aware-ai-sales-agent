@@ -16,6 +16,56 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - Core playbook live RAG implementation slice
+
+- Objective: implement the first working slice of the hybrid teach-now, retrieve-live, learn-later architecture.
+- Action taken: added the core sales/delivery playbook, retrieval-before-composition gates, retrieval latency metadata, campaign-fact grounding, core delivery pack handoff, and a 200-note call-pattern learning checkpoint.
+- Data used: local project RAG registry, local campaign fixtures, generated artifacts, and synthetic validator notes only. No provider call, private call read, external vector DB, embedding provider, or LLM call was used.
+- Output created: core playbook artifacts, guarded response retrieval metadata, voice delivery metadata, and local checkpoint validator output.
+- What was learned: live RAG can stay deterministic and fast in the local path while becoming a real pre-composition input. The safest first delivery integration is metadata handoff into RESP-002 while keeping `final_response` unchanged.
+- Why it matters for the thesis: the agent can now combine distilled fixed behavior with guarded contextual retrieval while preserving campaign facts and batch-only learning boundaries.
+- Open questions: whether to enable stall-for-time fallback in v1 live calls and whether the first relevance threshold should increase after live tests.
+
+### 2026-05-07 - Core sales, delivery, live RAG architecture decision
+
+- Objective: decide how the agent should use the existing RAG corpus before live calls without hard-coding the full registry or relying only on retrieval.
+- Action taken: documented a hybrid `teach now + retrieve live + learn later` design that separates safety/compliance, core sales playbook behavior, delivery intelligence, live tactical RAG, and reviewed batch-based pattern learning; added live retrieval latency budgets, relevance/source gates, campaign-fact grounding, and a 200-note learning checkpoint.
+- Data used: local RAG-017/RAG-018 docs, guarded response code, current RESP/VOICE delivery docs, and the private-call learning scaffold. No provider call, private data read, external vector DB, embedding provider, or runtime private retrieval was used.
+- Output created: `docs/superpowers/specs/2026-05-07-core-sales-delivery-live-rag-design.md`.
+- What was learned: the current runtime RAG path is opt-in and source-traced, but retrieval currently arrives after response composition. The next implementation should move allowed retrieval before composition while keeping protected text, campaign facts, latency, relevance thresholds, and final voice safety boundaries intact.
+- Why it matters for the thesis: the agent architecture now has a clear separation between fixed safety rules, distilled sales/delivery behavior, contextual retrieval, and reviewed pattern extraction from successful and failed call batches.
+- Open questions: which exact artifacts should hold the distilled core playbook and delivery intelligence pack, whether the first batch should stay public-source-only or include reviewed redacted private-call patterns, the first deterministic relevance threshold, and whether stall-for-time fallback should be enabled in v1.
+
+### 2026-05-07 - Project review validator cleanup
+
+- Objective: run a broad local project review and fix review-only failures that prevented the full validator sweep from staying clean.
+- Action taken: ran the setup, drift, thesis, private-data, RAG, guarded-response, voice/runtime, and all-script validator sweeps; fixed validators that wrote review scratch artifacts into tracked generated paths instead of `.tmp`; fixed the RAG-001 runner to read UTF-8 BOM JSON case files; regenerated the RESP-001 guarded-response artifact with retrieval metadata.
+- Data used: local repo files and generated validation artifacts only. No provider call, private data scan, private audio, NotebookLM API call, embedding provider, external vector database, or runtime retrieval beyond local guarded validation was used.
+- Output created: updated validator scratch-output paths, RAG-001 case loading, VOICE-013/VOICE-014 validator assumptions, stale VOICE case artifact paths, and refreshed `research/experiments/generated/RESP-001/` artifacts.
+- What was learned: the drift guard was effective at catching validators that still dirtied tracked generated artifacts. The RAG-001 runner also needed BOM-tolerant case loading because some Windows-edited JSON inputs can include a UTF-8 BOM.
+- Why it matters for the thesis: review gates should be reproducible from a clean checkout. Validators must not create artifacts that immediately break another guard, and ingestion runners should tolerate common local encoding variants without weakening source or privacy boundaries.
+- Open questions: whether a future meta-validator should run all validators inside a temporary output workspace to avoid accidental tracked artifact churn.
+
+### 2026-05-07 - Vinh/AskVinh per-video source metadata cleanup
+
+- Objective: replace the prior title-only Vinh/AskVinh RAG source caveat with explicit per-video metadata where public search could verify it.
+- Action taken: compared the `40` titles in the imported Vinh Giang NotebookLM report against public YouTube/search metadata, added verified watch URLs and publication dates to the thesis reference registry, and marked unresolved title-only items explicitly instead of treating them as verified.
+- Data used: public YouTube/search metadata, Vinh Giang official channel/resources pages, and existing local RAG import metadata. No transcript text, video downloads, private data, provider calls, or runtime retrieval changes were used.
+- Output created: expanded Vinh/AskVinh section in `docs/thesis/THESIS_REFERENCE_REGISTRY.md`.
+- What was learned: most imported Vinh RAG titles can be tied to concrete watch URLs, but several titles either changed, are not indexed cleanly, or appear only through podcast/channel mirrors. Those should remain title-only pending exact watch URL confirmation.
+- Why it matters for the thesis: this improves provenance for practitioner-source RAG claims while preserving the boundary that Vinh material is communication-training inspiration, not academic evidence or copied runtime wording.
+- Open questions: whether to use a YouTube metadata tool/API later to resolve the remaining pending titles without relying on search snippets or third-party transcript mirrors.
+
+### 2026-05-07 - RAG-019 sales communication source expansion
+
+- Objective: add a broader public-source sales communication layer to the guarded RAG without copying scripts or enabling unreviewed retrieval.
+- Action taken: researched public sources across cold calling, objections, closing, consultative selling, sales psychology, emotional intelligence, negotiation, voice delivery, conversation design, call-center behavior, persuasion, storytelling, German sales communication, real call breakdowns, and ethics/compliance; converted the relevant guidance into source-traced, project-owned advisory rules; wired the new source pack into RAG-017 registry generation.
+- Data used: public web sources only, including sales-methodology pages, academic/encyclopedic decision and manipulation references, conversation-design/provider documentation, call-center guidance, FTC guidance, and German telemarketing/UWG references. No private customer data, private audio, raw call transcripts, copied source passages, NotebookLM API call, provider call, embedding provider, or external vector database was used.
+- Output created: `research/experiments/cases/rag-019-sales-communication-source-expansion.json`, `docs/product/RAG_019_SALES_COMMUNICATION_SOURCE_EXPANSION.md`, RAG-019 runner/validator scripts, RAG-017 registry source-URL trace support, setup/command documentation updates, and this thesis reference update.
+- What was learned: broad sales guidance can be made useful only after it is narrowed into consent-aware, low-pressure, observable-signal-only rules. The most important boundaries are no hidden emotion inference, no protected-trait inference, no pressure escalation, no copied scripts, no compliance-text changes, and no runtime retrieval unless explicitly enabled.
+- Why it matters for the thesis: the sales agent now has a traceable public-source advisory corpus for practical sales behavior while preserving the thesis safety claim that persuasive knowledge is gated, paraphrased, local, reviewable, and subordinate to campaign/compliance guardrails.
+- Open questions: which of these RAG-019 items should be evaluated first in reviewed campaign simulations, and whether future source intake should separate peer-reviewed evidence from practitioner playbooks more strictly.
+
 ### 2026-05-07 - Generated artifact folderization and drift guard
 
 - Objective: make the accumulated experiment evidence easier to audit before pushing the full project checkpoint to GitHub.
