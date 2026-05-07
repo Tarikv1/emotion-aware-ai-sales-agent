@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-012 accepted cleanup
+
+- Objective: apply the human-accepted first cleanup slice from RAG-011 while keeping RAG review separate from runtime retrieval.
+- Action taken: added the RAG-012 accepted cleanup builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-011 blocker cleanup packet and RAG-009 all-source review coverage artifact under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, or runtime retrieval was used.
+- Output created: `docs/product/RAG_012_ACCEPTED_CLEANUP.md`, `research/experiments/cases/rag-012-accepted-cleanup.json`, `research/experiments/generated/RAG-012-accepted-cleanup/result.json`, `research/experiments/generated/RAG-012-accepted-cleanup/report.md`, `scripts/rag_accepted_cleanup.py`, `scripts/run_rag_012_accepted_cleanup.py`, and `scripts/validate_rag_012_accepted_cleanup.py`.
+- What was learned: RAG-012 accepted `17` cleanup decisions: `5` source-mapping chunks and `12` quote-clearance rewrites. Source-mapping blockers fall from `63` to `58`; the original quote-clearance queue falls from `42` to `30`; and `5` accepted source mappings still need quote-clearance follow-up before any future promotion.
+- Why it matters for the thesis: this checkpoint records how human review turns extracted sales and voice knowledge into safer project-owned rules without confusing cleanup with runtime use. It also preserves the distinction between metadata cleanup, quote clearance, and final runtime admission.
+- Open questions: whether `RAG-013` should continue with source-mapping cleanup, quote-clearance rewrite cleanup, or a combined cleanup slice before any runtime-off retrieval integration harness.
+
 ### 2026-05-07 - RAG-011 blocker cleanup packet
 
 - Objective: narrow the remaining source-mapping and quote-clearance cleanup work before any runtime integration work.

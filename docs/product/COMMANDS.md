@@ -366,6 +366,24 @@ Validate RAG-011 cleanup proposals, quote-clearance cards, no blocker mutation, 
 python scripts\validate_rag_011_blocker_cleanup_packet.py
 ```
 
+Run RAG-012 accepted cleanup after the RAG-011 source-mapping proposals and quote-clearance cards are human-accepted:
+
+```powershell
+python scripts\run_rag_012_accepted_cleanup.py
+```
+
+Default RAG-012 output folder:
+
+```text
+research\experiments\generated\RAG-012-accepted-cleanup\
+```
+
+Validate RAG-012 accepted source mappings, project-owned quote-clearance rewrites, follow-up flags, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_012_accepted_cleanup.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

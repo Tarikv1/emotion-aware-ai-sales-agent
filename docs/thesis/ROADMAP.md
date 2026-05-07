@@ -33,7 +33,7 @@ Active phase: source-tracked RAG foundation, voice/runtime quality, and thesis e
 
 Current checkpoint:
 
-- [ ] Current: design `RAG-012` human-accepted cleanup application for the RAG-011 source-mapping proposals and quote-clearance cards, still with runtime retrieval disabled.
+- [ ] Current: choose the `RAG-013` cleanup strategy for the remaining `58` source-mapping blockers, `30` original quote-clearance blockers, and `5` quote-clearance follow-ups before any runtime retrieval work.
 
 Next checkpoints:
 
@@ -49,12 +49,13 @@ Next checkpoints:
 - [ ] Next: implement provider pacing tuning using VOICE-027/VOICE-028 feedback as the baseline and changing pacing only before touching markers, emotion, or voice identity again.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
-- [ ] Next: after `RAG-012` applies human-accepted cleanup, decide whether to wire reviewed retrieval into a runtime-off integration harness or keep RAG as review-only while strengthening universal objection handling.
+- [ ] Next: after the remaining RAG cleanup path is accepted, decide whether to wire reviewed retrieval into a runtime-off integration harness or keep RAG as review-only while strengthening universal objection handling.
 - [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
 - [ ] Next: continue dataset-grounded thesis expansion once the current voice/runtime checkpoint is stable.
 
 Recently completed checkpoints:
 
+- [x] `RAG-012` accepted cleanup, which recorded Tarik-approved cleanup decisions from RAG-011 without mutating older artifacts. It accepted `3` source-mapping proposal groups covering `5` chunks, accepted `12` quote-clearance cards as project-owned paraphrases, reduced source-mapping blockers from `63` to `58`, reduced the original quote-clearance queue from `42` to `30`, flagged `5` accepted source-mapping chunks for quote-clearance follow-up, stored no source excerpt text, made no provider or NotebookLM calls, used no private customer data, auto-promoted `0` chunks, and kept runtime retrieval plus chunk import disabled.
 - [x] `RAG-011` blocker cleanup packet, which kept the remaining `63` source-mapping blockers and `42` quote-clearance blockers unchanged but narrowed the next cleanup slice to `3` high-confidence source-mapping proposal groups covering `5` chunks plus `12` quote-clearance cards. It reports `17` possible blocker reductions after human acceptance, resolves `0` blockers now, stores no source excerpt text, makes no provider or NotebookLM calls, uses no private customer data, auto-promotes `0` chunks, and keeps runtime retrieval plus chunk import disabled.
 - [x] `RAG-010` reviewed expansion slice, which promoted all `4` clean RAG-009 next-promotion candidates into project-owned paraphrased review items: `3` consultative response-wording rules and `1` voice-delivery advisory rule. It rewrote impact, so-what, and timing guidance as low-pressure discovery; rewrote cadence detection as weak context only, not hidden-emotion inference; stored no source excerpt text; made no provider or NotebookLM calls; used no private customer data; auto-promoted `0` chunks; and kept runtime retrieval plus chunk import disabled.
 - [x] `RAG-009` all-source review coverage, which accounted for all `95` RAG-004 sources and all `121` RAG-005 chunk candidates, carried forward the `9` manually reviewed RAG-007 chunks, identified `4` clean next-promotion candidates, blocked `63` chunks for source mapping and `42` for quote clearance, rejected `3` safety-risk chunks, stored no source excerpt text, made no provider or NotebookLM calls, used no private customer data, auto-promoted `0` chunks, and kept runtime retrieval plus chunk import disabled.

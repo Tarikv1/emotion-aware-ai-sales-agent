@@ -1,0 +1,41 @@
+{
+  "accepted_cleanup_id": "RAG-012-accepted-cleanup",
+  "title": "RAG accepted cleanup",
+  "description": "Records human-accepted source-mapping and quote-clearance cleanup decisions from RAG-011 without enabling runtime retrieval.",
+  "accepted_by": "project_owner_current_session",
+  "default_rag011_result": "research/experiments/generated/RAG-011-blocker-cleanup-packet/result.json",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "accepted_source_mapping_chunk_ids": [
+    "rag005-chunk-003",
+    "rag005-chunk-005",
+    "rag005-chunk-006",
+    "rag005-chunk-081",
+    "rag005-chunk-084"
+  ],
+  "accepted_quote_clearance_chunk_ids": [
+    "rag005-chunk-018",
+    "rag005-chunk-019",
+    "rag005-chunk-021",
+    "rag005-chunk-023",
+    "rag005-chunk-026",
+    "rag005-chunk-027",
+    "rag005-chunk-063",
+    "rag005-chunk-071",
+    "rag005-chunk-072",
+    "rag005-chunk-073",
+    "rag005-chunk-074",
+    "rag005-chunk-076"
+  ],
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "Source mappings are accepted as metadata cleanup only.",
+    "Accepted source-mapping chunks may still require quote-clearance follow-up before any later promotion.",
+    "Quote-clearance cards are accepted only as project-owned paraphrases.",
+    "This checkpoint does not import chunks into runtime memory or enable retrieval.",
+    "A later runtime integration gate is required before any runtime use."
+  ]
+}
