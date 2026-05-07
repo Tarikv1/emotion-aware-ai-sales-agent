@@ -438,6 +438,24 @@ Validate RAG-015 source-mapping group/chunk counts, priority batches, latent quo
 python scripts\validate_rag_015_source_mapping_batches.py
 ```
 
+Run RAG-016 quote-clearance batches after RAG-015 organizes remaining source-mapping work:
+
+```powershell
+python scripts\run_rag_016_quote_clearance_batches.py
+```
+
+Default RAG-016 output folder:
+
+```text
+research\experiments\generated\RAG-016-quote-clearance-batches\
+```
+
+Validate RAG-016 quote-clearance chunk counts, ethical-persuasion and voice-delivery lane counts, topic batches, no quote-clearance decisions, no source-excerpt storage, and no-runtime-retrieval boundary:
+
+```powershell
+python scripts\validate_rag_016_quote_clearance_batches.py
+```
+
 ## Core Product Contract
 
 Validate the runtime output contract used before speaking or logging agent decisions:

@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-016 quote-clearance batches
+
+- Objective: organize the remaining original quote-clearance blockers into human-review batches after RAG-015, including voice/prosody candidates where they make sense as advisory-only delivery guidance.
+- Action taken: added the RAG-016 quote-clearance batch builder, runner, case config, product documentation, validator, and official JSON/Markdown artifacts.
+- Data used: existing RAG-015 source-mapping batch artifact, RAG-013 cleanup strategy artifact, RAG-012 accepted cleanup artifact, and RAG-009 all-source review coverage artifact under `research/experiments`. No NotebookLM API call, LLM call, TTS/ASR provider call, private customer data, raw call-center audio, API key, source excerpt text, chunk import, embedding job, vector database, runtime retrieval, or new source gathering was used.
+- Output created: `docs/product/RAG_016_QUOTE_CLEARANCE_BATCHES.md`, `research/experiments/cases/rag-016-quote-clearance-batches.json`, `research/experiments/generated/RAG-016-quote-clearance-batches/result.json`, `research/experiments/generated/RAG-016-quote-clearance-batches/report.md`, `scripts/rag_quote_clearance_batches.py`, `scripts/run_rag_016_quote_clearance_batches.py`, and `scripts/validate_rag_016_quote_clearance_batches.py`.
+- What was learned: the remaining original quote-clearance queue has `30` chunks across `15` source-title groups: `11` ethical-persuasion response-wording candidates, `10` speech/prosody advisory candidates, and `9` emotion-recognition delivery advisory candidates. RAG-015 still leaves `58` source-mapping chunks and `21` latent quote follow-ups outside this batch.
+- Why it matters for the thesis: RAG-016 separates quote-dependent wording review from runtime retrieval and shows that voice/prosody knowledge can be preserved safely as advisory-only material instead of being promoted as emotion inference or buying-intent logic.
+- Open questions: which RAG-016 batch should be accepted or rejected first in `RAG-016A`, and whether the clean-candidate re-audit should wait until all three quote-clearance batches have a first accepted/rejected slice.
+
 ### 2026-05-07 - RAG-015 source-mapping batches
 
 - Objective: organize all remaining source-mapping blockers into human-review batches after RAG-014, without adding new resources or enabling runtime retrieval.

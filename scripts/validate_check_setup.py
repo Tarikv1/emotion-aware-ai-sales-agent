@@ -108,6 +108,7 @@ def main() -> None:
         "file.docs_product_rag_013_cleanup_strategy",
         "file.docs_product_rag_014_source_mapped_quote_followup",
         "file.docs_product_rag_015_source_mapping_batches",
+        "file.docs_product_rag_016_quote_clearance_batches",
         "file.docs_data_private_call_center_policy",
         "file.docs_data_private_call_learning_pipeline",
         "file.data_private_gitignore",
@@ -138,6 +139,7 @@ def main() -> None:
         "file.scripts_rag_cleanup_strategy",
         "file.scripts_rag_source_mapped_quote_followup",
         "file.scripts_rag_source_mapping_batches",
+        "file.scripts_rag_quote_clearance_batches",
         "file.scripts_run_rag_001_notebooklm_source_intake",
         "file.scripts_validate_rag_001_notebooklm_source_intake",
         "file.scripts_run_rag_002_notebooklm_extraction_automation",
@@ -168,6 +170,8 @@ def main() -> None:
         "file.scripts_validate_rag_014_source_mapped_quote_followup",
         "file.scripts_run_rag_015_source_mapping_batches",
         "file.scripts_validate_rag_015_source_mapping_batches",
+        "file.scripts_run_rag_016_quote_clearance_batches",
+        "file.scripts_validate_rag_016_quote_clearance_batches",
         "file.scripts_local_voice_config",
         "file.scripts_validate_local_voice_config",
         "file.scripts_read_relevant",
@@ -274,6 +278,7 @@ def main() -> None:
         "file.research_case_rag_013_cleanup_strategy",
         "file.research_case_rag_014_source_mapped_quote_followup",
         "file.research_case_rag_015_source_mapping_batches",
+        "file.research_case_rag_016_quote_clearance_batches",
         "write.research_experiments_generated",
     ]:
         assert_condition(required_check in checks_by_id, f"Missing setup check: {required_check}")
