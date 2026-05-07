@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - Core sales, delivery, live RAG architecture decision
+
+- Objective: decide how the agent should use the existing RAG corpus before live calls without hard-coding the full registry or relying only on retrieval.
+- Action taken: documented a hybrid `teach now + retrieve live + learn later` design that separates safety/compliance, core sales playbook behavior, delivery intelligence, live tactical RAG, and reviewed batch-based pattern learning; added live retrieval latency budgets, relevance/source gates, campaign-fact grounding, and a 200-note learning checkpoint.
+- Data used: local RAG-017/RAG-018 docs, guarded response code, current RESP/VOICE delivery docs, and the private-call learning scaffold. No provider call, private data read, external vector DB, embedding provider, or runtime private retrieval was used.
+- Output created: `docs/superpowers/specs/2026-05-07-core-sales-delivery-live-rag-design.md`.
+- What was learned: the current runtime RAG path is opt-in and source-traced, but retrieval currently arrives after response composition. The next implementation should move allowed retrieval before composition while keeping protected text, campaign facts, latency, relevance thresholds, and final voice safety boundaries intact.
+- Why it matters for the thesis: the agent architecture now has a clear separation between fixed safety rules, distilled sales/delivery behavior, contextual retrieval, and reviewed pattern extraction from successful and failed call batches.
+- Open questions: which exact artifacts should hold the distilled core playbook and delivery intelligence pack, whether the first batch should stay public-source-only or include reviewed redacted private-call patterns, the first deterministic relevance threshold, and whether stall-for-time fallback should be enabled in v1.
+
 ### 2026-05-07 - Project review validator cleanup
 
 - Objective: run a broad local project review and fix review-only failures that prevented the full validator sweep from staying clean.
