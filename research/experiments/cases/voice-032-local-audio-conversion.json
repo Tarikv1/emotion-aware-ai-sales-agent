@@ -1,0 +1,47 @@
+{
+  "voice_milestone": "VOICE-032",
+  "checkpoint_name": "Local WhatsApp OGG audio conversion gate",
+  "purpose": "Convert selected local WhatsApp .ogg voice notes into WAV files under data/private/ so VOICE-030C can analyze them locally.",
+  "source_extension_focus": ".ogg",
+  "primary_source_context": "WhatsApp exported voice notes",
+  "default_private_root": "data/private/tarik-speech-samples",
+  "default_input_dir": "data/private/tarik-speech-samples/whatsapp-voice-notes",
+  "default_converted_dir": "data/private/tarik-speech-samples/converted-audio",
+  "default_manifest": "data/private/tarik-speech-samples/derived/local-audio-conversion-manifest.jsonl",
+  "supported_source_extensions": [
+    ".ogg"
+  ],
+  "deferred_source_extensions": [
+    ".aac",
+    ".amr",
+    ".caf",
+    ".flac",
+    ".m4a",
+    ".mp3",
+    ".opus",
+    ".webm",
+    ".wma"
+  ],
+  "converter_policy": {
+    "preferred_local_converter": "ffmpeg",
+    "missing_converter_status": "converter_missing_needs_local_ffmpeg",
+    "unsupported_extension_status": "unsupported_extension_deferred",
+    "successful_status": "converted_and_queued",
+    "timeout_seconds_default": 20
+  },
+  "privacy_boundary": {
+    "input_must_stay_under_data_private": true,
+    "output_must_stay_under_data_private": true,
+    "provider_calls_made": false,
+    "transcription_created": false,
+    "voice_cloning_used": false,
+    "runtime_profile_applied": false,
+    "public_artifact_created": false,
+    "human_review_required_before_runtime_use": true
+  },
+  "queue_integration": {
+    "successful_wav_goes_to": "VOICE-030C",
+    "queue_status_expected_after_valid_wav": "analyzed_needs_review",
+    "runtime_settings_changed": false
+  }
+}

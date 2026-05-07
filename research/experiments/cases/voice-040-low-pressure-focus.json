@@ -1,0 +1,70 @@
+{
+  "experiment_id": "VOICE-040-low-pressure-focus",
+  "title": "Low-pressure phrase focus correction",
+  "description": "Corrects the VOICE-039 listening issue where the phrase 'You don't need to change anything today' attracted unnatural emphasis.",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "runtime_boundary": {
+    "changes_allowed": "English freeform provider-facing TTS wording may use a shorter low-pressure phrase to reduce wrong emphasis.",
+    "changes_forbidden": [
+      "changing the guarded final_response",
+      "rewriting protected campaign, compliance, handoff, hangup, or do-not-call text",
+      "rewriting German text",
+      "adding product claims",
+      "calling a voice provider without --live",
+      "logging API keys or raw voice IDs"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "voice-040-en-low-pressure-focus",
+      "title": "English low-pressure phrase focus",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "That sounds expensive, and I am not sure it is worth pulling people into another review right now because we already have a process that mostly works.",
+      "candidate_response": "That makes sense. You do not need to change anything today. The practical next step is to check whether reviewing options is worth your time, and if it is not useful, we leave it there. If there is a real fit, I can set up a short specialist callback.",
+      "expected": {
+        "semantic_rewrite_applied": true,
+        "low_pressure_rewrite_applied": true,
+        "final_response_unchanged": true,
+        "tts_input_source": "provider_rendered_text",
+        "minimum_tts_chars": 160
+      }
+    },
+    {
+      "case_id": "voice-040-protected-do-not-call-lock",
+      "title": "Protected do-not-call lock",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "candidate_response": "You do not need to change anything today.",
+      "expected": {
+        "semantic_rewrite_applied": false,
+        "low_pressure_rewrite_applied": false,
+        "final_response_unchanged": true,
+        "tts_input_source": "final_response",
+        "protected_text_locked": true
+      }
+    },
+    {
+      "case_id": "voice-040-de-language-lock",
+      "title": "German language lock",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "candidate_response": "Das verstehe ich. Sie muessen heute nichts aendern. Wir koennen nur kurz pruefen, ob ein genauer Blick fuer Sie sinnvoll ist.",
+      "expected": {
+        "semantic_rewrite_applied": false,
+        "low_pressure_rewrite_applied": false,
+        "final_response_unchanged": true,
+        "german_text_locked": true
+      }
+    }
+  ]
+}

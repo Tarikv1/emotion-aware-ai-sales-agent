@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - Generated artifact folderization and drift guard
+
+- Objective: make the accumulated experiment evidence easier to audit before pushing the full project checkpoint to GitHub.
+- Action taken: grouped prior flat generated artifacts under milestone folders, added `research/experiments/generated/README.md`, expanded generated-audio ignore rules, and extended the project drift guard to fail on unexpected flat generated-root files.
+- Data used: existing generated experiment outputs only. No provider call, NotebookLM API call, LLM call, private audio, private transcript, API key, or new source gathering was used.
+- Output created: grouped `research/experiments/generated/<checkpoint>/` artifact folders, updated `.gitignore`, updated `scripts/check_project_drift.py`, updated `scripts/validate_project_drift_guard.py`, and this thesis trace.
+- What was learned: artifact organization is part of thesis method quality. If evidence folders are hard to scan, generated files can hide stale outputs, source excerpts, live-audio leakage, or mixed checkpoint claims.
+- Why it matters for the thesis: the final write-up should be able to point to reproducible checkpoint folders and explain which outputs are public-safe generated evidence versus local ignored provider audio.
+- Open questions: whether later live listening artifacts should get a separate curated-public-evidence folder after privacy, provider-retention, and source-audio review.
+
 ### 2026-05-07 - RAG-016B through RAG-018 guarded live retrieval
 
 - Objective: finish the remaining voice/prosody RAG review and enable local guarded retrieval as an explicit opt-in runtime path.

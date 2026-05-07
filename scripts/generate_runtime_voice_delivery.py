@@ -40,7 +40,15 @@ def render_report(packet: dict) -> str:
     delivery = packet["voice_delivery"]
     provider = delivery["provider_rendering"]
     spoken = delivery["spoken_text_normalization"]
+    interaction = delivery["speech_interaction"]
+    imperfections = delivery["speech_imperfections"]
     prosody = delivery["prosody"]
+    pacing = delivery["voice_pacing_calibration"]
+    connected = delivery["voice_connected_speech"]
+    listening = delivery["voice_listening_calibration"]
+    emotion_smoothing = delivery["voice_emotion_smoothing"]
+    semantic_emphasis = delivery["voice_semantic_emphasis"]
+    low_pressure_focus = delivery["voice_low_pressure_focus"]
     validation = delivery["validation"]
     decision = packet["decision_snapshot"]
     lines = [
@@ -59,6 +67,17 @@ def render_report(packet: dict) -> str:
         f"- Call control: `{decision['call_control']}`",
         f"- Final response unchanged: `{delivery['final_response_unchanged']}`",
         f"- Spoken-text normalizations: `{spoken['normalization_count']}`",
+        f"- Interaction markers: `{interaction['marker_count']}`",
+        f"- Controlled imperfections: `{imperfections['imperfection_count']}`",
+        f"- Pacing calibrated: `{delivery['provider_rendering'].get('pacing_calibrated', False)}`",
+        f"- Avg voice speed ratio: `{pacing['average_speed_ratio']}`",
+        f"- Connected-speech flow joins: `{connected['flow_join_count']}`",
+        f"- Listening calibration adjustments: `{listening['listening_adjustment_count']}`",
+        f"- Emphasis targets blocked: `{listening['emphasis_guard']['blocked_emphasis_count']}`",
+        f"- Emotion transitions smoothed: `{emotion_smoothing['smoothed_transition_count']}`",
+        f"- Over-emotional cues blocked: `{emotion_smoothing['blocked_overemotional_cue_count']}`",
+        f"- Semantic emphasis rewrites: `{semantic_emphasis['rewrite_count']}`",
+        f"- Low-pressure focus rewrites: `{low_pressure_focus['rewrite_count']}`",
         f"- Provider calls made: `{delivery['provider_calls_made']}`",
         f"- Requires API key: `{delivery['requires_api_key']}`",
         f"- Customer audio uploaded: `{delivery['customer_audio_uploaded']}`",
@@ -95,11 +114,99 @@ def render_report(packet: dict) -> str:
     lines.extend(
         [
             "",
+            "## Interaction Prosody",
+            "",
+            f"- Validation passed: `{interaction['validation']['passed']}`",
+            f"- Marker count: `{interaction['marker_count']}`",
+            f"- Unsafe claim context: `{interaction['unsafe_claim_context']}`",
+            f"- Interaction TTS text: {interaction['tts_text']}",
+        ]
+    )
+    for marker in interaction["interaction_markers"]:
+        lines.append(
+            f"- `{marker['marker_type']}` on `{marker['segment_id']}`: visible `{marker['visible']}`, placement `{marker['placement']}`, phrase `{marker['marker_text']}`, rate `{marker['rate_multiplier']}`, pitch `{marker['pitch_intent']}`"
+        )
+    lines.extend(
+        [
+            "",
+            "## Controlled Imperfections",
+            "",
+            f"- Validation passed: `{imperfections['validation']['passed']}`",
+            f"- Imperfection count: `{imperfections['imperfection_count']}`",
+            f"- Unsafe claim context: `{imperfections['unsafe_claim_context']}`",
+            f"- Imperfection TTS text: {imperfections['tts_text']}",
+        ]
+    )
+    for imperfection in imperfections["imperfections"]:
+        lines.append(
+            f"- `{imperfection['imperfection_type']}` on `{imperfection['segment_id']}`: visible `{imperfection['visible']}`, placement `{imperfection['placement']}`, phrase `{imperfection['marker_text']}`, pause `{imperfection['pause_ms']}ms`"
+        )
+    lines.extend(
+        [
+            "",
             "## Prosody",
             "",
             f"- Cue count: `{prosody['cue_count']}`",
             f"- Cue counts: `{json.dumps(prosody['cue_counts'], ensure_ascii=False)}`",
             f"- Protected segment cue count: `{prosody['protected_segment_cue_count']}`",
+            "",
+            "## Pacing Calibration",
+            "",
+            f"- Calibration ID: `{pacing['voice_pacing_calibration_id']}`",
+            f"- Language: `{pacing['language']}`",
+            f"- Tuned segments: `{pacing['tuned_segment_count']}`",
+            f"- German word-gap reduction: `{pacing['german_word_gap_reduction_applied']}`",
+            f"- Avg break before: `{pacing['average_break_duration_before_ms']}` ms",
+            f"- Avg break after: `{pacing['average_break_duration_after_ms']}` ms",
+            f"- Validation passed: `{pacing['validation']['passed']}`",
+            "",
+            "## Connected Speech",
+            "",
+            f"- Connected speech ID: `{connected['voice_connected_speech_id']}`",
+            f"- Language: `{connected['language']}`",
+            f"- Flow joins: `{connected['flow_join_count']}`",
+            f"- Tuned segments: `{connected['tuned_segment_count']}`",
+            f"- Validation passed: `{connected['validation']['passed']}`",
+            "",
+            "## Listening Calibration",
+            "",
+            f"- Calibration ID: `{listening['voice_listening_calibration_id']}`",
+            f"- Language: `{listening['language']}`",
+            f"- German connected speech relaxed: `{listening['german_connected_speech_relaxed']}`",
+            f"- Listening adjustments: `{listening['listening_adjustment_count']}`",
+            f"- Blocked emphasis count: `{listening['emphasis_guard']['blocked_emphasis_count']}`",
+            f"- Validation passed: `{listening['validation']['passed']}`",
+            "",
+            "## Emotion Transition Smoothing",
+            "",
+            f"- Smoothing ID: `{emotion_smoothing['voice_emotion_smoothing_id']}`",
+            f"- Language: `{emotion_smoothing['language']}`",
+            f"- Eligible for smoothing: `{emotion_smoothing['eligible_for_smoothing']}`",
+            f"- Transition smoothing applied: `{emotion_smoothing['transition_smoothing_applied']}`",
+            f"- Detected transitions: `{emotion_smoothing['detected_transition_count']}`",
+            f"- Smoothed transitions: `{emotion_smoothing['smoothed_transition_count']}`",
+            f"- Blocked over-emotional cues: `{emotion_smoothing['blocked_overemotional_cue_count']}`",
+            f"- Validation passed: `{emotion_smoothing['validation']['passed']}`",
+            "",
+            "## Semantic Emphasis",
+            "",
+            f"- Semantic emphasis ID: `{semantic_emphasis['voice_semantic_emphasis_id']}`",
+            f"- Language: `{semantic_emphasis['language']}`",
+            f"- Language allowed: `{semantic_emphasis['language_allowed']}`",
+            f"- Eligible segments: `{semantic_emphasis['eligible_segment_count']}`",
+            f"- Protected segments: `{semantic_emphasis['protected_segment_count']}`",
+            f"- Rewrites: `{semantic_emphasis['rewrite_count']}`",
+            f"- Validation passed: `{semantic_emphasis['validation']['passed']}`",
+            "",
+            "## Low-Pressure Focus",
+            "",
+            f"- Low-pressure focus ID: `{low_pressure_focus['voice_low_pressure_focus_id']}`",
+            f"- Language: `{low_pressure_focus['language']}`",
+            f"- Language allowed: `{low_pressure_focus['language_allowed']}`",
+            f"- Eligible segments: `{low_pressure_focus['eligible_segment_count']}`",
+            f"- Protected segments: `{low_pressure_focus['protected_segment_count']}`",
+            f"- Rewrites: `{low_pressure_focus['rewrite_count']}`",
+            f"- Validation passed: `{low_pressure_focus['validation']['passed']}`",
             "",
             "## Provider Rendering",
             "",

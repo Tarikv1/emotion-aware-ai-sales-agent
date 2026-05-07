@@ -29,4 +29,8 @@ research/experiments/generated/VOICE-017-*.mp3
 research/experiments/generated/VOICE-019-*.wav
 research/experiments/generated/VOICE-019-*.mp3
 research/experiments/generated/VOICE-021-*.mp3
+research/experiments/generated/VOICE-024-*.wav
+research/experiments/generated/VOICE-024-*.mp3
 research/experiments/generated/RESP-003-*.mp3
+research/experiments/generated/**/*.wav
+research/experiments/generated/**/*.mp3

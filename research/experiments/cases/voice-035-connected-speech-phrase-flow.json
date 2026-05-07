@@ -1,0 +1,59 @@
+{
+  "voice_milestone": "VOICE-035",
+  "experiment_scope": "Offline/runtime checkpoint for bilingual connected-speech phrase flow: reduce isolated written-word delivery by joining obvious freeform filler and bridge boundaries in provider-facing TTS text while preserving protected text and VOICE-034 pacing bounds.",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "provider": "elevenlabs",
+  "runtime_cases": [
+    {
+      "case_id": "voice-035-de-flow-join",
+      "case_title": "German eligible freeform joins short acknowledgement into filler and follow-up",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "expected_language": "de",
+      "expected_connected_speech": "join_acknowledgement_to_also_followup"
+    },
+    {
+      "case_id": "voice-035-en-flow-join",
+      "case_title": "English eligible freeform joins filler and bridge sentence into smoother spoken flow",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "That sounds expensive.",
+      "candidate_response": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+      "expected_language": "en",
+      "expected_connected_speech": "join_filler_and_bridge_sentence"
+    },
+    {
+      "case_id": "voice-035-de-protected-stop",
+      "case_title": "German protected do-not-call response is not joined or changed",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "expected_language": "de",
+      "expected_connected_speech": "protected_text_locked"
+    }
+  ],
+  "connected_speech_policy": {
+    "style": "professional-connected-speech-v1",
+    "runs_after": "VOICE-034-pacing-calibration-v2",
+    "eligible_scope": "freeform runtime TTS provider rendering only",
+    "english_targets": [
+      "sentence boundary before thinking filler",
+      "short bridge sentence after reassurance"
+    ],
+    "german_targets": [
+      "sentence boundary before also filler",
+      "short acknowledgement into follow-up question"
+    ],
+    "protected_text_locked": true,
+    "speed_bounds_owned_by_voice_034": true
+  },
+  "privacy_boundary": {
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "private_audio_used": false
+  }
+}

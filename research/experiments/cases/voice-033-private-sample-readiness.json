@@ -1,0 +1,47 @@
+{
+  "voice_milestone": "VOICE-033",
+  "checkpoint_name": "Private speech sample readiness report",
+  "purpose": "Report whether Tarik's local private speech samples are ready for a VOICE-030D aggregate review without reading raw audio content.",
+  "default_private_root": "data/private/tarik-speech-samples",
+  "metadata_sources": [
+    "raw-audio directory entries",
+    "converted-audio directory entries",
+    "whatsapp-voice-notes directory entries",
+    "derived/audio-features JSON file count",
+    "derived/local-speech-learning-queue.jsonl aggregate metadata",
+    "derived/local-audio-conversion-manifest.jsonl aggregate metadata"
+  ],
+  "thresholds": {
+    "first_review_min_analyzed_samples": 10,
+    "stronger_pattern_review_min_analyzed_samples": 100,
+    "best_case_target_samples": 150
+  },
+  "readiness_statuses": [
+    "not_enough_samples_yet",
+    "enough_for_first_review",
+    "enough_for_stronger_pattern_review"
+  ],
+  "counts_reported": [
+    "WAV files available",
+    "analyzed feature files",
+    "WAV unanalyzed estimate",
+    "WhatsApp OGG waiting conversion",
+    "other non-WAV needing conversion",
+    "analysis failed needs review",
+    "conversion failed needs review",
+    "language counts",
+    "source counts",
+    "extension counts"
+  ],
+  "privacy_boundary": {
+    "private_metadata_read": true,
+    "raw_audio_content_read": false,
+    "provider_calls_made": false,
+    "transcription_created": false,
+    "voice_cloning_used": false,
+    "runtime_profile_applied": false,
+    "public_artifact_created": false,
+    "outputs_stay_under_data_private": true,
+    "aggregate_counts_only": true
+  }
+}

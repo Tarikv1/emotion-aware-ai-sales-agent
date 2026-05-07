@@ -24,6 +24,32 @@ REQUIRED_FILES = [
     "docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "docs/product/PROJECT_DRIFT_GUARD.md",
+    "docs/product/RAG_001_NOTEBOOKLM_SOURCE_INTAKE_BRIDGE.md",
+    "docs/product/RAG_002_NOTEBOOKLM_EXTRACTION_AUTOMATION_BRIDGE.md",
+    "docs/product/RAG_003_REPORT_IMPORT_READINESS.md",
+    "docs/product/RAG_004_SOURCE_MANIFEST_NORMALIZATION.md",
+    "docs/product/RAG_005_CHUNK_NORMALIZATION.md",
+    "docs/product/RAG_006_CHUNK_REVIEW_PACKET.md",
+    "docs/product/VOICE_024_SPEECH_REALISM_LIVE_AB.md",
+    "docs/product/VOICE_025_FILLER_PLACEMENT.md",
+    "docs/product/VOICE_026_INTERACTION_PROSODY.md",
+    "docs/product/VOICE_027_INTERACTION_PROSODY_LIVE_AB.md",
+    "docs/product/VOICE_028_CONTROLLED_IMPERFECTIONS.md",
+    "docs/product/VOICE_029_LOCAL_SPEECH_PROFILE_LEARNING.md",
+    "docs/product/VOICE_030A_RAW_AUDIO_LOCAL_READER.md",
+    "docs/product/VOICE_030B_LOCAL_SPEECH_CAPTURE.md",
+    "docs/product/VOICE_030C_PRIVATE_LEARNING_QUEUE.md",
+    "docs/product/VOICE_030D_PRIVATE_FEATURE_REVIEW.md",
+    "docs/product/VOICE_031_FEATURE_RUNTIME_MAPPING.md",
+    "docs/product/VOICE_032_LOCAL_AUDIO_CONVERSION.md",
+    "docs/product/VOICE_033_PRIVATE_SAMPLE_READINESS.md",
+    "docs/product/VOICE_034_PACING_CALIBRATION_V2.md",
+    "docs/product/VOICE_035_CONNECTED_SPEECH_PHRASE_FLOW.md",
+    "docs/product/VOICE_036_LISTENING_CALIBRATION.md",
+    "docs/product/VOICE_037_EMOTION_TRANSITION_SMOOTHING.md",
+    "docs/product/VOICE_038_SEMANTIC_EMPHASIS_DIAGNOSIS.md",
+    "docs/product/VOICE_039_RUNTIME_SEMANTIC_EMPHASIS.md",
+    "docs/product/VOICE_040_LOW_PRESSURE_FOCUS.md",
     "docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md",
     "docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md",
     "docs/thesis/ROADMAP.md",
@@ -40,6 +66,105 @@ REQUIRED_FILES = [
     "scripts/speech_realism.py",
     "scripts/run_voice_023_speech_realism.py",
     "scripts/validate_voice_023_speech_realism.py",
+    "scripts/run_voice_024_speech_realism_live_ab.py",
+    "scripts/validate_voice_024_speech_realism_live_ab.py",
+    "scripts/run_voice_025_filler_placement.py",
+    "scripts/validate_voice_025_filler_placement.py",
+    "scripts/speech_interaction.py",
+    "scripts/run_voice_026_interaction_prosody.py",
+    "scripts/validate_voice_026_interaction_prosody.py",
+    "scripts/run_voice_027_interaction_prosody_live_ab.py",
+    "scripts/validate_voice_027_interaction_prosody_live_ab.py",
+    "scripts/speech_imperfections.py",
+    "scripts/run_voice_028_controlled_imperfections.py",
+    "scripts/validate_voice_028_controlled_imperfections.py",
+    "scripts/personal_speech_profile.py",
+    "scripts/run_voice_029_local_speech_profile.py",
+    "scripts/validate_voice_029_local_speech_profile.py",
+    "scripts/init_personal_speech_learning_workspace.py",
+    "scripts/raw_audio_speech_features.py",
+    "scripts/run_voice_030_raw_audio_reader.py",
+    "scripts/validate_voice_030_raw_audio_reader.py",
+    "scripts/private_speech_learning_queue.py",
+    "scripts/run_voice_030b_local_speech_capture.py",
+    "scripts/validate_voice_030b_local_speech_capture.py",
+    "scripts/validate_voice_030c_private_learning_queue.py",
+    "scripts/run_voice_030d_private_feature_review.py",
+    "scripts/validate_voice_030d_private_feature_review.py",
+    "scripts/voice_feature_runtime_mapping.py",
+    "scripts/run_voice_031_feature_runtime_mapping.py",
+    "scripts/validate_voice_031_feature_runtime_mapping.py",
+    "scripts/private_audio_conversion.py",
+    "scripts/run_voice_032_local_audio_conversion.py",
+    "scripts/validate_voice_032_local_audio_conversion.py",
+    "scripts/private_sample_readiness.py",
+    "scripts/run_voice_033_private_sample_readiness.py",
+    "scripts/validate_voice_033_private_sample_readiness.py",
+    "scripts/voice_pacing_calibration.py",
+    "scripts/run_voice_034_pacing_calibration.py",
+    "scripts/validate_voice_034_pacing_calibration.py",
+    "scripts/voice_connected_speech.py",
+    "scripts/run_voice_035_connected_speech.py",
+    "scripts/validate_voice_035_connected_speech.py",
+    "scripts/voice_listening_calibration.py",
+    "scripts/run_voice_036_listening_calibration.py",
+    "scripts/validate_voice_036_listening_calibration.py",
+    "scripts/voice_emotion_smoothing.py",
+    "scripts/run_voice_037_emotion_smoothing.py",
+    "scripts/validate_voice_037_emotion_smoothing.py",
+    "scripts/run_voice_038_semantic_emphasis_diagnosis.py",
+    "scripts/validate_voice_038_semantic_emphasis_diagnosis.py",
+    "scripts/voice_semantic_emphasis.py",
+    "scripts/run_voice_039_runtime_semantic_emphasis.py",
+    "scripts/validate_voice_039_runtime_semantic_emphasis.py",
+    "scripts/voice_low_pressure_focus.py",
+    "scripts/run_voice_040_low_pressure_focus.py",
+    "scripts/validate_voice_040_low_pressure_focus.py",
+    "scripts/rag_knowledge_base.py",
+    "scripts/rag_notebooklm_automation.py",
+    "scripts/rag_report_import_readiness.py",
+    "scripts/rag_source_manifest_normalization.py",
+    "scripts/rag_chunk_normalization.py",
+    "scripts/rag_chunk_review_packet.py",
+    "scripts/run_rag_001_notebooklm_source_intake.py",
+    "scripts/validate_rag_001_notebooklm_source_intake.py",
+    "scripts/run_rag_002_notebooklm_extraction_automation.py",
+    "scripts/validate_rag_002_notebooklm_extraction_automation.py",
+    "scripts/run_rag_003_report_import_readiness.py",
+    "scripts/validate_rag_003_report_import_readiness.py",
+    "scripts/run_rag_004_source_manifest_normalization.py",
+    "scripts/validate_rag_004_source_manifest_normalization.py",
+    "scripts/run_rag_005_chunk_normalization.py",
+    "scripts/validate_rag_005_chunk_normalization.py",
+    "scripts/run_rag_006_chunk_review_packet.py",
+    "scripts/validate_rag_006_chunk_review_packet.py",
+    "data/rag/README.md",
+    "research/experiments/cases/voice-024-speech-realism-live-ab.json",
+    "research/experiments/cases/voice-025-filler-placement.json",
+    "research/experiments/cases/voice-026-interaction-prosody.json",
+    "research/experiments/cases/voice-027-interaction-prosody-live-ab.json",
+    "research/experiments/cases/voice-028-controlled-imperfections.json",
+    "research/experiments/cases/voice-029-local-speech-profile-learning.json",
+    "research/experiments/cases/voice-030-raw-audio-local-reader.json",
+    "research/experiments/cases/voice-030b-local-speech-capture.json",
+    "research/experiments/cases/voice-030c-private-learning-queue.json",
+    "research/experiments/cases/voice-030d-private-feature-review.json",
+    "research/experiments/cases/voice-031-feature-runtime-mapping.json",
+    "research/experiments/cases/voice-032-local-audio-conversion.json",
+    "research/experiments/cases/voice-033-private-sample-readiness.json",
+    "research/experiments/cases/voice-034-pacing-calibration-v2.json",
+    "research/experiments/cases/voice-035-connected-speech-phrase-flow.json",
+    "research/experiments/cases/voice-036-listening-calibration.json",
+    "research/experiments/cases/voice-037-emotion-smoothing.json",
+    "research/experiments/cases/voice-038-semantic-emphasis-diagnosis.json",
+    "research/experiments/cases/voice-039-runtime-semantic-emphasis.json",
+    "research/experiments/cases/voice-040-low-pressure-focus.json",
+    "research/experiments/cases/rag-001-notebooklm-source-intake-bridge.json",
+    "research/experiments/cases/rag-002-notebooklm-extraction-automation-bridge.json",
+    "research/experiments/cases/rag-003-report-import-readiness.json",
+    "research/experiments/cases/rag-004-source-manifest-normalization.json",
+    "research/experiments/cases/rag-005-chunk-normalization.json",
+    "research/experiments/cases/rag-006-chunk-review-packet.json",
     "scripts/validate_private_data_boundary.py",
     "scripts/check_private_call_learning_pipeline.py",
     "scripts/init_private_call_learning_workspace.py",
@@ -105,6 +230,7 @@ SKIP_DIR_PREFIXES = {
 }
 
 AUDIO_EXTENSIONS = {".mp3", ".wav"}
+ALLOWED_GENERATED_ROOT_FILES = {"README.md"}
 
 CURATED_GENERATED_AUDIO_FILES = {
     "research/experiments/generated/VOICE-002-customer-placeholder.wav",
@@ -335,6 +461,25 @@ def detect_unignored_generated_audio(root: Path) -> list[Issue]:
     return issues
 
 
+def detect_flat_generated_artifacts(root: Path) -> list[Issue]:
+    generated_root = root / "research" / "experiments" / "generated"
+    if not generated_root.is_dir():
+        return []
+    issues: list[Issue] = []
+    for path in sorted(generated_root.iterdir()):
+        if not path.is_file() or path.name in ALLOWED_GENERATED_ROOT_FILES:
+            continue
+        issues.append(
+            Issue(
+                code="flat_generated_artifact",
+                severity="fail",
+                path=relative_to_root(root, path),
+                message="Generated artifacts should live in milestone/run subfolders; keep only README.md at the generated root.",
+            )
+        )
+    return issues
+
+
 def summarize(issues: list[Issue], files_scanned: int) -> tuple[str, dict[str, Any]]:
     failure_count = sum(1 for issue in issues if issue.severity == "fail")
     warning_count = sum(1 for issue in issues if issue.severity == "warning")
@@ -356,6 +501,7 @@ def build_report(root: Path) -> dict[str, Any]:
     else:
         issues.extend(detect_missing_required_files(root))
         issues.extend(detect_line_issues(root, files))
+        issues.extend(detect_flat_generated_artifacts(root))
         issues.extend(detect_unignored_generated_audio(root))
 
     issue_payload = [issue.to_dict() for issue in sorted(issues, key=lambda item: (item.severity, item.path, item.line or 0, item.code))]

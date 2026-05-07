@@ -1,0 +1,654 @@
+{
+  "rag_automation_id": "RAG-002-notebooklm-extraction-automation-bridge",
+  "title": "NotebookLM extraction automation bridge for exhaustive source-topic reports",
+  "description": "Generates bounded NotebookLM prompts and local coverage gates so source extraction is less manual and tiny partial batches are rejected before RAG promotion.",
+  "summary": {
+    "topic_count": 10,
+    "prompt_count": 30,
+    "prompt_char_limit": 4500,
+    "chat_customization_char_limit": 10000,
+    "chat_customization_within_limit": true,
+    "report_artifact_workflow_enabled": true,
+    "primary_prompts_include_readable_report": true,
+    "primary_prompts_include_json_block": true,
+    "all_prompts_within_limit": true,
+    "completion_gate_enabled": true,
+    "small_batch_rejection_enabled": true,
+    "manual_notebooklm_ui_required": true,
+    "notebooklm_api_used": false,
+    "external_provider_calls_made": false,
+    "raw_source_text_stored": false,
+    "customer_private_data_used": false,
+    "validation_passed": true
+  },
+  "source_manifest": {
+    "manifest_id": "rag-001-source-manifest-template",
+    "rag_intake_id": "RAG-001-notebooklm-source-intake-bridge",
+    "version": 1,
+    "workflow_role": "NotebookLM extraction helper input, not permanent product memory",
+    "source_policy": {
+      "store_metadata_only": true,
+      "store_raw_source_text": false,
+      "allow_private_customer_data": false,
+      "allow_unsourced_chunks": false,
+      "max_source_excerpt_words": 60
+    },
+    "topics": [
+      {
+        "topic_id": "cold_calling",
+        "label": "Cold calling",
+        "aliases": [
+          "cold calling",
+          "outbound calling",
+          "opening calls"
+        ],
+        "description": "Opening, permission, relevance framing, and early-call trust for outbound sales."
+      },
+      {
+        "topic_id": "closing_techniques",
+        "label": "Closing techniques",
+        "aliases": [
+          "closing",
+          "commitment",
+          "next step"
+        ],
+        "description": "Low-pressure commitment, appointment setting, and next-step language."
+      },
+      {
+        "topic_id": "objection_handling",
+        "label": "Objection handling",
+        "aliases": [
+          "price objection",
+          "timing objection",
+          "status quo",
+          "brushoff"
+        ],
+        "description": "Safe responses to price, trust, timing, authority, fit, and send-info objections."
+      },
+      {
+        "topic_id": "consultative_selling_discovery",
+        "label": "Consultative selling and discovery",
+        "aliases": [
+          "consultative selling",
+          "discovery",
+          "qualification"
+        ],
+        "description": "Need discovery, qualification, problem framing, and useful follow-up questions."
+      },
+      {
+        "topic_id": "emotional_intelligence",
+        "label": "Emotional intelligence",
+        "aliases": [
+          "empathy",
+          "emotional adaptation",
+          "rapport"
+        ],
+        "description": "Emotion-aware tone, de-escalation, empathy, trust preservation, and boundaries."
+      },
+      {
+        "topic_id": "active_listening_human_like_sales_communication",
+        "label": "Active listening and human-like sales communication",
+        "aliases": [
+          "active listening",
+          "human-like communication",
+          "backchannels",
+          "conversation flow"
+        ],
+        "description": "Listening markers, paraphrasing, conversational flow, acknowledgements, and natural phrasing."
+      },
+      {
+        "topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "label": "Negotiation, English/German sales calls, and Telefonakquise",
+        "aliases": [
+          "negotiation",
+          "English sales calls",
+          "German sales calls",
+          "Telefonakquise"
+        ],
+        "description": "Negotiation patterns, bilingual call conventions, and German outbound-call language."
+      },
+      {
+        "topic_id": "ethical_persuasion_persuasive_dialogue",
+        "label": "Persuasion, ethical persuasion, and persuasive dialogue",
+        "aliases": [
+          "persuasion",
+          "ethical persuasion",
+          "persuasive dialogue"
+        ],
+        "description": "Persuasive structure that stays honest, non-coercive, and campaign-safe."
+      },
+      {
+        "topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "label": "Speech, tone, prosody, and human-like voice behavior",
+        "aliases": [
+          "speech",
+          "tone",
+          "prosody",
+          "voice behavior",
+          "human-like voice"
+        ],
+        "description": "Pacing, emphasis, pause behavior, pitch motion, and voice naturalness."
+      },
+      {
+        "topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "label": "Emotion recognition, speech emotion datasets, and persuasion datasets",
+        "aliases": [
+          "emotion recognition",
+          "speech emotion datasets",
+          "persuasion datasets"
+        ],
+        "description": "Datasets and evaluation references for emotion, persuasion, and speech behavior."
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "rag001-slot-01-cold_calling",
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "source_type": "source_slot",
+        "title": "Cold calling source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-02-closing_techniques",
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "source_type": "source_slot",
+        "title": "Closing techniques source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-03-objection_handling",
+        "topic_ids": [
+          "objection_handling"
+        ],
+        "source_type": "source_slot",
+        "title": "Objection handling source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-04-consultative_selling_discovery",
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "source_type": "source_slot",
+        "title": "Consultative selling and discovery source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-05-emotional_intelligence",
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "source_type": "source_slot",
+        "title": "Emotional intelligence source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-06-active_listening_human_like_sales_communication",
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "source_type": "source_slot",
+        "title": "Active listening and human-like sales communication source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-07-negotiation_german_english_sales_calls_telefonakquise",
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "source_type": "source_slot",
+        "title": "Negotiation, English/German sales calls, and Telefonakquise source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-08-ethical_persuasion_persuasive_dialogue",
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "source_type": "source_slot",
+        "title": "Persuasion, ethical persuasion, and persuasive dialogue source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-09-speech_tone_prosody_human_like_voice_behavior",
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "source_type": "source_slot",
+        "title": "Speech, tone, prosody, and human-like voice behavior source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      },
+      {
+        "source_id": "rag001-slot-10-emotion_recognition_speech_emotion_persuasion_datasets",
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "source_type": "source_slot",
+        "title": "Emotion recognition, speech emotion datasets, and persuasion datasets source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace this slot with a real source metadata record before extraction."
+      }
+    ]
+  },
+  "prompt_pack": {
+    "rag_automation_id": "RAG-002-notebooklm-extraction-automation-bridge",
+    "workflow_role": "NotebookLM UI extraction automation bridge",
+    "prompt_char_limit": 4500,
+    "chat_customization_char_limit": 10000,
+    "min_chunks_per_topic": 8,
+    "chat_customization": {
+      "title": "NotebookLM Configure Chat custom instructions",
+      "char_limit": 10000,
+      "char_count": 1613,
+      "text": "Role: You are a rigorous sales-research extraction assistant for the Emotion Aware AI Sales Agent thesis/product project.\n\nGoal: turn the selected NotebookLM sources into complete, source-grounded, practical sales-agent knowledge. Always prefer exhaustive coverage over short summaries.\n\nChoose response length: Longer.\n\nOutput behavior:\n- First produce a readable tailored report with clear headings, bullets, tables when useful, and concrete agent implications.\n- Then produce a machine-readable RAG JSON object when the prompt asks for it.\n- Do not collapse the tailored report into short JSON strings.\n- Do not give a small sample batch unless the prompt explicitly asks for a sample.\n- Review all selected sources for the requested topic before claiming completion.\n- If output limits stop you, write NEED_CONTINUATION instead of pretending the extraction is complete.\n\nExtraction standards:\n- Separate reusable sales principles, phrase patterns, emotional cues, voice/prosody implications, compliance/ethical guardrails, and when-not-to-use boundaries.\n- Preserve source traceability with source titles, sections, timestamps, page notes, or citation notes.\n- Merge duplicates, but do not omit distinct ideas.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nCompletion standard:\n- Use END: COMPLETE only after all selected sources were reviewed and no more distinct useful items remain.\n- If the source material is too thin for the requested minimum, say insufficient_source_material and explain why.",
+      "notebooklm_response_length": "Longer"
+    },
+    "manual_notebooklm_ui_required": true,
+    "notebooklm_api_used": false,
+    "external_provider_calls_made": false,
+    "raw_source_text_stored": false,
+    "customer_private_data_used": false,
+    "topics": [
+      {
+        "topic_id": "cold_calling",
+        "label": "Cold calling",
+        "source_ids": [
+          "rag001-slot-01-cold_calling"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Cold calling NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2216,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `cold_calling` - Cold calling\n\nSelected source metadata:\n- rag001-slot-01-cold_calling | Cold calling source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Cold calling Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `cold_calling`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Cold calling exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 2975,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `cold_calling` - Cold calling\nSelected source metadata:\n- rag001-slot-01-cold_calling | Cold calling source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"cold_calling\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Cold calling coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1179,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `cold_calling` - Cold calling\nSource metadata:\n- rag001-slot-01-cold_calling | Cold calling source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "closing_techniques",
+        "label": "Closing techniques",
+        "source_ids": [
+          "rag001-slot-02-closing_techniques"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Closing techniques NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2252,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `closing_techniques` - Closing techniques\n\nSelected source metadata:\n- rag001-slot-02-closing_techniques | Closing techniques source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Closing techniques Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `closing_techniques`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Closing techniques exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3005,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `closing_techniques` - Closing techniques\nSelected source metadata:\n- rag001-slot-02-closing_techniques | Closing techniques source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"closing_techniques\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Closing techniques coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1203,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `closing_techniques` - Closing techniques\nSource metadata:\n- rag001-slot-02-closing_techniques | Closing techniques source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "objection_handling",
+        "label": "Objection handling",
+        "source_ids": [
+          "rag001-slot-03-objection_handling"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Objection handling NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2252,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `objection_handling` - Objection handling\n\nSelected source metadata:\n- rag001-slot-03-objection_handling | Objection handling source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Objection handling Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `objection_handling`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Objection handling exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3005,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `objection_handling` - Objection handling\nSelected source metadata:\n- rag001-slot-03-objection_handling | Objection handling source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"objection_handling\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Objection handling coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1203,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `objection_handling` - Objection handling\nSource metadata:\n- rag001-slot-03-objection_handling | Objection handling source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "consultative_selling_discovery",
+        "label": "Consultative selling and discovery",
+        "source_ids": [
+          "rag001-slot-04-consultative_selling_discovery"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Consultative selling and discovery NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2336,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `consultative_selling_discovery` - Consultative selling and discovery\n\nSelected source metadata:\n- rag001-slot-04-consultative_selling_discovery | Consultative selling and discovery source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Consultative selling and discovery Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `consultative_selling_discovery`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Consultative selling and discovery exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3073,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `consultative_selling_discovery` - Consultative selling and discovery\nSelected source metadata:\n- rag001-slot-04-consultative_selling_discovery | Consultative selling and discovery source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"consultative_selling_discovery\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Consultative selling and discovery coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1259,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `consultative_selling_discovery` - Consultative selling and discovery\nSource metadata:\n- rag001-slot-04-consultative_selling_discovery | Consultative selling and discovery source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "emotional_intelligence",
+        "label": "Emotional intelligence",
+        "source_ids": [
+          "rag001-slot-05-emotional_intelligence"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Emotional intelligence NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2276,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `emotional_intelligence` - Emotional intelligence\n\nSelected source metadata:\n- rag001-slot-05-emotional_intelligence | Emotional intelligence source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Emotional intelligence Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `emotional_intelligence`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Emotional intelligence exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3025,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `emotional_intelligence` - Emotional intelligence\nSelected source metadata:\n- rag001-slot-05-emotional_intelligence | Emotional intelligence source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"emotional_intelligence\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Emotional intelligence coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1219,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `emotional_intelligence` - Emotional intelligence\nSource metadata:\n- rag001-slot-05-emotional_intelligence | Emotional intelligence source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "active_listening_human_like_sales_communication",
+        "label": "Active listening and human-like sales communication",
+        "source_ids": [
+          "rag001-slot-06-active_listening_human_like_sales_communication"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Active listening and human-like sales communication NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2438,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `active_listening_human_like_sales_communication` - Active listening and human-like sales communication\n\nSelected source metadata:\n- rag001-slot-06-active_listening_human_like_sales_communication | Active listening and human-like sales communication source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Active listening and human-like sales communication Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `active_listening_human_like_sales_communication`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Active listening and human-like sales communication exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3158,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `active_listening_human_like_sales_communication` - Active listening and human-like sales communication\nSelected source metadata:\n- rag001-slot-06-active_listening_human_like_sales_communication | Active listening and human-like sales communication source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"active_listening_human_like_sales_communication\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Active listening and human-like sales communication coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1327,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `active_listening_human_like_sales_communication` - Active listening and human-like sales communication\nSource metadata:\n- rag001-slot-06-active_listening_human_like_sales_communication | Active listening and human-like sales communication source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "label": "Negotiation, English/German sales calls, and Telefonakquise",
+        "source_ids": [
+          "rag001-slot-07-negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Negotiation, English/German sales calls, and Telefonakquise NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2480,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `negotiation_german_english_sales_calls_telefonakquise` - Negotiation, English/German sales calls, and Telefonakquise\n\nSelected source metadata:\n- rag001-slot-07-negotiation_german_english_sales_calls_telefonakquise | Negotiation, English/German sales calls, and Telefonakquise source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Negotiation, English/German sales calls, and Telefonakquise Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `negotiation_german_english_sales_calls_telefonakquise`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Negotiation, English/German sales calls, and Telefonakquise exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3192,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `negotiation_german_english_sales_calls_telefonakquise` - Negotiation, English/German sales calls, and Telefonakquise\nSelected source metadata:\n- rag001-slot-07-negotiation_german_english_sales_calls_telefonakquise | Negotiation, English/German sales calls, and Telefonakquise source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"negotiation_german_english_sales_calls_telefonakquise\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Negotiation, English/German sales calls, and Telefonakquise coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1355,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `negotiation_german_english_sales_calls_telefonakquise` - Negotiation, English/German sales calls, and Telefonakquise\nSource metadata:\n- rag001-slot-07-negotiation_german_english_sales_calls_telefonakquise | Negotiation, English/German sales calls, and Telefonakquise source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "ethical_persuasion_persuasive_dialogue",
+        "label": "Persuasion, ethical persuasion, and persuasive dialogue",
+        "source_ids": [
+          "rag001-slot-08-ethical_persuasion_persuasive_dialogue"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Persuasion, ethical persuasion, and persuasive dialogue NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2423,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `ethical_persuasion_persuasive_dialogue` - Persuasion, ethical persuasion, and persuasive dialogue\n\nSelected source metadata:\n- rag001-slot-08-ethical_persuasion_persuasive_dialogue | Persuasion, ethical persuasion, and persuasive dialogue source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Persuasion, ethical persuasion, and persuasive dialogue Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `ethical_persuasion_persuasive_dialogue`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Persuasion, ethical persuasion, and persuasive dialogue exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3139,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `ethical_persuasion_persuasive_dialogue` - Persuasion, ethical persuasion, and persuasive dialogue\nSelected source metadata:\n- rag001-slot-08-ethical_persuasion_persuasive_dialogue | Persuasion, ethical persuasion, and persuasive dialogue source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"ethical_persuasion_persuasive_dialogue\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Persuasion, ethical persuasion, and persuasive dialogue coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1317,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `ethical_persuasion_persuasive_dialogue` - Persuasion, ethical persuasion, and persuasive dialogue\nSource metadata:\n- rag001-slot-08-ethical_persuasion_persuasive_dialogue | Persuasion, ethical persuasion, and persuasive dialogue source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "label": "Speech, tone, prosody, and human-like voice behavior",
+        "source_ids": [
+          "rag001-slot-09-speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Speech, tone, prosody, and human-like voice behavior NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2435,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `speech_tone_prosody_human_like_voice_behavior` - Speech, tone, prosody, and human-like voice behavior\n\nSelected source metadata:\n- rag001-slot-09-speech_tone_prosody_human_like_voice_behavior | Speech, tone, prosody, and human-like voice behavior source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Speech, tone, prosody, and human-like voice behavior Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `speech_tone_prosody_human_like_voice_behavior`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Speech, tone, prosody, and human-like voice behavior exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3154,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `speech_tone_prosody_human_like_voice_behavior` - Speech, tone, prosody, and human-like voice behavior\nSelected source metadata:\n- rag001-slot-09-speech_tone_prosody_human_like_voice_behavior | Speech, tone, prosody, and human-like voice behavior source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"speech_tone_prosody_human_like_voice_behavior\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Speech, tone, prosody, and human-like voice behavior coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1325,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `speech_tone_prosody_human_like_voice_behavior` - Speech, tone, prosody, and human-like voice behavior\nSource metadata:\n- rag001-slot-09-speech_tone_prosody_human_like_voice_behavior | Speech, tone, prosody, and human-like voice behavior source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      },
+      {
+        "topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "label": "Emotion recognition, speech emotion datasets, and persuasion datasets",
+        "source_ids": [
+          "rag001-slot-10-emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "prompts": {
+          "report_artifact": {
+            "prompt_type": "report_artifact",
+            "title": "Emotion recognition, speech emotion datasets, and persuasion datasets NotebookLM report file prompt",
+            "char_limit": 4500,
+            "char_count": 2513,
+            "text": "Use NotebookLM Reports / Create report for this task, not a normal chat reply.\nNotebookLM is an extraction helper, not permanent product memory.\n\nCreate a NotebookLM report file for:\nTopic: `emotion_recognition_speech_emotion_persuasion_datasets` - Emotion recognition, speech emotion datasets, and persuasion datasets\n\nSelected source metadata:\n- rag001-slot-10-emotion_recognition_speech_emotion_persuasion_datasets | Emotion recognition, speech emotion datasets, and persuasion datasets source slot | source_slot | mixed\n\nDo not answer only in chat. Create a report file/document that can be exported or copied after generation.\n\nReport title:\nEmotion Aware AI Sales Agent - Emotion recognition, speech emotion datasets, and persuasion datasets Source Extraction Report\n\nReport requirements:\n- Make this a complete tailored report, not a short summary.\n- Review all selected sources for this topic before claiming completion.\n- Do not give me a small sample batch.\n- Extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n- Merge duplicates, but do not omit distinct tactics, warnings, emotion cues, phrase patterns, dataset points, or when-not-to-use boundaries.\n- Keep claims conservative and source-grounded.\n- Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nRequired report sections:\n1. Source coverage table\n2. Executive synthesis for the AI sales-agent product\n3. Complete reusable sales patterns\n4. Phrase and dialogue patterns\n5. Emotion/adaptation cues\n6. Voice/prosody and delivery implications\n7. Ethical/compliance guardrails\n8. Campaign configuration implications\n9. RAG-ready extraction appendix with at least 8 distinct chunk candidates if the source material supports it\n10. Missing or weak evidence\n11. Completion statement: END: COMPLETE or NEED_CONTINUATION\n\nThe RAG-ready extraction appendix must include: stable chunk id, source title/id, topic id `emotion_recognition_speech_emotion_persuasion_datasets`, language, sales stage, principle, application, when not to use, example phrase if available, emotional cues, compliance notes, evidence type, confidence, citation note, and optional short source excerpt <=60 words.\n\nExport or copy the completed report file after NotebookLM creates it. If output limits prevent completion, mark NEED_CONTINUATION and do not pretend the report is complete."
+          },
+          "primary_report": {
+            "prompt_type": "primary_report",
+            "title": "Emotion recognition, speech emotion datasets, and persuasion datasets exhaustive report and chunks",
+            "char_limit": 4500,
+            "char_count": 3215,
+            "text": "Use the Configure Chat custom instructions for report style and coverage discipline.\nNotebookLM is an extraction helper, not permanent product memory.\n\nTopic: `emotion_recognition_speech_emotion_persuasion_datasets` - Emotion recognition, speech emotion datasets, and persuasion datasets\nSelected source metadata:\n- rag001-slot-10-emotion_recognition_speech_emotion_persuasion_datasets | Emotion recognition, speech emotion datasets, and persuasion datasets source slot | source_slot | mixed\n\nCreate a complete tailored extraction. This is not a summary.\nDo not give me a small sample batch. Review all selected NotebookLM sources for this topic and extract every distinct reusable idea that can improve sales reasoning, ethical persuasion, objection handling, emotion adaptation, active listening, English/German phrasing, or voice/prosody.\n\nMerge duplicates, but do not omit a distinct tactic, warning, emotion cue, phrase pattern, dataset point, or when-not-to-use boundary. Keep claims conservative and source-grounded. Do not copy long passages, full transcripts, book chapters, private data, API keys, or unsourced claims.\n\nReturn two sections:\n\nPART A - TAILORED REPORT\nWrite a readable report with these headings: Source coverage; Complete reusable patterns; AI sales-agent implications; Voice/prosody implications; Ethical/compliance guardrails; Implementation candidates; Missing or weak evidence. Use enough detail that I do not need repeated small follow-up batches.\n\nPART B - RAG JSON\nReturn one JSON object, no markdown fences:\n{\"topic_id\":\"emotion_recognition_speech_emotion_persuasion_datasets\",\"completion_status\":\"complete|partial|insufficient_source_material\",\"coverage_checklist\":{\"all_selected_sources_reviewed\":true,\"small_sample_batch\":false,\"no_more_distinct_items_found\":true,\"end_marker\":\"END: COMPLETE|NEED_CONTINUATION\"},\"tailored_report\":{\"source_coverage\":\"short source-by-source coverage note\",\"key_patterns\":\"complete non-summary report of reusable patterns\",\"agent_implications\":\"how this should improve sales reasoning, wording, emotion, or voice\",\"guardrails\":\"when not to use these ideas\"},\"chunks\":[{\"chunk_id\":\"stable-topic-slug-001\",\"topic_ids\":[\"topic_id\"],\"source_ids\":[\"source_id_from_manifest\"],\"language\":\"en|de|mixed\",\"sales_stage\":[\"opening|relevance-check|objection|qualification|closing|handoff|voice-delivery\"],\"principle\":\"one reusable idea\",\"application\":\"when the sales agent should use it\",\"when_not_to_use\":\"clear boundary\",\"example_phrases\":{\"en\":\"short optional phrase\",\"de\":\"short optional phrase\"},\"emotional_cues\":[\"cue\"],\"compliance_notes\":\"risk notes\",\"evidence_type\":\"youtube|website|book|paper|mixed|synthetic_schema_demo\",\"confidence\":\"low|medium|high\",\"citation_note\":\"source title/time/page/section\",\"source_excerpt\":\"optional <=60 words\"}]} Need at least 8 chunks when the source material supports it, but do not cap the extraction there.\n\nCompletion rule: use `\"completion_status\":\"complete\"` only if all selected sources were reviewed, `coverage_checklist.small_sample_batch=false`, no more distinct items remain, and `coverage_checklist.end_marker=\"END: COMPLETE\"`. If output limits prevent completion, set `\"partial\"` and `\"NEED_CONTINUATION\"`."
+          },
+          "gap_check": {
+            "prompt_type": "gap_check",
+            "title": "Emotion recognition, speech emotion datasets, and persuasion datasets coverage gap check",
+            "char_limit": 4500,
+            "char_count": 1377,
+            "text": "Coverage gap check for Emotion Aware AI Sales Agent RAG extraction.\nTopic: `emotion_recognition_speech_emotion_persuasion_datasets` - Emotion recognition, speech emotion datasets, and persuasion datasets\nSource metadata:\n- rag001-slot-10-emotion_recognition_speech_emotion_persuasion_datasets | Emotion recognition, speech emotion datasets, and persuasion datasets source slot | source_slot | mixed\n\nLook again across all selected NotebookLM sources for this topic and find missing distinct items from the previous answer. Do not repeat existing chunk_ids or duplicated ideas. Focus on sales tactics, objections, discovery, emotional cues, voice/prosody, English/German phrasing, guardrails, datasets, and when-not-to-use boundaries that were not captured.\n\nReturn exactly one JSON object using the same schema as before. If there are missing items, include only the missing chunks and set `\"completion_status\":\"partial\"` with `\"NEED_CONTINUATION\"` unless you finish the full gap check. If no missing items remain, return `\"chunks\":[]`, `\"completion_status\":\"complete\"`, `coverage_checklist.small_sample_batch=false`, and `coverage_checklist.end_marker=\"END: COMPLETE\"`.\n\nMinimum coverage reminder: the main extraction should have at least 8 chunks when the source material supports it. If fewer are valid, explain why with `\"completion_status\":\"insufficient_source_material\"`."
+          }
+        }
+      }
+    ]
+  },
+  "prompt_validation": {
+    "passed": true,
+    "topic_count": 10,
+    "prompt_count": 30,
+    "prompt_char_limit": 4500,
+    "chat_customization_char_limit": 10000,
+    "chat_customization_within_limit": true,
+    "all_topics_have_report_artifact_prompt": true,
+    "report_artifact_workflow_enabled": true,
+    "all_prompts_within_limit": true,
+    "all_prompts_have_completion_marker": true,
+    "all_primary_prompts_are_exhaustive": true,
+    "primary_prompts_include_readable_report": true,
+    "primary_prompts_include_json_block": true,
+    "manual_notebooklm_ui_required": true,
+    "notebooklm_api_used": false,
+    "issues": []
+  },
+  "extraction_validation": [],
+  "runtime_retrieval_enabled": false,
+  "quality_claim_allowed": false,
+  "private_data_boundary": {
+    "customer_private_data_used": false,
+    "raw_private_audio_used": false,
+    "raw_private_transcripts_used": false,
+    "provider_upload_used": false
+  }
+}

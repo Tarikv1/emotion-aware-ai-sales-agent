@@ -1,0 +1,14 @@
+{
+  "rag_manifest_id": "RAG-004-source-manifest-normalization",
+  "title": "Source manifest normalization for NotebookLM report imports",
+  "description": "Extracts source-title candidates from imported NotebookLM reports and assigns stable local source IDs for human metadata review before chunk import.",
+  "default_imports_dir": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports",
+  "runtime_retrieval_enabled": false,
+  "chunk_import_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "This checkpoint creates candidate source IDs only.",
+    "It does not import chunks or enable retrieval.",
+    "Human review is required to fill URLs, authors/channels, source types, languages, rights status, and thesis citation metadata."
+  ]
+}

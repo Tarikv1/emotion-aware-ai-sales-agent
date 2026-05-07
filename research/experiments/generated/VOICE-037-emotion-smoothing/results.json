@@ -1,0 +1,949 @@
+{
+  "case_file": "research/experiments/cases/voice-037-emotion-smoothing.json",
+  "cases": [
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "voice-037-en-emotional-inertia",
+      "case_title": "English freeform delivery smooths sharp confidence-to-low pitch transitions",
+      "emotion_smoothing": {
+        "blocked_overemotional_cue_count": 0,
+        "detected_transition_count": 2,
+        "eligible_for_smoothing": true,
+        "enabled": true,
+        "language": "en",
+        "profile": {
+          "blocked_overemotional_intents": [
+            "angry",
+            "furious",
+            "hostile",
+            "abusive",
+            "excited-high",
+            "theatrical",
+            "dramatic",
+            "overexcited"
+          ],
+          "enabled": true,
+          "max_stability_when_smoothed": 0.64,
+          "max_style_when_smoothed": 0.18,
+          "max_transition_delta": 0.42,
+          "min_stability_when_smoothed": 0.56,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "style": "emotion-transition-smoothing-v1"
+        },
+        "runtime_boundary": {
+          "changes_allowed": "provider-facing voice stability/style smoothing only; wording, speed, call policy, and protected text stay exact",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing rendered text",
+            "changing protected campaign or compliance text",
+            "adding claims",
+            "uploading customer audio",
+            "voice cloning"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "voice_cloning_used": false
+        },
+        "smoothed_provider_rendering": {
+          "api_call_made": false,
+          "case_id": "RESP-002-runtime-turn",
+          "connected_speech_applied": true,
+          "customer_audio_uploaded": false,
+          "emotion_transition_smoothing_applied": true,
+          "generated_audio_created": false,
+          "language": "en",
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "mapped_cues": [
+            {
+              "after": "I'll keep this simple.",
+              "cue_id": "cue-02",
+              "duration_ms": 288,
+              "mode": "transition",
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "rendered_as": "break_tag",
+              "segment_id": "resp-002-final-response",
+              "segment_index": 0,
+              "segment_type": "freeform_clarification",
+              "type": "pause"
+            }
+          ],
+          "model_id": "eleven_flash_v2_5",
+          "pacing_calibrated": true,
+          "plain_text": "I'll keep this simple. Well, you're right to ask. It's only useful if there's a practical next step.",
+          "protected_segment_provider_tag_count": 0,
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "provider_tag_count": 0,
+          "rendered_text": "I'll keep this simple, well, you're right to ask, and it's only useful if there's a practical next step.",
+          "rendered_text_html_preview": "I&#x27;ll keep this simple, well, you&#x27;re right to ask, and it&#x27;s only useful if there&#x27;s a practical next step.",
+          "requires_api_key": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+          "segment_renderings": [
+            {
+              "eligible_for_prosody": true,
+              "mapped_cues": [
+                {
+                  "after": "I'll keep this simple.",
+                  "cue_id": "cue-02",
+                  "duration_ms": 288,
+                  "mode": "transition",
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "rendered_as": "break_tag",
+                  "segment_id": "resp-002-final-response",
+                  "segment_index": 0,
+                  "segment_type": "freeform_clarification",
+                  "type": "pause"
+                }
+              ],
+              "plain_text": "I'll keep this simple. Well, you're right to ask. It's only useful if there's a practical next step.",
+              "protected_reason": null,
+              "provider_tags_inserted": [],
+              "rendered_text": "I'll keep this simple, well, you're right to ask, and it's only useful if there's a practical next step.",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "unsupported_cues": [
+                {
+                  "cue_id": "cue-01",
+                  "direction": "steady-low",
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used",
+                  "relative_pitch_semitones": -0.546,
+                  "segment_id": "resp-002-final-response",
+                  "segment_index": 0,
+                  "segment_type": "freeform_clarification",
+                  "target": "I'll keep this simple.",
+                  "type": "pitch"
+                }
+              ],
+              "voice_connected_speech": {
+                "flow_join_count": 2,
+                "flow_operations": [
+                  {
+                    "after_text_changed": true,
+                    "before": ". <break time=\"0.235s\" /> Well, ",
+                    "remaining_same_pattern": false,
+                    "rule_id": "en-join-filler-after-short-sentence"
+                  },
+                  {
+                    "after_text_changed": true,
+                    "before": ". It's",
+                    "remaining_same_pattern": false,
+                    "rule_id": "en-join-it-bridge"
+                  }
+                ],
+                "tuned": true
+              },
+              "voice_emotion_smoothing": {
+                "blocked_overemotional_cue_count": 0,
+                "transition_count": 2,
+                "tuned": true
+              },
+              "voice_listening_calibration": {
+                "adjustments": [],
+                "tuned": false
+              },
+              "voice_pacing_calibration": {
+                "break_operations": [
+                  {
+                    "operation": "compress_break",
+                    "original_ms": 288,
+                    "scale": 0.816,
+                    "tuned_ms": 235
+                  }
+                ],
+                "speed_ratio": 1.093,
+                "tuned": true
+              }
+            }
+          ],
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cues": [
+            {
+              "cue_id": "cue-01",
+              "direction": "steady-low",
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used",
+              "relative_pitch_semitones": -0.546,
+              "segment_id": "resp-002-final-response",
+              "segment_index": 0,
+              "segment_type": "freeform_clarification",
+              "target": "I'll keep this simple.",
+              "type": "pitch"
+            }
+          ],
+          "voice_cloning_used": false,
+          "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+          "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+          "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+          "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.093,
+            "stability": 0.56,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        },
+        "smoothed_transition_count": 2,
+        "smoothed_voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.093,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        },
+        "source_rendered_text": "I'll keep this simple, well, you're right to ask, and it's only useful if there's a practical next step.",
+        "source_voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.093,
+          "stability": 0.45,
+          "style": 0.0,
+          "use_speaker_boost": true
+        },
+        "transition_plan": {
+          "blocked_overemotional_signals": [],
+          "smoothed_signals": [
+            {
+              "arousal": 0.25,
+              "blocked": false,
+              "intent": "neutral",
+              "signal_id": "decision-emotion",
+              "source": "decision_snapshot.detected_emotion",
+              "valence": 0.5
+            },
+            {
+              "arousal": 0.607,
+              "blocked": false,
+              "intent": "confident-forward",
+              "signal_id": "resp-002-final-response:sales_pace_variation",
+              "smoothed": true,
+              "source": "speech_interaction.sales_pace_variation",
+              "valence": 0.563
+            },
+            {
+              "arousal": 0.31,
+              "blocked": false,
+              "intent": "steady-low",
+              "signal_id": "cue-01",
+              "smoothed": true,
+              "source": "prosody.pitch",
+              "valence": 0.44
+            }
+          ],
+          "source_signals": [
+            {
+              "arousal": 0.25,
+              "blocked": false,
+              "intent": "neutral",
+              "signal_id": "decision-emotion",
+              "source": "decision_snapshot.detected_emotion",
+              "valence": 0.5
+            },
+            {
+              "arousal": 0.7,
+              "blocked": false,
+              "intent": "confident-forward",
+              "signal_id": "resp-002-final-response:sales_pace_variation",
+              "source": "speech_interaction.sales_pace_variation",
+              "valence": 0.58
+            },
+            {
+              "arousal": 0.26,
+              "blocked": false,
+              "intent": "steady-low",
+              "signal_id": "cue-01",
+              "source": "prosody.pitch",
+              "valence": 0.42
+            }
+          ],
+          "transitions": [
+            {
+              "from_intent": "neutral",
+              "from_signal_id": "decision-emotion",
+              "max_allowed_delta": 0.42,
+              "reason": "bounded_emotional_inertia",
+              "smoothed_arousal": 0.607,
+              "smoothed_valence": 0.563,
+              "to_intent": "confident-forward",
+              "to_signal_id": "resp-002-final-response:sales_pace_variation",
+              "transition_delta": 0.53
+            },
+            {
+              "from_intent": "confident-forward",
+              "from_signal_id": "resp-002-final-response:sales_pace_variation",
+              "max_allowed_delta": 0.42,
+              "reason": "bounded_emotional_inertia",
+              "smoothed_arousal": 0.31,
+              "smoothed_valence": 0.44,
+              "to_intent": "steady-low",
+              "to_signal_id": "cue-01",
+              "transition_delta": 0.49
+            }
+          ],
+          "usable_signal_count": 3
+        },
+        "transition_smoothing_applied": true,
+        "validation": {
+          "boundary_flags_changed": false,
+          "passed": true,
+          "protected_segment_text_changes": [],
+          "rendered_text_changed": false,
+          "speed_changed": false,
+          "stability_out_of_bounds": false,
+          "style_out_of_bounds": false
+        },
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+        "voice_milestone": "VOICE-037"
+      },
+      "expected_emotion_smoothing": "transition-smoothed",
+      "final_response_unchanged": true,
+      "language": "en",
+      "provider_rendering": {
+        "provider_key": "elevenlabs",
+        "provider_tag_count": 0,
+        "rendered_text": "I'll keep this simple, well, you're right to ask, and it's only useful if there's a practical next step.",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.093,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "segment_type": "freeform_clarification",
+      "validation": {
+        "emotion_smoothing_validation_passed": true,
+        "passed": true,
+        "runtime_voice_validation_passed": true
+      }
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "case_id": "voice-037-de-emotional-inertia",
+      "case_title": "German freeform delivery keeps VOICE-036 relaxation and smooths emotional jumps",
+      "emotion_smoothing": {
+        "blocked_overemotional_cue_count": 0,
+        "detected_transition_count": 1,
+        "eligible_for_smoothing": true,
+        "enabled": true,
+        "language": "de",
+        "profile": {
+          "blocked_overemotional_intents": [
+            "angry",
+            "furious",
+            "hostile",
+            "abusive",
+            "excited-high",
+            "theatrical",
+            "dramatic",
+            "overexcited"
+          ],
+          "enabled": true,
+          "max_stability_when_smoothed": 0.64,
+          "max_style_when_smoothed": 0.18,
+          "max_transition_delta": 0.42,
+          "min_stability_when_smoothed": 0.56,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "style": "emotion-transition-smoothing-v1"
+        },
+        "runtime_boundary": {
+          "changes_allowed": "provider-facing voice stability/style smoothing only; wording, speed, call policy, and protected text stay exact",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing rendered text",
+            "changing protected campaign or compliance text",
+            "adding claims",
+            "uploading customer audio",
+            "voice cloning"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "voice_cloning_used": false
+        },
+        "smoothed_provider_rendering": {
+          "api_call_made": false,
+          "case_id": "RESP-002-runtime-turn",
+          "connected_speech_applied": true,
+          "customer_audio_uploaded": false,
+          "emotion_transition_smoothing_applied": true,
+          "generated_audio_created": false,
+          "language": "de",
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "mapped_cues": [
+            {
+              "after": "Das verstehe ich.",
+              "cue_id": "cue-02",
+              "duration_ms": 199,
+              "mode": "thinking",
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "rendered_as": "break_tag",
+              "segment_id": "resp-002-final-response",
+              "segment_index": 0,
+              "segment_type": "freeform_objection_handling",
+              "type": "pause"
+            }
+          ],
+          "model_id": "eleven_flash_v2_5",
+          "pacing_calibrated": true,
+          "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "protected_segment_provider_tag_count": 0,
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "provider_tag_count": 1,
+          "rendered_text": "Das verstehe ich, <break time=\"0.08s\" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "rendered_text_html_preview": "Das verstehe ich, &lt;break time=&quot;0.08s&quot; /&gt; also geht&#x27;s Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "requires_api_key": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+          "segment_renderings": [
+            {
+              "eligible_for_prosody": true,
+              "mapped_cues": [
+                {
+                  "after": "Das verstehe ich.",
+                  "cue_id": "cue-02",
+                  "duration_ms": 199,
+                  "mode": "thinking",
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "rendered_as": "break_tag",
+                  "segment_id": "resp-002-final-response",
+                  "segment_index": 0,
+                  "segment_type": "freeform_objection_handling",
+                  "type": "pause"
+                }
+              ],
+              "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+              "protected_reason": null,
+              "provider_tags_inserted": [
+                "<break time=\"0.08s\" />"
+              ],
+              "rendered_text": "Das verstehe ich, <break time=\"0.08s\" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "unsupported_cues": [
+                {
+                  "cue_id": "cue-01",
+                  "direction": "slight-rise",
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used",
+                  "relative_pitch_semitones": 0.371,
+                  "segment_id": "resp-002-final-response",
+                  "segment_index": 0,
+                  "segment_type": "freeform_objection_handling",
+                  "target": "Das verstehe ich.",
+                  "type": "pitch"
+                }
+              ],
+              "voice_connected_speech": {
+                "flow_join_count": 1,
+                "flow_operations": [
+                  {
+                    "after_text_changed": true,
+                    "before": ". <break time=\"0.128s\" /> Also, Geht's",
+                    "remaining_same_pattern": false,
+                    "rule_id": "de-join-also-after-short-sentence"
+                  }
+                ],
+                "tuned": true
+              },
+              "voice_emotion_smoothing": {
+                "blocked_overemotional_cue_count": 0,
+                "transition_count": 1,
+                "tuned": true
+              },
+              "voice_listening_calibration": {
+                "adjustments": [
+                  {
+                    "adjustment_id": "de-relax-connected-opening",
+                    "break_tag": "<break time=\"0.08s\" />",
+                    "reason": "VOICE-035 listening feedback: German connected phrase was too compressed."
+                  }
+                ],
+                "tuned": true
+              },
+              "voice_pacing_calibration": {
+                "break_operations": [
+                  {
+                    "operation": "compress_break",
+                    "original_ms": 199,
+                    "scale": 0.645,
+                    "tuned_ms": 128
+                  }
+                ],
+                "speed_ratio": 1.111,
+                "tuned": true
+              }
+            }
+          ],
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cues": [
+            {
+              "cue_id": "cue-01",
+              "direction": "slight-rise",
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used",
+              "relative_pitch_semitones": 0.371,
+              "segment_id": "resp-002-final-response",
+              "segment_index": 0,
+              "segment_type": "freeform_objection_handling",
+              "target": "Das verstehe ich.",
+              "type": "pitch"
+            }
+          ],
+          "voice_cloning_used": false,
+          "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+          "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+          "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+          "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.065,
+            "stability": 0.56,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        },
+        "smoothed_transition_count": 1,
+        "smoothed_voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.065,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        },
+        "source_rendered_text": "Das verstehe ich, <break time=\"0.08s\" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "source_voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.065,
+          "stability": 0.45,
+          "style": 0.0,
+          "use_speaker_boost": true
+        },
+        "transition_plan": {
+          "blocked_overemotional_signals": [],
+          "smoothed_signals": [
+            {
+              "arousal": 0.35,
+              "blocked": false,
+              "intent": "skeptical-or-negative",
+              "signal_id": "decision-emotion",
+              "source": "decision_snapshot.detected_emotion",
+              "valence": 0.24
+            },
+            {
+              "arousal": 0.563,
+              "blocked": false,
+              "intent": "confident-forward",
+              "signal_id": "resp-002-final-response:sales_pace_variation",
+              "smoothed": true,
+              "source": "speech_interaction.sales_pace_variation",
+              "valence": 0.447
+            },
+            {
+              "arousal": 0.48,
+              "blocked": false,
+              "intent": "slight-rise",
+              "signal_id": "cue-01",
+              "smoothed": false,
+              "source": "prosody.pitch",
+              "valence": 0.58
+            }
+          ],
+          "source_signals": [
+            {
+              "arousal": 0.35,
+              "blocked": false,
+              "intent": "skeptical-or-negative",
+              "signal_id": "decision-emotion",
+              "source": "decision_snapshot.detected_emotion",
+              "valence": 0.24
+            },
+            {
+              "arousal": 0.7,
+              "blocked": false,
+              "intent": "confident-forward",
+              "signal_id": "resp-002-final-response:sales_pace_variation",
+              "source": "speech_interaction.sales_pace_variation",
+              "valence": 0.58
+            },
+            {
+              "arousal": 0.48,
+              "blocked": false,
+              "intent": "slight-rise",
+              "signal_id": "cue-01",
+              "source": "prosody.pitch",
+              "valence": 0.58
+            }
+          ],
+          "transitions": [
+            {
+              "from_intent": "skeptical-or-negative",
+              "from_signal_id": "decision-emotion",
+              "max_allowed_delta": 0.42,
+              "reason": "bounded_emotional_inertia",
+              "smoothed_arousal": 0.563,
+              "smoothed_valence": 0.447,
+              "to_intent": "confident-forward",
+              "to_signal_id": "resp-002-final-response:sales_pace_variation",
+              "transition_delta": 0.69
+            }
+          ],
+          "usable_signal_count": 3
+        },
+        "transition_smoothing_applied": true,
+        "validation": {
+          "boundary_flags_changed": false,
+          "passed": true,
+          "protected_segment_text_changes": [],
+          "rendered_text_changed": false,
+          "speed_changed": false,
+          "stability_out_of_bounds": false,
+          "style_out_of_bounds": false
+        },
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+        "voice_milestone": "VOICE-037"
+      },
+      "expected_emotion_smoothing": "transition-smoothed",
+      "final_response_unchanged": true,
+      "language": "de",
+      "provider_rendering": {
+        "provider_key": "elevenlabs",
+        "provider_tag_count": 1,
+        "rendered_text": "Das verstehe ich, <break time=\"0.08s\" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.065,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "segment_type": "freeform_objection_handling",
+      "validation": {
+        "emotion_smoothing_validation_passed": true,
+        "passed": true,
+        "runtime_voice_validation_passed": true
+      }
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "case_id": "voice-037-protected-do-not-call",
+      "case_title": "Protected do-not-call text receives no emotion smoothing",
+      "emotion_smoothing": {
+        "blocked_overemotional_cue_count": 0,
+        "detected_transition_count": 0,
+        "eligible_for_smoothing": false,
+        "enabled": true,
+        "language": "de",
+        "profile": {
+          "blocked_overemotional_intents": [
+            "angry",
+            "furious",
+            "hostile",
+            "abusive",
+            "excited-high",
+            "theatrical",
+            "dramatic",
+            "overexcited"
+          ],
+          "enabled": true,
+          "max_stability_when_smoothed": 0.64,
+          "max_style_when_smoothed": 0.18,
+          "max_transition_delta": 0.42,
+          "min_stability_when_smoothed": 0.56,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "style": "emotion-transition-smoothing-v1"
+        },
+        "runtime_boundary": {
+          "changes_allowed": "provider-facing voice stability/style smoothing only; wording, speed, call policy, and protected text stay exact",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing rendered text",
+            "changing protected campaign or compliance text",
+            "adding claims",
+            "uploading customer audio",
+            "voice cloning"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "voice_cloning_used": false
+        },
+        "smoothed_provider_rendering": {
+          "api_call_made": false,
+          "case_id": "RESP-002-runtime-turn",
+          "connected_speech_applied": false,
+          "customer_audio_uploaded": false,
+          "emotion_transition_smoothing_applied": false,
+          "generated_audio_created": false,
+          "language": "de",
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "mapped_cues": [],
+          "model_id": "eleven_flash_v2_5",
+          "pacing_calibrated": false,
+          "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "protected_segment_provider_tag_count": 0,
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "provider_tag_count": 0,
+          "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "rendered_text_html_preview": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "requires_api_key": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+          "segment_renderings": [
+            {
+              "eligible_for_prosody": false,
+              "mapped_cues": [],
+              "plain_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+              "protected_reason": "protected_segment_type:do_not_call",
+              "provider_tags_inserted": [],
+              "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "do_not_call",
+              "unsupported_cues": [],
+              "voice_connected_speech": {
+                "flow_join_count": 0,
+                "flow_operations": [],
+                "tuned": false
+              },
+              "voice_emotion_smoothing": {
+                "blocked_overemotional_cue_count": 0,
+                "transition_count": 0,
+                "tuned": false
+              },
+              "voice_listening_calibration": {
+                "adjustments": [],
+                "tuned": false
+              },
+              "voice_pacing_calibration": {
+                "break_operations": [],
+                "speed_ratio": 1.0,
+                "tuned": false
+              }
+            }
+          ],
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cues": [],
+          "voice_cloning_used": false,
+          "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+          "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+          "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+          "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.0,
+            "stability": 0.45,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        },
+        "smoothed_transition_count": 0,
+        "smoothed_voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.0,
+          "stability": 0.45,
+          "style": 0.0,
+          "use_speaker_boost": true
+        },
+        "source_rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "source_voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.0,
+          "stability": 0.45,
+          "style": 0.0,
+          "use_speaker_boost": true
+        },
+        "transition_plan": {
+          "blocked_overemotional_signals": [],
+          "smoothed_signals": [
+            {
+              "arousal": 0.35,
+              "blocked": false,
+              "intent": "skeptical-or-negative",
+              "signal_id": "decision-emotion",
+              "source": "decision_snapshot.detected_emotion",
+              "valence": 0.24
+            }
+          ],
+          "source_signals": [
+            {
+              "arousal": 0.35,
+              "blocked": false,
+              "intent": "skeptical-or-negative",
+              "signal_id": "decision-emotion",
+              "source": "decision_snapshot.detected_emotion",
+              "valence": 0.24
+            }
+          ],
+          "transitions": [],
+          "usable_signal_count": 1
+        },
+        "transition_smoothing_applied": false,
+        "validation": {
+          "boundary_flags_changed": false,
+          "passed": true,
+          "protected_segment_text_changes": [],
+          "rendered_text_changed": false,
+          "speed_changed": false,
+          "stability_out_of_bounds": false,
+          "style_out_of_bounds": false
+        },
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+        "voice_milestone": "VOICE-037"
+      },
+      "expected_emotion_smoothing": "protected-unchanged",
+      "final_response_unchanged": true,
+      "language": "de",
+      "provider_rendering": {
+        "provider_key": "elevenlabs",
+        "provider_tag_count": 0,
+        "rendered_text": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.0,
+          "stability": 0.45,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "segment_type": "do_not_call",
+      "validation": {
+        "emotion_smoothing_validation_passed": true,
+        "passed": true,
+        "runtime_voice_validation_passed": true
+      }
+    }
+  ],
+  "emotion_smoothing_policy": {
+    "allowed_changes": [
+      "increase provider stability inside a bounded range when sharp transition signals are detected",
+      "cap provider style/exaggeration when over-emotional cues are detected",
+      "record detected and smoothed transition evidence"
+    ],
+    "forbidden_changes": [
+      "changing final_response",
+      "changing rendered spoken words",
+      "changing protected campaign questions, disclosures, handoff, hangup, or do-not-call text",
+      "changing speed while smoothing emotion",
+      "calling a provider",
+      "uploading customer or private audio",
+      "voice cloning"
+    ],
+    "goal": "Prevent abrupt emotional jumps in the spoken voice while preserving the guarded response and campaign text."
+  },
+  "experiment_scope": "VOICE-037 emotion transition smoothing for provider-facing voice delivery.",
+  "runtime_boundary": {
+    "customer_audio_uploaded": false,
+    "generated_audio_created": false,
+    "offline_preview_only": true,
+    "provider_calls_made": false,
+    "quality_claim_allowed_without_human_rating": false,
+    "requires_api_key": false,
+    "voice_cloning_used": false
+  },
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "summary": {
+    "blocked_overemotional_cue_cases": 0,
+    "case_count": 3,
+    "customer_audio_uploaded": false,
+    "english_cases": 1,
+    "generated_audio_created": false,
+    "german_cases": 2,
+    "protected_case_count": 1,
+    "provider_calls_made": false,
+    "quality_claim_allowed": false,
+    "requires_api_key": false,
+    "transition_smoothed_cases": 2,
+    "validation_passed": 3,
+    "voice_cloning_used": false
+  },
+  "voice_milestone": "VOICE-037"
+}

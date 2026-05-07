@@ -11,8 +11,9 @@ from speech_realism import apply_speech_realism
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-023-speech-realism.json"
-DEFAULT_OUT_PATH = ROOT / "research" / "experiments" / "generated" / "VOICE-023-speech-realism.json"
-DEFAULT_REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "VOICE-023-speech-realism-report.md"
+DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-023"
+DEFAULT_OUT_PATH = DEFAULT_RUN_DIR / "VOICE-023-speech-realism.json"
+DEFAULT_REPORT_PATH = DEFAULT_RUN_DIR / "VOICE-023-speech-realism-report.md"
 
 
 def resolve_project_path(value: str | None, default: Path) -> Path:

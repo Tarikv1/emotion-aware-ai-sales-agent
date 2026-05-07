@@ -2,6 +2,31 @@
 
 Use this folder as the running memory of the thesis, not just as a place for polished final text.
 
+## Generated Evidence Layout
+
+Use `research/experiments/generated/<checkpoint>/` folders as the stable evidence trail for generated reports, JSON results, dry-run packets, and public-safe review outputs.
+
+When referencing generated evidence:
+
+- cite the checkpoint folder and product doc rather than a loose flat generated-root filename
+- keep only `README.md` at the generated root
+- keep live `.wav` and `.mp3` provider outputs ignored unless a later curation review explicitly approves tracking
+- do not mix private-input outputs with public-safe generated folders
+- rerun the drift guard before GitHub checkpoints so accidental flat files or unignored audio are caught
+
+## Source-Tracked RAG Notes
+
+Use `RAG-001` and `RAG-002` outputs as traceability aids, not as final bibliography text.
+
+When NotebookLM is used to extract sales knowledge:
+
+- cite the original source, not NotebookLM
+- keep the extracted chunk paraphrased
+- preserve `source_ids`, `topic_ids`, `citation_note`, and `when_not_to_use`
+- do not copy long passages, full transcripts, book chapters, or article bodies into the thesis repo
+- separate public sales/persuasion sources from private call-center learning material
+- for `RAG-002`, keep the generated prompt pack and coverage result as method evidence, especially whether NotebookLM returned `END: COMPLETE` or required a gap-check prompt
+
 ## Purpose
 
 Capture decisions, rationale, dataset choices, experiment scope, limitations, source references, implementation failures, and evaluation notes while the project is being built.
@@ -85,6 +110,7 @@ Record a note when:
 - an LLM or voice provider changes output quality
 - a bug reveals a limitation
 - a privacy or retention boundary changes
+- a private or personal speech-sample boundary changes
 - a user listening review changes direction
 - a future idea is deferred
 
@@ -176,6 +202,9 @@ Do not hide these:
 - provider documentation is not the same as measured production performance
 - private call-center data has not yet been processed
 - German/English speech-realism profiles are literature-informed but need listener validation
+- controlled delivery imperfections are currently offline-validated but still need live audio and listener validation
+- personal speech-pattern learning must be framed as abstract style learning, not voice cloning, identity learning, or raw transcript reuse
+- raw-audio learning currently extracts WAV acoustic features only; transcription, non-WAV decoding, and runtime personalization are separate later checkpoints
 - the product is not yet production deployed
 - legal/compliance review is not complete for live insurance deployment
 

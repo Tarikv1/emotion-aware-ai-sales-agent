@@ -1,0 +1,49 @@
+{
+  "voice_milestone": "VOICE-029",
+  "experiment_scope": "Local-only personal speech-pattern profile extraction from synthetic fixtures now and private redacted transcripts later.",
+  "private_workspace": {
+    "private_root": "data/private/tarik-speech-samples",
+    "required_private_subdirs": [
+      "raw-audio",
+      "transcripts-redacted",
+      "derived",
+      "reviewed-patterns",
+      "quarantine"
+    ]
+  },
+  "synthetic_samples": [
+    {
+      "sample_id": "voice-029-en-thinking-style",
+      "language": "en",
+      "source": "synthetic_fixture",
+      "text": "So what I mean is, I don't want the answer to sound too perfect. I think it should breathe a little, pause sometimes, and then continue in a way that feels natural."
+    },
+    {
+      "sample_id": "voice-029-en-repair-style",
+      "language": "en",
+      "source": "synthetic_fixture",
+      "text": "Okay, let me rephrase that. I am trying to say that the agent shouldn't copy a script; it should sound like it is actually thinking through the answer."
+    },
+    {
+      "sample_id": "voice-029-de-discourse-style",
+      "language": "de",
+      "source": "synthetic_fixture",
+      "text": "Also, ich meine, die Stimme soll nicht zu perfekt klingen. Manchmal gibt es eine kurze Pause, und dann geht es natuerlich weiter."
+    },
+    {
+      "sample_id": "voice-029-pii-suppression-fixture",
+      "language": "en",
+      "source": "synthetic_fixture",
+      "text": "My name is Example Person and my phone number is 5550100. So, I mean, this private detail should never appear in an exported speech profile."
+    }
+  ],
+  "privacy_boundary": {
+    "raw_audio_read_by_default": false,
+    "provider_calls_allowed": false,
+    "voice_cloning_allowed": false,
+    "raw_transcript_export_allowed": false,
+    "runtime_use_requires_human_review": true,
+    "private_input_requires_explicit_flag": true,
+    "private_input_output_must_stay_private": true
+  }
+}

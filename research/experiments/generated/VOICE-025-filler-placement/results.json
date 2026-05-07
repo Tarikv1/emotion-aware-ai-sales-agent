@@ -1,0 +1,754 @@
+{
+  "voice_milestone": "VOICE-025",
+  "experiment_scope": "Boundary-aware English/German filler placement for the shared speech-realism layer. Fillers should appear at turn, sentence, discourse, or planning boundaries, not inside protected campaign text or fluent clause frames.",
+  "case_source": "research/experiments/cases/voice-025-filler-placement.json",
+  "results": [
+    {
+      "case_id": "VOICE-025-C01",
+      "case_title": "English planning phrase uses pre-sentence filler placement",
+      "campaign_id": "campaign-voice-025-en-generic",
+      "language": "en",
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "c01-en-planning:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "c01-en-planning",
+            "segment_type": "freeform_objection_handling",
+            "filler": "so",
+            "position": "pre_thinking_sentence",
+            "pause_ms": 156,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.058,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "pre_thinking_sentence"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "c01-en-planning",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "That's a fair concern. The important thing is that the next step only makes sense if it is practical for you.",
+            "allow_speech_realism": true,
+            "allow_fillers": true
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c01-en-planning",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "That's a fair concern. The important thing is that the next step only makes sense if it is practical for you.",
+            "text_after": "That's a fair concern. So, the important thing is that the next step only makes sense if it is practical for you.",
+            "bundles": [
+              {
+                "bundle_id": "c01-en-planning:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "c01-en-planning",
+                "segment_type": "freeform_objection_handling",
+                "filler": "so",
+                "position": "pre_thinking_sentence",
+                "pause_ms": 156,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.058,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "pre_thinking_sentence"
+              }
+            ]
+          }
+        ],
+        "tts_text": "That's a fair concern. So, the important thing is that the next step only makes sense if it is practical for you.",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-025-C02",
+      "case_title": "German planning phrase uses German-specific boundary filler",
+      "campaign_id": "campaign-voice-025-de-generic",
+      "language": "de",
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human-german",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "c02-de-planning:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "c02-de-planning",
+            "segment_type": "freeform_objection_handling",
+            "filler": "ähm",
+            "position": "pre_thinking_sentence",
+            "pause_ms": 170,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.081,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "pre_thinking_sentence"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "c02-de-planning",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text": "Ich habe den Punkt verstanden. Wichtig ist, dass der naechste Schritt fuer Sie kurz und unverbindlich bleibt.",
+            "allow_speech_realism": true,
+            "allow_fillers": true
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c02-de-planning",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "Ich habe den Punkt verstanden. Wichtig ist, dass der naechste Schritt fuer Sie kurz und unverbindlich bleibt.",
+            "text_after": "Ich habe den Punkt verstanden. Ähm, wichtig ist, dass der naechste Schritt fuer Sie kurz und unverbindlich bleibt.",
+            "bundles": [
+              {
+                "bundle_id": "c02-de-planning:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "c02-de-planning",
+                "segment_type": "freeform_objection_handling",
+                "filler": "ähm",
+                "position": "pre_thinking_sentence",
+                "pause_ms": 170,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.081,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "pre_thinking_sentence"
+              }
+            ]
+          }
+        ],
+        "tts_text": "Ich habe den Punkt verstanden. Ähm, wichtig ist, dass der naechste Schritt fuer Sie kurz und unverbindlich bleibt.",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-025-C03",
+      "case_title": "English fallback uses sentence boundary rather than mid-clause insertion",
+      "campaign_id": "campaign-voice-025-en-generic",
+      "language": "en",
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "c03-en-boundary:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "c03-en-boundary",
+            "segment_type": "freeform_transition",
+            "filler": "um",
+            "position": "sentence_boundary",
+            "pause_ms": 183,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.067,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "c03-en-boundary",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "I understand why you would be careful. We can keep this short and only check whether a callback is useful.",
+            "allow_speech_realism": true,
+            "allow_fillers": true
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c03-en-boundary",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "I understand why you would be careful. We can keep this short and only check whether a callback is useful.",
+            "text_after": "I understand why you would be careful. Um, we can keep this short and only check whether a callback is useful.",
+            "bundles": [
+              {
+                "bundle_id": "c03-en-boundary:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "c03-en-boundary",
+                "segment_type": "freeform_transition",
+                "filler": "um",
+                "position": "sentence_boundary",
+                "pause_ms": 183,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.067,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "sentence_boundary"
+              }
+            ]
+          }
+        ],
+        "tts_text": "I understand why you would be careful. Um, we can keep this short and only check whether a callback is useful.",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-025-C04",
+      "case_title": "German fallback uses sentence boundary rather than translated English filler logic",
+      "campaign_id": "campaign-voice-025-de-generic",
+      "language": "de",
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human-german",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "c04-de-boundary:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "c04-de-boundary",
+            "segment_type": "freeform_transition",
+            "filler": "also",
+            "position": "sentence_boundary",
+            "pause_ms": 204,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.045,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "c04-de-boundary",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "text": "Das verstehe ich gut. Wir halten es kurz und klaeren nur, ob ein Rueckruf fuer Sie sinnvoll ist.",
+            "allow_speech_realism": true,
+            "allow_fillers": true
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c04-de-boundary",
+            "segment_type": "freeform_transition",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "Das verstehe ich gut. Wir halten es kurz und klaeren nur, ob ein Rueckruf fuer Sie sinnvoll ist.",
+            "text_after": "Das verstehe ich gut. Also, wir halten es kurz und klaeren nur, ob ein Rueckruf fuer Sie sinnvoll ist.",
+            "bundles": [
+              {
+                "bundle_id": "c04-de-boundary:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "c04-de-boundary",
+                "segment_type": "freeform_transition",
+                "filler": "also",
+                "position": "sentence_boundary",
+                "pause_ms": 204,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.045,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "sentence_boundary"
+              }
+            ]
+          }
+        ],
+        "tts_text": "Das verstehe ich gut. Also, wir halten es kurz und klaeren nur, ob ein Rueckruf fuer Sie sinnvoll ist.",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "VOICE-025-C05",
+      "case_title": "German protected campaign question remains exact",
+      "campaign_id": "campaign-voice-025-de-generic",
+      "language": "de",
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human-german",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 2,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 1,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "c05-de-freeform:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "c05-de-freeform",
+            "segment_type": "freeform_empathy",
+            "filler": "äh",
+            "position": "pre_thinking_sentence",
+            "pause_ms": 258,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.057,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "pre_thinking_sentence"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "c05-de-freeform",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "text": "Ich verstehe den Einwand. Wichtig ist, dass wir nur den passenden naechsten Schritt klaeren.",
+            "allow_speech_realism": true,
+            "allow_fillers": true
+          },
+          {
+            "segment_id": "c05-de-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text": "Darf ich Ihnen eine kurze Frage stellen?"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "c05-de-freeform",
+            "segment_type": "freeform_empathy",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "Ich verstehe den Einwand. Wichtig ist, dass wir nur den passenden naechsten Schritt klaeren.",
+            "text_after": "Ich verstehe den Einwand. Äh, wichtig ist, dass wir nur den passenden naechsten Schritt klaeren.",
+            "bundles": [
+              {
+                "bundle_id": "c05-de-freeform:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "c05-de-freeform",
+                "segment_type": "freeform_empathy",
+                "filler": "äh",
+                "position": "pre_thinking_sentence",
+                "pause_ms": 258,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.057,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "pre_thinking_sentence"
+              }
+            ]
+          },
+          {
+            "segment_index": 1,
+            "segment_id": "c05-de-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "eligible_for_speech_realism": false,
+            "protected_reason": "matches_campaign_qualification_question",
+            "text_before": "Darf ich Ihnen eine kurze Frage stellen?",
+            "text_after": "Darf ich Ihnen eine kurze Frage stellen?",
+            "bundles": []
+          }
+        ],
+        "tts_text": "Ich verstehe den Einwand. Äh, wichtig ist, dass wir nur den passenden naechsten Schritt klaeren. Darf ich Ihnen eine kurze Frage stellen?",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "case_count": 5,
+    "languages": {
+      "en": 2,
+      "de": 3
+    },
+    "bundle_count": 5,
+    "insertion_strategies": {
+      "pre_thinking_sentence": 3,
+      "sentence_boundary": 2
+    },
+    "fillers": {
+      "so": 1,
+      "ähm": 1,
+      "um": 1,
+      "also": 1,
+      "äh": 1
+    },
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "protected_segment_change_count": 0,
+    "provider_calls_made": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  }
+}

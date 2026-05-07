@@ -97,7 +97,7 @@
         "min_bundle_count": 1,
         "max_bundle_count": 1,
         "required_bundle_types": ["thinking_filler"],
-        "allowed_fillers": ["um", "uh", "hm"],
+        "allowed_fillers": ["um", "uh", "hm", "well", "so"],
         "protected_segment_ids_unchanged": []
       }
     },
@@ -118,7 +118,7 @@
         "min_bundle_count": 1,
         "max_bundle_count": 1,
         "required_bundle_types": ["thinking_filler"],
-        "allowed_fillers": ["aehm", "aeh", "hm", "also"],
+        "allowed_fillers": ["ähm", "äh", "aehm", "aeh", "hm", "also"],
         "forbidden_fragments": [" um ", " uh ", " you know "],
         "protected_segment_ids_unchanged": []
       }

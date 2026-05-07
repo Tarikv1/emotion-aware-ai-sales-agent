@@ -1,0 +1,144 @@
+{
+  "voice_milestone": "VOICE-025",
+  "experiment_scope": "Boundary-aware English/German filler placement for the shared speech-realism layer. Fillers should appear at turn, sentence, discourse, or planning boundaries, not inside protected campaign text or fluent clause frames.",
+  "campaigns": [
+    {
+      "campaign_id": "campaign-voice-025-en-generic",
+      "client_name": "Synthetic English Sales Team",
+      "product_name": "Generic callback qualification",
+      "product_category": "generic-sales",
+      "customer_type": "b2c",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hello, I am calling with a short product update. Do you have a moment?",
+      "qualification_questions": [
+        "Can I ask one short question?",
+        "Would a short specialist callback be useful?"
+      ],
+      "required_disclosures": [
+        "The callback is optional."
+      ],
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 1,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-025-de-generic",
+      "client_name": "Synthetisches deutsches Vertriebsteam",
+      "product_name": "Allgemeine Rueckrufqualifikation",
+      "product_category": "generic-sales",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Produktinformation an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Darf ich Ihnen eine kurze Frage stellen?",
+        "Waere ein kurzer Rueckruf durch einen Fachberater sinnvoll?"
+      ],
+      "required_disclosures": [
+        "Der Rueckruf ist optional."
+      ],
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human-german",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 1,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "VOICE-025-C01",
+      "case_title": "English planning phrase uses pre-sentence filler placement",
+      "campaign_id": "campaign-voice-025-en-generic",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c01-en-planning",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "That's a fair concern. The important thing is that the next step only makes sense if it is practical for you.",
+          "allow_speech_realism": true,
+          "allow_fillers": true
+        }
+      ]
+    },
+    {
+      "case_id": "VOICE-025-C02",
+      "case_title": "German planning phrase uses German-specific boundary filler",
+      "campaign_id": "campaign-voice-025-de-generic",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c02-de-planning",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "Ich habe den Punkt verstanden. Wichtig ist, dass der naechste Schritt fuer Sie kurz und unverbindlich bleibt.",
+          "allow_speech_realism": true,
+          "allow_fillers": true
+        }
+      ]
+    },
+    {
+      "case_id": "VOICE-025-C03",
+      "case_title": "English fallback uses sentence boundary rather than mid-clause insertion",
+      "campaign_id": "campaign-voice-025-en-generic",
+      "language": "en",
+      "segments": [
+        {
+          "segment_id": "c03-en-boundary",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "I understand why you would be careful. We can keep this short and only check whether a callback is useful.",
+          "allow_speech_realism": true,
+          "allow_fillers": true
+        }
+      ]
+    },
+    {
+      "case_id": "VOICE-025-C04",
+      "case_title": "German fallback uses sentence boundary rather than translated English filler logic",
+      "campaign_id": "campaign-voice-025-de-generic",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c04-de-boundary",
+          "segment_type": "freeform_transition",
+          "source": "agent_freeform",
+          "text": "Das verstehe ich gut. Wir halten es kurz und klaeren nur, ob ein Rueckruf fuer Sie sinnvoll ist.",
+          "allow_speech_realism": true,
+          "allow_fillers": true
+        }
+      ]
+    },
+    {
+      "case_id": "VOICE-025-C05",
+      "case_title": "German protected campaign question remains exact",
+      "campaign_id": "campaign-voice-025-de-generic",
+      "language": "de",
+      "segments": [
+        {
+          "segment_id": "c05-de-freeform",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "Ich verstehe den Einwand. Wichtig ist, dass wir nur den passenden naechsten Schritt klaeren.",
+          "allow_speech_realism": true,
+          "allow_fillers": true
+        },
+        {
+          "segment_id": "c05-de-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Darf ich Ihnen eine kurze Frage stellen?"
+        }
+      ]
+    }
+  ]
+}

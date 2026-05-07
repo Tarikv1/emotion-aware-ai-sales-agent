@@ -1,0 +1,409 @@
+{
+  "audit_id": "RAG-003-report-import-readiness",
+  "imports_dir": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports",
+  "summary": {
+    "expected_topic_count": 10,
+    "report_count": 11,
+    "covered_topic_count": 10,
+    "covered_topic_ids": [
+      "active_listening_human_like_sales_communication",
+      "closing_techniques",
+      "cold_calling",
+      "consultative_selling_discovery",
+      "emotion_recognition_speech_emotion_persuasion_datasets",
+      "emotional_intelligence",
+      "ethical_persuasion_persuasive_dialogue",
+      "negotiation_german_english_sales_calls_telefonakquise",
+      "objection_handling",
+      "speech_tone_prosody_human_like_voice_behavior"
+    ],
+    "missing_topic_ids": [],
+    "duplicate_topic_ids": [
+      "active_listening_human_like_sales_communication",
+      "consultative_selling_discovery",
+      "emotional_intelligence",
+      "ethical_persuasion_persuasive_dialogue",
+      "objection_handling",
+      "speech_tone_prosody_human_like_voice_behavior"
+    ],
+    "topic_to_reports": {
+      "active_listening_human_like_sales_communication": [
+        "Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+        "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+      ],
+      "closing_techniques": [
+        "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md"
+      ],
+      "cold_calling": [
+        "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+      ],
+      "consultative_selling_discovery": [
+        "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+        "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+      ],
+      "emotion_recognition_speech_emotion_persuasion_datasets": [
+        "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+      ],
+      "emotional_intelligence": [
+        "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+        "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+      ],
+      "ethical_persuasion_persuasive_dialogue": [
+        "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+        "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+      ],
+      "negotiation_german_english_sales_calls_telefonakquise": [
+        "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+      ],
+      "objection_handling": [
+        "Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report.md",
+        "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+      ],
+      "speech_tone_prosody_human_like_voice_behavior": [
+        "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+        "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+      ]
+    },
+    "all_reports_have_complete_marker": true,
+    "all_reports_have_source_coverage": true,
+    "all_reports_have_rag_appendix": true,
+    "need_continuation_count": 0,
+    "secret_like_report_count": 0,
+    "reports_with_secret_like_text": [],
+    "reports_missing_source_coverage": [],
+    "reports_missing_rag_appendix": [],
+    "reports_with_appended_output": [
+      "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md",
+      "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+      "Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report.md",
+      "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+      "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+      "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+      "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+      "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md",
+      "Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+      "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+    ],
+    "reports_needing_quote_review": [
+      "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md",
+      "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+      "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+      "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+      "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+      "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+      "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md",
+      "Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+      "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md",
+      "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+    ],
+    "source_id_mapping_required": true,
+    "import_readiness": "review_required",
+    "runtime_retrieval_enabled": false,
+    "safe_to_auto_promote": false,
+    "external_provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "raw_private_data_used": false
+  },
+  "recommendations": [
+    "Create a real source manifest that maps NotebookLM source titles to stable source IDs before chunk import.",
+    "Normalize pasted chat/gap-check continuations into appendices before chunk extraction.",
+    "Review source excerpts before committing or importing chunks to keep copyright exposure low."
+  ],
+  "reports": [
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md",
+      "name": "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md",
+      "size_bytes": 33270,
+      "heading_count": 20,
+      "first_heading": "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 17442,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+      "name": "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+      "size_bytes": 27018,
+      "heading_count": 15,
+      "first_heading": "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report",
+      "topic_ids": [
+        "emotional_intelligence"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 10636,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report.md",
+      "name": "Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report.md",
+      "size_bytes": 28103,
+      "heading_count": 22,
+      "first_heading": "Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report",
+      "topic_ids": [
+        "objection_handling"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": false,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 16132,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+      "name": "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+      "size_bytes": 49341,
+      "heading_count": 27,
+      "first_heading": "Emotion-Aware AI Sales Agent: Behavioral Strategy & Persuasion Extraction Report",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": true,
+      "source_id_mapping_required": false,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 17421,
+      "review_flags": [
+        "appended_chat_or_gap_output_detected",
+        "mixed_or_duplicate_report_structure",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+      "name": "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+      "size_bytes": 32032,
+      "heading_count": 15,
+      "first_heading": "Extraction Report: AI Sales Agent Strategy & RAG Synthesis",
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 14710,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+      "name": "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+      "size_bytes": 29063,
+      "heading_count": 23,
+      "first_heading": "Knowledge Extraction Report: Consultative Selling & Discovery for Emotion-Aware AI",
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 11319,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+      "name": "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+      "size_bytes": 34581,
+      "heading_count": 26,
+      "first_heading": "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": false,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 13720,
+      "review_flags": [
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md",
+      "name": "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md",
+      "size_bytes": 32432,
+      "heading_count": 11,
+      "first_heading": "Tailored Report: Emotion-Aware AI Sales Agent Closing Techniques",
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 17558,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+      "name": "Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+      "size_bytes": 29640,
+      "heading_count": 19,
+      "first_heading": "Technical Extraction Report: Negotiation Tactics & Cross-Cultural Sales Logic",
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": false,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 13704,
+      "review_flags": [
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md",
+      "name": "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md",
+      "size_bytes": 43057,
+      "heading_count": 21,
+      "first_heading": "Technical Report: Emotion Recognition and Persuasion Systems in Sales AI",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": true,
+      "appended_chat_or_gap_output_detected": true,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 11219,
+      "review_flags": [
+        "source_id_mapping_required",
+        "appended_chat_or_gap_output_detected",
+        "quote_review_recommended"
+      ]
+    },
+    {
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md",
+      "name": "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md",
+      "size_bytes": 25030,
+      "heading_count": 7,
+      "first_heading": "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report",
+      "topic_ids": [
+        "active_listening_human_like_sales_communication",
+        "consultative_selling_discovery",
+        "emotional_intelligence",
+        "ethical_persuasion_persuasive_dialogue",
+        "objection_handling",
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "complete_marker_present": true,
+      "need_continuation_present": false,
+      "source_coverage_present": true,
+      "rag_appendix_present": true,
+      "gap_or_continuation_present": false,
+      "appended_chat_or_gap_output_detected": false,
+      "duplicate_structure_detected": false,
+      "source_id_mapping_required": true,
+      "quote_review_recommended": true,
+      "secret_like_detected": false,
+      "chars_after_first_complete_marker": 0,
+      "review_flags": [
+        "source_id_mapping_required",
+        "quote_review_recommended"
+      ]
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "auto_promotion_allowed": false,
+    "notebooklm_api_used": false,
+    "external_provider_calls_made": false,
+    "private_customer_data_allowed": false,
+    "raw_source_text_import_allowed": false
+  }
+}

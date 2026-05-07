@@ -69,8 +69,8 @@ Avoid:
 
 Candidate markers:
 
-- `aeh`
-- `aehm`
+- `äh`
+- `ähm`
 - `hm`
 - `ja`
 - `genau`
@@ -79,16 +79,16 @@ Candidate markers:
 
 Implementation note:
 
-- These ASCII labels are internal placeholders. Provider-facing German text may use actual German filler spelling only after encoding and provider behavior are tested.
+- VOICE-025 now allows provider-facing `äh` and `ähm` in eligible freeform text, with validation coverage and a follow-up live-listening question for ElevenLabs rendering quality.
 
 Recommended behavior:
 
-- `aeh`: rare minor planning delay
-- `aehm`: rarer longer planning delay
+- `äh`: rare minor planning delay
+- `ähm`: rarer longer planning delay
 - `hm`: consideration or soft acknowledgment
 - `ja`: acknowledgment or alignment
 - `genau`: confirmation or agreement
-- `also`: transition or framing before explanation
+- `also`: turn-boundary transition or framing before explanation
 
 Avoid:
 
@@ -179,14 +179,15 @@ Implementation artifacts:
 - `scripts/run_voice_023_speech_realism.py`
 - `scripts/validate_voice_023_speech_realism.py`
 - `research/experiments/cases/voice-023-speech-realism.json`
-- `research/experiments/generated/VOICE-023-speech-realism.json`
-- `research/experiments/generated/VOICE-023-speech-realism-report.md`
+- `research/experiments/generated/VOICE-023/VOICE-023-speech-realism.json`
+- `research/experiments/generated/VOICE-023/VOICE-023-speech-realism-report.md`
 
 Runtime position:
 
-- `RESP-002` now applies VOICE-023 after VOICE-022 spoken-text normalization and before VOICE-015/016 prosody/provider rendering.
+- `RESP-002` applies VOICE-023 after VOICE-022 spoken-text normalization and before VOICE-026 interaction prosody plus VOICE-015/016 prosody/provider rendering.
 - `final_response`, call control, selected strategy, and protected segment text remain unchanged.
-- Current German provider-facing fillers are limited to `hm` and `also` until live audio tests prove whether umlaut forms such as `aeh`/`aehm` or actual `äh`/`ähm` render better.
+- VOICE-025 refines this layer with boundary-aware placement and allows German `äh`/`ähm` in eligible freeform text while keeping protected campaign text exact.
+- VOICE-026 separates listener backchannels, lookup acknowledgements, and sales-pace cues from speaker fillers.
 
 ## Product Meaning
 
@@ -198,5 +199,6 @@ reusable sales-agent core
   -> guarded response
   -> protected/freeform segmentation
   -> speech realism only on eligible freeform segments
+  -> interaction prosody only on eligible freeform segments
   -> TTS provider adapter
 ```

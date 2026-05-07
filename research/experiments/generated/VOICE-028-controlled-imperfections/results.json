@@ -1,0 +1,435 @@
+{
+  "voice_milestone": "VOICE-028",
+  "experiment_scope": "Offline checkpoint for controlled professional speech imperfections in eligible English/German freeform voice delivery.",
+  "case_source": "research/experiments/cases/voice-028-controlled-imperfections.json",
+  "evaluation_rubric": {
+    "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+    "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+    "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+    "placement": "Does the imperfection occur at a sentence or thought boundary?",
+    "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+  },
+  "results": [
+    {
+      "case_id": "voice-028-en-freeform-rephrase",
+      "case_title": "English eligible freeform receives one professional imperfection",
+      "campaign_id": "voice-028-en-generic-sales",
+      "language": "en",
+      "speech_imperfections": {
+        "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_imperfections_per_response": 1,
+          "min_chars_for_imperfection": 60,
+          "allow_clarifying_rephrases": true,
+          "allow_breath_pauses": true,
+          "allow_soft_restarts": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "curious"
+        },
+        "unsafe_claim_context": false,
+        "imperfections": [
+          {
+            "imperfection_id": "en-freeform:controlled_imperfection",
+            "imperfection_type": "clarifying_rephrase",
+            "segment_id": "en-freeform",
+            "language": "en",
+            "visible": true,
+            "marker_text": "Actually,",
+            "placement": "sentence_boundary",
+            "pause_ms": 123,
+            "safety_note": "Eligible freeform speech only; does not change protected campaign text or regulated claims."
+          }
+        ],
+        "imperfection_count": 1,
+        "output_segments": [
+          {
+            "segment_id": "en-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text_before": "I can keep this simple. The useful thing is to check whether the next step is relevant before anyone spends more time on it.",
+            "text_after": "I can keep this simple. Actually, the useful thing is to check whether the next step is relevant before anyone spends more time on it.",
+            "eligible": true,
+            "protection_reason": null,
+            "imperfections": [
+              {
+                "imperfection_id": "en-freeform:controlled_imperfection",
+                "imperfection_type": "clarifying_rephrase",
+                "segment_id": "en-freeform",
+                "language": "en",
+                "visible": true,
+                "marker_text": "Actually,",
+                "placement": "sentence_boundary",
+                "pause_ms": 123,
+                "safety_note": "Eligible freeform speech only; does not change protected campaign text or regulated claims."
+              }
+            ]
+          }
+        ],
+        "tts_text": "I can keep this simple. Actually, the useful thing is to check whether the next step is relevant before anyone spends more time on it.",
+        "evaluation_rubric": {
+          "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+          "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+          "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+          "placement": "Does the imperfection occur at a sentence or thought boundary?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_imperfection_violations": [],
+          "language_mismatched_imperfections": [],
+          "unsafe_visible_imperfections": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-028-de-freeform-rephrase",
+      "case_title": "German eligible freeform receives one professional imperfection",
+      "campaign_id": "voice-028-de-generic-sales",
+      "language": "de",
+      "speech_imperfections": {
+        "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_imperfections_per_response": 1,
+          "min_chars_for_imperfection": 60,
+          "allow_clarifying_rephrases": true,
+          "allow_breath_pauses": true,
+          "allow_soft_restarts": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "curious"
+        },
+        "unsafe_claim_context": false,
+        "imperfections": [
+          {
+            "imperfection_id": "de-freeform:controlled_imperfection",
+            "imperfection_type": "soft_restart",
+            "segment_id": "de-freeform",
+            "language": "de",
+            "visible": true,
+            "marker_text": "Ich sage es so,",
+            "placement": "sentence_boundary",
+            "pause_ms": 134,
+            "safety_note": "Eligible freeform speech only; does not change protected campaign text or regulated claims."
+          }
+        ],
+        "imperfection_count": 1,
+        "output_segments": [
+          {
+            "segment_id": "de-freeform",
+            "segment_type": "freeform_explanation",
+            "source": "agent_freeform",
+            "text_before": "Ich halte es kurz. Wir klaeren nur, ob der naechste Schritt fuer Sie relevant ist, bevor jemand mehr Zeit investiert.",
+            "text_after": "Ich halte es kurz. Ich sage es so, wir klaeren nur, ob der naechste Schritt fuer Sie relevant ist, bevor jemand mehr Zeit investiert.",
+            "eligible": true,
+            "protection_reason": null,
+            "imperfections": [
+              {
+                "imperfection_id": "de-freeform:controlled_imperfection",
+                "imperfection_type": "soft_restart",
+                "segment_id": "de-freeform",
+                "language": "de",
+                "visible": true,
+                "marker_text": "Ich sage es so,",
+                "placement": "sentence_boundary",
+                "pause_ms": 134,
+                "safety_note": "Eligible freeform speech only; does not change protected campaign text or regulated claims."
+              }
+            ]
+          }
+        ],
+        "tts_text": "Ich halte es kurz. Ich sage es so, wir klaeren nur, ob der naechste Schritt fuer Sie relevant ist, bevor jemand mehr Zeit investiert.",
+        "evaluation_rubric": {
+          "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+          "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+          "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+          "placement": "Does the imperfection occur at a sentence or thought boundary?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_imperfection_violations": [],
+          "language_mismatched_imperfections": [],
+          "unsafe_visible_imperfections": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-028-de-protected-question",
+      "case_title": "German protected campaign question receives no imperfection",
+      "campaign_id": "voice-028-de-generic-sales",
+      "language": "de",
+      "speech_imperfections": {
+        "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_imperfections_per_response": 1,
+          "min_chars_for_imperfection": 60,
+          "allow_clarifying_rephrases": true,
+          "allow_breath_pauses": true,
+          "allow_soft_restarts": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "neutral"
+        },
+        "unsafe_claim_context": false,
+        "imperfections": [],
+        "imperfection_count": 0,
+        "output_segments": [
+          {
+            "segment_id": "de-protected-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text_before": "Darf ich Ihnen zuerst eine kurze Frage stellen?",
+            "text_after": "Darf ich Ihnen zuerst eine kurze Frage stellen?",
+            "eligible": false,
+            "protection_reason": "matches_campaign_qualification_question",
+            "imperfections": []
+          }
+        ],
+        "tts_text": "Darf ich Ihnen zuerst eine kurze Frage stellen?",
+        "evaluation_rubric": {
+          "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+          "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+          "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+          "placement": "Does the imperfection occur at a sentence or thought boundary?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_imperfection_violations": [],
+          "language_mismatched_imperfections": [],
+          "unsafe_visible_imperfections": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-028-en-unsafe-suppression",
+      "case_title": "English unsafe-claim context suppresses visible imperfections",
+      "campaign_id": "voice-028-en-generic-sales",
+      "language": "en",
+      "speech_imperfections": {
+        "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_imperfections_per_response": 1,
+          "min_chars_for_imperfection": 60,
+          "allow_clarifying_rephrases": true,
+          "allow_breath_pauses": true,
+          "allow_soft_restarts": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "skeptical",
+          "unsafe_claim_present": true,
+          "customer_claim": "So this is guaranteed to save me money, right?"
+        },
+        "unsafe_claim_context": true,
+        "imperfections": [],
+        "imperfection_count": 0,
+        "output_segments": [
+          {
+            "segment_id": "en-unsafe",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text_before": "I can explain the limits clearly. The useful thing is to compare fit without promising a result.",
+            "text_after": "I can explain the limits clearly. The useful thing is to compare fit without promising a result.",
+            "eligible": true,
+            "protection_reason": null,
+            "imperfections": []
+          }
+        ],
+        "tts_text": "I can explain the limits clearly. The useful thing is to compare fit without promising a result.",
+        "evaluation_rubric": {
+          "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+          "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+          "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+          "placement": "Does the imperfection occur at a sentence or thought boundary?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_imperfection_violations": [],
+          "language_mismatched_imperfections": [],
+          "unsafe_visible_imperfections": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-028-en-stop-suppression",
+      "case_title": "English stop intent suppresses imperfections",
+      "campaign_id": "voice-028-en-generic-sales",
+      "language": "en",
+      "speech_imperfections": {
+        "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_imperfections_per_response": 1,
+          "min_chars_for_imperfection": 60,
+          "allow_clarifying_rephrases": true,
+          "allow_breath_pauses": true,
+          "allow_soft_restarts": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "angry",
+          "stop_intent": true,
+          "customer_phrase": "Stop calling me."
+        },
+        "unsafe_claim_context": false,
+        "imperfections": [],
+        "imperfection_count": 0,
+        "output_segments": [
+          {
+            "segment_id": "en-stop",
+            "segment_type": "freeform_closing",
+            "source": "agent_freeform",
+            "text_before": "I will stop the call here and respect that.",
+            "text_after": "I will stop the call here and respect that.",
+            "eligible": true,
+            "protection_reason": null,
+            "imperfections": []
+          }
+        ],
+        "tts_text": "I will stop the call here and respect that.",
+        "evaluation_rubric": {
+          "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+          "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+          "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+          "placement": "Does the imperfection occur at a sentence or thought boundary?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_imperfection_violations": [],
+          "language_mismatched_imperfections": [],
+          "unsafe_visible_imperfections": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    }
+  ],
+  "summary": {
+    "case_count": 5,
+    "languages": {
+      "en": 3,
+      "de": 2
+    },
+    "imperfection_count": 2,
+    "imperfection_types": {
+      "clarifying_rephrase": 1,
+      "soft_restart": 1
+    },
+    "validation_passed": 5,
+    "validation_failed": 0,
+    "protected_segment_change_count": 0,
+    "unsafe_visible_imperfection_count": 0,
+    "provider_calls_made": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  }
+}

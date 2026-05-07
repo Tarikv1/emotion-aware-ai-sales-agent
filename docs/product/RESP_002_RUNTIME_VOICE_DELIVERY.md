@@ -34,8 +34,20 @@ The output keeps all RESP-001 fields and adds:
 runtime_voice_delivery_id
 voice_delivery.segments
 voice_delivery.spoken_segments
+voice_delivery.realistic_segments
+voice_delivery.interaction_segments
+voice_delivery.imperfect_segments
 voice_delivery.spoken_text_normalization
+voice_delivery.speech_realism
+voice_delivery.speech_interaction
+voice_delivery.speech_imperfections
 voice_delivery.prosody
+voice_delivery.voice_pacing_calibration
+voice_delivery.voice_connected_speech
+voice_delivery.voice_listening_calibration
+voice_delivery.voice_emotion_smoothing
+voice_delivery.voice_semantic_emphasis
+voice_delivery.voice_low_pressure_focus
 voice_delivery.provider_rendering
 voice_delivery.validation
 ```
@@ -56,7 +68,7 @@ Eligible for prosody:
 - freeform empathy
 - freeform explanations
 
-Eligible freeform text may also receive spoken-text normalization before prosody. This lets `I will` become `I'll` in English or `Ich habe` become `Ich hab` in German for provider-facing TTS text.
+Eligible freeform text may also receive spoken-text normalization, speech-realism/filler placement, interaction-prosody shaping, opt-in controlled imperfections, provider prosody, `VOICE-034` pacing calibration, `VOICE-035` connected speech, `VOICE-036` listening calibration, `VOICE-037` emotion-transition smoothing, `VOICE-039` semantic-emphasis wording candidates, and `VOICE-040` low-pressure focus correction before live TTS. This lets `I will` become `I'll` in English or `Ich habe` become `Ich hab` in German for provider-facing TTS text, while allowing bounded lookup acknowledgements, neutral backchannels, pace cues, professional sentence-boundary imperfections, tighter provider break/speed settings, connected phrase flow, weak-emphasis filtering, smoother emotional inertia, one controlled English clear/simple wording candidate, and one low-pressure phrase correction only where safe.
 
 Protected from prosody:
 
@@ -110,12 +122,26 @@ Result:
 provider preview: elevenlabs
 final_response_unchanged: true
 spoken_text_normalization validation: true
+speech_interaction validation: true
+speech_imperfections validation: true
+voice pacing calibration validation: true
+voice connected speech validation: true
+voice listening calibration validation: true
+voice emotion smoothing validation: true
+voice semantic emphasis validation: true
+voice low-pressure focus validation: true
 provider_calls_made: false
 requires_api_key: false
 customer_audio_uploaded: false
 voice_cloning_used: false
 validation passed: true
 prosody cues: 2
+VOICE-034 pacing calibrated: true
+VOICE-035 connected speech applied: true
+VOICE-036 listening calibration applied: true
+VOICE-037 emotion smoothing applied: true
+VOICE-039 semantic emphasis rewrites: 0 for the default German turn
+VOICE-040 low-pressure focus rewrites: 0 for the default German turn
 provider tags in protected segments: 0
 ```
 
@@ -127,5 +153,5 @@ This keeps the architecture clean:
 
 - policy decides what can be said
 - RESP-001 decides guarded wording
-- RESP-002 decides how the approved wording should be spoken and delivered by voice
+- RESP-002 decides how the approved wording should be spoken and delivered by voice, including spoken normalization, bounded speech realism, interaction prosody, opt-in controlled imperfections, provider preview rendering, pacing calibration, connected speech, listening calibration, emotion-transition smoothing, controlled semantic-emphasis candidates, and low-pressure focus corrections
 - live TTS remains a separate explicit provider step

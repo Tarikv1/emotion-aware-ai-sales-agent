@@ -1,0 +1,176 @@
+{
+  "voice_milestone": "VOICE-026",
+  "experiment_scope": "Offline interaction-prosody layer for bilingual sales voice delivery.",
+  "campaigns": [
+    {
+      "campaign_id": "voice-026-en-generic-sales",
+      "client_name": "Synthetic English Sales Client",
+      "product_name": "Generic appointment-based sales offer",
+      "product_category": "vertical-agnostic-sales",
+      "customer_type": "b2c",
+      "language": "en",
+      "approved_opening": "Hello, this is a short call.",
+      "qualification_questions": [
+        "Can I ask one quick question first?"
+      ],
+      "required_disclosures": [
+        "This call is a product information call."
+      ],
+      "speech_interaction": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_markers_per_response": 2,
+        "allow_backchannels": true,
+        "allow_latency_acknowledgement": true,
+        "allow_sales_pace_variation": true
+      }
+    },
+    {
+      "campaign_id": "voice-026-de-generic-sales",
+      "client_name": "Synthetic German Sales Client",
+      "product_name": "Generic appointment-based sales offer",
+      "product_category": "vertical-agnostic-sales",
+      "customer_type": "b2c",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich fasse mich kurz.",
+      "qualification_questions": [
+        "Darf ich Ihnen zuerst eine kurze Frage stellen?"
+      ],
+      "required_disclosures": [
+        "Dies ist ein Produktinformationsgespraech."
+      ],
+      "speech_interaction": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_markers_per_response": 2,
+        "allow_backchannels": true,
+        "allow_latency_acknowledgement": true,
+        "allow_sales_pace_variation": true
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "voice-026-en-lookup-ack",
+      "case_title": "English lookup acknowledgement before a slower answer",
+      "campaign_id": "voice-026-en-generic-sales",
+      "language": "en",
+      "customer_state": {
+        "emotion": "curious",
+        "requires_lookup": true,
+        "processing_expected_ms": 1600
+      },
+      "segments": [
+        {
+          "segment_id": "en-lookup-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-026-de-lookup-ack",
+      "case_title": "German lookup acknowledgement before a slower answer",
+      "campaign_id": "voice-026-de-generic-sales",
+      "language": "de",
+      "customer_state": {
+        "emotion": "curious",
+        "requires_lookup": true,
+        "processing_expected_ms": 1600
+      },
+      "segments": [
+        {
+          "segment_id": "de-lookup-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "Der naechste Schritt ist kurz: Wir klaeren nur, ob das Angebot fuer Sie ueberhaupt relevant ist.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-026-en-unsafe-agreement-guard",
+      "case_title": "English avoids agreement backchannels around unsafe customer claims",
+      "campaign_id": "voice-026-en-generic-sales",
+      "language": "en",
+      "customer_state": {
+        "emotion": "skeptical",
+        "unsafe_claim_present": true,
+        "customer_claim": "So this is guaranteed to save me money, right?"
+      },
+      "segments": [
+        {
+          "segment_id": "en-unsafe-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "I can explain the limits clearly. The useful thing is to compare the fit without promising a result.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-026-de-unsafe-agreement-guard",
+      "case_title": "German avoids agreement backchannels around unsafe customer claims",
+      "campaign_id": "voice-026-de-generic-sales",
+      "language": "de",
+      "customer_state": {
+        "emotion": "skeptical",
+        "unsafe_claim_present": true,
+        "customer_claim": "Dann ist mir die Auszahlung garantiert, oder?"
+      },
+      "segments": [
+        {
+          "segment_id": "de-unsafe-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "Ich kann die Grenzen klar einordnen. Sinnvoll ist nur zu pruefen, ob ein Gespraech mit einer Fachperson passt.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-026-de-protected-question",
+      "case_title": "German protected campaign question receives no marker",
+      "campaign_id": "voice-026-de-generic-sales",
+      "language": "de",
+      "customer_state": {
+        "emotion": "neutral"
+      },
+      "segments": [
+        {
+          "segment_id": "de-protected-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Darf ich Ihnen zuerst eine kurze Frage stellen?"
+        }
+      ]
+    },
+    {
+      "case_id": "voice-026-en-stop-suppression",
+      "case_title": "English stop intent suppresses interaction markers",
+      "campaign_id": "voice-026-en-generic-sales",
+      "language": "en",
+      "customer_state": {
+        "emotion": "angry",
+        "stop_intent": true,
+        "customer_phrase": "Stop calling me."
+      },
+      "segments": [
+        {
+          "segment_id": "en-stop-freeform",
+          "segment_type": "freeform_closing",
+          "source": "agent_freeform",
+          "text": "I will stop the call here and respect that.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true
+        }
+      ]
+    }
+  ]
+}

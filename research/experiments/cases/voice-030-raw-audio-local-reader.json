@@ -1,0 +1,49 @@
+{
+  "voice_milestone": "VOICE-030A",
+  "experiment_scope": "Local-only raw WAV audio reader for acoustic speech-pattern features without transcription or provider calls.",
+  "private_workspace": {
+    "private_root": "data/private/tarik-speech-samples",
+    "raw_audio_dir": "data/private/tarik-speech-samples/raw-audio",
+    "derived_dir": "data/private/tarik-speech-samples/derived"
+  },
+  "audio_analysis": {
+    "frame_ms": 20,
+    "silence_threshold": 0.025,
+    "min_pause_ms": 180
+  },
+  "synthetic_audio_fixtures": [
+    {
+      "sample_id": "voice-030a-synthetic-en-paused",
+      "language": "en",
+      "sample_rate_hz": 16000,
+      "segments": [
+        {"kind": "tone", "duration_ms": 520, "amplitude": 0.35, "frequency_hz": 220},
+        {"kind": "silence", "duration_ms": 260},
+        {"kind": "tone", "duration_ms": 760, "amplitude": 0.32, "frequency_hz": 240},
+        {"kind": "silence", "duration_ms": 420},
+        {"kind": "tone", "duration_ms": 480, "amplitude": 0.30, "frequency_hz": 210}
+      ]
+    },
+    {
+      "sample_id": "voice-030a-synthetic-de-shorter-pauses",
+      "language": "de",
+      "sample_rate_hz": 16000,
+      "segments": [
+        {"kind": "tone", "duration_ms": 640, "amplitude": 0.33, "frequency_hz": 200},
+        {"kind": "silence", "duration_ms": 220},
+        {"kind": "tone", "duration_ms": 700, "amplitude": 0.31, "frequency_hz": 230},
+        {"kind": "silence", "duration_ms": 240},
+        {"kind": "tone", "duration_ms": 560, "amplitude": 0.29, "frequency_hz": 215}
+      ]
+    }
+  ],
+  "privacy_boundary": {
+    "raw_audio_read_requires_explicit_run": true,
+    "private_audio_requires_allow_private_read": true,
+    "private_input_output_must_stay_private": true,
+    "provider_calls_allowed": false,
+    "transcription_enabled": false,
+    "voice_cloning_allowed": false,
+    "runtime_use_requires_human_review": true
+  }
+}

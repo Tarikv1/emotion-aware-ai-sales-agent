@@ -38,9 +38,14 @@ DEFAULT_PROFILE = {
 }
 
 FILLERS_BY_LANGUAGE = {
-    "en": ["um", "uh", "hm"],
-    # Keep German runtime fillers provider-readable until live tests prove umlaut forms are better.
-    "de": ["hm", "also"],
+    "en": {
+        "pre_thinking_sentence": ["well", "um", "so", "uh"],
+        "sentence_boundary": ["um", "well", "so"],
+    },
+    "de": {
+        "pre_thinking_sentence": ["also", "ähm", "hm", "äh"],
+        "sentence_boundary": ["ähm", "also", "äh"],
+    },
 }
 
 THINKING_PATTERNS = {
@@ -139,49 +144,102 @@ def bundle_quota(profile: dict[str, Any], eligible_segments: list[dict[str, Any]
     return min(max_bundles, desired, len(eligible_segments))
 
 
-def select_filler(language: str, seed: str, inserted_count: int) -> str:
+GERMAN_WORDS_TO_LOWER_AFTER_MARKER = {
+    "Aber",
+    "Also",
+    "Dann",
+    "Das",
+    "Der",
+    "Die",
+    "Hier",
+    "Ich",
+    "Und",
+    "Was",
+    "Wenn",
+    "Wichtig",
+    "Wir",
+}
+
+
+def select_filler(language: str, seed: str, inserted_count: int, placement: str) -> str:
     language = normalize_language(language)
-    pool = FILLERS_BY_LANGUAGE[language]
-    return pool[stable_index(f"{seed}:filler:{inserted_count}", len(pool))]
+    pools = FILLERS_BY_LANGUAGE[language]
+    pool = pools.get(placement) or pools["sentence_boundary"]
+    return pool[stable_index(f"{seed}:filler:{placement}:{inserted_count}", len(pool))]
 
 
-def insert_filler_after_pattern(text: str, pattern: str, filler: str) -> str | None:
+def capitalized_marker(marker: str) -> str:
+    return marker[:1].upper() + marker[1:] if marker else marker
+
+
+def lower_after_marker(text: str, language: str) -> str:
+    if not text:
+        return text
+
+    language = normalize_language(language)
+    if language == "en":
+        first_word = re.match(r"([A-Z][a-z]+)\b", text)
+        if first_word and first_word.group(1) != "I":
+            return text[:1].lower() + text[1:]
+        return text
+
+    for word in GERMAN_WORDS_TO_LOWER_AFTER_MARKER:
+        if text == word or text.startswith(f"{word} ") or text.startswith(f"{word},"):
+            return word.lower() + text[len(word) :]
+    return text
+
+
+def sentence_start_before(text: str, index: int) -> int:
+    sentence_boundaries = list(re.finditer(r"[.!?]\s+", text[:index]))
+    if not sentence_boundaries:
+        return 0
+    return sentence_boundaries[-1].end()
+
+
+def insert_filler_at_boundary(text: str, boundary_start: int, filler: str, language: str) -> str | None:
+    prefix = text[:boundary_start].rstrip()
+    suffix = text[boundary_start:].lstrip()
+    if not suffix:
+        return None
+    marker = capitalized_marker(filler)
+    suffix = lower_after_marker(suffix, language)
+    separator = " " if prefix else ""
+    return f"{prefix}{separator}{marker}, {suffix}"
+
+
+def insert_filler_before_pattern_sentence(text: str, pattern: str, filler: str, language: str) -> str | None:
     match = re.search(pattern, text, re.IGNORECASE)
     if match is None:
         return None
-    prefix = text[: match.end()].rstrip()
-    suffix = text[match.end() :].lstrip()
-    if suffix.startswith(","):
-        suffix = suffix[1:].lstrip()
-    return f"{prefix}, {filler}, {suffix}"
+    boundary_start = sentence_start_before(text, match.start())
+    return insert_filler_at_boundary(text, boundary_start, filler, language)
 
 
-def insert_fallback_filler(text: str, filler: str) -> str:
+def insert_fallback_filler(text: str, filler: str, language: str) -> str:
     sentence_boundary = re.search(r"([.!?])\s+", text)
     if sentence_boundary is not None and sentence_boundary.end() < len(text):
-        prefix = text[: sentence_boundary.end()].strip()
-        suffix = text[sentence_boundary.end() :].lstrip()
-        sentence_filler = filler[:1].upper() + filler[1:] if filler else filler
-        return f"{prefix} {sentence_filler}, {suffix}"
+        candidate = insert_filler_at_boundary(text, sentence_boundary.end(), filler, language)
+        return candidate if candidate is not None else text
 
-    words = text.split()
-    if len(words) < 10:
-        return text
-    insert_at = min(max(6, len(words) // 3), 11)
-    before = words[:insert_at]
-    after = words[insert_at:]
-    if before and not before[-1].endswith((",", ";", ":")):
-        before[-1] = f"{before[-1]},"
-    return " ".join(before + [f"{filler},"] + after)
+    return text
 
 
-def insert_thinking_filler(text: str, filler: str, language: str) -> tuple[str, str]:
-    for pattern in THINKING_PATTERNS[normalize_language(language)]:
-        candidate = insert_filler_after_pattern(text, pattern, filler)
+def insert_thinking_filler(text: str, language: str, seed: str, inserted_count: int) -> tuple[str, str, str, str]:
+    language = normalize_language(language)
+    filler = select_filler(language, seed, inserted_count, "pre_thinking_sentence")
+    for pattern in THINKING_PATTERNS[language]:
+        candidate = insert_filler_before_pattern_sentence(text, pattern, filler, language)
         if candidate and candidate != text:
-            return candidate, "after_thinking_phrase"
-    candidate = insert_fallback_filler(text, filler)
-    return candidate, "fallback_mid_utterance" if candidate != text else "not_inserted"
+            return candidate, "pre_thinking_sentence", filler, "pre_thinking_sentence"
+
+    filler = select_filler(language, seed, inserted_count, "sentence_boundary")
+    candidate = insert_fallback_filler(text, filler, language)
+    return (
+        candidate,
+        "sentence_boundary" if candidate != text else "not_inserted",
+        filler,
+        "sentence_boundary" if candidate != text else "not_inserted",
+    )
 
 
 def build_thinking_bundle(
@@ -190,8 +248,9 @@ def build_thinking_bundle(
     seed: str,
     inserted_count: int,
     profile: dict[str, Any],
+    filler: str,
+    position: str,
 ) -> dict[str, Any]:
-    filler = select_filler(language, seed, inserted_count)
     pause_low, pause_high = profile.get("pause_ms_ranges", {}).get("thinking", [150, 260])
     rate_low, rate_high = profile.get("rate_ranges", {}).get("follow_through", [1.04, 1.12])
     return {
@@ -200,7 +259,7 @@ def build_thinking_bundle(
         "segment_id": segment.get("segment_id"),
         "segment_type": segment.get("segment_type"),
         "filler": filler,
-        "position": "mid_utterance",
+        "position": position,
         "pause_ms": stable_range_int(f"{seed}:pause:{inserted_count}", int(pause_low), int(pause_high)),
         "pitch_intent": "slight-rise",
         "rate_after": stable_range_float(f"{seed}:rate:{inserted_count}", float(rate_low), float(rate_high)),
@@ -213,7 +272,7 @@ def contains_language_mismatched_filler(text: str, language: str) -> bool:
     normalized = f" {normalize_text(text)} "
     if normalize_language(language) == "de":
         return any(fragment in normalized for fragment in [" uh ", " you know ", " like "])
-    return any(fragment in normalized for fragment in [" aehm ", " aeh "])
+    return any(fragment in normalized for fragment in [" ähm ", " äh ", " aehm ", " aeh ", " naja "])
 
 
 def validate_output_segments(
@@ -322,9 +381,22 @@ def apply_speech_realism(
             and profile.get("allow_thinking_fillers", True)
         ):
             segment_seed = f"{seed}:{segment['_index']}:{segment.get('segment_id')}:{text_before}"
-            bundle = build_thinking_bundle(segment, language, segment_seed, inserted_count, profile)
-            candidate, insertion_strategy = insert_thinking_filler(text_before, bundle["filler"], language)
+            candidate, insertion_strategy, filler, position = insert_thinking_filler(
+                text_before,
+                language,
+                segment_seed,
+                inserted_count,
+            )
             if candidate != text_before:
+                bundle = build_thinking_bundle(
+                    segment,
+                    language,
+                    segment_seed,
+                    inserted_count,
+                    profile,
+                    filler,
+                    position,
+                )
                 bundle["insertion_strategy"] = insertion_strategy
                 text_after = candidate
                 segment_bundles.append(bundle)

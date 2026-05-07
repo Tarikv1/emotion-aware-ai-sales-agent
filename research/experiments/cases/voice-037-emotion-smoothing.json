@@ -1,0 +1,49 @@
+{
+  "experiment_scope": "VOICE-037 emotion transition smoothing for provider-facing voice delivery.",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "provider": "elevenlabs",
+  "emotion_smoothing_policy": {
+    "goal": "Prevent abrupt emotional jumps in the spoken voice while preserving the guarded response and campaign text.",
+    "allowed_changes": [
+      "increase provider stability inside a bounded range when sharp transition signals are detected",
+      "cap provider style/exaggeration when over-emotional cues are detected",
+      "record detected and smoothed transition evidence"
+    ],
+    "forbidden_changes": [
+      "changing final_response",
+      "changing rendered spoken words",
+      "changing protected campaign questions, disclosures, handoff, hangup, or do-not-call text",
+      "changing speed while smoothing emotion",
+      "calling a provider",
+      "uploading customer or private audio",
+      "voice cloning"
+    ]
+  },
+  "runtime_cases": [
+    {
+      "case_id": "voice-037-en-emotional-inertia",
+      "case_title": "English freeform delivery smooths sharp confidence-to-low pitch transitions",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "That sounds expensive.",
+      "candidate_response": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+      "expected_emotion_smoothing": "transition-smoothed"
+    },
+    {
+      "case_id": "voice-037-de-emotional-inertia",
+      "case_title": "German freeform delivery keeps VOICE-036 relaxation and smooths emotional jumps",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "expected_emotion_smoothing": "transition-smoothed"
+    },
+    {
+      "case_id": "voice-037-protected-do-not-call",
+      "case_title": "Protected do-not-call text receives no emotion smoothing",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "expected_emotion_smoothing": "protected-unchanged"
+    }
+  ]
+}

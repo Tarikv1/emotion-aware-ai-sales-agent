@@ -1,0 +1,2249 @@
+{
+  "voice_milestone": "VOICE-027",
+  "experiment_scope": "Live-capable A/B listening harness for isolating the audible impact of VOICE-026 interaction prosody. The same improved English or German ElevenLabs custom voice is used for both variants. Both variants keep VOICE-022 spoken normalization and VOICE-023/025 speech realism enabled; only VOICE-026 interaction-prosody changes.",
+  "case_file": "research\\experiments\\cases\\voice-027-interaction-prosody-live-ab.json",
+  "output_run_dir": "research\\experiments\\generated\\VOICE-027-interaction-prosody-live-ab",
+  "provider": {
+    "provider_key": "elevenlabs",
+    "provider_name": "ElevenLabs",
+    "provider_rendering_mode": "break_tags_and_request_settings",
+    "model_id": "eleven_flash_v2_5",
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "audio_extension": "mp3",
+    "default_output_format": "mp3_44100_128",
+    "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+    "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "de": "ELEVENLABS_VOICE_ID_DE",
+      "en": "ELEVENLABS_VOICE_ID_EN"
+    },
+    "supported_cues": [
+      "pause",
+      "rate",
+      "stretch"
+    ],
+    "unsupported_cues": [
+      "pitch",
+      "emphasis"
+    ],
+    "base_voice_settings": {
+      "stability": 0.36,
+      "similarity_boost": 0.78,
+      "style": 0.3,
+      "use_speaker_boost": true,
+      "speed": 1.08
+    },
+    "enable_logging": false,
+    "provider_id": "elevenlabs-stream",
+    "endpoint_type": "tts-http-stream"
+  },
+  "voice_candidates": [
+    {
+      "candidate_id": "english_v2_improved",
+      "language": "en",
+      "version": "v2_improved",
+      "label": "English v2 improved sales voice",
+      "local_voice_config_key": "elevenlabs.candidates.english_v2_improved",
+      "fallback_voice_config_key": "elevenlabs.en"
+    },
+    {
+      "candidate_id": "german_v2_improved",
+      "language": "de",
+      "version": "v2_improved",
+      "label": "German v2 improved sales voice",
+      "local_voice_config_key": "elevenlabs.candidates.german_v2_improved",
+      "fallback_voice_config_key": "elevenlabs.de"
+    }
+  ],
+  "variants": [
+    {
+      "variant_id": "voice_025_baseline",
+      "label": "VOICE-025 baseline without VOICE-026 interaction prosody",
+      "speech_realism_enabled": true,
+      "speech_interaction_enabled": false,
+      "expected_role": "current boundary-aware filler-placement baseline without lookup acknowledgements or backchannels"
+    },
+    {
+      "variant_id": "with_voice_026",
+      "label": "With VOICE-026 interaction prosody",
+      "speech_realism_enabled": true,
+      "speech_interaction_enabled": true,
+      "expected_role": "same voice and script with lookup acknowledgements, neutral backchannels, and bounded sales pace cues enabled"
+    }
+  ],
+  "campaigns": [
+    {
+      "campaign_id": "campaign-voice-027-en-generic-sales",
+      "client_name": "Synthetic Generic Sales Team",
+      "product_name": "Specialist callback qualification",
+      "product_category": "vertical-agnostic-sales",
+      "customer_type": "b2b_or_b2c",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hi, I am calling with a quick follow-up. Do you have a minute?",
+      "qualification_questions": [
+        "Would a short specialist callback be useful?",
+        "Is timing, price, or fit the main concern?"
+      ],
+      "required_disclosures": [
+        "A specialist must verify product-specific details."
+      ],
+      "spoken_text_normalization": {
+        "enabled": true,
+        "style": "professional-spoken",
+        "english_contractions": true,
+        "max_rewrites_per_response": 4
+      },
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 1,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      },
+      "speech_interaction": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_markers_per_response": 2,
+        "allow_backchannels": true,
+        "allow_latency_acknowledgement": true,
+        "allow_sales_pace_variation": true
+      },
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 5,
+        "max_stretches_per_response": 1,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-027-de-safe-sales",
+      "client_name": "Synthetic German Call Center",
+      "product_name": "Safe specialist callback qualification",
+      "product_category": "regulated-or-sensitive-sales",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Information an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Duerfen wir einen kurzen Rueckruf durch einen Fachberater vormerken?",
+        "Ist fuer Sie eher Zeitpunkt, Beitrag oder ein unverbindlicher Rueckruf wichtig?"
+      ],
+      "required_disclosures": [
+        "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+      ],
+      "spoken_text_normalization": {
+        "enabled": true,
+        "style": "professional-spoken",
+        "german_spoken_forms": true,
+        "max_rewrites_per_response": 4
+      },
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human-german",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 1,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      },
+      "speech_interaction": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_markers_per_response": 2,
+        "allow_backchannels": true,
+        "allow_latency_acknowledgement": true,
+        "allow_sales_pace_variation": true
+      },
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 5,
+        "max_stretches_per_response": 1,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true
+      }
+    }
+  ],
+  "listening_scripts": [
+    {
+      "script_id": "en-lookup-latency",
+      "language": "en",
+      "campaign_id": "campaign-voice-027-en-generic-sales",
+      "script_title": "English lookup acknowledgement and forward motion",
+      "text_source": "synthetic sales-agent freeform response",
+      "customer_context": {
+        "emotion": "curious",
+        "requires_lookup": true,
+        "processing_expected_ms": 1600,
+        "sales_difficulty": "product-detail-lookup"
+      },
+      "segments": [
+        {
+          "segment_id": "en-lookup-freeform",
+          "segment_type": "freeform_bridge",
+          "source": "agent_freeform",
+          "text": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+          "allow_spoken_text_normalization": true,
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true,
+          "allow_prosody": true,
+          "allow_fillers": true,
+          "pause_after": "I'll keep this brief.",
+          "rate_target": "we check whether",
+          "rate_mode": "quick",
+          "stretch_targets": [
+            "brief"
+          ],
+          "emphasis_targets": [
+            "simple",
+            "relevant"
+          ],
+          "pitch_direction": "warm-soft"
+        }
+      ]
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "max_timeout_seconds": 10,
+    "api_key_location": "environment-only",
+    "voice_id_location": "ignored config/local/voice_ids.json or explicit environment override",
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "private_audio_used": false,
+    "voice_cloning_used": false,
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including raw voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using private call-center audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "first-five-seconds robot sensor",
+      "naturalness",
+      "trust",
+      "confidence",
+      "warmth",
+      "sales-call pacing",
+      "pace variation",
+      "thinking-time realism",
+      "backchannel placement",
+      "latency-acknowledgement usefulness",
+      "unsafe-agreement safety",
+      "pitch variation",
+      "emotional responsiveness",
+      "clarity",
+      "language pronunciation",
+      "low muffling or artifacts",
+      "sales usefulness",
+      "voice_025_baseline vs with_voice_026 preference",
+      "would use with real leads"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  },
+  "expected": {
+    "script_count": 4,
+    "variant_count": 2,
+    "dry_run_result_count": 8,
+    "languages": [
+      "de",
+      "en"
+    ],
+    "provider_calls_made_by_default": false,
+    "raw_voice_ids_in_artifacts": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "private_audio_used": false,
+    "with_voice_026_min_marker_count_per_script": 1,
+    "voice_025_baseline_marker_count_per_script": 0
+  },
+  "summary": {
+    "script_count": 1,
+    "variant_count": 2,
+    "result_count": 2,
+    "languages": {
+      "en": 2
+    },
+    "live_call_requested": false,
+    "api_calls_made": 0,
+    "audio_files_created": 0,
+    "fallback_count": 2,
+    "customer_audio_uploaded": false,
+    "private_audio_used": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "raw_voice_ids_logged": false,
+    "timeout_seconds": 8.0,
+    "speech_interaction_marker_types": {
+      "latency_acknowledgement": 1,
+      "sales_pace_variation": 1
+    },
+    "with_voice_026_marker_count": 2,
+    "voice_025_baseline_marker_count": 0,
+    "speech_realism_bundle_count": 2,
+    "unsafe_agreement_marker_count": 0,
+    "protected_segment_change_count": 0,
+    "provider_rendering_failed_count": 0,
+    "human_ratings_recorded": false,
+    "quality_claim_allowed": false,
+    "max_time_to_first_audio_ms": null,
+    "max_total_provider_latency_ms": 0
+  },
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "api_key_location": "environment-only",
+    "voice_id_location": "ignored local config or explicit environment override",
+    "raw_voice_ids_logged": false,
+    "customer_audio_uploaded": false,
+    "private_audio_used": false,
+    "voice_cloning_used": false,
+    "quality_claim_allowed_without_human_rating": false
+  },
+  "results": [
+    {
+      "voice_milestone": "VOICE-027",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "english_v2_improved",
+      "voice_candidate_label": "English v2 improved sales voice",
+      "voice_candidate_version": "v2_improved",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.english_v2_improved",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "en-lookup-latency",
+      "script_title": "English lookup acknowledgement and forward motion",
+      "campaign_id": "campaign-voice-027-en-generic-sales",
+      "language": "en",
+      "variant_id": "voice_025_baseline",
+      "variant_label": "VOICE-025 baseline without VOICE-026 interaction prosody",
+      "speech_realism_enabled": true,
+      "speech_interaction_enabled": false,
+      "speech_realism_bundle_count": 1,
+      "speech_interaction_marker_count": 0,
+      "speech_interaction_marker_types": {},
+      "spoken_text_normalization_count": 1,
+      "prosody_cue_count": 5,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 1
+      },
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": false,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": false,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "I'll keep this brief.... <break time=\"0.271s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+      "tts_input_chars": 144,
+      "voice_settings": {
+        "stability": 0.36,
+        "similarity_boost": 0.78,
+        "style": 0.3,
+        "use_speaker_boost": true,
+        "speed": 1.041
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.english_v2_improved>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "I'll keep this brief.... <break time=\"0.271s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.36,
+            "similarity_boost": 0.78,
+            "style": 0.3,
+            "use_speaker_boost": true,
+            "speed": 1.041
+          }
+        }
+      },
+      "audio_filename": "VOICE-027-en-voice_025_baseline-en-lookup-latency.mp3",
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 17,
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "normalization_count": 1,
+        "normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "allow_spoken_text_normalization": true,
+            "allow_speech_realism": true,
+            "allow_interaction_prosody": true,
+            "allow_prosody": true,
+            "allow_fillers": true,
+            "pause_after": "I'll keep this brief.",
+            "rate_target": "we check whether",
+            "rate_mode": "quick",
+            "stretch_targets": [
+              "brief"
+            ],
+            "emphasis_targets": [
+              "simple",
+              "relevant"
+            ],
+            "pitch_direction": "warm-soft"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              }
+            ]
+          }
+        ],
+        "tts_text": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      },
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "en-lookup-freeform:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "filler": "so",
+            "position": "sentence_boundary",
+            "pause_ms": 192,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.118,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "allow_spoken_text_normalization": true,
+            "allow_speech_realism": true,
+            "allow_interaction_prosody": true,
+            "allow_prosody": true,
+            "allow_fillers": true,
+            "pause_after": "I'll keep this brief.",
+            "rate_target": "we check whether",
+            "rate_mode": "quick",
+            "stretch_targets": [
+              "brief"
+            ],
+            "emphasis_targets": [
+              "simple",
+              "relevant"
+            ],
+            "pitch_direction": "warm-soft",
+            "spoken_text_before": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_text_after": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              }
+            ],
+            "eligible_for_spoken_normalization": true,
+            "spoken_protected_reason": null
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "bundles": [
+              {
+                "bundle_id": "en-lookup-freeform:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "filler": "so",
+                "position": "sentence_boundary",
+                "pause_ms": 192,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.118,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "sentence_boundary"
+              }
+            ]
+          }
+        ],
+        "tts_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      },
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "en",
+        "profile": {
+          "enabled": false,
+          "style": "professional-human",
+          "max_markers_per_response": 0,
+          "allow_backchannels": false,
+          "allow_latency_acknowledgement": false,
+          "allow_sales_pace_variation": false,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "curious",
+          "requires_lookup": true,
+          "processing_expected_ms": 1600,
+          "sales_difficulty": "product-detail-lookup"
+        },
+        "unsafe_claim_context": false,
+        "interaction_markers": [],
+        "marker_count": 0,
+        "output_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text_before": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": []
+          }
+        ],
+        "tts_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      },
+      "prosody": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 5,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-027:en-lookup-latency:voice_025_baseline",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "cue_count": 5,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 1
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "allow_spoken_text_normalization": true,
+            "allow_speech_realism": true,
+            "allow_interaction_prosody": true,
+            "allow_prosody": true,
+            "allow_fillers": true,
+            "pause_after": "I'll keep this brief.",
+            "rate_target": "we check whether",
+            "rate_mode": "quick",
+            "stretch_targets": [
+              "brief"
+            ],
+            "emphasis_targets": [
+              "simple",
+              "relevant"
+            ],
+            "pitch_direction": "warm-soft",
+            "spoken_text_before": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_text_after": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              }
+            ],
+            "eligible_for_spoken_normalization": true,
+            "spoken_protected_reason": null,
+            "speech_realism_text_before": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_realism_text_after": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_realism_bundles": [
+              {
+                "bundle_id": "en-lookup-freeform:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "filler": "so",
+                "position": "sentence_boundary",
+                "pause_ms": 192,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.118,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "sentence_boundary"
+              }
+            ],
+            "eligible_for_speech_realism": true,
+            "speech_realism_protected_reason": null,
+            "speech_interaction_text_before": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_interaction_text_after": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_interaction_markers": [],
+            "eligible_for_speech_interaction": true,
+            "speech_interaction_protected_reason": null
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "tts_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "debug_text": "I'll keep this brief.... So, the next step is **simple**: we check whether the offer is relevant, and if not, we stop there.",
+            "cue_count": 5,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "I'll keep this brief.",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.265,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "after": "I'll keep this brief.",
+                "mode": "transition",
+                "duration_ms": 271,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "we check whether",
+                "mode": "quick",
+                "ratio": 1.041,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "simple",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              },
+              {
+                "type": "stretch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "brief",
+                "variant": "brief...",
+                "hold_ms": 262,
+                "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                "cue_id": "cue-05"
+              }
+            ]
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "I'll keep this brief.",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.265,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "after": "I'll keep this brief.",
+            "mode": "transition",
+            "duration_ms": 271,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "we check whether",
+            "mode": "quick",
+            "ratio": 1.041,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "simple",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          },
+          {
+            "type": "stretch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "brief",
+            "variant": "brief...",
+            "hold_ms": 262,
+            "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+            "cue_id": "cue-05"
+          }
+        ],
+        "tts_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "debug_text": "I'll keep this brief.... So, the next step is **simple**: we check whether the offer is relevant, and if not, we stop there.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      },
+      "provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "en-lookup-latency",
+        "plain_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "rendered_text": "I'll keep this brief.... <break time=\"0.271s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "rendered_text_html_preview": "I&#x27;ll keep this brief.... &lt;break time=&quot;0.271s&quot; /&gt; So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "voice_settings": {
+          "stability": 0.36,
+          "similarity_boost": 0.78,
+          "style": 0.3,
+          "use_speaker_boost": true,
+          "speed": 1.041
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "rendered_text": "I'll keep this brief.... <break time=\"0.271s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "provider_tags_inserted": [
+              "<break time=\"0.271s\" />"
+            ],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "after": "I'll keep this brief.",
+                "mode": "transition",
+                "duration_ms": 271,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "we check whether",
+                "mode": "quick",
+                "ratio": 1.041,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03",
+                "rendered_as": "request_voice_settings_speed"
+              },
+              {
+                "type": "stretch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "brief",
+                "variant": "brief...",
+                "hold_ms": 262,
+                "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                "cue_id": "cue-05",
+                "rendered_as": "ellipsis_variant"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "I'll keep this brief.",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.265,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "simple",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04",
+                "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+              }
+            ]
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "after": "I'll keep this brief.",
+            "mode": "transition",
+            "duration_ms": 271,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "we check whether",
+            "mode": "quick",
+            "ratio": 1.041,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03",
+            "rendered_as": "request_voice_settings_speed"
+          },
+          {
+            "type": "stretch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "brief",
+            "variant": "brief...",
+            "hold_ms": 262,
+            "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+            "cue_id": "cue-05",
+            "rendered_as": "ellipsis_variant"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "I'll keep this brief.",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.265,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "simple",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04",
+            "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 1,
+          "stretch": 1
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 1,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 1,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003"
+      },
+      "provider_rendering_validation": {
+        "passed": true,
+        "markdown_in_rendered_text": false,
+        "protected_segment_tags": [],
+        "protected_segment_changes": []
+      },
+      "validation": {
+        "validator": "VOICE-027 A/B voice delivery pipeline check",
+        "passed": true,
+        "spoken_text_normalization_passed": true,
+        "speech_realism_passed": true,
+        "speech_interaction_passed": true,
+        "prosody_passed": true,
+        "provider_rendering_passed": true,
+        "provider_rendering_validation": {
+          "passed": true,
+          "markdown_in_rendered_text": false,
+          "protected_segment_tags": [],
+          "protected_segment_changes": []
+        },
+        "protected_segment_change_count": 0,
+        "unsafe_agreement_marker_count": 0,
+        "notes": "A/B pipeline preserved protected text, avoided unsafe agreement, and rendered provider-safe TTS input."
+      },
+      "api_call_made": false,
+      "fallback_used": true,
+      "fallback_reason": "dry-run-mode",
+      "audio_file_created": false,
+      "audio_output_path": null,
+      "audio_byte_size": 0,
+      "http_status": null,
+      "response_content_type": null,
+      "request_id_present": false,
+      "time_to_first_audio_ms": null,
+      "total_provider_latency_ms": 0,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "voice_milestone": "VOICE-027",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "english_v2_improved",
+      "voice_candidate_label": "English v2 improved sales voice",
+      "voice_candidate_version": "v2_improved",
+      "voice_id_source": "local_voice_ids:elevenlabs.candidates.english_v2_improved",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "en-lookup-latency",
+      "script_title": "English lookup acknowledgement and forward motion",
+      "campaign_id": "campaign-voice-027-en-generic-sales",
+      "language": "en",
+      "variant_id": "with_voice_026",
+      "variant_label": "With VOICE-026 interaction prosody",
+      "speech_realism_enabled": true,
+      "speech_interaction_enabled": true,
+      "speech_realism_bundle_count": 1,
+      "speech_interaction_marker_count": 2,
+      "speech_interaction_marker_types": {
+        "latency_acknowledgement": 1,
+        "sales_pace_variation": 1
+      },
+      "spoken_text_normalization_count": 1,
+      "prosody_cue_count": 5,
+      "prosody_cue_counts": {
+        "emphasis": 1,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 1,
+        "stretch": 1
+      },
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": false,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": false,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "custom_voice_used": true,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "I can check that. I'll keep this brief.... <break time=\"0.312s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+      "tts_input_chars": 162,
+      "voice_settings": {
+        "stability": 0.36,
+        "similarity_boost": 0.78,
+        "style": 0.3,
+        "use_speaker_boost": true,
+        "speed": 1.059
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.candidates.english_v2_improved>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "I can check that. I'll keep this brief.... <break time=\"0.312s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.36,
+            "similarity_boost": 0.78,
+            "style": 0.3,
+            "use_speaker_boost": true,
+            "speed": 1.059
+          }
+        }
+      },
+      "audio_filename": "VOICE-027-en-with_voice_026-en-lookup-latency.mp3",
+      "spoken_text_normalization": {
+        "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-spoken",
+          "english_contractions": true,
+          "german_spoken_forms": true,
+          "max_rewrites_per_response": 4,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "rule_count": 17,
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "normalization_count": 1,
+        "normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll",
+            "language": "en",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge"
+          }
+        ],
+        "input_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "allow_spoken_text_normalization": true,
+            "allow_speech_realism": true,
+            "allow_interaction_prosody": true,
+            "allow_prosody": true,
+            "allow_fillers": true,
+            "pause_after": "I'll keep this brief.",
+            "rate_target": "we check whether",
+            "rate_mode": "quick",
+            "stretch_targets": [
+              "brief"
+            ],
+            "emphasis_targets": [
+              "simple",
+              "relevant"
+            ],
+            "pitch_direction": "warm-soft"
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "eligible_for_spoken_normalization": true,
+            "protected_reason": null,
+            "text_before": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              }
+            ]
+          }
+        ],
+        "tts_text": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "validation": {
+          "validator": "VOICE-022 segment protection and spoken-normalization check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "normalization_in_protected_segments": [],
+          "source_protection_changes": [],
+          "notes": "Spoken-text normalization preserved protected segments and sources."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims or promises"
+          ]
+        }
+      },
+      "speech_realism": {
+        "speech_realism_id": "VOICE-023-speech-realism-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "filler_frequency": "low",
+          "max_bundles_per_response": 1,
+          "allow_thinking_fillers": true,
+          "allow_empathy_acknowledgements": true,
+          "min_chars_for_thinking_bundle": 72,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "thinking": [
+              150,
+              260
+            ],
+            "empathy": [
+              120,
+              220
+            ]
+          },
+          "rate_ranges": {
+            "follow_through": [
+              1.04,
+              1.12
+            ],
+            "empathy": [
+              0.96,
+              1.03
+            ]
+          }
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "bundle_quota": 1,
+        "bundle_count": 1,
+        "speech_bundles": [
+          {
+            "bundle_id": "en-lookup-freeform:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "filler": "so",
+            "position": "sentence_boundary",
+            "pause_ms": 175,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.09,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "customer_state_suppressed": false,
+        "input_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "allow_spoken_text_normalization": true,
+            "allow_speech_realism": true,
+            "allow_interaction_prosody": true,
+            "allow_prosody": true,
+            "allow_fillers": true,
+            "pause_after": "I'll keep this brief.",
+            "rate_target": "we check whether",
+            "rate_mode": "quick",
+            "stretch_targets": [
+              "brief"
+            ],
+            "emphasis_targets": [
+              "simple",
+              "relevant"
+            ],
+            "pitch_direction": "warm-soft",
+            "spoken_text_before": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_text_after": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              }
+            ],
+            "eligible_for_spoken_normalization": true,
+            "spoken_protected_reason": null
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "eligible_for_speech_realism": true,
+            "protected_reason": null,
+            "text_before": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "bundles": [
+              {
+                "bundle_id": "en-lookup-freeform:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "filler": "so",
+                "position": "sentence_boundary",
+                "pause_ms": 175,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.09,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "sentence_boundary"
+              }
+            ]
+          }
+        ],
+        "tts_text": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "validation": {
+          "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "bundle_in_protected_segments": [],
+          "language_mismatch_segments": [],
+          "unsafe_pause_bundles": [],
+          "unsafe_rate_bundles": [],
+          "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+        },
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": {
+          "position": "after spoken text normalization and before prosody/provider rendering",
+          "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing campaign questions",
+            "changing disclosures or compliance statements",
+            "changing call-control lines",
+            "adding claims, promises, or pressure"
+          ]
+        }
+      },
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "curious",
+          "requires_lookup": true,
+          "processing_expected_ms": 1600,
+          "sales_difficulty": "product-detail-lookup"
+        },
+        "unsafe_claim_context": false,
+        "interaction_markers": [
+          {
+            "marker_id": "en-lookup-freeform:latency_acknowledgement",
+            "marker_type": "latency_acknowledgement",
+            "segment_id": "en-lookup-freeform",
+            "language": "en",
+            "visible": true,
+            "marker_text": "I can check that.",
+            "placement": "pre_answer",
+            "pause_ms": 220,
+            "pitch_intent": "warm-steady",
+            "rate_multiplier": 0.98,
+            "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+          },
+          {
+            "marker_id": "en-lookup-freeform:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "en-lookup-freeform",
+            "language": "en",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.064,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "marker_count": 2,
+        "output_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text_before": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": [
+              {
+                "marker_id": "en-lookup-freeform:latency_acknowledgement",
+                "marker_type": "latency_acknowledgement",
+                "segment_id": "en-lookup-freeform",
+                "language": "en",
+                "visible": true,
+                "marker_text": "I can check that.",
+                "placement": "pre_answer",
+                "pause_ms": 220,
+                "pitch_intent": "warm-steady",
+                "rate_multiplier": 0.98,
+                "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+              },
+              {
+                "marker_id": "en-lookup-freeform:sales_pace_variation",
+                "marker_type": "sales_pace_variation",
+                "segment_id": "en-lookup-freeform",
+                "language": "en",
+                "visible": false,
+                "marker_text": "",
+                "placement": "whole_segment",
+                "pause_ms": 0,
+                "pitch_intent": "confident-forward",
+                "rate_multiplier": 1.064,
+                "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+              }
+            ]
+          }
+        ],
+        "tts_text": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      },
+      "prosody": {
+        "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "pause_variation_enabled": true,
+          "rate_variation_enabled": true,
+          "emphasis_enabled": true,
+          "pitch_variation_enabled": true,
+          "stretch_enabled": true,
+          "max_cues_per_response": 5,
+          "max_stretches_per_response": 1,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "pause_ms_ranges": {
+            "clause": [
+              140,
+              260
+            ],
+            "thinking": [
+              180,
+              320
+            ],
+            "transition": [
+              220,
+              380
+            ]
+          },
+          "rate_ranges": {
+            "quick": [
+              1.03,
+              1.08
+            ],
+            "careful": [
+              0.9,
+              0.96
+            ]
+          }
+        },
+        "randomization": {
+          "seeded": true,
+          "seed": "VOICE-027:en-lookup-latency:with_voice_026",
+          "deterministic_for_same_input": true,
+          "dimensions": [
+            "pause duration",
+            "rate ratio",
+            "pitch contour delta",
+            "stretch hold"
+          ]
+        },
+        "segment_count": 1,
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "cue_count": 5,
+        "cue_counts": {
+          "emphasis": 1,
+          "pause": 1,
+          "pitch": 1,
+          "rate": 1,
+          "stretch": 1
+        },
+        "protected_segment_cue_count": 0,
+        "input_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "text": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "allow_spoken_text_normalization": true,
+            "allow_speech_realism": true,
+            "allow_interaction_prosody": true,
+            "allow_prosody": true,
+            "allow_fillers": true,
+            "pause_after": "I'll keep this brief.",
+            "rate_target": "we check whether",
+            "rate_mode": "quick",
+            "stretch_targets": [
+              "brief"
+            ],
+            "emphasis_targets": [
+              "simple",
+              "relevant"
+            ],
+            "pitch_direction": "warm-soft",
+            "spoken_text_before": "I will keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_text_after": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "spoken_normalizations": [
+              {
+                "rule_id": "en-i-will",
+                "before": "I will",
+                "after": "I'll"
+              }
+            ],
+            "eligible_for_spoken_normalization": true,
+            "spoken_protected_reason": null,
+            "speech_realism_text_before": "I'll keep this brief. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_realism_text_after": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_realism_bundles": [
+              {
+                "bundle_id": "en-lookup-freeform:thinking:1",
+                "bundle_type": "thinking_filler",
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "filler": "so",
+                "position": "sentence_boundary",
+                "pause_ms": 175,
+                "pitch_intent": "slight-rise",
+                "rate_after": 1.09,
+                "delivery_intent": "thinking-then-confident-follow-through",
+                "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+                "insertion_strategy": "sentence_boundary"
+              }
+            ],
+            "eligible_for_speech_realism": true,
+            "speech_realism_protected_reason": null,
+            "speech_interaction_text_before": "I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_interaction_text_after": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "speech_interaction_markers": [
+              {
+                "marker_id": "en-lookup-freeform:latency_acknowledgement",
+                "marker_type": "latency_acknowledgement",
+                "segment_id": "en-lookup-freeform",
+                "language": "en",
+                "visible": true,
+                "marker_text": "I can check that.",
+                "placement": "pre_answer",
+                "pause_ms": 220,
+                "pitch_intent": "warm-steady",
+                "rate_multiplier": 0.98,
+                "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+              },
+              {
+                "marker_id": "en-lookup-freeform:sales_pace_variation",
+                "marker_type": "sales_pace_variation",
+                "segment_id": "en-lookup-freeform",
+                "language": "en",
+                "visible": false,
+                "marker_text": "",
+                "placement": "whole_segment",
+                "pause_ms": 0,
+                "pitch_intent": "confident-forward",
+                "rate_multiplier": 1.064,
+                "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+              }
+            ],
+            "eligible_for_speech_interaction": true,
+            "speech_interaction_protected_reason": null
+          }
+        ],
+        "output_segments": [
+          {
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "source": "agent_freeform",
+            "eligible_for_prosody": true,
+            "protected_reason": null,
+            "text_before": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "tts_text": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "debug_text": "I can check that. I'll keep this brief.... So, the next step is **simple**: we check whether the offer is relevant, and if not, we stop there.",
+            "cue_count": 5,
+            "cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "I can check that.",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.208,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01"
+              },
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "after": "I'll keep this brief.",
+                "mode": "transition",
+                "duration_ms": 312,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "we check whether",
+                "mode": "quick",
+                "ratio": 1.059,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "simple",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04"
+              },
+              {
+                "type": "stretch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "brief",
+                "variant": "brief...",
+                "hold_ms": 226,
+                "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                "cue_id": "cue-05"
+              }
+            ]
+          }
+        ],
+        "prosody_plan": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "I can check that.",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.208,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01"
+          },
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "after": "I'll keep this brief.",
+            "mode": "transition",
+            "duration_ms": 312,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "we check whether",
+            "mode": "quick",
+            "ratio": 1.059,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "simple",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04"
+          },
+          {
+            "type": "stretch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "brief",
+            "variant": "brief...",
+            "hold_ms": 226,
+            "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+            "cue_id": "cue-05"
+          }
+        ],
+        "tts_text": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "debug_text": "I can check that. I'll keep this brief.... So, the next step is **simple**: we check whether the offer is relevant, and if not, we stop there.",
+        "provider_rendering_boundary": {
+          "clean_tts_text": "Plain text remains available for every provider.",
+          "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+          "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+          "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+          "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+        },
+        "validation": {
+          "validator": "VOICE-015 segment protection and bounded prosody check",
+          "passed": true,
+          "protected_segment_changes": [],
+          "cue_in_protected_segments": [],
+          "unsafe_pause_cues": [],
+          "unsafe_rate_cues": [],
+          "unsafe_pitch_cues": [],
+          "markdown_in_tts_text": [],
+          "notes": "Prosody cues stayed bounded and outside protected segments."
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+        }
+      },
+      "provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "en-lookup-latency",
+        "plain_text": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "rendered_text": "I can check that. I'll keep this brief.... <break time=\"0.312s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "rendered_text_html_preview": "I can check that. I&#x27;ll keep this brief.... &lt;break time=&quot;0.312s&quot; /&gt; So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "voice_settings": {
+          "stability": 0.36,
+          "similarity_boost": 0.78,
+          "style": 0.3,
+          "use_speaker_boost": true,
+          "speed": 1.059
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I can check that. I'll keep this brief. So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "rendered_text": "I can check that. I'll keep this brief.... <break time=\"0.312s\" /> So, the next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "provider_tags_inserted": [
+              "<break time=\"0.312s\" />"
+            ],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "after": "I'll keep this brief.",
+                "mode": "transition",
+                "duration_ms": 312,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              },
+              {
+                "type": "rate",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "we check whether",
+                "mode": "quick",
+                "ratio": 1.059,
+                "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+                "cue_id": "cue-03",
+                "rendered_as": "request_voice_settings_speed"
+              },
+              {
+                "type": "stretch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "brief",
+                "variant": "brief...",
+                "hold_ms": 226,
+                "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+                "cue_id": "cue-05",
+                "rendered_as": "ellipsis_variant"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "I can check that.",
+                "direction": "warm-soft",
+                "relative_pitch_semitones": -0.208,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              },
+              {
+                "type": "emphasis",
+                "segment_index": 0,
+                "segment_id": "en-lookup-freeform",
+                "segment_type": "freeform_bridge",
+                "target": "simple",
+                "strength": "medium",
+                "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+                "cue_id": "cue-04",
+                "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+              }
+            ]
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "after": "I'll keep this brief.",
+            "mode": "transition",
+            "duration_ms": 312,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          },
+          {
+            "type": "rate",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "we check whether",
+            "mode": "quick",
+            "ratio": 1.059,
+            "provider_hint": "Render with a small speed change only; keep wording unchanged.",
+            "cue_id": "cue-03",
+            "rendered_as": "request_voice_settings_speed"
+          },
+          {
+            "type": "stretch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "brief",
+            "variant": "brief...",
+            "hold_ms": 226,
+            "provider_hint": "Render as a small thinking hold; do not over-stretch letters.",
+            "cue_id": "cue-05",
+            "rendered_as": "ellipsis_variant"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "I can check that.",
+            "direction": "warm-soft",
+            "relative_pitch_semitones": -0.208,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          },
+          {
+            "type": "emphasis",
+            "segment_index": 0,
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_bridge",
+            "target": "simple",
+            "strength": "medium",
+            "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
+            "cue_id": "cue-04",
+            "reason": "elevenlabs_emphasis_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 1,
+          "stretch": 1
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 1,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 1,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003"
+      },
+      "provider_rendering_validation": {
+        "passed": true,
+        "markdown_in_rendered_text": false,
+        "protected_segment_tags": [],
+        "protected_segment_changes": []
+      },
+      "validation": {
+        "validator": "VOICE-027 A/B voice delivery pipeline check",
+        "passed": true,
+        "spoken_text_normalization_passed": true,
+        "speech_realism_passed": true,
+        "speech_interaction_passed": true,
+        "prosody_passed": true,
+        "provider_rendering_passed": true,
+        "provider_rendering_validation": {
+          "passed": true,
+          "markdown_in_rendered_text": false,
+          "protected_segment_tags": [],
+          "protected_segment_changes": []
+        },
+        "protected_segment_change_count": 0,
+        "unsafe_agreement_marker_count": 0,
+        "notes": "A/B pipeline preserved protected text, avoided unsafe agreement, and rendered provider-safe TTS input."
+      },
+      "api_call_made": false,
+      "fallback_used": true,
+      "fallback_reason": "dry-run-mode",
+      "audio_file_created": false,
+      "audio_output_path": null,
+      "audio_byte_size": 0,
+      "http_status": null,
+      "response_content_type": null,
+      "request_id_present": false,
+      "time_to_first_audio_ms": null,
+      "total_provider_latency_ms": 0,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    }
+  ]
+}

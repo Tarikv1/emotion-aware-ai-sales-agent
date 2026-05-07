@@ -11,8 +11,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "scripts" / "run_voice_023_speech_realism.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-023-speech-realism.json"
-RESULTS_PATH = ROOT / "research" / "experiments" / "generated" / "VOICE-023-speech-realism.json"
-REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "VOICE-023-speech-realism-report.md"
+RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-023"
+RESULTS_PATH = RUN_DIR / "VOICE-023-speech-realism.json"
+REPORT_PATH = RUN_DIR / "VOICE-023-speech-realism-report.md"
 RUNTIME_PATH = ROOT / "scripts" / "runtime_voice_delivery.py"
 
 
