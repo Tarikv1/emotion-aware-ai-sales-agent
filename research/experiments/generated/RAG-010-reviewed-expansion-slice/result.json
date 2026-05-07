@@ -1,0 +1,186 @@
+{
+  "reviewed_expansion_slice_id": "RAG-010-reviewed-expansion-slice",
+  "inputs": {
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "case_path": "research/experiments/cases/rag-010-reviewed-expansion-slice.json"
+  },
+  "summary": {
+    "selected_chunk_count": 4,
+    "knowledge_item_count": 4,
+    "lane_counts": {
+      "response_wording": 3,
+      "voice_delivery": 1
+    },
+    "voice_or_prosody_advisory_item_count": 1,
+    "rejected_candidate_count": 0,
+    "auto_promoted_chunk_count": 0,
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "external_provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "source_metadata_final": false
+  },
+  "knowledge_items": [
+    {
+      "knowledge_id": "rag010-response-impact-bridge",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-029"
+      ],
+      "source_ids": [
+        "rag004-source-007"
+      ],
+      "source_titles": [
+        "30 Minutes to President’s Club"
+      ],
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "original_candidate_principle": "Level 3 Executive Problem (PR Risk)",
+      "review_verdict": "manual_expansion_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_rag009_next_promotion_candidates": true,
+        "quote_clearance_required": false,
+        "quote_clearance_resolution": "not_required_clean_rag009_candidate",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-010 review accepted a project-owned paraphrase from a clean RAG-009 next-promotion candidate."
+      },
+      "project_rule": "When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.",
+      "safe_application": "Use when discovery needs to move from a surface problem to measurable impact, such as lost time, missed work, rework, churn risk, customer experience, or internal cost.",
+      "do_not_use_when": "Do not invent PR risk, retention risk, financial loss, executive urgency, or any high-stakes consequence the customer has not stated or the campaign has not approved.",
+      "guardrail_notes": "Impact discovery must stay low-pressure and evidence-seeking. Campaign facts, compliance text, refusal handling, and human escalation override this wording rule.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag010-response-so-what-clarifier",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-030"
+      ],
+      "source_ids": [
+        "rag004-source-072"
+      ],
+      "source_titles": [
+        "Sales Introverts (Kyle Asay)"
+      ],
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "original_candidate_principle": "The 'So What' Gap",
+      "review_verdict": "manual_expansion_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_rag009_next_promotion_candidates": true,
+        "quote_clearance_required": false,
+        "quote_clearance_resolution": "not_required_clean_rag009_candidate",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-010 review accepted a project-owned paraphrase from a clean RAG-009 next-promotion candidate."
+      },
+      "project_rule": "After a customer names a problem, ask one respectful impact clarifier so the agent understands why the issue matters before proposing a next step.",
+      "safe_application": "Use when the customer gives a vague or operational answer and the agent needs the business or personal consequence in the customer's own terms.",
+      "do_not_use_when": "Do not interrogate, challenge, or repeat impact questions after the customer has answered, declined, or asked for a direct factual response.",
+      "guardrail_notes": "The clarifier must sound curious, not confrontational. It cannot turn weak pain into fabricated urgency or override a customer's refusal.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag010-response-real-timing-check",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-031"
+      ],
+      "source_ids": [
+        "rag004-source-074"
+      ],
+      "source_titles": [
+        "Salesman.com: 5 Questions"
+      ],
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "original_candidate_principle": "Deadline Qualification",
+      "review_verdict": "manual_expansion_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_rag009_next_promotion_candidates": true,
+        "quote_clearance_required": false,
+        "quote_clearance_resolution": "not_required_clean_rag009_candidate",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-010 review accepted a project-owned paraphrase from a clean RAG-009 next-promotion candidate."
+      },
+      "project_rule": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+      "safe_application": "Use after a need or impact is identified and the next useful step depends on whether the buyer has a real timing constraint.",
+      "do_not_use_when": "Do not manufacture scarcity, imply a deadline exists, or push for a meeting when the buyer is still clarifying the problem or has declined.",
+      "guardrail_notes": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag010-voice-cadence-as-weak-context",
+      "lane": "voice_delivery",
+      "source_chunk_ids": [
+        "rag005-chunk-036"
+      ],
+      "source_ids": [
+        "rag004-source-073"
+      ],
+      "source_titles": [
+        "Salesforce: Consultative Principles"
+      ],
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "original_candidate_principle": "Cadence Detection",
+      "review_verdict": "manual_expansion_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_rag009_next_promotion_candidates": true,
+        "quote_clearance_required": false,
+        "quote_clearance_resolution": "not_required_clean_rag009_candidate",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-010 review accepted a project-owned paraphrase from a clean RAG-009 next-promotion candidate."
+      },
+      "project_rule": "Treat customer speech pace as a weak context cue for response pacing or a gentle check-in, not as proof of hidden emotion or intent.",
+      "safe_application": "Use to slow down, simplify, or ask a low-pressure clarification when fast, hesitant, or uneven speech suggests the customer may need more room.",
+      "do_not_use_when": "Do not infer hidden emotion, urgency, stress, consent, refusal, truthfulness, or buying intent from cadence alone.",
+      "guardrail_notes": "This is advisory delivery guidance only. It must not alter protected text, override explicit customer words, or personalize based on sensitive traits.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "review_decisions": {
+    "promoted_chunk_ids": [
+      "rag005-chunk-029",
+      "rag005-chunk-030",
+      "rag005-chunk-031",
+      "rag005-chunk-036"
+    ],
+    "rejected_chunk_ids": [],
+    "decision_note": "All four clean RAG-009 next-promotion candidates were accepted as project-owned paraphrases for offline review artifacts only."
+  },
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "retrieval_policy_required_before_runtime_use": true
+  }
+}
