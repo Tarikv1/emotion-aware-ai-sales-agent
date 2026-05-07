@@ -486,7 +486,25 @@ Validate RAG-016B accepted voice/prosody advisory-only rules and blocker exclusi
 python scripts\validate_rag_016b_voice_delivery_decision_slice.py
 ```
 
-Run RAG-017 runtime knowledge registry after accepted RAG slices through RAG-016B:
+Run RAG-019 sales communication source expansion after public-source review:
+
+```powershell
+python scripts\run_rag_019_sales_communication_source_expansion.py
+```
+
+Default RAG-019 output folder:
+
+```text
+research\experiments\generated\RAG-019-sales-communication-source-expansion\
+```
+
+Validate RAG-019 public-source extraction, source counts, topic coverage, and no-private-data/no-runtime-default boundaries:
+
+```powershell
+python scripts\validate_rag_019_sales_communication_source_expansion.py
+```
+
+Run RAG-017 runtime knowledge registry after accepted RAG slices through RAG-016B and the RAG-019 sales communication expansion:
 
 ```powershell
 python scripts\run_rag_017_runtime_knowledge_registry.py

@@ -1,25 +1,25 @@
 # RAG-008 Guarded Retrieval Policy
 
-RAG-008 creates a dry-run retrieval packet over reviewed RAG-007 knowledge. Runtime retrieval remains disabled.
+RAG-008 creates a dry-run retrieval packet over the RAG-017 runtime knowledge registry. Runtime retrieval remains disabled.
 
 ## Summary
 
 - Query cases: `8`
 - Retrieved cases: `3`
 - Blocked cases: `5`
-- Retrieved item packets: `7`
-- Runtime retrieval enabled: `False`
+- Retrieved item packets: `9`
+- Runtime retrieval enabled by default: `False`
 - Retrieval used in runtime: `False`
 - Chunk import enabled: `False`
-- Only reviewed RAG-007 used: `True`
+- Only runtime registry used: `True`
 
 ## Retrieved Cases
 
 | Case | Retrieved Knowledge |
 | --- | --- |
-| `ordinary_objection_yes_and` | `rag007-response-yes-and-objection-framing`, `rag007-response-empathy-echo`, `rag007-response-prep-structure` |
-| `broad_question_structure` | `rag007-response-3-2-1-structure`, `rag007-response-prep-structure`, `rag007-response-declarative-clarity` |
-| `tone_uncertainty_clarification` | `rag007-voice-tone-mismatch-uncertainty` |
+| `ordinary_objection_yes_and` | `rag007-response-yes-and-objection-framing`, `rag010-response-real-timing-check`, `rag016a-response-autonomy-reminder` |
+| `broad_question_structure` | `rag007-response-3-2-1-structure`, `rag016a-response-concise-benefit-set`, `rag007-response-prep-structure` |
+| `tone_uncertainty_clarification` | `rag007-voice-tone-mismatch-uncertainty`, `rag010-voice-cadence-as-weak-context`, `rag016b-voice-no-acoustic-certainty` |
 
 ## Blocked Cases
 

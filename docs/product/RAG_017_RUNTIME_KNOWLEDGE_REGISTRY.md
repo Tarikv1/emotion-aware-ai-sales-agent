@@ -12,6 +12,7 @@ RAG-017 creates the runtime-eligible local registry from accepted, project-owned
 - accepted RAG-014 source-mapped quote follow-up items
 - accepted RAG-016A ethical-persuasion items
 - RAG-016B voice-delivery advisory items
+- RAG-019 public-source-backed sales communication advisory items
 
 ## Excluded
 
@@ -19,6 +20,7 @@ RAG-017 creates the runtime-eligible local registry from accepted, project-owned
 - unresolved source-mapping groups
 - latent quote-clearance follow-ups
 - raw source excerpts
+- copied public sales scripts or call transcripts
 - private customer data
 
 ## Commands

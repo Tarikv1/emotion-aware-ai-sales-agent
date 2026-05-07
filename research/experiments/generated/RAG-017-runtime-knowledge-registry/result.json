@@ -6,7 +6,8 @@
     "RAG-012-accepted-cleanup": "research/experiments/generated/RAG-012-accepted-cleanup/result.json",
     "RAG-014-source-mapped-quote-followup": "research/experiments/generated/RAG-014-source-mapped-quote-followup/result.json",
     "RAG-016A-quote-clearance-decision-slice": "research/experiments/generated/RAG-016A-quote-clearance-decision-slice/result.json",
-    "RAG-016B-voice-delivery-quote-clearance-decision-slice": "research/experiments/generated/RAG-016B-voice-delivery-decision-slice/result.json"
+    "RAG-016B-voice-delivery-quote-clearance-decision-slice": "research/experiments/generated/RAG-016B-voice-delivery-decision-slice/result.json",
+    "RAG-019-sales-communication-source-expansion": "research/experiments/generated/RAG-019-sales-communication-source-expansion/result.json"
   },
   "included_artifacts": [
     "RAG-007-reviewed-first-slice",
@@ -14,16 +15,17 @@
     "RAG-012-accepted-cleanup",
     "RAG-014-source-mapped-quote-followup",
     "RAG-016A-quote-clearance-decision-slice",
-    "RAG-016B-voice-delivery-quote-clearance-decision-slice"
+    "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+    "RAG-019-sales-communication-source-expansion"
   ],
   "summary": {
-    "registry_item_count": 59,
+    "registry_item_count": 90,
     "lane_counts": {
-      "response_wording": 28,
-      "voice_delivery": 29,
-      "safety_guardrail": 2
+      "response_wording": 50,
+      "voice_delivery": 31,
+      "safety_guardrail": 9
     },
-    "voice_delivery_item_count": 30,
+    "voice_delivery_item_count": 32,
     "runtime_retrieval_enabled_by_default": false,
     "retrieval_used_in_runtime": false,
     "source_mapping_blocker_chunk_count_excluded": 58,
@@ -61,7 +63,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "The Only Video You Need To Fix Your Communication Skills\" [Youtube] - Used (Themes: Influence diamond"
+        "source_title": "The Only Video You Need To Fix Your Communication Skills\" [Youtube] - Used (Themes: Influence diamond",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -108,7 +111,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "9 Habits for Clearer Speaking (I Wish I Knew Sooner)\" [Youtube] - Used (Themes: Pausing to highlight"
+        "source_title": "9 Habits for Clearer Speaking (I Wish I Knew Sooner)\" [Youtube] - Used (Themes: Pausing to highlight",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -155,7 +159,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker\" [Youtube] - Used (Themes: Rule of Three"
+        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker\" [Youtube] - Used (Themes: Rule of Three",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -202,7 +207,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "7 Communication Cheat Codes To Speak Like A Pro!\" [Youtube] - Used (Themes: PREP framework"
+        "source_title": "7 Communication Cheat Codes To Speak Like A Pro!\" [Youtube] - Used (Themes: PREP framework",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -249,7 +255,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Communication Is Hard Until You Structure Your Thinking First!\" [Youtube] - Used (Themes: 3-2-1 Framework"
+        "source_title": "Communication Is Hard Until You Structure Your Thinking First!\" [Youtube] - Used (Themes: 3-2-1 Framework",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -296,7 +303,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Think Fast, Talk Smart: Communication Techniques"
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -344,7 +352,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Non-Verbal Communication"
+        "source_title": "Non-Verbal Communication",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -398,7 +407,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research) - NN/G"
+        "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research) - NN/G",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -447,7 +457,8 @@
         "source_artifact_id": "RAG-007-reviewed-first-slice",
         "review_verdict": "manual_first_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Speak"
+        "source_title": "How to Speak",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -508,7 +519,8 @@
         "source_artifact_id": "RAG-010-reviewed-expansion-slice",
         "review_verdict": "manual_expansion_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "30 Minutes to President’s Club"
+        "source_title": "30 Minutes to President’s Club",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -555,7 +567,8 @@
         "source_artifact_id": "RAG-010-reviewed-expansion-slice",
         "review_verdict": "manual_expansion_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Sales Introverts (Kyle Asay)"
+        "source_title": "Sales Introverts (Kyle Asay)",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -602,7 +615,8 @@
         "source_artifact_id": "RAG-010-reviewed-expansion-slice",
         "review_verdict": "manual_expansion_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Salesman.com: 5 Questions"
+        "source_title": "Salesman.com: 5 Questions",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -649,7 +663,8 @@
         "source_artifact_id": "RAG-010-reviewed-expansion-slice",
         "review_verdict": "manual_expansion_slice_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Salesforce: Consultative Principles"
+        "source_title": "Salesforce: Consultative Principles",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -696,7 +711,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else"
+        "source_title": "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -743,7 +759,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker"
+        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -790,7 +807,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day"
+        "source_title": "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -837,7 +855,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker"
+        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -884,7 +903,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Build INSTANT Rapport With Strangers!"
+        "source_title": "How to Build INSTANT Rapport With Strangers!",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -931,7 +951,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "13 Years of Communication Skills Knowledge in 53 minutes"
+        "source_title": "13 Years of Communication Skills Knowledge in 53 minutes",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -978,7 +999,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Kaltakquise am Telefon: 60 Minuten Cold Calling (Timo Sven Bauer)"
+        "source_title": "Kaltakquise am Telefon: 60 Minuten Cold Calling (Timo Sven Bauer)",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1025,7 +1047,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "An Introduction to Behavioral Economics"
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1072,7 +1095,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "[1906.06725] Persuasion for Good"
+        "source_title": "[1906.06725] Persuasion for Good",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1119,7 +1143,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Science Of Persuasion"
+        "source_title": "Science Of Persuasion",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1166,7 +1191,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "The Ethics of Manipulation (Stanford Encyclopedia of Philosophy)"
+        "source_title": "The Ethics of Manipulation (Stanford Encyclopedia of Philosophy)",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1213,7 +1239,8 @@
         "source_artifact_id": "RAG-012-accepted-cleanup",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "An Introduction to Behavioral Economics"
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1260,7 +1287,8 @@
         "source_artifact_id": "RAG-014-source-mapped-quote-followup",
         "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Cognism Cold Calling Scripts"
+        "source_title": "Cognism Cold Calling Scripts",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1307,7 +1335,8 @@
         "source_artifact_id": "RAG-014-source-mapped-quote-followup",
         "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Sell Better - Jason Bay"
+        "source_title": "Sell Better - Jason Bay",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1354,7 +1383,8 @@
         "source_artifact_id": "RAG-014-source-mapped-quote-followup",
         "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub"
+        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1401,7 +1431,8 @@
         "source_artifact_id": "RAG-014-source-mapped-quote-followup",
         "review_verdict": "manual_source_mapped_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub"
+        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1448,7 +1479,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Science Of Persuasion"
+        "source_title": "Science Of Persuasion",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1495,7 +1527,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "An Introduction to Behavioral Economics"
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1542,7 +1575,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Science Of Persuasion"
+        "source_title": "Science Of Persuasion",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1589,7 +1623,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Cognitive Dissonance Theory: A Crash Course"
+        "source_title": "Cognitive Dissonance Theory: A Crash Course",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1636,7 +1671,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Persuasion | Psychology Today"
+        "source_title": "Persuasion | Psychology Today",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1683,7 +1719,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Science Of Persuasion"
+        "source_title": "Science Of Persuasion",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1730,7 +1767,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Persuasion | Psychology Today"
+        "source_title": "Persuasion | Psychology Today",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1777,7 +1815,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "An Introduction to Behavioral Economics"
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1824,7 +1863,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Science Of Persuasion"
+        "source_title": "Science Of Persuasion",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1871,7 +1911,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Persuasion | Psychology Today"
+        "source_title": "Persuasion | Psychology Today",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1918,7 +1959,8 @@
         "source_artifact_id": "RAG-016A-quote-clearance-decision-slice",
         "review_verdict": "manual_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "The Ethics of Manipulation"
+        "source_title": "The Ethics of Manipulation",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -1965,7 +2007,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Speak | Patrick Winston"
+        "source_title": "How to Speak | Patrick Winston",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2012,7 +2055,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Extreme Ownership | Jocko Willink | TEDxUniversityofNevada"
+        "source_title": "Extreme Ownership | Jocko Willink | TEDxUniversityofNevada",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2059,7 +2103,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Speak | Patrick Winston"
+        "source_title": "How to Speak | Patrick Winston",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2106,7 +2151,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research)"
+        "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research)",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2153,7 +2199,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Speak | Patrick Winston"
+        "source_title": "How to Speak | Patrick Winston",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2200,7 +2247,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Think Fast, Talk Smart: Communication Techniques"
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2248,7 +2296,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "The Art of Effective Communication | Marcus Alexander Velazquez"
+        "source_title": "The Art of Effective Communication | Marcus Alexander Velazquez",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2302,7 +2351,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Speak | Patrick Winston"
+        "source_title": "How to Speak | Patrick Winston",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2349,7 +2399,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "How to Speak | Patrick Winston"
+        "source_title": "How to Speak | Patrick Winston",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2396,7 +2447,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Think Fast, Talk Smart: Communication Techniques"
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2443,7 +2495,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation"
+        "source_title": "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2490,7 +2543,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition"
+        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2537,7 +2591,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Datasets - ConvoKit 4.1.1 documentation"
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2584,7 +2639,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Datasets - ConvoKit 4.1.1 documentation"
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2631,7 +2687,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Datasets - ConvoKit 4.1.1 documentation"
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2678,7 +2735,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition..."
+        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition...",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2725,7 +2783,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Datasets - ConvoKit 4.1.1 documentation"
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2772,7 +2831,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "Persuasion for Good"
+        "source_title": "Persuasion for Good",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2819,7 +2879,8 @@
         "source_artifact_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
         "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
         "quote_dependency_resolved": true,
-        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition"
+        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+        "source_urls": []
       },
       "citation_trace": [
         {
@@ -2835,6 +2896,1909 @@
       "retrieval_used_in_runtime": false,
       "protected_text_change_allowed": false,
       "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-cold-call-permission-opener",
+      "knowledge_id": "rag019-cold-call-permission-opener",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Open outbound calls with concrete context, name that it is a cold call when appropriate, and ask permission before giving the short reason for the call.",
+      "safe_application": "Use when an opted-in or otherwise lawful outbound call needs a concise, transparent opener.",
+      "do_not_use": "Do not use permission language to continue after a refusal, do-not-call request, protected disclosure, or legal consent gap.",
+      "guardrails": "Permission is real only if the customer can decline without renewed pressure.",
+      "source_chunk_ids": [
+        "rag019-chunk-001"
+      ],
+      "source_ids": [
+        "rag019-source-001"
+      ],
+      "topic_ids": [
+        "cold_calling",
+        "permission_based_openers",
+        "pattern_interrupts"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Gong Labs cold-call openers from 300M calls",
+        "source_urls": [
+          "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-001",
+          "source_chunk_ids": [
+            "rag019-chunk-001"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-cold-call-context-before-pitch",
+      "knowledge_id": "rag019-cold-call-context-before-pitch",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Lead with why this call might be relevant before pitching features or asking discovery questions.",
+      "safe_application": "Use peer segment, prior request, product category, or customer-stated context that is true and campaign-approved.",
+      "do_not_use": "Do not imply familiarity, referral, relationship, or social proof that is not verified.",
+      "guardrails": "Context reduces confusion; it must not manufacture trust.",
+      "source_chunk_ids": [
+        "rag019-chunk-002"
+      ],
+      "source_ids": [
+        "rag019-source-001"
+      ],
+      "topic_ids": [
+        "cold_calling",
+        "openers",
+        "call_control"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Gong Labs cold-call openers from 300M calls",
+        "source_urls": [
+          "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-001",
+          "source_chunk_ids": [
+            "rag019-chunk-002"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-cold-call-not-interested-boundary",
+      "knowledge_id": "rag019-cold-call-not-interested-boundary",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "Treat not-interested, stop-calling, and similar refusal language as a boundary before any objection-handling playbook.",
+      "safe_application": "Use to end the sales path, confirm opt-out when required, and avoid repeat-pressure behavior.",
+      "do_not_use": "Do not reinterpret a refusal as a hidden objection or buying signal.",
+      "guardrails": "Compliance and customer refusal override call-control goals.",
+      "source_chunk_ids": [
+        "rag019-chunk-003"
+      ],
+      "source_ids": [
+        "rag019-source-018"
+      ],
+      "topic_ids": [
+        "cold_calling",
+        "not_interested_handling",
+        "opt_out_handling"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "FTC Telemarketing Sales Rule compliance guide",
+        "source_urls": [
+          "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-018",
+          "source_chunk_ids": [
+            "rag019-chunk-003"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-diagnose-before-answering",
+      "knowledge_id": "rag019-objection-diagnose-before-answering",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+      "safe_application": "Use for price, timing, authority, trust, competitor, and status-quo concerns when the customer has not refused contact.",
+      "do_not_use": "Do not stack rebuttals, challenge the customer's judgment, or argue past the stated concern.",
+      "guardrails": "Objection handling should reduce uncertainty, not defeat resistance.",
+      "source_chunk_ids": [
+        "rag019-chunk-004"
+      ],
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-004"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "price_objections",
+        "timing_objections",
+        "trust_objections"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Apollo common sales objections",
+        "source_urls": [
+          "https://www.apollo.io/insights/common-sales-objections",
+          "https://www.apollo.io/insights/handling-objections-in-sales"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-004"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        },
+        {
+          "source_id": "rag019-source-004",
+          "source_chunk_ids": [
+            "rag019-chunk-004"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/handling-objections-in-sales"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-price-value-gap",
+      "knowledge_id": "rag019-objection-price-value-gap",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Handle price concerns by clarifying expected value, current cost, and risk-reduction needs before mentioning discounts.",
+      "safe_application": "Use approved ROI, total-cost, pilot, or comparison material only after the customer confirms the relevant concern.",
+      "do_not_use": "Do not invent savings, hide fees, pressure with scarcity, or use discounting as the first response.",
+      "guardrails": "Price framing must stay truthful and customer-specific.",
+      "source_chunk_ids": [
+        "rag019-chunk-005"
+      ],
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-002"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "price_objections",
+        "consultative_selling"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Apollo common sales objections",
+        "source_urls": [
+          "https://www.apollo.io/insights/common-sales-objections",
+          "https://www.huthwaiteinternational.com/spin-methodology"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-005"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        },
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-005"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-timing-priority-fit",
+      "knowledge_id": "rag019-objection-timing-priority-fit",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "For timing objections, ask what current priority or constraint makes now difficult and offer a lower-commitment next step only if useful.",
+      "safe_application": "Use callbacks, pilots, or one-page summaries when the customer wants to revisit later.",
+      "do_not_use": "Do not manufacture urgency, imply penalty for waiting, or keep pushing after the customer declines.",
+      "guardrails": "Urgency must come from customer-stated impact, not campaign pressure.",
+      "source_chunk_ids": [
+        "rag019-chunk-006"
+      ],
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-002"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "timing_objections",
+        "urgency_vs_pressure"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Apollo common sales objections",
+        "source_urls": [
+          "https://www.apollo.io/insights/common-sales-objections",
+          "https://www.huthwaiteinternational.com/spin-methodology"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-006"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        },
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-006"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-trust-competitor-proof",
+      "knowledge_id": "rag019-objection-trust-competitor-proof",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Answer trust and competitor objections with verified proof, relevant comparison criteria, and an invitation to test fit.",
+      "safe_application": "Use truthful customer examples, references, security documents, or side-by-side criteria that the campaign has approved.",
+      "do_not_use": "Do not disparage competitors, invent authority, inflate adoption, or imply unsupported superiority.",
+      "guardrails": "Proof must inform the buyer's judgment instead of borrowing trust deceptively.",
+      "source_chunk_ids": [
+        "rag019-chunk-007"
+      ],
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-005"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "trust_objections",
+        "competitor_objections",
+        "social_proof"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Apollo common sales objections",
+        "source_urls": [
+          "https://www.apollo.io/insights/common-sales-objections",
+          "https://www.influenceatwork.com/about-iaw/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-007"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        },
+        {
+          "source_id": "rag019-source-005",
+          "source_chunk_ids": [
+            "rag019-chunk-007"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.influenceatwork.com/about-iaw/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-send-info-clarify",
+      "knowledge_id": "rag019-objection-send-info-clarify",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "When the customer says send me information, ask which decision question the information should answer and agree the smallest useful follow-up.",
+      "safe_application": "Use to avoid irrelevant info dumps and to create a customer-owned next step.",
+      "do_not_use": "Do not block the customer's request for information or make the follow-up mandatory.",
+      "guardrails": "The customer can still choose email-only or no follow-up.",
+      "source_chunk_ids": [
+        "rag019-chunk-008"
+      ],
+      "source_ids": [
+        "rag019-source-002",
+        "rag019-source-003"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "send_me_info",
+        "qualification_questions"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Huthwaite SPIN methodology",
+        "source_urls": [
+          "https://www.huthwaiteinternational.com/spin-methodology",
+          "https://www.apollo.io/insights/common-sales-objections"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-008"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        },
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-008"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-current-provider",
+      "knowledge_id": "rag019-objection-current-provider",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "For current-provider objections, acknowledge the status quo and ask whether there is one gap, risk, or upcoming change worth comparing.",
+      "safe_application": "Use when the customer is open to a brief fit check or future benchmark.",
+      "do_not_use": "Do not undermine the current provider with speculation or push for a switch.",
+      "guardrails": "The comparison must be permission-based and evidence-led.",
+      "source_chunk_ids": [
+        "rag019-chunk-009"
+      ],
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-002"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "we_already_have_someone",
+        "competitor_objections"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Apollo common sales objections",
+        "source_urls": [
+          "https://www.apollo.io/insights/common-sales-objections",
+          "https://www.huthwaiteinternational.com/spin-methodology"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-009"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        },
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-009"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-objection-internal-buyer-enablement",
+      "knowledge_id": "rag019-objection-internal-buyer-enablement",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "When the customer needs to think or ask someone else, support internal evaluation with concise approved material and a no-pressure check-in option.",
+      "safe_application": "Use stakeholder summaries, comparison criteria, risk notes, or appointment setting when the customer wants help aligning with others.",
+      "do_not_use": "Do not treat another decision-maker as an obstacle to bypass or push for a solo decision.",
+      "guardrails": "Buyer enablement should lower decision friction while preserving deliberation.",
+      "source_chunk_ids": [
+        "rag019-chunk-010"
+      ],
+      "source_ids": [
+        "rag019-source-003",
+        "rag019-source-004"
+      ],
+      "topic_ids": [
+        "objection_handling",
+        "need_to_think",
+        "ask_partner_or_boss",
+        "decision_friction"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Apollo common sales objections",
+        "source_urls": [
+          "https://www.apollo.io/insights/common-sales-objections",
+          "https://www.apollo.io/insights/handling-objections-in-sales"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-003",
+          "source_chunk_ids": [
+            "rag019-chunk-010"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/common-sales-objections"
+        },
+        {
+          "source_id": "rag019-source-004",
+          "source_chunk_ids": [
+            "rag019-chunk-010"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.apollo.io/insights/handling-objections-in-sales"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-closing-obtain-commitment-not-hard-close",
+      "knowledge_id": "rag019-closing-obtain-commitment-not-hard-close",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Close by obtaining a mutual commitment to a useful next action, not by forcing a final yes before fit is clear.",
+      "safe_application": "Use soft checks, trial summaries, appointment setting, or explicit next-step offers after discovery and fit framing.",
+      "do_not_use": "Do not assume consent, lock the customer into a purchase, or make protected text sound optional.",
+      "guardrails": "A close is valid only when the customer understands and accepts the next step.",
+      "source_chunk_ids": [
+        "rag019-chunk-011"
+      ],
+      "source_ids": [
+        "rag019-source-002"
+      ],
+      "topic_ids": [
+        "closing_techniques",
+        "soft_closing",
+        "trial_closing",
+        "closing_without_pressure"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Huthwaite SPIN methodology",
+        "source_urls": [
+          "https://www.huthwaiteinternational.com/spin-methodology"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-011"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-closing-buying-signals-observable-only",
+      "knowledge_id": "rag019-closing-buying-signals-observable-only",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "Treat buying signals as observable customer statements, questions, or requested next steps, not as hidden emotion or inferred intent.",
+      "safe_application": "Use when the customer asks about implementation, price specifics, timing, decision process, or next steps.",
+      "do_not_use": "Do not infer readiness from tone, silence, politeness, accent, emotion labels, or demographic assumptions.",
+      "guardrails": "Explicit customer words and policy rules override model interpretation.",
+      "source_chunk_ids": [
+        "rag019-chunk-012"
+      ],
+      "source_ids": [
+        "rag019-source-002",
+        "rag019-source-009"
+      ],
+      "topic_ids": [
+        "closing_techniques",
+        "detecting_buying_signals",
+        "emotional_intelligence_in_sales"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Huthwaite SPIN methodology",
+        "source_urls": [
+          "https://www.huthwaiteinternational.com/spin-methodology",
+          "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-012"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        },
+        {
+          "source_id": "rag019-source-009",
+          "source_chunk_ids": [
+            "rag019-chunk-012"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-spin-consultative-question-flow",
+      "knowledge_id": "rag019-spin-consultative-question-flow",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Use a consultative question flow: understand situation, identify problem, explore implication, then ask the customer to describe the value of solving it.",
+      "safe_application": "Use in discovery calls and qualification where the customer has time and permission has been established.",
+      "do_not_use": "Do not interrogate, ask sensitive personal questions, or continue discovery after refusal.",
+      "guardrails": "The flow is a flexible reasoning aid, not a rigid script.",
+      "source_chunk_ids": [
+        "rag019-chunk-013"
+      ],
+      "source_ids": [
+        "rag019-source-002"
+      ],
+      "topic_ids": [
+        "consultative_selling",
+        "spin_selling",
+        "problem_discovery",
+        "implication_questions",
+        "need_payoff_questions"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Huthwaite SPIN methodology",
+        "source_urls": [
+          "https://www.huthwaiteinternational.com/spin-methodology"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-013"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-solution-framing-stated-needs-only",
+      "knowledge_id": "rag019-solution-framing-stated-needs-only",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Frame the solution only against needs, constraints, and outcomes the customer has stated or confirmed.",
+      "safe_application": "Use after discovery to summarize fit and invite correction.",
+      "do_not_use": "Do not project pain points, private motives, or urgency onto the customer.",
+      "guardrails": "Customer correction beats the agent's framing.",
+      "source_chunk_ids": [
+        "rag019-chunk-014"
+      ],
+      "source_ids": [
+        "rag019-source-002"
+      ],
+      "topic_ids": [
+        "consultative_selling",
+        "solution_framing",
+        "qualification_questions"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Huthwaite SPIN methodology",
+        "source_urls": [
+          "https://www.huthwaiteinternational.com/spin-methodology"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-002",
+          "source_chunk_ids": [
+            "rag019-chunk-014"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.huthwaiteinternational.com/spin-methodology"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-psychology-truthful-social-proof-authority",
+      "knowledge_id": "rag019-psychology-truthful-social-proof-authority",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Use social proof and authority only when they are truthful, relevant, and educational for the customer's decision.",
+      "safe_application": "Use verified similar-customer examples, genuine credentials, and relevant evidence from approved campaign materials.",
+      "do_not_use": "Do not invent popularity, fake expertise, hide limits, or imply the customer should comply because others did.",
+      "guardrails": "Trust-building must be evidence-based and autonomy-preserving.",
+      "source_chunk_ids": [
+        "rag019-chunk-015"
+      ],
+      "source_ids": [
+        "rag019-source-005",
+        "rag019-source-006"
+      ],
+      "topic_ids": [
+        "sales_psychology",
+        "social_proof",
+        "trust_building",
+        "authority",
+        "ethical_persuasion"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Influence at Work Cialdini Code of Ethics",
+        "source_urls": [
+          "https://www.influenceatwork.com/about-iaw/",
+          "https://www.influenceatwork.com/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-005",
+          "source_chunk_ids": [
+            "rag019-chunk-015"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.influenceatwork.com/about-iaw/"
+        },
+        {
+          "source_id": "rag019-source-006",
+          "source_chunk_ids": [
+            "rag019-chunk-015"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.influenceatwork.com/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-psychology-loss-aversion-ethical-limit",
+      "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "Frame cost of inaction only with real, relevant tradeoffs and avoid fear amplification.",
+      "safe_application": "Use confirmed operational, financial, service, or time costs when the customer has asked to compare options.",
+      "do_not_use": "Do not heighten fear, shame, guilt, scarcity, or imagined losses to bypass judgment.",
+      "guardrails": "Loss framing is allowed only as transparent decision support.",
+      "source_chunk_ids": [
+        "rag019-chunk-016"
+      ],
+      "source_ids": [
+        "rag019-source-007",
+        "rag019-source-008"
+      ],
+      "topic_ids": [
+        "sales_psychology",
+        "loss_aversion",
+        "urgency_vs_pressure",
+        "ethical_persuasion"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Kahneman and Tversky prospect theory record",
+        "source_urls": [
+          "https://www.econometricsociety.org/publications/econometrica/browse/1979/03/01/prospect-theory-analysis-decision-under-risk",
+          "https://plato.stanford.edu/entries/ethics-manipulation/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-007",
+          "source_chunk_ids": [
+            "rag019-chunk-016"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.econometricsociety.org/publications/econometrica/browse/1979/03/01/prospect-theory-analysis-decision-under-risk"
+        },
+        {
+          "source_id": "rag019-source-008",
+          "source_chunk_ids": [
+            "rag019-chunk-016"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://plato.stanford.edu/entries/ethics-manipulation/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+      "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "Offer useful value and small next steps without creating obligation, guilt, or consistency pressure.",
+      "safe_application": "Use optional checklists, summaries, demos, or reminders that the customer can accept or decline.",
+      "do_not_use": "Do not frame value as a favor owed back or use prior small yeses to force a larger yes.",
+      "guardrails": "Commitment must be explicit, informed, and reversible unless a legal contract says otherwise.",
+      "source_chunk_ids": [
+        "rag019-chunk-017"
+      ],
+      "source_ids": [
+        "rag019-source-005",
+        "rag019-source-006"
+      ],
+      "topic_ids": [
+        "sales_psychology",
+        "reciprocity",
+        "commitment_and_consistency",
+        "ethical_persuasion"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Influence at Work Cialdini Code of Ethics",
+        "source_urls": [
+          "https://www.influenceatwork.com/about-iaw/",
+          "https://www.influenceatwork.com/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-005",
+          "source_chunk_ids": [
+            "rag019-chunk-017"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.influenceatwork.com/about-iaw/"
+        },
+        {
+          "source_id": "rag019-source-006",
+          "source_chunk_ids": [
+            "rag019-chunk-017"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.influenceatwork.com/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-ei-active-listening-before-influence",
+      "knowledge_id": "rag019-ei-active-listening-before-influence",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Before influencing, show listening through concise paraphrase, summary, or a relevant clarification question.",
+      "safe_application": "Use when the customer expresses frustration, skepticism, confusion, or complex requirements.",
+      "do_not_use": "Do not over-reflect, diagnose feelings, or use listening phrases as filler before a pitch.",
+      "guardrails": "Listening must change the next response when the customer corrects the agent.",
+      "source_chunk_ids": [
+        "rag019-chunk-018"
+      ],
+      "source_ids": [
+        "rag019-source-009"
+      ],
+      "topic_ids": [
+        "emotional_intelligence_in_sales",
+        "active_listening",
+        "empathy",
+        "mirroring"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "FBI Law Enforcement Bulletin active listening skills for crisis negotiators",
+        "source_urls": [
+          "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-009",
+          "source_chunk_ids": [
+            "rag019-chunk-018"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-ei-labeling-with-tentative-language",
+      "knowledge_id": "rag019-ei-labeling-with-tentative-language",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Use tentative labels for observable concerns and invite correction instead of stating what the customer feels.",
+      "safe_application": "Use phrases that reflect stated concerns such as budget, risk, time, trust, or confusion.",
+      "do_not_use": "Do not claim to know hidden emotions, motives, vulnerability, or protected traits.",
+      "guardrails": "The safest label is about the issue, not the person's internal state.",
+      "source_chunk_ids": [
+        "rag019-chunk-019"
+      ],
+      "source_ids": [
+        "rag019-source-009",
+        "rag019-source-010"
+      ],
+      "topic_ids": [
+        "emotional_intelligence_in_sales",
+        "labeling_emotions",
+        "tactical_empathy",
+        "handling_skepticism"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "FBI Law Enforcement Bulletin active listening skills for crisis negotiators",
+        "source_urls": [
+          "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators",
+          "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-009",
+          "source_chunk_ids": [
+            "rag019-chunk-019"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators"
+        },
+        {
+          "source_id": "rag019-source-010",
+          "source_chunk_ids": [
+            "rag019-chunk-019"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-ei-annoyed-customer-deescalation",
+      "knowledge_id": "rag019-ei-annoyed-customer-deescalation",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "When a customer is annoyed, slow down, let the issue be stated, summarize the problem, then move to one concrete remedy or escalation path.",
+      "safe_application": "Use for complaints, service failures, repeated-contact frustration, and support-to-sales handoffs.",
+      "do_not_use": "Do not match anger, debate tone, blame the customer, or pivot to a sale before recovery.",
+      "guardrails": "Recovery and escalation override conversion goals.",
+      "source_chunk_ids": [
+        "rag019-chunk-020"
+      ],
+      "source_ids": [
+        "rag019-source-015",
+        "rag019-source-016"
+      ],
+      "topic_ids": [
+        "emotional_intelligence_in_sales",
+        "calming_annoyed_customers",
+        "call_center_communication",
+        "service_recovery"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "ICMI communication with angry customers",
+        "source_urls": [
+          "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers",
+          "https://blog.hubspot.com/service/service-recovery"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-015",
+          "source_chunk_ids": [
+            "rag019-chunk-020"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+        },
+        {
+          "source_id": "rag019-source-016",
+          "source_chunk_ids": [
+            "rag019-chunk-020"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://blog.hubspot.com/service/service-recovery"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-negotiation-calibrated-questions",
+      "knowledge_id": "rag019-negotiation-calibrated-questions",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Use calibrated how/what questions to explore constraints and invite the customer into problem solving.",
+      "safe_application": "Use in negotiation when price, scope, timing, or authority constraints need joint clarification.",
+      "do_not_use": "Do not use calibrated questions as traps, sarcasm, dominance moves, or ways to avoid valid opt-outs.",
+      "guardrails": "A calibrated question should make the constraint clearer, not corner the customer.",
+      "source_chunk_ids": [
+        "rag019-chunk-021"
+      ],
+      "source_ids": [
+        "rag019-source-010"
+      ],
+      "topic_ids": [
+        "negotiation",
+        "tactical_empathy",
+        "calibrated_questions",
+        "how_am_i_supposed_to_do_that"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "World Economic Forum / Quartz tactical empathy interview with Chris Voss",
+        "source_urls": [
+          "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-010",
+          "source_chunk_ids": [
+            "rag019-chunk-021"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-negotiation-anchoring-transparent-reference",
+      "knowledge_id": "rag019-negotiation-anchoring-transparent-reference",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Use anchors and reference points only when the basis is transparent, relevant, and open to challenge.",
+      "safe_application": "Use approved benchmarks, current spend, list prices, implementation scope, or value ranges with clear assumptions.",
+      "do_not_use": "Do not inflate anchors, hide assumptions, create fake concessions, or use silence as pressure.",
+      "guardrails": "Discount resistance should explain value and constraints, not punish negotiation.",
+      "source_chunk_ids": [
+        "rag019-chunk-022"
+      ],
+      "source_ids": [
+        "rag019-source-011",
+        "rag019-source-008"
+      ],
+      "topic_ids": [
+        "negotiation",
+        "anchoring",
+        "price_negotiation",
+        "discount_resistance",
+        "concession_strategy"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Harvard Program on Negotiation anchoring in negotiation",
+        "source_urls": [
+          "https://www.pon.harvard.edu/daily/negotiation-skills-daily/what-is-anchoring-in-negotiation/",
+          "https://plato.stanford.edu/entries/ethics-manipulation/"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-011",
+          "source_chunk_ids": [
+            "rag019-chunk-022"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.pon.harvard.edu/daily/negotiation-skills-daily/what-is-anchoring-in-negotiation/"
+        },
+        {
+          "source_id": "rag019-source-008",
+          "source_chunk_ids": [
+            "rag019-chunk-022"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://plato.stanford.edu/entries/ethics-manipulation/"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-voice-delivery-clarity-over-performance",
+      "knowledge_id": "rag019-voice-delivery-clarity-over-performance",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "voice_delivery",
+      "category": "voice_delivery",
+      "advisory_rule_text": "Tune tone, pacing, pauses, and articulation for comprehension and calm turn-taking rather than performance.",
+      "safe_application": "Use for delivery metadata after text guardrails pass.",
+      "do_not_use": "Do not add theatrical hesitation, exaggerated warmth, fake intimacy, or urgency emphasis.",
+      "guardrails": "Delivery guidance cannot change protected words or claim emotional insight.",
+      "source_chunk_ids": [
+        "rag019-chunk-023"
+      ],
+      "source_ids": [
+        "rag019-source-012",
+        "rag019-source-015"
+      ],
+      "topic_ids": [
+        "voice_and_speech_delivery",
+        "tone",
+        "pacing",
+        "pauses",
+        "confidence_in_speech"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Google conversation design: turn-taking",
+        "source_urls": [
+          "https://developers.google.com/assistant/conversation-design/learn-about-conversation",
+          "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-012",
+          "source_chunk_ids": [
+            "rag019-chunk-023"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+        },
+        {
+          "source_id": "rag019-source-015",
+          "source_chunk_ids": [
+            "rag019-chunk-023"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-conversation-turn-taking-one-question",
+      "knowledge_id": "rag019-conversation-turn-taking-one-question",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Ask one clear question at a time and stop speaking after the question so the customer can take the turn.",
+      "safe_application": "Use for discovery, qualification, repair, appointment setting, and next-step confirmation.",
+      "do_not_use": "Do not chain multiple questions to control the call or prevent objections.",
+      "guardrails": "Call control means structure, not domination.",
+      "source_chunk_ids": [
+        "rag019-chunk-024"
+      ],
+      "source_ids": [
+        "rag019-source-012"
+      ],
+      "topic_ids": [
+        "conversation_design",
+        "turn_taking",
+        "call_control",
+        "clarification_questions"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Google conversation design: turn-taking",
+        "source_urls": [
+          "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-012",
+          "source_chunk_ids": [
+            "rag019-chunk-024"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-conversation-barge-in-respect",
+      "knowledge_id": "rag019-conversation-barge-in-respect",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "voice_delivery",
+      "category": "voice_delivery",
+      "advisory_rule_text": "When the customer interrupts, stop or shorten the current output, preserve context, and process the new customer turn.",
+      "safe_application": "Use for voice-agent streaming behavior and interruption event handling.",
+      "do_not_use": "Do not talk over the customer, resume a pitch automatically, or ignore corrections.",
+      "guardrails": "Interruptions are valid customer control signals.",
+      "source_chunk_ids": [
+        "rag019-chunk-025"
+      ],
+      "source_ids": [
+        "rag019-source-014",
+        "rag019-source-012"
+      ],
+      "topic_ids": [
+        "conversation_design",
+        "interruption_handling",
+        "barge_in_behavior",
+        "dialogue_state_tracking"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Amazon Nova Sonic barge-in documentation",
+        "source_urls": [
+          "https://docs.aws.amazon.com/nova/latest/nova2-userguide/sonic-barge-in.html",
+          "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-014",
+          "source_chunk_ids": [
+            "rag019-chunk-025"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://docs.aws.amazon.com/nova/latest/nova2-userguide/sonic-barge-in.html"
+        },
+        {
+          "source_id": "rag019-source-012",
+          "source_chunk_ids": [
+            "rag019-chunk-025"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://developers.google.com/assistant/conversation-design/learn-about-conversation"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-conversation-repair-fallback-handoff",
+      "knowledge_id": "rag019-conversation-repair-fallback-handoff",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "When the agent cannot understand or fulfill the request, state the limitation, ask a focused clarification, or offer a human handoff.",
+      "safe_application": "Use for ambiguous input, unsupported requests, tool failure, or repeated misunderstanding.",
+      "do_not_use": "Do not hallucinate capability, loop generic apologies, or dead-end the customer.",
+      "guardrails": "Fallbacks must give the customer a usable next action.",
+      "source_chunk_ids": [
+        "rag019-chunk-026"
+      ],
+      "source_ids": [
+        "rag019-source-013"
+      ],
+      "topic_ids": [
+        "conversation_design",
+        "repair_strategies",
+        "graceful_fallback_responses",
+        "human_escalation"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Microsoft Copilot Studio graceful fallbacks and handoffs",
+        "source_urls": [
+          "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-fallbacks"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-013",
+          "source_chunk_ids": [
+            "rag019-chunk-026"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-fallbacks"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-call-center-escalation-service-recovery",
+      "knowledge_id": "rag019-call-center-escalation-service-recovery",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "For service-recovery calls, acknowledge the issue, take ownership within policy, find the root cause, solve or escalate, and set a follow-up expectation.",
+      "safe_application": "Use when a customer complaint or support issue appears during a sales or retention call.",
+      "do_not_use": "Do not upsell during unresolved recovery or transfer without preserving context.",
+      "guardrails": "Escalation quality matters more than keeping the prospect on the phone.",
+      "source_chunk_ids": [
+        "rag019-chunk-027"
+      ],
+      "source_ids": [
+        "rag019-source-016",
+        "rag019-source-017",
+        "rag019-source-015"
+      ],
+      "topic_ids": [
+        "call_center_communication",
+        "escalation_handling",
+        "angry_customer_handling",
+        "service_recovery"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "HubSpot service recovery strategies",
+        "source_urls": [
+          "https://blog.hubspot.com/service/service-recovery",
+          "https://www.zendesk.com/blog/escalation-management/",
+          "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-016",
+          "source_chunk_ids": [
+            "rag019-chunk-027"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://blog.hubspot.com/service/service-recovery"
+        },
+        {
+          "source_id": "rag019-source-017",
+          "source_chunk_ids": [
+            "rag019-chunk-027"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.zendesk.com/blog/escalation-management/"
+        },
+        {
+          "source_id": "rag019-source-015",
+          "source_chunk_ids": [
+            "rag019-chunk-027"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-storytelling-problem-solution-proof",
+      "knowledge_id": "rag019-storytelling-problem-solution-proof",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "response_wording",
+      "category": "response_wording",
+      "advisory_rule_text": "Use concise sales stories with a real situation, clear tension, concrete action, and verified outcome.",
+      "safe_application": "Use customer-success, before-after, analogy, or problem-solution stories only when approved and relevant.",
+      "do_not_use": "Do not fabricate customers, overstate outcomes, copy public case-study wording, or use emotional narrative to hide limitations.",
+      "guardrails": "Stories should make evidence memorable, not replace evidence.",
+      "source_chunk_ids": [
+        "rag019-chunk-028"
+      ],
+      "source_ids": [
+        "rag019-source-025"
+      ],
+      "topic_ids": [
+        "storytelling_for_sales",
+        "problem_solution_story",
+        "customer_success_story",
+        "before_after_bridge",
+        "concise_story_structure"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Stanford GSB business storytelling case",
+        "source_urls": [
+          "https://www.gsb.stanford.edu/faculty-research/case-studies/how-harness-stories-business"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-025",
+          "source_chunk_ids": [
+            "rag019-chunk-028"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.gsb.stanford.edu/faculty-research/case-studies/how-harness-stories-business"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-german-sales-formal-consent-first",
+      "knowledge_id": "rag019-german-sales-formal-consent-first",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "For German sales calls, use formal Sie language and run consent/legal eligibility checks before any Telefonakquise or Kaltakquise wording.",
+      "safe_application": "Use polite, direct German wording only after the campaign has confirmed lawful call basis and documentation requirements.",
+      "do_not_use": "Do not call German consumers for advertising without prior explicit consent, do not hide caller identity, and do not treat B2B presumed interest as a blanket permission.",
+      "guardrails": "German compliance controls override sales scripting and voice style.",
+      "source_chunk_ids": [
+        "rag019-chunk-029"
+      ],
+      "source_ids": [
+        "rag019-source-021",
+        "rag019-source-022",
+        "rag019-source-023",
+        "rag019-source-024"
+      ],
+      "topic_ids": [
+        "german_sales_communication",
+        "telefonakquise",
+        "kaltakquise",
+        "sie_form",
+        "telemarketing_rules"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Bundesnetzagentur unerlaubte Telefonwerbung",
+        "source_urls": [
+          "https://www.bundesnetzagentur.de/DE/Vportal/TK/Aerger/Faelle/UEW/start.html",
+          "https://www.gesetze-im-internet.de/uwg_2004/__7.html",
+          "https://www.gesetze-im-internet.de/uwg_2004/__7a.html",
+          "https://www.ihk.de/ulm/recht-und-steuern/wettbewerbsrecht/wettbewerbsrecht/telefon-werbung-4239498"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-021",
+          "source_chunk_ids": [
+            "rag019-chunk-029"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.bundesnetzagentur.de/DE/Vportal/TK/Aerger/Faelle/UEW/start.html"
+        },
+        {
+          "source_id": "rag019-source-022",
+          "source_chunk_ids": [
+            "rag019-chunk-029"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.gesetze-im-internet.de/uwg_2004/__7.html"
+        },
+        {
+          "source_id": "rag019-source-023",
+          "source_chunk_ids": [
+            "rag019-chunk-029"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.gesetze-im-internet.de/uwg_2004/__7a.html"
+        },
+        {
+          "source_id": "rag019-source-024",
+          "source_chunk_ids": [
+            "rag019-chunk-029"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.ihk.de/ulm/recht-und-steuern/wettbewerbsrecht/wettbewerbsrecht/telefon-werbung-4239498"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-real-call-breakdowns-training-only",
+      "knowledge_id": "rag019-real-call-breakdowns-training-only",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "Use public sales-call breakdowns as pattern evidence only; convert lessons into project-owned rules rather than copying scripts or talk tracks.",
+      "safe_application": "Use for training labels such as opener type, objection category, turn structure, and failure pattern.",
+      "do_not_use": "Do not store full call transcripts, copied roleplay scripts, private recordings, or speaker-identifying material in runtime RAG.",
+      "guardrails": "Real-call evidence needs source, consent, privacy, and quote-clearance review before reuse.",
+      "source_chunk_ids": [
+        "rag019-chunk-030"
+      ],
+      "source_ids": [
+        "rag019-source-001"
+      ],
+      "topic_ids": [
+        "real_sales_call_breakdowns",
+        "live_cold_calls",
+        "sales_call_reviews",
+        "roleplays",
+        "failed_sales_call_analysis"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "Gong Labs cold-call openers from 300M calls",
+        "source_urls": [
+          "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-001",
+          "source_chunk_ids": [
+            "rag019-chunk-030"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      }
+    },
+    {
+      "registry_id": "rag019-ethics-ai-disclosure-truthful-claims",
+      "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+      "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+      "lane": "safety_guardrail",
+      "category": "safety_guardrail",
+      "advisory_rule_text": "Use AI disclosure when required by campaign or law, make only substantiated claims, and avoid designs that imitate humans to deceive.",
+      "safe_application": "Use before opening scripts, voice-clone behavior, product claims, earnings/performance claims, and customer-facing AI positioning.",
+      "do_not_use": "Do not hide that the caller is AI where disclosure is required, imply human identity, exaggerate AI capability, or target vulnerable customers with pressure.",
+      "guardrails": "Truthful claims and disclosure obligations override persuasion, voice naturalness, and conversion goals.",
+      "source_chunk_ids": [
+        "rag019-chunk-031"
+      ],
+      "source_ids": [
+        "rag019-source-018",
+        "rag019-source-019",
+        "rag019-source-020"
+      ],
+      "topic_ids": [
+        "ethics_and_compliance",
+        "ai_disclosure",
+        "truthful_claims",
+        "avoiding_manipulation",
+        "vulnerable_customer_protection"
+      ],
+      "trace_metadata": {
+        "source_artifact_id": "RAG-019-sales-communication-source-expansion",
+        "review_verdict": "manual_public_source_paraphrased",
+        "quote_dependency_resolved": true,
+        "source_title": "FTC Telemarketing Sales Rule compliance guide",
+        "source_urls": [
+          "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule",
+          "https://www.ftc.gov/business-guidance/blog/2023/02/keep-your-ai-claims-check",
+          "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale"
+        ]
+      },
+      "citation_trace": [
+        {
+          "source_id": "rag019-source-018",
+          "source_chunk_ids": [
+            "rag019-chunk-031"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule"
+        },
+        {
+          "source_id": "rag019-source-019",
+          "source_chunk_ids": [
+            "rag019-chunk-031"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.ftc.gov/business-guidance/blog/2023/02/keep-your-ai-claims-check"
+        },
+        {
+          "source_id": "rag019-source-020",
+          "source_chunk_ids": [
+            "rag019-chunk-031"
+          ],
+          "artifact_id": "RAG-019-sales-communication-source-expansion",
+          "source_url": "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale"
+        }
+      ],
+      "runtime_registry_eligible": true,
+      "retrieval_scope": "advisory_only",
+      "retrieval_used_in_runtime": false,
+      "protected_text_change_allowed": false,
+      "voice_or_prosody_advisory_only": false,
       "hard_limits": {
         "hidden_emotion_inference_allowed": false,
         "protected_trait_inference_allowed": false,

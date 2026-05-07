@@ -4,6 +4,8 @@
 
 RAG-018 connects the RAG-017 local registry to guarded response generation as an explicit opt-in path. It does not add a vector database, embedding provider, LLM reranker, private-data read, or default runtime retrieval.
 
+RAG-017 may include the RAG-019 public sales communication source expansion after the RAG-019 validator passes. Those items remain advisory, source-traced, and blocked by the same runtime guardrails.
+
 ## Runtime Contract
 
 `scripts\generate_guarded_response.py` supports:

@@ -23,6 +23,7 @@ EXPECTED_INCLUDED_ARTIFACTS = {
     "RAG-014-source-mapped-quote-followup",
     "RAG-016A-quote-clearance-decision-slice",
     "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+    "RAG-019-sales-communication-source-expansion",
 }
 BLOCKED_CHUNK_IDS = {"rag005-chunk-001", "rag005-chunk-002", "rag005-chunk-004"}
 
@@ -46,7 +47,7 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
 
     assert_condition(payload["runtime_knowledge_registry_id"] == EXPECTED_ID, payload)
     assert_condition(set(payload["included_artifacts"]) == EXPECTED_INCLUDED_ARTIFACTS, payload["included_artifacts"])
-    assert_condition(summary["registry_item_count"] == 59, summary)
+    assert_condition(summary["registry_item_count"] == 90, summary)
     assert_condition(summary["voice_delivery_item_count"] >= 25, summary)
     assert_condition(summary["runtime_retrieval_enabled_by_default"] is False, summary)
     assert_condition(summary["retrieval_used_in_runtime"] is False, summary)
@@ -68,6 +69,8 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     assert_condition("rag014-response-consent-based-schedule-confirmation" in item_ids, "RAG-014 item missing.")
     assert_condition("rag016a-response-autonomy-reminder" in item_ids, "RAG-016A item missing.")
     assert_condition("rag016b-voice-no-hidden-emotion-claims" in item_ids, "RAG-016B item missing.")
+    assert_condition("rag019-cold-call-permission-opener" in item_ids, "RAG-019 cold-call item missing.")
+    assert_condition("rag019-ethics-ai-disclosure-truthful-claims" in item_ids, "RAG-019 compliance item missing.")
     assert_condition(not BLOCKED_CHUNK_IDS.intersection(chunk_ids), sorted(BLOCKED_CHUNK_IDS.intersection(chunk_ids)))
 
     for item in items:

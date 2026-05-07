@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RAG-019 sales communication source expansion
+
+- Objective: add a broader public-source sales communication layer to the guarded RAG without copying scripts or enabling unreviewed retrieval.
+- Action taken: researched public sources across cold calling, objections, closing, consultative selling, sales psychology, emotional intelligence, negotiation, voice delivery, conversation design, call-center behavior, persuasion, storytelling, German sales communication, real call breakdowns, and ethics/compliance; converted the relevant guidance into source-traced, project-owned advisory rules; wired the new source pack into RAG-017 registry generation.
+- Data used: public web sources only, including sales-methodology pages, academic/encyclopedic decision and manipulation references, conversation-design/provider documentation, call-center guidance, FTC guidance, and German telemarketing/UWG references. No private customer data, private audio, raw call transcripts, copied source passages, NotebookLM API call, provider call, embedding provider, or external vector database was used.
+- Output created: `research/experiments/cases/rag-019-sales-communication-source-expansion.json`, `docs/product/RAG_019_SALES_COMMUNICATION_SOURCE_EXPANSION.md`, RAG-019 runner/validator scripts, RAG-017 registry source-URL trace support, setup/command documentation updates, and this thesis reference update.
+- What was learned: broad sales guidance can be made useful only after it is narrowed into consent-aware, low-pressure, observable-signal-only rules. The most important boundaries are no hidden emotion inference, no protected-trait inference, no pressure escalation, no copied scripts, no compliance-text changes, and no runtime retrieval unless explicitly enabled.
+- Why it matters for the thesis: the sales agent now has a traceable public-source advisory corpus for practical sales behavior while preserving the thesis safety claim that persuasive knowledge is gated, paraphrased, local, reviewable, and subordinate to campaign/compliance guardrails.
+- Open questions: which of these RAG-019 items should be evaluated first in reviewed campaign simulations, and whether future source intake should separate peer-reviewed evidence from practitioner playbooks more strictly.
+
 ### 2026-05-07 - Generated artifact folderization and drift guard
 
 - Objective: make the accumulated experiment evidence easier to audit before pushing the full project checkpoint to GitHub.

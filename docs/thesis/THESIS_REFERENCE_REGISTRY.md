@@ -74,6 +74,46 @@ Use the source categories carefully:
 - Current project status: downloaded and extracted locally.
 - Thesis caution: the task is charity persuasion, not commercial outbound sales. Use it for strategy grounding, not direct product-performance claims.
 
+## Sales Communication And Compliance Sources
+
+### RAG-019 public sales communication source expansion
+
+- Type: public practitioner, academic, provider documentation, legal/compliance, and product-grounding source pack
+- Cold calling and objection handling sources:
+  - Gong cold-call opener analysis: https://www.gong.io/blog/the-best-and-worst-cold-call-openers-backed-by-data-from-300m-calls
+  - Apollo common sales objections: https://www.apollo.io/insights/common-sales-objections
+  - Apollo handling objections in sales: https://www.apollo.io/insights/handling-objections-in-sales
+- Consultative selling and sales-methodology sources:
+  - Huthwaite SPIN methodology: https://www.huthwaiteinternational.com/spin-methodology
+  - Stanford GSB business storytelling case collection: https://www.gsb.stanford.edu/faculty-research/case-studies/how-harness-stories-business
+- Persuasion and decision-science sources:
+  - Influence at Work Cialdini overview: https://www.influenceatwork.com/about-iaw/
+  - Influence at Work main site: https://www.influenceatwork.com/
+  - Kahneman and Tversky prospect theory record: https://www.econometricsociety.org/publications/econometrica/browse/1979/03/01/prospect-theory-analysis-decision-under-risk
+  - Stanford Encyclopedia of Philosophy manipulation entry: https://plato.stanford.edu/entries/ethics-manipulation/
+- Negotiation and tactical empathy sources:
+  - FBI crisis negotiation evaluation tool: https://leb.fbi.gov/articles/focus/focus-on-training-an-evaluation-tool-for-crisis-negotiators
+  - World Economic Forum / Chris Voss tactical empathy interview: https://www.weforum.org/stories/2022/01/tactical-empathy-key-workplace-negotiations-voss/
+  - Harvard Program on Negotiation anchoring explainer: https://www.pon.harvard.edu/daily/negotiation-skills-daily/what-is-anchoring-in-negotiation/
+- Conversation design, call-center, and service recovery sources:
+  - Google Assistant conversation design basics: https://developers.google.com/assistant/conversation-design/learn-about-conversation
+  - Microsoft Copilot Studio fallback guidance: https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-fallbacks
+  - Amazon Nova Sonic barge-in documentation: https://docs.aws.amazon.com/nova/latest/nova2-userguide/sonic-barge-in.html
+  - ICMI angry-customer communication guidance: https://www.icmi.com/resources/2020/tips-for-contact-centers-to-communicate-with-angry-customers
+  - HubSpot service recovery overview: https://blog.hubspot.com/service/service-recovery
+  - Zendesk escalation management overview: https://www.zendesk.com/blog/escalation-management/
+- AI, telemarketing, and German compliance sources:
+  - FTC Telemarketing Sales Rule business guidance: https://www.ftc.gov/business-guidance/resources/complying-telemarketing-sales-rule
+  - FTC AI claims guidance: https://www.ftc.gov/business-guidance/blog/2023/02/keep-your-ai-claims-check
+  - FTC AI deception guidance: https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale
+  - Bundesnetzagentur unerlaubte Telefonwerbung portal: https://www.bundesnetzagentur.de/DE/Vportal/TK/Aerger/Faelle/UEW/start.html
+  - German UWG Section 7: https://www.gesetze-im-internet.de/uwg_2004/__7.html
+  - German UWG Section 7a: https://www.gesetze-im-internet.de/uwg_2004/__7a.html
+  - IHK Ulm telephone advertising overview: https://www.ihk.de/ulm/recht-und-steuern/wettbewerbsrecht/wettbewerbsrecht/telefon-werbung-4239498
+- Project use: source-backed paraphrased advisory rules for RAG-019 covering cold calling, objections, closing, consultative discovery, persuasion, negotiation, voice delivery, conversation design, call-center behavior, German formal sales communication, real-call review boundaries, and compliance.
+- Current project status: extracted into `research/experiments/cases/rag-019-sales-communication-source-expansion.json` as project-owned paraphrases with source URLs, hard limits, and no runtime eligibility by default.
+- Thesis caution: practitioner sales pages are product-grounding inputs, not peer-reviewed effectiveness evidence. Legal/compliance pages guide system boundaries and are not legal advice. No copied sales scripts, article passages, or call transcripts are stored in the RAG.
+
 ## Speech Realism Sources
 
 Detailed notes live in `docs/thesis/SPEECH_REALISM_REFERENCES.md`.
