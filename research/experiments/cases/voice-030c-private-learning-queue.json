@@ -1,0 +1,61 @@
+{
+  "voice_milestone": "VOICE-030C",
+  "experiment_scope": "Automatic private learning queue after local speech capture/import, with WAV acoustic analysis and non-WAV conversion status.",
+  "private_workspace": {
+    "private_root": "data/private/tarik-speech-samples",
+    "queue_manifest_path": "data/private/tarik-speech-samples/derived/local-speech-learning-queue.jsonl",
+    "audio_features_dir": "data/private/tarik-speech-samples/derived/audio-features"
+  },
+  "processing_statuses": [
+    "analyzed_needs_review",
+    "needs_local_conversion",
+    "analysis_failed_needs_review"
+  ],
+  "speaker_context": {
+    "native_language": "tr",
+    "spoken_languages": [
+      "en",
+      "de",
+      "tr"
+    ],
+    "english_proficiency": "high",
+    "pronunciation_learning": "use_selectively_for_natural_delivery_not_identity_clone",
+    "learn_from": [
+      "timing",
+      "filler_placement",
+      "repair_style",
+      "thinking_pauses",
+      "sentence_rhythm",
+      "clear_english_delivery_patterns"
+    ],
+    "guardrails": [
+      "do_not_clone_or_overfit_to_one_speaker_identity",
+      "do_not_force_every_campaign_to_match_tarik_exactly"
+    ]
+  },
+  "learning_signal_policy": {
+    "long_formulation_pauses": "expected_in_owner_samples_not_agent_target",
+    "pause_duration_reasoning": "Owner samples may include long pauses while formulating complex instructions; these pauses should not slow down the sales agent.",
+    "diagnostic_only_features": [
+      "pause_ratio",
+      "average_pause_ms",
+      "longest_pause_ms",
+      "silence_seconds"
+    ],
+    "runtime_candidate_features": [
+      "speech_burst_count",
+      "energy_variation",
+      "mean_speech_rms"
+    ],
+    "runtime_use_requires_human_review": true
+  },
+  "privacy_boundary": {
+    "outputs_stay_under_data_private": true,
+    "provider_calls_allowed": false,
+    "transcription_created": false,
+    "voice_cloning_allowed": false,
+    "runtime_profile_applied": false,
+    "public_artifact_created": false,
+    "human_review_required_before_runtime_use": true
+  }
+}

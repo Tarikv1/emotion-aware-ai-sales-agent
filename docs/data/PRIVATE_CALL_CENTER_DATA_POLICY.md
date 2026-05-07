@@ -44,6 +44,22 @@ Safe derived artifacts may be committed only when they contain no raw private au
 
 The working pipeline for this boundary is documented in `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md`.
 
+## Personal Speech Samples
+
+Tarik's optional personal speech samples for future agent-personalization experiments must also stay under `data/private/`, for example:
+
+```text
+data/private/tarik-speech-samples/
+```
+
+These samples are local-only by default. They must not be committed, uploaded to providers, used for voice cloning, or copied into generated reports. Only abstract, reviewed speech-pattern notes may leave `data/private/`, and only when they contain no private audio, no raw transcript, no identifiers, and no sensitive third-party details.
+
+The `VOICE-029` local speech-profile checkpoint may read reviewed local redacted transcripts from this folder only when explicitly run with `--allow-private-read`. When private input is read, its JSON and Markdown outputs must stay under `data/private/` until a later export review checkpoint exists.
+
+VOICE-029 does not transcribe raw audio yet. Raw recordings must first be transcribed locally and reviewed/redacted before they are used for speech-pattern extraction.
+
+`VOICE-030A` may decode local WAV recordings from `data/private/tarik-speech-samples/raw-audio/` only when explicitly run with `--allow-private-read`. It extracts aggregate acoustic timing and energy features only. It does not transcribe audio, call providers, clone voices, or export private-input results outside `data/private/`.
+
 ## Export Review Gate
 
 Nothing derived from private call-center audio may leave `data/private/` until it passes a local export review.

@@ -1,0 +1,104 @@
+{
+  "voice_milestone": "VOICE-030A",
+  "raw_audio_features_id": "VOICE-030A-raw-audio-local-reader",
+  "source_mode": "synthetic_audio_fixture",
+  "summary": {
+    "audio_file_count": 2,
+    "supported_file_count": 2,
+    "unsupported_file_count": 0,
+    "languages": {
+      "de": 1,
+      "en": 1
+    },
+    "total_duration_seconds": 4.8,
+    "total_pause_count": 4,
+    "safe_public_artifact": true
+  },
+  "privacy_boundary": {
+    "private_input_read": false,
+    "raw_audio_decoded": true,
+    "raw_private_audio_decoded": false,
+    "provider_calls_made": false,
+    "transcription_created": false,
+    "raw_transcript_exported": false,
+    "voice_cloning_used": false,
+    "runtime_profile_applied": false,
+    "human_review_required_before_runtime_use": true,
+    "safe_for_public_generated_artifacts": true
+  },
+  "audio_analysis": {
+    "frame_ms": 20,
+    "silence_threshold": 0.025,
+    "min_pause_ms": 180
+  },
+  "audio_results": [
+    {
+      "audio_id": "voice-030a-synthetic-en-paused",
+      "language": "en",
+      "source": "synthetic_audio_fixture",
+      "private": false,
+      "supported": true,
+      "file_extension": ".wav",
+      "features": {
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "frame_count": 39040,
+        "duration_seconds": 2.44,
+        "frame_ms": 20,
+        "silence_threshold": 0.025,
+        "min_pause_ms": 180,
+        "speech_seconds": 1.76,
+        "silence_seconds": 0.68,
+        "pause_ratio": 0.279,
+        "pause_count": 2,
+        "longest_pause_ms": 420,
+        "average_pause_ms": 340.0,
+        "speech_burst_count": 3,
+        "mean_rms": 0.16497,
+        "mean_speech_rms": 0.22871,
+        "energy_variation": 0.06
+      }
+    },
+    {
+      "audio_id": "voice-030a-synthetic-de-shorter-pauses",
+      "language": "de",
+      "source": "synthetic_audio_fixture",
+      "private": false,
+      "supported": true,
+      "file_extension": ".wav",
+      "features": {
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "frame_count": 37760,
+        "duration_seconds": 2.36,
+        "frame_ms": 20,
+        "silence_threshold": 0.025,
+        "min_pause_ms": 180,
+        "speech_seconds": 1.9,
+        "silence_seconds": 0.46,
+        "pause_ratio": 0.195,
+        "pause_count": 2,
+        "longest_pause_ms": 240,
+        "average_pause_ms": 230.0,
+        "speech_burst_count": 3,
+        "mean_rms": 0.17695,
+        "mean_speech_rms": 0.21979,
+        "energy_variation": 0.052
+      }
+    }
+  ],
+  "runtime_profile_proposal": {
+    "apply_to_runtime_by_default": false,
+    "requires_human_review": true,
+    "safe_next_step": "Combine reviewed audio timing features with VOICE-029 transcript-pattern features before runtime tuning.",
+    "not_inferred": [
+      "words",
+      "meaning",
+      "identity",
+      "speaker voiceprint",
+      "private personal facts"
+    ]
+  }
+}

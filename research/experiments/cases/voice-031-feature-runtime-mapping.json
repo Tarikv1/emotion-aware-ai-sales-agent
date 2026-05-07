@@ -1,0 +1,107 @@
+{
+  "voice_milestone": "VOICE-031",
+  "checkpoint_name": "Reviewed feature-to-runtime mapping gate",
+  "source_checkpoint": "VOICE-030D",
+  "purpose": "Convert a reviewed VOICE-030D aggregate feature summary into a human-reviewed runtime-setting proposal without automatically changing the live agent.",
+  "default_mode": "synthetic_public_fixture",
+  "allowed_runtime_candidate_features": [
+    "speech_burst_count",
+    "energy_variation",
+    "mean_speech_rms"
+  ],
+  "blocked_runtime_features": [
+    "pause_ratio",
+    "average_pause_ms",
+    "longest_pause_ms",
+    "silence_seconds"
+  ],
+  "campaign_application_policy": {
+    "default_voice_posture": "professional_sales_agent",
+    "campaign_override_required": true,
+    "campaign_can_disable_personalization": true,
+    "protected_segments_locked": true,
+    "vertical_agnostic_core_preserved": true
+  },
+  "deferred_reminders": [
+    {
+      "reminder_id": "whatsapp_voice_note_import",
+      "idea": "Optionally import selected Tarik WhatsApp voice notes as extra private speech samples.",
+      "why_deferred": "Wait until the VOICE-030D review decision so we do not mix recording contexts too early.",
+      "unlock_condition": "After Tarik decides to run VOICE-030D on enough local speech samples, remind him that WhatsApp voice notes can be imported if he wants more coverage.",
+      "privacy_boundary": [
+        "selected files stay under data/private/",
+        "source label must mark them as whatsapp_voice_note",
+        "local conversion is required for non-WAV formats",
+        "do not upload private voice notes to providers"
+      ]
+    }
+  ],
+  "synthetic_review_summary_fixture": {
+    "voice_milestone": "VOICE-030D",
+    "created_at_utc": "2026-05-05T00:00:00Z",
+    "summary": {
+      "sample_count": 4,
+      "language_counts": {
+        "en": 4
+      },
+      "duration_seconds": {
+        "count": 4,
+        "min": 5.0,
+        "max": 9.0,
+        "avg": 6.875
+      },
+      "duration_is_context_only": true
+    },
+    "runtime_candidate_summary": {
+      "speech_burst_count": {
+        "count": 4,
+        "min": 7,
+        "max": 12,
+        "avg": 9.25
+      },
+      "energy_variation": {
+        "count": 4,
+        "min": 0.18,
+        "max": 0.34,
+        "avg": 0.255
+      },
+      "mean_speech_rms": {
+        "count": 4,
+        "min": 0.16,
+        "max": 0.24,
+        "avg": 0.205
+      }
+    },
+    "diagnostic_only_summary": {
+      "excluded_from_runtime_learning": [
+        "pause_ratio",
+        "average_pause_ms",
+        "longest_pause_ms",
+        "silence_seconds"
+      ],
+      "reason": "Owner formulation pauses are useful context but must not become agent pacing targets."
+    },
+    "context_only_summary": {
+      "features": [
+        "duration_seconds"
+      ],
+      "reason": "Duration helps interpret sample coverage but is not a behavior target."
+    },
+    "review_decision": {
+      "status": "needs_human_review",
+      "runtime_settings_changed": false,
+      "safe_next_step": "Review private aggregate patterns before mapping any candidate into runtime voice settings."
+    },
+    "privacy_boundary": {
+      "private_input_read": false,
+      "outputs_stay_under_data_private": false,
+      "provider_calls_made": false,
+      "transcription_created": false,
+      "voice_cloning_used": false,
+      "runtime_profile_applied": false,
+      "public_artifact_created": false,
+      "raw_audio_paths_exported": false,
+      "human_review_required_before_runtime_use": true
+    }
+  }
+}

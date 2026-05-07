@@ -1,0 +1,17 @@
+{
+  "rag_review_id": "RAG-006-chunk-review-packet",
+  "title": "Human review packet for RAG chunk candidates",
+  "description": "Groups RAG-005 chunk candidates into source-mapping, topic-mapping, quote-review, and first-slice review queues before any runtime promotion.",
+  "default_rag005_result": "research/experiments/generated/RAG-005-chunk-normalization/result.json",
+  "default_source_manifest": "research/experiments/generated/RAG-004-source-manifest-normalization/result.json",
+  "runtime_retrieval_enabled": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "This checkpoint creates review queues only.",
+    "Source suggestions are hints, not automatic mappings.",
+    "It does not import chunks into runtime memory or enable retrieval.",
+    "Human review is required before any chunk can become a runtime RAG knowledge candidate."
+  ]
+}

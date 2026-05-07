@@ -1,0 +1,65 @@
+{
+  "voice_milestone": "VOICE-034",
+  "experiment_scope": "Offline/runtime checkpoint for pacing calibration v2: faster professional sales pace, fewer/shorter gaps, and German-specific tighter word-gap behavior without rewriting protected text.",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "provider": "elevenlabs",
+  "runtime_cases": [
+    {
+      "case_id": "voice-034-de-gap-tightening",
+      "case_title": "German eligible freeform tightens word gaps and keeps sales pace moving",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "expected_language": "de",
+      "expected_pacing": "german_word_gap_reduction"
+    },
+    {
+      "case_id": "voice-034-en-sales-pace",
+      "case_title": "English eligible freeform receives faster professional sales pace",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "That sounds expensive.",
+      "candidate_response": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+      "expected_language": "en",
+      "expected_pacing": "professional_sales_speed"
+    },
+    {
+      "case_id": "voice-034-de-protected-stop",
+      "case_title": "German protected do-not-call response is not paced or changed",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "expected_language": "de",
+      "expected_pacing": "protected_text_locked"
+    }
+  ],
+  "pacing_policy": {
+    "style": "professional-sales-pacing-v2",
+    "english_speed_bounds": [
+      1.07,
+      1.15
+    ],
+    "german_speed_bounds": [
+      1.09,
+      1.16
+    ],
+    "english_break_bounds_ms": [
+      80,
+      240
+    ],
+    "german_break_bounds_ms": [
+      60,
+      210
+    ],
+    "german_word_gap_reduction": true,
+    "protected_text_locked": true
+  },
+  "privacy_boundary": {
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "private_audio_used": false
+  }
+}

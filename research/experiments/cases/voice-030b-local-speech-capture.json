@@ -1,0 +1,42 @@
+{
+  "voice_milestone": "VOICE-030B",
+  "experiment_scope": "Local-only speech-sample capture and import into the ignored Tarik speech-samples raw-audio folder.",
+  "private_workspace": {
+    "private_root": "data/private/tarik-speech-samples",
+    "raw_audio_dir": "data/private/tarik-speech-samples/raw-audio",
+    "manifest_path": "data/private/tarik-speech-samples/derived/local-speech-capture-manifest.jsonl"
+  },
+  "capture_modes": [
+    "import_file",
+    "localhost_browser_recorder"
+  ],
+  "localhost_browser_recorder": {
+    "default_capture_format": "audio/wav",
+    "default_file_extension": ".wav",
+    "encoding_location": "browser_local_web_audio",
+    "legacy_webm_recordings_allowed_as_private_imports": true
+  },
+  "supported_upload_extensions": [
+    ".wav",
+    ".webm",
+    ".mp3",
+    ".m4a",
+    ".aac",
+    ".ogg",
+    ".opus",
+    ".flac",
+    ".wma",
+    ".caf",
+    ".amr"
+  ],
+  "privacy_boundary": {
+    "raw_audio_storage": "data/private/tarik-speech-samples/raw-audio",
+    "manifest_storage": "data/private/tarik-speech-samples/derived/local-speech-capture-manifest.jsonl",
+    "provider_calls_allowed": false,
+    "transcription_created": false,
+    "voice_cloning_allowed": false,
+    "public_artifact_created": false,
+    "runtime_use_requires_human_review": true,
+    "localhost_only": true
+  }
+}

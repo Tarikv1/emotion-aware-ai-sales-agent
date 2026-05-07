@@ -1,0 +1,29 @@
+{
+  "source_mapped_quote_followup_id": "RAG-014-source-mapped-quote-followup",
+  "title": "RAG source-mapped quote follow-up",
+  "description": "Clears or rejects the five quote dependencies created by RAG-012 accepted source mappings without enabling runtime retrieval.",
+  "accepted_by": "project_owner_current_session",
+  "default_rag013_result": "research/experiments/generated/RAG-013-cleanup-strategy/result.json",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "accepted_followup_chunk_ids": [
+    "rag005-chunk-003",
+    "rag005-chunk-006",
+    "rag005-chunk-081",
+    "rag005-chunk-084"
+  ],
+  "rejected_followup_chunk_ids": [
+    "rag005-chunk-005"
+  ],
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "Accepted follow-ups are project-owned paraphrases only.",
+    "The fixed rep talk-time dominance candidate is rejected as a pressure/control tactic.",
+    "All accepted rules must remain low-pressure and vertical-agnostic.",
+    "This checkpoint does not import chunks into runtime memory or enable retrieval.",
+    "A later runtime integration gate is required before any runtime use."
+  ]
+}

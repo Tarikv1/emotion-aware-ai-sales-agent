@@ -1,0 +1,494 @@
+{
+  "accepted_cleanup_id": "RAG-012-accepted-cleanup",
+  "inputs": {
+    "rag011_result_path": "research/experiments/generated/RAG-011-blocker-cleanup-packet/result.json",
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "case_path": "research/experiments/cases/rag-012-accepted-cleanup.json"
+  },
+  "acceptance": {
+    "accepted_by": "project_owner_current_session",
+    "acceptance_scope": "RAG-011 source-mapping proposals and quote-clearance cards listed in the RAG-012 case file.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "source_mapping_blocker_count_before": 63,
+    "quote_clearance_blocker_count_before": 42,
+    "accepted_source_mapping_chunk_count": 5,
+    "accepted_source_mapping_group_count": 3,
+    "accepted_quote_clearance_item_count": 12,
+    "accepted_cleanup_decision_count": 17,
+    "quote_clearance_follow_up_required_from_source_mappings": 5,
+    "source_mapping_blockers_remaining_after_acceptance": 58,
+    "quote_clearance_blockers_remaining_after_acceptance": 30,
+    "primary_review_blockers_remaining_after_acceptance": 88,
+    "blockers_resolved_in_prior_artifacts": 0,
+    "blockers_resolved_by_rag012_acceptance": 17,
+    "auto_promoted_chunk_count": 0,
+    "lane_counts": {
+      "response_wording": 6,
+      "voice_delivery": 5,
+      "safety_guardrail": 1
+    },
+    "voice_or_prosody_advisory_item_count": 6,
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false
+  },
+  "accepted_source_mappings": [
+    {
+      "chunk_id": "rag005-chunk-081",
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "original_status": "blocked_source_mapping",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-025"
+      ],
+      "accepted_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "candidate_score": 0.666,
+      "source_mapping_resolved": true,
+      "quote_dependency_resolved": false,
+      "quote_clearance_follow_up_required": true,
+      "review_verdict": "source_mapping_accepted",
+      "human_acceptance_recorded": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-084",
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "original_status": "blocked_source_mapping",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-025"
+      ],
+      "accepted_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "candidate_score": 0.666,
+      "source_mapping_resolved": true,
+      "quote_dependency_resolved": false,
+      "quote_clearance_follow_up_required": true,
+      "review_verdict": "source_mapping_accepted",
+      "human_acceptance_recorded": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-005",
+      "source_title": "Sell Better - Jason Bay",
+      "original_status": "blocked_source_mapping",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-051"
+      ],
+      "accepted_canonical_title": "Jason Bay (Sell Better)",
+      "candidate_score": 0.689,
+      "source_mapping_resolved": true,
+      "quote_dependency_resolved": false,
+      "quote_clearance_follow_up_required": true,
+      "review_verdict": "source_mapping_accepted",
+      "human_acceptance_recorded": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-006",
+      "source_title": "Sell Better - Jason Bay",
+      "original_status": "blocked_source_mapping",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-051"
+      ],
+      "accepted_canonical_title": "Jason Bay (Sell Better)",
+      "candidate_score": 0.689,
+      "source_mapping_resolved": true,
+      "quote_dependency_resolved": false,
+      "quote_clearance_follow_up_required": true,
+      "review_verdict": "source_mapping_accepted",
+      "human_acceptance_recorded": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-003",
+      "source_title": "Cognism Cold Calling Scripts",
+      "original_status": "blocked_source_mapping",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "accepted_source_ids": [
+        "rag004-source-028"
+      ],
+      "accepted_canonical_title": "Cognism Hub/Scripts",
+      "candidate_score": 0.587,
+      "source_mapping_resolved": true,
+      "quote_dependency_resolved": false,
+      "quote_clearance_follow_up_required": true,
+      "review_verdict": "source_mapping_accepted",
+      "human_acceptance_recorded": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "accepted_quote_clearance_items": [
+    {
+      "knowledge_id": "rag012-response-empathy-echo",
+      "chunk_id": "rag005-chunk-018",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-012"
+      ],
+      "source_title": "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else",
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "original_candidate_principle": "Reflecting Emotions (Listening with the Heart)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "When a customer sounds hesitant, concerned, or uncertain, reflect the concern as a tentative observation and invite correction.",
+      "safe_application": "Use a short empathy echo before the next question, such as naming that something may sound uncertain or important, then let the customer confirm or correct it.",
+      "do_not_use_when": "Do not diagnose emotion, tell the customer what they feel, or keep probing after they decline to discuss it.",
+      "guardrail_notes": "Customer words override vocal guesses. Treat emotion cues as weak context only.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-voice-purposeful-pause",
+      "chunk_id": "rag005-chunk-019",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-002"
+      ],
+      "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_candidate_principle": "Purposeful Pausing for Highlight",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use a brief pause around a high-value sentence only when it helps the customer process the point.",
+      "safe_application": "Use for important next-step, impact, or summary statements after the agent has earned the right to slow down.",
+      "do_not_use_when": "Do not add repeated pauses to normal information exchange, compliance text, or urgent customer questions.",
+      "guardrail_notes": "Pauses are delivery metadata only and must not change protected wording.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-voice-warm-volume",
+      "chunk_id": "rag005-chunk-021",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-076"
+      ],
+      "source_title": "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_candidate_principle": "Soft Palate Lift for Warm Volume",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Prefer clear, warm vocal energy over raw loudness when the agent needs to sound confident.",
+      "safe_application": "Use provider settings or delivery hints that preserve clarity without clipping, shouting, or harsh emphasis.",
+      "do_not_use_when": "Do not push loudness for objections, pricing, disclosures, or emotionally sensitive topics.",
+      "guardrail_notes": "This is a TTS rendering constraint, not a claim about human vocal anatomy.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-voice-declarative-statements",
+      "chunk_id": "rag005-chunk-023",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-002"
+      ],
+      "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_candidate_principle": "The Power Drop (Downward Inflection)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Render clear statements with declarative confidence while keeping genuine questions open and non-interrogative.",
+      "safe_application": "Use on concise summaries, next-step statements, and factual confirmations that the campaign allows.",
+      "do_not_use_when": "Do not use a forceful declarative tone for discovery questions, uncertain claims, compliance text, or customer disagreement.",
+      "guardrail_notes": "Confidence in delivery cannot upgrade weak facts into certainty.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-voice-energy-match-and-lead",
+      "chunk_id": "rag005-chunk-026",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-041"
+      ],
+      "source_title": "How to Build INSTANT Rapport With Strangers!",
+      "topic_ids": [
+        "emotional_intelligence"
+      ],
+      "original_candidate_principle": "Match, Mirror, and Lead",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Start near the customer's pace and energy, then gently guide the call toward a calm professional rhythm.",
+      "safe_application": "Use when the customer is quiet, fast, or cautious and the agent needs to avoid sounding mismatched.",
+      "do_not_use_when": "Do not mirror hostility, panic, yelling, accents, dialects, protected traits, or refusal language.",
+      "guardrail_notes": "Matching is about pace and intensity only; it cannot become mimicry or emotion certainty.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-voice-pace-variation",
+      "chunk_id": "rag005-chunk-027",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-003"
+      ],
+      "source_title": "13 Years of Communication Skills Knowledge in 53 minutes",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_candidate_principle": "Modulating Rate of Speech",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Vary response pace so routine context stays efficient and important or complex points slow down.",
+      "safe_application": "Use a moderate pace for setup context and a slower pace for price, risk, next steps, and customer-confirmed impact.",
+      "do_not_use_when": "Do not rush disclosures, pricing, consent, callback details, or anything the customer asks to repeat.",
+      "guardrail_notes": "Pacing must improve comprehension, not create pressure.",
+      "voice_or_prosody_advisory_only": true,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-response-low-pressure-visual-followup",
+      "chunk_id": "rag005-chunk-063",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-089"
+      ],
+      "source_title": "Kaltakquise am Telefon: 60 Minuten Cold Calling (Timo Sven Bauer)",
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "original_candidate_principle": "The Visual 'Loom' Follow-up Strategy. Using a folksy proverb to pivot from a verbal rejection to sending a highly visual, asynchronous video pitch.",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "When a customer resists an immediate explanation but has not refused contact, offer a low-pressure campaign-approved follow-up asset.",
+      "safe_application": "Use for a short video, visual summary, or written explainer only when the campaign supports it and the customer can choose whether to review it later.",
+      "do_not_use_when": "Do not offer further contact after an explicit no-contact request, do-not-call signal, or compliance block.",
+      "guardrail_notes": "Follow-up must reduce pressure and preserve consent; it cannot be a workaround for refusal.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-response-switching-friction",
+      "chunk_id": "rag005-chunk-071",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "source_title": "An Introduction to Behavioral Economics",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Sunk Cost Fallacy & Mental Accounting",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Acknowledge the customer's prior investment before discussing whether future value justifies a change.",
+      "safe_application": "Use when a customer hesitates because the current tool, provider, or process already took time, money, or effort to set up.",
+      "do_not_use_when": "Do not shame past decisions, exaggerate hidden costs, or imply the customer was wrong to choose their current path.",
+      "guardrail_notes": "The agent may compare future tradeoffs only with campaign-approved facts and customer-confirmed pain.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-response-explicit-preference-adaptation",
+      "chunk_id": "rag005-chunk-072",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-066"
+      ],
+      "source_title": "[1906.06725] Persuasion for Good",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Personalized Persuasion (Demographic & Psychological Adaptation)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Adapt explanation style to the customer's explicitly stated professional priorities and preferences.",
+      "safe_application": "Use customer-provided signals such as wanting numbers, simplicity, risk reduction, speed, service quality, or a human callback.",
+      "do_not_use_when": "Do not infer or use sensitive demographics, protected traits, private psychology, or manipulative personality labels.",
+      "guardrail_notes": "Personalization must stay transparent, professional, and based on the conversation or campaign profile.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-response-voluntary-micro-commitment",
+      "chunk_id": "rag005-chunk-073",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "source_title": "Science Of Persuasion",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Consistency",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Ask for small, voluntary confirmations before larger next steps.",
+      "safe_application": "Use to confirm one problem, one priority, or one acceptable next step before moving to scheduling or handoff.",
+      "do_not_use_when": "Do not trap customers with gotcha logic, false agreement chains, or commitments they did not freely choose.",
+      "guardrail_notes": "The customer must be able to say no, correct the agent, or choose a different next step.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-guardrail-anti-manipulation",
+      "chunk_id": "rag005-chunk-074",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag004-source-083"
+      ],
+      "source_title": "The Ethics of Manipulation (Stanford Encyclopedia of Philosophy)",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Guardrail: Non-Coercive Pressure & Trickery",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Block sales tactics that rely on trickery, emotional coercion, shame, gaslighting, or repeated pressure.",
+      "safe_application": "Use as a universal negative constraint before response wording, objection handling, retrieval, or follow-up suggestions.",
+      "do_not_use_when": "Do not make this configurable per campaign unless a stricter policy replaces it.",
+      "guardrail_notes": "This guardrail overrides persuasion tactics, voice style, campaign goals, and conversion pressure.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag012-response-transparent-choice-architecture",
+      "chunk_id": "rag005-chunk-076",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "source_title": "An Introduction to Behavioral Economics",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_candidate_principle": "Decoy Effect / Choice Architecture",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "When multiple campaign-approved options exist, present the tradeoffs plainly so the customer can choose.",
+      "safe_application": "Use simple comparisons that explain who each option fits, what it costs, and what the customer gives up.",
+      "do_not_use_when": "Do not hide alternatives, invent decoy choices, bury costs, or create confusing tiers to push a target option.",
+      "guardrail_notes": "Choice design must improve clarity and consent, not manipulate preference.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "runtime_integration_gate_required_before_use": true
+  }
+}

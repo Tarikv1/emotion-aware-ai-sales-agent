@@ -1,0 +1,73 @@
+{
+  "voice_milestone": "VOICE-036",
+  "experiment_scope": "Offline/runtime checkpoint for listening-feedback calibration after VOICE-035: German connected speech should keep a tiny breathing cue and slower intelligible speed, while weak emphasis targets should be blocked before provider rendering.",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "provider": "elevenlabs",
+  "runtime_cases": [
+    {
+      "case_id": "voice-036-de-relaxed-connected-speech",
+      "case_title": "German connected speech keeps a tiny breath and slower intelligible speed",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "expected_language": "de",
+      "expected_listening_calibration": "german_connected_speech_relaxed"
+    },
+    {
+      "case_id": "voice-036-en-emphasis-guard",
+      "case_title": "English weak adjective emphasis is blocked before provider rendering",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "transcript": "That sounds expensive.",
+      "candidate_response": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
+      "expected_language": "en",
+      "expected_listening_calibration": "weak_emphasis_target_blocked"
+    },
+    {
+      "case_id": "voice-036-de-protected-stop",
+      "case_title": "German protected do-not-call response remains exact",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "expected_language": "de",
+      "expected_listening_calibration": "protected_text_locked"
+    }
+  ],
+  "listening_calibration_policy": {
+    "style": "listening-feedback-calibration-v1",
+    "runs_after": [
+      "VOICE-015 prosody planning for emphasis guard",
+      "VOICE-035 connected speech for German breath/speed relaxation"
+    ],
+    "german_connected_break_seconds": 0.08,
+    "german_relaxed_speed": 1.065,
+    "german_relaxed_speed_bounds": [
+      1.03,
+      1.08
+    ],
+    "emphasis_guard": {
+      "default": "conservative",
+      "principle": "better no emphasis than wrong emphasis",
+      "blocked_single_word_examples": [
+        "practical",
+        "realistic",
+        "safe"
+      ],
+      "allowed_examples": [
+        "specialist",
+        "verified",
+        "non-binding",
+        "next step"
+      ]
+    },
+    "protected_text_locked": true
+  },
+  "privacy_boundary": {
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "private_audio_used": false
+  }
+}

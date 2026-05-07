@@ -1,0 +1,336 @@
+{
+  "voice_milestone": "VOICE-024",
+  "experiment_scope": "Live-capable A/B listening harness for isolating the audible impact of VOICE-023 speech realism. The same improved English or German ElevenLabs custom voice is used for both variants; only the VOICE-023 speech-realism layer changes.",
+  "provider": {
+    "provider_key": "elevenlabs",
+    "provider_name": "ElevenLabs",
+    "provider_rendering_mode": "break_tags_and_request_settings",
+    "model_id": "eleven_flash_v2_5",
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "audio_extension": "mp3",
+    "default_output_format": "mp3_44100_128",
+    "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+    "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "de": "ELEVENLABS_VOICE_ID_DE",
+      "en": "ELEVENLABS_VOICE_ID_EN"
+    },
+    "supported_cues": ["pause", "rate", "stretch"],
+    "unsupported_cues": ["pitch", "emphasis"],
+    "base_voice_settings": {
+      "stability": 0.38,
+      "similarity_boost": 0.78,
+      "style": 0.26,
+      "use_speaker_boost": true,
+      "speed": 1.07
+    },
+    "enable_logging": false
+  },
+  "voice_candidates": [
+    {
+      "candidate_id": "english_v2_improved",
+      "language": "en",
+      "version": "v2_improved",
+      "label": "English v2 improved sales voice",
+      "local_voice_config_key": "elevenlabs.candidates.english_v2_improved",
+      "fallback_voice_config_key": "elevenlabs.en"
+    },
+    {
+      "candidate_id": "german_v2_improved",
+      "language": "de",
+      "version": "v2_improved",
+      "label": "German v2 improved sales voice",
+      "local_voice_config_key": "elevenlabs.candidates.german_v2_improved",
+      "fallback_voice_config_key": "elevenlabs.de"
+    }
+  ],
+  "variants": [
+    {
+      "variant_id": "without_voice_023",
+      "label": "Without VOICE-023 speech realism",
+      "speech_realism_enabled": false,
+      "expected_role": "baseline provider rendering after spoken-text normalization and prosody only"
+    },
+    {
+      "variant_id": "with_voice_023",
+      "label": "With VOICE-023 speech realism",
+      "speech_realism_enabled": true,
+      "expected_role": "same voice and script with bounded thinking fillers and bundled delivery metadata enabled"
+    }
+  ],
+  "campaigns": [
+    {
+      "campaign_id": "campaign-voice-024-en-generic-sales",
+      "client_name": "Synthetic Generic Sales Team",
+      "product_name": "Specialist callback qualification",
+      "product_category": "vertical-agnostic-sales",
+      "customer_type": "b2b_or_b2c",
+      "country_or_region": "US",
+      "language": "en",
+      "approved_opening": "Hi, I am calling with a quick follow-up. Do you have a minute?",
+      "qualification_questions": [
+        "Would a short specialist callback be useful?",
+        "Is timing, price, or fit the main concern?"
+      ],
+      "required_disclosures": [
+        "A specialist must verify product-specific details."
+      ],
+      "spoken_text_normalization": {
+        "enabled": true,
+        "style": "professional-spoken",
+        "english_contractions": true,
+        "max_rewrites_per_response": 4
+      },
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 2,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      },
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 5,
+        "max_stretches_per_response": 1,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true
+      }
+    },
+    {
+      "campaign_id": "campaign-voice-024-de-safe-sales",
+      "client_name": "Synthetic German Call Center",
+      "product_name": "Safe specialist callback qualification",
+      "product_category": "regulated-or-sensitive-sales",
+      "customer_type": "b2c",
+      "country_or_region": "DE",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich rufe wegen einer kurzen Information an. Passt es gerade kurz?",
+      "qualification_questions": [
+        "Duerfen wir einen kurzen Rueckruf durch einen Fachberater vormerken?",
+        "Ist fuer Sie eher Zeitpunkt, Beitrag oder ein unverbindlicher Rueckruf wichtig?"
+      ],
+      "required_disclosures": [
+        "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+      ],
+      "spoken_text_normalization": {
+        "enabled": true,
+        "style": "professional-spoken",
+        "german_spoken_forms": true,
+        "max_rewrites_per_response": 4
+      },
+      "speech_realism": {
+        "enabled": true,
+        "style": "professional-human-german",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 2,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true
+      },
+      "speech_prosody": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_cues_per_response": 5,
+        "max_stretches_per_response": 1,
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true
+      }
+    }
+  ],
+  "listening_scripts": [
+    {
+      "script_id": "en-objection-thinking",
+      "language": "en",
+      "campaign_id": "campaign-voice-024-en-generic-sales",
+      "script_title": "English objection with thinking bridge",
+      "text_source": "synthetic sales-agent freeform response plus protected campaign question",
+      "customer_context": {
+        "emotion": "skeptical",
+        "sales_difficulty": "price-or-robot-objection"
+      },
+      "segments": [
+        {
+          "segment_id": "en-objection-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "I will keep this brief. The important thing is that we are not asking you to decide today; we are just checking whether a short specialist callback would be useful.",
+          "allow_spoken_text_normalization": true,
+          "allow_speech_realism": true,
+          "allow_prosody": true,
+          "allow_fillers": true,
+          "pause_after": "I'll keep this brief.",
+          "rate_target": "we're just checking",
+          "rate_mode": "quick",
+          "stretch_targets": ["brief"],
+          "emphasis_targets": ["important", "useful"],
+          "pitch_direction": "warm-soft"
+        },
+        {
+          "segment_id": "en-objection-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Would a short specialist callback be useful?"
+        }
+      ]
+    },
+    {
+      "script_id": "en-empathy-fit-check",
+      "language": "en",
+      "campaign_id": "campaign-voice-024-en-generic-sales",
+      "script_title": "English empathy and fit check",
+      "text_source": "synthetic sales-agent freeform response with product-neutral guardrail",
+      "customer_context": {
+        "emotion": "uncertain",
+        "sales_difficulty": "timing-objection"
+      },
+      "segments": [
+        {
+          "segment_id": "en-empathy-freeform",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "I understand the concern. What I can do is keep the next step practical: if there is no fit, we stop there, and if there is, a specialist can explain the details.",
+          "allow_spoken_text_normalization": true,
+          "allow_speech_realism": true,
+          "allow_prosody": true,
+          "allow_fillers": true,
+          "pause_after": "I understand the concern.",
+          "rate_target": "keep the next step practical",
+          "rate_mode": "quick",
+          "stretch_targets": ["concern"],
+          "emphasis_targets": ["practical", "specialist"],
+          "pitch_direction": "warm-soft"
+        }
+      ]
+    },
+    {
+      "script_id": "de-objection-thinking",
+      "language": "de",
+      "campaign_id": "campaign-voice-024-de-safe-sales",
+      "script_title": "German objection with thinking bridge",
+      "text_source": "synthetic German sales-agent freeform response plus protected campaign question",
+      "customer_context": {
+        "emotion": "skeptical",
+        "sales_difficulty": "regulated-product-caution"
+      },
+      "segments": [
+        {
+          "segment_id": "de-objection-freeform",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "Ich habe verstanden, dass Sie vorsichtig sind. Wichtig ist, dass wir nichts versprechen; wir klaeren nur, ob ein kurzer Fachberater-Rueckruf sinnvoll waere.",
+          "allow_spoken_text_normalization": true,
+          "allow_speech_realism": true,
+          "allow_prosody": true,
+          "allow_fillers": true,
+          "pause_after": "Ich hab verstanden, dass Sie vorsichtig sind.",
+          "rate_target": "wir klaeren nur",
+          "rate_mode": "quick",
+          "stretch_targets": ["Wichtig"],
+          "emphasis_targets": ["Wichtig", "Fachberater"],
+          "pitch_direction": "warm-soft"
+        },
+        {
+          "segment_id": "de-objection-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Duerfen wir einen kurzen Rueckruf durch einen Fachberater vormerken?"
+        }
+      ]
+    },
+    {
+      "script_id": "de-empathy-fit-check",
+      "language": "de",
+      "campaign_id": "campaign-voice-024-de-safe-sales",
+      "script_title": "German empathy and fit check",
+      "text_source": "synthetic German sales-agent freeform response with protected disclosure",
+      "customer_context": {
+        "emotion": "uncertain",
+        "sales_difficulty": "timing-or-trust-objection"
+      },
+      "segments": [
+        {
+          "segment_id": "de-empathy-freeform",
+          "segment_type": "freeform_empathy",
+          "source": "agent_freeform",
+          "text": "Ich verstehe den Punkt. Was ich machen kann, ist den naechsten Schritt sehr kurz halten: wenn es nicht passt, beenden wir es sauber, und wenn es passt, prueft ein Fachberater die Details.",
+          "allow_spoken_text_normalization": true,
+          "allow_speech_realism": true,
+          "allow_prosody": true,
+          "allow_fillers": true,
+          "pause_after": "Ich verstehe den Punkt.",
+          "rate_target": "den naechsten Schritt sehr kurz halten",
+          "rate_mode": "quick",
+          "stretch_targets": ["Punkt"],
+          "emphasis_targets": ["kurz", "Fachberater"],
+          "pitch_direction": "warm-soft"
+        },
+        {
+          "segment_id": "de-empathy-disclosure",
+          "segment_type": "required_disclosure",
+          "source": "campaign_config",
+          "text": "Der Rueckruf ist unverbindlich und ersetzt keine individuelle Beratung."
+        }
+      ]
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run-no-provider-call",
+    "live_call_requires_flag": "--live",
+    "max_timeout_seconds": 10,
+    "api_key_location": "environment-only",
+    "voice_id_location": "ignored config/local/voice_ids.json or explicit environment override",
+    "customer_audio_uploaded": false,
+    "synthetic_prompts_only": true,
+    "private_audio_used": false,
+    "voice_cloning_used": false,
+    "forbidden": [
+      "writing API keys to files",
+      "printing API keys",
+      "including raw voice IDs in generated JSON or Markdown",
+      "uploading customer audio",
+      "using private call-center audio",
+      "using voice cloning",
+      "running without a bounded timeout",
+      "claiming audio quality without human listening review"
+    ]
+  },
+  "quality_rubric": {
+    "scale": "1-5 human listening score after live audio exists",
+    "criteria": [
+      "first-five-seconds robot sensor",
+      "naturalness",
+      "sales-call pacing",
+      "pace variation",
+      "thinking-time realism",
+      "filler usefulness",
+      "pitch variation",
+      "emotional responsiveness",
+      "clarity",
+      "language pronunciation",
+      "low muffling or artifacts",
+      "trustworthiness",
+      "sales usefulness",
+      "without VOICE-023 vs with VOICE-023 preference",
+      "would use with real leads"
+    ],
+    "dry_run_rule": "Do not record quality scores in dry-run mode."
+  },
+  "expected": {
+    "script_count": 4,
+    "variant_count": 2,
+    "dry_run_result_count": 8,
+    "languages": ["de", "en"],
+    "provider_calls_made_by_default": false,
+    "raw_voice_ids_in_artifacts": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "private_audio_used": false,
+    "with_voice_023_min_bundle_count_per_script": 1,
+    "without_voice_023_bundle_count_per_script": 0
+  }
+}

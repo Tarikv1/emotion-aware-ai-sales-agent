@@ -84,6 +84,15 @@ def main() -> None:
         alias_voice, alias_source = local_voice_id_for_provider(provider, "en", path)
         assert_condition(alias_voice == "en-alias-voice-id", "Alias voice ID should resolve from local config.")
         assert_condition(alias_source == "local_voice_ids:elevenlabs.aliases.english_sales_voice_v1", alias_source or "missing source")
+
+        bom_path = TMP_DIR / "voice_ids_bom.json"
+        bom_path.write_text(
+            json.dumps({"elevenlabs": {"en": "en-bom-local-voice-id"}}),
+            encoding="utf-8-sig",
+        )
+        bom_voice, bom_source = local_voice_id_for_provider(provider, "en", bom_path)
+        assert_condition(bom_voice == "en-bom-local-voice-id", "UTF-8 BOM local config should resolve.")
+        assert_condition(bom_source == "local_voice_ids:elevenlabs.en", bom_source or "missing source")
     finally:
         shutil.rmtree(TMP_DIR, ignore_errors=True)
 

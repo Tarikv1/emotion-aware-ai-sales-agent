@@ -1,0 +1,1764 @@
+{
+  "response_generation_id": "RESP-001-local-guarded",
+  "provider": "local-guarded-composer",
+  "llm_used": false,
+  "requires_api_key": false,
+  "api_calls_made": false,
+  "generation_mode": "local deterministic composer with guardrail validation",
+  "campaign": {
+    "campaign_id": "campaign-prod-005-b2c-telecom",
+    "client_name": "Synthetic Telecom Call Center",
+    "product_name": "Internet and mobile plan review",
+    "product_category": "telecom",
+    "customer_type": "b2c",
+    "country_or_region": "DE",
+    "language": "de"
+  },
+  "stage": "relevance-check",
+  "input_type": "speech-final",
+  "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+  "policy_response": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+  "candidate_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+  "final_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+  "validation": {
+    "validator": "RESP-001 substring forbidden-claim check",
+    "checked_text_source": "candidate_response",
+    "passed": true,
+    "forbidden_claim_matches": [],
+    "required_repair": false,
+    "fallback_used": false,
+    "notes": "Candidate passed local guardrail validation."
+  },
+  "guardrails": {
+    "guardrail_source": "SalesCampaign plus universal response-safety rules",
+    "allowed_claims": [
+      "A human specialist can review available plan options.",
+      "Plan details must be checked against approved product data."
+    ],
+    "forbidden_claims": [
+      "guarantee",
+      "guaranteed",
+      "guaranteed savings",
+      "save you money",
+      "always be stable",
+      "no risk",
+      "covered for sure",
+      "payout",
+      "legal advice",
+      "medical advice",
+      "guaranteed coverage",
+      "guaranteed speed",
+      "unsupported technical claims"
+    ],
+    "required_disclosures": [
+      "Technical details depend on address and plan availability."
+    ],
+    "escalation_triggers": [
+      "coverage guarantee",
+      "technical certainty request",
+      "human request"
+    ],
+    "human_handoff_role": "telecom specialist",
+    "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
+  },
+  "decision_snapshot": {
+    "response_mode": "fast-response",
+    "campaign_language": "de",
+    "response_language": "de",
+    "detected_emotion": "skeptical-or-negative",
+    "sales_difficulty": "price-objection",
+    "interest_state": "maybe-interested",
+    "selected_strategy": "inquiry",
+    "next_action": "ask-follow-up",
+    "call_control": "continue-call",
+    "background_modules": [],
+    "first_response_latency_budget_ms": 700,
+    "first_response_latency_ms": 0
+  },
+  "response_constraints": {
+    "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
+    "max_sentences": 2,
+    "must_not_invent_product_claims": true,
+    "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+  },
+  "latency": {
+    "generation_latency_ms": 0,
+    "source_decision_latency_ms": 0,
+    "target": "keep generation fast enough for the live response path"
+  },
+  "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+  "voice_delivery": {
+    "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+    "enabled": true,
+    "provider_key": "elevenlabs",
+    "provider_name": "ElevenLabs Flash v2.5",
+    "language": "de",
+    "final_response_unchanged": true,
+    "provider_calls_made": false,
+    "requires_api_key": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "generated_audio_created": false,
+    "segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_objection_handling",
+        "source": "runtime_guarded_response",
+        "text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        }
+      }
+    ],
+    "spoken_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_objection_handling",
+        "source": "runtime_guarded_response",
+        "text": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_normalizations": [
+          {
+            "rule_id": "de-geht-es",
+            "before": "Geht es",
+            "after": "Geht's"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null
+      }
+    ],
+    "realistic_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_objection_handling",
+        "source": "runtime_guarded_response",
+        "text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_normalizations": [
+          {
+            "rule_id": "de-geht-es",
+            "before": "Geht es",
+            "after": "Geht's"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null,
+        "speech_realism_text_before": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_realism_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_realism_bundles": [
+          {
+            "bundle_id": "resp-002-final-response:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "filler": "also",
+            "position": "sentence_boundary",
+            "pause_ms": 183,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.108,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "eligible_for_speech_realism": true,
+        "speech_realism_protected_reason": null
+      }
+    ],
+    "interaction_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_objection_handling",
+        "source": "runtime_guarded_response",
+        "text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_normalizations": [
+          {
+            "rule_id": "de-geht-es",
+            "before": "Geht es",
+            "after": "Geht's"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null,
+        "speech_realism_text_before": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_realism_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_realism_bundles": [
+          {
+            "bundle_id": "resp-002-final-response:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "filler": "also",
+            "position": "sentence_boundary",
+            "pause_ms": 183,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.108,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "eligible_for_speech_realism": true,
+        "speech_realism_protected_reason": null,
+        "speech_interaction_text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_interaction_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_interaction_markers": [
+          {
+            "marker_id": "resp-002-final-response:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "resp-002-final-response",
+            "language": "de",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.075,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "eligible_for_speech_interaction": true,
+        "speech_interaction_protected_reason": null
+      }
+    ],
+    "imperfect_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_objection_handling",
+        "source": "runtime_guarded_response",
+        "text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "spoken_normalizations": [
+          {
+            "rule_id": "de-geht-es",
+            "before": "Geht es",
+            "after": "Geht's"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null,
+        "speech_realism_text_before": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_realism_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_realism_bundles": [
+          {
+            "bundle_id": "resp-002-final-response:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "filler": "also",
+            "position": "sentence_boundary",
+            "pause_ms": 183,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.108,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "eligible_for_speech_realism": true,
+        "speech_realism_protected_reason": null,
+        "speech_interaction_text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_interaction_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_interaction_markers": [
+          {
+            "marker_id": "resp-002-final-response:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "resp-002-final-response",
+            "language": "de",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.075,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "eligible_for_speech_interaction": true,
+        "speech_interaction_protected_reason": null,
+        "speech_imperfections_text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_imperfections_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "speech_imperfections": [],
+        "eligible_for_speech_imperfections": true,
+        "speech_imperfections_protected_reason": null
+      }
+    ],
+    "spoken_text_normalization": {
+      "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+      "language": "de",
+      "profile": {
+        "enabled": true,
+        "style": "professional-spoken",
+        "english_contractions": true,
+        "german_spoken_forms": true,
+        "max_rewrites_per_response": 4,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ]
+      },
+      "rule_count": 5,
+      "segment_count": 1,
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "normalization_count": 1,
+      "normalizations": [
+        {
+          "rule_id": "de-geht-es",
+          "before": "Geht es",
+          "after": "Geht's",
+          "language": "de",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling"
+        }
+      ],
+      "input_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "allow_fillers": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true,
+          "eligible_for_prosody": true,
+          "decision_source": {
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call"
+          }
+        }
+      ],
+      "output_segments": [
+        {
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "eligible_for_spoken_normalization": true,
+          "protected_reason": null,
+          "text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "normalizations": [
+            {
+              "rule_id": "de-geht-es",
+              "before": "Geht es",
+              "after": "Geht's"
+            }
+          ]
+        }
+      ],
+      "tts_text": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "validation": {
+        "validator": "VOICE-022 segment protection and spoken-normalization check",
+        "passed": true,
+        "protected_segment_changes": [],
+        "normalization_in_protected_segments": [],
+        "source_protection_changes": [],
+        "notes": "Spoken-text normalization preserved protected segments and sources."
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing protected campaign questions",
+          "changing disclosures or compliance statements",
+          "changing call-control lines",
+          "adding claims or promises"
+        ]
+      }
+    },
+    "speech_realism": {
+      "speech_realism_id": "VOICE-023-speech-realism-layer",
+      "language": "de",
+      "profile": {
+        "enabled": true,
+        "style": "professional-human",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 2,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true,
+        "min_chars_for_thinking_bundle": 72,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "pause_ms_ranges": {
+          "thinking": [
+            150,
+            260
+          ],
+          "empathy": [
+            120,
+            220
+          ]
+        },
+        "rate_ranges": {
+          "follow_through": [
+            1.04,
+            1.12
+          ],
+          "empathy": [
+            0.96,
+            1.03
+          ]
+        }
+      },
+      "segment_count": 1,
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "bundle_quota": 1,
+      "bundle_count": 1,
+      "speech_bundles": [
+        {
+          "bundle_id": "resp-002-final-response:thinking:1",
+          "bundle_type": "thinking_filler",
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "filler": "also",
+          "position": "sentence_boundary",
+          "pause_ms": 183,
+          "pitch_intent": "slight-rise",
+          "rate_after": 1.108,
+          "delivery_intent": "thinking-then-confident-follow-through",
+          "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+          "insertion_strategy": "sentence_boundary"
+        }
+      ],
+      "customer_state_suppressed": false,
+      "input_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "text": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "allow_fillers": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true,
+          "eligible_for_prosody": true,
+          "decision_source": {
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call"
+          },
+          "spoken_text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "spoken_text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "spoken_normalizations": [
+            {
+              "rule_id": "de-geht-es",
+              "before": "Geht es",
+              "after": "Geht's"
+            }
+          ],
+          "eligible_for_spoken_normalization": true,
+          "spoken_protected_reason": null
+        }
+      ],
+      "output_segments": [
+        {
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "eligible_for_speech_realism": true,
+          "protected_reason": null,
+          "text_before": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "bundles": [
+            {
+              "bundle_id": "resp-002-final-response:thinking:1",
+              "bundle_type": "thinking_filler",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "filler": "also",
+              "position": "sentence_boundary",
+              "pause_ms": 183,
+              "pitch_intent": "slight-rise",
+              "rate_after": 1.108,
+              "delivery_intent": "thinking-then-confident-follow-through",
+              "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+              "insertion_strategy": "sentence_boundary"
+            }
+          ]
+        }
+      ],
+      "tts_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "validation": {
+        "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+        "passed": true,
+        "protected_segment_changes": [],
+        "bundle_in_protected_segments": [],
+        "language_mismatch_segments": [],
+        "unsafe_pause_bundles": [],
+        "unsafe_rate_bundles": [],
+        "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+      },
+      "provider_calls_made": false,
+      "requires_api_key": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false,
+      "generated_audio_created": false,
+      "runtime_boundary": {
+        "position": "after spoken text normalization and before prosody/provider rendering",
+        "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing campaign questions",
+          "changing disclosures or compliance statements",
+          "changing call-control lines",
+          "adding claims, promises, or pressure"
+        ]
+      }
+    },
+    "speech_interaction": {
+      "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+      "language": "de",
+      "profile": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_markers_per_response": 2,
+        "allow_backchannels": true,
+        "allow_latency_acknowledgement": true,
+        "allow_sales_pace_variation": true,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ]
+      },
+      "customer_state_used": {},
+      "unsafe_claim_context": false,
+      "interaction_markers": [
+        {
+          "marker_id": "resp-002-final-response:sales_pace_variation",
+          "marker_type": "sales_pace_variation",
+          "segment_id": "resp-002-final-response",
+          "language": "de",
+          "visible": false,
+          "marker_text": "",
+          "placement": "whole_segment",
+          "pause_ms": 0,
+          "pitch_intent": "confident-forward",
+          "rate_multiplier": 1.075,
+          "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+        }
+      ],
+      "marker_count": 1,
+      "output_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "eligible": true,
+          "protection_reason": null,
+          "markers": [
+            {
+              "marker_id": "resp-002-final-response:sales_pace_variation",
+              "marker_type": "sales_pace_variation",
+              "segment_id": "resp-002-final-response",
+              "language": "de",
+              "visible": false,
+              "marker_text": "",
+              "placement": "whole_segment",
+              "pause_ms": 0,
+              "pitch_intent": "confident-forward",
+              "rate_multiplier": 1.075,
+              "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+            }
+          ]
+        }
+      ],
+      "tts_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "evaluation_rubric": {
+        "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+        "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+        "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+        "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+        "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+        "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+        "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+        "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_changes": [],
+        "protected_marker_violations": [],
+        "language_mismatched_markers": [],
+        "unsafe_agreement_markers": [],
+        "rate_range_violations": [],
+        "missing_rubric_keys": []
+      },
+      "provider_calls_made": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false
+    },
+    "speech_imperfections": {
+      "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+      "language": "de",
+      "profile": {
+        "enabled": false,
+        "style": "professional-human",
+        "max_imperfections_per_response": 1,
+        "min_chars_for_imperfection": 60,
+        "allow_clarifying_rephrases": true,
+        "allow_breath_pauses": true,
+        "allow_soft_restarts": true,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ]
+      },
+      "customer_state_used": {},
+      "unsafe_claim_context": false,
+      "imperfections": [],
+      "imperfection_count": 0,
+      "output_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "eligible": true,
+          "protection_reason": null,
+          "imperfections": []
+        }
+      ],
+      "tts_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "evaluation_rubric": {
+        "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+        "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+        "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+        "placement": "Does the imperfection occur at a sentence or thought boundary?",
+        "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_changes": [],
+        "protected_imperfection_violations": [],
+        "language_mismatched_imperfections": [],
+        "unsafe_visible_imperfections": []
+      },
+      "provider_calls_made": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false
+    },
+    "prosody": {
+      "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
+      "language": "de",
+      "profile": {
+        "enabled": true,
+        "style": "professional-human",
+        "pause_variation_enabled": true,
+        "rate_variation_enabled": true,
+        "emphasis_enabled": true,
+        "pitch_variation_enabled": true,
+        "stretch_enabled": true,
+        "max_cues_per_response": 4,
+        "max_stretches_per_response": 1,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "pause_ms_ranges": {
+          "clause": [
+            140,
+            260
+          ],
+          "thinking": [
+            180,
+            320
+          ],
+          "transition": [
+            220,
+            380
+          ]
+        },
+        "rate_ranges": {
+          "quick": [
+            1.03,
+            1.08
+          ],
+          "careful": [
+            0.9,
+            0.96
+          ]
+        }
+      },
+      "randomization": {
+        "seeded": true,
+        "seed": "RESP-001-local-guarded:campaign-prod-005-b2c-telecom:relevance-check:Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+        "deterministic_for_same_input": true,
+        "dimensions": [
+          "pause duration",
+          "rate ratio",
+          "pitch contour delta",
+          "stretch hold"
+        ]
+      },
+      "segment_count": 1,
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "cue_count": 2,
+      "cue_counts": {
+        "emphasis": 0,
+        "pause": 1,
+        "pitch": 1,
+        "rate": 0,
+        "stretch": 0
+      },
+      "protected_segment_cue_count": 0,
+      "input_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "allow_fillers": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true,
+          "eligible_for_prosody": true,
+          "decision_source": {
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call"
+          },
+          "spoken_text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "spoken_text_after": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "spoken_normalizations": [
+            {
+              "rule_id": "de-geht-es",
+              "before": "Geht es",
+              "after": "Geht's"
+            }
+          ],
+          "eligible_for_spoken_normalization": true,
+          "spoken_protected_reason": null,
+          "speech_realism_text_before": "Das verstehe ich. Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speech_realism_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speech_realism_bundles": [
+            {
+              "bundle_id": "resp-002-final-response:thinking:1",
+              "bundle_type": "thinking_filler",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "filler": "also",
+              "position": "sentence_boundary",
+              "pause_ms": 183,
+              "pitch_intent": "slight-rise",
+              "rate_after": 1.108,
+              "delivery_intent": "thinking-then-confident-follow-through",
+              "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+              "insertion_strategy": "sentence_boundary"
+            }
+          ],
+          "eligible_for_speech_realism": true,
+          "speech_realism_protected_reason": null,
+          "speech_interaction_text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speech_interaction_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speech_interaction_markers": [
+            {
+              "marker_id": "resp-002-final-response:sales_pace_variation",
+              "marker_type": "sales_pace_variation",
+              "segment_id": "resp-002-final-response",
+              "language": "de",
+              "visible": false,
+              "marker_text": "",
+              "placement": "whole_segment",
+              "pause_ms": 0,
+              "pitch_intent": "confident-forward",
+              "rate_multiplier": 1.075,
+              "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+            }
+          ],
+          "eligible_for_speech_interaction": true,
+          "speech_interaction_protected_reason": null,
+          "speech_imperfections_text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speech_imperfections_text_after": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speech_imperfections": [],
+          "eligible_for_speech_imperfections": true,
+          "speech_imperfections_protected_reason": null
+        }
+      ],
+      "output_segments": [
+        {
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "source": "runtime_guarded_response",
+          "eligible_for_prosody": true,
+          "protected_reason": null,
+          "text_before": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "tts_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "debug_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "cue_count": 2,
+          "cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "target": "Das verstehe ich.",
+              "direction": "slight-rise",
+              "relative_pitch_semitones": 0.371,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01"
+            },
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "after": "Das verstehe ich.",
+              "mode": "thinking",
+              "duration_ms": 199,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02"
+            }
+          ]
+        }
+      ],
+      "prosody_plan": [
+        {
+          "type": "pitch",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "target": "Das verstehe ich.",
+          "direction": "slight-rise",
+          "relative_pitch_semitones": 0.371,
+          "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+          "cue_id": "cue-01"
+        },
+        {
+          "type": "pause",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "after": "Das verstehe ich.",
+          "mode": "thinking",
+          "duration_ms": 199,
+          "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+          "cue_id": "cue-02"
+        }
+      ],
+      "tts_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "debug_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "provider_rendering_boundary": {
+        "clean_tts_text": "Plain text remains available for every provider.",
+        "debug_text": "Debug text may show emphasis or stretch cues for human review.",
+        "cartesia": "Future adapter may map pause/rate/pitch cues to supported SSML-style controls.",
+        "elevenlabs": "Future adapter may map cues to punctuation shaping, model tags, or voice settings only after provider tests.",
+        "fallback": "If a provider cannot represent a cue safely, drop the cue and speak clean text."
+      },
+      "validation": {
+        "validator": "VOICE-015 segment protection and bounded prosody check",
+        "passed": true,
+        "protected_segment_changes": [],
+        "cue_in_protected_segments": [],
+        "unsafe_pause_cues": [],
+        "unsafe_rate_cues": [],
+        "unsafe_pitch_cues": [],
+        "markdown_in_tts_text": [],
+        "notes": "Prosody cues stayed bounded and outside protected segments."
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+      }
+    },
+    "voice_pacing_calibration": {
+      "voice_milestone": "VOICE-034",
+      "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+      "enabled": true,
+      "language": "de",
+      "profile": {
+        "enabled": true,
+        "style": "professional-sales-pacing-v2",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "speed_bounds": {
+          "en": [
+            1.07,
+            1.15
+          ],
+          "de": [
+            1.09,
+            1.16
+          ]
+        },
+        "break_bounds_ms": {
+          "en": [
+            80,
+            240
+          ],
+          "de": [
+            60,
+            210
+          ]
+        },
+        "break_scale_ranges": {
+          "en": [
+            0.62,
+            0.82
+          ],
+          "de": [
+            0.48,
+            0.68
+          ]
+        },
+        "max_breaks_per_segment": 3,
+        "german_word_gap_reduction": true,
+        "min_provider_tags_preserved": 0
+      },
+      "german_word_gap_reduction_applied": true,
+      "source_provider_tag_count": 1,
+      "calibrated_provider_tag_count": 1,
+      "average_break_duration_before_ms": 199.0,
+      "average_break_duration_after_ms": 128.0,
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "protected": false,
+          "protected_reason": null,
+          "tuned": true,
+          "source_text": "Das verstehe ich. <break time=\"0.199s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "pacing_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "speed_ratio": 1.111,
+          "break_operations": [
+            {
+              "operation": "compress_break",
+              "original_ms": 199,
+              "tuned_ms": 128,
+              "scale": 0.645
+            }
+          ],
+          "provider_hint": "Professional sales pacing calibrated; wording unchanged."
+        }
+      ],
+      "tuned_segment_count": 1,
+      "average_speed_ratio": 1.111,
+      "calibrated_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "de",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "rendered_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "rendered_text_html_preview": "Das verstehe ich. &lt;break time=\"0.128s\" /&gt; Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.111
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+            "rendered_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+            "provider_tags_inserted": [
+              "<break time=\"0.199s\" />"
+            ],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_objection_handling",
+                "after": "Das verstehe ich.",
+                "mode": "thinking",
+                "duration_ms": 199,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_objection_handling",
+                "target": "Das verstehe ich.",
+                "direction": "slight-rise",
+                "relative_pitch_semitones": 0.371,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.111,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 199,
+                  "tuned_ms": 128,
+                  "scale": 0.645
+                }
+              ]
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "after": "Das verstehe ich.",
+            "mode": "thinking",
+            "duration_ms": 199,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "target": "Das verstehe ich.",
+            "direction": "slight-rise",
+            "relative_pitch_semitones": 0.371,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 1,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_text_changes": [],
+        "speed_out_of_bounds": [],
+        "protected_tags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-rendered pacing tags and voice speed settings only; wording and protected text stay exact"
+      }
+    },
+    "voice_connected_speech": {
+      "voice_milestone": "VOICE-035",
+      "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+      "enabled": true,
+      "language": "de",
+      "profile": {
+        "enabled": true,
+        "style": "professional-connected-speech-v1",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "join_sentence_to_thinking_filler": true,
+        "join_short_bridge_sentence": true,
+        "max_flow_joins_per_segment": 3
+      },
+      "source_provider_tag_count": 1,
+      "connected_provider_tag_count": 0,
+      "flow_join_count": 1,
+      "tuned_segment_count": 1,
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "protected": false,
+          "protected_reason": null,
+          "source_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "connected_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "flow_join_count": 1,
+          "flow_operations": [
+            {
+              "rule_id": "de-join-also-after-short-sentence",
+              "before": ". <break time=\"0.128s\" /> Also, Geht's",
+              "after_text_changed": true,
+              "remaining_same_pattern": false
+            }
+          ],
+          "provider_hint": "Sentence-boundary filler and short bridge phrases joined for provider-facing spoken flow."
+        }
+      ],
+      "connected_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "de",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "rendered_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "rendered_text_html_preview": "Das verstehe ich, also geht&#x27;s Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.111
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+            "rendered_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_objection_handling",
+                "after": "Das verstehe ich.",
+                "mode": "thinking",
+                "duration_ms": 199,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_objection_handling",
+                "target": "Das verstehe ich.",
+                "direction": "slight-rise",
+                "relative_pitch_semitones": 0.371,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.111,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 199,
+                  "tuned_ms": 128,
+                  "scale": 0.645
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "de-join-also-after-short-sentence",
+                  "before": ". <break time=\"0.128s\" /> Also, Geht's",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "after": "Das verstehe ich.",
+            "mode": "thinking",
+            "duration_ms": 199,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling",
+            "target": "Das verstehe ich.",
+            "direction": "slight-rise",
+            "relative_pitch_semitones": 0.371,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_text_changes": [],
+        "markdown_in_rendered_text": false,
+        "boundary_flags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-facing connected-speech punctuation for eligible freeform TTS text only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing protected campaign questions",
+          "changing compliance, handoff, hangup, or do-not-call text",
+          "adding product claims or promises"
+        ]
+      }
+    },
+    "provider_rendering": {
+      "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs Flash v2.5",
+      "provider_rendering_mode": "break_tags_and_request_settings",
+      "model_id": "eleven_flash_v2_5",
+      "language": "de",
+      "case_id": "RESP-002-runtime-turn",
+      "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "rendered_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "rendered_text_html_preview": "Das verstehe ich, also geht&#x27;s Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.111
+      },
+      "segment_renderings": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "protected_reason": null,
+          "eligible_for_prosody": true,
+          "plain_text": "Das verstehe ich. Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "rendered_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "provider_tags_inserted": [],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "after": "Das verstehe ich.",
+              "mode": "thinking",
+              "duration_ms": 199,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_objection_handling",
+              "target": "Das verstehe ich.",
+              "direction": "slight-rise",
+              "relative_pitch_semitones": 0.371,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            }
+          ],
+          "voice_pacing_calibration": {
+            "tuned": true,
+            "speed_ratio": 1.111,
+            "break_operations": [
+              {
+                "operation": "compress_break",
+                "original_ms": 199,
+                "tuned_ms": 128,
+                "scale": 0.645
+              }
+            ]
+          },
+          "voice_connected_speech": {
+            "tuned": true,
+            "flow_join_count": 1,
+            "flow_operations": [
+              {
+                "rule_id": "de-join-also-after-short-sentence",
+                "before": ". <break time=\"0.128s\" /> Also, Geht's",
+                "after_text_changed": true,
+                "remaining_same_pattern": false
+              }
+            ]
+          }
+        }
+      ],
+      "mapped_cues": [
+        {
+          "type": "pause",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "after": "Das verstehe ich.",
+          "mode": "thinking",
+          "duration_ms": 199,
+          "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+          "cue_id": "cue-02",
+          "rendered_as": "break_tag"
+        }
+      ],
+      "unsupported_cues": [
+        {
+          "type": "pitch",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_objection_handling",
+          "target": "Das verstehe ich.",
+          "direction": "slight-rise",
+          "relative_pitch_semitones": 0.371,
+          "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+          "cue_id": "cue-01",
+          "reason": "elevenlabs_pitch_direct_mapping_not_used"
+        }
+      ],
+      "mapped_cue_counts": {
+        "emphasis": 0,
+        "pause": 1,
+        "pitch": 0,
+        "rate": 0,
+        "stretch": 0
+      },
+      "unsupported_cue_counts": {
+        "emphasis": 0,
+        "pause": 0,
+        "pitch": 1,
+        "rate": 0,
+        "stretch": 0
+      },
+      "provider_tag_count": 0,
+      "protected_segment_provider_tag_count": 0,
+      "api_call_made": false,
+      "requires_api_key": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false,
+      "generated_audio_created": false,
+      "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+      "pacing_calibrated": true,
+      "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+      "connected_speech_applied": true,
+      "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow"
+    },
+    "validation": {
+      "validator": "RESP-002 guarded response voice delivery check",
+      "passed": true,
+      "final_response_unchanged": true,
+      "tts_text_equals_final_response": false,
+      "spoken_text_normalization_passed": true,
+      "speech_realism_passed": true,
+      "speech_interaction_passed": true,
+      "speech_imperfections_passed": true,
+      "voice_pacing_calibration_passed": true,
+      "voice_connected_speech_passed": true,
+      "prosody_validation_passed": true,
+      "provider_validation": {
+        "passed": true,
+        "markdown_in_rendered_text": false,
+        "protected_segment_tags": [],
+        "protected_segment_changes": []
+      },
+      "protected_segment_change_count": 0,
+      "speech_realism_protected_segment_change_count": 0,
+      "speech_interaction_protected_segment_change_count": 0,
+      "speech_interaction_protected_marker_count": 0,
+      "speech_imperfections_protected_segment_change_count": 0,
+      "speech_imperfections_protected_violation_count": 0,
+      "speech_imperfections_unsafe_visible_count": 0,
+      "voice_pacing_tuned_segment_count": 1,
+      "voice_connected_speech_flow_join_count": 1,
+      "cue_in_protected_segment_count": 0,
+      "notes": "Runtime voice delivery preserved guarded text and kept provider rendering offline."
+    },
+    "runtime_boundary": {
+      "position": "after RESP-001 guarded response generation and before live TTS",
+      "changes_allowed": "delivery metadata, safe spoken freeform TTS wording, interaction prosody cues, opt-in controlled imperfections, pacing calibration, connected-speech flow, and provider-specific TTS input only",
+      "changes_forbidden": [
+        "changing final_response",
+        "changing call_control",
+        "changing selected strategy",
+        "adding claims",
+        "editing protected campaign or compliance text",
+        "calling a provider without an explicit later live TTS checkpoint"
+      ]
+    }
+  },
+  "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+  "tts_delivery": {
+    "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+    "source_runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+    "provider_key": "elevenlabs",
+    "provider_id": "elevenlabs-stream",
+    "provider_name": "ElevenLabs",
+    "endpoint_type": "tts-http-stream",
+    "model_id": "eleven_flash_v2_5",
+    "language": "de",
+    "live_call_requested": false,
+    "requires_api_key": false,
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+    "api_key_present": false,
+    "voice_id_present": true,
+    "api_key_value_logged": false,
+    "voice_id_value_logged": false,
+    "customer_audio_uploaded": false,
+    "generated_text_sent_to_provider": false,
+    "synthetic_prompt_only": true,
+    "voice_cloning_used": false,
+    "custom_voice_used": false,
+    "timeout_seconds": 8.0,
+    "tts_input_source": "provider_rendered_text",
+    "tts_input_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+    "provider_rendering_used": true,
+    "voice_settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.75,
+      "style": 0.0,
+      "use_speaker_boost": true,
+      "speed": 1.111
+    },
+    "request_preview": {
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false",
+      "headers": {
+        "xi-api-key": "<redacted>",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "model_id": "eleven_flash_v2_5",
+        "language_code": "de",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.111
+        }
+      }
+    },
+    "provider_calls_made": false,
+    "audio_file_created": false,
+    "audio_output_path": null,
+    "audio_byte_size": 0,
+    "fallback_used": true,
+    "fallback_reason": "dry-run-mode",
+    "http_status": null,
+    "response_content_type": null,
+    "request_id_present": false,
+    "time_to_first_audio_ms": null,
+    "total_provider_latency_ms": 0,
+    "provider_error": null,
+    "provider_error_summary": {
+      "type": null,
+      "code": null,
+      "message": null
+    },
+    "asset_log": {
+      "asset_log_id": "RESP-003-generated-audio-asset-log",
+      "experiment_id": "RESP-003-runtime-live-tts",
+      "asset_id": "no-audio-created",
+      "output_path": "",
+      "audio_format": "mp3",
+      "provider": "elevenlabs",
+      "provider_model": "eleven_flash_v2_5",
+      "provider_voice_env_var": "local_voice_ids:elevenlabs.de",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "status": "not created",
+      "inputs": {
+        "source_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "source_text_path": "runtime guarded response packet",
+        "provider_rendered_text": "Das verstehe ich, also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "synthetic_prompt": true,
+        "customer_audio_uploaded": false,
+        "source_audio_used": false,
+        "source_audio_rights": "not applicable",
+        "person_or_voice_likeness_involved": false,
+        "voice_cloning_used": false,
+        "consent_note": "No customer audio or voice cloning used by RESP-003."
+      },
+      "run_boundary": {
+        "network_used": false,
+        "upload_used": false,
+        "cost": "none",
+        "api_key_location": "environment-only",
+        "environment_variables_used": [
+          "ELEVENLABS_API_KEY",
+          "local_voice_ids:elevenlabs.de"
+        ],
+        "command": "scripts/generate_runtime_tts_delivery.py",
+        "timeout_seconds": 8.0,
+        "fallback_used": true,
+        "provider_error": null
+      },
+      "review": {
+        "human_listening_review": false,
+        "naturalness": null,
+        "clarity": null,
+        "language_pronunciation": null,
+        "pacing": null,
+        "muffling_or_artifacts": null,
+        "emotional_appropriateness": null,
+        "trustworthiness": null,
+        "sales_usefulness": null,
+        "compliance_concern": false,
+        "decision": "needs review",
+        "follow_up": ""
+      }
+    },
+    "runtime_boundary": {
+      "position": "after RESP-002 runtime voice delivery and before playback",
+      "default_mode": "dry-run-no-provider-call",
+      "live_call_requires": [
+        "--live",
+        "ELEVENLABS_API_KEY",
+        "local_voice_ids:elevenlabs.de"
+      ],
+      "changes_allowed": "audio generation from approved TTS input only",
+      "changes_forbidden": [
+        "changing final_response",
+        "changing sales policy decisions",
+        "writing API keys or voice IDs to files",
+        "uploading customer audio",
+        "using voice cloning",
+        "running without a bounded timeout",
+        "making audio quality claims without human listening review"
+      ]
+    },
+    "validation": {
+      "validator": "RESP-003 runtime live TTS safety check",
+      "passed": true,
+      "final_response_unchanged": true,
+      "redacted_request_preview": true,
+      "provider_calls_made": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false,
+      "timeout_within_limit": true,
+      "notes": "RESP-003 respected provider boundary and audio asset logging rules."
+    }
+  }
+}

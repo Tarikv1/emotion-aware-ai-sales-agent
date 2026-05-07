@@ -1,0 +1,26 @@
+{
+  "quote_clearance_batches_id": "RAG-016-quote-clearance-batches",
+  "title": "RAG quote-clearance batches",
+  "description": "Organizes all remaining original quote-clearance blockers into human-review batches without applying quote decisions or enabling runtime retrieval.",
+  "recommended_next_checkpoint": "RAG-016A-quote-clearance-decision-slice",
+  "default_rag015_result": "research/experiments/generated/RAG-015-source-mapping-batches/result.json",
+  "default_rag013_result": "research/experiments/generated/RAG-013-cleanup-strategy/result.json",
+  "default_rag012_result": "research/experiments/generated/RAG-012-accepted-cleanup/result.json",
+  "default_rag009_result": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+  "priority_rules": [
+    "Batch 1: ethical persuasion and behavioral-science candidates that need low-pressure project-owned response wording or rejection.",
+    "Batch 2: speech-tone, cadence, and prosody candidates that can only become advisory delivery guidance.",
+    "Batch 3: emotion-recognition and dataset candidates that can only become limitations-aware advisory delivery guidance."
+  ],
+  "runtime_retrieval_enabled": false,
+  "retrieval_used_in_runtime": false,
+  "chunk_import_enabled": false,
+  "auto_promotion_enabled": false,
+  "metadata_only": true,
+  "notes": [
+    "RAG-016 is a batch packet only.",
+    "No quote-clearance decisions are accepted by this checkpoint.",
+    "Voice and prosody candidates remain advisory-only.",
+    "Runtime retrieval remains disabled."
+  ]
+}

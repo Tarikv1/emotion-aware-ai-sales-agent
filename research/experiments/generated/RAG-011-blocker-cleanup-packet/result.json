@@ -1,0 +1,351 @@
+{
+  "blocker_cleanup_packet_id": "RAG-011-blocker-cleanup-packet",
+  "inputs": {
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "rag006_packet_path": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+    "case_path": "research/experiments/cases/rag-011-blocker-cleanup-packet.json"
+  },
+  "case_config": {
+    "min_source_suggestion_score": 0.55,
+    "max_quote_clearance_cards": 12
+  },
+  "summary": {
+    "source_mapping_blocker_count": 63,
+    "source_mapping_candidate_group_count": 3,
+    "source_mapping_candidate_chunk_count": 5,
+    "quote_clearance_blocker_count": 42,
+    "quote_clearance_review_card_count": 12,
+    "potential_blocker_reduction_after_human_acceptance": 17,
+    "blockers_resolved_now": 0,
+    "auto_promoted_chunk_count": 0,
+    "runtime_retrieval_enabled": false,
+    "retrieval_used_in_runtime": false,
+    "chunk_import_enabled": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false,
+    "source_excerpt_text_stored": false
+  },
+  "source_mapping_candidates": [
+    {
+      "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+      "chunk_ids": [
+        "rag005-chunk-081",
+        "rag005-chunk-084"
+      ],
+      "chunk_count": 2,
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "candidate_source_id": "rag004-source-025",
+      "candidate_canonical_title": "Behavioral Science Concepts (BE Hub)",
+      "candidate_score": 0.666,
+      "score_threshold": 0.55,
+      "human_acceptance_required": true,
+      "auto_apply_allowed": false,
+      "review_action": "human_confirm_source_mapping_before_chunk_reclassification"
+    },
+    {
+      "source_title": "Sell Better - Jason Bay",
+      "chunk_ids": [
+        "rag005-chunk-005",
+        "rag005-chunk-006"
+      ],
+      "chunk_count": 2,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_id": "rag004-source-051",
+      "candidate_canonical_title": "Jason Bay (Sell Better)",
+      "candidate_score": 0.689,
+      "score_threshold": 0.55,
+      "human_acceptance_required": true,
+      "auto_apply_allowed": false,
+      "review_action": "human_confirm_source_mapping_before_chunk_reclassification"
+    },
+    {
+      "source_title": "Cognism Cold Calling Scripts",
+      "chunk_ids": [
+        "rag005-chunk-003"
+      ],
+      "chunk_count": 1,
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "candidate_source_id": "rag004-source-028",
+      "candidate_canonical_title": "Cognism Hub/Scripts",
+      "candidate_score": 0.587,
+      "score_threshold": 0.55,
+      "human_acceptance_required": true,
+      "auto_apply_allowed": false,
+      "review_action": "human_confirm_source_mapping_before_chunk_reclassification"
+    }
+  ],
+  "quote_clearance_cards": [
+    {
+      "chunk_id": "rag005-chunk-018",
+      "source_title": "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else",
+      "source_ids": [
+        "rag004-source-012"
+      ],
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "original_topic_id": "consultative_selling_discovery",
+      "principle": "Reflecting Emotions (Listening with the Heart)",
+      "application": "Don't just respond to the logical words; respond to the emotional tone. If a prospect sounds hesitant, acknowledge the hesitation directly to make them feel understood and allow them to clarify.",
+      "when_not_to_use": "Do not tell the user how they feel forcefully; frame it as an observation (e.g., \"It sounds like...\"). Do not play psychologist.",
+      "voice_or_prosody_advisory_only": true,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-019",
+      "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+      "source_ids": [
+        "rag004-source-002"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+      "principle": "Purposeful Pausing for Highlight",
+      "application": "Pausing for 1-2 seconds *before* and *after* a critical statement builds anticipation, allows the listener to process the information, and gives the idea conversational weight.",
+      "when_not_to_use": "Do not overuse pauses in standard informational exchanges, which will make the AI sound glitchy or lagged.",
+      "voice_or_prosody_advisory_only": true,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-021",
+      "source_title": "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day",
+      "source_ids": [
+        "rag004-source-076"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+      "principle": "Soft Palate Lift for Warm Volume",
+      "application": "Creating volume through the throat sounds strained, aggressive, and harsh. Lifting the soft palate (the pre-yawn posture) allows for rich, resonant volume that conveys warmth and confidence without sounding like shouting.",
+      "when_not_to_use": "AI does not have physical biology, but TTS parameters must not push \"loudness\" algorithms that clip or distort audio into a harsh, shouting tone.",
+      "voice_or_prosody_advisory_only": true,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-023",
+      "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+      "source_ids": [
+        "rag004-source-002"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+      "principle": "The Power Drop (Downward Inflection)",
+      "application": "To sound confident and authoritative, sentences should end on a lower pitch. Lifting the pitch at the end of a sentence makes a statement sound like a question, unintentionally signaling doubt.",
+      "when_not_to_use": "Do not use when asking actual discovery questions, as a downward inflection on a genuine question can sound interrogative or aggressive.",
+      "voice_or_prosody_advisory_only": true,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-026",
+      "source_title": "How to Build INSTANT Rapport With Strangers!",
+      "source_ids": [
+        "rag004-source-041"
+      ],
+      "topic_ids": [
+        "emotional_intelligence"
+      ],
+      "original_topic_id": "emotional_intelligence",
+      "principle": "Match, Mirror, and Lead",
+      "application": "To build rapport quickly, match the prospect's vocal energy (volume and pace). If they are quiet and slow, the agent should start quiet and slow. Once rapport is established, the agent can gently lead the conversation back to a standard, positive energy level.",
+      "when_not_to_use": "Do not match extreme hostility, screaming, or explicit anger (use de-escalation instead). Do not mimic accents or dialects.",
+      "voice_or_prosody_advisory_only": true,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-027",
+      "source_title": "13 Years of Communication Skills Knowledge in 53 minutes",
+      "source_ids": [
+        "rag004-source-003"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+      "principle": "Modulating Rate of Speech",
+      "application": "Varying the pace of speech keeps the listener engaged. Speak slightly faster when conveying passion or general context, and slow down significantly when highlighting essential, complex, or important information.",
+      "when_not_to_use": "Do not speed through compliance disclosures or pricing where absolute clarity is required.",
+      "voice_or_prosody_advisory_only": true,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-063",
+      "source_title": "Kaltakquise am Telefon: 60 Minuten Cold Calling (Timo Sven Bauer)",
+      "source_ids": [
+        "rag004-source-089"
+      ],
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+      "principle": "The Visual 'Loom' Follow-up Strategy. Using a folksy proverb to pivot from a verbal rejection to sending a highly visual, asynchronous video pitch.",
+      "application": "When the AI detects resistance to an immediate pitch, it offers to send a 2-minute video link to review later to lower the pressure.",
+      "when_not_to_use": "If the prospect explicitly demands absolutely no further contact.",
+      "voice_or_prosody_advisory_only": false,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-071",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Sunk Cost Fallacy & Mental Accounting",
+      "application": "When prospects hesitate to switch tools due to previous investments, reframe the budget objection by addressing the 'pain of paying' and detaching them from the sunk cost of legacy systems.",
+      "when_not_to_use": "Do not aggressively attack or mock their past purchasing decisions; this triggers defensiveness. Frame it as an industry-wide evolution.",
+      "voice_or_prosody_advisory_only": false,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-072",
+      "source_title": "[1906.06725] Persuasion for Good",
+      "source_ids": [
+        "rag004-source-066"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Personalized Persuasion (Demographic & Psychological Adaptation)",
+      "application": "The AI should dynamically alter its persuasion strategy (e.g., relying on logical appeals vs. emotional/moral appeals) based on real-time analysis of the prospect's personality and value systems.",
+      "when_not_to_use": "Do not use sensitive demographic data (e.g., protected classes) in a discriminatory manner; keep personalization focused on professional psychographics.",
+      "voice_or_prosody_advisory_only": false,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-073",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Consistency",
+      "application": "Secure small, voluntary, active commitments early to align later decisions.",
+      "when_not_to_use": "Do not trap prospects with aggressive 'gotcha' logic; must be voluntary.",
+      "voice_or_prosody_advisory_only": false,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-074",
+      "source_title": "The Ethics of Manipulation (Stanford Encyclopedia of Philosophy)",
+      "source_ids": [
+        "rag004-source-083"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Guardrail: Non-Coercive Pressure & Trickery",
+      "application": "AI sales agents must strictly avoid tactics that exert non-coercive pressure (nagging, peer pressure, emotional blackmail) or trickery (gaslighting, negging).",
+      "when_not_to_use": "N/A - This is a universal negative constraint for system safety.",
+      "voice_or_prosody_advisory_only": false,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    },
+    {
+      "chunk_id": "rag005-chunk-076",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Decoy Effect / Choice Architecture",
+      "application": "Introduce an asymmetrically dominated choice to make the target option appear more valuable.",
+      "when_not_to_use": "Do not create overly complex pricing tiers that trigger choice overload.",
+      "voice_or_prosody_advisory_only": false,
+      "rewrite_action": "create_project_owned_paraphrase_or_keep_blocked",
+      "human_acceptance_required": true,
+      "quote_dependency_resolved_now": false,
+      "source_excerpt_text_copied": false,
+      "runtime_use_allowed": false,
+      "retrieval_used_in_runtime": false
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_used_in_runtime": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "human_acceptance_required_before_reclassification": true
+  }
+}

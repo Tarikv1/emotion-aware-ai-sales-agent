@@ -1,0 +1,37 @@
+# RAG-002 NotebookLM Prompt Index
+
+First paste `00-configure-chat-custom-instructions.md` into NotebookLM Configure Chat > Custom, and set response length to Longer.
+
+Then use each topic's `01-create-report-file.md` inside NotebookLM Reports / Create report. Use `02-chat-json-extraction.md` only if you need a stricter JSON handoff after the report exists.
+
+- `configure_chat` `custom_instructions` `1613 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/00-configure-chat-custom-instructions.md`
+- `cold_calling` `report_artifact` `2216 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/01-cold-calling/01-create-report-file.md`
+- `cold_calling` `primary_report` `2975 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/01-cold-calling/02-chat-json-extraction.md`
+- `cold_calling` `gap_check` `1179 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/01-cold-calling/03-gap-check.md`
+- `closing_techniques` `report_artifact` `2252 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/02-closing-techniques/01-create-report-file.md`
+- `closing_techniques` `primary_report` `3005 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/02-closing-techniques/02-chat-json-extraction.md`
+- `closing_techniques` `gap_check` `1203 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/02-closing-techniques/03-gap-check.md`
+- `objection_handling` `report_artifact` `2252 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/03-objection-handling/01-create-report-file.md`
+- `objection_handling` `primary_report` `3005 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/03-objection-handling/02-chat-json-extraction.md`
+- `objection_handling` `gap_check` `1203 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/03-objection-handling/03-gap-check.md`
+- `consultative_selling_discovery` `report_artifact` `2336 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/04-consultative-selling-discovery/01-create-report-file.md`
+- `consultative_selling_discovery` `primary_report` `3073 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/04-consultative-selling-discovery/02-chat-json-extraction.md`
+- `consultative_selling_discovery` `gap_check` `1259 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/04-consultative-selling-discovery/03-gap-check.md`
+- `emotional_intelligence` `report_artifact` `2276 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/05-emotional-intelligence/01-create-report-file.md`
+- `emotional_intelligence` `primary_report` `3025 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/05-emotional-intelligence/02-chat-json-extraction.md`
+- `emotional_intelligence` `gap_check` `1219 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/05-emotional-intelligence/03-gap-check.md`
+- `active_listening_human_like_sales_communication` `report_artifact` `2438 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/06-active-listening-human-like-sales-communication/01-create-report-file.md`
+- `active_listening_human_like_sales_communication` `primary_report` `3158 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/06-active-listening-human-like-sales-communication/02-chat-json-extraction.md`
+- `active_listening_human_like_sales_communication` `gap_check` `1327 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/06-active-listening-human-like-sales-communication/03-gap-check.md`
+- `negotiation_german_english_sales_calls_telefonakquise` `report_artifact` `2480 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/07-negotiation-german-english-sales-calls-telefonakquise/01-create-report-file.md`
+- `negotiation_german_english_sales_calls_telefonakquise` `primary_report` `3192 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/07-negotiation-german-english-sales-calls-telefonakquise/02-chat-json-extraction.md`
+- `negotiation_german_english_sales_calls_telefonakquise` `gap_check` `1355 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/07-negotiation-german-english-sales-calls-telefonakquise/03-gap-check.md`
+- `ethical_persuasion_persuasive_dialogue` `report_artifact` `2423 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/08-ethical-persuasion-persuasive-dialogue/01-create-report-file.md`
+- `ethical_persuasion_persuasive_dialogue` `primary_report` `3139 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/08-ethical-persuasion-persuasive-dialogue/02-chat-json-extraction.md`
+- `ethical_persuasion_persuasive_dialogue` `gap_check` `1317 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/08-ethical-persuasion-persuasive-dialogue/03-gap-check.md`
+- `speech_tone_prosody_human_like_voice_behavior` `report_artifact` `2435 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/09-speech-tone-prosody-human-like-voice-behavior/01-create-report-file.md`
+- `speech_tone_prosody_human_like_voice_behavior` `primary_report` `3154 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/09-speech-tone-prosody-human-like-voice-behavior/02-chat-json-extraction.md`
+- `speech_tone_prosody_human_like_voice_behavior` `gap_check` `1325 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/09-speech-tone-prosody-human-like-voice-behavior/03-gap-check.md`
+- `emotion_recognition_speech_emotion_persuasion_datasets` `report_artifact` `2513 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/10-emotion-recognition-speech-emotion-persuasion-datasets/01-create-report-file.md`
+- `emotion_recognition_speech_emotion_persuasion_datasets` `primary_report` `3215 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/10-emotion-recognition-speech-emotion-persuasion-datasets/02-chat-json-extraction.md`
+- `emotion_recognition_speech_emotion_persuasion_datasets` `gap_check` `1377 chars`: `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/prompts/10-emotion-recognition-speech-emotion-persuasion-datasets/03-gap-check.md`

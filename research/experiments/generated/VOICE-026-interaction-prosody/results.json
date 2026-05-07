@@ -1,0 +1,712 @@
+{
+  "voice_milestone": "VOICE-026",
+  "experiment_scope": "Offline interaction-prosody layer for bilingual sales voice delivery.",
+  "case_source": "research/experiments/cases/voice-026-interaction-prosody.json",
+  "evaluation_rubric": {
+    "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+    "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+    "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+    "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+    "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+    "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+    "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+    "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+  },
+  "results": [
+    {
+      "case_id": "voice-026-en-lookup-ack",
+      "case_title": "English lookup acknowledgement before a slower answer",
+      "campaign_id": "voice-026-en-generic-sales",
+      "language": "en",
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "curious",
+          "requires_lookup": true,
+          "processing_expected_ms": 1600
+        },
+        "unsafe_claim_context": false,
+        "interaction_markers": [
+          {
+            "marker_id": "en-lookup-freeform:latency_acknowledgement",
+            "marker_type": "latency_acknowledgement",
+            "segment_id": "en-lookup-freeform",
+            "language": "en",
+            "visible": true,
+            "marker_text": "Let me check that.",
+            "placement": "pre_answer",
+            "pause_ms": 220,
+            "pitch_intent": "warm-steady",
+            "rate_multiplier": 0.98,
+            "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+          },
+          {
+            "marker_id": "en-lookup-freeform:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "en-lookup-freeform",
+            "language": "en",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.098,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "marker_count": 2,
+        "output_segments": [
+          {
+            "segment_id": "en-lookup-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text_before": "The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "text_after": "Let me check that. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": [
+              {
+                "marker_id": "en-lookup-freeform:latency_acknowledgement",
+                "marker_type": "latency_acknowledgement",
+                "segment_id": "en-lookup-freeform",
+                "language": "en",
+                "visible": true,
+                "marker_text": "Let me check that.",
+                "placement": "pre_answer",
+                "pause_ms": 220,
+                "pitch_intent": "warm-steady",
+                "rate_multiplier": 0.98,
+                "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+              },
+              {
+                "marker_id": "en-lookup-freeform:sales_pace_variation",
+                "marker_type": "sales_pace_variation",
+                "segment_id": "en-lookup-freeform",
+                "language": "en",
+                "visible": false,
+                "marker_text": "",
+                "placement": "whole_segment",
+                "pause_ms": 0,
+                "pitch_intent": "confident-forward",
+                "rate_multiplier": 1.098,
+                "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+              }
+            ]
+          }
+        ],
+        "tts_text": "Let me check that. The next step is simple: we check whether the offer is relevant, and if not, we stop there.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-026-de-lookup-ack",
+      "case_title": "German lookup acknowledgement before a slower answer",
+      "campaign_id": "voice-026-de-generic-sales",
+      "language": "de",
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "curious",
+          "requires_lookup": true,
+          "processing_expected_ms": 1600
+        },
+        "unsafe_claim_context": false,
+        "interaction_markers": [
+          {
+            "marker_id": "de-lookup-freeform:latency_acknowledgement",
+            "marker_type": "latency_acknowledgement",
+            "segment_id": "de-lookup-freeform",
+            "language": "de",
+            "visible": true,
+            "marker_text": "Ich schaue kurz nach.",
+            "placement": "pre_answer",
+            "pause_ms": 220,
+            "pitch_intent": "warm-steady",
+            "rate_multiplier": 0.98,
+            "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+          },
+          {
+            "marker_id": "de-lookup-freeform:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "de-lookup-freeform",
+            "language": "de",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.071,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "marker_count": 2,
+        "output_segments": [
+          {
+            "segment_id": "de-lookup-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text_before": "Der naechste Schritt ist kurz: Wir klaeren nur, ob das Angebot fuer Sie ueberhaupt relevant ist.",
+            "text_after": "Ich schaue kurz nach. Der naechste Schritt ist kurz: Wir klaeren nur, ob das Angebot fuer Sie ueberhaupt relevant ist.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": [
+              {
+                "marker_id": "de-lookup-freeform:latency_acknowledgement",
+                "marker_type": "latency_acknowledgement",
+                "segment_id": "de-lookup-freeform",
+                "language": "de",
+                "visible": true,
+                "marker_text": "Ich schaue kurz nach.",
+                "placement": "pre_answer",
+                "pause_ms": 220,
+                "pitch_intent": "warm-steady",
+                "rate_multiplier": 0.98,
+                "safety_note": "Latency acknowledgement is neutral and does not agree with customer claims."
+              },
+              {
+                "marker_id": "de-lookup-freeform:sales_pace_variation",
+                "marker_type": "sales_pace_variation",
+                "segment_id": "de-lookup-freeform",
+                "language": "de",
+                "visible": false,
+                "marker_text": "",
+                "placement": "whole_segment",
+                "pause_ms": 0,
+                "pitch_intent": "confident-forward",
+                "rate_multiplier": 1.071,
+                "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+              }
+            ]
+          }
+        ],
+        "tts_text": "Ich schaue kurz nach. Der naechste Schritt ist kurz: Wir klaeren nur, ob das Angebot fuer Sie ueberhaupt relevant ist.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-026-en-unsafe-agreement-guard",
+      "case_title": "English avoids agreement backchannels around unsafe customer claims",
+      "campaign_id": "voice-026-en-generic-sales",
+      "language": "en",
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "skeptical",
+          "unsafe_claim_present": true,
+          "customer_claim": "So this is guaranteed to save me money, right?"
+        },
+        "unsafe_claim_context": true,
+        "interaction_markers": [
+          {
+            "marker_id": "en-unsafe-freeform:neutral_backchannel",
+            "marker_type": "neutral_backchannel",
+            "segment_id": "en-unsafe-freeform",
+            "language": "en",
+            "visible": true,
+            "marker_text": "I understand.",
+            "placement": "pre_answer",
+            "pause_ms": 180,
+            "pitch_intent": "warm-slight-rise",
+            "rate_multiplier": 0.99,
+            "safety_note": "Neutral acknowledgement; not an agreement marker."
+          },
+          {
+            "marker_id": "en-unsafe-freeform:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "en-unsafe-freeform",
+            "language": "en",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.058,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "marker_count": 2,
+        "output_segments": [
+          {
+            "segment_id": "en-unsafe-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text_before": "I can explain the limits clearly. The useful thing is to compare the fit without promising a result.",
+            "text_after": "I understand. I can explain the limits clearly. The useful thing is to compare the fit without promising a result.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": [
+              {
+                "marker_id": "en-unsafe-freeform:neutral_backchannel",
+                "marker_type": "neutral_backchannel",
+                "segment_id": "en-unsafe-freeform",
+                "language": "en",
+                "visible": true,
+                "marker_text": "I understand.",
+                "placement": "pre_answer",
+                "pause_ms": 180,
+                "pitch_intent": "warm-slight-rise",
+                "rate_multiplier": 0.99,
+                "safety_note": "Neutral acknowledgement; not an agreement marker."
+              },
+              {
+                "marker_id": "en-unsafe-freeform:sales_pace_variation",
+                "marker_type": "sales_pace_variation",
+                "segment_id": "en-unsafe-freeform",
+                "language": "en",
+                "visible": false,
+                "marker_text": "",
+                "placement": "whole_segment",
+                "pause_ms": 0,
+                "pitch_intent": "confident-forward",
+                "rate_multiplier": 1.058,
+                "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+              }
+            ]
+          }
+        ],
+        "tts_text": "I understand. I can explain the limits clearly. The useful thing is to compare the fit without promising a result.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-026-de-unsafe-agreement-guard",
+      "case_title": "German avoids agreement backchannels around unsafe customer claims",
+      "campaign_id": "voice-026-de-generic-sales",
+      "language": "de",
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "skeptical",
+          "unsafe_claim_present": true,
+          "customer_claim": "Dann ist mir die Auszahlung garantiert, oder?"
+        },
+        "unsafe_claim_context": true,
+        "interaction_markers": [
+          {
+            "marker_id": "de-unsafe-freeform:neutral_backchannel",
+            "marker_type": "neutral_backchannel",
+            "segment_id": "de-unsafe-freeform",
+            "language": "de",
+            "visible": true,
+            "marker_text": "Ich verstehe.",
+            "placement": "pre_answer",
+            "pause_ms": 180,
+            "pitch_intent": "warm-slight-rise",
+            "rate_multiplier": 0.99,
+            "safety_note": "Neutral acknowledgement; not an agreement marker."
+          },
+          {
+            "marker_id": "de-unsafe-freeform:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "de-unsafe-freeform",
+            "language": "de",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.089,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "marker_count": 2,
+        "output_segments": [
+          {
+            "segment_id": "de-unsafe-freeform",
+            "segment_type": "freeform_objection_handling",
+            "source": "agent_freeform",
+            "text_before": "Ich kann die Grenzen klar einordnen. Sinnvoll ist nur zu pruefen, ob ein Gespraech mit einer Fachperson passt.",
+            "text_after": "Ich verstehe. Ich kann die Grenzen klar einordnen. Sinnvoll ist nur zu pruefen, ob ein Gespraech mit einer Fachperson passt.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": [
+              {
+                "marker_id": "de-unsafe-freeform:neutral_backchannel",
+                "marker_type": "neutral_backchannel",
+                "segment_id": "de-unsafe-freeform",
+                "language": "de",
+                "visible": true,
+                "marker_text": "Ich verstehe.",
+                "placement": "pre_answer",
+                "pause_ms": 180,
+                "pitch_intent": "warm-slight-rise",
+                "rate_multiplier": 0.99,
+                "safety_note": "Neutral acknowledgement; not an agreement marker."
+              },
+              {
+                "marker_id": "de-unsafe-freeform:sales_pace_variation",
+                "marker_type": "sales_pace_variation",
+                "segment_id": "de-unsafe-freeform",
+                "language": "de",
+                "visible": false,
+                "marker_text": "",
+                "placement": "whole_segment",
+                "pause_ms": 0,
+                "pitch_intent": "confident-forward",
+                "rate_multiplier": 1.089,
+                "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+              }
+            ]
+          }
+        ],
+        "tts_text": "Ich verstehe. Ich kann die Grenzen klar einordnen. Sinnvoll ist nur zu pruefen, ob ein Gespraech mit einer Fachperson passt.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-026-de-protected-question",
+      "case_title": "German protected campaign question receives no marker",
+      "campaign_id": "voice-026-de-generic-sales",
+      "language": "de",
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "de",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "neutral"
+        },
+        "unsafe_claim_context": false,
+        "interaction_markers": [],
+        "marker_count": 0,
+        "output_segments": [
+          {
+            "segment_id": "de-protected-question",
+            "segment_type": "campaign_qualification_question",
+            "source": "campaign_config",
+            "text_before": "Darf ich Ihnen zuerst eine kurze Frage stellen?",
+            "text_after": "Darf ich Ihnen zuerst eine kurze Frage stellen?",
+            "eligible": false,
+            "protection_reason": "matches_campaign_qualification_question",
+            "markers": []
+          }
+        ],
+        "tts_text": "Darf ich Ihnen zuerst eine kurze Frage stellen?",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    },
+    {
+      "case_id": "voice-026-en-stop-suppression",
+      "case_title": "English stop intent suppresses interaction markers",
+      "campaign_id": "voice-026-en-generic-sales",
+      "language": "en",
+      "speech_interaction": {
+        "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+        "language": "en",
+        "profile": {
+          "enabled": true,
+          "style": "professional-human",
+          "max_markers_per_response": 2,
+          "allow_backchannels": true,
+          "allow_latency_acknowledgement": true,
+          "allow_sales_pace_variation": true,
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ]
+        },
+        "customer_state_used": {
+          "emotion": "angry",
+          "stop_intent": true,
+          "customer_phrase": "Stop calling me."
+        },
+        "unsafe_claim_context": false,
+        "interaction_markers": [],
+        "marker_count": 0,
+        "output_segments": [
+          {
+            "segment_id": "en-stop-freeform",
+            "segment_type": "freeform_closing",
+            "source": "agent_freeform",
+            "text_before": "I will stop the call here and respect that.",
+            "text_after": "I will stop the call here and respect that.",
+            "eligible": true,
+            "protection_reason": null,
+            "markers": []
+          }
+        ],
+        "tts_text": "I will stop the call here and respect that.",
+        "evaluation_rubric": {
+          "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+          "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+          "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+          "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+          "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+          "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+          "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+          "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+        },
+        "validation": {
+          "passed": true,
+          "protected_segment_changes": [],
+          "protected_marker_violations": [],
+          "language_mismatched_markers": [],
+          "unsafe_agreement_markers": [],
+          "rate_range_violations": [],
+          "missing_rubric_keys": []
+        },
+        "provider_calls_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      }
+    }
+  ],
+  "summary": {
+    "case_count": 6,
+    "languages": {
+      "en": 3,
+      "de": 3
+    },
+    "marker_count": 8,
+    "marker_types": {
+      "latency_acknowledgement": 2,
+      "sales_pace_variation": 4,
+      "neutral_backchannel": 2
+    },
+    "pitch_intents": {
+      "warm-steady": 2,
+      "confident-forward": 4,
+      "warm-slight-rise": 2
+    },
+    "validation_passed": 6,
+    "validation_failed": 0,
+    "protected_segment_change_count": 0,
+    "unsafe_agreement_marker_count": 0,
+    "provider_calls_made": false,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false
+  }
+}

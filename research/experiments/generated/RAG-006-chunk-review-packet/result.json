@@ -1,0 +1,2737 @@
+{
+  "review_packet_id": "RAG-006-chunk-review-packet",
+  "rag005_result_path": "research/experiments/generated/RAG-005-chunk-normalization/result.json",
+  "source_manifest_path": "research/experiments/generated/RAG-004-source-manifest-normalization/result.json",
+  "summary": {
+    "chunk_candidate_count": 121,
+    "source_mapping_queue_count": 46,
+    "source_mapping_chunk_count": 63,
+    "topic_mapping_queue_count": 8,
+    "quote_review_queue_count": 80,
+    "first_slice_candidate_count": 20,
+    "auto_promoted_chunk_count": 0,
+    "runtime_retrieval_enabled": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "external_provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false
+  },
+  "review_queues": {
+    "source_mapping_queue": [
+      {
+        "source_title": "Discovery Masterclass: Everything You Need to Run a Perfect Discovery Call",
+        "chunk_ids": [
+          "rag005-chunk-032",
+          "rag005-chunk-033",
+          "rag005-chunk-035",
+          "rag005-chunk-041",
+          "rag005-chunk-042"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 5,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Never Split The Difference / Chris Voss Summary Cheat-Sheet",
+        "chunk_ids": [
+          "rag005-chunk-043",
+          "rag005-chunk-044",
+          "rag005-chunk-055",
+          "rag005-chunk-059"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 4,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Social Influence Dialogue Systems",
+        "chunk_ids": [
+          "rag005-chunk-114",
+          "rag005-chunk-116",
+          "rag005-chunk-118"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "chunk_count": 3,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "24 Techniques for Closing the Sale",
+        "chunk_ids": [
+          "rag005-chunk-011",
+          "rag005-chunk-015"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+        "chunk_ids": [
+          "rag005-chunk-081",
+          "rag005-chunk-084"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-025",
+            "canonical_title": "Behavioral Science Concepts (BE Hub)",
+            "score": 0.666,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Einwandbehandlung im Verkauf (zu teuer, keine Zeit & Co.) (\\#derLÖSER)",
+        "chunk_ids": [
+          "rag005-chunk-065",
+          "rag005-chunk-068"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Master B2B Sales Negotiation in 46 Minutes",
+        "chunk_ids": [
+          "rag005-chunk-046",
+          "rag005-chunk-051"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Never Split the Difference",
+        "chunk_ids": [
+          "rag005-chunk-049",
+          "rag005-chunk-052"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Sell Better - Jason Bay",
+        "chunk_ids": [
+          "rag005-chunk-005",
+          "rag005-chunk-006"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-051",
+            "canonical_title": "Jason Bay (Sell Better)",
+            "score": 0.689,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Telefonakquise - Der Leitfaden | Kaltakquise (\\#derLÖSER)",
+        "chunk_ids": [
+          "rag005-chunk-062",
+          "rag005-chunk-067"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Telefonakquise-Leitfaden: 11 Vorlagen, Beispiele (Pipedrive)",
+        "chunk_ids": [
+          "rag005-chunk-064",
+          "rag005-chunk-069"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "chunk_count": 2,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "10 Sales Training Methodologies Compared (2026) | Salesmotion",
+        "chunk_ids": [
+          "rag005-chunk-037"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "16 Best Closing Techniques",
+        "chunk_ids": [
+          "rag005-chunk-016"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "18 Steps to a Successful Discovery Call \\+ Free Discovery Call Checklist",
+        "chunk_ids": [
+          "rag005-chunk-034"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "30MPC - Mr. Miyagi Method",
+        "chunk_ids": [
+          "rag005-chunk-002"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "30MPC Perfect Script Masterclass",
+        "chunk_ids": [
+          "rag005-chunk-001"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Am TELEFON richtig VERKAUFEN | So geht AKQUISE (Felix Thönnessen)",
+        "chunk_ids": [
+          "rag005-chunk-070"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Chris Voss - The Decision Lab",
+        "chunk_ids": [
+          "rag005-chunk-047"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Chris Voss: FBI Hostage Negotiator Teaches Us How to Sell | EP 106",
+        "chunk_ids": [
+          "rag005-chunk-058"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Close: 18 Steps to Discovery",
+        "chunk_ids": [
+          "rag005-chunk-040"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Cognism Cold Calling Hub - Frida Ottosson",
+        "chunk_ids": [
+          "rag005-chunk-004"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-028",
+            "canonical_title": "Cognism Hub/Scripts",
+            "score": 0.47,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Cognism Cold Calling Scripts",
+        "chunk_ids": [
+          "rag005-chunk-003"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-028",
+            "canonical_title": "Cognism Hub/Scripts",
+            "score": 0.587,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "DailyDialog: A Manually Labelled Multi-turn Dialogue Dataset...",
+        "chunk_ids": [
+          "rag005-chunk-110"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Elite Sales Performance",
+        "chunk_ids": [
+          "rag005-chunk-013"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-073",
+            "canonical_title": "Salesforce",
+            "score": 0.452,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Four Levers Negotiating",
+        "chunk_ids": [
+          "rag005-chunk-045"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Getting More",
+        "chunk_ids": [
+          "rag005-chunk-050"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Getting More by Stuart Diamond: Summary & Notes",
+        "chunk_ids": [
+          "rag005-chunk-054"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Getting More Summary",
+        "chunk_ids": [
+          "rag005-chunk-060"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Getting to Yes",
+        "chunk_ids": [
+          "rag005-chunk-056"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "GoEmotions: A Dataset of Fine-Grained Emotions",
+        "chunk_ids": [
+          "rag005-chunk-121"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Gong: 8 Things for Discovery",
+        "chunk_ids": [
+          "rag005-chunk-028"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Grant Cardone - Phone Closing",
+        "chunk_ids": [
+          "rag005-chunk-010"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "High Ticket Sales in 1 Call",
+        "chunk_ids": [
+          "rag005-chunk-009"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "How To Close Every Sale (2024)",
+        "chunk_ids": [
+          "rag005-chunk-012"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Josh Braun - Knowledge Gap",
+        "chunk_ids": [
+          "rag005-chunk-007"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-054",
+            "canonical_title": "Josh Braun 30MPC",
+            "score": 0.52,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Kaltakquise am Telefon - so öffnest du deinen Gesprächspartner [in 4 Schritten] (Thomas Pelzl)",
+        "chunk_ids": [
+          "rag005-chunk-061"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Kaltakquise Telefon - Der Einstieg - Wie öffne ich den Entscheider? (Lars Krüger)",
+        "chunk_ids": [
+          "rag005-chunk-066"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "MELD: A Multimodal Multi-Party Dataset for Emotion Recognition...",
+        "chunk_ids": [
+          "rag005-chunk-120"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-017",
+            "canonical_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+            "score": 0.47,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Never Split the Difference: 3 SALES Tips (+ examples)",
+        "chunk_ids": [
+          "rag005-chunk-053"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Pipedrive: Consultative Selling",
+        "chunk_ids": [
+          "rag005-chunk-038"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-069",
+            "canonical_title": "Pipedrive Blog",
+            "score": 0.451,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Precision Cold Calling - Josh Braun",
+        "chunk_ids": [
+          "rag005-chunk-008"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Salesmotion: 10 Sales Methodologies",
+        "chunk_ids": [
+          "rag005-chunk-039"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Social Influence Dialogue Systems: A Survey...",
+        "chunk_ids": [
+          "rag005-chunk-117"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "The Upward Spiral",
+        "chunk_ids": [
+          "rag005-chunk-057"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Ultimate Sales Training",
+        "chunk_ids": [
+          "rag005-chunk-014"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      },
+      {
+        "source_title": "Voss Transcript",
+        "chunk_ids": [
+          "rag005-chunk-048"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "chunk_count": 1,
+        "candidate_source_suggestions": [
+          {
+            "source_id": "rag004-source-023",
+            "canonical_title": "Andy Luttrell Transcript",
+            "score": 0.464,
+            "review_only": true
+          },
+          {
+            "source_id": "rag004-source-088",
+            "canonical_title": "Thomas Pelzl YouTube Transcript",
+            "score": 0.46,
+            "review_only": true
+          }
+        ],
+        "review_action": "map_to_existing_source_or_create_source_candidate",
+        "auto_mapped": false
+      }
+    ],
+    "topic_mapping_queue": [
+      {
+        "chunk_id": "rag005-chunk-045",
+        "source_title": "Four Levers Negotiating",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "ethics_guardrails",
+        "principle": "Earned Case Studies",
+        "application": "Case studies must be earned via success, not bought via discounts.",
+        "when_not_to_use": "Never. Do not pay for testimonials.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-048",
+        "source_title": "Voss Transcript",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "no_oriented_questions",
+        "principle": "No-Oriented Logic",
+        "application": "Elicit a 'No' to provide the counterpart a sense of control and safety.",
+        "when_not_to_use": "When the counterpart is already in a highly agreeable 'Yes' flow.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-049",
+        "source_title": "Never Split the Difference",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "behavioral_markers",
+        "principle": "The 'That's Right' Objective",
+        "application": "Drive toward 'That's Right' to confirm total empathy; avoid 'You're Right'.",
+        "when_not_to_use": "Routine administrative updates.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-050",
+        "source_title": "Getting More",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "tactic_countermeasure",
+        "principle": "Exception Discovery",
+        "application": "When faced with 'Company Policy', ask 'Have you ever made an exception?'",
+        "when_not_to_use": "When the policy is a hard legal/regulatory requirement (e.g., GDPR).",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-052",
+        "source_title": "Never Split the Difference",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "delivery",
+        "principle": "Acoustic Triggers",
+        "application": "Use FM DJ voice for bad news/price; Playful voice for outreach.",
+        "when_not_to_use": "Generic technical reporting.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-056",
+        "source_title": "Getting to Yes",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "principled_negotiation",
+        "principle": "Mutual Gains",
+        "application": "Focus on interests, not positions; use objective criteria for fair outcomes.",
+        "when_not_to_use": "When dealing with purely irrational, destructive actors.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-057",
+        "source_title": "The Upward Spiral",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "neuroscience",
+        "principle": "Amygdala Defusing",
+        "application": "Labeling negative emotions defuses the amygdala and re-engages the prefrontal cortex.",
+        "when_not_to_use": "Standard logical exchanges without emotional tension.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      },
+      {
+        "chunk_id": "rag005-chunk-060",
+        "source_title": "Getting More Summary",
+        "source_ids": [],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "cross_cultural_logic",
+        "principle": "Cultural Benchmark Variance",
+        "application": "In Chinese business culture, a signed contract is a benchmark, not a final rigid obligation.",
+        "when_not_to_use": "Western legalistic environments requiring strict adherence to terms.",
+        "review_flags": [
+          "source_mapping_required",
+          "topic_mapping_required"
+        ],
+        "review_action": "confirm_project_topic_or_create_taxonomy_note"
+      }
+    ],
+    "quote_review_queue": [
+      {
+        "chunk_id": "rag005-chunk-001",
+        "source_title": "30MPC Perfect Script Masterclass",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "JD-Based Tailored Permission",
+        "application": "Establishing research-based social proof through specific job posting data.",
+        "when_not_to_use": "When the company has no active job postings.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-002",
+        "source_title": "30MPC - Mr. Miyagi Method",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Arman Farokh EQ Rule (Immediate Exit)",
+        "application": "Protocol for exiting calls when high-priority life interruptions are detected to preserve future rapport.",
+        "when_not_to_use": "When the prospect is using 'I'm in a meeting' as a common blow-off.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-003",
+        "source_title": "Cognism Cold Calling Scripts",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Mirroring Pain",
+        "application": "Repeating the prospect's last phrase as a question to drive deeper technical disclosure.",
+        "when_not_to_use": "If the prospect is already rambling.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-004",
+        "source_title": "Cognism Cold Calling Hub - Frida Ottosson",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Honesty Anchor",
+        "application": "Use extreme transparency to break the telemarketer stigma immediately.",
+        "when_not_to_use": "When calling a warm lead who already knows the agent.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-005",
+        "source_title": "Sell Better - Jason Bay",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Rep Talk-Time Dominance",
+        "application": "Ensuring the AI agent maintains control by speaking 55% of the total call time.",
+        "when_not_to_use": "During a deep discovery call (post-cold call).",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-006",
+        "source_title": "Sell Better - Jason Bay",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Triple Confirmation",
+        "application": "A three-step verification loop to maximize meeting show-rates.",
+        "when_not_to_use": "When the prospect has not yet agreed to a time.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-007",
+        "source_title": "Josh Braun - Knowledge Gap",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Shine a Light Presupposition",
+        "application": "Assuming the prospect has already tried and failed to solve a problem with a competitor.",
+        "when_not_to_use": "When the prospect is a first-time buyer in the category.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-008",
+        "source_title": "Precision Cold Calling - Josh Braun",
+        "source_ids": [],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "original_topic_id": "cold_calling",
+        "principle": "Categorical Classification",
+        "application": "Asking a binary or multiple-choice question to define the prospect's current technical state.",
+        "when_not_to_use": "When the prospect is already in an emotional 'defensive' state.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-017",
+        "source_title": "The Only Video You Need To Fix Your Communication Skills",
+        "source_ids": [
+          "rag004-source-086"
+        ],
+        "topic_ids": [
+          "objection_handling"
+        ],
+        "original_topic_id": "objection_handling",
+        "principle": "Yes, And\" over \"Yes, But",
+        "application": "When a customer raises a difficult objection (e.g., price), using \"Yes, but\" invalidates their concern. Using \"Yes, and\" acknowledges their reality while pivoting the conversation in a positive, constructive direction.",
+        "when_not_to_use": "Do not use \"Yes, and\" if the customer states something factually or legally incorrect about the contract; polite correction is required there.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-018",
+        "source_title": "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else",
+        "source_ids": [
+          "rag004-source-012"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "original_topic_id": "consultative_selling_discovery",
+        "principle": "Reflecting Emotions (Listening with the Heart)",
+        "application": "Don't just respond to the logical words; respond to the emotional tone. If a prospect sounds hesitant, acknowledge the hesitation directly to make them feel understood and allow them to clarify.",
+        "when_not_to_use": "Do not tell the user how they feel forcefully; frame it as an observation (e.g., \"It sounds like...\"). Do not play psychologist.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-019",
+        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+        "source_ids": [
+          "rag004-source-002"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Purposeful Pausing for Highlight",
+        "application": "Pausing for 1-2 seconds *before* and *after* a critical statement builds anticipation, allows the listener to process the information, and gives the idea conversational weight.",
+        "when_not_to_use": "Do not overuse pauses in standard informational exchanges, which will make the AI sound glitchy or lagged.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-020",
+        "source_title": "9 Habits for Clearer Speaking (I Wish I Knew Sooner)",
+        "source_ids": [
+          "rag004-source-016"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Declarative Statements vs. Rambling",
+        "application": "Thinking out loud leads to connected, run-on sentences filled with \"ums\" and \"ands\". Speaking in short, declarative sentences with full stops creates immediate clarity and prevents the listener from having to mentally decode rambling thoughts.",
+        "when_not_to_use": "Do not make statements so short they sound robotic, curt, or aggressive.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-021",
+        "source_title": "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day",
+        "source_ids": [
+          "rag004-source-076"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Soft Palate Lift for Warm Volume",
+        "application": "Creating volume through the throat sounds strained, aggressive, and harsh. Lifting the soft palate (the pre-yawn posture) allows for rich, resonant volume that conveys warmth and confidence without sounding like shouting.",
+        "when_not_to_use": "AI does not have physical biology, but TTS parameters must not push \"loudness\" algorithms that clip or distort audio into a harsh, shouting tone.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-022",
+        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+        "source_ids": [
+          "rag004-source-002"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication"
+        ],
+        "original_topic_id": "active_listening_human_like_sales_communication",
+        "principle": "The Empathy Echo",
+        "application": "Instantly make the prospect feel heard by repeating their last significant word or emotional phrase back to them before responding. This slows the conversation, builds safety, and deepens trust.",
+        "when_not_to_use": "Do not repeat aggressive profanity or combative insults. Do not overuse this mechanically on every single turn, as it will sound like a parrot.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-023",
+        "source_title": "10 Speaking Techniques That Made Me A Top 1% Speaker",
+        "source_ids": [
+          "rag004-source-002"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "The Power Drop (Downward Inflection)",
+        "application": "To sound confident and authoritative, sentences should end on a lower pitch. Lifting the pitch at the end of a sentence makes a statement sound like a question, unintentionally signaling doubt.",
+        "when_not_to_use": "Do not use when asking actual discovery questions, as a downward inflection on a genuine question can sound interrogative or aggressive.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-024",
+        "source_title": "7 Communication Cheat Codes To Speak Like A Pro!",
+        "source_ids": [
+          "rag004-source-013"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "The PREP Framework",
+        "application": "Structure persuasive arguments cleanly to avoid confusing the listener. PREP stands for Point, Reason, Example, Point. State the point clearly, provide the logical reason, give a concrete example, and restate the core point.",
+        "when_not_to_use": "Do not use for brief conversational pleasantries or simple status updates.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-025",
+        "source_title": "Communication Is Hard Until You Structure Your Thinking First!",
+        "source_ids": [
+          "rag004-source-032"
+        ],
+        "topic_ids": [
+          "objection_handling"
+        ],
+        "original_topic_id": "objection_handling",
+        "principle": "The 3-2-1 Framework (Distilling Thoughts)",
+        "application": "When asked an unexpected or broad question, constrain rambling by structuring the answer using \"three steps,\" \"two types,\" or \"the one thing.\" This forces concise, coherent responses under pressure.",
+        "when_not_to_use": "Do not use if the prospect asks a simple yes/no question that requires a direct factual answer.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-026",
+        "source_title": "How to Build INSTANT Rapport With Strangers!",
+        "source_ids": [
+          "rag004-source-041"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "original_topic_id": "emotional_intelligence",
+        "principle": "Match, Mirror, and Lead",
+        "application": "To build rapport quickly, match the prospect's vocal energy (volume and pace). If they are quiet and slow, the agent should start quiet and slow. Once rapport is established, the agent can gently lead the conversation back to a standard, positive energy level.",
+        "when_not_to_use": "Do not match extreme hostility, screaming, or explicit anger (use de-escalation instead). Do not mimic accents or dialects.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-027",
+        "source_title": "13 Years of Communication Skills Knowledge in 53 minutes",
+        "source_ids": [
+          "rag004-source-003"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Modulating Rate of Speech",
+        "application": "Varying the pace of speech keeps the listener engaged. Speak slightly faster when conveying passion or general context, and slow down significantly when highlighting essential, complex, or important information.",
+        "when_not_to_use": "Do not speed through compliance disclosures or pricing where absolute clarity is required.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-061",
+        "source_title": "Kaltakquise am Telefon - so öffnest du deinen Gesprächspartner [in 4 Schritten] (Thomas Pelzl)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "The 4-Step Fact-Benefit Hook. 1\\. Undeniable fact, 2\\. Peer problem, 3\\. Solution idea, 4\\. Micro-commitment for time.",
+        "application": "AI establishes immediate relevance by stating a demographic fact the prospect cannot deny, before introducing the value proposition.",
+        "when_not_to_use": "When the prospect immediately signals an emergency or total lack of time upon answering.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-062",
+        "source_title": "Telefonakquise - Der Leitfaden | Kaltakquise (\\#derLÖSER)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Decision Maker vs. Responsible. Ask for the person who makes decisions ('Entscheider'), not who is responsible ('Verantwortlich'), to reach budget holders instead of end-users.",
+        "application": "AI should target the entity that holds purchasing power to avoid stalling in middle-management.",
+        "when_not_to_use": "When selling low-level technical commodities where end-user buy-in is the explicit starting point.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-063",
+        "source_title": "Kaltakquise am Telefon: 60 Minuten Cold Calling (Timo Sven Bauer)",
+        "source_ids": [
+          "rag004-source-089"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "The Visual 'Loom' Follow-up Strategy. Using a folksy proverb to pivot from a verbal rejection to sending a highly visual, asynchronous video pitch.",
+        "application": "When the AI detects resistance to an immediate pitch, it offers to send a 2-minute video link to review later to lower the pressure.",
+        "when_not_to_use": "If the prospect explicitly demands absolutely no further contact.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-064",
+        "source_title": "Telefonakquise-Leitfaden: 11 Vorlagen, Beispiele (Pipedrive)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Gatekeeper Bypass - Asking for Help. Treat the gatekeeper as an ally by admitting you need their help finding a name, turning a barrier into a guide.",
+        "application": "The AI should use a polite, slightly vulnerable tone to ask the gatekeeper for direction instead of demanding to be patched through.",
+        "when_not_to_use": "When the prospect's direct line is known or the gatekeeper is an automated IVR system.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-065",
+        "source_title": "Einwandbehandlung im Verkauf (zu teuer, keine Zeit & Co.) (\\#derLÖSER)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Future vs. Past Proverb. Responding to 'We already have a partner' with a philosophical challenge about the future.",
+        "application": "AI acknowledges the existing vendor but plants a seed of doubt regarding future innovation to open the prospect to a comparison.",
+        "when_not_to_use": "If the prospect is highly hostile; it may sound condescending if the AI's prosody is not perfectly smooth.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-066",
+        "source_title": "Kaltakquise Telefon - Der Einstieg - Wie öffne ich den Entscheider? (Lars Krüger)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Colleague & Appreciation (Loben bringt nach oben). Reference an internal colleague or system to warm up the call, then immediately praise their market position.",
+        "application": "AI mentions an internal routing (e.g., 'My team flagged your profile') and praises the prospect's public achievements to lower skepticism.",
+        "when_not_to_use": "Do not use fake 'colleague' references if they don't exist. Adapt for AI by stating the system or database directed the call.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-067",
+        "source_title": "Telefonakquise - Der Leitfaden | Kaltakquise (\\#derLÖSER)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Calendar Week (KW) Trick. Referencing a specific Calendar Week (Kalenderwoche) forces the prospect to physically check their calendar, increasing meeting commitment.",
+        "application": "AI proposes a follow-up using 'KW' instead of 'nächste Woche' to trigger a behavioral commitment and transition out of abstract pleasantries.",
+        "when_not_to_use": "When talking to US/UK clients where 'Calendar Weeks' (KW) are not standard business terminology.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-068",
+        "source_title": "Einwandbehandlung im Verkauf (zu teuer, keine Zeit & Co.) (\\#derLÖSER)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Meta-Communication. Stepping out of the sales role to address the communication dynamic itself when hitting a persistent wall.",
+        "application": "AI detects consecutive negative responses, pauses the pitch, and asks for feedback on its approach to reset the conversation and disarm hostility.",
+        "when_not_to_use": "Early in the call before standard objection handling frameworks have been attempted.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-069",
+        "source_title": "Telefonakquise-Leitfaden: 11 Vorlagen, Beispiele (Pipedrive)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Optimized Voicemail Structure. Keep it concise, state the exact reason, ask for a callback, and repeat the number twice.",
+        "application": "AI detects an answering machine, leaves a structured 20-second message, and logs the action for the next touchpoint.",
+        "when_not_to_use": "Do not leave rambling messages or attempt to pitch the whole product value proposition to the machine.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-070",
+        "source_title": "Am TELEFON richtig VERKAUFEN | So geht AKQUISE (Felix Thönnessen)",
+        "source_ids": [],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "original_topic_id": "negotiation_german_english_sales_calls_telefonakquise",
+        "principle": "Pull Strategy via Root Cause. Discover the underlying inability (e.g., cannot swim) rather than pitching the surface product (beach holiday) to create genuine pull.",
+        "application": "AI asks deep 'Why' questions to uncover the root pain point before matching the product feature.",
+        "when_not_to_use": "When dealing with highly transactional, low-ticket reflex purchases that don't require deep discovery.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-071",
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_ids": [
+          "rag004-source-022"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Sunk Cost Fallacy & Mental Accounting",
+        "application": "When prospects hesitate to switch tools due to previous investments, reframe the budget objection by addressing the 'pain of paying' and detaching them from the sunk cost of legacy systems.",
+        "when_not_to_use": "Do not aggressively attack or mock their past purchasing decisions; this triggers defensiveness. Frame it as an industry-wide evolution.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-072",
+        "source_title": "[1906.06725] Persuasion for Good",
+        "source_ids": [
+          "rag004-source-066"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Personalized Persuasion (Demographic & Psychological Adaptation)",
+        "application": "The AI should dynamically alter its persuasion strategy (e.g., relying on logical appeals vs. emotional/moral appeals) based on real-time analysis of the prospect's personality and value systems.",
+        "when_not_to_use": "Do not use sensitive demographic data (e.g., protected classes) in a discriminatory manner; keep personalization focused on professional psychographics.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-073",
+        "source_title": "Science Of Persuasion",
+        "source_ids": [
+          "rag004-source-075"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Consistency",
+        "application": "Secure small, voluntary, active commitments early to align later decisions.",
+        "when_not_to_use": "Do not trap prospects with aggressive 'gotcha' logic; must be voluntary.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-074",
+        "source_title": "The Ethics of Manipulation (Stanford Encyclopedia of Philosophy)",
+        "source_ids": [
+          "rag004-source-083"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Guardrail: Non-Coercive Pressure & Trickery",
+        "application": "AI sales agents must strictly avoid tactics that exert non-coercive pressure (nagging, peer pressure, emotional blackmail) or trickery (gaslighting, negging).",
+        "when_not_to_use": "N/A - This is a universal negative constraint for system safety.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-075",
+        "source_title": "Science Of Persuasion",
+        "source_ids": [
+          "rag004-source-075"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Scarcity & Loss Aversion",
+        "application": "Highlight unique benefits and exactly what the prospect stands to lose by not acting.",
+        "when_not_to_use": "Do not manufacture false scarcity; damages trust if discovered.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-076",
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_ids": [
+          "rag004-source-022"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Decoy Effect / Choice Architecture",
+        "application": "Introduce an asymmetrically dominated choice to make the target option appear more valuable.",
+        "when_not_to_use": "Do not create overly complex pricing tiers that trigger choice overload.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-077",
+        "source_title": "Science Of Persuasion",
+        "source_ids": [
+          "rag004-source-075"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Reciprocity",
+        "application": "Give unexpected, personalized value first to create a social obligation to say yes.",
+        "when_not_to_use": "Do not use if the gift appears conditional, transactional, or like a bribe.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-078",
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_ids": [
+          "rag004-source-022"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Choice Overload Prevention",
+        "application": "Limit the number of product tiers or configuration options presented to the prospect to prevent decision fatigue and choice deferral.",
+        "when_not_to_use": "Do not hide options if the prospect specifically requests a highly customized, granular breakdown.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-079",
+        "source_title": "Science Of Persuasion",
+        "source_ids": [
+          "rag004-source-075"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Consensus (Social Proof)",
+        "application": "Point to the actions of similar others to resolve uncertainty.",
+        "when_not_to_use": "Do not use generic or unrelated social proof that the prospect cannot identify with.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-080",
+        "source_title": "Cognitive Dissonance Theory: A Crash Course",
+        "source_ids": [
+          "rag004-source-030"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Cognitive Dissonance",
+        "application": "Gently highlight inconsistencies between stated goals and current actions to motivate change.",
+        "when_not_to_use": "Do not use a hostile or mocking tone; will trigger defensiveness rather than compliance.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-081",
+        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+        "source_ids": [],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Status Quo Bias & Inertia",
+        "application": "Directly address the prospect's natural tendency to do nothing. Reframe inaction not as 'staying safe,' but as an active choice that incurs ongoing hidden costs.",
+        "when_not_to_use": "Do not overwhelm the prospect with fear-mongering if they are already anxious; pair the disruption of the status quo with an easy, low-friction next step.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-082",
+        "source_title": "Persuasion | Psychology Today",
+        "source_ids": [
+          "rag004-source-065"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Autonomy Reminder",
+        "application": "Remind prospects of their freedom to choose to bypass reactance (reverse psychology).",
+        "when_not_to_use": "Do not use if the prospect is already heavily leaning towards a close; only use for resistance.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-083",
+        "source_title": "Science Of Persuasion",
+        "source_ids": [
+          "rag004-source-075"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Liking (Similarity & Mutual Goals)",
+        "application": "Before discussing pricing or terms, the agent should explicitly identify a shared trait, personal information, or mutual goal to dramatically increase agreement rates.",
+        "when_not_to_use": "Do not fabricate similarities. If the agent is an AI, it should connect over shared business objectives rather than faking human personal anecdotes.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-084",
+        "source_title": "Behavioral Science Concepts - BehavioralEconomics.com | The BE Hub",
+        "source_ids": [],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Endowment Effect & IKEA Effect",
+        "application": "Recognize when a prospect irrationally overvalues their current, highly customized in-house solution because of the labor they invested in building it. Validate their effort before pivoting to ROI.",
+        "when_not_to_use": "Do not dismiss their past work as useless; this attacks their ego and triggers reactance.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-085",
+        "source_title": "Persuasion | Psychology Today",
+        "source_ids": [
+          "rag004-source-065"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Optimal Number of Claims (Rule of Three)",
+        "application": "Limit product promises or core benefits to exactly three during a pitch. Exceeding three dilutes the message and triggers skepticism.",
+        "when_not_to_use": "Do not arbitrarily drop critical compliance or safety features just to hit the number three.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-086",
+        "source_title": "An Introduction to Behavioral Economics",
+        "source_ids": [
+          "rag004-source-022"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Anchoring",
+        "application": "Introduce a higher reference price, industry benchmark, or high-value metric early in the conversation to set a cognitive anchor before presenting the actual, lower cost.",
+        "when_not_to_use": "Do not use artificially inflated or entirely fabricated 'original prices' as an anchor, as this violates deception guardrails.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-087",
+        "source_title": "Science Of Persuasion",
+        "source_ids": [
+          "rag004-source-075"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Authority (Third-Party Introduction)",
+        "application": "Arrange for a third party (or an automated pre-call email from an executive) to highlight the sales agent's specific expertise before the agent actually makes the pitch.",
+        "when_not_to_use": "Do not exaggerate credentials or use fake job titles (e.g., calling a junior SDR a 'Senior Data Scientist').",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-088",
+        "source_title": "Persuasion | Psychology Today",
+        "source_ids": [
+          "rag004-source-065"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Emotional Self-Reflection",
+        "application": "Connect the product's impact directly to the prospect's personal career goals, values, or self-image, rather than relying solely on abstract logical data.",
+        "when_not_to_use": "Avoid assuming too much about a stranger's personal life; keep the reflection tied to their professional identity and stated goals.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-089",
+        "source_title": "The Ethics of Manipulation",
+        "source_ids": [
+          "rag004-source-083"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+        "principle": "Ethical Guardrails",
+        "application": "Influence must track reasons rather than bypass them; avoid trickery and coercive pressure.",
+        "when_not_to_use": "Never violate this. All AI interactions must respect the user's rational agency.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-090",
+        "source_title": "How to Speak | Patrick Winston",
+        "source_ids": [
+          "rag004-source-042"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Start with an empowerment promise and use verbal punctuation to keep the audience engaged.",
+        "application": "Tell the prospect exactly what value they will gain by the end of the conversation. Use verbal landmarks (e.g., 'The first idea is...', 'Now for the third idea...') to help distracted listeners 'get back on the bus'.",
+        "when_not_to_use": "Do not start a presentation or pitch with a joke; listeners need time to adjust to your vocal parameters first.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-091",
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_ids": [
+          "rag004-source-087"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Adopt a 'Yes, and...' mindset to treat objections as opportunities rather than threats.",
+        "application": "Program the agent to accept the reality of the prospect's statement ('Yes') and build upon it seamlessly ('and'), rather than reacting defensively ('No, but').",
+        "when_not_to_use": "Do not validate factually incorrect compliance or legal claims.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-092",
+        "source_title": "Extreme Ownership | Jocko Willink | TEDxUniversityofNevada",
+        "source_ids": [
+          "rag004-source-036"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Take extreme ownership of communication failures or errors without making excuses.",
+        "application": "When the AI agent misunderstands a prompt, experiences latency, or faces a frustrated user, it should instantly take the blame rather than pointing out user error or systemic issues.",
+        "when_not_to_use": "Do not take blame for severe legal or compliance failures outside the agent's purview.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-093",
+        "source_title": "How to Speak | Patrick Winston",
+        "source_ids": [
+          "rag004-source-042"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Build a 'fence' around a concept to prevent confusion with competitors.",
+        "application": "Explicitly contrast the product or service with similar but distinct market alternatives so the prospect understands exactly what it is and what it is not.",
+        "when_not_to_use": "Do not disparage competitors directly; focus on objective, structural differences.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-094",
+        "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research)",
+        "source_ids": [
+          "rag004-source-085"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Avoid high-risk humor; it can easily alienate users and obscure the core message.",
+        "application": "While humor can differentiate a brand, it is subjective. Keep language clear and informative rather than attempting 'clever' or 'corny' jokes that distract from the value proposition.",
+        "when_not_to_use": "Never use humor when the user is experiencing an error, expressing frustration, or discussing sensitive topics.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-095",
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_ids": [
+          "rag004-source-087"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Use inclusive, conversational language to reduce psychological distance.",
+        "application": "Replace distancing, formal pronouns ('one', 'they') and robotic sequencing ('step one') with inclusive pronouns ('we', 'you', 'us') and conversational transitions.",
+        "when_not_to_use": "Avoid overly casual inclusion if the industry requires high formality (e.g., specific legal disclosures).",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-096",
+        "source_title": "How to Speak | Patrick Winston",
+        "source_ids": [
+          "rag004-source-042"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Tolerate extended silence (up to 7 seconds) after asking a high-value question.",
+        "application": "When the AI asks a complex discovery or objection-handling question, configure the latency/barge-in threshold to allow the prospect ample time to think. Avoid having the AI jump in too quickly with vocal fillers.",
+        "when_not_to_use": "Do not use extended silence for basic, rapid-fire factual questions where a long pause indicates the call may have dropped.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-097",
+        "source_title": "2015 World Champion: 'The Power of Words' Mohammed Qahtani",
+        "source_ids": [
+          "rag004-source-004"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Frame corrections and directives positively to preserve the prospect's pride.",
+        "application": "When a prospect is wrong or needs redirection, avoid language that intimidates or threatens their ego. Speak to their desired identity (e.g., success, intelligence) to encourage compliance.",
+        "when_not_to_use": "Never use intimidating, condescending, or dismissive phrasing (e.g., 'I'm busy' or 'Are you stupid?').",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-098",
+        "source_title": "Non-Verbal Communication | SkillsYouNeed",
+        "source_ids": [
+          "rag004-source-063",
+          "rag004-source-094"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Trust non-verbal paralinguistics (tone/pitch) over verbal content if there is a mismatch.",
+        "application": "Configure the AI's emotion-detection to flag when a user's words (e.g., 'Yes, that sounds fine') contradict their tone (hesitant, sighing, strained). The agent should gently address the detected emotion.",
+        "when_not_to_use": "N/A",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-099",
+        "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research)",
+        "source_ids": [
+          "rag004-source-085"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Prioritize trustworthiness over friendliness; use a casual, conversational, and moderately enthusiastic tone to maximize desirability.",
+        "application": "Configure the agent to be straightforward and approachable without forcing humor. Trustworthiness drives 52% of a user's willingness to recommend a brand, while friendliness only adds 8%.",
+        "when_not_to_use": "Avoid overly chummy, playful, or irreverent tones in serious, high-stakes industries (like finance or healthcare) as they undermine professionalism and credibility.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-100",
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_ids": [
+          "rag004-source-087"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Use structured frameworks like 'Problem-Solution-Benefit' or 'What-So What-Now What' for spontaneous speaking.",
+        "application": "When asked an off-the-cuff question, format the response into three clear chunks. This increases processing fluency by \\~40% and keeps the agent from rambling.",
+        "when_not_to_use": "Do not rush to answer a hostile question defensively. Use paraphrasing to buy time and reframe the question before applying the structure.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-101",
+        "source_title": "How to Speak So That People Want to Listen | Julian Treasure | TED",
+        "source_ids": [
+          "rag004-source-042",
+          "rag004-source-043",
+          "rag004-source-056"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Optimize the vocal toolbox (Register, Timbre, Prosody, Pace, Pitch, Volume) to convey authority and engagement.",
+        "application": "Speak from the chest for depth and authority; use a warm, rich timbre to build trust; vary pace to emphasize points; and use silence for impact rather than vocal fillers.",
+        "when_not_to_use": "Avoid 'uptalk' (ending statements as if they were questions), monotonous delivery, or 'sodcasting' (broadcasting loudly without consideration for the listener).",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-102",
+        "source_title": "The Art of Effective Communication | Marcus Alexander Velazquez",
+        "source_ids": [
+          "rag004-source-059",
+          "rag004-source-082"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Simplicity is key; avoid over-speaking and explicitly define terms to prevent misunderstandings.",
+        "application": "Ensure the AI agent does not suffer from 'diarrhea of the mouth' by giving overly long responses. When ambiguity arises, ask the prospect to define their terms to guarantee mutual understanding.",
+        "when_not_to_use": "Do not assume the prospect shares your definition of an industry buzzword or concept.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-103",
+        "source_title": "How to Speak | Patrick Winston",
+        "source_ids": [
+          "rag004-source-042"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "End interactions with a strong summary of contributions, not a weak 'thank you'.",
+        "application": "Conclude the conversation by outlining the value delivered or the specific contributions made. 'Salute' the prospect by acknowledging their time and specific insights, rather than a generic sign-off.",
+        "when_not_to_use": "Do not end with 'Thank you for listening,' as it implies the audience only stayed out of politeness.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-104",
+        "source_title": "How to Speak | Patrick Winston",
+        "source_ids": [
+          "rag004-source-042"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Cycle on the subject to ensure message retention.",
+        "application": "Repeat core value propositions or key points subtly at least three times throughout the interaction. Structure the delivery to revisit the main idea from different angles to accommodate natural attention lapses.",
+        "when_not_to_use": "Do not repeat the exact same phrasing consecutively, which sounds robotic; vary the explanation.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-105",
+        "source_title": "Think Fast, Talk Smart: Communication Techniques",
+        "source_ids": [
+          "rag004-source-087"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "original_topic_id": "speech_tone_prosody_human_like_voice_behavior",
+        "principle": "Bypass rehearsed objections or guardedness by shifting the dynamic and asking the prospect for advice.",
+        "application": "When facing a highly guarded or 'trained' prospect who gives non-answers, ask them what advice they would give to someone in a similar situation. This reframes their role and yields more authentic insights.",
+        "when_not_to_use": "Do not use if the prospect is already openly sharing or if the question is strictly factual.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-106",
+        "source_title": "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation",
+        "source_ids": [
+          "rag004-source-078"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Cross-Modal Emotion Distillation",
+        "application": "Use a robust text-emotion Teacher model to train an audio-emotion Student model when large amounts of labeled speech data are unavailable.",
+        "when_not_to_use": "N/A - Architectural configuration strategy.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-107",
+        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+        "source_ids": [
+          "rag004-source-017"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Multimodal Disambiguation",
+        "application": "Prioritize acoustic and visual cues over text when detecting the prospect's emotional state, as words alone frequently mask true intent.",
+        "when_not_to_use": "When acoustic data is severely degraded by background noise or poor connection, fall back to text-based semantic tracking.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-108",
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_ids": [
+          "rag004-source-034"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Antisocial Derailment Warning",
+        "application": "Implement real-time monitoring for conversational trajectories that mimic 'conversations gone awry'. If a prospect exhibits escalating rule-violating or abusive behavior, safely disengage the AI.",
+        "when_not_to_use": "Do not confuse strong, assertive B2B negotiation tactics (dominance) with antisocial derailment (toxicity).",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-109",
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_ids": [
+          "rag004-source-034"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Multi-Issue Bargaining Trade-offs",
+        "application": "Treat negotiations not as zero-sum haggling over a single issue (like price), but as a multi-issue bargaining task (MIBT) where concessions on lower-priority items (e.g., contract length) secure wins on high-priority items.",
+        "when_not_to_use": "Avoid when the prospect has only one non-negotiable hard requirement (e.g., budget cap) and cannot utilize secondary concessions.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-110",
+        "source_title": "DailyDialog: A Manually Labelled Multi-turn Dialogue Dataset...",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Dual Intent and Emotion Co-Tracking",
+        "application": "Label user inputs with both a communication intent (e.g., question, directive) and an emotion (e.g., anxiety, joy) simultaneously to route to the most accurate dialogue logic.",
+        "when_not_to_use": "N/A - Architectural best practice.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-111",
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_ids": [
+          "rag004-source-034"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Perceived Truthfulness Optimization",
+        "application": "Ensure that statements aren't just factually true, but are phrased to pass 'perceived truthfulness' thresholds, avoiding overly slick or 'salesy' jargon that triggers deception filters in the listener.",
+        "when_not_to_use": "N/A - Maintaining high perceived truthfulness is universally applicable.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-112",
+        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition...",
+        "source_ids": [
+          "rag004-source-017"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Incomplete Modality Graceful Degradation",
+        "application": "Design the emotion recognition architecture to function even when audio is noisy or VoIP compression destroys prosody, using autoencoders or knowledge distillation to reconstruct emotional signals from text alone.",
+        "when_not_to_use": "Do not guess emotional states with high confidence if all acoustic signals are missing and text is highly ambiguous.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-113",
+        "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+        "source_ids": [
+          "rag004-source-034"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Argumentation Delta Tracking",
+        "application": "Leverage datasets tracking successful view-changes to formulate structured arguments that successfully shift a prospect's initial objections to a state of agreement.",
+        "when_not_to_use": "Do not engage in argumentation if the prospect indicates the conversation is over or firmly requests no further contact.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-114",
+        "source_title": "Social Influence Dialogue Systems",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Dialogue Act Look-Ahead (Opponent Modeling)",
+        "application": "Predict the prospect's next dialogue act (e.g., an objection or counter-offer) internally, and use that prediction to formulate a preemptive response strategy.",
+        "when_not_to_use": "Do not pre-emptively answer unstated objections if the prospect has already demonstrated high compliance and readiness to close.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-115",
+        "source_title": "Persuasion for Good",
+        "source_ids": [
+          "rag004-source-066"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Personalized Persuasion Strategy Selection",
+        "application": "Dynamically map the persuasion strategy (e.g., Logical vs. Emotional Appeal) based on inferred user traits and the context of the conversation.",
+        "when_not_to_use": "Do not rigidly lock into one strategy; if an emotional appeal triggers defensive cues, switch to a logical or credibility appeal.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-116",
+        "source_title": "Social Influence Dialogue Systems",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Task and Social Content Layering",
+        "application": "Integrate small talk, empathy, and self-disclosure before executing task-oriented bargaining or logic-based pitches to build rapport.",
+        "when_not_to_use": "Do not overuse social content if the user expresses high urgency or directly asks to skip to pricing.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-117",
+        "source_title": "Social Influence Dialogue Systems: A Survey...",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Politeness Mitigation and Face Acts",
+        "application": "When facing strong resistance, use politeness strategies to protect the prospect's 'face' (ego or social status) before deploying logical counter-arguments. This prevents defensive entrenchment.",
+        "when_not_to_use": "Do not overuse politeness markers to the point of sounding submissive or lacking confidence in the product.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-118",
+        "source_title": "Social Influence Dialogue Systems",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Transparent and Ethical Social Influence",
+        "application": "Ensure the sales agent prioritizes mutually beneficial agreements. Monitor the dialogue system to prevent descent into manipulative, toxic, or deceptively anthropomorphic behaviors.",
+        "when_not_to_use": "Never allow the system to simulate human suffering or lie about its identity to gain compliance.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-119",
+        "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+        "source_ids": [
+          "rag004-source-017"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Low-Level Acoustic Feature Extraction",
+        "application": "Leverage tools like OpenSMILE and LibROSA to process MFCCs, pitch, zero-crossing rate, and vocal intensity to gauge prospect tension and interest.",
+        "when_not_to_use": "Do not rely on micro-acoustic changes if the telephony network is utilizing heavy VoIP compression that destroys vocal tract glottal frequencies.",
+        "review_flags": [
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-120",
+        "source_title": "MELD: A Multimodal Multi-Party Dataset for Emotion Recognition...",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Sequential Emotion Shift Tracking",
+        "application": "Do not just measure the absolute emotion of a single utterance; track the 'emotion shift' across turns (e.g., from Anger to Neutral) to validate if a de-escalation or persuasion tactic is actively working.",
+        "when_not_to_use": "Avoid micro-analyzing shifts on very short, non-substantive filler utterances like 'yeah' or 'uh-huh'.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      },
+      {
+        "chunk_id": "rag005-chunk-121",
+        "source_title": "GoEmotions: A Dataset of Fine-Grained Emotions",
+        "source_ids": [],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "original_topic_id": "emotion_recognition_speech_emotion_persuasion_datasets",
+        "principle": "Fine-Grained Emotion Categorization",
+        "application": "Track 27 distinct emotional states rather than binary positive/negative to generate highly context-aware and empathetic responses.",
+        "when_not_to_use": "Avoid overly complex emotional state modeling if processing latency degrades real-time conversational flow.",
+        "review_flags": [
+          "source_mapping_required",
+          "quote_review_required"
+        ],
+        "source_excerpt_present": true,
+        "review_action": "verify_quote_or_replace_with_paraphrase"
+      }
+    ]
+  },
+  "first_slice_candidates": [
+    {
+      "chunk_id": "rag005-chunk-017",
+      "source_title": "The Only Video You Need To Fix Your Communication Skills",
+      "source_ids": [
+        "rag004-source-086"
+      ],
+      "topic_ids": [
+        "objection_handling"
+      ],
+      "original_topic_id": "objection_handling",
+      "principle": "Yes, And\" over \"Yes, But",
+      "application": "When a customer raises a difficult objection (e.g., price), using \"Yes, but\" invalidates their concern. Using \"Yes, and\" acknowledges their reality while pivoting the conversation in a positive, constructive direction.",
+      "when_not_to_use": "Do not use \"Yes, and\" if the customer states something factually or legally incorrect about the contract; polite correction is required there.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-025",
+      "source_title": "Communication Is Hard Until You Structure Your Thinking First!",
+      "source_ids": [
+        "rag004-source-032"
+      ],
+      "topic_ids": [
+        "objection_handling"
+      ],
+      "original_topic_id": "objection_handling",
+      "principle": "The 3-2-1 Framework (Distilling Thoughts)",
+      "application": "When asked an unexpected or broad question, constrain rambling by structuring the answer using \"three steps,\" \"two types,\" or \"the one thing.\" This forces concise, coherent responses under pressure.",
+      "when_not_to_use": "Do not use if the prospect asks a simple yes/no question that requires a direct factual answer.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-020",
+      "source_title": "9 Habits for Clearer Speaking (I Wish I Knew Sooner)",
+      "source_ids": [
+        "rag004-source-016"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Declarative Statements vs. Rambling",
+      "application": "Thinking out loud leads to connected, run-on sentences filled with \"ums\" and \"ands\". Speaking in short, declarative sentences with full stops creates immediate clarity and prevents the listener from having to mentally decode rambling thoughts.",
+      "when_not_to_use": "Do not make statements so short they sound robotic, curt, or aggressive.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-024",
+      "source_title": "7 Communication Cheat Codes To Speak Like A Pro!",
+      "source_ids": [
+        "rag004-source-013"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "The PREP Framework",
+      "application": "Structure persuasive arguments cleanly to avoid confusing the listener. PREP stands for Point, Reason, Example, Point. State the point clearly, provide the logical reason, give a concrete example, and restate the core point.",
+      "when_not_to_use": "Do not use for brief conversational pleasantries or simple status updates.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-071",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Sunk Cost Fallacy & Mental Accounting",
+      "application": "When prospects hesitate to switch tools due to previous investments, reframe the budget objection by addressing the 'pain of paying' and detaching them from the sunk cost of legacy systems.",
+      "when_not_to_use": "Do not aggressively attack or mock their past purchasing decisions; this triggers defensiveness. Frame it as an industry-wide evolution.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-072",
+      "source_title": "[1906.06725] Persuasion for Good",
+      "source_ids": [
+        "rag004-source-066"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Personalized Persuasion (Demographic & Psychological Adaptation)",
+      "application": "The AI should dynamically alter its persuasion strategy (e.g., relying on logical appeals vs. emotional/moral appeals) based on real-time analysis of the prospect's personality and value systems.",
+      "when_not_to_use": "Do not use sensitive demographic data (e.g., protected classes) in a discriminatory manner; keep personalization focused on professional psychographics.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-073",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Consistency",
+      "application": "Secure small, voluntary, active commitments early to align later decisions.",
+      "when_not_to_use": "Do not trap prospects with aggressive 'gotcha' logic; must be voluntary.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-074",
+      "source_title": "The Ethics of Manipulation (Stanford Encyclopedia of Philosophy)",
+      "source_ids": [
+        "rag004-source-083"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Guardrail: Non-Coercive Pressure & Trickery",
+      "application": "AI sales agents must strictly avoid tactics that exert non-coercive pressure (nagging, peer pressure, emotional blackmail) or trickery (gaslighting, negging).",
+      "when_not_to_use": "N/A - This is a universal negative constraint for system safety.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-075",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Scarcity & Loss Aversion",
+      "application": "Highlight unique benefits and exactly what the prospect stands to lose by not acting.",
+      "when_not_to_use": "Do not manufacture false scarcity; damages trust if discovered.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-076",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Decoy Effect / Choice Architecture",
+      "application": "Introduce an asymmetrically dominated choice to make the target option appear more valuable.",
+      "when_not_to_use": "Do not create overly complex pricing tiers that trigger choice overload.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-077",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Reciprocity",
+      "application": "Give unexpected, personalized value first to create a social obligation to say yes.",
+      "when_not_to_use": "Do not use if the gift appears conditional, transactional, or like a bribe.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-078",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Choice Overload Prevention",
+      "application": "Limit the number of product tiers or configuration options presented to the prospect to prevent decision fatigue and choice deferral.",
+      "when_not_to_use": "Do not hide options if the prospect specifically requests a highly customized, granular breakdown.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-079",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Consensus (Social Proof)",
+      "application": "Point to the actions of similar others to resolve uncertainty.",
+      "when_not_to_use": "Do not use generic or unrelated social proof that the prospect cannot identify with.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-080",
+      "source_title": "Cognitive Dissonance Theory: A Crash Course",
+      "source_ids": [
+        "rag004-source-030"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Cognitive Dissonance",
+      "application": "Gently highlight inconsistencies between stated goals and current actions to motivate change.",
+      "when_not_to_use": "Do not use a hostile or mocking tone; will trigger defensiveness rather than compliance.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-082",
+      "source_title": "Persuasion | Psychology Today",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Autonomy Reminder",
+      "application": "Remind prospects of their freedom to choose to bypass reactance (reverse psychology).",
+      "when_not_to_use": "Do not use if the prospect is already heavily leaning towards a close; only use for resistance.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-083",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Liking (Similarity & Mutual Goals)",
+      "application": "Before discussing pricing or terms, the agent should explicitly identify a shared trait, personal information, or mutual goal to dramatically increase agreement rates.",
+      "when_not_to_use": "Do not fabricate similarities. If the agent is an AI, it should connect over shared business objectives rather than faking human personal anecdotes.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-085",
+      "source_title": "Persuasion | Psychology Today",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Optimal Number of Claims (Rule of Three)",
+      "application": "Limit product promises or core benefits to exactly three during a pitch. Exceeding three dilutes the message and triggers skepticism.",
+      "when_not_to_use": "Do not arbitrarily drop critical compliance or safety features just to hit the number three.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-086",
+      "source_title": "An Introduction to Behavioral Economics",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Anchoring",
+      "application": "Introduce a higher reference price, industry benchmark, or high-value metric early in the conversation to set a cognitive anchor before presenting the actual, lower cost.",
+      "when_not_to_use": "Do not use artificially inflated or entirely fabricated 'original prices' as an anchor, as this violates deception guardrails.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-087",
+      "source_title": "Science Of Persuasion",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Authority (Third-Party Introduction)",
+      "application": "Arrange for a third party (or an automated pre-call email from an executive) to highlight the sales agent's specific expertise before the agent actually makes the pitch.",
+      "when_not_to_use": "Do not exaggerate credentials or use fake job titles (e.g., calling a junior SDR a 'Senior Data Scientist').",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-088",
+      "source_title": "Persuasion | Psychology Today",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "original_topic_id": "ethical_persuasion_persuasive_dialogue",
+      "principle": "Emotional Self-Reflection",
+      "application": "Connect the product's impact directly to the prospect's personal career goals, values, or self-image, rather than relying solely on abstract logical data.",
+      "when_not_to_use": "Avoid assuming too much about a stranger's personal life; keep the reflection tied to their professional identity and stated goals.",
+      "review_flags": [
+        "quote_review_required"
+      ],
+      "review_action": "human_review_for_possible_rag006_or_later_promotion",
+      "runtime_eligible_now": false
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_suggestions_are_review_only": true,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "private_customer_data_allowed": false
+  }
+}

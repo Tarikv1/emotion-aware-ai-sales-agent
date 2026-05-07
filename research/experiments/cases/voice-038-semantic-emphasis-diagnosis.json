@@ -1,0 +1,153 @@
+{
+  "experiment_scope": {
+    "milestone": "VOICE-038",
+    "purpose": "semantic-emphasis-rhythm-diagnosis",
+    "description": "Diagnose phrase rhythm and semantic emphasis for the current preferred English ElevenLabs voice before changing runtime logic."
+  },
+  "provider": {
+    "provider_key": "elevenlabs",
+    "provider_id": "elevenlabs-stream",
+    "provider_name": "ElevenLabs",
+    "endpoint_type": "tts-http-stream",
+    "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+    "model_id": "eleven_flash_v2_5",
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "en": "ELEVENLABS_VOICE_ID_EN",
+      "de": "ELEVENLABS_VOICE_ID_DE"
+    },
+    "default_output_format": "mp3_44100_128",
+    "audio_extension": "mp3",
+    "enable_logging": false,
+    "base_voice_settings": {
+      "stability": 0.56,
+      "similarity_boost": 0.75,
+      "style": 0.08,
+      "use_speaker_boost": true,
+      "speed": 1.07
+    }
+  },
+  "voice_candidate": {
+    "candidate_id": "preferred_english_candidate_current",
+    "label": "Current preferred English candidate",
+    "language": "en",
+    "status": "active-listening-candidate",
+    "voice_id_location": "ELEVENLABS_VOICE_ID_EN or ignored config/local/voice_ids.json"
+  },
+  "listening_script": {
+    "script_id": "voice-038-en-worth-your-time",
+    "script_title": "English worth-your-time emphasis diagnosis",
+    "language": "en",
+    "source_feedback": "Tarik heard roboticness mostly resolved, but rhythm/emphasis broke around the clause 'whether reviewing options is worth your time'.",
+    "fragile_clause": "whether reviewing options is worth your time"
+  },
+  "variants": [
+    {
+      "variant_id": "baseline_original_clause",
+      "label": "Baseline original fragile clause",
+      "hypothesis": "Preserving the original clause confirms the exact failure condition with the preferred voice.",
+      "language": "en",
+      "diagnosis_tags": ["baseline", "fragile-clause"],
+      "tts_input_text": "That makes sense. The practical next step is to check whether reviewing options is worth your time.",
+      "voice_settings": {
+        "stability": 0.56,
+        "style": 0.08,
+        "speed": 1.07
+      }
+    },
+    {
+      "variant_id": "clear_opening_simple_clause",
+      "label": "Clear opening with simpler worth clause",
+      "hypothesis": "Keeping 'That makes sense' but simplifying the clause may preserve trust while avoiding awkward emphasis.",
+      "language": "en",
+      "diagnosis_tags": ["opening-check", "simpler-clause"],
+      "tts_input_text": "That makes sense. We can quickly check if a review is worth your time.",
+      "voice_settings": {
+        "stability": 0.58,
+        "style": 0.06,
+        "speed": 1.07
+      }
+    },
+    {
+      "variant_id": "chunked_decision_clause",
+      "label": "Chunked decision phrase",
+      "hypothesis": "Splitting the logic into smaller spoken chunks may guide rhythm without forcing emphasis tags.",
+      "language": "en",
+      "diagnosis_tags": ["phrase-chunking", "decision-rhythm", "break-tag"],
+      "tts_input_text": "That makes sense. We can check the options first, <break time=\"0.12s\" /> then decide if it is worth your time.",
+      "voice_settings": {
+        "stability": 0.58,
+        "style": 0.06,
+        "speed": 1.065
+      }
+    },
+    {
+      "variant_id": "benefit_first_clause",
+      "label": "Benefit-first wording",
+      "hypothesis": "Reframing around a clear reason to review may make the important word obvious without manual emphasis.",
+      "language": "en",
+      "diagnosis_tags": ["semantic-reframe", "benefit-first"],
+      "tts_input_text": "That makes sense. Let's only spend time on this if there is a clear reason to review it.",
+      "voice_settings": {
+        "stability": 0.6,
+        "style": 0.06,
+        "speed": 1.07
+      }
+    },
+    {
+      "variant_id": "semantic_focus_question",
+      "label": "Semantic focus question",
+      "hypothesis": "A short focus question may move the natural emphasis to 'worth your time' without overdirecting the provider.",
+      "language": "en",
+      "diagnosis_tags": ["semantic-focus", "question-shape"],
+      "tts_input_text": "That makes sense. The key question is simple: is a review worth your time?",
+      "voice_settings": {
+        "stability": 0.57,
+        "style": 0.08,
+        "speed": 1.065
+      }
+    },
+    {
+      "variant_id": "opening_alternative",
+      "label": "Opening alternative",
+      "hypothesis": "Replacing the slightly unclear opening can reveal whether 'That makes sense' is part of the perceived gibberish.",
+      "language": "en",
+      "diagnosis_tags": ["opening-check", "semantic-focus"],
+      "tts_input_text": "I understand. The key question is simple: is a review worth your time?",
+      "voice_settings": {
+        "stability": 0.57,
+        "style": 0.08,
+        "speed": 1.065
+      }
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run",
+    "live_requires_flag": true,
+    "api_key_location": "environment-only",
+    "voice_id_location": "environment or ignored local config",
+    "raw_voice_ids_logged": false,
+    "customer_audio_uploaded": false,
+    "private_audio_used": false,
+    "voice_cloning_used": false,
+    "runtime_behavior_changed": false
+  },
+  "quality_rubric": {
+    "criteria": [
+      "Does the opening sound clear rather than garbled?",
+      "Does the voice emphasize the important idea rather than filler words?",
+      "Does the phrase flow naturally through the worth-your-time idea?",
+      "Does the sentence still sound trustworthy and sales-appropriate?",
+      "Does the variant avoid sounding over-scripted or over-emphasized?",
+      "Would this wording be safe to promote into runtime after more checks?"
+    ]
+  },
+  "expected": {
+    "default_provider_calls": 0,
+    "default_audio_files": 0,
+    "live_mode_is_explicit": true,
+    "human_rating_required_before_quality_claim": true,
+    "winning_variant_required_before_runtime_change": true
+  }
+}

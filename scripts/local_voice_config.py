@@ -34,7 +34,7 @@ def provider_key_from_provider(provider: dict[str, Any]) -> str:
 def load_local_voice_ids(config_path: Path = LOCAL_VOICE_IDS_PATH) -> dict[str, Any]:
     if not config_path.is_file():
         return {}
-    payload = json.loads(config_path.read_text(encoding="utf-8"))
+    payload = json.loads(config_path.read_text(encoding="utf-8-sig"))
     if not isinstance(payload, dict):
         raise ValueError("Local voice ID config must be a JSON object.")
     return payload

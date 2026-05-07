@@ -1,0 +1,143 @@
+{
+  "voice_milestone": "VOICE-029",
+  "profile_id": "VOICE-029-local-speech-profile-learning",
+  "source_mode": "synthetic_fixture",
+  "summary": {
+    "sample_count": 4,
+    "languages": {
+      "de": 1,
+      "en": 3
+    },
+    "sources": {
+      "synthetic_fixture": 4
+    },
+    "safe_public_artifact": true
+  },
+  "privacy_boundary": {
+    "private_input_read": false,
+    "raw_audio_read": false,
+    "provider_calls_made": false,
+    "voice_cloning_used": false,
+    "raw_transcript_exported": false,
+    "raw_examples_included": false,
+    "human_review_required_before_runtime_use": true,
+    "safe_for_public_generated_artifacts": true
+  },
+  "pattern_profile": {
+    "description": "Abstract aggregate speech-style signals only; no raw examples or private identifiers.",
+    "languages": {
+      "de": {
+        "sample_count": 1,
+        "word_count": 22,
+        "sentence_count": 2,
+        "avg_words_per_sentence": 11.0,
+        "filler_marker_count": 1,
+        "filler_rate_per_100_words": 4.55,
+        "repair_marker_count": 1,
+        "repair_rate_per_100_words": 4.55,
+        "contraction_count": 0,
+        "pause_marker_count": 0,
+        "pause_markers_per_sentence": 0.0,
+        "top_filler_markers": [
+          {
+            "marker": "also",
+            "count": 1
+          }
+        ],
+        "top_repair_markers": [
+          {
+            "marker": "ich meine",
+            "count": 1
+          }
+        ],
+        "pause_marker_summary": []
+      },
+      "en": {
+        "sample_count": 3,
+        "word_count": 84,
+        "sentence_count": 6,
+        "avg_words_per_sentence": 14.0,
+        "filler_marker_count": 4,
+        "filler_rate_per_100_words": 4.76,
+        "repair_marker_count": 5,
+        "repair_rate_per_100_words": 5.95,
+        "contraction_count": 2,
+        "pause_marker_count": 0,
+        "pause_markers_per_sentence": 0.0,
+        "top_filler_markers": [
+          {
+            "marker": "so",
+            "count": 2
+          },
+          {
+            "marker": "like",
+            "count": 1
+          },
+          {
+            "marker": "okay",
+            "count": 1
+          }
+        ],
+        "top_repair_markers": [
+          {
+            "marker": "i mean",
+            "count": 2
+          },
+          {
+            "marker": "let me rephrase",
+            "count": 1
+          },
+          {
+            "marker": "trying to say",
+            "count": 1
+          },
+          {
+            "marker": "what i mean",
+            "count": 1
+          }
+        ],
+        "pause_marker_summary": []
+      }
+    }
+  },
+  "runtime_profile_proposal": {
+    "apply_to_runtime_by_default": false,
+    "requires_human_review": true,
+    "safe_next_step": "Review the abstract profile, then manually map stable patterns into campaign-level voice settings.",
+    "speech_realism": {
+      "suggested_filler_intensity": "medium",
+      "preferred_placement": "sentence_or_thought_boundary",
+      "avoid_mid_clause_insertion": true,
+      "languages_observed": [
+        "de",
+        "en"
+      ]
+    },
+    "speech_imperfections": {
+      "enable_only_after_review": true,
+      "suggested_max_imperfections_per_response": 1,
+      "preferred_types": [
+        "clarifying_rephrase",
+        "soft_restart",
+        "breath_pause"
+      ],
+      "protected_text_stays_exact": true
+    },
+    "not_inferred": [
+      "identity",
+      "speaker voiceprint",
+      "raw transcript examples",
+      "private personal facts"
+    ]
+  },
+  "private_workspace": {
+    "private_root": "data/private/tarik-speech-samples",
+    "required_private_subdirs": [
+      "raw-audio",
+      "transcripts-redacted",
+      "derived",
+      "reviewed-patterns",
+      "quarantine"
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "allowed_runtime_candidate_features": [
+    "speech_burst_count",
+    "energy_variation",
+    "mean_speech_rms"
+  ],
+  "blocked_runtime_features": [
+    "pause_ratio",
+    "average_pause_ms",
+    "longest_pause_ms",
+    "silence_seconds"
+  ],
+  "campaign_application_policy": {
+    "applies_to": "campaign-level voice settings only after review, never raw automatic cloning",
+    "campaign_can_disable_personalization": true,
+    "campaign_override_required": true,
+    "default_voice_posture": "professional_sales_agent",
+    "protected_segments_locked": true,
+    "vertical_agnostic_core_preserved": true
+  },
+  "candidate_mapping_proposals": [
+    {
+      "application_mode": "review_only",
+      "interpretation": "Use only as a reviewed hint for where a professional sales voice can sound more alive across sentence groups; do not copy owner pause lengths.",
+      "proposal": "moderate_turn_density_candidate",
+      "runtime_setting": "rhythm_density_hint",
+      "source_feature": "speech_burst_count",
+      "value_summary": {
+        "avg": 9.25,
+        "count": 4,
+        "max": 12,
+        "min": 7
+      }
+    },
+    {
+      "application_mode": "review_only",
+      "interpretation": "Use only as a reviewed hint for bounded emotional color and emphasis variation; campaign guardrails still decide what may be said.",
+      "proposal": "moderate_expressiveness_variation_candidate",
+      "runtime_setting": "expressiveness_variation_hint",
+      "source_feature": "energy_variation",
+      "value_summary": {
+        "avg": 0.255,
+        "count": 4,
+        "max": 0.34,
+        "min": 0.18
+      }
+    },
+    {
+      "application_mode": "review_only",
+      "interpretation": "Use only as a reviewed hint for perceived vocal presence; provider loudness and campaign tone remain separately configured.",
+      "proposal": "moderate_presence_candidate",
+      "runtime_setting": "presence_level_hint",
+      "source_feature": "mean_speech_rms",
+      "value_summary": {
+        "avg": 0.205,
+        "count": 4,
+        "max": 0.24,
+        "min": 0.16
+      }
+    }
+  ],
+  "deferred_reminders": [
+    {
+      "idea": "Optionally import selected Tarik WhatsApp voice notes as extra private speech samples.",
+      "privacy_boundary": [
+        "selected files stay under data/private/",
+        "source label must mark them as whatsapp_voice_note",
+        "local conversion is required for non-WAV formats",
+        "do not upload private voice notes to providers"
+      ],
+      "reminder_id": "whatsapp_voice_note_import",
+      "unlock_condition": "After Tarik decides to run VOICE-030D on enough local speech samples, remind him that WhatsApp voice notes can be imported if he wants more coverage.",
+      "why_deferred": "Wait until the VOICE-030D review decision so we do not mix recording contexts too early."
+    }
+  ],
+  "human_review_required": true,
+  "mapping_id": "VOICE-031-reviewed-feature-runtime-mapping",
+  "mapping_status": "proposal_only_needs_human_review",
+  "personalization_guardrails": [
+    "do_not_clone_or_overfit_to_one_speaker_identity",
+    "do_not_force_every_campaign_to_match_tarik_exactly",
+    "preserve_campaign_language_voice_and_target_accent_choice",
+    "do_not_turn_diagnostic_pause_metrics_into_agent_pacing_targets",
+    "do_not_apply_to_protected_campaign_questions_disclosures_handoff_or_hangup_text"
+  ],
+  "privacy_boundary": {
+    "outputs_stay_under_data_private": false,
+    "private_review_summary_read": false,
+    "provider_calls_made": false,
+    "public_artifact_created_from_private_summary": false,
+    "raw_audio_paths_exported": false,
+    "raw_audio_read": false,
+    "runtime_profile_applied": false,
+    "transcription_created": false,
+    "voice_cloning_used": false
+  },
+  "runtime_profile_applied": false,
+  "source_label": "synthetic_public_fixture",
+  "source_review_milestone": "VOICE-030D",
+  "validation": {
+    "blocked_feature_violations": [],
+    "missing_blocked_feature_exclusions": [],
+    "notes": "Reviewed feature summary can become a human-reviewed runtime proposal, but nothing is applied automatically.",
+    "passed": true,
+    "proposal_count": 3,
+    "source_boundary_violations": [],
+    "unsupported_candidate_features": []
+  },
+  "voice_milestone": "VOICE-031"
+}

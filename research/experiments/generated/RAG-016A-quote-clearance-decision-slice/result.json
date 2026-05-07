@@ -1,0 +1,683 @@
+{
+  "quote_clearance_decision_slice_id": "RAG-016A-quote-clearance-decision-slice",
+  "recommended_next_checkpoint": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+  "inputs": {
+    "rag016_result_path": "research/experiments/generated/RAG-016-quote-clearance-batches/result.json",
+    "rag009_result_path": "research/experiments/generated/RAG-009-all-source-review-coverage/result.json",
+    "case_path": "research/experiments/cases/rag-016a-quote-clearance-decision-slice.json"
+  },
+  "acceptance": {
+    "accepted_by": "project_owner_current_session",
+    "acceptance_scope": "RAG-016 ethical-persuasion response-wording batch listed in the RAG-016A case file.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "selected_priority_batch": "batch_1_ethical_persuasion_response_wording",
+    "decision_candidate_count": 11,
+    "accepted_quote_clearance_item_count": 11,
+    "rejected_quote_clearance_item_count": 0,
+    "quote_clearance_decisions_applied_now": 11,
+    "quote_clearance_blockers_resolved_now": 11,
+    "quote_clearance_blockers_remaining_after_rag016a": 19,
+    "ethical_persuasion_remaining_after_rag016a": 0,
+    "voice_delivery_remaining_after_rag016a": 19,
+    "accepted_lane_counts": {
+      "response_wording": 10,
+      "safety_guardrail": 1
+    },
+    "source_mapping_pending_chunk_count_from_rag015": 58,
+    "source_mapping_pending_group_count_from_rag015": 43,
+    "source_mapping_latent_quote_followup_count_from_rag015": 21,
+    "known_unresolved_cleanup_work_after_rag016a": 77,
+    "auto_promoted_chunk_count": 0,
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false
+  },
+  "accepted_quote_clearance_items": [
+    {
+      "knowledge_id": "rag016a-response-no-strings-value",
+      "chunk_id": "rag005-chunk-077",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "source_title": "Science Of Persuasion",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Reciprocity",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Offer useful campaign-approved information without making it conditional on agreement or a next step.",
+      "safe_application": "Use when a short checklist, explanation, or comparison can help the customer decide with less pressure.",
+      "do_not_use_when": "Do not frame the value as a debt, favor, gift, obligation, bribe, or reason the customer should reciprocate.",
+      "guardrail_notes": "Value-first behavior must support customer agency; it cannot create a social-obligation trap.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-choice-clarity",
+      "chunk_id": "rag005-chunk-078",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "source_title": "An Introduction to Behavioral Economics",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Choice Overload Prevention",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Present the smallest useful set of campaign-approved options first, then offer full details when the customer asks.",
+      "safe_application": "Use when too many tiers, add-ons, dates, or configurations would make the next choice harder to compare.",
+      "do_not_use_when": "Do not hide relevant options, prices, limitations, compliance details, or requested customization details.",
+      "guardrail_notes": "Choice simplification improves comprehension only when full information remains available.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-truthful-social-proof",
+      "chunk_id": "rag005-chunk-079",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "source_title": "Science Of Persuasion",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Consensus (Social Proof)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use social proof only when it is truthful, relevant, and framed as context rather than pressure.",
+      "safe_application": "Use campaign-approved examples from similar customers, segments, or use cases to reduce uncertainty.",
+      "do_not_use_when": "Do not cite vague popularity, unrelated groups, inflated adoption claims, or herd pressure.",
+      "guardrail_notes": "Social proof is weak context; it never replaces the customer's own fit, timing, or consent.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-goal-path-alignment",
+      "chunk_id": "rag005-chunk-080",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-030"
+      ],
+      "source_title": "Cognitive Dissonance Theory: A Crash Course",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Cognitive Dissonance",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "With permission, compare a customer-stated goal with the current path and ask whether the gap is worth examining.",
+      "safe_application": "Use only after the customer has stated both a desired outcome and a current constraint or tradeoff.",
+      "do_not_use_when": "Do not shame, mock, corner, or imply hypocrisy; do not force a change narrative.",
+      "guardrail_notes": "The agent may surface a possible mismatch, but the customer decides whether it matters.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-autonomy-reminder",
+      "chunk_id": "rag005-chunk-082",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "source_title": "Persuasion | Psychology Today",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Autonomy Reminder",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+      "safe_application": "Use when the customer is hesitant, resistant, or worried about being pushed.",
+      "do_not_use_when": "Do not use autonomy language as reverse psychology or as a setup for renewed pressure.",
+      "guardrail_notes": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-shared-business-objective",
+      "chunk_id": "rag005-chunk-083",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "source_title": "Science Of Persuasion",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Liking (Similarity & Mutual Goals)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Build rapport by naming a shared business objective the customer has already stated, not by fabricating personal similarity.",
+      "safe_application": "Use to align on goals such as reducing risk, saving time, improving service, or clarifying cost.",
+      "do_not_use_when": "Do not fake personal anecdotes, imply friendship, mine private details, or mimic identity traits.",
+      "guardrail_notes": "An AI sales agent can align professionally without pretending to share human experiences.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-concise-benefit-set",
+      "chunk_id": "rag005-chunk-085",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "source_title": "Persuasion | Psychology Today",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Optimal Number of Claims (Rule of Three)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Keep benefit framing concise by naming only the few campaign-approved points that match the customer's stated priority.",
+      "safe_application": "Use when summarizing fit after discovery or when the customer asks for the simplest explanation.",
+      "do_not_use_when": "Do not remove critical compliance, price, safety, limitation, or eligibility information to keep the list short.",
+      "guardrail_notes": "Concision is a comprehension aid, not a reason to omit material information.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-transparent-reference-point",
+      "chunk_id": "rag005-chunk-086",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-022"
+      ],
+      "source_title": "An Introduction to Behavioral Economics",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Anchoring",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use reference prices, benchmarks, or value metrics only when they are real, relevant, and clearly explained.",
+      "safe_application": "Use campaign-approved market ranges, baseline costs, or customer-confirmed current spend as context.",
+      "do_not_use_when": "Do not inflate a comparison, invent a list price, cherry-pick misleading benchmarks, or bury assumptions.",
+      "guardrail_notes": "A reference point must clarify tradeoffs; it cannot manufacture perceived savings.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-truthful-authority-context",
+      "chunk_id": "rag005-chunk-087",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-075"
+      ],
+      "source_title": "Science Of Persuasion",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Authority (Third-Party Introduction)",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Reference expertise, endorsements, or introductions only when the role, relationship, and evidence are truthful.",
+      "safe_application": "Use verified campaign materials, legitimate referrals, or accurate specialist context to explain why information is credible.",
+      "do_not_use_when": "Do not exaggerate credentials, invent third-party approval, imply unavailable expertise, or use fake titles.",
+      "guardrail_notes": "Authority cues must improve evidence quality, not borrow trust through deception.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-response-stated-priority-reflection",
+      "chunk_id": "rag005-chunk-088",
+      "lane": "response_wording",
+      "source_ids": [
+        "rag004-source-065"
+      ],
+      "source_title": "Persuasion | Psychology Today",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Emotional Self-Reflection",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Tie impact to professional priorities the customer has explicitly stated, then invite correction.",
+      "safe_application": "Use for customer-stated priorities such as reliability, workload, budget control, reputation, speed, or service quality.",
+      "do_not_use_when": "Do not infer private values, identity, insecurity, ambition, or personal life goals from sparse signals.",
+      "guardrail_notes": "Reflection stays professional and tentative; customer correction overrides the agent's framing.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016a-guardrail-rational-agency",
+      "chunk_id": "rag005-chunk-089",
+      "lane": "safety_guardrail",
+      "source_ids": [
+        "rag004-source-083"
+      ],
+      "source_title": "The Ethics of Manipulation",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "priority_batch": "batch_1_ethical_persuasion_response_wording",
+      "original_candidate_principle": "Ethical Guardrails",
+      "review_verdict": "manual_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Influence tactics must help the customer reason about fit and tradeoffs, not bypass judgment through trickery or coercion.",
+      "safe_application": "Use as a universal guardrail before persuasion, objection handling, retrieval, voice delivery, and follow-up suggestions.",
+      "do_not_use_when": "Do not make this guardrail weaker for aggressive campaign goals or conversion pressure.",
+      "guardrail_notes": "Respect for rational agency overrides persuasion patterns, campaign targets, and voice style.",
+      "voice_or_prosody_advisory_only": false,
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "rejected_quote_clearance_items": [],
+  "remaining_quote_clearance_cards": [
+    {
+      "chunk_id": "rag005-chunk-092",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "Extreme Ownership | Jocko Willink | TEDxUniversityofNevada",
+      "source_ids": [
+        "rag004-source-036"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-090",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "How to Speak | Patrick Winston",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-093",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "How to Speak | Patrick Winston",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-096",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "How to Speak | Patrick Winston",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-103",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "How to Speak | Patrick Winston",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-104",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "How to Speak | Patrick Winston",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-102",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "The Art of Effective Communication | Marcus Alexander Velazquez",
+      "source_ids": [
+        "rag004-source-059",
+        "rag004-source-082"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-094",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research)",
+      "source_ids": [
+        "rag004-source-085"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-100",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "Think Fast, Talk Smart: Communication Techniques",
+      "source_ids": [
+        "rag004-source-087"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-105",
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "speech_prosody_advisory",
+      "source_title": "Think Fast, Talk Smart: Communication Techniques",
+      "source_ids": [
+        "rag004-source-087"
+      ],
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-107",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+      "source_ids": [
+        "rag004-source-017"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-119",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+      "source_ids": [
+        "rag004-source-017"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-112",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition...",
+      "source_ids": [
+        "rag004-source-017"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-108",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-109",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-111",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-113",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-115",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "Persuasion for Good",
+      "source_ids": [
+        "rag004-source-066"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "chunk_id": "rag005-chunk-106",
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "cleanup_lane": "voice_delivery",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "source_title": "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation",
+      "source_ids": [
+        "rag004-source-078"
+      ],
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "review_action": "create_project_owned_paraphrase_or_reject",
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "runtime_integration_gate_required_before_use": true
+  }
+}

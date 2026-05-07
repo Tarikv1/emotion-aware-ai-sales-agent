@@ -1,0 +1,476 @@
+{
+  "reviewed_slice_id": "RAG-007-reviewed-first-slice",
+  "inputs": {
+    "rag006_packet_path": "research/experiments/generated/RAG-006-chunk-review-packet/result.json",
+    "rag005_result_path": "research/experiments/generated/RAG-005-chunk-normalization/result.json",
+    "source_manifest_path": "research/experiments/generated/RAG-004-source-manifest-normalization/result.json"
+  },
+  "summary": {
+    "selected_chunk_count": 9,
+    "knowledge_item_count": 9,
+    "lane_counts": {
+      "response_wording": 5,
+      "voice_delivery": 4
+    },
+    "auto_promoted_chunk_count": 0,
+    "selected_from_first_slice_candidates_count": 4,
+    "selected_from_quote_queue_count": 9,
+    "manual_quote_clearance_count": 9,
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "external_provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "source_metadata_final": false
+  },
+  "knowledge_items": [
+    {
+      "knowledge_id": "rag007-response-yes-and-objection-framing",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-017"
+      ],
+      "source_ids": [
+        "rag004-source-086"
+      ],
+      "source_titles": [
+        "The Only Video You Need To Fix Your Communication Skills\" [Youtube] - Used (Themes: Influence diamond"
+      ],
+      "source_metadata": {
+        "rag004-source-086": {
+          "source_id": "rag004-source-086",
+          "canonical_title": "The Only Video You Need To Fix Your Communication Skills\" [Youtube] - Used (Themes: Influence diamond",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "objection_handling"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": true,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "Acknowledge the customer's concern before moving to a useful next step; do not use agreement language to blur factual or compliance boundaries.",
+      "safe_application": "Use when the customer raises a normal objection such as price, timing, complexity, or uncertainty and the agent can acknowledge the concern without validating a false claim.",
+      "do_not_use_when": "Do not use when the customer states an incorrect fact, legal claim, medical claim, pricing detail, contract term, refusal, or do-not-call request; correct or honor that boundary directly.",
+      "guardrail_notes": "Campaign facts, compliance language, refusal handling, human escalation, and do-not-call policy override this wording rule.",
+      "rag006_locations": [
+        "first_slice_candidates",
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-response-declarative-clarity",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-020"
+      ],
+      "source_ids": [
+        "rag004-source-016"
+      ],
+      "source_titles": [
+        "9 Habits for Clearer Speaking (I Wish I Knew Sooner)\" [Youtube] - Used (Themes: Pausing to highlight"
+      ],
+      "source_metadata": {
+        "rag004-source-016": {
+          "source_id": "rag004-source-016",
+          "canonical_title": "9 Habits for Clearer Speaking (I Wish I Knew Sooner)\" [Youtube] - Used (Themes: Pausing to highlight",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": true,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "Use short declarative statements when clarity matters, especially after an objection or broad question.",
+      "safe_application": "Use to reduce rambling in explanations, next-step summaries, and concise value statements.",
+      "do_not_use_when": "Do not make the agent sound clipped, robotic, dismissive, or aggressive; keep warmth and natural transitions.",
+      "guardrail_notes": "This rule shapes freeform wording only and must not shorten required disclosures or campaign scripts.",
+      "rag006_locations": [
+        "first_slice_candidates",
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-response-empathy-echo",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-022"
+      ],
+      "source_ids": [
+        "rag004-source-002"
+      ],
+      "source_titles": [
+        "10 Speaking Techniques That Made Me A Top 1% Speaker\" [Youtube] - Used (Themes: Rule of Three"
+      ],
+      "source_metadata": {
+        "rag004-source-002": {
+          "source_id": "rag004-source-002",
+          "canonical_title": "10 Speaking Techniques That Made Me A Top 1% Speaker\" [Youtube] - Used (Themes: Rule of Three",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": false,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "Reflect a customer's key concern or emotional phrase sparingly before responding, so the reply shows listening without mechanical repetition.",
+      "safe_application": "Use when the customer expresses frustration, confusion, hesitation, or a specific concern that should be acknowledged before the next question or explanation.",
+      "do_not_use_when": "Do not repeat profanity, insults, private details, or the same phrase on every turn.",
+      "guardrail_notes": "The echo is not an emotion diagnosis and must not override explicit customer intent.",
+      "rag006_locations": [
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-response-prep-structure",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-024"
+      ],
+      "source_ids": [
+        "rag004-source-013"
+      ],
+      "source_titles": [
+        "7 Communication Cheat Codes To Speak Like A Pro!\" [Youtube] - Used (Themes: PREP framework"
+      ],
+      "source_metadata": {
+        "rag004-source-013": {
+          "source_id": "rag004-source-013",
+          "canonical_title": "7 Communication Cheat Codes To Speak Like A Pro!\" [Youtube] - Used (Themes: PREP framework",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": true,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "For a persuasive explanation, state the point, give the reason, add one concrete example, and return to the point.",
+      "safe_application": "Use for medium-length answers where the customer needs a clear reason to continue or compare an option.",
+      "do_not_use_when": "Do not use for simple yes/no answers, pleasantries, required compliance text, or urgent refusal handling.",
+      "guardrail_notes": "Examples must be campaign-approved and truthful; the structure cannot invent claims or guarantees.",
+      "rag006_locations": [
+        "first_slice_candidates",
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-response-3-2-1-structure",
+      "lane": "response_wording",
+      "source_chunk_ids": [
+        "rag005-chunk-025"
+      ],
+      "source_ids": [
+        "rag004-source-032"
+      ],
+      "source_titles": [
+        "Communication Is Hard Until You Structure Your Thinking First!\" [Youtube] - Used (Themes: 3-2-1 Framework"
+      ],
+      "source_metadata": {
+        "rag004-source-032": {
+          "source_id": "rag004-source-032",
+          "canonical_title": "Communication Is Hard Until You Structure Your Thinking First!\" [Youtube] - Used (Themes: 3-2-1 Framework",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "objection_handling"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": true,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "When an answer could sprawl, constrain it into a small numbered structure such as three points, two options, or one key takeaway.",
+      "safe_application": "Use when the customer asks a broad or unexpected question and the agent needs a concise, organized response.",
+      "do_not_use_when": "Do not use when the customer asked for one direct factual answer or when numbering would sound evasive.",
+      "guardrail_notes": "Numbered structure cannot remove mandatory disclosures, uncertainty statements, or escalation language.",
+      "rag006_locations": [
+        "first_slice_candidates",
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-voice-yes-and-posture",
+      "lane": "voice_delivery",
+      "source_chunk_ids": [
+        "rag005-chunk-091"
+      ],
+      "source_ids": [
+        "rag004-source-087"
+      ],
+      "source_titles": [
+        "Think Fast, Talk Smart: Communication Techniques"
+      ],
+      "source_metadata": {
+        "rag004-source-087": {
+          "source_id": "rag004-source-087",
+          "canonical_title": "Think Fast, Talk Smart: Communication Techniques",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": false,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "Use a non-defensive delivery posture when acknowledging objections; the voice should sound constructive rather than argumentative.",
+      "safe_application": "Use to guide delivery tone for ordinary resistance where the agent can acknowledge and continue.",
+      "do_not_use_when": "Do not sound agreeable when correcting a false claim, honoring a refusal, or delivering a compliance boundary.",
+      "guardrail_notes": "This is delivery guidance only; it does not change the guarded text.",
+      "rag006_locations": [
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-voice-tone-mismatch-uncertainty",
+      "lane": "voice_delivery",
+      "source_chunk_ids": [
+        "rag005-chunk-098"
+      ],
+      "source_ids": [
+        "rag004-source-063",
+        "rag004-source-094"
+      ],
+      "source_titles": [
+        "Non-Verbal Communication",
+        "Verbal Communication Skills"
+      ],
+      "source_metadata": {
+        "rag004-source-063": {
+          "source_id": "rag004-source-063",
+          "canonical_title": "Non-Verbal Communication",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        },
+        "rag004-source-094": {
+          "source_id": "rag004-source-094",
+          "canonical_title": "Verbal Communication Skills",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": false,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "If words and vocal delivery appear misaligned, treat that as uncertainty and ask a gentle clarification instead of assuming hidden emotion or intent.",
+      "safe_application": "Use when a customer says something positive or neutral but sounds hesitant, strained, or unsure, and a clarification would reduce pressure.",
+      "do_not_use_when": "Do not override explicit consent, refusal, factual statements, compliance boundaries, or customer-stated preferences.",
+      "guardrail_notes": "The agent must not claim it knows the customer's real emotion from tone; tone is only a weak signal for choosing a low-pressure clarification.",
+      "rag006_locations": [
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-voice-trustworthy-not-forced-friendly",
+      "lane": "voice_delivery",
+      "source_chunk_ids": [
+        "rag005-chunk-099"
+      ],
+      "source_ids": [
+        "rag004-source-085"
+      ],
+      "source_titles": [
+        "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research) - NN/G"
+      ],
+      "source_metadata": {
+        "rag004-source-085": {
+          "source_id": "rag004-source-085",
+          "canonical_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research) - NN/G",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": false,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "Prefer a trustworthy, straightforward, moderately warm delivery over forced friendliness or entertainment.",
+      "safe_application": "Use as the default delivery target across serious B2B and B2C sales campaigns.",
+      "do_not_use_when": "Do not use exaggerated cheer, jokes, or overfamiliar phrasing in high-stakes or regulated contexts.",
+      "guardrail_notes": "Campaign persona can adjust warmth, but trust and clarity remain the default delivery priority.",
+      "rag006_locations": [
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    },
+    {
+      "knowledge_id": "rag007-voice-bounded-vocal-toolbox",
+      "lane": "voice_delivery",
+      "source_chunk_ids": [
+        "rag005-chunk-101"
+      ],
+      "source_ids": [
+        "rag004-source-042",
+        "rag004-source-043",
+        "rag004-source-056"
+      ],
+      "source_titles": [
+        "How to Speak",
+        "How to Speak So That People Want to Listen",
+        "Julian Treasure"
+      ],
+      "source_metadata": {
+        "rag004-source-042": {
+          "source_id": "rag004-source-042",
+          "canonical_title": "How to Speak",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        },
+        "rag004-source-043": {
+          "source_id": "rag004-source-043",
+          "canonical_title": "How to Speak So That People Want to Listen",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        },
+        "rag004-source-056": {
+          "source_id": "rag004-source-056",
+          "canonical_title": "Julian Treasure",
+          "metadata_status": "needs_human_review",
+          "rights_status": "needs_review"
+        }
+      },
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "review_verdict": "manual_first_slice_paraphrased",
+      "quote_dependency_resolved": true,
+      "manual_review_clearance": {
+        "selected_from_first_slice_candidates": false,
+        "selected_from_quote_queue": true,
+        "quote_clearance_required": true,
+        "quote_clearance_resolution": "project_owned_paraphrase_no_source_excerpt_text",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false,
+        "clearance_note": "Manual RAG-007 review accepted a project-owned paraphrase and copied no source excerpt text."
+      },
+      "project_rule": "Use controlled variation in pace, pitch, volume, warmth, and silence to support clarity and engagement.",
+      "safe_application": "Use to guide TTS delivery metadata and human-review rubrics for freeform sales responses.",
+      "do_not_use_when": "Do not imitate a source speaker's identity, accent, personal style, or theatrical performance.",
+      "guardrail_notes": "Protected campaign scripts and compliance text must stay exact even when delivery metadata changes.",
+      "rag006_locations": [
+        "quote_review_queue"
+      ],
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false
+    }
+  ],
+  "excluded_categories": {
+    "pressure_tactic_chunk_ids": [
+      "rag005-chunk-071",
+      "rag005-chunk-075",
+      "rag005-chunk-076",
+      "rag005-chunk-077",
+      "rag005-chunk-087"
+    ],
+    "reason": "Pressure, scarcity, threat, and demographic-personalization tactics are excluded from this first reviewed slice."
+  },
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "retrieval_policy_required_before_runtime_use": true
+  }
+}

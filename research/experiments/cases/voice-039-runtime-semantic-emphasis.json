@@ -1,0 +1,67 @@
+{
+  "experiment_id": "VOICE-039-runtime-semantic-emphasis",
+  "title": "Runtime semantic emphasis candidate",
+  "description": "Promotes the VOICE-038 clear/simple wording pattern into the full guarded RESP-002/RESP-003 runtime path as provider-facing TTS text only.",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "runtime_boundary": {
+    "changes_allowed": "English freeform provider-facing TTS wording may use the clear/simple clause selected from VOICE-038 listening feedback.",
+    "changes_forbidden": [
+      "changing the guarded final_response",
+      "rewriting protected campaign, compliance, handoff, hangup, or do-not-call text",
+      "rewriting German text",
+      "adding product claims",
+      "calling a voice provider without --live",
+      "logging API keys or raw voice IDs"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "voice-039-en-long-clear-simple-runtime-candidate",
+      "title": "Longer English full-runtime candidate",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "That sounds expensive, and I am not sure it is worth pulling people into another review right now because we already have a process that mostly works.",
+      "candidate_response": "That makes sense. You do not need to change anything today. The practical next step is to check whether reviewing options is worth your time, and if it is not useful, we leave it there. If there is a real fit, I can set up a short specialist callback.",
+      "expected": {
+        "semantic_rewrite_applied": true,
+        "final_response_unchanged": true,
+        "tts_input_source": "provider_rendered_text",
+        "minimum_tts_chars": 180
+      }
+    },
+    {
+      "case_id": "voice-039-protected-do-not-call-lock",
+      "title": "Protected do-not-call lock",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "candidate_response": "The practical next step is to check whether reviewing options is worth your time.",
+      "expected": {
+        "semantic_rewrite_applied": false,
+        "final_response_unchanged": true,
+        "tts_input_source": "final_response",
+        "protected_text_locked": true
+      }
+    },
+    {
+      "case_id": "voice-039-de-language-lock",
+      "title": "German language lock",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "candidate_response": "Das verstehe ich. Wir koennen kurz pruefen, ob ein genauer Blick fuer Sie sinnvoll ist, und wenn nicht, lassen wir es direkt dabei.",
+      "expected": {
+        "semantic_rewrite_applied": false,
+        "final_response_unchanged": true,
+        "german_text_locked": true
+      }
+    }
+  ]
+}

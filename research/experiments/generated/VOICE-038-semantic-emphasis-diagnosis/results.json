@@ -1,0 +1,776 @@
+{
+  "voice_milestone": "VOICE-038",
+  "experiment_scope": {
+    "milestone": "VOICE-038",
+    "purpose": "semantic-emphasis-rhythm-diagnosis",
+    "description": "Diagnose phrase rhythm and semantic emphasis for the current preferred English ElevenLabs voice before changing runtime logic."
+  },
+  "case_file": "research\\experiments\\cases\\voice-038-semantic-emphasis-diagnosis.json",
+  "output_run_dir": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis",
+  "provider": {
+    "provider_key": "elevenlabs",
+    "provider_id": "elevenlabs-stream",
+    "provider_name": "ElevenLabs",
+    "endpoint_type": "tts-http-stream",
+    "endpoint_url_template": "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+    "model_id": "eleven_flash_v2_5",
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "default_voice_id_env_var": "ELEVENLABS_VOICE_ID",
+    "language_voice_id_env_vars": {
+      "en": "ELEVENLABS_VOICE_ID_EN",
+      "de": "ELEVENLABS_VOICE_ID_DE"
+    },
+    "default_output_format": "mp3_44100_128",
+    "audio_extension": "mp3",
+    "enable_logging": false,
+    "base_voice_settings": {
+      "stability": 0.56,
+      "similarity_boost": 0.75,
+      "style": 0.08,
+      "use_speaker_boost": true,
+      "speed": 1.07
+    }
+  },
+  "voice_candidate": {
+    "candidate_id": "preferred_english_candidate_current",
+    "label": "Current preferred English candidate",
+    "language": "en",
+    "status": "active-listening-candidate",
+    "voice_id_location": "ELEVENLABS_VOICE_ID_EN or ignored config/local/voice_ids.json"
+  },
+  "listening_script": {
+    "script_id": "voice-038-en-worth-your-time",
+    "script_title": "English worth-your-time emphasis diagnosis",
+    "language": "en",
+    "source_feedback": "Tarik heard roboticness mostly resolved, but rhythm/emphasis broke around the clause 'whether reviewing options is worth your time'.",
+    "fragile_clause": "whether reviewing options is worth your time"
+  },
+  "variants": [
+    {
+      "variant_id": "baseline_original_clause",
+      "label": "Baseline original fragile clause",
+      "hypothesis": "Preserving the original clause confirms the exact failure condition with the preferred voice.",
+      "language": "en",
+      "diagnosis_tags": [
+        "baseline",
+        "fragile-clause"
+      ],
+      "tts_input_text": "That makes sense. The practical next step is to check whether reviewing options is worth your time.",
+      "voice_settings": {
+        "stability": 0.56,
+        "style": 0.08,
+        "speed": 1.07
+      }
+    },
+    {
+      "variant_id": "clear_opening_simple_clause",
+      "label": "Clear opening with simpler worth clause",
+      "hypothesis": "Keeping 'That makes sense' but simplifying the clause may preserve trust while avoiding awkward emphasis.",
+      "language": "en",
+      "diagnosis_tags": [
+        "opening-check",
+        "simpler-clause"
+      ],
+      "tts_input_text": "That makes sense. We can quickly check if a review is worth your time.",
+      "voice_settings": {
+        "stability": 0.58,
+        "style": 0.06,
+        "speed": 1.07
+      }
+    },
+    {
+      "variant_id": "chunked_decision_clause",
+      "label": "Chunked decision phrase",
+      "hypothesis": "Splitting the logic into smaller spoken chunks may guide rhythm without forcing emphasis tags.",
+      "language": "en",
+      "diagnosis_tags": [
+        "phrase-chunking",
+        "decision-rhythm",
+        "break-tag"
+      ],
+      "tts_input_text": "That makes sense. We can check the options first, <break time=\"0.12s\" /> then decide if it is worth your time.",
+      "voice_settings": {
+        "stability": 0.58,
+        "style": 0.06,
+        "speed": 1.065
+      }
+    },
+    {
+      "variant_id": "benefit_first_clause",
+      "label": "Benefit-first wording",
+      "hypothesis": "Reframing around a clear reason to review may make the important word obvious without manual emphasis.",
+      "language": "en",
+      "diagnosis_tags": [
+        "semantic-reframe",
+        "benefit-first"
+      ],
+      "tts_input_text": "That makes sense. Let's only spend time on this if there is a clear reason to review it.",
+      "voice_settings": {
+        "stability": 0.6,
+        "style": 0.06,
+        "speed": 1.07
+      }
+    },
+    {
+      "variant_id": "semantic_focus_question",
+      "label": "Semantic focus question",
+      "hypothesis": "A short focus question may move the natural emphasis to 'worth your time' without overdirecting the provider.",
+      "language": "en",
+      "diagnosis_tags": [
+        "semantic-focus",
+        "question-shape"
+      ],
+      "tts_input_text": "That makes sense. The key question is simple: is a review worth your time?",
+      "voice_settings": {
+        "stability": 0.57,
+        "style": 0.08,
+        "speed": 1.065
+      }
+    },
+    {
+      "variant_id": "opening_alternative",
+      "label": "Opening alternative",
+      "hypothesis": "Replacing the slightly unclear opening can reveal whether 'That makes sense' is part of the perceived gibberish.",
+      "language": "en",
+      "diagnosis_tags": [
+        "opening-check",
+        "semantic-focus"
+      ],
+      "tts_input_text": "I understand. The key question is simple: is a review worth your time?",
+      "voice_settings": {
+        "stability": 0.57,
+        "style": 0.08,
+        "speed": 1.065
+      }
+    }
+  ],
+  "safety_gate": {
+    "default_mode": "dry-run",
+    "live_requires_flag": true,
+    "api_key_location": "environment-only",
+    "voice_id_location": "environment or ignored local config",
+    "raw_voice_ids_logged": false,
+    "customer_audio_uploaded": false,
+    "private_audio_used": false,
+    "voice_cloning_used": false,
+    "runtime_behavior_changed": false
+  },
+  "quality_rubric": {
+    "criteria": [
+      "Does the opening sound clear rather than garbled?",
+      "Does the voice emphasize the important idea rather than filler words?",
+      "Does the phrase flow naturally through the worth-your-time idea?",
+      "Does the sentence still sound trustworthy and sales-appropriate?",
+      "Does the variant avoid sounding over-scripted or over-emphasized?",
+      "Would this wording be safe to promote into runtime after more checks?"
+    ]
+  },
+  "expected": {
+    "default_provider_calls": 0,
+    "default_audio_files": 0,
+    "live_mode_is_explicit": true,
+    "human_rating_required_before_quality_claim": true,
+    "winning_variant_required_before_runtime_change": true
+  },
+  "summary": {
+    "script_count": 1,
+    "variant_count": 6,
+    "result_count": 6,
+    "languages": {
+      "en": 6
+    },
+    "live_call_requested": true,
+    "api_calls_made": 6,
+    "audio_files_created": 6,
+    "fallback_count": 0,
+    "customer_audio_uploaded": false,
+    "private_audio_used": false,
+    "synthetic_prompts_only": true,
+    "voice_cloning_used": false,
+    "raw_voice_ids_logged": false,
+    "timeout_seconds": 8.0,
+    "diagnosis_tags": {
+      "baseline": 1,
+      "benefit-first": 1,
+      "break-tag": 1,
+      "decision-rhythm": 1,
+      "fragile-clause": 1,
+      "opening-check": 2,
+      "phrase-chunking": 1,
+      "question-shape": 1,
+      "semantic-focus": 2,
+      "semantic-reframe": 1,
+      "simpler-clause": 1
+    },
+    "fragile_clause_variants": 1,
+    "replacement_clause_variants": 5,
+    "break_tag_variant_count": 1,
+    "validation_passed": 6,
+    "human_ratings_recorded": false,
+    "quality_claim_allowed": false,
+    "max_time_to_first_audio_ms": 344.549,
+    "max_total_provider_latency_ms": 458.273
+  },
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "provider_calls_made": true,
+    "requires_api_key": true,
+    "api_key_location": "environment-only",
+    "voice_id_location": "environment or ignored local config",
+    "raw_voice_ids_logged": false,
+    "customer_audio_uploaded": false,
+    "private_audio_used": false,
+    "voice_cloning_used": false,
+    "quality_claim_allowed_without_human_rating": false,
+    "runtime_behavior_changed": false
+  },
+  "results": [
+    {
+      "voice_milestone": "VOICE-038",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "preferred_english_candidate_current",
+      "voice_candidate_label": "Current preferred English candidate",
+      "voice_candidate_status": "active-listening-candidate",
+      "voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "voice-038-en-worth-your-time",
+      "script_title": "English worth-your-time emphasis diagnosis",
+      "language": "en",
+      "variant_id": "baseline_original_clause",
+      "variant_label": "Baseline original fragile clause",
+      "hypothesis": "Preserving the original clause confirms the exact failure condition with the preferred voice.",
+      "diagnosis_tags": [
+        "baseline",
+        "fragile-clause"
+      ],
+      "fragile_clause_target": "whether reviewing options is worth your time",
+      "keeps_fragile_clause": true,
+      "replaces_fragile_clause": false,
+      "uses_break_tags": false,
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "That makes sense. The practical next step is to check whether reviewing options is worth your time.",
+      "tts_input_chars": 99,
+      "voice_settings": {
+        "stability": 0.56,
+        "similarity_boost": 0.75,
+        "style": 0.08,
+        "use_speaker_boost": true,
+        "speed": 1.07
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "That makes sense. The practical next step is to check whether reviewing options is worth your time.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.08,
+            "use_speaker_boost": true,
+            "speed": 1.07
+          }
+        }
+      },
+      "audio_filename": "VOICE-038-en-baseline_original_clause.mp3",
+      "validation": {
+        "validator": "VOICE-038 semantic emphasis diagnosis safety check",
+        "passed": true,
+        "english_only": true,
+        "non_empty_text": true,
+        "markdown_emphasis_blocked": true,
+        "fake_emphasis_tags_blocked": true,
+        "bounded_voice_settings": true
+      },
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis\\audio\\VOICE-038-en-baseline_original_clause.mp3",
+      "audio_byte_size": 80711,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 344.549,
+      "total_provider_latency_ms": 458.273,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "voice_milestone": "VOICE-038",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "preferred_english_candidate_current",
+      "voice_candidate_label": "Current preferred English candidate",
+      "voice_candidate_status": "active-listening-candidate",
+      "voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "voice-038-en-worth-your-time",
+      "script_title": "English worth-your-time emphasis diagnosis",
+      "language": "en",
+      "variant_id": "clear_opening_simple_clause",
+      "variant_label": "Clear opening with simpler worth clause",
+      "hypothesis": "Keeping 'That makes sense' but simplifying the clause may preserve trust while avoiding awkward emphasis.",
+      "diagnosis_tags": [
+        "opening-check",
+        "simpler-clause"
+      ],
+      "fragile_clause_target": "whether reviewing options is worth your time",
+      "keeps_fragile_clause": false,
+      "replaces_fragile_clause": true,
+      "uses_break_tags": false,
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "That makes sense. We can quickly check if a review is worth your time.",
+      "tts_input_chars": 70,
+      "voice_settings": {
+        "stability": 0.58,
+        "similarity_boost": 0.75,
+        "style": 0.06,
+        "use_speaker_boost": true,
+        "speed": 1.07
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "That makes sense. We can quickly check if a review is worth your time.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.58,
+            "similarity_boost": 0.75,
+            "style": 0.06,
+            "use_speaker_boost": true,
+            "speed": 1.07
+          }
+        }
+      },
+      "audio_filename": "VOICE-038-en-clear_opening_simple_clause.mp3",
+      "validation": {
+        "validator": "VOICE-038 semantic emphasis diagnosis safety check",
+        "passed": true,
+        "english_only": true,
+        "non_empty_text": true,
+        "markdown_emphasis_blocked": true,
+        "fake_emphasis_tags_blocked": true,
+        "bounded_voice_settings": true
+      },
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis\\audio\\VOICE-038-en-clear_opening_simple_clause.mp3",
+      "audio_byte_size": 56469,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 180.795,
+      "total_provider_latency_ms": 278.404,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "voice_milestone": "VOICE-038",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "preferred_english_candidate_current",
+      "voice_candidate_label": "Current preferred English candidate",
+      "voice_candidate_status": "active-listening-candidate",
+      "voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "voice-038-en-worth-your-time",
+      "script_title": "English worth-your-time emphasis diagnosis",
+      "language": "en",
+      "variant_id": "chunked_decision_clause",
+      "variant_label": "Chunked decision phrase",
+      "hypothesis": "Splitting the logic into smaller spoken chunks may guide rhythm without forcing emphasis tags.",
+      "diagnosis_tags": [
+        "phrase-chunking",
+        "decision-rhythm",
+        "break-tag"
+      ],
+      "fragile_clause_target": "whether reviewing options is worth your time",
+      "keeps_fragile_clause": false,
+      "replaces_fragile_clause": true,
+      "uses_break_tags": true,
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "That makes sense. We can check the options first, <break time=\"0.12s\" /> then decide if it is worth your time.",
+      "tts_input_chars": 110,
+      "voice_settings": {
+        "stability": 0.58,
+        "similarity_boost": 0.75,
+        "style": 0.06,
+        "use_speaker_boost": true,
+        "speed": 1.065
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "That makes sense. We can check the options first, <break time=\"0.12s\" /> then decide if it is worth your time.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.58,
+            "similarity_boost": 0.75,
+            "style": 0.06,
+            "use_speaker_boost": true,
+            "speed": 1.065
+          }
+        }
+      },
+      "audio_filename": "VOICE-038-en-chunked_decision_clause.mp3",
+      "validation": {
+        "validator": "VOICE-038 semantic emphasis diagnosis safety check",
+        "passed": true,
+        "english_only": true,
+        "non_empty_text": true,
+        "markdown_emphasis_blocked": true,
+        "fake_emphasis_tags_blocked": true,
+        "bounded_voice_settings": true
+      },
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis\\audio\\VOICE-038-en-chunked_decision_clause.mp3",
+      "audio_byte_size": 73605,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 204.578,
+      "total_provider_latency_ms": 316.164,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "voice_milestone": "VOICE-038",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "preferred_english_candidate_current",
+      "voice_candidate_label": "Current preferred English candidate",
+      "voice_candidate_status": "active-listening-candidate",
+      "voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "voice-038-en-worth-your-time",
+      "script_title": "English worth-your-time emphasis diagnosis",
+      "language": "en",
+      "variant_id": "benefit_first_clause",
+      "variant_label": "Benefit-first wording",
+      "hypothesis": "Reframing around a clear reason to review may make the important word obvious without manual emphasis.",
+      "diagnosis_tags": [
+        "semantic-reframe",
+        "benefit-first"
+      ],
+      "fragile_clause_target": "whether reviewing options is worth your time",
+      "keeps_fragile_clause": false,
+      "replaces_fragile_clause": true,
+      "uses_break_tags": false,
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "That makes sense. Let's only spend time on this if there is a clear reason to review it.",
+      "tts_input_chars": 88,
+      "voice_settings": {
+        "stability": 0.6,
+        "similarity_boost": 0.75,
+        "style": 0.06,
+        "use_speaker_boost": true,
+        "speed": 1.07
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "That makes sense. Let's only spend time on this if there is a clear reason to review it.",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.6,
+            "similarity_boost": 0.75,
+            "style": 0.06,
+            "use_speaker_boost": true,
+            "speed": 1.07
+          }
+        }
+      },
+      "audio_filename": "VOICE-038-en-benefit_first_clause.mp3",
+      "validation": {
+        "validator": "VOICE-038 semantic emphasis diagnosis safety check",
+        "passed": true,
+        "english_only": true,
+        "non_empty_text": true,
+        "markdown_emphasis_blocked": true,
+        "fake_emphasis_tags_blocked": true,
+        "bounded_voice_settings": true
+      },
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis\\audio\\VOICE-038-en-benefit_first_clause.mp3",
+      "audio_byte_size": 68172,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 180.448,
+      "total_provider_latency_ms": 303.538,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "voice_milestone": "VOICE-038",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "preferred_english_candidate_current",
+      "voice_candidate_label": "Current preferred English candidate",
+      "voice_candidate_status": "active-listening-candidate",
+      "voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "voice-038-en-worth-your-time",
+      "script_title": "English worth-your-time emphasis diagnosis",
+      "language": "en",
+      "variant_id": "semantic_focus_question",
+      "variant_label": "Semantic focus question",
+      "hypothesis": "A short focus question may move the natural emphasis to 'worth your time' without overdirecting the provider.",
+      "diagnosis_tags": [
+        "semantic-focus",
+        "question-shape"
+      ],
+      "fragile_clause_target": "whether reviewing options is worth your time",
+      "keeps_fragile_clause": false,
+      "replaces_fragile_clause": true,
+      "uses_break_tags": false,
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "That makes sense. The key question is simple: is a review worth your time?",
+      "tts_input_chars": 74,
+      "voice_settings": {
+        "stability": 0.57,
+        "similarity_boost": 0.75,
+        "style": 0.08,
+        "use_speaker_boost": true,
+        "speed": 1.065
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "That makes sense. The key question is simple: is a review worth your time?",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.57,
+            "similarity_boost": 0.75,
+            "style": 0.08,
+            "use_speaker_boost": true,
+            "speed": 1.065
+          }
+        }
+      },
+      "audio_filename": "VOICE-038-en-semantic_focus_question.mp3",
+      "validation": {
+        "validator": "VOICE-038 semantic emphasis diagnosis safety check",
+        "passed": true,
+        "english_only": true,
+        "non_empty_text": true,
+        "markdown_emphasis_blocked": true,
+        "fake_emphasis_tags_blocked": true,
+        "bounded_voice_settings": true
+      },
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis\\audio\\VOICE-038-en-semantic_focus_question.mp3",
+      "audio_byte_size": 62320,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 183.013,
+      "total_provider_latency_ms": 270.005,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    },
+    {
+      "voice_milestone": "VOICE-038",
+      "provider_key": "elevenlabs",
+      "provider_name": "ElevenLabs",
+      "model_id": "eleven_flash_v2_5",
+      "voice_candidate_id": "preferred_english_candidate_current",
+      "voice_candidate_label": "Current preferred English candidate",
+      "voice_candidate_status": "active-listening-candidate",
+      "voice_id_source": "ELEVENLABS_VOICE_ID_EN",
+      "voice_id_present": true,
+      "voice_id_value_logged": false,
+      "script_id": "voice-038-en-worth-your-time",
+      "script_title": "English worth-your-time emphasis diagnosis",
+      "language": "en",
+      "variant_id": "opening_alternative",
+      "variant_label": "Opening alternative",
+      "hypothesis": "Replacing the slightly unclear opening can reveal whether 'That makes sense' is part of the perceived gibberish.",
+      "diagnosis_tags": [
+        "opening-check",
+        "semantic-focus"
+      ],
+      "fragile_clause_target": "whether reviewing options is worth your time",
+      "keeps_fragile_clause": false,
+      "replaces_fragile_clause": true,
+      "uses_break_tags": false,
+      "api_key_env_var": "ELEVENLABS_API_KEY",
+      "api_key_present": true,
+      "api_key_value_logged": false,
+      "customer_audio_uploaded": false,
+      "private_audio_used": false,
+      "generated_text_sent_to_provider": true,
+      "synthetic_prompt_only": true,
+      "voice_cloning_used": false,
+      "timeout_seconds": 8.0,
+      "tts_input_text": "I understand. The key question is simple: is a review worth your time?",
+      "tts_input_chars": 70,
+      "voice_settings": {
+        "stability": 0.57,
+        "similarity_boost": 0.75,
+        "style": 0.08,
+        "use_speaker_boost": true,
+        "speed": 1.065
+      },
+      "request_preview": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:ELEVENLABS_VOICE_ID_EN>/stream?output_format=mp3_44100_128&enable_logging=false",
+        "headers": {
+          "xi-api-key": "<redacted>",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "text": "I understand. The key question is simple: is a review worth your time?",
+          "model_id": "eleven_flash_v2_5",
+          "language_code": "en",
+          "voice_settings": {
+            "stability": 0.57,
+            "similarity_boost": 0.75,
+            "style": 0.08,
+            "use_speaker_boost": true,
+            "speed": 1.065
+          }
+        }
+      },
+      "audio_filename": "VOICE-038-en-opening_alternative.mp3",
+      "validation": {
+        "validator": "VOICE-038 semantic emphasis diagnosis safety check",
+        "passed": true,
+        "english_only": true,
+        "non_empty_text": true,
+        "markdown_emphasis_blocked": true,
+        "fake_emphasis_tags_blocked": true,
+        "bounded_voice_settings": true
+      },
+      "api_call_made": true,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "audio_file_created": true,
+      "audio_output_path": "research\\experiments\\generated\\VOICE-038-semantic-emphasis-diagnosis\\audio\\VOICE-038-en-opening_alternative.mp3",
+      "audio_byte_size": 63156,
+      "http_status": 200,
+      "response_content_type": "audio/mpeg",
+      "request_id_present": true,
+      "time_to_first_audio_ms": 170.658,
+      "total_provider_latency_ms": 274.229,
+      "provider_error": null,
+      "provider_error_summary": {
+        "type": null,
+        "code": null,
+        "message": null
+      }
+    }
+  ]
+}

@@ -110,6 +110,38 @@ def validate_common_payload(payload: dict, resp_001_payload: dict) -> None:
     assert_condition(voice_delivery["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["validation"]["passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["spoken_text_normalization"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["speech_interaction"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["speech_imperfections"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_pacing_calibration"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_connected_speech"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_listening_calibration"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_emotion_smoothing"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_semantic_emphasis"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_low_pressure_focus"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["validation"]["voice_pacing_calibration_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_connected_speech_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_listening_calibration_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_emotion_smoothing_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_semantic_emphasis_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_low_pressure_focus_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["voice_pacing_calibration"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_connected_speech"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_listening_calibration"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_emotion_smoothing"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_semantic_emphasis"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_low_pressure_focus"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_pacing_calibration"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_connected_speech"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_listening_calibration"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_emotion_smoothing"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_semantic_emphasis"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_low_pressure_focus"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_pacing_calibration"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_connected_speech"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_listening_calibration"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_emotion_smoothing"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_semantic_emphasis"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_low_pressure_focus"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(
         voice_delivery["provider_rendering"]["protected_segment_provider_tag_count"] == 0,
         voice_delivery["provider_rendering"],
@@ -125,6 +157,18 @@ def validate_freeform_payload(payload: dict) -> None:
         delivery["spoken_text_normalization"],
     )
     assert_condition(delivery["prosody"]["cue_count"] > 0, delivery["prosody"])
+    assert_condition(delivery["voice_pacing_calibration"]["tuned_segment_count"] >= 1, delivery["voice_pacing_calibration"])
+    assert_condition(delivery["voice_connected_speech"]["flow_join_count"] >= 1, delivery["voice_connected_speech"])
+    assert_condition(delivery["voice_listening_calibration"]["validation"]["passed"] is True, delivery["voice_listening_calibration"])
+    assert_condition(delivery["voice_emotion_smoothing"]["transition_smoothing_applied"] is True, delivery["voice_emotion_smoothing"])
+    assert_condition(delivery["voice_emotion_smoothing"]["smoothed_transition_count"] >= 1, delivery["voice_emotion_smoothing"])
+    assert_condition(delivery["provider_rendering"]["pacing_calibrated"] is True, delivery["provider_rendering"])
+    assert_condition(delivery["provider_rendering"]["connected_speech_applied"] is True, delivery["provider_rendering"])
+    assert_condition(
+        delivery["provider_rendering"]["emotion_transition_smoothing_applied"] is True,
+        delivery["provider_rendering"],
+    )
+    assert_condition(delivery["voice_semantic_emphasis"]["validation"]["passed"] is True, delivery["voice_semantic_emphasis"])
     assert_condition(delivery["provider_rendering"]["provider_key"] == "elevenlabs", delivery["provider_rendering"])
     assert_condition(
         delivery["provider_rendering"]["rendered_text"] != payload["final_response"],
@@ -139,6 +183,12 @@ def validate_protected_payload(payload: dict, expected_segment_type: str) -> Non
     assert_condition(segment["eligible_for_prosody"] is False, segment)
     assert_condition(delivery["spoken_text_normalization"]["normalization_count"] == 0, delivery["spoken_text_normalization"])
     assert_condition(delivery["prosody"]["cue_count"] == 0, delivery["prosody"])
+    assert_condition(delivery["voice_pacing_calibration"]["tuned_segment_count"] == 0, delivery["voice_pacing_calibration"])
+    assert_condition(delivery["voice_connected_speech"]["flow_join_count"] == 0, delivery["voice_connected_speech"])
+    assert_condition(delivery["voice_listening_calibration"]["listening_adjustment_count"] == 0, delivery["voice_listening_calibration"])
+    assert_condition(delivery["voice_emotion_smoothing"]["transition_smoothing_applied"] is False, delivery["voice_emotion_smoothing"])
+    assert_condition(delivery["voice_semantic_emphasis"]["rewrite_count"] == 0, delivery["voice_semantic_emphasis"])
+    assert_condition(delivery["voice_low_pressure_focus"]["rewrite_count"] == 0, delivery["voice_low_pressure_focus"])
     assert_condition(delivery["provider_rendering"]["provider_tag_count"] == 0, delivery["provider_rendering"])
     assert_condition(delivery["provider_rendering"]["rendered_text"] == payload["final_response"], delivery["provider_rendering"])
 
@@ -146,10 +196,20 @@ def validate_protected_payload(payload: dict, expected_segment_type: str) -> Non
 def validate_spoken_normalized_payload(payload: dict, required_fragments: list[str], forbidden_fragments: list[str]) -> None:
     delivery = payload["voice_delivery"]
     spoken = delivery["spoken_text_normalization"]
+    speech_interaction = delivery.get("speech_interaction")
+    speech_imperfections = delivery.get("speech_imperfections")
+    speech_realism = delivery.get("speech_realism")
+    delivery_tts_text = (
+        speech_imperfections["tts_text"]
+        if speech_imperfections
+        else speech_interaction["tts_text"]
+        if speech_interaction
+        else speech_realism["tts_text"] if speech_realism else spoken["tts_text"]
+    )
     assert_condition(delivery["segments"][0]["eligible_for_prosody"] is True, delivery["segments"])
     assert_condition(spoken["normalization_count"] >= len(required_fragments), spoken)
     assert_condition(payload["final_response"] != spoken["tts_text"], "Final response should remain unnormalized.")
-    assert_condition(delivery["provider_rendering"]["plain_text"] == spoken["tts_text"], delivery["provider_rendering"])
+    assert_condition(delivery["provider_rendering"]["plain_text"] == delivery_tts_text, delivery["provider_rendering"])
     for fragment in required_fragments:
         assert_condition(fragment in spoken["tts_text"], f"Missing spoken fragment: {fragment}")
     for fragment in forbidden_fragments:

@@ -1,0 +1,734 @@
+{
+  "voice_delivery_decision_slice_id": "RAG-016B-voice-delivery-quote-clearance-decision-slice",
+  "inputs": {
+    "rag016a_result_path": "research/experiments/generated/RAG-016A-quote-clearance-decision-slice/result.json",
+    "case_path": "research/experiments/cases/rag-016b-voice-delivery-decision-slice.json"
+  },
+  "acceptance": {
+    "accepted_by": "project_owner_current_session",
+    "acceptance_scope": "Remaining RAG-016A voice-delivery quote-clearance cards.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "accepted_quote_clearance_item_count": 19,
+    "accepted_voice_delivery_item_count": 19,
+    "speech_prosody_advisory_item_count": 10,
+    "emotion_recognition_delivery_advisory_item_count": 9,
+    "voice_delivery_remaining_after_rag016b": 0,
+    "quote_clearance_blockers_remaining_after_rag016b": 0,
+    "source_mapping_pending_chunk_count_from_rag015": 58,
+    "source_mapping_pending_group_count_from_rag015": 43,
+    "source_mapping_latent_quote_followup_count_from_rag015": 21,
+    "known_unresolved_cleanup_work_after_rag016b": 58,
+    "auto_promoted_chunk_count": 0,
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false
+  },
+  "accepted_quote_clearance_items": [
+    {
+      "knowledge_id": "rag016b-voice-clear-open-close",
+      "chunk_id": "rag005-chunk-090",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "source_title": "How to Speak | Patrick Winston",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Make openings and closings clear enough that the customer can follow the turn without extra cognitive load.",
+      "safe_application": "Use as delivery guidance for short explanations, summaries, and transitions.",
+      "do_not_use_when": "Do not add theatrical framing, long pauses, or extra wording to required scripts.",
+      "guardrail_notes": "Clear delivery supports comprehension only; it cannot change campaign text or imply certainty.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-calm-accountability",
+      "chunk_id": "rag005-chunk-092",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-036"
+      ],
+      "source_title": "Extreme Ownership | Jocko Willink | TEDxUniversityofNevada",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use calm, accountable delivery when acknowledging an issue or next step.",
+      "safe_application": "Use for corrections, handoffs, and short ownership statements that the campaign permits.",
+      "do_not_use_when": "Do not imitate a military, motivational, or dominant speaking style.",
+      "guardrail_notes": "Delivery must stay professional and non-coercive.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-signpost-structure",
+      "chunk_id": "rag005-chunk-093",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "source_title": "How to Speak | Patrick Winston",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use simple vocal signposting so the customer can hear when the agent is moving from context to question or next step.",
+      "safe_application": "Use for multi-part answers and short option comparisons.",
+      "do_not_use_when": "Do not use signposting to bury limitations, pricing, or disclosure details.",
+      "guardrail_notes": "Structure cannot remove mandatory text or human-escalation language.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-brand-trust-clarity",
+      "chunk_id": "rag005-chunk-094",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-085"
+      ],
+      "source_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research)",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Prefer trustworthy, plain delivery over exaggerated warmth or entertainment.",
+      "safe_application": "Use as a default voice target for regulated, serious, or unfamiliar sales contexts.",
+      "do_not_use_when": "Do not make the agent sound falsely familiar or emotionally intimate.",
+      "guardrail_notes": "Brand voice can tune warmth, but trust and clarity stay primary.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-pause-for-comprehension",
+      "chunk_id": "rag005-chunk-096",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "source_title": "How to Speak | Patrick Winston",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use brief pauses only where they help the customer process a high-value point.",
+      "safe_application": "Use around concise summaries, confirmed next steps, or complex approved facts.",
+      "do_not_use_when": "Do not pause to manufacture drama, pressure, or suspense.",
+      "guardrail_notes": "Pauses are delivery metadata and never a persuasion loophole.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-spontaneous-not-scriptless",
+      "chunk_id": "rag005-chunk-100",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-087"
+      ],
+      "source_title": "Think Fast, Talk Smart: Communication Techniques",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Sound natural by varying rhythm lightly while keeping the approved message intact.",
+      "safe_application": "Use for freeform but guarded responses that have already passed text validation.",
+      "do_not_use_when": "Do not improvise protected scripts, disclosures, prices, or promises.",
+      "guardrail_notes": "Naturalness cannot loosen factual or compliance boundaries.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-listening-forward",
+      "chunk_id": "rag005-chunk-102",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-059",
+        "rag004-source-082"
+      ],
+      "source_title": "The Art of Effective Communication | Marcus Alexander Velazquez",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use delivery that sounds attentive and forward-moving, not performatively sympathetic.",
+      "safe_application": "Use when acknowledging a customer concern before asking one useful question.",
+      "do_not_use_when": "Do not over-empathize, diagnose feelings, or keep probing after refusal.",
+      "guardrail_notes": "Listening cues are weak context only and must follow explicit customer words.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-emphasis-sparingly",
+      "chunk_id": "rag005-chunk-103",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "source_title": "How to Speak | Patrick Winston",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Emphasize only the smallest number of words needed for comprehension.",
+      "safe_application": "Use for one key term in a short answer, callback confirmation, or option comparison.",
+      "do_not_use_when": "Do not emphasize savings, risk, scarcity, authority, or urgency beyond approved facts.",
+      "guardrail_notes": "Emphasis must improve clarity, not push compliance.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-question-shape",
+      "chunk_id": "rag005-chunk-104",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-042"
+      ],
+      "source_title": "How to Speak | Patrick Winston",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Render genuine questions with an open, non-interrogative shape.",
+      "safe_application": "Use for discovery, fit checks, and consent checks where the customer can decline.",
+      "do_not_use_when": "Do not make questions sound like traps, tests, or forced choices.",
+      "guardrail_notes": "Question delivery must preserve customer agency.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-concise-turn-taking",
+      "chunk_id": "rag005-chunk-105",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-087"
+      ],
+      "source_title": "Think Fast, Talk Smart: Communication Techniques",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "priority_batch": "batch_2_speech_prosody_advisory",
+      "review_focus": "speech_prosody_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Keep delivery concise enough to invite customer turn-taking.",
+      "safe_application": "Use when the response should create room for correction, no, or a follow-up question.",
+      "do_not_use_when": "Do not use speed or density to prevent interruption or objections.",
+      "guardrail_notes": "Turn-taking matters more than monologue control.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-no-acoustic-certainty",
+      "chunk_id": "rag005-chunk-106",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-078"
+      ],
+      "source_title": "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Treat acoustic signals as uncertain delivery context, not as proof of emotion, truthfulness, or buying intent.",
+      "safe_application": "Use to choose slower pace, simpler wording, or a gentle clarification.",
+      "do_not_use_when": "Do not infer consent, refusal, urgency, deception, or inner state from audio features.",
+      "guardrail_notes": "Explicit customer words and policy decisions override acoustic cues.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-no-hidden-emotion-claims",
+      "chunk_id": "rag005-chunk-107",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-017"
+      ],
+      "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use multimodal uncertainty only to lower pressure or clarify; never claim to know the customer's internal state.",
+      "safe_application": "Use when delivery metadata should become calmer, slower, or more tentative.",
+      "do_not_use_when": "Do not label the customer, score their inner state, or personalize pressure from inferred affect.",
+      "guardrail_notes": "Emotion-aware behavior must stay observable, tentative, and correctable.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-dataset-limits",
+      "chunk_id": "rag005-chunk-108",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Treat dataset-derived speech categories as development context, not live customer labels.",
+      "safe_application": "Use to remind runtime code that training labels do not authorize live emotion claims.",
+      "do_not_use_when": "Do not map a live caller to a dataset class for sales personalization.",
+      "guardrail_notes": "Dataset labels never override consent, refusal, or campaign rules.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-domain-shift-caution",
+      "chunk_id": "rag005-chunk-109",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Assume speech and conversation datasets may not match live sales-call conditions.",
+      "safe_application": "Use to keep confidence conservative when audio quality, language, or context differs.",
+      "do_not_use_when": "Do not generalize dataset behavior into protected-trait or purchase-intent assumptions.",
+      "guardrail_notes": "Domain shift is a reason to ask simpler clarifying questions, not to profile.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-observable-only",
+      "chunk_id": "rag005-chunk-111",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Respond only to observable words, silence, interruptions, and explicit preferences.",
+      "safe_application": "Use when choosing between clarification, handoff, pause, or concise answer.",
+      "do_not_use_when": "Do not treat demographic, identity, or accent guesses as personalization inputs.",
+      "guardrail_notes": "Customer-stated preferences are valid; inferred identity traits are not.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-low-confidence-fallback",
+      "chunk_id": "rag005-chunk-112",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-017"
+      ],
+      "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition...",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "When affect or intent confidence is low, fall back to neutral wording and optional human escalation.",
+      "safe_application": "Use when signals conflict or the customer may need more room.",
+      "do_not_use_when": "Do not compensate for low confidence by becoming more persuasive or urgent.",
+      "guardrail_notes": "Low confidence narrows the action set; it does not expand it.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-consent-first-adaptation",
+      "chunk_id": "rag005-chunk-113",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-034"
+      ],
+      "source_title": "Datasets - ConvoKit 4.1.1 documentation",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Adapt delivery from explicit consent, explicit preference, and campaign context before any inferred signal.",
+      "safe_application": "Use when the customer asks to slow down, repeat, switch language, or talk to a human.",
+      "do_not_use_when": "Do not continue adaptive persuasion after no, stop, or do-not-call language.",
+      "guardrail_notes": "Consent and refusal are policy-owned, not style-owned.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-prosocial-pressure-limit",
+      "chunk_id": "rag005-chunk-115",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-066"
+      ],
+      "source_title": "Persuasion for Good",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Use helpful, prosocial framing only when it preserves the customer's freedom to decline.",
+      "safe_application": "Use for optional summaries, education, or handoff suggestions.",
+      "do_not_use_when": "Do not convert helpfulness into obligation, guilt, or moral pressure.",
+      "guardrail_notes": "Helpfulness must reduce pressure and preserve choice.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag016b-voice-cross-modal-humility",
+      "chunk_id": "rag005-chunk-119",
+      "lane": "voice_delivery",
+      "source_ids": [
+        "rag004-source-017"
+      ],
+      "source_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "priority_batch": "batch_3_emotion_recognition_delivery_advisory",
+      "review_focus": "emotion_recognition_delivery_advisory",
+      "review_verdict": "manual_voice_delivery_quote_clearance_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "project_rule": "Treat cross-modal signals as fallible context for delivery humility.",
+      "safe_application": "Use when text and audio appear mismatched and the safest response is a gentle check-in.",
+      "do_not_use_when": "Do not infer hidden motives, urgency, or readiness to buy from signal mismatch.",
+      "guardrail_notes": "Signal mismatch justifies caution, not certainty.",
+      "voice_or_prosody_advisory_only": true,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "quote_clearance_resolution": "project_owned_voice_delivery_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "source_mapping_blockers_excluded_from_runtime_registry": true,
+    "latent_quote_followups_excluded_from_runtime_registry": true,
+    "runtime_registry_gate_required_before_use": true
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "voice_milestone": "VOICE-028",
+  "experiment_scope": "Offline checkpoint for controlled professional speech imperfections in eligible English/German freeform voice delivery.",
+  "campaigns": [
+    {
+      "campaign_id": "voice-028-en-generic-sales",
+      "client_name": "Synthetic English Sales Client",
+      "product_name": "Generic callback qualification",
+      "product_category": "vertical-agnostic-sales",
+      "customer_type": "b2c",
+      "language": "en",
+      "approved_opening": "Hello, this is a short call.",
+      "qualification_questions": [
+        "Can I ask one quick question first?"
+      ],
+      "required_disclosures": [
+        "This call is a product information call."
+      ],
+      "speech_imperfections": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_imperfections_per_response": 1,
+        "allow_clarifying_rephrases": true,
+        "allow_breath_pauses": true,
+        "allow_soft_restarts": true
+      }
+    },
+    {
+      "campaign_id": "voice-028-de-generic-sales",
+      "client_name": "Synthetic German Sales Client",
+      "product_name": "Generic callback qualification",
+      "product_category": "vertical-agnostic-sales",
+      "customer_type": "b2c",
+      "language": "de",
+      "approved_opening": "Guten Tag, ich fasse mich kurz.",
+      "qualification_questions": [
+        "Darf ich Ihnen zuerst eine kurze Frage stellen?"
+      ],
+      "required_disclosures": [
+        "Dies ist ein Produktinformationsgespraech."
+      ],
+      "speech_imperfections": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_imperfections_per_response": 1,
+        "allow_clarifying_rephrases": true,
+        "allow_breath_pauses": true,
+        "allow_soft_restarts": true
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "voice-028-en-freeform-rephrase",
+      "case_title": "English eligible freeform receives one professional imperfection",
+      "campaign_id": "voice-028-en-generic-sales",
+      "language": "en",
+      "customer_state": {
+        "emotion": "curious"
+      },
+      "segments": [
+        {
+          "segment_id": "en-freeform",
+          "segment_type": "freeform_explanation",
+          "source": "agent_freeform",
+          "text": "I can keep this simple. The useful thing is to check whether the next step is relevant before anyone spends more time on it.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-028-de-freeform-rephrase",
+      "case_title": "German eligible freeform receives one professional imperfection",
+      "campaign_id": "voice-028-de-generic-sales",
+      "language": "de",
+      "customer_state": {
+        "emotion": "curious"
+      },
+      "segments": [
+        {
+          "segment_id": "de-freeform",
+          "segment_type": "freeform_explanation",
+          "source": "agent_freeform",
+          "text": "Ich halte es kurz. Wir klaeren nur, ob der naechste Schritt fuer Sie relevant ist, bevor jemand mehr Zeit investiert.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-028-de-protected-question",
+      "case_title": "German protected campaign question receives no imperfection",
+      "campaign_id": "voice-028-de-generic-sales",
+      "language": "de",
+      "customer_state": {
+        "emotion": "neutral"
+      },
+      "segments": [
+        {
+          "segment_id": "de-protected-question",
+          "segment_type": "campaign_qualification_question",
+          "source": "campaign_config",
+          "text": "Darf ich Ihnen zuerst eine kurze Frage stellen?"
+        }
+      ]
+    },
+    {
+      "case_id": "voice-028-en-unsafe-suppression",
+      "case_title": "English unsafe-claim context suppresses visible imperfections",
+      "campaign_id": "voice-028-en-generic-sales",
+      "language": "en",
+      "customer_state": {
+        "emotion": "skeptical",
+        "unsafe_claim_present": true,
+        "customer_claim": "So this is guaranteed to save me money, right?"
+      },
+      "segments": [
+        {
+          "segment_id": "en-unsafe",
+          "segment_type": "freeform_objection_handling",
+          "source": "agent_freeform",
+          "text": "I can explain the limits clearly. The useful thing is to compare fit without promising a result.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true
+        }
+      ]
+    },
+    {
+      "case_id": "voice-028-en-stop-suppression",
+      "case_title": "English stop intent suppresses imperfections",
+      "campaign_id": "voice-028-en-generic-sales",
+      "language": "en",
+      "customer_state": {
+        "emotion": "angry",
+        "stop_intent": true,
+        "customer_phrase": "Stop calling me."
+      },
+      "segments": [
+        {
+          "segment_id": "en-stop",
+          "segment_type": "freeform_closing",
+          "source": "agent_freeform",
+          "text": "I will stop the call here and respect that.",
+          "allow_speech_realism": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true
+        }
+      ]
+    }
+  ]
+}

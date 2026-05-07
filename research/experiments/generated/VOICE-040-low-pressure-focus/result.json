@@ -1,0 +1,730 @@
+{
+  "voice_low_pressure_focus_runtime_id": "VOICE-040-low-pressure-focus",
+  "title": "Low-pressure phrase focus correction",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "summary": {
+    "case_count": 1,
+    "live_call_requested": true,
+    "provider_calls_made": true,
+    "audio_files_created": 1,
+    "fallback_count": 0,
+    "semantic_rewrite_count": 1,
+    "low_pressure_rewrite_count": 1,
+    "protected_rewrite_count": 0,
+    "final_response_change_count": 0,
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "synthetic_prompts_only": true,
+    "raw_voice_ids_logged": false,
+    "api_key_values_logged": false,
+    "validation_passed": true,
+    "timeout_seconds": 8.0,
+    "max_total_provider_latency_ms": 1587.622
+  },
+  "results": [
+    {
+      "case_id": "voice-040-en-low-pressure-focus",
+      "title": "English low-pressure phrase focus",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "language": "en",
+      "source_cases": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "final_response": "That makes sense. You do not need to change anything today. The practical next step is to check whether reviewing options is worth your time, and if it is not useful, we leave it there. If there is a real fit, I can set up a short specialist callback.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "voice_semantic_emphasis": {
+        "voice_milestone": "VOICE-039",
+        "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis",
+        "enabled": true,
+        "language": "en",
+        "language_allowed": true,
+        "profile": {
+          "enabled": true,
+          "style": "clear-simple-runtime-wording-v1",
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "languages": [
+            "en"
+          ],
+          "max_rewrites_per_segment": 1,
+          "rewrite_rules": [
+            {
+              "rule_id": "en-clear-open-review-worth-time",
+              "pattern": "\\bthe practical next step is to check whether reviewing options is worth your time\\b",
+              "replacement": "we can quickly check if a review is worth your time",
+              "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+            },
+            {
+              "rule_id": "en-clear-open-a-review-worth-time",
+              "pattern": "\\bthe practical next step is to check whether a review is worth your time\\b",
+              "replacement": "we can quickly check if a review is worth your time",
+              "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+            }
+          ]
+        },
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "rewrite_count": 1,
+        "rewrites": [
+          {
+            "rule_id": "en-clear-open-review-worth-time",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "before": "the practical next step is to check whether reviewing options is worth your time",
+            "after": "we can quickly check if a review is worth your time",
+            "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+          }
+        ],
+        "segment_plan": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected": false,
+            "protected_reason": null,
+            "source_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, the practical next step is to check whether reviewing options is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+            "semantic_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+            "rewrite_count": 1
+          }
+        ],
+        "source_rendered_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, the practical next step is to check whether reviewing options is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+        "semantic_rendered_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+        "semantic_provider_rendering": {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "en",
+          "case_id": "RESP-002-runtime-turn",
+          "plain_text": "That makes sense. You don't need to change anything today. Well, the practical next step is to check whether reviewing options is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+          "rendered_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+          "rendered_text_html_preview": "That makes sense. &lt;break time=&quot;0.231s&quot; /&gt; You don&#x27;t need to change anything today, well, we can quickly check if a review is worth your time, and if it&#x27;s not useful, we leave it there. If there&#x27;s a real fit, I can set up a short specialist callback.",
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.117
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "That makes sense. You don't need to change anything today. Well, the practical next step is to check whether reviewing options is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+              "rendered_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+              "provider_tags_inserted": [
+                "<break time=\"0.231s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "resp-002-final-response",
+                  "segment_type": "freeform_clarification",
+                  "after": "That makes sense.",
+                  "mode": "transition",
+                  "duration_ms": 304,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "resp-002-final-response",
+                  "segment_type": "freeform_clarification",
+                  "target": "That makes sense.",
+                  "direction": "steady-low",
+                  "relative_pitch_semitones": -0.493,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                }
+              ],
+              "voice_pacing_calibration": {
+                "tuned": true,
+                "speed_ratio": 1.117,
+                "break_operations": [
+                  {
+                    "operation": "compress_break",
+                    "original_ms": 304,
+                    "tuned_ms": 231,
+                    "scale": 0.759
+                  }
+                ]
+              },
+              "voice_connected_speech": {
+                "tuned": true,
+                "flow_join_count": 1,
+                "flow_operations": [
+                  {
+                    "rule_id": "en-join-filler-after-short-sentence",
+                    "before": ". Well, ",
+                    "after_text_changed": true,
+                    "remaining_same_pattern": false
+                  }
+                ]
+              },
+              "voice_listening_calibration": {
+                "tuned": false,
+                "adjustments": []
+              },
+              "voice_emotion_smoothing": {
+                "tuned": true,
+                "transition_count": 2,
+                "blocked_overemotional_cue_count": 0
+              },
+              "voice_semantic_emphasis": {
+                "tuned": true,
+                "rewrite_count": 1,
+                "rewrites": [
+                  {
+                    "rule_id": "en-clear-open-review-worth-time",
+                    "segment_id": "resp-002-final-response",
+                    "segment_type": "freeform_clarification",
+                    "before": "the practical next step is to check whether reviewing options is worth your time",
+                    "after": "we can quickly check if a review is worth your time",
+                    "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+                  }
+                ]
+              }
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "after": "That makes sense.",
+              "mode": "transition",
+              "duration_ms": 304,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "target": "That makes sense.",
+              "direction": "steady-low",
+              "relative_pitch_semitones": -0.493,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+          "pacing_calibrated": true,
+          "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+          "connected_speech_applied": true,
+          "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+          "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+          "emotion_transition_smoothing_applied": true,
+          "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+          "semantic_emphasis_candidate_applied": true,
+          "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis"
+        },
+        "validation": {
+          "passed": true,
+          "enabled": true,
+          "protected_segment_text_changes": [],
+          "non_english_rewrite_count": 0,
+          "markdown_in_rendered_text": false,
+          "plain_text_changed": false,
+          "boundary_flags_changed": false
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "changes_allowed": "provider-facing freeform English TTS wording only, promoted from VOICE-038 listening feedback",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing call_control",
+            "changing protected campaign or compliance text",
+            "rewriting German text",
+            "adding claims",
+            "uploading customer audio",
+            "voice cloning"
+          ]
+        }
+      },
+      "voice_low_pressure_focus": {
+        "voice_milestone": "VOICE-040",
+        "voice_low_pressure_focus_id": "VOICE-040-low-pressure-focus",
+        "enabled": true,
+        "language": "en",
+        "language_allowed": true,
+        "profile": {
+          "enabled": true,
+          "style": "low-pressure-focus-v1",
+          "protected_segment_types": [
+            "appointment_confirmation",
+            "approved_opening",
+            "campaign_qualification_question",
+            "claim_boundary",
+            "company_script",
+            "compliance_statement",
+            "coverage_or_claim_boundary",
+            "do_not_call",
+            "hangup",
+            "human_handoff_exact_script",
+            "legal_or_medical_boundary",
+            "required_disclosure",
+            "sensitive_escalation"
+          ],
+          "languages": [
+            "en"
+          ],
+          "max_rewrites_per_segment": 1,
+          "rewrite_rules": [
+            {
+              "rule_id": "en-low-pressure-focus-with-bridge",
+              "pattern": "\\byou (?:do not|don't) need to change anything today,\\s+well,\\s+(we can quickly check)",
+              "replacement": "no changes needed today, \\1",
+              "reason": "VOICE-039 listening feedback: avoid risky emphasis on the low-pressure phrase and keep the next step flowing."
+            },
+            {
+              "rule_id": "en-low-pressure-focus-plain",
+              "pattern": "\\byou (?:do not|don't) need to change anything today\\b",
+              "replacement": "no changes needed today",
+              "reason": "VOICE-039 listening feedback: avoid risky emphasis on the low-pressure phrase."
+            }
+          ]
+        },
+        "eligible_segment_count": 1,
+        "protected_segment_count": 0,
+        "rewrite_count": 1,
+        "rewrites": [
+          {
+            "rule_id": "en-low-pressure-focus-with-bridge",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "before": "You don't need to change anything today, well, we can quickly check",
+            "after": "No changes needed today, we can quickly check",
+            "reason": "VOICE-039 listening feedback: avoid risky emphasis on the low-pressure phrase and keep the next step flowing."
+          }
+        ],
+        "segment_plan": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected": false,
+            "protected_reason": null,
+            "source_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+            "focused_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+            "rewrite_count": 1
+          }
+        ],
+        "source_rendered_text": "That makes sense. <break time=\"0.231s\" /> You don't need to change anything today, well, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+        "focused_rendered_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+        "focused_provider_rendering": {
+          "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs Flash v2.5",
+          "provider_rendering_mode": "break_tags_and_request_settings",
+          "model_id": "eleven_flash_v2_5",
+          "language": "en",
+          "case_id": "RESP-002-runtime-turn",
+          "plain_text": "That makes sense. You don't need to change anything today. Well, the practical next step is to check whether reviewing options is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+          "rendered_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+          "rendered_text_html_preview": "That makes sense. &lt;break time=&quot;0.231s&quot; /&gt; No changes needed today, we can quickly check if a review is worth your time, and if it&#x27;s not useful, we leave it there. If there&#x27;s a real fit, I can set up a short specialist callback.",
+          "voice_settings": {
+            "stability": 0.56,
+            "similarity_boost": 0.75,
+            "style": 0.0,
+            "use_speaker_boost": true,
+            "speed": 1.117
+          },
+          "segment_renderings": [
+            {
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "protected_reason": null,
+              "eligible_for_prosody": true,
+              "plain_text": "That makes sense. You don't need to change anything today. Well, the practical next step is to check whether reviewing options is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+              "rendered_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+              "provider_tags_inserted": [
+                "<break time=\"0.231s\" />"
+              ],
+              "mapped_cues": [
+                {
+                  "type": "pause",
+                  "segment_index": 0,
+                  "segment_id": "resp-002-final-response",
+                  "segment_type": "freeform_clarification",
+                  "after": "That makes sense.",
+                  "mode": "transition",
+                  "duration_ms": 304,
+                  "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                  "cue_id": "cue-02",
+                  "rendered_as": "break_tag"
+                }
+              ],
+              "unsupported_cues": [
+                {
+                  "type": "pitch",
+                  "segment_index": 0,
+                  "segment_id": "resp-002-final-response",
+                  "segment_type": "freeform_clarification",
+                  "target": "That makes sense.",
+                  "direction": "steady-low",
+                  "relative_pitch_semitones": -0.493,
+                  "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                  "cue_id": "cue-01",
+                  "reason": "elevenlabs_pitch_direct_mapping_not_used"
+                }
+              ],
+              "voice_pacing_calibration": {
+                "tuned": true,
+                "speed_ratio": 1.117,
+                "break_operations": [
+                  {
+                    "operation": "compress_break",
+                    "original_ms": 304,
+                    "tuned_ms": 231,
+                    "scale": 0.759
+                  }
+                ]
+              },
+              "voice_connected_speech": {
+                "tuned": true,
+                "flow_join_count": 1,
+                "flow_operations": [
+                  {
+                    "rule_id": "en-join-filler-after-short-sentence",
+                    "before": ". Well, ",
+                    "after_text_changed": true,
+                    "remaining_same_pattern": false
+                  }
+                ]
+              },
+              "voice_listening_calibration": {
+                "tuned": false,
+                "adjustments": []
+              },
+              "voice_emotion_smoothing": {
+                "tuned": true,
+                "transition_count": 2,
+                "blocked_overemotional_cue_count": 0
+              },
+              "voice_semantic_emphasis": {
+                "tuned": true,
+                "rewrite_count": 1,
+                "rewrites": [
+                  {
+                    "rule_id": "en-clear-open-review-worth-time",
+                    "segment_id": "resp-002-final-response",
+                    "segment_type": "freeform_clarification",
+                    "before": "the practical next step is to check whether reviewing options is worth your time",
+                    "after": "we can quickly check if a review is worth your time",
+                    "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+                  }
+                ]
+              },
+              "voice_low_pressure_focus": {
+                "tuned": true,
+                "rewrite_count": 1,
+                "rewrites": [
+                  {
+                    "rule_id": "en-low-pressure-focus-with-bridge",
+                    "segment_id": "resp-002-final-response",
+                    "segment_type": "freeform_clarification",
+                    "before": "You don't need to change anything today, well, we can quickly check",
+                    "after": "No changes needed today, we can quickly check",
+                    "reason": "VOICE-039 listening feedback: avoid risky emphasis on the low-pressure phrase and keep the next step flowing."
+                  }
+                ]
+              }
+            }
+          ],
+          "mapped_cues": [
+            {
+              "type": "pause",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "after": "That makes sense.",
+              "mode": "transition",
+              "duration_ms": 304,
+              "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+              "cue_id": "cue-02",
+              "rendered_as": "break_tag"
+            }
+          ],
+          "unsupported_cues": [
+            {
+              "type": "pitch",
+              "segment_index": 0,
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "target": "That makes sense.",
+              "direction": "steady-low",
+              "relative_pitch_semitones": -0.493,
+              "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+              "cue_id": "cue-01",
+              "reason": "elevenlabs_pitch_direct_mapping_not_used"
+            }
+          ],
+          "mapped_cue_counts": {
+            "emphasis": 0,
+            "pause": 1,
+            "pitch": 0,
+            "rate": 0,
+            "stretch": 0
+          },
+          "unsupported_cue_counts": {
+            "emphasis": 0,
+            "pause": 0,
+            "pitch": 1,
+            "rate": 0,
+            "stretch": 0
+          },
+          "provider_tag_count": 1,
+          "protected_segment_provider_tag_count": 0,
+          "api_call_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+          "pacing_calibrated": true,
+          "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+          "connected_speech_applied": true,
+          "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+          "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+          "emotion_transition_smoothing_applied": true,
+          "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+          "semantic_emphasis_candidate_applied": true,
+          "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis",
+          "low_pressure_focus_applied": true,
+          "voice_low_pressure_focus_id": "VOICE-040-low-pressure-focus"
+        },
+        "validation": {
+          "passed": true,
+          "enabled": true,
+          "protected_segment_text_changes": [],
+          "non_english_rewrite_count": 0,
+          "markdown_in_rendered_text": false,
+          "plain_text_changed": false,
+          "boundary_flags_changed": false
+        },
+        "runtime_boundary": {
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "generated_audio_created": false,
+          "changes_allowed": "provider-facing freeform English low-pressure wording only, based on VOICE-039 listening feedback",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing call_control",
+            "changing protected campaign or compliance text",
+            "rewriting German text",
+            "adding claims",
+            "uploading customer audio",
+            "voice cloning"
+          ]
+        }
+      },
+      "provider_rendering": {
+        "provider_key": "elevenlabs",
+        "rendered_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+        "semantic_emphasis_candidate_applied": true,
+        "low_pressure_focus_applied": true,
+        "provider_tag_count": 1,
+        "protected_segment_provider_tag_count": 0,
+        "voice_settings": {
+          "stability": 0.56,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.117
+        }
+      },
+      "tts_delivery": {
+        "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+        "source_runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "live_call_requested": true,
+        "requires_api_key": true,
+        "api_key_env_var": "ELEVENLABS_API_KEY",
+        "selected_voice_id_env_var": "ELEVENLABS_VOICE_ID_EN",
+        "api_key_present": true,
+        "voice_id_present": true,
+        "api_key_value_logged": false,
+        "voice_id_value_logged": false,
+        "customer_audio_uploaded": false,
+        "generated_text_sent_to_provider": true,
+        "synthetic_prompt_only": true,
+        "voice_cloning_used": false,
+        "timeout_seconds": 8.0,
+        "tts_input_source": "provider_rendered_text",
+        "tts_input_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+        "provider_rendering_used": true,
+        "voice_settings": {
+          "stability": 0.56,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.117
+        },
+        "provider_calls_made": true,
+        "audio_file_created": true,
+        "audio_output_path": "research\\experiments\\generated\\VOICE-040-low-pressure-focus\\audio\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-7d4511b3.mp3",
+        "audio_byte_size": 159705,
+        "fallback_used": false,
+        "fallback_reason": null,
+        "http_status": 200,
+        "response_content_type": "audio/mpeg",
+        "request_id_present": true,
+        "time_to_first_audio_ms": 1272.954,
+        "total_provider_latency_ms": 1587.622,
+        "provider_error_summary": {
+          "type": null,
+          "code": null,
+          "message": null
+        },
+        "validation": {
+          "validator": "RESP-003 runtime live TTS safety check",
+          "passed": true,
+          "final_response_unchanged": true,
+          "redacted_request_preview": true,
+          "provider_calls_made": true,
+          "customer_audio_uploaded": false,
+          "voice_cloning_used": false,
+          "timeout_within_limit": true,
+          "notes": "RESP-003 respected provider boundary and audio asset logging rules."
+        },
+        "asset_log": {
+          "asset_log_id": "RESP-003-generated-audio-asset-log",
+          "experiment_id": "RESP-003-runtime-live-tts",
+          "asset_id": "research\\experiments\\generated\\VOICE-040-low-pressure-focus\\audio\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-7d4511b3.mp3",
+          "output_path": "research\\experiments\\generated\\VOICE-040-low-pressure-focus\\audio\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-7d4511b3.mp3",
+          "audio_format": "mp3",
+          "provider": "elevenlabs",
+          "provider_model": "eleven_flash_v2_5",
+          "provider_voice_env_var": "ELEVENLABS_VOICE_ID_EN",
+          "language": "en",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "status": "needs review",
+          "inputs": {
+            "source_text": "That makes sense. You do not need to change anything today. The practical next step is to check whether reviewing options is worth your time, and if it is not useful, we leave it there. If there is a real fit, I can set up a short specialist callback.",
+            "source_text_path": "runtime guarded response packet",
+            "provider_rendered_text": "That makes sense. <break time=\"0.231s\" /> No changes needed today, we can quickly check if a review is worth your time, and if it's not useful, we leave it there. If there's a real fit, I can set up a short specialist callback.",
+            "synthetic_prompt": true,
+            "customer_audio_uploaded": false,
+            "source_audio_used": false,
+            "source_audio_rights": "not applicable",
+            "person_or_voice_likeness_involved": false,
+            "voice_cloning_used": false,
+            "consent_note": "No customer audio or voice cloning used by RESP-003."
+          },
+          "run_boundary": {
+            "network_used": true,
+            "upload_used": false,
+            "cost": "provider API call",
+            "api_key_location": "environment-only",
+            "environment_variables_used": [
+              "ELEVENLABS_API_KEY",
+              "ELEVENLABS_VOICE_ID_EN"
+            ],
+            "command": "scripts/run_voice_040_low_pressure_focus.py",
+            "timeout_seconds": 8.0,
+            "fallback_used": false,
+            "provider_error": null
+          },
+          "review": {
+            "human_listening_review": false,
+            "naturalness": null,
+            "clarity": null,
+            "language_pronunciation": null,
+            "pacing": null,
+            "muffling_or_artifacts": null,
+            "emotional_appropriateness": null,
+            "trustworthiness": null,
+            "sales_usefulness": null,
+            "compliance_concern": false,
+            "decision": "needs review",
+            "follow_up": "Listen to generated audio before making quality claims."
+          }
+        }
+      },
+      "long_script_tts_chars": 227,
+      "validation": {
+        "passed": true,
+        "semantic_expectation_met": true,
+        "low_pressure_expectation_met": true,
+        "tts_input_source_met": true,
+        "minimum_tts_chars_met": true,
+        "final_response_unchanged": true,
+        "protected_text_locked": true,
+        "german_language_locked": true,
+        "runtime_boundary_passed": true
+      }
+    }
+  ],
+  "quality_claim_allowed": false,
+  "human_listening_review_required": true
+}

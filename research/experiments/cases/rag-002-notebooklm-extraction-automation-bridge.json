@@ -1,0 +1,8 @@
+{
+  "rag_automation_id": "RAG-002-notebooklm-extraction-automation-bridge",
+  "title": "NotebookLM extraction automation bridge for exhaustive source-topic reports",
+  "description": "Generates bounded NotebookLM prompts and local coverage gates so source extraction is less manual and tiny partial batches are rejected before RAG promotion.",
+  "prompt_char_limit": 4500,
+  "min_chunks_per_topic": 8,
+  "source_manifest_note": "RAG-002 defaults to the RAG-001 source manifest template unless a real source_manifest is supplied here after source review."
+}

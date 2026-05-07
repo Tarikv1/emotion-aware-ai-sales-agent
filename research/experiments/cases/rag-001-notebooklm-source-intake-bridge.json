@@ -1,0 +1,202 @@
+﻿{
+  "rag_intake_id": "RAG-001-notebooklm-source-intake-bridge",
+  "title": "NotebookLM source intake bridge for source-tracked sales RAG",
+  "description": "Creates a local, source-tracked RAG intake scaffold where NotebookLM is used only as an extraction helper.",
+  "source_manifest": {
+    "manifest_id": "rag-001-demo-source-manifest",
+    "rag_intake_id": "RAG-001-notebooklm-source-intake-bridge",
+    "version": 1,
+    "workflow_role": "NotebookLM extraction helper input, not permanent product memory",
+    "source_policy": {
+      "store_metadata_only": true,
+      "store_raw_source_text": false,
+      "allow_private_customer_data": false,
+      "allow_unsourced_chunks": false,
+      "max_source_excerpt_words": 60
+    },
+    "sources": [
+      {
+        "source_id": "rag001-slot-01-cold_calling",
+        "topic_ids": ["cold_calling"],
+        "source_type": "source_slot",
+        "title": "Cold calling source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-02-closing_techniques",
+        "topic_ids": ["closing_techniques"],
+        "source_type": "source_slot",
+        "title": "Closing techniques source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-03-objection_handling",
+        "topic_ids": ["objection_handling"],
+        "source_type": "source_slot",
+        "title": "Objection handling source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-04-consultative_selling_discovery",
+        "topic_ids": ["consultative_selling_discovery"],
+        "source_type": "source_slot",
+        "title": "Consultative selling and discovery source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-05-emotional_intelligence",
+        "topic_ids": ["emotional_intelligence"],
+        "source_type": "source_slot",
+        "title": "Emotional intelligence source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-06-active_listening_human_like_sales_communication",
+        "topic_ids": ["active_listening_human_like_sales_communication"],
+        "source_type": "source_slot",
+        "title": "Active listening and human-like sales communication source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-07-negotiation_german_english_sales_calls_telefonakquise",
+        "topic_ids": ["negotiation_german_english_sales_calls_telefonakquise"],
+        "source_type": "source_slot",
+        "title": "Negotiation, English/German sales calls, and Telefonakquise source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-08-ethical_persuasion_persuasive_dialogue",
+        "topic_ids": ["ethical_persuasion_persuasive_dialogue"],
+        "source_type": "source_slot",
+        "title": "Persuasion, ethical persuasion, and persuasive dialogue source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-09-speech_tone_prosody_human_like_voice_behavior",
+        "topic_ids": ["speech_tone_prosody_human_like_voice_behavior"],
+        "source_type": "source_slot",
+        "title": "Speech, tone, prosody, and human-like voice behavior source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      },
+      {
+        "source_id": "rag001-slot-10-emotion_recognition_speech_emotion_persuasion_datasets",
+        "topic_ids": ["emotion_recognition_speech_emotion_persuasion_datasets"],
+        "source_type": "source_slot",
+        "title": "Emotion recognition, speech emotion datasets, and persuasion datasets source slot",
+        "creator_or_author": "",
+        "url": "",
+        "isbn_or_publisher_note": "",
+        "language": "mixed",
+        "rights_status": "pending_review",
+        "notebooklm_status": "not_added_yet",
+        "use_status": "candidate",
+        "notes": "Replace with public video, website, book, PDF, or paper metadata before extraction."
+      }
+    ]
+  },
+  "notebooklm_extracted_chunks": [
+    {
+      "chunk_id": "rag001-demo-objection-low-pressure-next-step",
+      "topic_ids": ["objection_handling", "ethical_persuasion_persuasive_dialogue"],
+      "source_ids": ["rag001-slot-03-objection_handling"],
+      "language": "mixed",
+      "sales_stage": ["relevance-check", "objection"],
+      "principle": "Acknowledge the concern before proposing a small, optional next step.",
+      "application": "Use when a prospect raises price, effort, or timing resistance but has not asked to stop the call.",
+      "when_not_to_use": "Do not use after do-not-call, hangup, human request, legal, medical, coverage, or sensitive-data boundaries.",
+      "example_phrases": {
+        "en": "That makes sense. No changes needed today; we can simply check whether a short review is useful.",
+        "de": "Das verstehe ich. Heute muss nichts geaendert werden; wir pruefen nur kurz, ob ein kurzer Blick sinnvoll ist."
+      },
+      "emotional_cues": ["skeptical", "price-sensitive", "cautious"],
+      "compliance_notes": "Keep the next step optional. Do not promise savings, outcomes, coverage, or guaranteed value.",
+      "evidence_type": "synthetic_schema_demo",
+      "confidence": "medium",
+      "citation_note": "Synthetic demo chunk for RAG-001 schema validation; replace with NotebookLM source-tracked extraction.",
+      "source_excerpt": ""
+    },
+    {
+      "chunk_id": "rag001-demo-speech-emphasis-naturalness",
+      "topic_ids": ["speech_tone_prosody_human_like_voice_behavior", "active_listening_human_like_sales_communication"],
+      "source_ids": ["rag001-slot-09-speech_tone_prosody_human_like_voice_behavior"],
+      "language": "mixed",
+      "sales_stage": ["voice-delivery", "objection"],
+      "principle": "Choose wording that naturally points emphasis toward the meaning instead of relying on artificial stress tags.",
+      "application": "Use before provider TTS when a sentence contains weak stress targets such as you, anything, today, or change.",
+      "when_not_to_use": "Do not rewrite campaign-required questions, disclosures, handoff text, do-not-call language, or regulated claims.",
+      "example_phrases": {
+        "en": "No changes needed today; we can simply check whether it is worth a short review.",
+        "de": "Heute muss nichts geaendert werden; wir schauen nur kurz, ob ein kurzer Blick sinnvoll ist."
+      },
+      "emotional_cues": ["skeptical", "uncertain", "time-sensitive"],
+      "compliance_notes": "Voice naturalness must not add pressure, false urgency, or claims beyond the campaign profile.",
+      "evidence_type": "synthetic_schema_demo",
+      "confidence": "medium",
+      "citation_note": "Synthetic demo chunk for RAG-001 schema validation; replace with NotebookLM source-tracked extraction.",
+      "source_excerpt": ""
+    }
+  ]
+}

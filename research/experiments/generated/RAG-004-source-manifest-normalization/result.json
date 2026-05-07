@@ -1,0 +1,4003 @@
+{
+  "manifest_id": "RAG-004-source-manifest-normalization",
+  "imports_dir": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports",
+  "summary": {
+    "report_count": 11,
+    "source_count": 95,
+    "source_id_mapping_review_required": true,
+    "sources_missing_topic_count": 0,
+    "sources_missing_review_metadata_count": 95,
+    "secret_like_source_count": 0,
+    "runtime_retrieval_enabled": false,
+    "chunk_import_enabled": false,
+    "external_provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "raw_source_text_stored": false,
+    "private_customer_data_used": false
+  },
+  "source_manifest": {
+    "manifest_id": "RAG-004-source-manifest-normalization",
+    "version": 1,
+    "workflow_role": "source-title normalization review, not runtime retrieval",
+    "source_policy": {
+      "store_metadata_only": true,
+      "store_raw_source_text": false,
+      "allow_private_customer_data": false,
+      "allow_unsourced_chunks": false,
+      "require_human_metadata_review": true
+    },
+    "sources": [
+      {
+        "source_id": "rag004-source-001",
+        "stable_key": "be456dff95",
+        "canonical_title": "10 Communication Skills That Will Make You Rich!\" [Youtube] - Used (Themes: Clarity",
+        "raw_titles": [
+          "10 Communication Skills That Will Make You Rich!\" [Youtube] - Used (Themes: Clarity"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-002",
+        "stable_key": "a3f3286b65",
+        "canonical_title": "10 Speaking Techniques That Made Me A Top 1% Speaker\" [Youtube] - Used (Themes: Rule of Three",
+        "raw_titles": [
+          "10 Speaking Techniques That Made Me A Top 1% Speaker\" [Youtube] - Used (Themes: Rule of Three"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-003",
+        "stable_key": "e4c811a578",
+        "canonical_title": "13 Years of Communication Skills Knowledge in 53 minutes\" [Youtube] - Used (Themes: Vocal foundations",
+        "raw_titles": [
+          "13 Years of Communication Skills Knowledge in 53 minutes\" [Youtube] - Used (Themes: Vocal foundations"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-004",
+        "stable_key": "cffb8b1eb5",
+        "canonical_title": "2015 World Champion: 'The Power of Words' Mohammed Qahtani, Toastmasters International",
+        "raw_titles": [
+          "2015 World Champion: 'The Power of Words' Mohammed Qahtani, Toastmasters International"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-005",
+        "stable_key": "fadf5b5e75",
+        "canonical_title": "3 Powerful Ways To Tell Stories Without Boring People\" [Youtube] - Used (Themes: Shortening stories",
+        "raw_titles": [
+          "3 Powerful Ways To Tell Stories Without Boring People\" [Youtube] - Used (Themes: Shortening stories"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-006",
+        "stable_key": "246fa4b90e",
+        "canonical_title": "30 Day Plan to Master Your Communication [Complete Beginner's Guide] + FREE Workbook PDF\" [Youtube] - Used (Themes: Non-functional behaviors",
+        "raw_titles": [
+          "30 Day Plan to Master Your Communication [Complete Beginner's Guide] + FREE Workbook PDF\" [Youtube] - Used (Themes: Non-functional behaviors"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-007",
+        "stable_key": "cebff5c163",
+        "canonical_title": "30 Minutes to President’s Club",
+        "raw_titles": [
+          "30 Minutes to President’s Club"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "topic_labels": [
+          "Consultative selling and discovery"
+        ],
+        "report_names": [
+          "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-008",
+        "stable_key": "b7fc82ae5f",
+        "canonical_title": "30MPC (Armon & Nick)",
+        "raw_titles": [
+          "30MPC (Armon & Nick)"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "topic_labels": [
+          "Cold calling"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-009",
+        "stable_key": "01eebda79b",
+        "canonical_title": "33 Minutes Of Communication Skills Advice I Wish I Knew In My 20s\" [Youtube] - Used (Themes: Managing conversational anxiety",
+        "raw_titles": [
+          "33 Minutes Of Communication Skills Advice I Wish I Knew In My 20s\" [Youtube] - Used (Themes: Managing conversational anxiety"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-010",
+        "stable_key": "9c8fb534be",
+        "canonical_title": "43 minutes straight of SOLID communication skills advice\" [Youtube] - Used (Themes: Melody",
+        "raw_titles": [
+          "43 minutes straight of SOLID communication skills advice\" [Youtube] - Used (Themes: Melody"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-011",
+        "stable_key": "e78f3f597b",
+        "canonical_title": "5 communication hacks that will dramatically improve your confidence!\" [Youtube] - Used (Themes: Deepening questions",
+        "raw_titles": [
+          "5 communication hacks that will dramatically improve your confidence!\" [Youtube] - Used (Themes: Deepening questions"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-012",
+        "stable_key": "23b5d6b6e2",
+        "canonical_title": "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else\" [Youtube] - Used (Themes: Open-ended questions",
+        "raw_titles": [
+          "5 Communication Secrets That Give You An Unfair Advantage Over Anyone Else\" [Youtube] - Used (Themes: Open-ended questions"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-013",
+        "stable_key": "e8531667bc",
+        "canonical_title": "7 Communication Cheat Codes To Speak Like A Pro!\" [Youtube] - Used (Themes: PREP framework",
+        "raw_titles": [
+          "7 Communication Cheat Codes To Speak Like A Pro!\" [Youtube] - Used (Themes: PREP framework"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-014",
+        "stable_key": "1ec426f1de",
+        "canonical_title": "7 emotions + 3 sentiments mapping interactions in video",
+        "raw_titles": [
+          "7 emotions + 3 sentiments mapping interactions in video"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "topic_labels": [
+          "Emotion recognition, speech emotion datasets, and persuasion datasets"
+        ],
+        "report_names": [
+          "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-015",
+        "stable_key": "5f6dd67e2f",
+        "canonical_title": "7 POWERFUL Storytelling Secrets to Level Up Your Communication Skills\" [Youtube] - Used (Themes: Dialogue play",
+        "raw_titles": [
+          "7 POWERFUL Storytelling Secrets to Level Up Your Communication Skills\" [Youtube] - Used (Themes: Dialogue play"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-016",
+        "stable_key": "b95e063815",
+        "canonical_title": "9 Habits for Clearer Speaking (I Wish I Knew Sooner)\" [Youtube] - Used (Themes: Pausing to highlight",
+        "raw_titles": [
+          "9 Habits for Clearer Speaking (I Wish I Knew Sooner)\" [Youtube] - Used (Themes: Pausing to highlight"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-017",
+        "stable_key": "28b33d2136",
+        "canonical_title": "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition",
+        "raw_titles": [
+          "A Comprehensive Survey on Multi-modal Conversational Emotion Recognition"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "topic_labels": [
+          "Emotion recognition, speech emotion datasets, and persuasion datasets"
+        ],
+        "report_names": [
+          "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-018",
+        "stable_key": "502b75b2ce",
+        "canonical_title": "Advanced JS",
+        "raw_titles": [
+          "Advanced JS"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-019",
+        "stable_key": "31d2e07632",
+        "canonical_title": "Alessia Cara - Here",
+        "raw_titles": [
+          "Alessia Cara - Here"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-020",
+        "stable_key": "5105999267",
+        "canonical_title": "Alex Cattoni",
+        "raw_titles": [
+          "Alex Cattoni"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-021",
+        "stable_key": "eda4decfcf",
+        "canonical_title": "Alexander Lyon (Comm Coach)",
+        "raw_titles": [
+          "Alexander Lyon (Comm Coach)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-022",
+        "stable_key": "3708e98f77",
+        "canonical_title": "An Introduction to Behavioral Economics",
+        "raw_titles": [
+          "An Introduction to Behavioral Economics"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-023",
+        "stable_key": "a149ccd7f6",
+        "canonical_title": "Andy Luttrell Transcript",
+        "raw_titles": [
+          "Andy Luttrell Transcript"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-024",
+        "stable_key": "0258a8b238",
+        "canonical_title": "BE Hub Concepts",
+        "raw_titles": [
+          "BE Hub Concepts"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-025",
+        "stable_key": "03b54de249",
+        "canonical_title": "Behavioral Science Concepts (BE Hub)",
+        "raw_titles": [
+          "Behavioral Science Concepts (BE Hub)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-026",
+        "stable_key": "63897a1eef",
+        "canonical_title": "BigSpeak",
+        "raw_titles": [
+          "BigSpeak"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-027",
+        "stable_key": "8aa7c7b777",
+        "canonical_title": "Center for Creative Leadership",
+        "raw_titles": [
+          "Center for Creative Leadership"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-028",
+        "stable_key": "7dbc4312d4",
+        "canonical_title": "Cognism Hub/Scripts",
+        "raw_titles": [
+          "Cognism Hub/Scripts"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "topic_labels": [
+          "Cold calling"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "source_type_guess": "website_or_blog",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-029",
+        "stable_key": "c30a0b60fa",
+        "canonical_title": "Cognism Live",
+        "raw_titles": [
+          "Cognism Live"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "topic_labels": [
+          "Cold calling"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "source_type_guess": "website_or_blog",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-030",
+        "stable_key": "975a28a52d",
+        "canonical_title": "Cognitive Dissonance Theory",
+        "raw_titles": [
+          "Cognitive Dissonance Theory"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-031",
+        "stable_key": "ffca5ebdeb",
+        "canonical_title": "Colleen Stanley (Badger Maps)",
+        "raw_titles": [
+          "Colleen Stanley (Badger Maps)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-032",
+        "stable_key": "da2f00f46a",
+        "canonical_title": "Communication Is Hard Until You Structure Your Thinking First!\" [Youtube] - Used (Themes: 3-2-1 Framework",
+        "raw_titles": [
+          "Communication Is Hard Until You Structure Your Thinking First!\" [Youtube] - Used (Themes: 3-2-1 Framework"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-033",
+        "stable_key": "4b600f160e",
+        "canonical_title": "Connor Murray Video",
+        "raw_titles": [
+          "Connor Murray Video"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "topic_labels": [
+          "Cold calling"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-034",
+        "stable_key": "cc135f2fa4",
+        "canonical_title": "Datasets - ConvoKit 4.1.1",
+        "raw_titles": [
+          "Datasets - ConvoKit 4.1.1"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "topic_labels": [
+          "Emotion recognition, speech emotion datasets, and persuasion datasets"
+        ],
+        "report_names": [
+          "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-035",
+        "stable_key": "5c4c5884b1",
+        "canonical_title": "EASY 3-Step Exercise To INSTANTLY Improve Your Articulation!\" [Youtube] - Used (Themes: Crisp articulation",
+        "raw_titles": [
+          "EASY 3-Step Exercise To INSTANTLY Improve Your Articulation!\" [Youtube] - Used (Themes: Crisp articulation"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-036",
+        "stable_key": "4e9ce448af",
+        "canonical_title": "Extreme Ownership",
+        "raw_titles": [
+          "Extreme Ownership"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-037",
+        "stable_key": "e2a2b1a530",
+        "canonical_title": "Felix Thönnessen YouTube Transcript",
+        "raw_titles": [
+          "Felix Thönnessen YouTube Transcript"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-038",
+        "stable_key": "572d021c49",
+        "canonical_title": "Give me 14 minutes",
+        "raw_titles": [
+          "Give me 14 minutes"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-039",
+        "stable_key": "1631f26034",
+        "canonical_title": "Harvard Business (DeSmet)",
+        "raw_titles": [
+          "Harvard Business (DeSmet)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-040",
+        "stable_key": "d848217b6d",
+        "canonical_title": "Harvard Gazette (Siegel)",
+        "raw_titles": [
+          "Harvard Gazette (Siegel)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-041",
+        "stable_key": "32e8c23cd3",
+        "canonical_title": "How to Build INSTANT Rapport With Strangers!\" [Youtube] - Used (Themes: Match",
+        "raw_titles": [
+          "How to Build INSTANT Rapport With Strangers!\" [Youtube] - Used (Themes: Match"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-042",
+        "stable_key": "2ea19960d9",
+        "canonical_title": "How to Speak",
+        "raw_titles": [
+          "How to Speak"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-043",
+        "stable_key": "3577bc7437",
+        "canonical_title": "How to Speak So That People Want to Listen",
+        "raw_titles": [
+          "How to Speak So That People Want to Listen"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-044",
+        "stable_key": "b2ec225bf9",
+        "canonical_title": "How to Turn That Difficult Conversation You Need to Have on EASY Mode\" [Youtube] - Used (Themes: Sandwich technique",
+        "raw_titles": [
+          "How to Turn That Difficult Conversation You Need to Have on EASY Mode\" [Youtube] - Used (Themes: Sandwich technique"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-045",
+        "stable_key": "9e002df31c",
+        "canonical_title": "HubSpot",
+        "raw_titles": [
+          "HubSpot"
+        ],
+        "topic_ids": [
+          "closing_techniques"
+        ],
+        "topic_labels": [
+          "Closing techniques"
+        ],
+        "report_names": [
+          "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md"
+        ],
+        "source_type_guess": "website_or_blog",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-046",
+        "stable_key": "4e5f2c9d8d",
+        "canonical_title": "HubSpot (Context)",
+        "raw_titles": [
+          "HubSpot (Context)"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "website_or_blog",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-047",
+        "stable_key": "2f023d7419",
+        "canonical_title": "I'll help you think & speak faster\" [Youtube] - Used (Themes: Breath control",
+        "raw_titles": [
+          "I'll help you think & speak faster\" [Youtube] - Used (Themes: Breath control"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-048",
+        "stable_key": "b242a88e26",
+        "canonical_title": "IAW Website",
+        "raw_titles": [
+          "IAW Website"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "website_or_blog",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-049",
+        "stable_key": "b6662464e6",
+        "canonical_title": "Intro to BE",
+        "raw_titles": [
+          "Intro to BE"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-050",
+        "stable_key": "eecd393184",
+        "canonical_title": "Intro to BE (Samson)",
+        "raw_titles": [
+          "Intro to BE (Samson)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-051",
+        "stable_key": "5616c24db1",
+        "canonical_title": "Jason Bay (Sell Better)",
+        "raw_titles": [
+          "Jason Bay (Sell Better)"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "topic_labels": [
+          "Cold calling"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-052",
+        "stable_key": "f915ac7d8d",
+        "canonical_title": "Jeff Shore (5 Min Sales)",
+        "raw_titles": [
+          "Jeff Shore (5 Min Sales)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-053",
+        "stable_key": "73c4d969ee",
+        "canonical_title": "Jens Löser (#derLÖSER) Transcripts",
+        "raw_titles": [
+          "Jens Löser (#derLÖSER) Transcripts"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "de",
+        "source_type": "needs_review",
+        "language": "de",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-054",
+        "stable_key": "30177b8217",
+        "canonical_title": "Josh Braun 30MPC",
+        "raw_titles": [
+          "Josh Braun 30MPC"
+        ],
+        "topic_ids": [
+          "cold_calling"
+        ],
+        "topic_labels": [
+          "Cold calling"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-055",
+        "stable_key": "549a9adba2",
+        "canonical_title": "Journal of the International Phonetic Association",
+        "raw_titles": [
+          "Journal of the International Phonetic Association"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-056",
+        "stable_key": "7f36b907be",
+        "canonical_title": "Julian Treasure",
+        "raw_titles": [
+          "Julian Treasure"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-057",
+        "stable_key": "83df10e48d",
+        "canonical_title": "Lars Krüger YouTube Transcripts",
+        "raw_titles": [
+          "Lars Krüger YouTube Transcripts"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "de",
+        "source_type": "needs_review",
+        "language": "de",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-058",
+        "stable_key": "506a4249e8",
+        "canonical_title": "Loss Aversion",
+        "raw_titles": [
+          "Loss Aversion"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-059",
+        "stable_key": "09bd1b8f7a",
+        "canonical_title": "Marcus Alexander Velazquez",
+        "raw_titles": [
+          "Marcus Alexander Velazquez"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-060",
+        "stable_key": "26f699ac8b",
+        "canonical_title": "Matthew Pollard",
+        "raw_titles": [
+          "Matthew Pollard"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-061",
+        "stable_key": "e00f69365d",
+        "canonical_title": "Mindtools",
+        "raw_titles": [
+          "Mindtools"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-062",
+        "stable_key": "e63b39c8dc",
+        "canonical_title": "Multi-party Conversational Emotion",
+        "raw_titles": [
+          "Multi-party Conversational Emotion"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "topic_labels": [
+          "Emotion recognition, speech emotion datasets, and persuasion datasets"
+        ],
+        "report_names": [
+          "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-063",
+        "stable_key": "7756e57eb2",
+        "canonical_title": "Non-Verbal Communication",
+        "raw_titles": [
+          "Non-Verbal Communication"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-064",
+        "stable_key": "41305024fc",
+        "canonical_title": "Pausing/dead air",
+        "raw_titles": [
+          "Pausing/dead air"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-065",
+        "stable_key": "bc00cdb6f7",
+        "canonical_title": "Persuasion (Psychology Today)",
+        "raw_titles": [
+          "Persuasion (Psychology Today)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-066",
+        "stable_key": "4f55089b98",
+        "canonical_title": "Persuasion for Good",
+        "raw_titles": [
+          "Persuasion for Good"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "topic_labels": [
+          "Emotion recognition, speech emotion datasets, and persuasion datasets"
+        ],
+        "report_names": [
+          "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-067",
+        "stable_key": "deec9f5b1a",
+        "canonical_title": "Persuasion for Good (arXiv)",
+        "raw_titles": [
+          "Persuasion for Good (arXiv)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "paper_or_reference",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-068",
+        "stable_key": "99fdfecd17",
+        "canonical_title": "Persuasion for Good (Paper)",
+        "raw_titles": [
+          "Persuasion for Good (Paper)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "paper_or_reference",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-069",
+        "stable_key": "c670d7bf92",
+        "canonical_title": "Pipedrive Blog",
+        "raw_titles": [
+          "Pipedrive Blog"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "website_or_blog",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-070",
+        "stable_key": "38d0f79e82",
+        "canonical_title": "Psychology Today",
+        "raw_titles": [
+          "Psychology Today"
+        ],
+        "topic_ids": [
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-071",
+        "stable_key": "0317d4c2da",
+        "canonical_title": "Sales Gravy (Jeb Blount Jr.)",
+        "raw_titles": [
+          "Sales Gravy (Jeb Blount Jr.)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-072",
+        "stable_key": "f79656b9a3",
+        "canonical_title": "Sales Introverts (Kyle Asay)",
+        "raw_titles": [
+          "Sales Introverts (Kyle Asay)"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "topic_labels": [
+          "Consultative selling and discovery"
+        ],
+        "report_names": [
+          "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-073",
+        "stable_key": "d77b13fada",
+        "canonical_title": "Salesforce",
+        "raw_titles": [
+          "Salesforce"
+        ],
+        "topic_ids": [
+          "closing_techniques",
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Closing techniques",
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+          "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-074",
+        "stable_key": "f7272c8bcc",
+        "canonical_title": "Salesman.com: 5 Questions",
+        "raw_titles": [
+          "Salesman.com: 5 Questions"
+        ],
+        "topic_ids": [
+          "consultative_selling_discovery"
+        ],
+        "topic_labels": [
+          "Consultative selling and discovery"
+        ],
+        "report_names": [
+          "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-075",
+        "stable_key": "b66ed77573",
+        "canonical_title": "Science Of Persuasion (Cialdini)",
+        "raw_titles": [
+          "Science Of Persuasion (Cialdini)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-076",
+        "stable_key": "3bbfa09788",
+        "canonical_title": "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day\" [Youtube] - Used (Themes: Soft palate lifting",
+        "raw_titles": [
+          "Speak 10X Clearer: Do These 3 Vocal Exercises Every Day\" [Youtube] - Used (Themes: Soft palate lifting"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-077",
+        "stable_key": "fbeee66f91",
+        "canonical_title": "Speak Better Than 99% of People (Everything You Need To Know)\" [Youtube] - Used (Themes: Full vocal range",
+        "raw_titles": [
+          "Speak Better Than 99% of People (Everything You Need To Know)\" [Youtube] - Used (Themes: Full vocal range"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-078",
+        "stable_key": "ddbb5ba178",
+        "canonical_title": "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation",
+        "raw_titles": [
+          "Speech Emotion Recognition via Multi-Level Cross-Modal Distillation"
+        ],
+        "topic_ids": [
+          "emotion_recognition_speech_emotion_persuasion_datasets"
+        ],
+        "topic_labels": [
+          "Emotion recognition, speech emotion datasets, and persuasion datasets"
+        ],
+        "report_names": [
+          "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-079",
+        "stable_key": "79e4482993",
+        "canonical_title": "Stanford Encyclopedia (Noggle)",
+        "raw_titles": [
+          "Stanford Encyclopedia (Noggle)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "paper_or_reference",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-080",
+        "stable_key": "b8a4be9be7",
+        "canonical_title": "Sunstein (IAW)",
+        "raw_titles": [
+          "Sunstein (IAW)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-081",
+        "stable_key": "f31334d4a7",
+        "canonical_title": "Team Cialdini",
+        "raw_titles": [
+          "Team Cialdini"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-082",
+        "stable_key": "9f12237a42",
+        "canonical_title": "The Art of Effective Communication",
+        "raw_titles": [
+          "The Art of Effective Communication"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-083",
+        "stable_key": "3a01cc50e4",
+        "canonical_title": "The Ethics of Manipulation (Stanford)",
+        "raw_titles": [
+          "The Ethics of Manipulation (Stanford)"
+        ],
+        "topic_ids": [
+          "ethical_persuasion_persuasive_dialogue"
+        ],
+        "topic_labels": [
+          "Persuasion, ethical persuasion, and persuasive dialogue"
+        ],
+        "report_names": [
+          "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md"
+        ],
+        "source_type_guess": "paper_or_reference",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-084",
+        "stable_key": "da3d305b22",
+        "canonical_title": "The Four Dimensions of Tone of Voice - NN/G",
+        "raw_titles": [
+          "The Four Dimensions of Tone of Voice - NN/G"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-085",
+        "stable_key": "cc9540ef60",
+        "canonical_title": "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research) - NN/G",
+        "raw_titles": [
+          "The Impact of Tone of Voice on Users' Brand Perception (Nielsen Norman Group UX research) - NN/G"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-086",
+        "stable_key": "9e5dc469a8",
+        "canonical_title": "The Only Video You Need To Fix Your Communication Skills\" [Youtube] - Used (Themes: Influence diamond",
+        "raw_titles": [
+          "The Only Video You Need To Fix Your Communication Skills\" [Youtube] - Used (Themes: Influence diamond"
+        ],
+        "topic_ids": [
+          "active_listening_human_like_sales_communication",
+          "consultative_selling_discovery",
+          "emotional_intelligence",
+          "ethical_persuasion_persuasive_dialogue",
+          "objection_handling",
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Active listening and human-like sales communication",
+          "Consultative selling and discovery",
+          "Emotional intelligence",
+          "Persuasion, ethical persuasion, and persuasive dialogue",
+          "Objection handling",
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-087",
+        "stable_key": "70b1f1f780",
+        "canonical_title": "Think Fast, Talk Smart: Communication Techniques",
+        "raw_titles": [
+          "Think Fast, Talk Smart: Communication Techniques"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-088",
+        "stable_key": "b377926ca2",
+        "canonical_title": "Thomas Pelzl YouTube Transcript",
+        "raw_titles": [
+          "Thomas Pelzl YouTube Transcript"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-089",
+        "stable_key": "c1e8310a65",
+        "canonical_title": "Timo Sven Bauer",
+        "raw_titles": [
+          "Timo Sven Bauer"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-090",
+        "stable_key": "53c13195f6",
+        "canonical_title": "Timo Sven Bauer YouTube Transcripts",
+        "raw_titles": [
+          "Timo Sven Bauer YouTube Transcripts"
+        ],
+        "topic_ids": [
+          "negotiation_german_english_sales_calls_telefonakquise"
+        ],
+        "topic_labels": [
+          "Negotiation, English/German sales calls, and Telefonakquise"
+        ],
+        "report_names": [
+          "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md"
+        ],
+        "source_type_guess": "video_or_transcript",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-091",
+        "stable_key": "560a3ef4d1",
+        "canonical_title": "Toastmasters International -Public Speaking Tips",
+        "raw_titles": [
+          "Toastmasters International -Public Speaking Tips"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-092",
+        "stable_key": "4c08d985b3",
+        "canonical_title": "Tony Robbins",
+        "raw_titles": [
+          "Tony Robbins"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-093",
+        "stable_key": "f323b71e5c",
+        "canonical_title": "Trillium BCG (Science of Selling)",
+        "raw_titles": [
+          "Trillium BCG (Science of Selling)"
+        ],
+        "topic_ids": [
+          "emotional_intelligence"
+        ],
+        "topic_labels": [
+          "Emotional intelligence"
+        ],
+        "report_names": [
+          "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-094",
+        "stable_key": "4a22af619b",
+        "canonical_title": "Verbal Communication Skills",
+        "raw_titles": [
+          "Verbal Communication Skills"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      },
+      {
+        "source_id": "rag004-source-095",
+        "stable_key": "bf09967570",
+        "canonical_title": "Your Body Language May Shape Who You Are",
+        "raw_titles": [
+          "Your Body Language May Shape Who You Are"
+        ],
+        "topic_ids": [
+          "speech_tone_prosody_human_like_voice_behavior"
+        ],
+        "topic_labels": [
+          "Speech, tone, prosody, and human-like voice behavior"
+        ],
+        "report_names": [
+          "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "report_paths": [
+          "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md"
+        ],
+        "source_type_guess": "needs_review",
+        "language_guess": "mixed",
+        "source_type": "needs_review",
+        "language": "mixed",
+        "creator_or_author": "",
+        "url": "",
+        "publisher_or_channel": "",
+        "publication_date": "",
+        "rights_status": "needs_review",
+        "metadata_status": "needs_human_review",
+        "notebooklm_status": "imported_report_reference",
+        "use_status": "candidate",
+        "raw_source_text_stored": false,
+        "secret_like_detected": false,
+        "review_notes": "Fill URL/author/channel/source type/rights metadata before chunk import."
+      }
+    ],
+    "topic_to_source_ids": {
+      "active_listening_human_like_sales_communication": [
+        "rag004-source-001",
+        "rag004-source-002",
+        "rag004-source-003",
+        "rag004-source-005",
+        "rag004-source-006",
+        "rag004-source-009",
+        "rag004-source-010",
+        "rag004-source-011",
+        "rag004-source-012",
+        "rag004-source-013",
+        "rag004-source-015",
+        "rag004-source-016",
+        "rag004-source-032",
+        "rag004-source-035",
+        "rag004-source-038",
+        "rag004-source-041",
+        "rag004-source-044",
+        "rag004-source-047",
+        "rag004-source-076",
+        "rag004-source-077",
+        "rag004-source-086"
+      ],
+      "closing_techniques": [
+        "rag004-source-045",
+        "rag004-source-073"
+      ],
+      "cold_calling": [
+        "rag004-source-008",
+        "rag004-source-028",
+        "rag004-source-029",
+        "rag004-source-033",
+        "rag004-source-051",
+        "rag004-source-054"
+      ],
+      "consultative_selling_discovery": [
+        "rag004-source-001",
+        "rag004-source-002",
+        "rag004-source-003",
+        "rag004-source-005",
+        "rag004-source-006",
+        "rag004-source-007",
+        "rag004-source-009",
+        "rag004-source-010",
+        "rag004-source-011",
+        "rag004-source-012",
+        "rag004-source-013",
+        "rag004-source-015",
+        "rag004-source-016",
+        "rag004-source-032",
+        "rag004-source-035",
+        "rag004-source-038",
+        "rag004-source-041",
+        "rag004-source-044",
+        "rag004-source-047",
+        "rag004-source-072",
+        "rag004-source-074",
+        "rag004-source-076",
+        "rag004-source-077",
+        "rag004-source-086"
+      ],
+      "emotion_recognition_speech_emotion_persuasion_datasets": [
+        "rag004-source-014",
+        "rag004-source-017",
+        "rag004-source-034",
+        "rag004-source-062",
+        "rag004-source-066",
+        "rag004-source-078"
+      ],
+      "emotional_intelligence": [
+        "rag004-source-001",
+        "rag004-source-002",
+        "rag004-source-003",
+        "rag004-source-005",
+        "rag004-source-006",
+        "rag004-source-009",
+        "rag004-source-010",
+        "rag004-source-011",
+        "rag004-source-012",
+        "rag004-source-013",
+        "rag004-source-015",
+        "rag004-source-016",
+        "rag004-source-020",
+        "rag004-source-021",
+        "rag004-source-027",
+        "rag004-source-031",
+        "rag004-source-032",
+        "rag004-source-035",
+        "rag004-source-038",
+        "rag004-source-039",
+        "rag004-source-040",
+        "rag004-source-041",
+        "rag004-source-044",
+        "rag004-source-047",
+        "rag004-source-052",
+        "rag004-source-060",
+        "rag004-source-061",
+        "rag004-source-070",
+        "rag004-source-071",
+        "rag004-source-076",
+        "rag004-source-077",
+        "rag004-source-086",
+        "rag004-source-089",
+        "rag004-source-092",
+        "rag004-source-093"
+      ],
+      "ethical_persuasion_persuasive_dialogue": [
+        "rag004-source-001",
+        "rag004-source-002",
+        "rag004-source-003",
+        "rag004-source-005",
+        "rag004-source-006",
+        "rag004-source-009",
+        "rag004-source-010",
+        "rag004-source-011",
+        "rag004-source-012",
+        "rag004-source-013",
+        "rag004-source-015",
+        "rag004-source-016",
+        "rag004-source-018",
+        "rag004-source-022",
+        "rag004-source-023",
+        "rag004-source-024",
+        "rag004-source-025",
+        "rag004-source-026",
+        "rag004-source-030",
+        "rag004-source-032",
+        "rag004-source-035",
+        "rag004-source-038",
+        "rag004-source-041",
+        "rag004-source-044",
+        "rag004-source-047",
+        "rag004-source-048",
+        "rag004-source-049",
+        "rag004-source-050",
+        "rag004-source-058",
+        "rag004-source-065",
+        "rag004-source-067",
+        "rag004-source-068",
+        "rag004-source-070",
+        "rag004-source-075",
+        "rag004-source-076",
+        "rag004-source-077",
+        "rag004-source-079",
+        "rag004-source-080",
+        "rag004-source-081",
+        "rag004-source-083",
+        "rag004-source-086"
+      ],
+      "negotiation_german_english_sales_calls_telefonakquise": [
+        "rag004-source-037",
+        "rag004-source-046",
+        "rag004-source-053",
+        "rag004-source-057",
+        "rag004-source-069",
+        "rag004-source-073",
+        "rag004-source-088",
+        "rag004-source-090"
+      ],
+      "objection_handling": [
+        "rag004-source-001",
+        "rag004-source-002",
+        "rag004-source-003",
+        "rag004-source-005",
+        "rag004-source-006",
+        "rag004-source-009",
+        "rag004-source-010",
+        "rag004-source-011",
+        "rag004-source-012",
+        "rag004-source-013",
+        "rag004-source-015",
+        "rag004-source-016",
+        "rag004-source-032",
+        "rag004-source-035",
+        "rag004-source-038",
+        "rag004-source-041",
+        "rag004-source-044",
+        "rag004-source-047",
+        "rag004-source-076",
+        "rag004-source-077",
+        "rag004-source-086"
+      ],
+      "speech_tone_prosody_human_like_voice_behavior": [
+        "rag004-source-001",
+        "rag004-source-002",
+        "rag004-source-003",
+        "rag004-source-004",
+        "rag004-source-005",
+        "rag004-source-006",
+        "rag004-source-009",
+        "rag004-source-010",
+        "rag004-source-011",
+        "rag004-source-012",
+        "rag004-source-013",
+        "rag004-source-015",
+        "rag004-source-016",
+        "rag004-source-019",
+        "rag004-source-032",
+        "rag004-source-035",
+        "rag004-source-036",
+        "rag004-source-038",
+        "rag004-source-041",
+        "rag004-source-042",
+        "rag004-source-043",
+        "rag004-source-044",
+        "rag004-source-047",
+        "rag004-source-055",
+        "rag004-source-056",
+        "rag004-source-059",
+        "rag004-source-063",
+        "rag004-source-064",
+        "rag004-source-076",
+        "rag004-source-077",
+        "rag004-source-082",
+        "rag004-source-084",
+        "rag004-source-085",
+        "rag004-source-086",
+        "rag004-source-087",
+        "rag004-source-091",
+        "rag004-source-094",
+        "rag004-source-095"
+      ]
+    }
+  },
+  "reports_scanned": [
+    {
+      "name": "Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Cold calling Source Extraction Report.md",
+      "topic_ids": [
+        "cold_calling"
+      ],
+      "source_candidate_count": 6
+    },
+    {
+      "name": "Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Emotional Intelligence Source Extraction Report.md",
+      "topic_ids": [
+        "emotional_intelligence"
+      ],
+      "source_candidate_count": 14
+    },
+    {
+      "name": "Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion Aware AI Sales Agent - Objection Handling Source Extraction Report.md",
+      "topic_ids": [
+        "objection_handling"
+      ],
+      "source_candidate_count": 0
+    },
+    {
+      "name": "Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Emotion-Aware AI Sales Agent_ Behavioral Strategy & Persuasion Extraction Report.md",
+      "topic_ids": [
+        "ethical_persuasion_persuasive_dialogue"
+      ],
+      "source_candidate_count": 20
+    },
+    {
+      "name": "Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Extraction Report_ AI Sales Agent Strategy & RAG Synthesis.md",
+      "topic_ids": [
+        "negotiation_german_english_sales_calls_telefonakquise"
+      ],
+      "source_candidate_count": 8
+    },
+    {
+      "name": "Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Knowledge Extraction Report_ Consultative Selling & Discovery for Emotion-Aware AI.md",
+      "topic_ids": [
+        "consultative_selling_discovery"
+      ],
+      "source_candidate_count": 3
+    },
+    {
+      "name": "Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic.md",
+      "topic_ids": [
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "source_candidate_count": 17
+    },
+    {
+      "name": "Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Tailored Report_ Emotion-Aware AI Sales Agent Closing Techniques.md",
+      "topic_ids": [
+        "closing_techniques"
+      ],
+      "source_candidate_count": 2
+    },
+    {
+      "name": "Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Extraction Report_ Negotiation Tactics & Cross-Cultural Sales Logic.md",
+      "topic_ids": [
+        "active_listening_human_like_sales_communication"
+      ],
+      "source_candidate_count": 0
+    },
+    {
+      "name": "Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Technical Report_ Emotion Recognition and Persuasion Systems in Sales AI.md",
+      "topic_ids": [
+        "emotion_recognition_speech_emotion_persuasion_datasets"
+      ],
+      "source_candidate_count": 6
+    },
+    {
+      "name": "Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md",
+      "path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/Vinh Giang Communication and Human Voice Behavior RAG Extraction Report.md",
+      "topic_ids": [
+        "active_listening_human_like_sales_communication",
+        "consultative_selling_discovery",
+        "emotional_intelligence",
+        "ethical_persuasion_persuasive_dialogue",
+        "objection_handling",
+        "speech_tone_prosody_human_like_voice_behavior"
+      ],
+      "source_candidate_count": 21
+    }
+  ],
+  "review_queues": {
+    "sources_without_topics": [],
+    "sources_missing_review_metadata": [
+      "rag004-source-001",
+      "rag004-source-002",
+      "rag004-source-003",
+      "rag004-source-004",
+      "rag004-source-005",
+      "rag004-source-006",
+      "rag004-source-007",
+      "rag004-source-008",
+      "rag004-source-009",
+      "rag004-source-010",
+      "rag004-source-011",
+      "rag004-source-012",
+      "rag004-source-013",
+      "rag004-source-014",
+      "rag004-source-015",
+      "rag004-source-016",
+      "rag004-source-017",
+      "rag004-source-018",
+      "rag004-source-019",
+      "rag004-source-020",
+      "rag004-source-021",
+      "rag004-source-022",
+      "rag004-source-023",
+      "rag004-source-024",
+      "rag004-source-025",
+      "rag004-source-026",
+      "rag004-source-027",
+      "rag004-source-028",
+      "rag004-source-029",
+      "rag004-source-030",
+      "rag004-source-031",
+      "rag004-source-032",
+      "rag004-source-033",
+      "rag004-source-034",
+      "rag004-source-035",
+      "rag004-source-036",
+      "rag004-source-037",
+      "rag004-source-038",
+      "rag004-source-039",
+      "rag004-source-040",
+      "rag004-source-041",
+      "rag004-source-042",
+      "rag004-source-043",
+      "rag004-source-044",
+      "rag004-source-045",
+      "rag004-source-046",
+      "rag004-source-047",
+      "rag004-source-048",
+      "rag004-source-049",
+      "rag004-source-050",
+      "rag004-source-051",
+      "rag004-source-052",
+      "rag004-source-053",
+      "rag004-source-054",
+      "rag004-source-055",
+      "rag004-source-056",
+      "rag004-source-057",
+      "rag004-source-058",
+      "rag004-source-059",
+      "rag004-source-060",
+      "rag004-source-061",
+      "rag004-source-062",
+      "rag004-source-063",
+      "rag004-source-064",
+      "rag004-source-065",
+      "rag004-source-066",
+      "rag004-source-067",
+      "rag004-source-068",
+      "rag004-source-069",
+      "rag004-source-070",
+      "rag004-source-071",
+      "rag004-source-072",
+      "rag004-source-073",
+      "rag004-source-074",
+      "rag004-source-075",
+      "rag004-source-076",
+      "rag004-source-077",
+      "rag004-source-078",
+      "rag004-source-079",
+      "rag004-source-080",
+      "rag004-source-081",
+      "rag004-source-082",
+      "rag004-source-083",
+      "rag004-source-084",
+      "rag004-source-085",
+      "rag004-source-086",
+      "rag004-source-087",
+      "rag004-source-088",
+      "rag004-source-089",
+      "rag004-source-090",
+      "rag004-source-091",
+      "rag004-source-092",
+      "rag004-source-093",
+      "rag004-source-094",
+      "rag004-source-095"
+    ],
+    "secret_like_sources": []
+  },
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "chunk_import_enabled": false,
+    "notebooklm_api_used": false,
+    "external_provider_calls_made": false,
+    "private_customer_data_allowed": false,
+    "raw_source_text_import_allowed": false
+  }
+}

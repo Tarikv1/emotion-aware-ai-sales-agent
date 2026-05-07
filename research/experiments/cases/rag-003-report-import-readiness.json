@@ -1,0 +1,14 @@
+{
+  "rag_audit_id": "RAG-003-report-import-readiness",
+  "title": "NotebookLM report import readiness audit",
+  "description": "Audits manually exported or pasted NotebookLM report files before any RAG chunk import, source-ID mapping, or runtime retrieval promotion.",
+  "default_imports_dir": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports",
+  "expected_topic_count": 10,
+  "runtime_retrieval_enabled": false,
+  "auto_promotion_allowed": false,
+  "notes": [
+    "This checkpoint scans report structure and coverage only.",
+    "It does not call NotebookLM, external providers, or runtime retrieval.",
+    "Reports can be complete enough for manual review while still requiring source-ID mapping before chunk import."
+  ]
+}

@@ -82,6 +82,25 @@ def validate_common_payload(payload: dict) -> None:
     assert_condition(delivery["timeout_seconds"] <= 10, delivery)
     assert_condition(delivery["validation"]["passed"] is True, delivery["validation"])
     assert_condition(payload["voice_delivery"]["spoken_text_normalization"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["speech_imperfections"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_pacing_calibration"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_connected_speech"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_listening_calibration"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_emotion_smoothing"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_semantic_emphasis"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_low_pressure_focus"]["validation"]["passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["validation"]["voice_pacing_calibration_passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["validation"]["voice_connected_speech_passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["validation"]["voice_listening_calibration_passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["validation"]["voice_emotion_smoothing_passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["validation"]["voice_semantic_emphasis_passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["validation"]["voice_low_pressure_focus_passed"] is True, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_pacing_calibration"]["runtime_boundary"]["provider_calls_made"] is False, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_connected_speech"]["runtime_boundary"]["provider_calls_made"] is False, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_listening_calibration"]["runtime_boundary"]["provider_calls_made"] is False, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_emotion_smoothing"]["runtime_boundary"]["provider_calls_made"] is False, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_semantic_emphasis"]["runtime_boundary"]["provider_calls_made"] is False, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_low_pressure_focus"]["runtime_boundary"]["provider_calls_made"] is False, payload["voice_delivery"])
     assert_condition(delivery["asset_log"]["run_boundary"]["api_key_location"] == "environment-only", delivery["asset_log"])
     assert_condition(delivery["asset_log"]["inputs"]["customer_audio_uploaded"] is False, delivery["asset_log"])
     assert_condition(delivery["asset_log"]["inputs"]["voice_cloning_used"] is False, delivery["asset_log"])
@@ -97,6 +116,11 @@ def validate_default_dry_run(payload: dict) -> None:
     assert_condition(delivery["fallback_used"] is True, delivery)
     assert_condition(delivery["fallback_reason"] == "dry-run-mode", delivery)
     assert_condition(delivery["tts_input_source"] == "provider_rendered_text", delivery)
+    assert_condition(payload["voice_delivery"]["provider_rendering"].get("pacing_calibrated") is True, payload["voice_delivery"])
+    assert_condition(
+        payload["voice_delivery"]["provider_rendering"].get("emotion_transition_smoothing_applied") is True,
+        payload["voice_delivery"],
+    )
     assert_condition("<redacted>" in json.dumps(delivery["request_preview"], ensure_ascii=False), delivery["request_preview"])
 
 
@@ -113,6 +137,12 @@ def validate_protected_text(payload: dict) -> None:
     delivery = payload["tts_delivery"]
     assert_condition(payload["voice_delivery"]["segments"][0]["segment_type"] == "do_not_call", payload["voice_delivery"])
     assert_condition(payload["voice_delivery"]["spoken_text_normalization"]["normalization_count"] == 0, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_pacing_calibration"]["tuned_segment_count"] == 0, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_connected_speech"]["flow_join_count"] == 0, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_listening_calibration"]["listening_adjustment_count"] == 0, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_emotion_smoothing"]["transition_smoothing_applied"] is False, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_semantic_emphasis"]["rewrite_count"] == 0, payload["voice_delivery"])
+    assert_condition(payload["voice_delivery"]["voice_low_pressure_focus"]["rewrite_count"] == 0, payload["voice_delivery"])
     assert_condition(delivery["tts_input_source"] == "final_response", delivery)
     assert_condition(delivery["tts_input_text"] == payload["final_response"], delivery)
     assert_condition(delivery["provider_rendering_used"] is False, delivery)
@@ -121,14 +151,15 @@ def validate_protected_text(payload: dict) -> None:
 def validate_spoken_normalized_tts(payload: dict, required_fragments: list[str], forbidden_fragments: list[str]) -> None:
     delivery = payload["tts_delivery"]
     spoken = payload["voice_delivery"]["spoken_text_normalization"]
+    normalized_tts_input = delivery["tts_input_text"].lower()
     assert_condition(spoken["normalization_count"] >= len(required_fragments), spoken)
     assert_condition(delivery["tts_input_source"] == "provider_rendered_text", delivery)
     assert_condition(delivery["provider_rendering_used"] is True, delivery)
     assert_condition(delivery["tts_input_text"] != payload["final_response"], delivery)
     for fragment in required_fragments:
-        assert_condition(fragment in delivery["tts_input_text"], f"Missing TTS spoken fragment: {fragment}")
+        assert_condition(fragment.lower() in normalized_tts_input, f"Missing TTS spoken fragment: {fragment}")
     for fragment in forbidden_fragments:
-        assert_condition(fragment not in delivery["tts_input_text"], f"Forbidden TTS fragment remained: {fragment}")
+        assert_condition(fragment.lower() not in normalized_tts_input, f"Forbidden TTS fragment remained: {fragment}")
 
 
 def assert_no_secret_text(text: str, label: str) -> None:
