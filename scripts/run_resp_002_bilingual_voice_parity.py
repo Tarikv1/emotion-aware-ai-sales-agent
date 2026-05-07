@@ -20,6 +20,7 @@ DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "RESP-002-bi
 PARITY_CASES = [
     {
         "case_id": "RESP-002-PARITY-DE-OBJECTION",
+        "pair_id": "objection",
         "language": "de",
         "campaign_id": "campaign-prod-005-b2c-telecom",
         "stage": "relevance-check",
@@ -30,6 +31,7 @@ PARITY_CASES = [
     },
     {
         "case_id": "RESP-002-PARITY-EN-OBJECTION",
+        "pair_id": "objection",
         "language": "en",
         "campaign_id": "campaign-prod-005-b2b-software",
         "stage": "relevance-check",
@@ -37,6 +39,50 @@ PARITY_CASES = [
         "candidate_response": "I will keep this simple. You are right to ask. It is only useful if there is a practical next step.",
         "required_spoken_fragments": ["I'll", "You're", "It's", "there's"],
         "forbidden_spoken_fragments": ["I will", "You are", "It is", "there is"],
+    },
+    {
+        "case_id": "RESP-002-PARITY-DE-TRUST",
+        "pair_id": "trust",
+        "language": "de",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "stage": "relevance-check",
+        "transcript": "Ich kenne Sie nicht. Warum sollte ich Ihnen glauben?",
+        "candidate_response": "Ich habe verstanden. Wenn es hilft, geht es nur um eine kurze Einordnung.",
+        "required_spoken_fragments": ["Ich hab", "Wenn's", "geht's"],
+        "forbidden_spoken_fragments": ["Ich habe", "Wenn es", "geht es"],
+    },
+    {
+        "case_id": "RESP-002-PARITY-EN-TRUST",
+        "pair_id": "trust",
+        "language": "en",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "stage": "relevance-check",
+        "transcript": "I do not know your company. Why should I trust this?",
+        "candidate_response": "I am not asking you to decide now. That is why I will keep it brief.",
+        "required_spoken_fragments": ["I'm", "That's", "I'll"],
+        "forbidden_spoken_fragments": ["I am", "That is", "I will"],
+    },
+    {
+        "case_id": "RESP-002-PARITY-DE-NEXT-STEP",
+        "pair_id": "next_step",
+        "language": "de",
+        "campaign_id": "campaign-prod-005-b2c-telecom",
+        "stage": "relevance-check",
+        "transcript": "Vielleicht, aber ich will mich nicht festlegen.",
+        "candidate_response": "Ich habe verstanden. Wenn es passt, macht es Sinn, einen kurzen Rueckruf zu planen.",
+        "required_spoken_fragments": ["Ich hab", "Wenn's", "macht's"],
+        "forbidden_spoken_fragments": ["Ich habe", "Wenn es", "macht es"],
+    },
+    {
+        "case_id": "RESP-002-PARITY-EN-NEXT-STEP",
+        "pair_id": "next_step",
+        "language": "en",
+        "campaign_id": "campaign-prod-005-b2b-software",
+        "stage": "relevance-check",
+        "transcript": "Maybe, but I do not want to commit.",
+        "candidate_response": "I would suggest one simple next step. We will keep it practical, and you are free to say no.",
+        "required_spoken_fragments": ["I'd", "We'll", "you're"],
+        "forbidden_spoken_fragments": ["I would", "We will", "you are"],
     },
 ]
 
@@ -76,6 +122,7 @@ def collect_metrics(case: dict[str, Any], packet: dict[str, Any]) -> dict[str, A
     forbidden_fragments_absent = not contains_any(spoken_text, case["forbidden_spoken_fragments"])
     return {
         "case_id": case["case_id"],
+        "pair_id": case["pair_id"],
         "language": case["language"],
         "campaign_id": case["campaign_id"],
         "final_response": packet["final_response"],
@@ -126,12 +173,21 @@ def build_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
         language: [row for row in rows if row["language"] == language]
         for language in sorted({row["language"] for row in rows})
     }
+    by_pair = {
+        pair_id: [row for row in rows if row["pair_id"] == pair_id]
+        for pair_id in sorted({row["pair_id"] for row in rows})
+    }
     return {
         "case_count": len(rows),
         "safe_case_count": sum(1 for row in rows if row["safe"]),
         "unsafe_case_count": sum(1 for row in rows if not row["safe"]),
         "languages": sorted(by_language),
         "language_counts": {language: len(items) for language, items in by_language.items()},
+        "pair_counts": {pair_id: len(items) for pair_id, items in by_pair.items()},
+        "matched_pair_count": sum(
+            1 for items in by_pair.values()
+            if {row["language"] for row in items} == {"de", "en"}
+        ),
         "english_case_count": len(by_language.get("en", [])),
         "german_case_count": len(by_language.get("de", [])),
         "provider_calls_made": any(row["provider_calls_made"] for row in rows),
@@ -175,6 +231,7 @@ def render_report(payload: dict[str, Any]) -> str:
         f"- Safe cases: `{summary['safe_case_count']}/{summary['case_count']}`",
         f"- English cases: `{summary['english_case_count']}`",
         f"- German cases: `{summary['german_case_count']}`",
+        f"- Matched scenario pairs: `{summary['matched_pair_count']}`",
         f"- Both languages have spoken normalization: `{summary['both_languages_have_spoken_normalization']}`",
         f"- Both languages have prosody cues: `{summary['both_languages_have_prosody']}`",
         f"- Both languages have pacing calibration: `{summary['both_languages_have_pacing']}`",
@@ -182,13 +239,14 @@ def render_report(payload: dict[str, Any]) -> str:
         "",
         "## Case Table",
         "",
-        "| Case | Lang | Normalizations | Prosody | Pacing | Connected | Emotion | Provider changed | Safe |",
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+        "| Case | Pair | Lang | Normalizations | Prosody | Pacing | Connected | Emotion | Provider changed | Safe |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |",
     ]
     for row in payload["cases"]:
         lines.append(
-            "| {case_id} | {language} | {normalizations} | {prosody} | {pacing} | {connected} | {emotion} | {provider_changed} | {safe} |".format(
+            "| {case_id} | {pair_id} | {language} | {normalizations} | {prosody} | {pacing} | {connected} | {emotion} | {provider_changed} | {safe} |".format(
                 case_id=row["case_id"],
+                pair_id=row["pair_id"],
                 language=row["language"],
                 normalizations=row["spoken_normalization_count"],
                 prosody=row["prosody_cue_count"],

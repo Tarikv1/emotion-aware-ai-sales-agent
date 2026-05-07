@@ -42,28 +42,29 @@ def main() -> None:
     assert_condition(payload["customer_audio_uploaded"] is False, payload)
     assert_condition(payload["voice_cloning_used"] is False, payload)
     assert_condition(payload["generated_audio_created"] is False, payload)
-    assert_condition(summary["case_count"] == 2, summary)
-    assert_condition(summary["safe_case_count"] == 2, summary)
+    assert_condition(summary["case_count"] == 6, summary)
+    assert_condition(summary["safe_case_count"] == 6, summary)
     assert_condition(summary["unsafe_case_count"] == 0, summary)
-    assert_condition(summary["english_case_count"] == 1, summary)
-    assert_condition(summary["german_case_count"] == 1, summary)
+    assert_condition(summary["english_case_count"] == 3, summary)
+    assert_condition(summary["german_case_count"] == 3, summary)
+    assert_condition(summary["matched_pair_count"] == 3, summary)
     assert_condition(summary["both_languages_have_spoken_normalization"] is True, summary)
     assert_condition(summary["both_languages_have_prosody"] is True, summary)
     assert_condition(summary["both_languages_have_pacing"] is True, summary)
     assert_condition(summary["both_languages_have_emotion_smoothing"] is True, summary)
 
-    by_language = {case["language"]: case for case in payload["cases"]}
-    assert_condition(set(by_language) == {"de", "en"}, by_language)
-    german = by_language["de"]
-    english = by_language["en"]
-    assert_condition(german["required_spoken_fragments_present"] is True, german)
-    assert_condition(german["forbidden_spoken_fragments_absent"] is True, german)
-    assert_condition(english["required_spoken_fragments_present"] is True, english)
-    assert_condition(english["forbidden_spoken_fragments_absent"] is True, english)
-    assert_condition(german["provider_rendering_changed"] is True, german)
-    assert_condition(english["provider_rendering_changed"] is True, english)
-    assert_condition(german["protected_segment_provider_tag_count"] == 0, german)
-    assert_condition(english["protected_segment_provider_tag_count"] == 0, english)
+    by_pair: dict[str, set[str]] = {}
+    for case in payload["cases"]:
+        by_pair.setdefault(case["pair_id"], set()).add(case["language"])
+        assert_condition(case["required_spoken_fragments_present"] is True, case)
+        assert_condition(case["forbidden_spoken_fragments_absent"] is True, case)
+        assert_condition(case["provider_rendering_changed"] is True, case)
+        assert_condition(case["protected_segment_provider_tag_count"] == 0, case)
+        assert_condition(case["spoken_normalization_count"] >= 1, case)
+        assert_condition(case["prosody_cue_count"] >= 1, case)
+        assert_condition(case["pacing_tuned_segment_count"] >= 1, case)
+        assert_condition(case["emotion_smoothed_transition_count"] >= 1, case)
+    assert_condition(by_pair == {"objection": {"de", "en"}, "trust": {"de", "en"}, "next_step": {"de", "en"}}, by_pair)
 
     serialized = json.dumps(payload, ensure_ascii=False).lower().replace("\\", "/")
     for forbidden in ("data/private", "data/private-restricted", "api_key", "source_excerpt"):
