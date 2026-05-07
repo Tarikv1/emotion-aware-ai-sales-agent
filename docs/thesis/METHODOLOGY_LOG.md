@@ -26,6 +26,16 @@ Use this file as a chronological research journal for the thesis implementation.
 - Why it matters for the thesis: the next audio review can compare the actual runtime voice path side by side in both languages, rather than testing earlier voice artifacts or metadata alone.
 - Open questions: whether the first live provider run should use ElevenLabs only or repeat the matched A/B with Cartesia after the ElevenLabs listening review.
 
+### 2026-05-07 - RESP-003 bilingual live listening review
+
+- Objective: record Tarik's listening review of the first matched RESP-003 bilingual live ElevenLabs A/B run.
+- Action taken: reviewed all generated plain-guarded versus shaped-runtime audio files, accepted shaped runtime as clearly better than plain, and converted the German pacing issue into a slower German runtime pacing gate.
+- Data used: generated ElevenLabs MP3 files from `research/experiments/generated/RESP-003-bilingual-live-tts-ab/audio/`. No customer audio, voice cloning, private call audio, or secret values were stored in the review.
+- Output created: updated RESP-003 A/B result/report plus German pacing profile changes in VOICE-034 and VOICE-036.
+- What was learned: shaped runtime is strongly preferred over plain guarded output. English shaped runtime is currently good on naturalness, clarity, emotional tone, and pacing. German shaped runtime is better than plain but still too robotic and too fast.
+- Why it matters for the thesis: this is the first direct evidence that runtime delivery shaping improves perceived voice output in both languages, while also identifying a language-specific failure that requires separate German tuning.
+- Open questions: whether a better German ElevenLabs voice ID solves most roboticness, and whether the slower German profile improves pacing without making German sound hesitant.
+
 ### 2026-05-07 - RESP-002 bilingual voice parity suite
 
 - Objective: ensure English voice-delivery improvements are evaluated in parallel with German improvements.
@@ -377,7 +387,7 @@ Use this file as a chronological research journal for the thesis implementation.
 - Data used: synthetic German B2C telecom and English B2B software runtime turns only. The listening feedback came from live ElevenLabs outputs generated from synthetic prompts with local ignored voice IDs. No customer/private audio, transcription, or voice cloning was used.
 - Output created: `docs/product/VOICE_036_LISTENING_CALIBRATION.md`, `research/experiments/cases/voice-036-listening-calibration.json`, `research/experiments/generated/VOICE-036-listening-calibration/results.json`, `research/experiments/generated/VOICE-036-listening-calibration/report.md`, `research/experiments/generated/RESP-003/voice-035-listening-check/human-listening-review.md`, `scripts/voice_listening_calibration.py`, `scripts/run_voice_036_listening_calibration.py`, and `scripts/validate_voice_036_listening_calibration.py`.
 - What was learned: connected speech can improve English phrase flow but over-compress German if the breath cue is removed entirely. Emphasis should be conservative; wrong emphasis is worse than no emphasis.
-- Error or correction preserved: VOICE-035's German output was too fast/compressed for clear review. VOICE-036 restores a tiny `0.08s` breath and relaxes German speed to `1.065` for eligible freeform text only.
+- Error or correction preserved: VOICE-035's German output was too fast/compressed for clear review. VOICE-036 originally restored a tiny `0.08s` breath and relaxed German speed to `1.065`; the later RESP-003 matched A/B listening review superseded that speed target with a slower German range.
 - Why it matters for the thesis: this checkpoint shows a listening-evaluation loop where a previous naturalness fix created a new intelligibility issue, then a narrower follow-up layer corrected the issue while preserving safety boundaries.
 - Open questions: whether a fresh live RESP-003 listening check with VOICE-036 confirms German intelligibility and whether English still needs semantic emphasis modeling beyond the conservative guard.
 

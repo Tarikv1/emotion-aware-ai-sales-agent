@@ -94,7 +94,7 @@ def validate_german_relaxed_connected_speech() -> None:
     assert_condition(calibration["german_connected_speech_relaxed"] is True, calibration)
     assert_condition("Das verstehe ich, <break time=\"0.08s\" /> also geht's" in rendered, rendered)
     assert_condition(tts["tts_input_text"] == rendered, tts)
-    assert_condition(1.03 <= speed <= 1.08, provider["voice_settings"])
+    assert_condition(0.97 <= speed <= 1.02, provider["voice_settings"])
     assert_condition(delivery["final_response_unchanged"] is True, delivery)
     assert_condition(delivery["provider_calls_made"] is False, delivery)
     assert_condition(tts["provider_calls_made"] is False, tts)

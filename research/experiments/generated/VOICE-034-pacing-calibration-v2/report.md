@@ -11,7 +11,7 @@ VOICE-034 is offline and no-key. It tunes provider-rendered pacing metadata and 
 - English cases: `1`
 - Tuned cases: `2`
 - Protected cases: `1`
-- Average voice speed: `1.102`
+- Average voice speed: `1.044`
 - German word-gap reduction cases: `1`
 - Validation passed: `3 / 3`
 - Provider calls made: `False`
@@ -28,10 +28,10 @@ VOICE-034 is offline and no-key. It tunes provider-rendered pacing metadata and 
 - Tuned segments: `1`
 - German gap reduction: `True`
 - Avg break before: `199.0` ms
-- Avg break after: `128.0` ms
-- Voice speed: `1.111`
+- Avg break after: `209.0` ms
+- Voice speed: `0.995`
 - Validation passed: `True`
-- Rendered text: Das verstehe ich. <break time="0.128s" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
+- Rendered text: Das verstehe ich, <break time="0.08s" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
 
 ### voice-034-en-sales-pace: English eligible freeform receives faster professional sales pace
 
@@ -44,7 +44,7 @@ VOICE-034 is offline and no-key. It tunes provider-rendered pacing metadata and 
 - Avg break after: `235.0` ms
 - Voice speed: `1.093`
 - Validation passed: `True`
-- Rendered text: I'll keep this simple. <break time="0.235s" /> Well, you're right to ask. It's only useful if there's a practical next step.
+- Rendered text: I'll keep this simple, well, you're right to ask, and it's only useful if there's a practical next step.
 
 ### voice-034-de-protected-stop: German protected do-not-call response is not paced or changed
 

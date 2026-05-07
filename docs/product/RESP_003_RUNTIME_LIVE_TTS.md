@@ -184,6 +184,21 @@ human listening review recorded: false
 quality claim allowed: false
 ```
 
+## Matched Bilingual Listening Review
+
+Tarik reviewed the first live ElevenLabs matched RESP-003 A/B audio on 2026-05-07.
+
+Review summary:
+
+```text
+shaped_runtime is clearly better than plain_guarded
+English shaped runtime is currently good on naturalness, clarity, emotional tone, and pacing
+German shaped runtime is better than plain, but still too robotic and too fast
+German needs a slower runtime pacing profile and a better German voice ID candidate
+```
+
+Detailed review: `research/experiments/generated/RESP-003-bilingual-live-tts-ab/human-listening-review.md`
+
 ## First Live Bilingual ElevenLabs Run
 
 The first live RESP-003 ElevenLabs run created one German and one English audio file.

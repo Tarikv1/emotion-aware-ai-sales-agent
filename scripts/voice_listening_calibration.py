@@ -33,8 +33,8 @@ DEFAULT_PROFILE = {
     "style": "listening-feedback-calibration-v1",
     "protected_segment_types": sorted(PROTECTED_SEGMENT_TYPES),
     "german_connected_break_seconds": 0.08,
-    "german_relaxed_speed": 1.065,
-    "german_relaxed_speed_bounds": [1.03, 1.08],
+    "german_relaxed_speed": 0.995,
+    "german_relaxed_speed_bounds": [0.97, 1.02],
     "emphasis_guard_enabled": True,
     "allowed_emphasis_targets": {
         "en": ["specialist", "verified", "non-binding", "next step", "budget", "decision"],

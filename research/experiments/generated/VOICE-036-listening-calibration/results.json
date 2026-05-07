@@ -94,7 +94,7 @@
                 "flow_operations": [
                   {
                     "after_text_changed": true,
-                    "before": ". <break time=\"0.128s\" /> Also, Geht's",
+                    "before": ". <break time=\"0.209s\" /> Also, Geht's",
                     "remaining_same_pattern": false,
                     "rule_id": "de-join-also-after-short-sentence"
                   }
@@ -116,11 +116,11 @@
                   {
                     "operation": "compress_break",
                     "original_ms": 199,
-                    "scale": 0.645,
-                    "tuned_ms": 128
+                    "scale": 1.048,
+                    "tuned_ms": 209
                   }
                 ],
-                "speed_ratio": 1.111,
+                "speed_ratio": 0.991,
                 "tuned": true
               }
             }
@@ -152,7 +152,7 @@
           "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
           "voice_settings": {
             "similarity_boost": 0.75,
-            "speed": 1.065,
+            "speed": 0.995,
             "stability": 0.45,
             "style": 0.0,
             "use_speaker_boost": true
@@ -203,10 +203,10 @@
           "emphasis_guard_enabled": true,
           "enabled": true,
           "german_connected_break_seconds": 0.08,
-          "german_relaxed_speed": 1.065,
+          "german_relaxed_speed": 0.995,
           "german_relaxed_speed_bounds": [
-            1.03,
-            1.08
+            0.97,
+            1.02
           ],
           "protected_segment_types": [
             "appointment_confirmation",
@@ -272,8 +272,8 @@
         "rendered_text": "Das verstehe ich, <break time=\"0.08s\" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
         "voice_settings": {
           "similarity_boost": 0.75,
-          "speed": 1.065,
-          "stability": 0.45,
+          "speed": 0.995,
+          "stability": 0.56,
           "style": 0.0,
           "use_speaker_boost": true
         }
@@ -492,10 +492,10 @@
           "emphasis_guard_enabled": true,
           "enabled": true,
           "german_connected_break_seconds": 0.08,
-          "german_relaxed_speed": 1.065,
+          "german_relaxed_speed": 0.995,
           "german_relaxed_speed_bounds": [
-            1.03,
-            1.08
+            0.97,
+            1.02
           ],
           "protected_segment_types": [
             "appointment_confirmation",
@@ -556,7 +556,7 @@
         "voice_settings": {
           "similarity_boost": 0.75,
           "speed": 1.093,
-          "stability": 0.45,
+          "stability": 0.56,
           "style": 0.0,
           "use_speaker_boost": true
         }
@@ -696,10 +696,10 @@
           "emphasis_guard_enabled": true,
           "enabled": true,
           "german_connected_break_seconds": 0.08,
-          "german_relaxed_speed": 1.065,
+          "german_relaxed_speed": 0.995,
           "german_relaxed_speed_bounds": [
-            1.03,
-            1.08
+            0.97,
+            1.02
           ],
           "protected_segment_types": [
             "appointment_confirmation",

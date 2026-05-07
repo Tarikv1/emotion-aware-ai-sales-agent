@@ -9,9 +9,9 @@
       "final_response_unchanged": true,
       "language": "de",
       "pacing_calibration": {
-        "average_break_duration_after_ms": 128.0,
+        "average_break_duration_after_ms": 209.0,
         "average_break_duration_before_ms": 199.0,
-        "average_speed_ratio": 1.111,
+        "average_speed_ratio": 0.991,
         "calibrated_provider_rendering": {
           "api_call_made": false,
           "case_id": "RESP-002-runtime-turn",
@@ -48,8 +48,8 @@
           "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
           "provider_rendering_mode": "break_tags_and_request_settings",
           "provider_tag_count": 1,
-          "rendered_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-          "rendered_text_html_preview": "Das verstehe ich. &lt;break time=\"0.128s\" /&gt; Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "rendered_text": "Das verstehe ich. <break time=\"0.209s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "rendered_text_html_preview": "Das verstehe ich. &lt;break time=\"0.209s\" /&gt; Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
           "requires_api_key": false,
           "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
           "segment_renderings": [
@@ -74,7 +74,7 @@
               "provider_tags_inserted": [
                 "<break time=\"0.199s\" />"
               ],
-              "rendered_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+              "rendered_text": "Das verstehe ich. <break time=\"0.209s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
               "segment_id": "resp-002-final-response",
               "segment_type": "freeform_objection_handling",
               "unsupported_cues": [
@@ -96,11 +96,11 @@
                   {
                     "operation": "compress_break",
                     "original_ms": 199,
-                    "scale": 0.645,
-                    "tuned_ms": 128
+                    "scale": 1.048,
+                    "tuned_ms": 209
                   }
                 ],
-                "speed_ratio": 1.111,
+                "speed_ratio": 0.991,
                 "tuned": true
               }
             }
@@ -130,7 +130,7 @@
           "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
           "voice_settings": {
             "similarity_boost": 0.75,
-            "speed": 1.111,
+            "speed": 0.991,
             "stability": 0.45,
             "style": 0.0,
             "use_speaker_boost": true
@@ -143,8 +143,8 @@
         "profile": {
           "break_bounds_ms": {
             "de": [
-              60,
-              210
+              110,
+              280
             ],
             "en": [
               80,
@@ -153,8 +153,8 @@
           },
           "break_scale_ranges": {
             "de": [
-              0.48,
-              0.68
+              0.9,
+              1.08
             ],
             "en": [
               0.62,
@@ -182,8 +182,8 @@
           ],
           "speed_bounds": {
             "de": [
-              1.09,
-              1.16
+              0.97,
+              1.04
             ],
             "en": [
               1.07,
@@ -206,18 +206,18 @@
               {
                 "operation": "compress_break",
                 "original_ms": 199,
-                "scale": 0.645,
-                "tuned_ms": 128
+                "scale": 1.048,
+                "tuned_ms": 209
               }
             ],
-            "pacing_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+            "pacing_text": "Das verstehe ich. <break time=\"0.209s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
             "protected": false,
             "protected_reason": null,
             "provider_hint": "Professional sales pacing calibrated; wording unchanged.",
             "segment_id": "resp-002-final-response",
             "segment_type": "freeform_objection_handling",
             "source_text": "Das verstehe ich. <break time=\"0.199s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-            "speed_ratio": 1.111,
+            "speed_ratio": 0.991,
             "tuned": true
           }
         ],
@@ -236,11 +236,11 @@
         "pacing_calibrated": true,
         "provider_key": "elevenlabs",
         "provider_tag_count": 1,
-        "rendered_text": "Das verstehe ich. <break time=\"0.128s\" /> Also, Geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "rendered_text": "Das verstehe ich, <break time=\"0.08s\" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
         "voice_settings": {
           "similarity_boost": 0.75,
-          "speed": 1.111,
-          "stability": 0.45,
+          "speed": 0.995,
+          "stability": 0.56,
           "style": 0.0,
           "use_speaker_boost": true
         }
@@ -340,17 +340,6 @@
                   "segment_type": "freeform_clarification",
                   "target": "I'll keep this simple.",
                   "type": "pitch"
-                },
-                {
-                  "cue_id": "cue-03",
-                  "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
-                  "reason": "elevenlabs_emphasis_direct_mapping_not_used",
-                  "segment_id": "resp-002-final-response",
-                  "segment_index": 0,
-                  "segment_type": "freeform_clarification",
-                  "strength": "medium",
-                  "target": "practical",
-                  "type": "emphasis"
                 }
               ],
               "voice_pacing_calibration": {
@@ -368,7 +357,7 @@
             }
           ],
           "unsupported_cue_counts": {
-            "emphasis": 1,
+            "emphasis": 0,
             "pause": 0,
             "pitch": 1,
             "rate": 0,
@@ -386,17 +375,6 @@
               "segment_type": "freeform_clarification",
               "target": "I'll keep this simple.",
               "type": "pitch"
-            },
-            {
-              "cue_id": "cue-03",
-              "provider_hint": "Debug view may use Markdown bold; provider adapters must not blindly send Markdown unless supported.",
-              "reason": "elevenlabs_emphasis_direct_mapping_not_used",
-              "segment_id": "resp-002-final-response",
-              "segment_index": 0,
-              "segment_type": "freeform_clarification",
-              "strength": "medium",
-              "target": "practical",
-              "type": "emphasis"
             }
           ],
           "voice_cloning_used": false,
@@ -416,8 +394,8 @@
         "profile": {
           "break_bounds_ms": {
             "de": [
-              60,
-              210
+              110,
+              280
             ],
             "en": [
               80,
@@ -426,8 +404,8 @@
           },
           "break_scale_ranges": {
             "de": [
-              0.48,
-              0.68
+              0.9,
+              1.08
             ],
             "en": [
               0.62,
@@ -455,8 +433,8 @@
           ],
           "speed_bounds": {
             "de": [
-              1.09,
-              1.16
+              0.97,
+              1.04
             ],
             "en": [
               1.07,
@@ -508,12 +486,12 @@
       "provider_rendering": {
         "pacing_calibrated": true,
         "provider_key": "elevenlabs",
-        "provider_tag_count": 1,
-        "rendered_text": "I'll keep this simple. <break time=\"0.235s\" /> Well, you're right to ask. It's only useful if there's a practical next step.",
+        "provider_tag_count": 0,
+        "rendered_text": "I'll keep this simple, well, you're right to ask, and it's only useful if there's a practical next step.",
         "voice_settings": {
           "similarity_boost": 0.75,
           "speed": 1.093,
-          "stability": 0.45,
+          "stability": 0.56,
           "style": 0.0,
           "use_speaker_boost": true
         }
@@ -606,8 +584,8 @@
         "profile": {
           "break_bounds_ms": {
             "de": [
-              60,
-              210
+              110,
+              280
             ],
             "en": [
               80,
@@ -616,8 +594,8 @@
           },
           "break_scale_ranges": {
             "de": [
-              0.48,
-              0.68
+              0.9,
+              1.08
             ],
             "en": [
               0.62,
@@ -645,8 +623,8 @@
           ],
           "speed_bounds": {
             "de": [
-              1.09,
-              1.16
+              0.97,
+              1.04
             ],
             "en": [
               1.07,
@@ -742,7 +720,7 @@
   },
   "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
   "summary": {
-    "average_voice_speed": 1.102,
+    "average_voice_speed": 1.044,
     "case_count": 3,
     "customer_audio_uploaded": false,
     "english_cases": 1,

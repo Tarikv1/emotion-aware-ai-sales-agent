@@ -12,6 +12,7 @@ Recent listening feedback:
 - The agent still sounds too evenly paced.
 - The German output had too much gap between words.
 - The voice should be a bit faster and more sales-call-like without becoming rushed.
+- Later RESP-003 A/B listening found the current shaped German runtime too fast, so German now uses a slower provider speed profile than English.
 
 VOICE-034 focuses on pacing only. It intentionally does not add more fillers or new emotional wording.
 
@@ -41,9 +42,9 @@ English:
 
 German:
 
-- speed: `1.09` to `1.16`
-- break bounds: `60` to `210` ms
-- German word-gap reduction enabled
+- speed: `0.97` to `1.04`
+- break bounds: `110` to `280` ms
+- German word-gap reduction remains bounded, but no longer accelerates the voice above normal sales-call pace
 
 ## Command
 

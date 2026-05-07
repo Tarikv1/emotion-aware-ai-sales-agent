@@ -98,24 +98,22 @@ def validate_german_runtime_gap_tightening() -> None:
     assert_condition(calibration["german_word_gap_reduction_applied"] is True, calibration)
     assert_condition(calibration["tuned_segment_count"] >= 1, calibration)
     assert_condition(provider["pacing_calibrated"] is True, provider)
-    assert_condition(calibration["average_speed_ratio"] >= 1.09, calibration)
-    assert_condition(calibration["average_speed_ratio"] <= 1.16, calibration)
+    assert_condition(calibration["average_speed_ratio"] >= 0.97, calibration)
+    assert_condition(calibration["average_speed_ratio"] <= 1.04, calibration)
     calibrated_settings = calibration["calibrated_provider_rendering"]["voice_settings"]
-    assert_condition(calibrated_settings["speed"] >= 1.09, calibrated_settings)
-    assert_condition(calibrated_settings["speed"] <= 1.16, calibrated_settings)
+    assert_condition(calibrated_settings["speed"] >= 0.97, calibrated_settings)
+    assert_condition(calibrated_settings["speed"] <= 1.04, calibrated_settings)
     if delivery["voice_listening_calibration"]["german_connected_speech_relaxed"]:
-        assert_condition(provider["voice_settings"]["speed"] >= 1.03, provider["voice_settings"])
-        assert_condition(provider["voice_settings"]["speed"] <= 1.08, provider["voice_settings"])
+        assert_condition(provider["voice_settings"]["speed"] >= 0.97, provider["voice_settings"])
+        assert_condition(provider["voice_settings"]["speed"] <= 1.02, provider["voice_settings"])
     else:
-        assert_condition(provider["voice_settings"]["speed"] >= 1.09, provider["voice_settings"])
-        assert_condition(provider["voice_settings"]["speed"] <= 1.16, provider["voice_settings"])
+        assert_condition(provider["voice_settings"]["speed"] >= 0.97, provider["voice_settings"])
+        assert_condition(provider["voice_settings"]["speed"] <= 1.04, provider["voice_settings"])
     assert_condition(provider["provider_tag_count"] <= calibration["source_provider_tag_count"], calibration)
+    assert_condition(calibration["average_break_duration_after_ms"] >= 110, calibration)
+    assert_condition(calibration["average_break_duration_after_ms"] <= 280, calibration)
     assert_condition(
-        calibration["average_break_duration_after_ms"] <= calibration["average_break_duration_before_ms"],
-        calibration,
-    )
-    assert_condition(
-        all(value <= 210 for value in break_ms_values(provider["rendered_text"])),
+        all(value <= 280 for value in break_ms_values(provider["rendered_text"])),
         provider["rendered_text"],
     )
     assert_condition(delivery["final_response_unchanged"] is True, delivery)

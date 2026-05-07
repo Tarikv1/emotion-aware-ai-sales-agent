@@ -33,15 +33,15 @@ DEFAULT_PROFILE = {
     "protected_segment_types": sorted(PROTECTED_SEGMENT_TYPES),
     "speed_bounds": {
         "en": [1.07, 1.15],
-        "de": [1.09, 1.16],
+        "de": [0.97, 1.04],
     },
     "break_bounds_ms": {
         "en": [80, 240],
-        "de": [60, 210],
+        "de": [110, 280],
     },
     "break_scale_ranges": {
         "en": [0.62, 0.82],
-        "de": [0.48, 0.68],
+        "de": [0.9, 1.08],
     },
     "max_breaks_per_segment": 3,
     "german_word_gap_reduction": True,

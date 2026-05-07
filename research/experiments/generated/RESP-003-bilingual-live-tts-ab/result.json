@@ -155,7 +155,7 @@
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.133
+            "speed": 1.013
           },
           "request_preview": {
             "method": "POST",
@@ -173,7 +173,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.133
+                "speed": 1.013
               }
             }
           },
@@ -399,7 +399,7 @@
       "transcript": "Ich kenne Sie nicht. Warum sollte ich Ihnen glauben?",
       "final_response": "Ich habe verstanden. Wenn es hilft, geht es nur um eine kurze Einordnung.",
       "runtime_tts_input_source": "provider_rendered_text",
-      "runtime_tts_input_text": "Ich hab verstanden. <break time=\"0.158s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
+      "runtime_tts_input_text": "Ich hab verstanden. <break time=\"0.275s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
       "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
       "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
       "provider_rendering_changed": true,
@@ -499,7 +499,7 @@
           "custom_voice_used": false,
           "timeout_seconds": 8.0,
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "Ich hab verstanden. <break time=\"0.158s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
+          "tts_input_text": "Ich hab verstanden. <break time=\"0.275s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
           "tts_input_chars": 94,
           "provider_rendering_used": true,
           "voice_settings": {
@@ -507,7 +507,7 @@
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.148
+            "speed": 1.028
           },
           "request_preview": {
             "method": "POST",
@@ -517,7 +517,7 @@
               "Content-Type": "application/json"
             },
             "body": {
-              "text": "Ich hab verstanden. <break time=\"0.158s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
+              "text": "Ich hab verstanden. <break time=\"0.275s\" /> Wenn's hilft, geht's nur um eine kurze Einordnung.",
               "model_id": "eleven_flash_v2_5",
               "language_code": "de",
               "voice_settings": {
@@ -525,7 +525,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.148
+                "speed": 1.028
               }
             }
           },
@@ -859,7 +859,7 @@
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.125
+            "speed": 1.005
           },
           "request_preview": {
             "method": "POST",
@@ -877,7 +877,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.125
+                "speed": 1.005
               }
             }
           },

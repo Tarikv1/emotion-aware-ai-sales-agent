@@ -28,7 +28,7 @@ VOICE-036 is offline and no-key. It applies Tarik's listening feedback after VOI
 - Listening adjustments: `1`
 - Blocked emphasis count: `0`
 - Provider tags: `1`
-- Voice speed: `1.065`
+- Voice speed: `0.995`
 - Validation passed: `True`
 - Rendered text: Das verstehe ich, <break time="0.08s" /> also geht's Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
 

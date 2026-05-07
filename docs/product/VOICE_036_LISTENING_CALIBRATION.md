@@ -20,6 +20,7 @@ German connected-speech relaxation:
 - Keeps the connected phrase from VOICE-035.
 - Adds a tiny provider-facing breath cue after the short acknowledgement.
 - Reduces the German ElevenLabs speed from the VOICE-034/035 fast setting into a clearer sales-call range.
+- After the RESP-003 matched A/B review, the German relaxation target is slower than normal speed rather than slightly faster.
 
 Example:
 
@@ -58,6 +59,7 @@ Allowed:
 - Filter unsafe or weak emphasis cues before provider rendering.
 - Add a tiny German breath cue for eligible freeform connected speech.
 - Reduce German voice speed only inside the bounded listening-feedback range.
+- Keep English speed behavior unchanged unless a separate English listening review justifies a change.
 
 Forbidden:
 
@@ -90,6 +92,6 @@ research\experiments\generated\VOICE-036-listening-calibration\
 
 ## Listening Interpretation
 
-VOICE-036 should make the German sample easier to understand than VOICE-035, while preserving the more natural connected phrase shape.
+VOICE-036 should make the German sample easier to understand than VOICE-035 and the first RESP-003 matched A/B run, while preserving the more natural connected phrase shape.
 
 For English, VOICE-036 does not try to solve all remaining roboticness. It only prevents weak emphasis targets from being sent to providers that can render emphasis. Future work can add a richer emphasis model that chooses semantically important campaign words, but the current safe default is conservative.

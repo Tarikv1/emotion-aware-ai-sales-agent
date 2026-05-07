@@ -128,7 +128,7 @@ def validate_german_runtime_smoothing() -> None:
     assert_condition(smoothing["validation"]["passed"] is True, smoothing["validation"])
     assert_condition(smoothing["transition_smoothing_applied"] is True, smoothing)
     assert_condition(float(provider["voice_settings"]["stability"]) >= 0.56, provider["voice_settings"])
-    assert_condition(float(provider["voice_settings"]["speed"]) == 1.065, provider["voice_settings"])
+    assert_condition(float(provider["voice_settings"]["speed"]) == 0.995, provider["voice_settings"])
     assert_condition("Das verstehe ich, <break time=\"0.08s\" /> also geht's" in provider["rendered_text"], provider["rendered_text"])
 
 
