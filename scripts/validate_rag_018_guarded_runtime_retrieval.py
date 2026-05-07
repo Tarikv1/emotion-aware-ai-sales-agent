@@ -84,9 +84,9 @@ def main() -> None:
     assert_condition(enabled_run.returncode == 0, enabled_run.stderr)
     enabled_payload = parse_stdout_json(enabled_run)
     retrieval = enabled_payload["retrieval"]
-    assert_condition(retrieval["status"] == "influenced", retrieval)
-    assert_condition(retrieval["retrieval_used_in_runtime"] is True, retrieval)
-    assert_condition(retrieval["influenced_response"] is True, retrieval)
+    assert_condition(retrieval["status"] == "retrieved_not_used", retrieval)
+    assert_condition(retrieval["retrieval_used_in_runtime"] is False, retrieval)
+    assert_condition(retrieval["influenced_response"] is False, retrieval)
     assert_condition(retrieval["retrieved_item_ids"], retrieval)
     assert_condition(retrieval["citation_trace"], retrieval)
     assert_condition(enabled_payload["validation"]["passed"] is True, enabled_payload["validation"])

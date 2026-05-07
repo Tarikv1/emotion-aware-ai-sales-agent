@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - RESP-001 retrieval A/B evaluation
+
+- Objective: compare the deterministic policy response, always-on core sales delivery playbook, and opt-in live RAG on the same frozen realtime cases.
+- Action taken: added `scripts/run_resp_001_retrieval_ab_evaluation.py`, ran it on the 9 frozen `PROD-005` realtime cases, and corrected RESP-001 retrieval instrumentation so `retrieval_used_in_runtime` is true only when the RAG-guided candidate differs from the no-retrieval core-playbook candidate.
+- Data used: local campaign fixtures and the local RAG-017 registry only. No provider call, private customer data, external vector database, embedding provider, or LLM call was used.
+- Output created: `research/experiments/generated/RESP-001-retrieval-ab-evaluation/`.
+- What was learned: the core playbook improves several policy responses without needing live RAG. Live RAG retrieves safe advisory hints quickly, but the current deterministic composer does not yet use those hints to produce different wording.
+- Why it matters for the thesis: this creates a reproducible baseline before claiming runtime retrieval improves sales behavior, and it separates safe retrieval availability from actual behavioral influence.
+- Open questions: which additional scripted cases should represent appointment setting, partner/boss objections, send-me-info, trust objections, buying signals, and next-step closing before any default retrieval decision.
+
 ### 2026-05-07 - Core playbook live RAG implementation slice
 
 - Objective: implement the first working slice of the hybrid teach-now, retrieve-live, learn-later architecture.

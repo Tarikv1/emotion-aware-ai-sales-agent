@@ -466,18 +466,25 @@ def build_retrieval_packet(
     }
 
 
-def finalize_retrieval_packet(retrieval: dict, validation: dict, candidate_response: str, policy_response: str) -> dict:
+def finalize_retrieval_packet(
+    retrieval: dict,
+    validation: dict,
+    candidate_response: str,
+    policy_response: str,
+    baseline_candidate_response: str,
+) -> dict:
     finalized = dict(retrieval)
     used = (
         finalized.get("enabled") is True
         and finalized.get("status") == "retrieved"
         and validation["fallback_used"] is False
         and bool(finalized.get("advisory_hints"))
-        and candidate_response != policy_response
+        and candidate_response != baseline_candidate_response
     )
     finalized["retrieval_used_in_runtime"] = used
     finalized["influenced_response"] = used
     finalized["used_hint_count"] = len(finalized.get("advisory_hints", [])) if used else 0
+    finalized["influence_basis"] = "candidate_diff_from_no_retrieval_baseline"
     if used:
         finalized["status"] = "influenced"
     elif finalized.get("status") == "retrieved":
@@ -551,6 +558,13 @@ def apply_guarded_response_to_decision(
         query_text=policy_response,
         campaign_fact_grounding=campaign_fact_grounding,
     )
+    baseline_candidate_response = compose_candidate_response(
+        decision,
+        campaign,
+        transcript,
+        core_pack=core_pack,
+        advisory_hints=[],
+    )
     candidate_response = candidate_response_override or compose_candidate_response(
         decision,
         campaign,
@@ -560,7 +574,13 @@ def apply_guarded_response_to_decision(
     )
     validation = validate_candidate_response(candidate_response, guardrails)
     final_response = policy_response if validation["fallback_used"] else candidate_response
-    retrieval = finalize_retrieval_packet(retrieval, validation, candidate_response, policy_response)
+    retrieval = finalize_retrieval_packet(
+        retrieval,
+        validation,
+        candidate_response,
+        policy_response,
+        baseline_candidate_response,
+    )
     generation_latency_ms = int((time.perf_counter() - generation_start) * 1000)
 
     return {

@@ -21,7 +21,7 @@ RAG-017 may include the RAG-019 public sales communication source expansion afte
 
 When retrieval is disabled, the output still includes retrieval metadata with `enabled=false` and `retrieval_used_in_runtime=false`.
 
-When retrieval is enabled, advisory items may influence response metadata and hints only if the guarded response passes validation and the context is not blocked.
+When retrieval is enabled, advisory items may influence response metadata and hints only if the guarded response passes validation and the context is not blocked. `retrieval_used_in_runtime` is true only when the RAG-guided candidate differs from the no-retrieval core-playbook candidate; retrieved hints that do not change the response are reported as `retrieved_not_used`.
 
 ## Retrieval Timing And Gates
 
@@ -55,4 +55,10 @@ Voice/prosody rules are advisory-only. They may guide delivery hints, but they c
 
 ```powershell
 python scripts\validate_rag_018_guarded_runtime_retrieval.py
+```
+
+Run the current policy/core-playbook/live-RAG comparison:
+
+```powershell
+python scripts\run_resp_001_retrieval_ab_evaluation.py
 ```

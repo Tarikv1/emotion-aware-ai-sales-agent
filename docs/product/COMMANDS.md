@@ -609,6 +609,18 @@ python scripts\generate_guarded_response.py `
   --retrieval-acceptable-latency-ms 300
 ```
 
+Run the controlled RESP-001 policy/core-playbook/live-RAG comparison:
+
+```powershell
+python scripts\run_resp_001_retrieval_ab_evaluation.py
+```
+
+Outputs:
+
+```text
+research\experiments\generated\RESP-001-retrieval-ab-evaluation\
+```
+
 Generate a runtime voice-delivery packet from the guarded response path:
 
 ```powershell
