@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "scripts" / "run_realtime_turn_simulation.py"
 GUARDED_RESPONSE_SCRIPT = ROOT / "scripts" / "generate_guarded_response.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "lang-001-bilingual-realtime-core.json"
-GENERATED_DIR = ROOT / "research" / "experiments" / "generated"
+GENERATED_DIR = ROOT / ".tmp" / "LANG-001"
 RESULTS_OUT = GENERATED_DIR / "LANG-001-bilingual-realtime-results.json"
 REPORT_OUT = GENERATED_DIR / "LANG-001-bilingual-realtime-report.md"
 

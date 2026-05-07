@@ -1,7 +1,7 @@
 {
   "voice_milestone": "VOICE-019",
   "experiment_scope": "Guarded live-capable A/B audio harness comparing VOICE-017-style prosody-shaped input against VOICE-018 professional-sales tuned input. Default mode is dry-run and makes no provider calls.",
-  "source_artifact": "research/experiments/generated/VOICE-018-sales-voice-tuning.json",
+  "source_artifact": "research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning.json",
   "provider_config_source": "research/experiments/cases/voice-017-live-ab-audio.json",
   "selected_source_case_ids": [
     "VOICE-015-C01",

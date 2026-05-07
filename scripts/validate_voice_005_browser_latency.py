@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VOICE_004_SCRIPT = ROOT / "scripts" / "run_browser_speech_demo.py"
 MEASURE_SCRIPT = ROOT / "scripts" / "measure_voice_005_latency.py"
-GENERATED_DIR = ROOT / "research" / "experiments" / "generated"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-005"
 RESULTS_OUT = GENERATED_DIR / "VOICE-005-latency-results.json"
 REPORT_OUT = GENERATED_DIR / "VOICE-005-latency-report.md"
 PRICE_TRANSCRIPT = "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt."

@@ -1,7 +1,7 @@
 {
   "voice_milestone": "VOICE-017",
   "experiment_scope": "Guarded live-capable A/B audio harness comparing plain text against VOICE-016 prosody-shaped text. Default mode is dry-run and makes no provider calls.",
-  "source_artifact": "research/experiments/generated/VOICE-016-provider-prosody-rendering.json",
+  "source_artifact": "research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json",
   "selected_source_case_ids": [
     "VOICE-015-C01",
     "VOICE-015-C02",

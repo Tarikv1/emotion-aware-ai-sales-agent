@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-07 - Project review validator cleanup
+
+- Objective: run a broad local project review and fix review-only failures that prevented the full validator sweep from staying clean.
+- Action taken: ran the setup, drift, thesis, private-data, RAG, guarded-response, voice/runtime, and all-script validator sweeps; fixed validators that wrote review scratch artifacts into tracked generated paths instead of `.tmp`; fixed the RAG-001 runner to read UTF-8 BOM JSON case files; regenerated the RESP-001 guarded-response artifact with retrieval metadata.
+- Data used: local repo files and generated validation artifacts only. No provider call, private data scan, private audio, NotebookLM API call, embedding provider, external vector database, or runtime retrieval beyond local guarded validation was used.
+- Output created: updated validator scratch-output paths, RAG-001 case loading, VOICE-013/VOICE-014 validator assumptions, stale VOICE case artifact paths, and refreshed `research/experiments/generated/RESP-001/` artifacts.
+- What was learned: the drift guard was effective at catching validators that still dirtied tracked generated artifacts. The RAG-001 runner also needed BOM-tolerant case loading because some Windows-edited JSON inputs can include a UTF-8 BOM.
+- Why it matters for the thesis: review gates should be reproducible from a clean checkout. Validators must not create artifacts that immediately break another guard, and ingestion runners should tolerate common local encoding variants without weakening source or privacy boundaries.
+- Open questions: whether a future meta-validator should run all validators inside a temporary output workspace to avoid accidental tracked artifact churn.
+
 ### 2026-05-07 - Vinh/AskVinh per-video source metadata cleanup
 
 - Objective: replace the prior title-only Vinh/AskVinh RAG source caveat with explicit per-video metadata where public search could verify it.

@@ -29,6 +29,18 @@
     "fallback_used": false,
     "notes": "Candidate passed local guardrail validation."
   },
+  "retrieval": {
+    "enabled": false,
+    "status": "disabled",
+    "blocked_reason": "retrieval_not_enabled",
+    "retrieval_used_in_runtime": false,
+    "influenced_response": false,
+    "retrieved_item_ids": [],
+    "citation_trace": [],
+    "advisory_hints": [],
+    "max_results": 0,
+    "registry_path": ""
+  },
   "guardrails": {
     "guardrail_source": "SalesCampaign plus universal response-safety rules",
     "allowed_claims": [
@@ -79,7 +91,8 @@
     "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
     "max_sentences": 2,
     "must_not_invent_product_claims": true,
-    "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+    "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response.",
+    "retrieval_rule": "Retrieval is opt-in, advisory-only, and cannot alter protected text or override guardrail fallback."
   },
   "latency": {
     "generation_latency_ms": 0,

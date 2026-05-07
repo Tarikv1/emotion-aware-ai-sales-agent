@@ -8,8 +8,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "generate_guarded_response.py"
-RESULT_PATH = ROOT / "research" / "experiments" / "generated" / "RESP-001-guarded-response-result.json"
-REPORT_PATH = ROOT / "research" / "experiments" / "generated" / "RESP-001-guarded-response-report.md"
+GENERATED_DIR = ROOT / ".tmp" / "RESP-001"
+RESULT_PATH = GENERATED_DIR / "RESP-001-guarded-response-result.json"
+REPORT_PATH = GENERATED_DIR / "RESP-001-guarded-response-report.md"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-latency-call-control.json"
 REGISTRY_PATH = ROOT / "research" / "experiments" / "generated" / "RAG-017-runtime-knowledge-registry" / "result.json"
 PYTHON = sys.executable

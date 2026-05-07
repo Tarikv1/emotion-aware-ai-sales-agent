@@ -2,8 +2,8 @@
   "voice_milestone": "VOICE-020",
   "experiment_scope": "Offline ElevenLabs-first voice design packet for human-like sales-agent delivery. This checkpoint creates voice prompts, settings candidates, emotional delivery bundles, and protected-text locks before creating or selecting voices in ElevenLabs.",
   "source_artifacts": [
-    "research/experiments/generated/VOICE-018-sales-voice-tuning.json",
-    "research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio.json",
+    "research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning.json",
+    "research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio.json",
     "research/experiments/VOICE-019-sales-tuned-live-ab-audio.md"
   ],
   "official_sources": [

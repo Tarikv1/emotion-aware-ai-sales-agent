@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_PATH = ROOT / "scripts" / "run_browser_speech_demo.py"
-GENERATED_DIR = ROOT / "research" / "experiments" / "generated"
+GENERATED_DIR = ROOT / ".tmp" / "VOICE-004"
 HTML_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo.html"
 METADATA_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo-metadata.json"
 DECISION_OUT = GENERATED_DIR / "VOICE-004-browser-speech-demo-decision.json"

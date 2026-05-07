@@ -98,12 +98,15 @@ def validate_payload(payload: dict, *, live_requested: bool) -> None:
         elevenlabs = case["elevenlabs_tts"]
         packet = case["voice_packet"]
         expected_env = "ELEVENLABS_VOICE_ID_DE" if case["language"] == "de" else "ELEVENLABS_VOICE_ID_EN"
+        expected_local_source = f"local_voice_ids:elevenlabs.{case['language']}"
+        selected_voice_source = elevenlabs["selected_voice_id_env_var"]
+        allowed_voice_sources = {expected_env, expected_local_source}
         assert_condition(packet["campaign"]["language"] == case["language"], f"{case['case_id']} campaign language mismatch.")
         assert_condition(packet["decision"]["response_language"] == case["language"], f"{case['case_id']} response language mismatch.")
         assert_condition(elevenlabs["provider_id"] == "elevenlabs-stream", f"{case['case_id']} provider mismatch.")
         assert_condition(elevenlabs["model_id"] == "eleven_flash_v2_5", f"{case['case_id']} model mismatch.")
         assert_condition(elevenlabs["language"] == case["language"], f"{case['case_id']} language mismatch.")
-        assert_condition(elevenlabs["selected_voice_id_env_var"] == expected_env, f"{case['case_id']} voice env mismatch.")
+        assert_condition(selected_voice_source in allowed_voice_sources, f"{case['case_id']} voice source mismatch.")
         assert_condition(elevenlabs["api_call_made"] is False, f"{case['case_id']} should not call ElevenLabs during validation.")
         assert_condition(elevenlabs["audio_file_created"] is False, f"{case['case_id']} should not create audio during validation.")
         assert_condition(elevenlabs["fallback_used"] is True, f"{case['case_id']} should use fallback.")
@@ -115,7 +118,7 @@ def validate_payload(payload: dict, *, live_requested: bool) -> None:
         assert_condition(elevenlabs["timeout_seconds"] <= 10, f"{case['case_id']} timeout too high.")
         assert_condition(elevenlabs["request_preview"]["headers"]["xi-api-key"] == "<redacted>", f"{case['case_id']} key preview not redacted.")
         assert_condition(
-            f"<redacted-env:{expected_env}>" in elevenlabs["request_preview"]["url"],
+            f"<redacted-env:{selected_voice_source}>" in elevenlabs["request_preview"]["url"],
             f"{case['case_id']} voice URL preview not redacted.",
         )
         assert_condition(elevenlabs["request_preview"]["body"]["text"] == case["tts_quality_script"], f"{case['case_id']} text mismatch.")
