@@ -94,6 +94,14 @@ def apply_rule_once(
 def english_patterns() -> list[tuple[str, re.Pattern[str], str | Callable[[re.Match[str]], str]]]:
     return [
         (
+            "en-join-trust-repair-transition",
+            re.compile(
+                r"\.\s*(?:<break\s+time=\"[0-9.]+(?:ms|s)\"\s*/?>\s*)?(?:That's why I'll|That is why I will)\b",
+                re.IGNORECASE,
+            ),
+            ", so I'll",
+        ),
+        (
             "en-join-filler-after-short-sentence",
             re.compile(r"\.\s*(?:<break\s+time=\"[0-9.]+(?:ms|s)\"\s*/?>\s*)?Well,\s+", re.IGNORECASE),
             ", well, ",

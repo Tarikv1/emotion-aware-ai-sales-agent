@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-08 - RESP-003 follow-up voice tuning
+
+- Objective: convert Tarik's second RESP-003 bilingual listening feedback into narrow runtime tuning without regressing the English objection and next-step samples that sounded strong.
+- Action taken: added RESP-003 validator checks for shaped-runtime speed behavior, nudged the German VOICE-034 lower speed bound from `0.97` to `0.975`, kept German pause text unchanged for the objection case, and then corrected the English trust-repair regression by replacing the brittle `.<break> That's why...` transition with `, so...` while keeping trust speed in a livelier `1.13-1.14` band.
+- Data used: synthetic RESP-003 bilingual live A/B prompts and Tarik's human listening feedback only. No customer audio, transcription, voice cloning, private call data, or provider secret values were stored.
+- Output created: updated VOICE-034/VOICE-036 docs, RESP-003 human listening notes, validator checks, and regenerated dry-run RESP-003 artifacts.
+- What was learned: the English trust issue was not a literal filler insertion. Lowering speed to `1.12` made English sound more robotic, so the better correction is phrase-flow repair plus a livelier bounded speed. The newer German voice ID removed most roboticness, so only a tiny German pacing adjustment is justified.
+- Why it matters for the thesis: this preserves a controlled human-in-the-loop voice iteration where qualitative listening feedback is translated into bounded, testable provider settings instead of broad prompt or voice-layer churn.
+- Open questions: the corrected live RESP-003 run confirmed the reviewed English trust, English objection, English next-step, and German objection shaped-runtime samples are good enough to keep as the current checkpoint. Broader campaign coverage and production readiness remain future questions.
+
 ### 2026-05-07 - RESP-003 bilingual runtime TTS A/B harness
 
 - Objective: prepare a matched English/German listening comparison for the current runtime voice path instead of relying only on offline delivery metadata.

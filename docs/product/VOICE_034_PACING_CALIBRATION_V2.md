@@ -13,6 +13,8 @@ Recent listening feedback:
 - The German output had too much gap between words.
 - The voice should be a bit faster and more sales-call-like without becoming rushed.
 - Later RESP-003 A/B listening found the current shaped German runtime too fast, so German now uses a slower provider speed profile than English.
+- The next RESP-003 listening pass with a better German voice found German roboticness mostly resolved, with only a tiny speed lift needed.
+- The English trust-repair sample exposed a swallowed transition, but lowering the speed too far made the voice flatter and more robotic. Trust repair now keeps a lively bounded pace while VOICE-035 fixes the brittle transition text.
 
 VOICE-034 focuses on pacing only. It intentionally does not add more fillers or new emotional wording.
 
@@ -38,11 +40,12 @@ Protected text includes campaign questions, disclosures, claim boundaries, human
 English:
 
 - speed: `1.07` to `1.15`
+- trust-repair reassurance cap: `1.13` to `1.14`
 - break bounds: `80` to `240` ms
 
 German:
 
-- speed: `0.97` to `1.04`
+- speed: `0.975` to `1.04`
 - break bounds: `110` to `280` ms
 - German word-gap reduction remains bounded, but no longer accelerates the voice above normal sales-call pace
 

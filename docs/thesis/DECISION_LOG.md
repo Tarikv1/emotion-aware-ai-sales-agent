@@ -15,6 +15,30 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-035 - Keep voice-listening fixes narrow and case-protected
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: preserve the strong English objection and next-step shaped-runtime behavior, repair the English trust transition with connected-speech phrasing plus a livelier bounded speed, and apply only a tiny German pacing lift after the improved German voice ID reduced roboticness.
+- Why:
+  - Tarik judged English objection and next-step shaped runtime as very close to the intended result
+  - the English trust issue appeared to be a swallowed transition, not a general filler-rule problem
+  - lowering English trust speed too far made the voice more robotic, so speed alone was the wrong fix
+  - the new German voice ID removed most roboticness, so broad German rewrites or pause changes would be unnecessary churn
+  - preserving language-specific checks prevents German tuning from silently weakening English
+- Alternatives considered:
+  - slow all English shaped-runtime output
+  - remove fillers or connected-speech joins globally
+  - add or remove German pause tags in the objection case
+  - leave the live feedback as notes without validator-backed tuning
+- Consequences:
+  - RESP-003 validation now checks specific shaped-runtime speed bands for English objection, English next-step, English trust, and German objection
+  - VOICE-034 carries a dedicated English trust-repair reassurance band of `1.13-1.14`
+  - VOICE-035 removes the brittle English `.<break> That's why...` trust transition from provider-facing text
+  - German VOICE-034 speed bounds move from `0.97-1.04` to `0.975-1.04`
+  - Tarik accepted the corrected RESP-003 live shaped-runtime samples for English trust, English objection, English next-step, and German objection as the current checkpoint
+  - broader campaign coverage and production readiness still require later review
+
 ### DEC-034 - Keep generated experiment artifacts grouped by checkpoint folder
 
 - Date: 2026-05-07

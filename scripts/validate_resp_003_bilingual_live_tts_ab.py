@@ -68,6 +68,7 @@ def validate_dry_run_payload(payload: dict[str, Any]) -> None:
     assert_condition(summary["all_shaped_inputs_differ_from_plain"] is True, summary)
 
     by_pair: dict[str, set[str]] = {}
+    shaped_by_pair_language: dict[tuple[str, str], dict[str, Any]] = {}
     for case in payload["cases"]:
         by_pair.setdefault(case["pair_id"], set()).add(case["language"])
         assert_condition(case["runtime_voice_delivery_id"] == "RESP-002-runtime-voice-delivery", case)
@@ -78,6 +79,7 @@ def validate_dry_run_payload(payload: dict[str, Any]) -> None:
         assert_condition(set(by_variant) == {"plain_guarded", "shaped_runtime"}, by_variant)
         plain = by_variant["plain_guarded"]
         shaped = by_variant["shaped_runtime"]
+        shaped_by_pair_language[(case["pair_id"], case["language"])] = shaped
         assert_condition(plain["tts_input_text"] == case["final_response"], plain)
         assert_condition(shaped["tts_input_text"] == case["runtime_tts_input_text"], shaped)
         assert_condition(shaped["tts_input_text"] != plain["tts_input_text"], case)
@@ -95,6 +97,18 @@ def validate_dry_run_payload(payload: dict[str, Any]) -> None:
             assert_condition(result["voice_id_value_logged"] is False, result)
             assert_condition("<redacted" in json.dumps(result["request_preview"], ensure_ascii=False), result)
     assert_condition(by_pair == {"objection": {"de", "en"}, "trust": {"de", "en"}, "next_step": {"de", "en"}}, by_pair)
+
+    en_objection_speed = float(shaped_by_pair_language[("objection", "en")]["voice_settings"]["speed"])
+    en_next_step_speed = float(shaped_by_pair_language[("next_step", "en")]["voice_settings"]["speed"])
+    en_trust_speed = float(shaped_by_pair_language[("trust", "en")]["voice_settings"]["speed"])
+    en_trust_text = shaped_by_pair_language[("trust", "en")]["tts_input_text"]
+    de_objection_speed = float(shaped_by_pair_language[("objection", "de")]["voice_settings"]["speed"])
+    assert_condition(1.12 <= en_objection_speed <= 1.15, en_objection_speed)
+    assert_condition(1.12 <= en_next_step_speed <= 1.15, en_next_step_speed)
+    assert_condition(1.13 <= en_trust_speed <= 1.14, en_trust_speed)
+    assert_condition(", so I'll keep it brief" in en_trust_text, en_trust_text)
+    assert_condition("<break" not in en_trust_text, en_trust_text)
+    assert_condition(1.015 <= de_objection_speed <= 1.04, de_objection_speed)
 
 
 def validate_forced_missing_key() -> None:

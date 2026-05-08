@@ -33,8 +33,9 @@ DEFAULT_PROFILE = {
     "protected_segment_types": sorted(PROTECTED_SEGMENT_TYPES),
     "speed_bounds": {
         "en": [1.07, 1.15],
-        "de": [0.97, 1.04],
+        "de": [0.975, 1.04],
     },
+    "english_trust_repair_speed_bounds": [1.13, 1.14],
     "break_bounds_ms": {
         "en": [80, 240],
         "de": [110, 280],
@@ -66,6 +67,10 @@ def clamp_float(value: float, low: float, high: float, digits: int = 3) -> float
 
 def normalize_language(language: str | None) -> str:
     return "de" if str(language or "").lower().startswith("de") else "en"
+
+
+def normalize_text(text: str | None) -> str:
+    return re.sub(r"\s+", " ", str(text or "").strip().lower())
 
 
 def profile_from_campaign(campaign: dict[str, Any]) -> dict[str, Any]:
@@ -142,6 +147,13 @@ def compress_breaks(text: str, *, language: str, segment_id: str, seed: str, pro
 
 def speed_for_segment(segment: dict[str, Any], *, language: str, seed: str, profile: dict[str, Any]) -> float:
     bounds = profile.get("speed_bounds", DEFAULT_PROFILE["speed_bounds"]).get(language, DEFAULT_PROFILE["speed_bounds"]["en"])
+    source_text = normalize_text(segment.get("rendered_text", ""))
+    if language == "en" and (
+        "not asking you to decide now" in source_text
+        or "that's why i'll keep it brief" in source_text
+        or "that is why i will keep it brief" in source_text
+    ):
+        bounds = profile.get("english_trust_repair_speed_bounds", DEFAULT_PROFILE["english_trust_repair_speed_bounds"])
     low, high = float(bounds[0]), float(bounds[1])
     segment_type = segment.get("segment_type") or "segment"
     return clamp_float(stable_range_float(f"{seed}:{segment.get('segment_id')}:{segment_type}:voice-034-speed", low, high), low, high)

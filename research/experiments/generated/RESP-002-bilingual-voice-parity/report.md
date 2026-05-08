@@ -27,7 +27,7 @@ This report checks that English and German voice-delivery improvements are evalu
 | RESP-002-PARITY-DE-OBJECTION | objection | de | 3 | 2 | 1 | 1 | 1 | True | True |
 | RESP-002-PARITY-EN-OBJECTION | objection | en | 4 | 2 | 1 | 2 | 2 | True | True |
 | RESP-002-PARITY-DE-TRUST | trust | de | 3 | 2 | 1 | 0 | 2 | True | True |
-| RESP-002-PARITY-EN-TRUST | trust | en | 3 | 2 | 1 | 0 | 2 | True | True |
+| RESP-002-PARITY-EN-TRUST | trust | en | 3 | 2 | 1 | 1 | 2 | True | True |
 | RESP-002-PARITY-DE-NEXT-STEP | next_step | de | 3 | 2 | 1 | 1 | 2 | True | True |
 | RESP-002-PARITY-EN-NEXT-STEP | next_step | en | 3 | 2 | 1 | 0 | 2 | True | True |
 

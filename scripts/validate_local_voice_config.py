@@ -7,7 +7,7 @@ import shutil
 import uuid
 from pathlib import Path
 
-from local_voice_config import local_voice_candidate_for_provider, local_voice_id_for_provider
+from local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, local_voice_candidate_for_provider, local_voice_id_for_provider
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,12 +23,33 @@ def assert_condition(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
+def validate_project_local_config(provider: dict) -> None:
+    if not LOCAL_VOICE_IDS_PATH.exists():
+        return
+    try:
+        load_local_voice_ids(LOCAL_VOICE_IDS_PATH)
+    except json.JSONDecodeError as exc:
+        raise AssertionError(
+            "Project local voice config is invalid JSON. "
+            f"Check {LOCAL_VOICE_IDS_PATH.relative_to(ROOT)} near line {exc.lineno}, column {exc.colno}. "
+            "Common cause: a trailing comma after the last field in an object."
+        ) from exc
+
+    for language in ("en", "de"):
+        voice_id, source = local_voice_id_for_provider(provider, language, LOCAL_VOICE_IDS_PATH)
+        assert_condition(
+            voice_id is not None and source is not None,
+            f"Project local voice config is missing a usable ElevenLabs {language} voice ID.",
+        )
+
+
 def main() -> None:
     provider = {
         "provider_id": "elevenlabs-tts-stream",
         "provider_name": "ElevenLabs",
         "api_key_env_var": "ELEVENLABS_API_KEY",
     }
+    validate_project_local_config(provider)
     TMP_DIR.mkdir(parents=True, exist_ok=True)
     try:
         path = TMP_DIR / "voice_ids.json"

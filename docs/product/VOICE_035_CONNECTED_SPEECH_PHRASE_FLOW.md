@@ -14,6 +14,8 @@ Examples:
 
 - English before: `I'll keep this simple. <break ... /> Well, you're right to ask. It's only useful...`
 - English after: `I'll keep this simple, well, you're right to ask, and it's only useful...`
+- English trust before: `I'm not asking you to decide now. <break ... /> That's why I'll keep it brief.`
+- English trust after: `I'm not asking you to decide now, so I'll keep it brief.`
 - German before: `Das verstehe ich. <break ... /> Also, Geht's Ihnen...`
 - German after: `Das verstehe ich, also geht's Ihnen...`
 
@@ -55,6 +57,7 @@ Forbidden:
 English currently targets:
 
 - `Well,` or `So,` after a short sentence and provider break.
+- Trust-repair transitions such as `That's why I'll...` after a short reassurance.
 - Short bridge clauses such as `It's...` or `That's...` after a reassurance sentence.
 
 German currently targets:
@@ -99,3 +102,5 @@ The first `RESP-003` live check with VOICE-035 active showed:
 Follow-up:
 
 - `VOICE-036` now handles this by restoring a tiny German breath cue, relaxing German speed, and blocking weak emphasis targets before provider rendering.
+
+The later RESP-003 bilingual listening pass showed that lowering the English trust-repair speed too far made English more robotic. VOICE-035 now handles the trust case by removing the brittle sentence break and converting `That's why I'll...` into `so I'll...`, while VOICE-034 keeps the trust speed in a livelier bounded range.

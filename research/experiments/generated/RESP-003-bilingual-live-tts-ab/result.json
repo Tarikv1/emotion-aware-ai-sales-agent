@@ -155,7 +155,7 @@
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.013
+            "speed": 1.015
           },
           "request_preview": {
             "method": "POST",
@@ -173,7 +173,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.013
+                "speed": 1.015
               }
             }
           },
@@ -507,7 +507,7 @@
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.028
+            "speed": 1.029
           },
           "request_preview": {
             "method": "POST",
@@ -525,7 +525,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.028
+                "speed": 1.029
               }
             }
           },
@@ -575,7 +575,7 @@
       "transcript": "I do not know your company. Why should I trust this?",
       "final_response": "I am not asking you to decide now. That is why I will keep it brief.",
       "runtime_tts_input_source": "provider_rendered_text",
-      "runtime_tts_input_text": "I'm not asking you to decide now. <break time=\"0.24s\" /> That's why I'll keep it brief.",
+      "runtime_tts_input_text": "I'm not asking you to decide now, so I'll keep it brief.",
       "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
       "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
       "provider_rendering_changed": true,
@@ -675,15 +675,15 @@
           "custom_voice_used": false,
           "timeout_seconds": 8.0,
           "tts_input_source": "provider_rendered_text",
-          "tts_input_text": "I'm not asking you to decide now. <break time=\"0.24s\" /> That's why I'll keep it brief.",
-          "tts_input_chars": 87,
+          "tts_input_text": "I'm not asking you to decide now, so I'll keep it brief.",
+          "tts_input_chars": 56,
           "provider_rendering_used": true,
           "voice_settings": {
             "stability": 0.56,
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.149
+            "speed": 1.14
           },
           "request_preview": {
             "method": "POST",
@@ -693,7 +693,7 @@
               "Content-Type": "application/json"
             },
             "body": {
-              "text": "I'm not asking you to decide now. <break time=\"0.24s\" /> That's why I'll keep it brief.",
+              "text": "I'm not asking you to decide now, so I'll keep it brief.",
               "model_id": "eleven_flash_v2_5",
               "language_code": "en",
               "voice_settings": {
@@ -701,7 +701,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.149
+                "speed": 1.14
               }
             }
           },
@@ -859,7 +859,7 @@
             "similarity_boost": 0.75,
             "style": 0.0,
             "use_speaker_boost": true,
-            "speed": 1.005
+            "speed": 1.007
           },
           "request_preview": {
             "method": "POST",
@@ -877,7 +877,7 @@
                 "similarity_boost": 0.75,
                 "style": 0.0,
                 "use_speaker_boost": true,
-                "speed": 1.005
+                "speed": 1.007
               }
             }
           },
