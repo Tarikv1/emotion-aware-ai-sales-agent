@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-026 local demo trace harness
+
+- Objective: convert the accepted `PROD-025` bounded demo readiness packet into a local, inspectable demo trace surface without promoting runtime behavior or enabling live/provider/customer-data paths.
+- Action taken: added a PROD-026 trace-harness module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, and generated result/report/trace-packet/static-HTML artifacts.
+- Data used: the generated `PROD-025` bounded demo readiness packet only. PROD-026 did not call providers, call an LLM, read private data, download a dataset, start a server, enable retrieval by default, enable composer hooks by default, collect payment, or change runtime behavior.
+- Output created: `docs/product/PROD_026_LOCAL_DEMO_TRACE_HARNESS.md`, `scripts/prod_026_local_demo_trace_harness.py`, `scripts/run_prod_026_local_demo_trace_harness.py`, `scripts/validate_prod_026_local_demo_trace_harness.py`, `research/experiments/generated/PROD-026-local-demo-trace-harness/result.json`, `research/experiments/generated/PROD-026-local-demo-trace-harness/report.md`, `research/experiments/generated/PROD-026-local-demo-trace-harness/trace_packet.json`, and `research/experiments/generated/PROD-026-local-demo-trace-harness/trace_harness.html`.
+- What was learned: the project can now show `3` exact synthetic questions and `3` exact agent answers together with policy action, call control, expected outcome, source checkpoint, and safety flags. The harness is ready for manual review while production runtime promotion and live provider demo remain blocked.
+- Why it matters for the thesis: this creates a concrete bridge from evaluation evidence to a human-inspectable product demo while preserving the privacy, safety, and no-overclaim boundaries established by earlier checkpoints.
+- Open questions: whether the selected three trace cards are the right first demo set and whether the next demo should stay as static trace review or add a separate offline scripted-call simulation.
+
 ### 2026-05-09 - PROD-025 bounded demo readiness packet
 
 - Objective: convert the clean `PROD-024` post-fix evidence into a bounded local-demo scope without promoting the runtime or enabling live/provider/customer-data paths.

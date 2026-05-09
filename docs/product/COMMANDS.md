@@ -903,6 +903,18 @@ Validate the bounded demo scope, blocked claims, trace contract, review gates, a
 python scripts\validate_prod_025_bounded_demo_readiness_packet.py
 ```
 
+Run the PROD-026 local demo trace harness:
+
+```powershell
+python scripts\run_prod_026_local_demo_trace_harness.py
+```
+
+Validate exact question/answer visibility, decision-process visibility, static trace outputs, and local-only/manual-review boundaries:
+
+```powershell
+python scripts\validate_prod_026_local_demo_trace_harness.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

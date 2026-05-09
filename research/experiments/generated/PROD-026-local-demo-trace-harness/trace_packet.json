@@ -1,0 +1,113 @@
+{
+  "checkpoint_id": "PROD-026-local-demo-trace-harness",
+  "title": "PROD-026 local demo trace packet",
+  "source_checkpoint_id": "PROD-025-bounded-demo-readiness-packet",
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "customer_facing_claim_allowed": false,
+    "server_started": false
+  },
+  "harness_summary": {
+    "source_trace_card_count": 3,
+    "trace_card_count": 3,
+    "exact_question_and_answer_visible": true,
+    "decision_process_visible": true,
+    "safety_flags_visible": true,
+    "local_trace_only": true,
+    "manual_review_required": true,
+    "local_demo_trace_harness_ready": true,
+    "production_runtime_promotion_allowed": false,
+    "live_provider_demo_allowed": false,
+    "next_checkpoint_recommended": "PROD-027-manual-demo-trace-review"
+  },
+  "trace_cards": [
+    {
+      "card_id": "demo-trace-001",
+      "source_turn_id": "PROD-021-C01-T01",
+      "scenario_label": "software_multi_objection_sale",
+      "customer_question": "The cost sounds high, and I need to know whether reviewing this is worth my time.",
+      "agent_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "decision_process": {
+        "policy_action": "value-clarify",
+        "call_control": "continue-call",
+        "expected_outcome": "non_sale_correct",
+        "source_checkpoint": "PROD-024-live-shaped-post-fix-rerun"
+      },
+      "safety_flags": {
+        "contains_payment_collection": false,
+        "hard_failure": false,
+        "protected_context_preserved": true
+      },
+      "review_status": "pending-manual-review"
+    },
+    {
+      "card_id": "demo-trace-002",
+      "source_turn_id": "PROD-021-C02-T01",
+      "scenario_label": "software_procurement_authority_delay",
+      "customer_question": "My boss has to review this before I can decide.",
+      "agent_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+      "decision_process": {
+        "policy_action": "stakeholder-review",
+        "call_control": "continue-call",
+        "expected_outcome": "non_sale_correct",
+        "source_checkpoint": "PROD-024-live-shaped-post-fix-rerun"
+      },
+      "safety_flags": {
+        "contains_payment_collection": false,
+        "hard_failure": false,
+        "protected_context_preserved": true
+      },
+      "review_status": "pending-manual-review"
+    },
+    {
+      "card_id": "demo-trace-003",
+      "source_turn_id": "PROD-021-C07-T01",
+      "scenario_label": "trust_price_callback",
+      "customer_question": "I do not know your company. How can I verify this is legitimate?",
+      "agent_answer": "Fair question. Should I first give you a verification path before we discuss any next step?",
+      "decision_process": {
+        "policy_action": "trust-repair",
+        "call_control": "continue-call",
+        "expected_outcome": "support_only",
+        "source_checkpoint": "PROD-024-live-shaped-post-fix-rerun"
+      },
+      "safety_flags": {
+        "contains_payment_collection": false,
+        "hard_failure": false,
+        "protected_context_preserved": true
+      },
+      "review_status": "pending-manual-review"
+    }
+  ],
+  "review_checklist": [
+    {
+      "check_id": "exact-question-answer-visible",
+      "status": "pending-manual-review",
+      "question": "Can Tarik see the exact synthetic customer question and exact agent answer for each card?"
+    },
+    {
+      "check_id": "decision-process-understandable",
+      "status": "pending-manual-review",
+      "question": "Are policy action, call control, expected outcome, and source checkpoint clear enough to inspect?"
+    },
+    {
+      "check_id": "safety-boundary-visible",
+      "status": "pending-manual-review",
+      "question": "Are payment, hard failure, and protected-context flags visible on each trace card?"
+    },
+    {
+      "check_id": "demo-claim-contained",
+      "status": "pending-manual-review",
+      "question": "Does the harness avoid production, live-provider, customer-data, and default-retrieval claims?"
+    }
+  ]
+}

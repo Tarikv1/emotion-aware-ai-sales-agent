@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-026 Local Demo Trace Harness</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f6f7f9;
+      color: #1f2933;
+    }
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 30px;
+    }
+    .summary, .trace-card {
+      background: #ffffff;
+      border: 1px solid #d6dbe1;
+      border-radius: 6px;
+      padding: 18px;
+      margin: 16px 0;
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 8px 12px;
+    }
+    dt {
+      font-weight: 700;
+    }
+    dd {
+      margin: 0;
+    }
+    p, pre {
+      line-height: 1.45;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #eef2f6;
+      padding: 12px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>PROD-026 Local Demo Trace Harness</h1>
+    <p>Local demo trace harness built from PROD-025. This is a static trace artifact only.</p>
+    <section class="summary">
+      <h2>Boundary Summary</h2>
+      <p>Exact question and answer visible: `true`</p>
+      <p>Decision process visible: `true`</p>
+      <p>Local trace only: `true`</p>
+      <p>Manual review required: `true`</p>
+      <p>Provider calls made: `false`</p>
+      <p>Customer data allowed: `false`</p>
+      <p>Retrieval default enabled: `false`</p>
+      <p>Composer hook default enabled: `false`</p>
+      <p>Next checkpoint recommended: `PROD-027-manual-demo-trace-review`</p>
+    </section>
+    <section class="summary">
+      <h2>Harness Outputs</h2>
+      <p>Trace packet: `research/experiments/generated/PROD-026-local-demo-trace-harness/trace_packet.json`</p>
+      <p>Report: `research/experiments/generated/PROD-026-local-demo-trace-harness/report.md`</p>
+      <p>Server started: `false`</p>
+    </section>
+    <article class="trace-card">
+        <h2>demo-trace-001 / PROD-021-C01-T01</h2>
+        <dl>
+          <dt>Scenario</dt><dd>software_multi_objection_sale</dd>
+          <dt>Policy action</dt><dd>value-clarify</dd>
+          <dt>Call control</dt><dd>continue-call</dd>
+          <dt>Expected outcome</dt><dd>non_sale_correct</dd>
+          <dt>Source checkpoint</dt><dd>PROD-024-live-shaped-post-fix-rerun</dd>
+          <dt>Review status</dt><dd>pending-manual-review</dd>
+        </dl>
+        <section>
+          <h3>Customer Question</h3>
+          <p>The cost sounds high, and I need to know whether reviewing this is worth my time.</p>
+        </section>
+        <section>
+          <h3>Agent Answer</h3>
+          <p>That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?</p>
+        </section>
+        <section>
+          <h3>Safety Flags</h3>
+          <pre>{
+  &quot;contains_payment_collection&quot;: false,
+  &quot;hard_failure&quot;: false,
+  &quot;protected_context_preserved&quot;: true
+}</pre>
+        </section>
+      </article><article class="trace-card">
+        <h2>demo-trace-002 / PROD-021-C02-T01</h2>
+        <dl>
+          <dt>Scenario</dt><dd>software_procurement_authority_delay</dd>
+          <dt>Policy action</dt><dd>stakeholder-review</dd>
+          <dt>Call control</dt><dd>continue-call</dd>
+          <dt>Expected outcome</dt><dd>non_sale_correct</dd>
+          <dt>Source checkpoint</dt><dd>PROD-024-live-shaped-post-fix-rerun</dd>
+          <dt>Review status</dt><dd>pending-manual-review</dd>
+        </dl>
+        <section>
+          <h3>Customer Question</h3>
+          <p>My boss has to review this before I can decide.</p>
+        </section>
+        <section>
+          <h3>Agent Answer</h3>
+          <p>That makes sense. Should I send a short summary you can share, or is there one concern I should address first?</p>
+        </section>
+        <section>
+          <h3>Safety Flags</h3>
+          <pre>{
+  &quot;contains_payment_collection&quot;: false,
+  &quot;hard_failure&quot;: false,
+  &quot;protected_context_preserved&quot;: true
+}</pre>
+        </section>
+      </article><article class="trace-card">
+        <h2>demo-trace-003 / PROD-021-C07-T01</h2>
+        <dl>
+          <dt>Scenario</dt><dd>trust_price_callback</dd>
+          <dt>Policy action</dt><dd>trust-repair</dd>
+          <dt>Call control</dt><dd>continue-call</dd>
+          <dt>Expected outcome</dt><dd>support_only</dd>
+          <dt>Source checkpoint</dt><dd>PROD-024-live-shaped-post-fix-rerun</dd>
+          <dt>Review status</dt><dd>pending-manual-review</dd>
+        </dl>
+        <section>
+          <h3>Customer Question</h3>
+          <p>I do not know your company. How can I verify this is legitimate?</p>
+        </section>
+        <section>
+          <h3>Agent Answer</h3>
+          <p>Fair question. Should I first give you a verification path before we discuss any next step?</p>
+        </section>
+        <section>
+          <h3>Safety Flags</h3>
+          <pre>{
+  &quot;contains_payment_collection&quot;: false,
+  &quot;hard_failure&quot;: false,
+  &quot;protected_context_preserved&quot;: true
+}</pre>
+        </section>
+      </article>
+  </main>
+</body>
+</html>

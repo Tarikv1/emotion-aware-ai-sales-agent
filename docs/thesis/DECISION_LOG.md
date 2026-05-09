@@ -15,6 +15,26 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-073 - Keep PROD-026 as local trace harness
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Keep PROD-026 as local trace harness; use it for manual demo trace review, not production runtime promotion or live-provider demo work.
+- Why:
+  - PROD-026 builds directly from the accepted PROD-025 bounded demo readiness packet
+  - the harness exposes exact synthetic customer questions, exact agent answers, policy actions, call controls, expected outcomes, source checkpoint, and safety flags
+  - it stays static and local-only, with provider calls, LLM use, customer data, payment collection, runtime default changes, retrieval defaults, composer-hook defaults, and server start blocked
+  - manual review is still required before any provider-backed, voice, telephony, or client-facing demo step
+- Alternatives considered:
+  - start a live demo server immediately
+  - show only polished answer text without the decision process
+  - promote the local trace harness as production readiness
+  - skip manual trace review and move directly to voice/provider work
+- Consequences:
+  - the next checkpoint should be `PROD-027-manual-demo-trace-review`
+  - the review should decide whether to keep the three trace cards as-is, revise card selection, or add a separate offline scripted-call simulation
+  - provider-backed, voice, telephony, and client-facing demo work remain blocked until the manual trace review is accepted
+
 ### DEC-072 - Keep PROD-025 as bounded demo readiness packet
 
 - Date: 2026-05-09
