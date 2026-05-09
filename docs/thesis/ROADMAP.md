@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-030-grounded-demo-review` by inspecting the grounded full-scenario trace, accepting or revising grounded answer behavior, and deciding whether the fact-grounded answer layer should become a runtime campaign-profile candidate or remain demo-only.
+- [ ] Current: run `PROD-031-grounded-route-gap-fix` to fix the `10` route gaps found by PROD-030 before any full-demo or runtime campaign-profile promotion.
 
 Next checkpoints:
 
-- [ ] Next: review grounded full-scenario results and decide whether to adapt the fact-grounded answer layer into the runtime campaign profile, keep it demo-only, or revise the campaign facts before demo polishing.
+- [ ] Next: after the grounded route-gap fix, rerun the grounded full-scenario/demo-review checks and decide whether the fact-grounded answer layer can become a runtime campaign-profile candidate, still behind explicit review gates.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
 - [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
@@ -57,6 +57,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-030` grounded demo review, which inspects the completed `PROD-029` grounded full-scenario trace and records accepted/rejected/revise status per grounded answer and route gap. It accepts `120/120` grounded answers for local demo wording review with revised grounded answers `0`, rejected grounded answers `0`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. It keeps `110/120` turns and `13/20` full scenarios demo-ready, while blocking the full demo set because `10` route turns across `7` scenarios still need policy or call-control review. The demo-ready scenario labels are `cancellation_boundary`, `sale_eligible`, `support_handoff`, and `trust_repair`; route-gap labels are `callback_request` and `price_objection`; route-gap types are `unknown-runtime-signal_policy_mismatch`, `autonomy-check_policy_mismatch`, and `scheduling-confirmation_call-control-mismatch`. Runtime campaign-profile promotion, production runtime promotion, retrieval defaults, composer-hook defaults, provider calls, LLM use, private data reads, customer data, server start, and payment collection stayed blocked. The next checkpoint is `PROD-031-grounded-route-gap-fix`.
 
 - [x] `PROD-029` grounded full-scenario rerun, which reruns the exact `PROD-027` `20`-scenario / `120`-turn route set with the accepted `PROD-028` synthetic campaign facts and compares old PROD-027 answers against grounded campaign answers without overwriting either checkpoint. The rerun keeps the same customer turns, expected policy actions, expected call controls, and source-pattern references, while adding exact grounded answers and product fact markers. It reached direct answer rate `1.0`, knowledge-applicable fact rate `1.0`, grounded question overuse rate `0.0`, PROD-027 question overuse rate `0.7833`, grounded answer win rate `0.6583`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. Route behavior remains the same as PROD-027: route correctness `0.9167`, policy-action correctness `0.9167`, call-control correctness `0.975`, and `13/20` scenarios fully route-passed. Provider calls, LLM use, runtime behavior changes, retrieval defaults, composer-hook defaults, production runtime promotion, customer data, and payment collection stayed blocked. The next checkpoint is `PROD-030-grounded-demo-review`.
 
@@ -444,19 +446,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-030-grounded-demo-review` using the accepted `PROD-029-grounded-full-scenario-rerun` trace.
+Run `PROD-031-grounded-route-gap-fix` using the accepted `PROD-030-grounded-demo-review` route-gap packet.
 
 Purpose:
 
-- inspect the exact customer turns, exact baseline answers, exact grounded answers, expected route, observed route, call control, product fact markers, and safety flags
-- decide which grounded answers are accepted as demo-ready and which route gaps need separate policy work
+- fix the three route-gap types found by PROD-030: `unknown-runtime-signal_policy_mismatch`, `autonomy-check_policy_mismatch`, and `scheduling-confirmation_call-control-mismatch`
+- preserve the accepted grounded answers while changing only the route-policy/call-control behavior needed for the `10` gap turns
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
-- decide whether to adapt the fact-grounded answer layer into the runtime campaign profile, keep it demo-only, or revise the synthetic campaign facts before demo polishing
+- rerun the grounded demo review after the fix before any full-demo, runtime-profile, provider, voice, telephony, or client-facing step
 
-Immediate product artifact after `PROD-029`:
+Immediate product artifact after `PROD-030`:
 
-- accepted/rejected/revise status per grounded answer and route gap
-- next-demo recommendation before any provider-backed, voice, telephony, or client-facing step
+- grounded route-gap fix packet
+- post-fix rerun recommendation before any provider-backed, voice, telephony, or client-facing step
 
 Next voice checkpoint:
 

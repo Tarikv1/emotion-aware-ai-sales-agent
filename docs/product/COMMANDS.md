@@ -951,6 +951,18 @@ Validate the unchanged PROD-027 scenario set, old-vs-grounded answer comparison,
 python scripts\validate_prod_029_grounded_full_scenario_rerun.py
 ```
 
+Run the PROD-030 grounded demo review checkpoint:
+
+```powershell
+python scripts\run_prod_030_grounded_demo_review.py
+```
+
+Validate accepted/rejected/revise status per grounded answer and route gap, demo-ready subset selection, runtime-profile promotion block, and no-provider/no-runtime-change boundary:
+
+```powershell
+python scripts\validate_prod_030_grounded_demo_review.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

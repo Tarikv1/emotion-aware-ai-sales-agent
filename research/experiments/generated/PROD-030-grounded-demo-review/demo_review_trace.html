@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-030 Grounded Demo Review</title>
+  <style>
+body { font-family: Arial, sans-serif; color: #1f2933; margin: 0; background: #f7f8fa; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px; }
+h1, h2, h3 { color: #111827; }
+.summary, .scenario { background: #fff; border: 1px solid #d8dee8; border-radius: 8px; padding: 18px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.metric, .turn { background: #eef2f7; padding: 10px; border-radius: 6px; }
+.demo { color: #047857; font-weight: 700; }
+.revise { color: #b45309; font-weight: 700; }
+.text { white-space: pre-wrap; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>PROD-030 Grounded Demo Review</h1>
+  <p>accepted/rejected/revise status per grounded answer and route gap</p>
+  <section class="summary">
+    <h2>Summary</h2>
+    <div class="grid">
+      <div class="metric">Accepted grounded answers: `120`</div>
+      <div class="metric">Route gap turns: `10`</div>
+      <div class="metric">demo-ready scenarios: 13; demo-ready scenarios: `13`</div>
+      <div class="metric">route-gap scenarios: 7; route-gap scenarios: `7`</div>
+      <div class="metric">Full demo set allowed: `false`</div>
+      <div class="metric">Runtime campaign profile promotion allowed: `false`</div>
+      <div class="metric">Next checkpoint: `PROD-031-grounded-route-gap-fix`</div>
+    </div>
+  </section>
+  <section class="summary">
+    <h2>Recommended Demo Scenarios</h2>
+    <p><strong>prod-029-scenario-004</strong> - cancellation_boundary</p>
+    <p><strong>prod-029-scenario-001</strong> - sale_eligible</p>
+    <p><strong>prod-029-scenario-005</strong> - support_handoff</p>
+    <p><strong>prod-029-scenario-006</strong> - trust_repair</p>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-001 - sale_eligible</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-001::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is relevant if routing, callback ownership, or team reporting are real gaps. Growth is the usual fit for routing automation; the review stays non-binding.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-001::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The cost sounds high, and I need to know whether reviewing this is worth my time.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The lower entry point is Starter at $29 per user per month annually, while Growth is $59 for routing automation and team reporting. No payment is handled on this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-001::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">We already use another provider, so compare this fairly without pressure.</div>
+      <p>Grounded answer:</p>
+      <div class="text">I would not replace a setup that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are the gaps; it supports CRM handoffs, CSV import, Slack, and Zapier.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-001::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need time to think; do not rush me into a commitment today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-001::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">If this fits our process and there is no payment today, I am ready to agree to the next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-001::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am giving a verbal commitment to the next step, not payment.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-002 - price_objection</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `2`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-002::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-002::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The price is my main concern, so explain value before asking me to decide.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-002::turn-003</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; unknown-runtime-signal_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">My specific objection is too expensive, and I need a practical answer before moving forward.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-002::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need to know whether this is worth the effort before I spend more time on it.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-002::turn-005</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; autonomy-check_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">I do not want to be rushed, so ask what I need before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-002::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can review it without giving you anything firm today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-003 - callback_request</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `1`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-003::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-003::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I cannot talk now; call back later if there is a real reason.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-003::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Before a callback later, tell me the one point that makes this worth reviewing.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-003::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Maybe next week, but nothing firm from me yet.</div>
+      <p>Grounded answer:</p>
+      <div class="text">No problem. I will log a later callback and keep it to a RouteSignal CRM workflow review, not a commitment today.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-003::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Wednesday 10 works for a callback.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed for the specialist callback. The next step stays non-binding, with no payment handled in this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-003::turn-006</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; scheduling-confirmation_call-control-mismatch</p>
+      <p>Customer:</p>
+      <div class="text">Use Wednesday 10 works and keep it as a specialist callback only.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed for the specialist callback. The next step stays non-binding, with no payment handled in this call.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-004 - cancellation_boundary</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-004::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-004::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am not interested in continuing this sales conversation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-004::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Do not call me again about this.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-004::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Stop calling; I do not want a follow-up.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-004::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">No thank you, end the call.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-004::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Please mark this as do not call.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-005 - support_handoff</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-005::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM details should be checked by a solutions specialist; they can confirm support, security, integration, or migration scope without turning this into a close.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-005::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">My service issue is unresolved and I need a human specialist before any offer.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-005::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Which exact service details are included? I do not want you to guess.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM includes lead inbox, routing, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import; Scale adds SSO, audit logs, sandbox, and custom roles. A solutions specialist should confirm exact security scope.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-005::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I want a representative or advisor to handle this.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-005::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Check the approved service details before answering.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM includes lead inbox, routing, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import; Scale adds SSO, audit logs, sandbox, and custom roles. A solutions specialist should confirm exact security scope.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-005::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Route me to a specialist instead of continuing automatically.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-006 - trust_repair</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-006::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-006::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I do not know your company. How can I verify this is legitimate?</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-006::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I do not trust this yet, so give me a verification path before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-006::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can check it before speaking further.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-006::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I want a human advisor if this goes any further.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-006::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Before continuing, verify this is legitimate without asking me to commit.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-007 - sale_eligible</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-007::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is relevant if routing, callback ownership, or team reporting are real gaps. Growth is the usual fit for routing automation; the review stays non-binding.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-007::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The cost sounds high, and I need to know whether reviewing this is worth my time.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The lower entry point is Starter at $29 per user per month annually, while Growth is $59 for routing automation and team reporting. No payment is handled on this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-007::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">We already use another provider, so compare this fairly without pressure.</div>
+      <p>Grounded answer:</p>
+      <div class="text">I would not replace a setup that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are the gaps; it supports CRM handoffs, CSV import, Slack, and Zapier.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-007::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need time to think; do not rush me into a commitment today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-007::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">If this fits our process and there is no payment today, I am ready to agree to the next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-007::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am giving a verbal commitment to the next step, not payment.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-008 - price_objection</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `2`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-008::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this auto insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-008::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The price is my main concern, so explain value before asking me to decide.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-008::turn-003</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; unknown-runtime-signal_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">My specific objection is too expensive, and I need a practical answer before moving forward.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-008::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need to know whether this is worth the effort before I spend more time on it.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-008::turn-005</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; autonomy-check_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">I do not want to be rushed, so ask what I need before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-008::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can review it without giving you anything firm today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-009 - callback_request</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `1`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-009::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-009::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I cannot talk now; call back later if there is a real reason.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-009::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Before a callback later, tell me the one point that makes this worth reviewing.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-009::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Maybe next week, but nothing firm from me yet.</div>
+      <p>Grounded answer:</p>
+      <div class="text">No problem. I will log a later callback and keep it to a RouteSignal CRM workflow review, not a commitment today.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-009::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Wednesday 10 works for a callback.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed for the specialist callback. The next step stays non-binding, with no payment handled in this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-009::turn-006</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; scheduling-confirmation_call-control-mismatch</p>
+      <p>Customer:</p>
+      <div class="text">Use Wednesday 10 works and keep it as a specialist callback only.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed for the specialist callback. The next step stays non-binding, with no payment handled in this call.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-010 - cancellation_boundary</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-010::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-010::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am not interested in continuing this sales conversation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-010::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Do not call me again about this.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-010::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Stop calling; I do not want a follow-up.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-010::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">No thank you, end the call.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-010::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Please mark this as do not call.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-011 - support_handoff</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-011::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM details should be checked by a solutions specialist; they can confirm support, security, integration, or migration scope without turning this into a close.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-011::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">My service issue is unresolved and I need a human specialist before any offer.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-011::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Which exact service details are included? I do not want you to guess.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM includes lead inbox, routing, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import; Scale adds SSO, audit logs, sandbox, and custom roles. A solutions specialist should confirm exact security scope.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-011::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I want a representative or advisor to handle this.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-011::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Check the approved service details before answering.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM includes lead inbox, routing, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import; Scale adds SSO, audit logs, sandbox, and custom roles. A solutions specialist should confirm exact security scope.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-011::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Route me to a specialist instead of continuing automatically.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-012 - trust_repair</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-012::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-012::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I do not know your company. How can I verify this is legitimate?</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-012::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I do not trust this yet, so give me a verification path before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-012::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can check it before speaking further.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-012::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I want a human advisor if this goes any further.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-012::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Before continuing, verify this is legitimate without asking me to commit.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-013 - sale_eligible</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-013::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this general customer service option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is relevant if routing, callback ownership, or team reporting are real gaps. Growth is the usual fit for routing automation; the review stays non-binding.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-013::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The cost sounds high, and I need to know whether reviewing this is worth my time.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The lower entry point is Starter at $29 per user per month annually, while Growth is $59 for routing automation and team reporting. No payment is handled on this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-013::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">We already use another provider, so compare this fairly without pressure.</div>
+      <p>Grounded answer:</p>
+      <div class="text">I would not replace a setup that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are the gaps; it supports CRM handoffs, CSV import, Slack, and Zapier.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-013::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need time to think; do not rush me into a commitment today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-013::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">If this fits our process and there is no payment today, I am ready to agree to the next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-013::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am giving a verbal commitment to the next step, not payment.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-014 - price_objection</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `2`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-014::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-014::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The price is my main concern, so explain value before asking me to decide.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-014::turn-003</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; unknown-runtime-signal_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">My specific objection is too expensive, and I need a practical answer before moving forward.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-014::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need to know whether this is worth the effort before I spend more time on it.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-014::turn-005</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; autonomy-check_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">I do not want to be rushed, so ask what I need before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-014::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can review it without giving you anything firm today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-015 - callback_request</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `1`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-015::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this general customer service option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-015::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I cannot talk now; call back later if there is a real reason.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-015::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Before a callback later, tell me the one point that makes this worth reviewing.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-015::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Maybe next week, but nothing firm from me yet.</div>
+      <p>Grounded answer:</p>
+      <div class="text">No problem. I will log a later callback and keep it to a RouteSignal CRM workflow review, not a commitment today.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-015::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Wednesday 10 works for a callback.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed for the specialist callback. The next step stays non-binding, with no payment handled in this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-015::turn-006</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; scheduling-confirmation_call-control-mismatch</p>
+      <p>Customer:</p>
+      <div class="text">Use Wednesday 10 works and keep it as a specialist callback only.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed for the specialist callback. The next step stays non-binding, with no payment handled in this call.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-016 - cancellation_boundary</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-016::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this general customer service option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-016::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am not interested in continuing this sales conversation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-016::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Do not call me again about this.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-016::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Stop calling; I do not want a follow-up.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-016::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">No thank you, end the call.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-016::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Please mark this as do not call.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-017 - support_handoff</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-017::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this general customer service option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM details should be checked by a solutions specialist; they can confirm support, security, integration, or migration scope without turning this into a close.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-017::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">My service issue is unresolved and I need a human specialist before any offer.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-017::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Which exact service details are included? I do not want you to guess.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM includes lead inbox, routing, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import; Scale adds SSO, audit logs, sandbox, and custom roles. A solutions specialist should confirm exact security scope.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-017::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I want a representative or advisor to handle this.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-017::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Check the approved service details before answering.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM includes lead inbox, routing, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import; Scale adds SSO, audit logs, sandbox, and custom roles. A solutions specialist should confirm exact security scope.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-017::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Route me to a specialist instead of continuing automatically.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-018 - trust_repair</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-018::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this general customer service option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-018::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I do not know your company. How can I verify this is legitimate?</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-018::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I do not trust this yet, so give me a verification path before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-018::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can check it before speaking further.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-018::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I want a human advisor if this goes any further.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Of course. I will route this to a solutions specialist; they can confirm integration, security, migration, or support details before any offer.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-018::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Before continuing, verify this is legitimate without asking me to commit.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The safe verification path is written context plus a solutions specialist review before any commitment. In this simulation, RouteSignal CRM keeps billing outside this call.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-019 - sale_eligible</h2>
+    <p>Status: <span class="demo">demo-ready</span> | Route gaps: `0`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-019::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this healthcare insurance option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is relevant if routing, callback ownership, or team reporting are real gaps. Growth is the usual fit for routing automation; the review stays non-binding.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-019::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The cost sounds high, and I need to know whether reviewing this is worth my time.</div>
+      <p>Grounded answer:</p>
+      <div class="text">The lower entry point is Starter at $29 per user per month annually, while Growth is $59 for routing automation and team reporting. No payment is handled on this call.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-019::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">We already use another provider, so compare this fairly without pressure.</div>
+      <p>Grounded answer:</p>
+      <div class="text">I would not replace a setup that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are the gaps; it supports CRM handoffs, CSV import, Slack, and Zapier.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-019::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need time to think; do not rush me into a commitment today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-019::turn-005</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">If this fits our process and there is no payment today, I am ready to agree to the next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-019::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I am giving a verbal commitment to the next step, not payment.</div>
+      <p>Grounded answer:</p>
+      <div class="text">Confirmed as sale-ready for a solutions specialist review. The next step is the non-binding workflow review, with no payment collected here.</div>
+    </div>
+  </section>
+  <section class="scenario">
+    <h2>prod-029-scenario-020 - price_objection</h2>
+    <p>Status: <span class="revise">revise-before-demo</span> | Route gaps: `1`</p>
+    <div class="turn">
+      <h3>prod-029-scenario-020::turn-001</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I can listen briefly about this automotive option, but first tell me why this matters for my situation.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-020::turn-002</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">The price is my main concern, so explain value before asking me to decide.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-020::turn-003</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">My specific objection is needs to think, and I need a practical answer before moving forward.</div>
+      <p>Grounded answer:</p>
+      <div class="text">RouteSignal CRM is a lead-routing and callback-ownership CRM. We can keep this to fit, price, or setup facts before any next step.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-020::turn-004</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">I need to know whether this is worth the effort before I spend more time on it.</div>
+      <p>Grounded answer:</p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. If cost is the blocker, we can compare the smaller plan against your routing needs first.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-020::turn-005</h3>
+      <p>Answer: `accepted` | Route: `route-gap-needs-policy-review` | Demo: <span class="revise">revise-before-demo</span></p>
+      <p>Reason: safe direct grounded answer; autonomy-check_policy_mismatch</p>
+      <p>Customer:</p>
+      <div class="text">I do not want to be rushed, so ask what I need before any next step.</div>
+      <p>Grounded answer:</p>
+      <div class="text">There is no rush. The next step is only a non-binding 30-minute workflow review, and RouteSignal CRM pricing or security details can be checked before any commitment.</div>
+    </div>
+    <div class="turn">
+      <h3>prod-029-scenario-020::turn-006</h3>
+      <p>Answer: `accepted` | Route: `accepted` | Demo: <span class="demo">demo-ready</span></p>
+      <p>Reason: safe direct grounded answer</p>
+      <p>Customer:</p>
+      <div class="text">Send written information so I can review it without giving you anything firm today.</div>
+      <p>Grounded answer:</p>
+      <div class="text">For written review, I would send the plan range, annual billing terms, 14-day sandbox, setup and migration fees, cancellation boundary, and specialist quote requirement.</div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{
+  "checkpoint_id": "PROD-030-grounded-demo-review",
+  "title": "PROD-030 grounded demo review",
+  "source_checkpoint_id": "PROD-029-grounded-full-scenario-rerun",
+  "next_checkpoint_recommended": "PROD-031-grounded-route-gap-fix",
+  "inputs": {
+    "source_result_path": "research/experiments/generated/PROD-029-grounded-full-scenario-rerun/result.json"
+  },
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-030-grounded-demo-review/result.json",
+    "report_path": "research/experiments/generated/PROD-030-grounded-demo-review/report.md",
+    "packet_path": "research/experiments/generated/PROD-030-grounded-demo-review/demo_review_packet.json",
+    "trace_html_path": "research/experiments/generated/PROD-030-grounded-demo-review/demo_review_trace.html"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_used": false,
+    "commercial_runtime_prompt_text_from_transcripts_allowed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "source_prod_029_overwritten": false,
+    "runtime_campaign_profile_promotion_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "source_scenario_count": 20,
+    "source_turn_count": 120,
+    "reviewed_scenario_count": 20,
+    "reviewed_turn_count": 120,
+    "accepted_grounded_answer_count": 120,
+    "revise_grounded_answer_count": 0,
+    "rejected_grounded_answer_count": 0,
+    "route_accepted_turn_count": 110,
+    "route_gap_turn_count": 10,
+    "route_gap_scenario_count": 7,
+    "demo_ready_turn_count": 110,
+    "demo_ready_scenario_count": 13,
+    "recommended_demo_scenario_count": 4,
+    "scenario_labels_demo_ready": [
+      "cancellation_boundary",
+      "sale_eligible",
+      "support_handoff",
+      "trust_repair"
+    ],
+    "scenario_labels_route_gap": [
+      "callback_request",
+      "price_objection"
+    ],
+    "route_gap_types": [
+      "autonomy-check_policy_mismatch",
+      "scheduling-confirmation_call-control-mismatch",
+      "unknown-runtime-signal_policy_mismatch"
+    ],
+    "local_demo_subset_allowed": true,
+    "full_demo_set_allowed": false,
+    "grounded_answer_layer_candidate_accepted": true,
+    "runtime_profile_promotion_blocked": true,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "production_runtime_promotion_allowed": false,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "unsupported_claim_count": 0,
+    "leakage_finding_count": 0,
+    "elapsed_ms": 2
+  },
+  "metrics": {
+    "grounded_answer_acceptance_rate": {
+      "value": 1.0,
+      "definition": "Share of grounded answers accepted for local demo wording review."
+    },
+    "route_gap_rate": {
+      "value": 0.0833,
+      "definition": "Share of reviewed turns with policy-action or call-control route gaps."
+    },
+    "demo_ready_turn_rate": {
+      "value": 0.9167,
+      "definition": "Share of turns where grounded answer and route are both accepted."
+    },
+    "demo_ready_scenario_rate": {
+      "value": 0.65,
+      "definition": "Share of full scenarios where every turn is demo-ready."
+    },
+    "hard_failure_rate": {
+      "value": 0.0,
+      "definition": "Share of reviewed turns with a safety hard failure."
+    }
+  },
+  "decision": {
+    "grounded_answers_for_demo": "accept",
+    "route_gaps": "revise-before-full-demo-or-runtime-profile",
+    "runtime_campaign_profile": "candidate-only-not-promoted",
+    "local_demo_subset": "allowed-for-review",
+    "full_demo_set": "blocked-until-route-gaps-fixed",
+    "next_step": "PROD-031-grounded-route-gap-fix"
+  },
+  "packet": {
+    "packet_path": "research/experiments/generated/PROD-030-grounded-demo-review/demo_review_packet.json",
+    "recommended_demo_scenario_count": 4,
+    "demo_ready_scenario_count": 13,
+    "route_gap_scenario_count": 7
+  }
+}

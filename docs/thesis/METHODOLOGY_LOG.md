@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-030 grounded demo review
+
+- Objective: inspect the PROD-029 grounded full-scenario trace and decide which grounded answers are demo-ready, which route gaps need revision, and whether runtime campaign-profile promotion is still blocked.
+- Action taken: added a PROD-030 grounded demo review module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, thesis logs, and generated result/report/review-packet/static-HTML artifacts.
+- Data used: the generated `PROD-029` grounded full-scenario result only. PROD-030 did not call providers, call an LLM, read private data, download a dataset, start a server, enable retrieval by default, enable composer hooks by default, collect payment, change runtime behavior, or promote the runtime campaign profile.
+- Output created: `docs/product/PROD_030_GROUNDED_DEMO_REVIEW.md`, `scripts/prod_030_grounded_demo_review.py`, `scripts/run_prod_030_grounded_demo_review.py`, `scripts/validate_prod_030_grounded_demo_review.py`, `research/experiments/generated/PROD-030-grounded-demo-review/result.json`, `research/experiments/generated/PROD-030-grounded-demo-review/report.md`, `research/experiments/generated/PROD-030-grounded-demo-review/demo_review_packet.json`, and `research/experiments/generated/PROD-030-grounded-demo-review/demo_review_trace.html`.
+- What was learned: the grounded answer layer is ready as a local demo wording candidate, with accepted grounded answers `120`, revised grounded answers `0`, rejected grounded answers `0`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. Full-demo readiness is still blocked by `10` route-gap turns across `7` scenarios.
+- Why it matters for the thesis: the checkpoint separates answer usefulness from route-policy correctness. Better product facts fix the over-questioning problem, but safe sales autonomy still depends on correct policy actions and call controls.
+- Open questions: whether PROD-031 should fix the route gaps in the runtime router, the scenario-specific expectation mapping, or both; and whether a post-fix rerun can make the full grounded scenario set demo-ready.
+
 ### 2026-05-09 - PROD-029 grounded full-scenario rerun
 
 - Objective: rerun the exact PROD-027 full-scenario evaluation with the accepted PROD-028 synthetic campaign facts so the project can compare the old question-heavy answers against fact-grounded campaign answers.

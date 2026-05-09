@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-077 - Keep PROD-030 as a demo review gate
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Accept the PROD-029 grounded answer layer as a local demo wording candidate, but block full-demo and runtime campaign-profile promotion until the remaining route gaps are fixed.
+- Why:
+  - PROD-030 accepted `120/120` grounded answers with no revised or rejected answer text
+  - safety stayed clean with hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`
+  - route correctness is still not full-demo ready because `10` turns across `7` scenarios need policy or call-control review
+  - the remaining misses are concentrated in `unknown-runtime-signal_policy_mismatch`, `autonomy-check_policy_mismatch`, and `scheduling-confirmation_call-control-mismatch`
+- Alternatives considered:
+  - promote the grounded answer layer directly into the runtime campaign profile
+  - show the full `20`-scenario set as demo-ready despite route gaps
+  - revise grounded answer text even though all answer text passed review
+  - skip route-gap work and move to provider-backed voice or telephony
+- Consequences:
+  - the next checkpoint should be `PROD-031-grounded-route-gap-fix`
+  - a local subset of `13` full scenarios can be reviewed as demo-ready evidence
+  - the full scenario set remains blocked until route gaps are fixed and rerun
+  - provider-backed, voice, telephony, runtime-default, and client-facing promotion remain blocked
+
 ### DEC-076 - Keep PROD-029 as a grounded rerun of PROD-027
 
 - Date: 2026-05-09
