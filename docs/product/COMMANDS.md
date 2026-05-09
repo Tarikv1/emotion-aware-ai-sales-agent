@@ -975,6 +975,18 @@ Validate deterministic reactive customer state transitions, exact traces, safety
 python scripts\validate_prod_031_interactive_grounded_call_simulation.py
 ```
 
+Run the PROD-032 interactive simulation review checkpoint:
+
+```powershell
+python scripts\run_prod_032_interactive_simulation_review.py
+```
+
+Validate trace-level finding classification, first-fix recommendation, product-grounding issue count, safety boundaries, and no-provider/no-runtime-change behavior:
+
+```powershell
+python scripts\validate_prod_032_interactive_simulation_review.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

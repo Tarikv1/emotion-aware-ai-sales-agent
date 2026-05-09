@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-080 - Keep PROD-032 as the interactive trace review gate
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Treat PROD-032 as a review gate that classifies interactive trace findings before static route-gap cleanup, runtime-policy edits, demo polish, provider work, or client-facing promotion.
+- Why:
+  - PROD-032 reviewed `8` calls and `26` turns from PROD-031 and found `54` trace-level findings across `7` affected calls
+  - product grounding remained clean with product grounding issues `0`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`
+  - the biggest blocker is simulator terminal-control quality: callback requests converted to sale-ready state `5` times, repeated agent answers appeared `12` times, and repeated customer messages appeared `4` times
+  - runtime decision traces still need alignment, but that work should follow a simulator terminal-control fix so later reviews measure real conversational behavior
+- Alternatives considered:
+  - fix the old static PROD-030 route gaps immediately
+  - promote the safe PROD-031 headline metrics as demo-ready evidence
+  - tune product facts even though product-grounding issues were `0`
+- Consequences:
+  - the next checkpoint is `PROD-033-interactive-simulator-termination-fix`
+  - static route-gap cleanup remains deferred until callback and terminal loops are cleaned in reactive simulation
+  - runtime behavior changes, retrieval defaults, composer-hook defaults, provider work, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-079 - Keep PROD-031 as interactive evaluation evidence
 
 - Date: 2026-05-09

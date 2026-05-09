@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-032 Interactive Simulation Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; color: #202124; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f6f8fa; }
+    .metric { display: inline-block; margin: 6px 12px 6px 0; padding: 6px 8px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>PROD-032 Interactive Simulation Review</h1>
+  <p>Review of PROD-031 simulator-design limits, runtime-policy issues, product-grounding issues, and still-relevant static route gaps.</p>
+  <div class="metric">Source checkpoint: `PROD-031-interactive-grounded-call-simulation`</div>
+  <div class="metric">Raw findings: `54`</div>
+  <div class="metric">Affected calls: `7`</div>
+  <div class="metric">Simulator-design limits: `21`</div>
+  <div class="metric">Runtime-policy issues: `25`</div>
+  <div class="metric">Product grounding issues: `0`</div>
+  <div class="metric">Callback converted to sale-ready: `5`</div>
+  <div class="metric">Repeated agent answers: `12`</div>
+  <div class="metric">Repeated customer messages: `4`</div>
+  <div class="metric">first fix recommendation: `simulator_termination_and_callback_state_control`</div>
+  <div class="metric">Next checkpoint: `PROD-033-interactive-simulator-termination-fix`</div>
+  <h2>Finding Clusters</h2>
+  <ul><li><strong>callback-terminal-control</strong>: simulator-design-limit, 10 findings. fix first because terminal state quality controls every later interactive metric</li><li><strong>repetition-loop-control</strong>: simulator-design-limit, 16 findings. fix simulator loop termination and answer variation before using traces for demo claims</li><li><strong>visible-decision-policy-alignment</strong>: runtime-policy-issue, 25 findings. runtime decision snapshots need route specialization after the simulator terminal fix</li><li><strong>price-close-readiness</strong>: still-relevant-static-route-gap, 3 findings. price handling is safe but still shows premature-close pressure in the simulator state model</li></ul>
+  <h2>Call Reviews</h2>
+  <table>
+    <thead><tr><th>Seed</th><th>Status</th><th>Findings</th><th>Categories</th><th>Review Note</th></tr></thead>
+    <tbody><tr><td>interactive-price-sensitive</td><td>fix-before-demo</td><td>11</td><td>runtime-policy-issue, simulator-design-limit, still-relevant-static-route-gap</td><td>High-severity callback or terminal-control finding needs a simulator/control fix before demo review.</td></tr><tr><td>interactive-confused-product-fit</td><td>review-before-demo</td><td>8</td><td>runtime-policy-issue, simulator-design-limit, still-relevant-static-route-gap</td><td>Trace is safe but needs policy or simulator review before stronger demo claims.</td></tr><tr><td>interactive-skeptical-trust-gap</td><td>review-before-demo</td><td>5</td><td>runtime-policy-issue, simulator-design-limit</td><td>Trace is safe but needs policy or simulator review before stronger demo claims.</td></tr><tr><td>interactive-busy-callback</td><td>review-before-demo</td><td>9</td><td>runtime-policy-issue, simulator-design-limit</td><td>Trace is safe but needs policy or simulator review before stronger demo claims.</td></tr><tr><td>interactive-existing-provider</td><td>fix-before-demo</td><td>7</td><td>runtime-policy-issue, simulator-design-limit, still-relevant-static-route-gap</td><td>High-severity callback or terminal-control finding needs a simulator/control fix before demo review.</td></tr><tr><td>interactive-stakeholder-review</td><td>fix-before-demo</td><td>12</td><td>runtime-policy-issue, simulator-design-limit, still-relevant-static-route-gap</td><td>High-severity callback or terminal-control finding needs a simulator/control fix before demo review.</td></tr><tr><td>interactive-support-boundary</td><td>review-before-demo</td><td>2</td><td>runtime-policy-issue</td><td>Trace is safe but needs policy or simulator review before stronger demo claims.</td></tr><tr><td>interactive-do-not-call</td><td>clean</td><td>0</td><td>clean</td><td>No PROD-032 review findings; this trace can remain regression evidence.</td></tr></tbody>
+  </table>
+</body>
+</html>

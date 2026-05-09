@@ -1,0 +1,72 @@
+{
+  "checkpoint_id": "PROD-032-interactive-simulation-review",
+  "title": "PROD-032 interactive simulation review",
+  "source_checkpoint_id": "PROD-031-interactive-grounded-call-simulation",
+  "next_checkpoint_recommended": "PROD-033-interactive-simulator-termination-fix",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-032-interactive-simulation-review/result.json",
+    "report_path": "research/experiments/generated/PROD-032-interactive-simulation-review/report.md",
+    "packet_path": "research/experiments/generated/PROD-032-interactive-simulation-review/interactive_simulation_review_packet.json",
+    "trace_html_path": "research/experiments/generated/PROD-032-interactive-simulation-review/interactive_simulation_review_trace.html"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_used": false,
+    "commercial_runtime_prompt_text_from_transcripts_allowed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "source_prod_031_overwritten": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "source_call_count": 8,
+    "source_turn_count": 26,
+    "reviewed_call_count": 8,
+    "reviewed_turn_count": 26,
+    "raw_finding_count": 54,
+    "affected_call_count": 7,
+    "clean_call_count": 1,
+    "simulator_design_limit_count": 21,
+    "runtime_policy_issue_count": 25,
+    "product_grounding_issue_count": 0,
+    "still_relevant_static_route_gap_count": 2,
+    "still_relevant_static_route_gaps": [
+      "callback_request",
+      "price_objection"
+    ],
+    "callback_converted_to_sale_ready_count": 5,
+    "callback_request_converted_to_sale_ready_count": 5,
+    "repeated_agent_answer_count": 12,
+    "repeated_customer_message_count": 4,
+    "decision_snapshot_mismatch_count": 19,
+    "unknown_objection_decision_count": 6,
+    "premature_close_marker_count": 3,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "unsupported_claim_count": 0,
+    "leakage_finding_count": 0,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "production_runtime_promotion_allowed": false,
+    "first_fix_recommendation": "simulator_termination_and_callback_state_control"
+  },
+  "decision": {
+    "interactive_trace_evidence": "accepted-for-review-not-demo-promotion",
+    "first_fix": "simulator_termination_and_callback_state_control",
+    "static_route_gap_cleanup": "defer-until-simulator-terminal-control-is-clean",
+    "runtime_promotion": "blocked",
+    "next_step": "PROD-033-interactive-simulator-termination-fix"
+  }
+}

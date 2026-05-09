@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-032 interactive simulation review
+
+- Objective: inspect the PROD-031 reactive state traces and decide which issues are simulator-design limits, runtime-policy issues, product-grounding issues, or still-relevant static route gaps.
+- Action taken: added the PROD-032 review module, runner, validator, product doc, command-map coverage, setup coverage, drift-guard coverage, generated result/report/review-packet/static-HTML artifacts, and thesis documentation.
+- Data used: the generated PROD-031 result and interactive trace artifacts only. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_032_INTERACTIVE_SIMULATION_REVIEW.md`, `scripts/prod_032_interactive_simulation_review.py`, `scripts/run_prod_032_interactive_simulation_review.py`, `scripts/validate_prod_032_interactive_simulation_review.py`, `research/experiments/generated/PROD-032-interactive-simulation-review/result.json`, `research/experiments/generated/PROD-032-interactive-simulation-review/report.md`, `research/experiments/generated/PROD-032-interactive-simulation-review/interactive_simulation_review_packet.json`, and `research/experiments/generated/PROD-032-interactive-simulation-review/interactive_simulation_review_trace.html`.
+- What was learned: headline metrics can look clean while trace-level review still finds important limitations. PROD-032 found `54` raw findings across `7` affected calls: callback converted to sale-ready `5` times, repeated agent answers `12`, repeated customer messages `4`, decision snapshot mismatches `19`, unknown-objection decisions `6`, and premature close markers `3`. Product grounding issues remained `0`, with hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`.
+- Why it matters for the thesis: the evaluation now separates safe answer content, visible decision-process correctness, simulator realism, and route-gap relevance instead of collapsing them into one success metric.
+- Open questions: whether PROD-033 can remove artificial callback/repetition loops without hiding genuine runtime policy gaps, and which runtime decision trace mismatch should be fixed first after terminal control is clean.
+
 ### 2026-05-09 - PROD-031 interactive grounded call simulation
 
 - Objective: replace weak static customer-turn replay with deterministic reactive customer simulation.
