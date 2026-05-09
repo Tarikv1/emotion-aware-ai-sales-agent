@@ -69,16 +69,16 @@ The campaign enforces stricter insurance rules:
 
 Packet generation completed:
 
-- `research/experiments/generated/PROD-002-evaluation-packet.md`
+- `research/experiments/generated/PROD-002/PROD-002-evaluation-packet.md`
 
 Database-shaped export completed:
 
-- `research/experiments/generated/PROD-002-db-records.json`
+- `research/experiments/generated/PROD-002/PROD-002-db-records.json`
 
 SQLite import completed:
 
-- `research/experiments/generated/PROD-002.sqlite`
-- `research/experiments/generated/PROD-002-sqlite-report.md`
+- `research/experiments/generated/PROD-002/PROD-002.sqlite`
+- `research/experiments/generated/PROD-002/PROD-002-sqlite-report.md`
 
 Validation completed:
 

@@ -91,10 +91,10 @@ Latency:
 
 Generated audio:
 
-- `research/experiments/generated/VOICE-019-C01-en-elevenlabs-prosody.mp3`
-- `research/experiments/generated/VOICE-019-C01-en-elevenlabs-sales_tuned.mp3`
-- `research/experiments/generated/VOICE-019-C02-de-elevenlabs-prosody.mp3`
-- `research/experiments/generated/VOICE-019-C02-de-elevenlabs-sales_tuned.mp3`
+- `research/experiments/generated/VOICE-019/VOICE-019-C01-en-elevenlabs-prosody.mp3`
+- `research/experiments/generated/VOICE-019/VOICE-019-C01-en-elevenlabs-sales_tuned.mp3`
+- `research/experiments/generated/VOICE-019/VOICE-019-C02-de-elevenlabs-prosody.mp3`
+- `research/experiments/generated/VOICE-019/VOICE-019-C02-de-elevenlabs-sales_tuned.mp3`
 
 ## Human Listening Review
 

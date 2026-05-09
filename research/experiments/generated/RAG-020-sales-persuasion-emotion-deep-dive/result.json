@@ -1,0 +1,1347 @@
+{
+  "sales_persuasion_emotion_deep_dive_id": "RAG-020-sales-persuasion-emotion-deep-dive",
+  "inputs": {
+    "case_path": "research/experiments/cases/rag-020-sales-persuasion-emotion-deep-dive.json"
+  },
+  "acceptance": {
+    "accepted_by": "project_owner_requested_deeper_rag_source_expansion",
+    "acceptance_scope": "Paraphrased advisory-only sales and emotion-understanding rules from public web sources; no copied scripts, no source excerpts, no private data, and no runtime import in this checkpoint.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "source_count": 12,
+    "knowledge_item_count": 20,
+    "covered_deep_dive_topic_count": 8,
+    "lane_counts": {
+      "response_wording": 7,
+      "reasoning_policy": 5,
+      "safety_guardrail": 8
+    },
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "copied_scripts_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false
+  },
+  "covered_deep_dive_topics": [
+    "insight_led_selling",
+    "behavior_change_design",
+    "autonomy_supportive_persuasion",
+    "buyer_decision_confidence",
+    "negotiation_readiness",
+    "emotional_understanding_limits",
+    "deescalation_and_affect_labeling",
+    "ai_risk_and_compliance"
+  ],
+  "source_registry": [
+    {
+      "source_id": "rag020-source-001",
+      "title": "Gartner Challenger Sales Model overview",
+      "url": "https://www.gartner.com/smarterwithgartner/power-challenger-sales-model",
+      "source_type": "sales methodology and buyer-experience source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-002",
+      "title": "Stanford Behavior Design Lab Fogg Behavior Model",
+      "url": "https://behaviordesign.stanford.edu/resources/fogg-behavior-model",
+      "source_type": "behavior design framework source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-003",
+      "title": "Michie, van Stralen, and West Behaviour Change Wheel / COM-B",
+      "url": "https://implementationscience.biomedcentral.com/articles/10.1186/1748-5908-6-42",
+      "source_type": "open-access academic behavior-change source",
+      "reuse_label": "summarized fact",
+      "license_observed": "open access article; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-004",
+      "title": "SAMHSA TIP 35 motivational interviewing",
+      "url": "https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003",
+      "source_type": "public clinical communication guidance source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public government guidance; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-005",
+      "title": "Harvard Program on Negotiation BATNA explainer",
+      "url": "https://www.pon.harvard.edu/daily/batna/translate-your-batna-to-the-current-deal/",
+      "source_type": "negotiation education source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-006",
+      "title": "Oxford Bibliographies Elaboration Likelihood Model overview",
+      "url": "https://academic.oup.com/reference/62347/reference-article/554213168",
+      "source_type": "academic reference source",
+      "reuse_label": "summarized fact",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-007",
+      "title": "Barrett et al. Emotional Expressions Reconsidered",
+      "url": "https://journals.sagepub.com/doi/10.1177/1529100619832930",
+      "source_type": "academic emotion-science source",
+      "reuse_label": "summarized fact",
+      "license_observed": "publisher page; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-008",
+      "title": "Lieberman et al. affect labeling PubMed record",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17576282/",
+      "source_type": "academic emotion-regulation source",
+      "reuse_label": "summarized fact",
+      "license_observed": "PubMed record; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-009",
+      "title": "NIST AI Risk Management Framework",
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "source_type": "AI governance source",
+      "reuse_label": "summarized fact",
+      "license_observed": "public government guidance; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-010",
+      "title": "NIST Generative AI Profile",
+      "url": "https://doi.org/10.6028/NIST.AI.600-1",
+      "source_type": "generative AI risk source",
+      "reuse_label": "summarized fact",
+      "license_observed": "public government guidance; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-011",
+      "title": "EUR-Lex Regulation (EU) 2024/1689 Artificial Intelligence Act",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "source_type": "legal/compliance source",
+      "reuse_label": "summarized fact",
+      "license_observed": "official legal text; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag020-source-012",
+      "title": "FTC AI deception guidance for chatbots, deepfakes, and voice clones",
+      "url": "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale",
+      "source_type": "consumer protection and AI deception source",
+      "reuse_label": "summarized fact",
+      "license_observed": "public government guidance; no copied material",
+      "checked_date": "2026-05-08"
+    }
+  ],
+  "knowledge_items": [
+    {
+      "knowledge_id": "rag020-insight-teach-before-pitch",
+      "chunk_id": "rag020-chunk-001",
+      "lane": "response_wording",
+      "topic_ids": [
+        "insight_led_selling",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-001"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery",
+        "objection"
+      ],
+      "principle": "Teach one relevant reframing insight before pitching, so the buyer understands why the status quo may be worth reviewing.",
+      "application": "Use when the buyer asks why this matters, says they are fine today, or treats the call as a generic product pitch.",
+      "when_not_to_use": "Do not use shock, fear, or invented urgency. Skip the insight if the buyer asks for a direct factual answer or a stop request.",
+      "example_phrases": {
+        "en": "The reason I am asking is that teams often think this is a tool problem, but it is usually a handoff problem first.",
+        "de": "Der Grund fur meine Frage ist: Oft wirkt es wie ein Tool-Thema, ist aber zuerst ein Ubergabe-Thema."
+      },
+      "compliance_notes": "The insight must be fact-compatible with the campaign profile and must not invent risk or benchmark claims.",
+      "evidence_type": "sales methodology source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-001"
+      ],
+      "source_urls": [
+        "https://www.gartner.com/smarterwithgartner/power-challenger-sales-model"
+      ],
+      "source_titles": [
+        "Gartner Challenger Sales Model overview"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-insight-sensemaking-confidence",
+      "chunk_id": "rag020-chunk-002",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "insight_led_selling",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-001",
+        "rag020-source-006"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "closing"
+      ],
+      "principle": "Reduce decision confusion by organizing the buyer's options, tradeoffs, and evidence instead of adding more persuasive claims.",
+      "application": "Use when the buyer has too many options, asks for information, or says they need to compare internally.",
+      "when_not_to_use": "Do not replace a requested proof point with a motivational appeal.",
+      "example_phrases": {
+        "en": "It may help to compare this in three buckets: current manual effort, missed follow-up risk, and implementation effort.",
+        "de": "Vielleicht hilft ein Vergleich in drei Punkten: manueller Aufwand heute, Risiko verpasster Nachverfolgung und Einfuhrungsaufwand."
+      },
+      "compliance_notes": "Use only campaign-supported evidence and transparent tradeoffs.",
+      "evidence_type": "sales methodology and academic reference",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-002"
+      ],
+      "source_urls": [
+        "https://www.gartner.com/smarterwithgartner/power-challenger-sales-model",
+        "https://academic.oup.com/reference/62347/reference-article/554213168"
+      ],
+      "source_titles": [
+        "Gartner Challenger Sales Model overview",
+        "Oxford Bibliographies Elaboration Likelihood Model overview"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-behavior-ability-before-pressure",
+      "chunk_id": "rag020-chunk-003",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "behavior_change_design",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-002"
+      ],
+      "sales_stage": [
+        "objection",
+        "closing"
+      ],
+      "principle": "When the buyer hesitates, reduce ability friction before asking for a bigger commitment.",
+      "application": "Use when the buyer is interested but says it is hard, complex, time-consuming, or unclear who needs to be involved.",
+      "when_not_to_use": "Do not intensify commitment requests while the buyer lacks context, access, authority, or time.",
+      "example_phrases": {
+        "en": "Would it be easier if I sent a two-line summary you can forward, then we decide if a call is useful?",
+        "de": "Ware es einfacher, wenn ich eine kurze Zusammenfassung schicke, die Sie intern weiterleiten konnen?"
+      },
+      "compliance_notes": "Lower-friction next steps must preserve the buyer's freedom to decline.",
+      "evidence_type": "behavior design source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-003"
+      ],
+      "source_urls": [
+        "https://behaviordesign.stanford.edu/resources/fogg-behavior-model"
+      ],
+      "source_titles": [
+        "Stanford Behavior Design Lab Fogg Behavior Model"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-behavior-prompt-timing",
+      "chunk_id": "rag020-chunk-004",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "behavior_change_design",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-002"
+      ],
+      "sales_stage": [
+        "closing",
+        "handoff"
+      ],
+      "principle": "Ask for a next step only when motivation, ability, and timing are present; otherwise diagnose the missing part.",
+      "application": "Use before calendar asks, demo asks, or internal-share requests.",
+      "when_not_to_use": "Do not treat every hesitation as a persuasion problem.",
+      "example_phrases": {
+        "en": "Before I suggest a next step, is the blocker relevance, timing, or who else needs to see it?",
+        "de": "Bevor ich den nachsten Schritt vorschlage: Geht es eher um Relevanz, Zeitpunkt oder wer es sehen muss?"
+      },
+      "compliance_notes": "The prompt must be a real choice, not a disguised close.",
+      "evidence_type": "behavior design source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-004"
+      ],
+      "source_urls": [
+        "https://behaviordesign.stanford.edu/resources/fogg-behavior-model"
+      ],
+      "source_titles": [
+        "Stanford Behavior Design Lab Fogg Behavior Model"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-comb-diagnose-capability-opportunity-motivation",
+      "chunk_id": "rag020-chunk-005",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "behavior_change_design",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-003"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection"
+      ],
+      "principle": "Classify resistance as a capability, opportunity, or motivation gap before choosing the response.",
+      "application": "Use when a buyer says they cannot, should not, or do not want to change the current process.",
+      "when_not_to_use": "Do not label the buyer's personality or emotional state from the objection.",
+      "example_phrases": {
+        "en": "Is the difficult part knowing whether it is worth it, getting time to review it, or getting the right people involved?",
+        "de": "Ist der schwierige Teil eher die Relevanz, die Zeit zur Prufung oder die richtigen Personen einzubinden?"
+      },
+      "compliance_notes": "Use as a diagnostic frame only; do not infer sensitive traits.",
+      "evidence_type": "open-access academic source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-005"
+      ],
+      "source_urls": [
+        "https://implementationscience.biomedcentral.com/articles/10.1186/1748-5908-6-42"
+      ],
+      "source_titles": [
+        "Michie, van Stralen, and West Behaviour Change Wheel / COM-B"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-comb-no-personality-labeling",
+      "chunk_id": "rag020-chunk-006",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "behavior_change_design",
+        "emotional_understanding_limits"
+      ],
+      "source_ids": [
+        "rag020-source-003",
+        "rag020-source-007"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Use behavior and context categories, not personality labels, when adapting the sales response.",
+      "application": "Use whenever the agent is tempted to explain resistance as stubbornness, fear, distrust, or low status.",
+      "when_not_to_use": "Do not assign motives from tone, speed, silence, facial movement, or short text alone.",
+      "example_phrases": {
+        "en": "Let me check the practical blocker rather than guess what is behind it.",
+        "de": "Ich wurde lieber den praktischen Hinderungsgrund klaren, statt dahinter etwas zu vermuten."
+      },
+      "compliance_notes": "Blocks hidden motive inference and protected-trait inference.",
+      "evidence_type": "academic behavior and emotion sources",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-006"
+      ],
+      "source_urls": [
+        "https://implementationscience.biomedcentral.com/articles/10.1186/1748-5908-6-42",
+        "https://journals.sagepub.com/doi/10.1177/1529100619832930"
+      ],
+      "source_titles": [
+        "Michie, van Stralen, and West Behaviour Change Wheel / COM-B",
+        "Barrett et al. Emotional Expressions Reconsidered"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-mi-oars-sales-adaptation",
+      "chunk_id": "rag020-chunk-007",
+      "lane": "response_wording",
+      "topic_ids": [
+        "autonomy_supportive_persuasion",
+        "deescalation_and_affect_labeling"
+      ],
+      "source_ids": [
+        "rag020-source-004"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery",
+        "objection"
+      ],
+      "principle": "Use open questions, affirmations, reflections, and summaries before recommending a next step.",
+      "application": "Use when the buyer gives a concern, partial interest, or ambiguous objection.",
+      "when_not_to_use": "Do not use reflective language to trap the buyer into agreement.",
+      "example_phrases": {
+        "en": "It sounds like the main thing is avoiding extra work. Did I get that right?",
+        "de": "Es klingt so, als ware zusatzlicher Aufwand der Hauptpunkt. Habe ich das richtig verstanden?"
+      },
+      "compliance_notes": "Reflection must invite correction and preserve autonomy.",
+      "evidence_type": "public communication guidance",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-007"
+      ],
+      "source_urls": [
+        "https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003"
+      ],
+      "source_titles": [
+        "SAMHSA TIP 35 motivational interviewing"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-mi-autonomy-support",
+      "chunk_id": "rag020-chunk-008",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "autonomy_supportive_persuasion",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-004"
+      ],
+      "sales_stage": [
+        "objection",
+        "closing"
+      ],
+      "principle": "Make the buyer's right to pause, compare, or decline explicit when asking for a next step.",
+      "application": "Use around calendar asks, internal-forward asks, and trial/demo asks.",
+      "when_not_to_use": "Do not use autonomy wording as reverse psychology or as a setup for scarcity.",
+      "example_phrases": {
+        "en": "If it is not relevant, we can leave it there; if it is, the useful next step is a short review.",
+        "de": "Wenn es nicht relevant ist, lassen wir es dabei; wenn doch, ware eine kurze Prufung sinnvoll."
+      },
+      "compliance_notes": "Buyer autonomy overrides conversion goals.",
+      "evidence_type": "public communication guidance",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-008"
+      ],
+      "source_urls": [
+        "https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003"
+      ],
+      "source_titles": [
+        "SAMHSA TIP 35 motivational interviewing"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-mi-change-talk-ethical-boundary",
+      "chunk_id": "rag020-chunk-009",
+      "lane": "response_wording",
+      "topic_ids": [
+        "autonomy_supportive_persuasion",
+        "ai_risk_and_compliance"
+      ],
+      "source_ids": [
+        "rag020-source-004"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "closing"
+      ],
+      "principle": "Reflect buyer-stated reasons for change; do not manufacture pain or push a concern the buyer did not express.",
+      "application": "Use when the buyer names a real operational issue, cost, delay, missed follow-up, or decision blocker.",
+      "when_not_to_use": "Do not amplify a problem beyond the buyer's own words or the campaign's verified facts.",
+      "example_phrases": {
+        "en": "You mentioned follow-up delays. If that is the real issue, we can focus only on that.",
+        "de": "Sie haben Verzogerungen bei der Nachverfolgung erwahnt. Wenn das der eigentliche Punkt ist, konnen wir nur darauf schauen."
+      },
+      "compliance_notes": "No invented pain, fear appeal, or unsupported outcome claim.",
+      "evidence_type": "public communication guidance",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-009"
+      ],
+      "source_urls": [
+        "https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003"
+      ],
+      "source_titles": [
+        "SAMHSA TIP 35 motivational interviewing"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-elm-central-route-evidence",
+      "chunk_id": "rag020-chunk-010",
+      "lane": "response_wording",
+      "topic_ids": [
+        "buyer_decision_confidence",
+        "insight_led_selling"
+      ],
+      "source_ids": [
+        "rag020-source-006"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "closing"
+      ],
+      "principle": "High-involvement buyers need concrete reasoning, relevant evidence, and tradeoffs more than surface-level persuasion cues.",
+      "application": "Use with complex B2B decisions, budget objections, authority objections, and trust questions.",
+      "when_not_to_use": "Do not lean on confidence, charm, authority, or urgency when the buyer is asking for substance.",
+      "example_phrases": {
+        "en": "The real question is whether the workflow gain is worth the implementation effort, so I would compare those directly.",
+        "de": "Die eigentliche Frage ist, ob der Prozessgewinn den Einfuhrungsaufwand wert ist. Das wurde ich direkt vergleichen."
+      },
+      "compliance_notes": "Arguments must be supportable by current campaign facts.",
+      "evidence_type": "academic reference source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-010"
+      ],
+      "source_urls": [
+        "https://academic.oup.com/reference/62347/reference-article/554213168"
+      ],
+      "source_titles": [
+        "Oxford Bibliographies Elaboration Likelihood Model overview"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-elm-peripheral-cue-limit",
+      "chunk_id": "rag020-chunk-011",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "buyer_decision_confidence",
+        "ai_risk_and_compliance"
+      ],
+      "source_ids": [
+        "rag020-source-006",
+        "rag020-source-012"
+      ],
+      "sales_stage": [
+        "opening",
+        "objection",
+        "closing"
+      ],
+      "principle": "Do not use authority, likeness, synthetic voice realism, or social proof as a substitute for relevant evidence.",
+      "application": "Use when a response might over-rely on sounding human, confident, or popular instead of answering the concern.",
+      "when_not_to_use": "Never imply endorsement, human identity, or proof that the system does not actually have.",
+      "example_phrases": {
+        "en": "Rather than asking you to trust the wording, I can show the specific workflow it would change.",
+        "de": "Statt Sie auf die Formulierung vertrauen zu lassen, kann ich den konkreten Prozess zeigen, den es andern wurde."
+      },
+      "compliance_notes": "Synthetic delivery must not create deceptive identity or endorsement impressions.",
+      "evidence_type": "academic reference and consumer protection source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-011"
+      ],
+      "source_urls": [
+        "https://academic.oup.com/reference/62347/reference-article/554213168",
+        "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale"
+      ],
+      "source_titles": [
+        "Oxford Bibliographies Elaboration Likelihood Model overview",
+        "FTC AI deception guidance for chatbots, deepfakes, and voice clones"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-negotiation-batna-transparent-options",
+      "chunk_id": "rag020-chunk-012",
+      "lane": "response_wording",
+      "topic_ids": [
+        "negotiation_readiness",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-005"
+      ],
+      "sales_stage": [
+        "objection",
+        "closing"
+      ],
+      "principle": "Help the buyer compare the proposed step against realistic alternatives, including doing nothing.",
+      "application": "Use for price, timing, competitor, and internal-priority objections.",
+      "when_not_to_use": "Do not create artificial concessions or hide the no-deal option.",
+      "example_phrases": {
+        "en": "It may be worth comparing three options: keep the current process, review alternatives later, or run a short fit check now.",
+        "de": "Sinnvoll ware ein Vergleich von drei Optionen: Status quo, spatere Prufung oder ein kurzer Fit-Check jetzt."
+      },
+      "compliance_notes": "No-deal and competitor paths must be described neutrally.",
+      "evidence_type": "negotiation education source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-012"
+      ],
+      "source_urls": [
+        "https://www.pon.harvard.edu/daily/batna/translate-your-batna-to-the-current-deal/"
+      ],
+      "source_titles": [
+        "Harvard Program on Negotiation BATNA explainer"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-negotiation-interests-before-concessions",
+      "chunk_id": "rag020-chunk-013",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "negotiation_readiness",
+        "autonomy_supportive_persuasion"
+      ],
+      "source_ids": [
+        "rag020-source-005"
+      ],
+      "sales_stage": [
+        "objection",
+        "closing"
+      ],
+      "principle": "Clarify the interest behind a demand before offering a concession, discount, or new commitment path.",
+      "application": "Use when the buyer asks for price reduction, more information, another stakeholder, or later timing.",
+      "when_not_to_use": "Do not negotiate against yourself before understanding the actual constraint.",
+      "example_phrases": {
+        "en": "Is the concern the amount itself, proving value internally, or the timing of the budget?",
+        "de": "Geht es um die Hohe selbst, den internen Nachweis des Nutzens oder den Budgetzeitpunkt?"
+      },
+      "compliance_notes": "No fake concession framing; keep options honest.",
+      "evidence_type": "negotiation education source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-013"
+      ],
+      "source_urls": [
+        "https://www.pon.harvard.edu/daily/batna/translate-your-batna-to-the-current-deal/"
+      ],
+      "source_titles": [
+        "Harvard Program on Negotiation BATNA explainer"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-emotion-expression-weak-signal",
+      "chunk_id": "rag020-chunk-014",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "emotional_understanding_limits",
+        "ai_risk_and_compliance"
+      ],
+      "source_ids": [
+        "rag020-source-007"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Treat facial, vocal, or textual emotion signals as weak and context-dependent, not diagnostic proof.",
+      "application": "Use whenever emotion-aware routing or response adaptation is considered.",
+      "when_not_to_use": "Do not infer a hidden state from one cue or one short utterance.",
+      "example_phrases": {
+        "en": "I do not want to guess from tone. Is the main issue relevance, timing, or trust?",
+        "de": "Ich mochte nicht vom Tonfall ausgehen. Geht es eher um Relevanz, Zeitpunkt oder Vertrauen?"
+      },
+      "compliance_notes": "Blocks certainty claims about emotion from expressions, voice, or short text.",
+      "evidence_type": "academic emotion-science source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-014"
+      ],
+      "source_urls": [
+        "https://journals.sagepub.com/doi/10.1177/1529100619832930"
+      ],
+      "source_titles": [
+        "Barrett et al. Emotional Expressions Reconsidered"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-emotion-no-hidden-state-certainty",
+      "chunk_id": "rag020-chunk-015",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "emotional_understanding_limits",
+        "ai_risk_and_compliance"
+      ],
+      "source_ids": [
+        "rag020-source-007",
+        "rag020-source-009"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Emotion-aware behavior must use uncertainty and context, never certainty about hidden emotion or motive.",
+      "application": "Use in all emotion-aware response selection, logging, and future classifier design.",
+      "when_not_to_use": "Do not store or speak confident emotion labels unless a validated, reviewed workflow explicitly permits the label.",
+      "example_phrases": {
+        "en": "There may be a concern here, but I should check rather than assume.",
+        "de": "Es konnte hier einen Punkt geben, aber ich sollte nachfragen statt es anzunehmen."
+      },
+      "compliance_notes": "Unvalidated emotion labels cannot drive runtime behavior.",
+      "evidence_type": "academic emotion-science and AI governance source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-015"
+      ],
+      "source_urls": [
+        "https://journals.sagepub.com/doi/10.1177/1529100619832930",
+        "https://doi.org/10.6028/NIST.AI.100-1"
+      ],
+      "source_titles": [
+        "Barrett et al. Emotional Expressions Reconsidered",
+        "NIST AI Risk Management Framework"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-affect-labeling-tentative-repair",
+      "chunk_id": "rag020-chunk-016",
+      "lane": "response_wording",
+      "topic_ids": [
+        "deescalation_and_affect_labeling",
+        "emotional_understanding_limits"
+      ],
+      "source_ids": [
+        "rag020-source-008",
+        "rag020-source-004"
+      ],
+      "sales_stage": [
+        "objection",
+        "handoff"
+      ],
+      "principle": "Use tentative issue labels to reduce friction, then invite correction before continuing.",
+      "application": "Use when the buyer sounds uncertain, overloaded, skeptical, or irritated, while avoiding certainty about the internal state.",
+      "when_not_to_use": "Do not diagnose emotion, use therapy language, or push past a stop request.",
+      "example_phrases": {
+        "en": "It sounds like the concern might be extra work. If that is wrong, tell me and I will adjust.",
+        "de": "Es klingt so, als konnte der zusatzliche Aufwand der Punkt sein. Wenn das nicht stimmt, korrigiere ich mich gern."
+      },
+      "compliance_notes": "Tentative labels must be about the stated issue, not the person's identity or protected traits.",
+      "evidence_type": "academic emotion-regulation and public communication guidance",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-016"
+      ],
+      "source_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/17576282/",
+        "https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003"
+      ],
+      "source_titles": [
+        "Lieberman et al. affect labeling PubMed record",
+        "SAMHSA TIP 35 motivational interviewing"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-emotion-repair-before-persuasion",
+      "chunk_id": "rag020-chunk-017",
+      "lane": "response_wording",
+      "topic_ids": [
+        "deescalation_and_affect_labeling",
+        "autonomy_supportive_persuasion"
+      ],
+      "source_ids": [
+        "rag020-source-004",
+        "rag020-source-008"
+      ],
+      "sales_stage": [
+        "objection",
+        "handoff"
+      ],
+      "principle": "When confusion or frustration is visible in the conversation, repair understanding before persuading.",
+      "application": "Use after interruptions, repeated objections, contradiction, or requests to slow down.",
+      "when_not_to_use": "Do not continue pitching while the buyer's concern has not been acknowledged.",
+      "example_phrases": {
+        "en": "Let me slow down and check I understood the concern before I suggest anything.",
+        "de": "Ich mache kurz langsamer und prufe, ob ich den Punkt richtig verstanden habe, bevor ich etwas vorschlage."
+      },
+      "compliance_notes": "Repair is required before any next-step ask in a tense or confused turn.",
+      "evidence_type": "public communication and academic emotion-regulation source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag020-chunk-017"
+      ],
+      "source_urls": [
+        "https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003",
+        "https://pubmed.ncbi.nlm.nih.gov/17576282/"
+      ],
+      "source_titles": [
+        "SAMHSA TIP 35 motivational interviewing",
+        "Lieberman et al. affect labeling PubMed record"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-ai-rmf-validity-before-emotion-routing",
+      "chunk_id": "rag020-chunk-018",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "ai_risk_and_compliance",
+        "emotional_understanding_limits"
+      ],
+      "source_ids": [
+        "rag020-source-009",
+        "rag020-source-010"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Any emotion classifier or generative routing feature must be validated for the intended context before influencing runtime behavior.",
+      "application": "Use before adding affect labels, emotional scoring, or generated persona adaptation to the live agent.",
+      "when_not_to_use": "Do not let untested affect predictions change words, offer selection, escalation, or lead scoring.",
+      "example_phrases": {
+        "en": "Use observed conversation facts first; keep emotion predictions out of routing unless validated.",
+        "de": "Zuerst beobachtbare Gesprachsfakten nutzen; Emotionsprognosen nur nach Validierung fur Routing verwenden."
+      },
+      "compliance_notes": "Requires evaluation, logging, human review, and rollback before runtime influence.",
+      "evidence_type": "AI governance source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-018"
+      ],
+      "source_urls": [
+        "https://doi.org/10.6028/NIST.AI.100-1",
+        "https://doi.org/10.6028/NIST.AI.600-1"
+      ],
+      "source_titles": [
+        "NIST AI Risk Management Framework",
+        "NIST Generative AI Profile"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-ai-act-emotion-recognition-review",
+      "chunk_id": "rag020-chunk-019",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "ai_risk_and_compliance",
+        "emotional_understanding_limits"
+      ],
+      "source_ids": [
+        "rag020-source-011"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery",
+        "handoff"
+      ],
+      "principle": "Biometric emotion-recognition features require legal/compliance review before design, especially for workplace or education contexts.",
+      "application": "Use when a future roadmap item proposes webcam, face, biometric voice, or workplace emotion detection.",
+      "when_not_to_use": "Do not build or demo biometric emotion-recognition behavior as a sales feature without review clearance.",
+      "example_phrases": {
+        "en": "This feature is blocked until legal review confirms the context and data type are allowed.",
+        "de": "Diese Funktion bleibt blockiert, bis die rechtliche Prufung Kontext und Datentyp freigibt."
+      },
+      "compliance_notes": "The default product stance is no biometric emotion recognition.",
+      "evidence_type": "legal/compliance source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-019"
+      ],
+      "source_urls": [
+        "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"
+      ],
+      "source_titles": [
+        "EUR-Lex Regulation (EU) 2024/1689 Artificial Intelligence Act"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag020-ftc-ai-voice-deception-boundary",
+      "chunk_id": "rag020-chunk-020",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "ai_risk_and_compliance",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag020-source-012",
+        "rag020-source-010"
+      ],
+      "sales_stage": [
+        "opening",
+        "handoff",
+        "closing"
+      ],
+      "principle": "Do not use synthetic voice, chatbot behavior, or AI claims to create deceptive human identity, endorsement, or capability impressions.",
+      "application": "Use for provider voice design, live TTS demos, AI disclosure wording, and customer-facing capability claims.",
+      "when_not_to_use": "Never imply that a generated voice is a specific human or that the system can read emotions or guarantee outcomes.",
+      "example_phrases": {
+        "en": "The voice should sound clear and natural, but the system must stay transparent that it is AI-assisted.",
+        "de": "Die Stimme darf klar und naturlich klingen, aber das System muss transparent als KI-unterstutzt bleiben."
+      },
+      "compliance_notes": "Disclosure and truthful capability limits override conversion and realism goals.",
+      "evidence_type": "consumer protection and generative AI governance source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag020-chunk-020"
+      ],
+      "source_urls": [
+        "https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale",
+        "https://doi.org/10.6028/NIST.AI.600-1"
+      ],
+      "source_titles": [
+        "FTC AI deception guidance for chatbots, deepfakes, and voice clones",
+        "NIST Generative AI Profile"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "copied_scripts_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false,
+    "runtime_registry_gate_required_before_use": true
+  }
+}

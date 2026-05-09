@@ -1,0 +1,1444 @@
+{
+  "prod_011_id": "PROD-011-dialogue-policy-hardening",
+  "source_checkpoint": "PROD-010-long-call-universal-objections",
+  "policy_id": "brain_002_dialogue_policy_hardening_v1",
+  "runtime_behavior_changed": false,
+  "retrieval_default": "disabled",
+  "fixture_candidate_packets_used": false,
+  "editable_surface": "dialogue_policy_rules",
+  "protocol": {
+    "fixed_cases": true,
+    "dialogue_policy_hardening": true,
+    "uses_prod_010_packet_evidence": true,
+    "runtime_promotion": false,
+    "dataset_download": false,
+    "provider_calls": false,
+    "private_data": false,
+    "commercial_runtime_prompt_contamination": false
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "commercial_runtime_prompt_contamination": false,
+    "runtime_behavior_changed": false
+  },
+  "summary": {
+    "call_count": 7,
+    "turn_count": 49,
+    "policy_decision_count": 49,
+    "domain_count": 7,
+    "universal_objection_count": 14,
+    "eligible_close_count": 2,
+    "non_sale_call_count": 5,
+    "baseline": {
+      "safe_close_rate": 0.0,
+      "hard_failure_rate": 0.8571,
+      "non_sale_correctness": 0.0,
+      "policy_action_correctness": 0.1429,
+      "blocked_action_avoidance": 0.1429,
+      "objection_stack_preservation": 0.0,
+      "state_reference_completeness": 0.0,
+      "call_control_correctness": 0.1429,
+      "close_attempt_quality": 0.3257
+    },
+    "hardened": {
+      "safe_close_rate": 1.0,
+      "hard_failure_rate": 0.0,
+      "non_sale_correctness": 1.0,
+      "policy_action_correctness": 1.0,
+      "blocked_action_avoidance": 1.0,
+      "objection_stack_preservation": 1.0,
+      "state_reference_completeness": 1.0,
+      "call_control_correctness": 1.0,
+      "close_attempt_quality": 0.9214
+    },
+    "retrieval_enabled_count": 0,
+    "provider_calls_made": false,
+    "private_data_read": false,
+    "max_latency_ms": 16,
+    "acceptable_latency_ms": 150,
+    "decision": "keep_dialogue_policy_hardening_for_runtime_design_not_runtime_promotion"
+  },
+  "calls": [
+    {
+      "call_id": "PROD-010-C01",
+      "domain": "telecom",
+      "scenario_label": "telecom_multi_objection_sale",
+      "eligible_for_close": true,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C01-T01",
+          "policy_action": "value-clarify",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C01-T02",
+          "policy_action": "value-clarify",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C01-T03",
+          "policy_action": "fair-compare",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C01-T04",
+          "policy_action": "fair-compare",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C01-T05",
+          "policy_action": "autonomy-check",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C01-T06",
+          "policy_action": "autonomy-check",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C01-T07",
+          "policy_action": "close-and-log-sale-ready",
+          "call_control": "close-and-log-sale-ready",
+          "sale_ready": true,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "competitor",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C01",
+            "turn_id": "PROD-010-C01-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "close-and-log-sale-ready",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false,
+        "hard_failure": false
+      }
+    },
+    {
+      "call_id": "PROD-010-C02",
+      "domain": "b2b_software",
+      "scenario_label": "b2b_procurement_authority_delay",
+      "eligible_for_close": false,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C02-T01",
+          "policy_action": "clarify-fit",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C02-T02",
+          "policy_action": "clarify-fit",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C02-T03",
+          "policy_action": "stakeholder-review",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C02-T04",
+          "policy_action": "stakeholder-review",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C02-T05",
+          "policy_action": "procurement-review",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C02-T06",
+          "policy_action": "procurement-review",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C02-T07",
+          "policy_action": "procurement-review",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "authority",
+            "procurement",
+            "timing"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C02",
+            "turn_id": "PROD-010-C02-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "procurement-review",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": true,
+        "hard_failure": false
+      }
+    },
+    {
+      "call_id": "PROD-010-C03",
+      "domain": "insurance_service",
+      "scenario_label": "insurance_privacy_claim_boundary",
+      "eligible_for_close": false,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C03-T01",
+          "policy_action": "clarify-fit",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C03-T02",
+          "policy_action": "claim-boundary-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C03-T03",
+          "policy_action": "claim-boundary-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C03-T04",
+          "policy_action": "claim-boundary-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C03-T05",
+          "policy_action": "privacy-safe-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C03-T06",
+          "policy_action": "privacy-safe-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C03-T07",
+          "policy_action": "privacy-safe-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "privacy",
+            "claim_boundary",
+            "trust"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C03",
+            "turn_id": "PROD-010-C03-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "privacy-safe-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true,
+        "hard_failure": false
+      }
+    },
+    {
+      "call_id": "PROD-010-C04",
+      "domain": "medical_equipment",
+      "scenario_label": "medical_technical_safety_escalation",
+      "eligible_for_close": false,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C04-T01",
+          "policy_action": "clarify-fit",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C04-T02",
+          "policy_action": "technical-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C04-T03",
+          "policy_action": "technical-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C04-T04",
+          "policy_action": "technical-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C04-T05",
+          "policy_action": "trust-repair",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C04-T06",
+          "policy_action": "technical-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C04-T07",
+          "policy_action": "technical-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "technical_risk",
+            "trust",
+            "claim_boundary"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C04",
+            "turn_id": "PROD-010-C04-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "technical-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true,
+        "hard_failure": false
+      }
+    },
+    {
+      "call_id": "PROD-010-C05",
+      "domain": "membership_service",
+      "scenario_label": "membership_angry_refusal",
+      "eligible_for_close": false,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C05-T01",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C05-T02",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C05-T03",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C05-T04",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C05-T05",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C05-T06",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C05-T07",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "anger",
+            "cancellation",
+            "status_quo"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C05",
+            "turn_id": "PROD-010-C05-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "end-call",
+        "call_control": "end-call",
+        "sale_ready": false,
+        "non_sale_correct": true,
+        "hard_failure": false
+      }
+    },
+    {
+      "call_id": "PROD-010-C06",
+      "domain": "home_service",
+      "scenario_label": "home_service_support_upsell_trap",
+      "eligible_for_close": false,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C06-T01",
+          "policy_action": "support-first-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C06-T02",
+          "policy_action": "support-first-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C06-T03",
+          "policy_action": "trust-repair",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C06-T04",
+          "policy_action": "trust-repair",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C06-T05",
+          "policy_action": "end-call",
+          "call_control": "end-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C06-T06",
+          "policy_action": "support-first-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C06-T07",
+          "policy_action": "support-first-escalation",
+          "call_control": "transfer-or-escalate",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "support",
+            "trust",
+            "anger"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C06",
+            "turn_id": "PROD-010-C06-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "support-first-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true,
+        "hard_failure": false
+      }
+    },
+    {
+      "call_id": "PROD-010-C07",
+      "domain": "retail_product",
+      "scenario_label": "retail_multi_objection_sale",
+      "eligible_for_close": true,
+      "policy_decisions": [
+        {
+          "turn_id": "PROD-010-C07-T01",
+          "policy_action": "clarify-fit",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T01",
+            "turn_position": 1,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C07-T02",
+          "policy_action": "clarify-fit",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T02",
+            "turn_position": 2,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        },
+        {
+          "turn_id": "PROD-010-C07-T03",
+          "policy_action": "value-clarify",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T03",
+            "turn_position": 3,
+            "turn_count": 7
+          },
+          "latency_ms": 15
+        },
+        {
+          "turn_id": "PROD-010-C07-T04",
+          "policy_action": "value-clarify",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T04",
+            "turn_position": 4,
+            "turn_count": 7
+          },
+          "latency_ms": 16
+        },
+        {
+          "turn_id": "PROD-010-C07-T05",
+          "policy_action": "fair-compare",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T05",
+            "turn_position": 5,
+            "turn_count": 7
+          },
+          "latency_ms": 12
+        },
+        {
+          "turn_id": "PROD-010-C07-T06",
+          "policy_action": "autonomy-check",
+          "call_control": "continue-call",
+          "sale_ready": false,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T06",
+            "turn_position": 6,
+            "turn_count": 7
+          },
+          "latency_ms": 13
+        },
+        {
+          "turn_id": "PROD-010-C07-T07",
+          "policy_action": "close-and-log-sale-ready",
+          "call_control": "close-and-log-sale-ready",
+          "sale_ready": true,
+          "non_sale_correct": false,
+          "hard_failure": false,
+          "retrieval_enabled": false,
+          "provider_calls_made": false,
+          "private_data_read": false,
+          "blocked_actions_avoided": true,
+          "universal_objections_seen": [
+            "price",
+            "fit_risk",
+            "competitor"
+          ],
+          "source_packet_reference": {
+            "source_checkpoint": "PROD-010-long-call-universal-objections",
+            "policy_id": "brain_002_dialogue_policy_hardening_v1",
+            "call_id": "PROD-010-C07",
+            "turn_id": "PROD-010-C07-T07",
+            "turn_position": 7,
+            "turn_count": 7
+          },
+          "latency_ms": 14
+        }
+      ],
+      "final_policy": {
+        "policy_action": "close-and-log-sale-ready",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false,
+        "hard_failure": false
+      }
+    }
+  ]
+}

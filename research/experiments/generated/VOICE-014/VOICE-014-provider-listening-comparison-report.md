@@ -40,13 +40,13 @@ No provider calls were made. This comparison uses local generated audio artifact
 - Lower total-latency provider: `elevenlabs`
 
 - Cartesia Sonic 3 WebSocket:
-  audio: `research\experiments\generated\VOICE-011-C01-de-cartesia-websocket.wav`
+  audio: `research/experiments/generated/VOICE-011/VOICE-011-C01-de-cartesia-websocket.wav`
   exists: `True`
   first audio: `400.619 ms`
   total latency: `4490.608 ms`
   bytes: `612306`
 - ElevenLabs HTTP Stream:
-  audio: `research\experiments\generated\VOICE-013-C01-de-elevenlabs-stream.mp3`
+  audio: `research/experiments/generated/VOICE-013/VOICE-013-C01-de-elevenlabs-stream.mp3`
   exists: `True`
   first audio: `507.54 ms`
   total latency: `1112.927 ms`
@@ -62,13 +62,13 @@ No provider calls were made. This comparison uses local generated audio artifact
 - Lower total-latency provider: `elevenlabs`
 
 - Cartesia Sonic 3 WebSocket:
-  audio: `research\experiments\generated\VOICE-011-C02-de-cartesia-websocket.wav`
+  audio: `research/experiments/generated/VOICE-011/VOICE-011-C02-de-cartesia-websocket.wav`
   exists: `True`
   first audio: `330.179 ms`
   total latency: `4988.674 ms`
   bytes: `621222`
 - ElevenLabs HTTP Stream:
-  audio: `research\experiments\generated\VOICE-013-C02-de-elevenlabs-stream.mp3`
+  audio: `research/experiments/generated/VOICE-013/VOICE-013-C02-de-elevenlabs-stream.mp3`
   exists: `True`
   first audio: `258.46 ms`
   total latency: `891.199 ms`
@@ -84,13 +84,13 @@ No provider calls were made. This comparison uses local generated audio artifact
 - Lower total-latency provider: `elevenlabs`
 
 - Cartesia Sonic 3 WebSocket:
-  audio: `research\experiments\generated\VOICE-011-C03-en-cartesia-websocket.wav`
+  audio: `research/experiments/generated/VOICE-011/VOICE-011-C03-en-cartesia-websocket.wav`
   exists: `True`
   first audio: `328.734 ms`
   total latency: `4493.621 ms`
   bytes: `650944`
 - ElevenLabs HTTP Stream:
-  audio: `research\experiments\generated\VOICE-013-C03-en-elevenlabs-stream.mp3`
+  audio: `research/experiments/generated/VOICE-013/VOICE-013-C03-en-elevenlabs-stream.mp3`
   exists: `True`
   first audio: `219.971 ms`
   total latency: `843.897 ms`
@@ -106,13 +106,13 @@ No provider calls were made. This comparison uses local generated audio artifact
 - Lower total-latency provider: `elevenlabs`
 
 - Cartesia Sonic 3 WebSocket:
-  audio: `research\experiments\generated\VOICE-011-C04-en-cartesia-websocket.wav`
+  audio: `research/experiments/generated/VOICE-011/VOICE-011-C04-en-cartesia-websocket.wav`
   exists: `True`
   first audio: `286.607 ms`
   total latency: `4899.123 ms`
   bytes: `671750`
 - ElevenLabs HTTP Stream:
-  audio: `research\experiments\generated\VOICE-013-C04-en-elevenlabs-stream.mp3`
+  audio: `research/experiments/generated/VOICE-013/VOICE-013-C04-en-elevenlabs-stream.mp3`
   exists: `True`
   first audio: `240.191 ms`
   total latency: `793.956 ms`

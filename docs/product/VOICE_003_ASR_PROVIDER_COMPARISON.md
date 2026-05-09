@@ -32,8 +32,8 @@ Example:
 ```powershell
 python scripts\compare_asr_providers.py `
   --providers research\experiments\cases\voice-003-asr-provider-candidates.json `
-  --out research\experiments\generated\VOICE-003-asr-provider-comparison.json `
-  --report-out research\experiments\generated\VOICE-003-asr-provider-comparison-report.md
+  --out research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison.json `
+  --report-out research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison-report.md
 ```
 
 No API calls are made and no audio is uploaded.
@@ -76,8 +76,8 @@ Downstream realtime sales-agent logic should consume only that boundary.
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-003-asr-provider-comparison.json
-research/experiments/generated/VOICE-003-asr-provider-comparison-report.md
+research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison.json
+research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison-report.md
 ```
 
 ## Validation

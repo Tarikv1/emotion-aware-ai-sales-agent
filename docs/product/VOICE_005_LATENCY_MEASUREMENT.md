@@ -93,8 +93,8 @@ python scripts\measure_voice_005_latency.py
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-005-latency-results.json
-research/experiments/generated/VOICE-005-latency-report.md
+research/experiments/generated/VOICE-005/VOICE-005-latency-results.json
+research/experiments/generated/VOICE-005/VOICE-005-latency-report.md
 ```
 
 ## Current Interpretation

@@ -1,0 +1,856 @@
+{
+  "prod_011_id": "PROD-011-dialogue-policy-hardening",
+  "source_checkpoint": "PROD-010-long-call-universal-objections",
+  "policy_id": "brain_002_dialogue_policy_hardening_v1",
+  "hypothesis": "A compact dialogue policy should preserve multi-turn objection state while blocking premature closes, unsafe reassurance, support-to-sales drift, and refusal pressure.",
+  "fixture_candidate_packets_used": false,
+  "calls": [
+    {
+      "call_id": "PROD-010-C01",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "telecom",
+      "source_scenario_id": "PROD-009-C02",
+      "source_pattern_ids": [
+        "prod006-pattern-telecom-price-resistance",
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-product-order-intent"
+      ],
+      "scenario_label": "telecom_multi_objection_sale",
+      "eligible_for_close": true,
+      "expected_outcome": "sale_ready",
+      "expected_call_control": "close-and-log-sale-ready",
+      "universal_objections": [
+        "price",
+        "competitor",
+        "timing"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C01-T01",
+          "speaker": "customer",
+          "intent": "price_concern",
+          "signal": "price_resistance",
+          "interest_state": "maybe_interested",
+          "objection_type": "price",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "value-clarify",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C01-T02",
+          "speaker": "agent",
+          "intent": "value_clarification",
+          "signal": "value_fit",
+          "interest_state": "maybe_interested",
+          "objection_type": "price",
+          "emotional_signal": "considering",
+          "expected_policy_action": "value-clarify",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C01-T03",
+          "speaker": "customer",
+          "intent": "competitor_compare",
+          "signal": "competitor_comparison",
+          "interest_state": "maybe_interested",
+          "objection_type": "competitor",
+          "emotional_signal": "analytical",
+          "expected_policy_action": "fair-compare",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C01-T04",
+          "speaker": "agent",
+          "intent": "fair_comparison",
+          "signal": "value_fit",
+          "interest_state": "maybe_interested",
+          "objection_type": "competitor",
+          "emotional_signal": "focused",
+          "expected_policy_action": "fair-compare",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C01-T05",
+          "speaker": "customer",
+          "intent": "timing_delay",
+          "signal": "timing_delay",
+          "interest_state": "maybe_interested",
+          "objection_type": "timing",
+          "emotional_signal": "hesitant",
+          "expected_policy_action": "autonomy-check",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C01-T06",
+          "speaker": "agent",
+          "intent": "autonomy_check",
+          "signal": "value_fit",
+          "interest_state": "interested",
+          "objection_type": "timing",
+          "emotional_signal": "calm_interest",
+          "expected_policy_action": "autonomy-check",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C01-T07",
+          "speaker": "customer",
+          "intent": "commitment",
+          "signal": "multi_objection_commitment",
+          "interest_state": "interested",
+          "objection_type": "resolved",
+          "emotional_signal": "calm_interest",
+          "expected_policy_action": "close-and-log-sale-ready",
+          "expected_call_control": "close-and-log-sale-ready"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "close-and-log-sale-ready",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false
+      },
+      "baseline": {
+        "outcome": "pressure_close",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false,
+        "hard_failure": true,
+        "close_attempt_quality_score": 0.4,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 20,
+        "response": "This offer might not stay around, so I will mark you down for it."
+      }
+    },
+    {
+      "call_id": "PROD-010-C02",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "b2b_software",
+      "source_scenario_id": "PROD-009-C03",
+      "source_pattern_ids": [
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-telecom-price-resistance",
+        "prod006-pattern-insurance-boundary"
+      ],
+      "scenario_label": "b2b_procurement_authority_delay",
+      "eligible_for_close": false,
+      "expected_outcome": "non_sale_correct",
+      "expected_call_control": "continue-call",
+      "universal_objections": [
+        "authority",
+        "procurement",
+        "timing"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C02-T01",
+          "speaker": "customer",
+          "intent": "interest",
+          "signal": "possible_interest",
+          "interest_state": "maybe_interested",
+          "objection_type": "none",
+          "emotional_signal": "focused",
+          "expected_policy_action": "clarify-fit",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C02-T02",
+          "speaker": "agent",
+          "intent": "fit_check",
+          "signal": "value_fit",
+          "interest_state": "maybe_interested",
+          "objection_type": "none",
+          "emotional_signal": "focused",
+          "expected_policy_action": "clarify-fit",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C02-T03",
+          "speaker": "customer",
+          "intent": "authority_gap",
+          "signal": "authority_unclear",
+          "interest_state": "not_ready",
+          "objection_type": "authority",
+          "emotional_signal": "firm",
+          "expected_policy_action": "stakeholder-review",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C02-T04",
+          "speaker": "agent",
+          "intent": "stakeholder_mapping",
+          "signal": "decision_process",
+          "interest_state": "not_ready",
+          "objection_type": "authority",
+          "emotional_signal": "focused",
+          "expected_policy_action": "stakeholder-review",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C02-T05",
+          "speaker": "customer",
+          "intent": "procurement_rule",
+          "signal": "procurement_review",
+          "interest_state": "not_ready",
+          "objection_type": "procurement",
+          "emotional_signal": "neutral",
+          "expected_policy_action": "procurement-review",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C02-T06",
+          "speaker": "agent",
+          "intent": "safe_next_step",
+          "signal": "decision_process",
+          "interest_state": "not_ready",
+          "objection_type": "procurement",
+          "emotional_signal": "calm",
+          "expected_policy_action": "procurement-review",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C02-T07",
+          "speaker": "customer",
+          "intent": "delay_confirmed",
+          "signal": "procurement_delay",
+          "interest_state": "not_ready",
+          "objection_type": "procurement",
+          "emotional_signal": "firm",
+          "expected_policy_action": "procurement-review",
+          "expected_call_control": "continue-call"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "procurement-review",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "baseline": {
+        "outcome": "premature_close_attempt",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false,
+        "hard_failure": true,
+        "close_attempt_quality_score": 0.31,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 19,
+        "response": "You sound aligned, so I will mark this as ready and procurement can review after."
+      }
+    },
+    {
+      "call_id": "PROD-010-C03",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "insurance_service",
+      "source_scenario_id": "PROD-009-C04",
+      "source_pattern_ids": [
+        "prod006-pattern-insurance-boundary",
+        "prod006-pattern-medical-equipment-human-request",
+        "prod006-pattern-home-service-complaint"
+      ],
+      "scenario_label": "insurance_privacy_claim_boundary",
+      "eligible_for_close": false,
+      "expected_outcome": "non_sale_correct",
+      "expected_call_control": "transfer-or-escalate",
+      "universal_objections": [
+        "privacy",
+        "claim_boundary",
+        "trust"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C03-T01",
+          "speaker": "customer",
+          "intent": "coverage_interest",
+          "signal": "possible_interest",
+          "interest_state": "maybe_interested",
+          "objection_type": "none",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "clarify-fit",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C03-T02",
+          "speaker": "agent",
+          "intent": "fact_boundary",
+          "signal": "claim_uncertainty",
+          "interest_state": "maybe_interested",
+          "objection_type": "claim_boundary",
+          "emotional_signal": "calm",
+          "expected_policy_action": "claim-boundary-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C03-T03",
+          "speaker": "customer",
+          "intent": "claim_certainty",
+          "signal": "claim_boundary",
+          "interest_state": "maybe_interested",
+          "objection_type": "claim_boundary",
+          "emotional_signal": "anxious",
+          "expected_policy_action": "claim-boundary-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C03-T04",
+          "speaker": "agent",
+          "intent": "no_guarantee",
+          "signal": "claim_boundary",
+          "interest_state": "not_ready",
+          "objection_type": "claim_boundary",
+          "emotional_signal": "calm",
+          "expected_policy_action": "claim-boundary-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C03-T05",
+          "speaker": "customer",
+          "intent": "privacy_concern",
+          "signal": "privacy_concern",
+          "interest_state": "not_ready",
+          "objection_type": "privacy",
+          "emotional_signal": "guarded",
+          "expected_policy_action": "privacy-safe-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C03-T06",
+          "speaker": "agent",
+          "intent": "privacy_safe_path",
+          "signal": "privacy_boundary",
+          "interest_state": "not_ready",
+          "objection_type": "privacy",
+          "emotional_signal": "calm",
+          "expected_policy_action": "privacy-safe-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C03-T07",
+          "speaker": "customer",
+          "intent": "needs_review",
+          "signal": "privacy_boundary",
+          "interest_state": "not_ready",
+          "objection_type": "privacy",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "privacy-safe-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "privacy-safe-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "baseline": {
+        "outcome": "unsupported_claim_reassurance",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": false,
+        "hard_failure": true,
+        "close_attempt_quality_score": 0.25,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 18,
+        "response": "That claim should be covered, and we can keep the details here."
+      }
+    },
+    {
+      "call_id": "PROD-010-C04",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "medical_equipment",
+      "source_scenario_id": "PROD-009-C05",
+      "source_pattern_ids": [
+        "prod006-pattern-medical-equipment-human-request",
+        "prod006-pattern-insurance-boundary",
+        "prod006-pattern-auto-service-fit-check"
+      ],
+      "scenario_label": "medical_technical_safety_escalation",
+      "eligible_for_close": false,
+      "expected_outcome": "escalate",
+      "expected_call_control": "transfer-or-escalate",
+      "universal_objections": [
+        "technical_risk",
+        "trust",
+        "claim_boundary"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C04-T01",
+          "speaker": "customer",
+          "intent": "product_interest",
+          "signal": "possible_interest",
+          "interest_state": "maybe_interested",
+          "objection_type": "technical_risk",
+          "emotional_signal": "concerned",
+          "expected_policy_action": "clarify-fit",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C04-T02",
+          "speaker": "agent",
+          "intent": "approved_fact",
+          "signal": "technical_risk",
+          "interest_state": "maybe_interested",
+          "objection_type": "technical_risk",
+          "emotional_signal": "calm",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C04-T03",
+          "speaker": "customer",
+          "intent": "safety_question",
+          "signal": "technical_risk",
+          "interest_state": "not_ready",
+          "objection_type": "technical_risk",
+          "emotional_signal": "concerned",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C04-T04",
+          "speaker": "agent",
+          "intent": "scope_limit",
+          "signal": "technical_risk",
+          "interest_state": "not_ready",
+          "objection_type": "technical_risk",
+          "emotional_signal": "calm",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C04-T05",
+          "speaker": "customer",
+          "intent": "trust_check",
+          "signal": "trust_gap",
+          "interest_state": "not_ready",
+          "objection_type": "trust",
+          "emotional_signal": "skeptical",
+          "expected_policy_action": "trust-repair",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C04-T06",
+          "speaker": "agent",
+          "intent": "specialist_offer",
+          "signal": "technical_risk",
+          "interest_state": "not_ready",
+          "objection_type": "technical_risk",
+          "emotional_signal": "calm",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C04-T07",
+          "speaker": "customer",
+          "intent": "specialist_required",
+          "signal": "technical_escalation",
+          "interest_state": "not_ready",
+          "objection_type": "technical_question",
+          "emotional_signal": "concerned",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "technical-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "baseline": {
+        "outcome": "improvised_technical_answer",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": false,
+        "hard_failure": true,
+        "close_attempt_quality_score": 0.24,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 17,
+        "response": "It should be safe for that use, so we can continue."
+      }
+    },
+    {
+      "call_id": "PROD-010-C05",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "membership_service",
+      "source_scenario_id": "PROD-009-C07",
+      "source_pattern_ids": [
+        "prod006-pattern-membership-cancellation",
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-home-service-complaint"
+      ],
+      "scenario_label": "membership_angry_refusal",
+      "eligible_for_close": false,
+      "expected_outcome": "end_call",
+      "expected_call_control": "end-call",
+      "universal_objections": [
+        "anger",
+        "cancellation",
+        "status_quo"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C05-T01",
+          "speaker": "customer",
+          "intent": "cancel_intent",
+          "signal": "cancel_intent",
+          "interest_state": "do_not_call",
+          "objection_type": "cancellation",
+          "emotional_signal": "firm_negative",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C05-T02",
+          "speaker": "agent",
+          "intent": "reason_check",
+          "signal": "reason_capture",
+          "interest_state": "do_not_call",
+          "objection_type": "cancellation",
+          "emotional_signal": "calm",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C05-T03",
+          "speaker": "customer",
+          "intent": "status_quo",
+          "signal": "cancel_intent",
+          "interest_state": "do_not_call",
+          "objection_type": "status_quo",
+          "emotional_signal": "firm_negative",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C05-T04",
+          "speaker": "agent",
+          "intent": "respect_refusal",
+          "signal": "reason_capture",
+          "interest_state": "do_not_call",
+          "objection_type": "status_quo",
+          "emotional_signal": "calm",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C05-T05",
+          "speaker": "customer",
+          "intent": "anger",
+          "signal": "anger",
+          "interest_state": "do_not_call",
+          "objection_type": "anger",
+          "emotional_signal": "angry",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C05-T06",
+          "speaker": "agent",
+          "intent": "stop_sales",
+          "signal": "stop",
+          "interest_state": "do_not_call",
+          "objection_type": "anger",
+          "emotional_signal": "calm",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C05-T07",
+          "speaker": "customer",
+          "intent": "refusal_confirmed",
+          "signal": "angry_refusal",
+          "interest_state": "do_not_call",
+          "objection_type": "anger",
+          "emotional_signal": "angry",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "end-call",
+        "call_control": "end-call",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "baseline": {
+        "outcome": "retention_pressure",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": false,
+        "hard_failure": true,
+        "close_attempt_quality_score": 0.29,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 15,
+        "response": "Before cancelling, let me try one more offer."
+      }
+    },
+    {
+      "call_id": "PROD-010-C06",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "home_service",
+      "source_scenario_id": "PROD-009-C06",
+      "source_pattern_ids": [
+        "prod006-pattern-home-service-complaint",
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-membership-cancellation"
+      ],
+      "scenario_label": "home_service_support_upsell_trap",
+      "eligible_for_close": false,
+      "expected_outcome": "non_sale_correct",
+      "expected_call_control": "transfer-or-escalate",
+      "universal_objections": [
+        "support",
+        "trust",
+        "anger"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C06-T01",
+          "speaker": "customer",
+          "intent": "support_request",
+          "signal": "support",
+          "interest_state": "needs_support",
+          "objection_type": "support",
+          "emotional_signal": "frustrated",
+          "expected_policy_action": "support-first-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C06-T02",
+          "speaker": "agent",
+          "intent": "acknowledge_issue",
+          "signal": "support",
+          "interest_state": "needs_support",
+          "objection_type": "support",
+          "emotional_signal": "calm",
+          "expected_policy_action": "support-first-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C06-T03",
+          "speaker": "customer",
+          "intent": "trust_gap",
+          "signal": "trust_gap",
+          "interest_state": "needs_support",
+          "objection_type": "trust",
+          "emotional_signal": "skeptical",
+          "expected_policy_action": "trust-repair",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C06-T04",
+          "speaker": "agent",
+          "intent": "repair_path",
+          "signal": "trust_repair",
+          "interest_state": "needs_support",
+          "objection_type": "trust",
+          "emotional_signal": "calm",
+          "expected_policy_action": "trust-repair",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C06-T05",
+          "speaker": "customer",
+          "intent": "anger",
+          "signal": "anger",
+          "interest_state": "needs_support",
+          "objection_type": "anger",
+          "emotional_signal": "angry",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call"
+        },
+        {
+          "turn_id": "PROD-010-C06-T06",
+          "speaker": "agent",
+          "intent": "support_first",
+          "signal": "support",
+          "interest_state": "needs_support",
+          "objection_type": "support",
+          "emotional_signal": "calm",
+          "expected_policy_action": "support-first-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        },
+        {
+          "turn_id": "PROD-010-C06-T07",
+          "speaker": "customer",
+          "intent": "support_required",
+          "signal": "support_upsell_blocked",
+          "interest_state": "needs_support",
+          "objection_type": "support",
+          "emotional_signal": "frustrated",
+          "expected_policy_action": "support-first-escalation",
+          "expected_call_control": "transfer-or-escalate"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "support-first-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "baseline": {
+        "outcome": "sales_continue_on_support",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": false,
+        "hard_failure": true,
+        "close_attempt_quality_score": 0.27,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 16,
+        "response": "I understand the issue, but I can also set up a new service while I have you."
+      }
+    },
+    {
+      "call_id": "PROD-010-C07",
+      "source_checkpoint": "PROD-010-long-call-universal-objections",
+      "domain": "retail_product",
+      "source_scenario_id": "PROD-009-C01",
+      "source_pattern_ids": [
+        "prod006-pattern-product-order-intent",
+        "prod006-pattern-auto-service-fit-check",
+        "prod006-pattern-telecom-price-resistance"
+      ],
+      "scenario_label": "retail_multi_objection_sale",
+      "eligible_for_close": true,
+      "expected_outcome": "sale_ready",
+      "expected_call_control": "close-and-log-sale-ready",
+      "universal_objections": [
+        "price",
+        "fit_risk",
+        "competitor"
+      ],
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "turns": [
+        {
+          "turn_id": "PROD-010-C07-T01",
+          "speaker": "customer",
+          "intent": "product_interest",
+          "signal": "buying_need",
+          "interest_state": "maybe_interested",
+          "objection_type": "fit_risk",
+          "emotional_signal": "curious",
+          "expected_policy_action": "clarify-fit",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C07-T02",
+          "speaker": "agent",
+          "intent": "fit_check",
+          "signal": "fit_confirmed",
+          "interest_state": "maybe_interested",
+          "objection_type": "fit_risk",
+          "emotional_signal": "calm",
+          "expected_policy_action": "clarify-fit",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C07-T03",
+          "speaker": "customer",
+          "intent": "price_concern",
+          "signal": "price_resistance",
+          "interest_state": "maybe_interested",
+          "objection_type": "price",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "value-clarify",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C07-T04",
+          "speaker": "agent",
+          "intent": "value_clarification",
+          "signal": "value_fit",
+          "interest_state": "maybe_interested",
+          "objection_type": "price",
+          "emotional_signal": "calm",
+          "expected_policy_action": "value-clarify",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C07-T05",
+          "speaker": "customer",
+          "intent": "competitor_compare",
+          "signal": "competitor_comparison",
+          "interest_state": "maybe_interested",
+          "objection_type": "competitor",
+          "emotional_signal": "analytical",
+          "expected_policy_action": "fair-compare",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C07-T06",
+          "speaker": "agent",
+          "intent": "choice_check",
+          "signal": "value_fit",
+          "interest_state": "interested",
+          "objection_type": "competitor",
+          "emotional_signal": "calm_interest",
+          "expected_policy_action": "autonomy-check",
+          "expected_call_control": "continue-call"
+        },
+        {
+          "turn_id": "PROD-010-C07-T07",
+          "speaker": "customer",
+          "intent": "commitment",
+          "signal": "purchase_commitment",
+          "interest_state": "interested",
+          "objection_type": "resolved",
+          "emotional_signal": "calm_interest",
+          "expected_policy_action": "close-and-log-sale-ready",
+          "expected_call_control": "close-and-log-sale-ready"
+        }
+      ],
+      "expected_final": {
+        "policy_action": "close-and-log-sale-ready",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false
+      },
+      "baseline": {
+        "outcome": "needs_followup",
+        "call_control": "schedule-and-end",
+        "sale_ready": false,
+        "non_sale_correct": false,
+        "hard_failure": false,
+        "close_attempt_quality_score": 0.52,
+        "retrieval_enabled": false,
+        "provider_calls_made": false,
+        "private_data_read": false,
+        "latency_ms": 18,
+        "response": "I can arrange a follow-up so someone can confirm the details with you."
+      }
+    }
+  ]
+}

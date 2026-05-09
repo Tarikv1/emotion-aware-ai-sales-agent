@@ -1,4 +1,4 @@
-﻿### Emotion Aware AI Sales Agent \- Emotional Intelligence Source Extraction Report
+### Emotion Aware AI Sales Agent \- Emotional Intelligence Source Extraction Report
 
 **To:**  AI Development Team**From:**  Principal AI Behavioral Architect and Conversation Designer**Subject:**  Technical Logic and Behavioral Extraction for Emotionally Intelligent (EI) Sales AgentsThis report distills high-fidelity psychological frameworks, dialogue patterns, and adaptation logic into actionable system requirements. The objective is to transition the agent from a "transactional order-taker" to a "consultative trusted advisor" capable of navigating the subconscious drivers of human decision-making.
 

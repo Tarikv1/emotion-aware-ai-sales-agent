@@ -2,7 +2,7 @@
   "voice_milestone": "VOICE-018",
   "experiment_scope": "Offline professional-sales voice tuning on top of VOICE-016 provider previews. The checkpoint increases sales-call pacing, adds emotion/pitch intent metadata, compresses pauses, and preserves protected text exactly.",
   "case_file": "research\\experiments\\cases\\voice-018-sales-voice-tuning.json",
-  "source_artifact": "research\\experiments\\generated\\VOICE-016-provider-prosody-rendering.json",
+  "source_artifact": "research\\experiments\\generated\\VOICE-016\\VOICE-016-provider-prosody-rendering.json",
   "sales_voice_profile": {
     "profile_id": "professional-sales-v1",
     "style": "professional-sales",

@@ -19,7 +19,7 @@ Default mode is dry-run. Live provider calls require explicit opt-in.
 VOICE-019 reads:
 
 ```text
-research/experiments/generated/VOICE-018-sales-voice-tuning.json
+research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning.json
 research/experiments/cases/voice-017-live-ab-audio.json
 ```
 
@@ -142,8 +142,8 @@ $cartesiaVoiceIdEn = $null
 ## Generated Artifacts
 
 - `research/experiments/cases/voice-019-sales-tuned-live-ab-audio.json`
-- `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio.json`
-- `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio-report.md`
+- `research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio.json`
+- `research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio-report.md`
 
 Live audio outputs use the ignored pattern:
 

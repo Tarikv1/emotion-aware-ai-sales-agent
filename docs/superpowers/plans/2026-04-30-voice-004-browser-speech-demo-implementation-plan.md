@@ -20,11 +20,11 @@
   - Documents the browser speech recognition demo and local-server contract.
 - Create: `research/experiments/VOICE-004-browser-speech-demo.md`
   - Records the experiment setup and interpretation.
-- Generate: `research/experiments/generated/VOICE-004-browser-speech-demo.html`
+- Generate: `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo.html`
   - Browser demo page.
-- Generate: `research/experiments/generated/VOICE-004-browser-speech-demo-metadata.json`
+- Generate: `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-metadata.json`
   - Demo metadata.
-- Generate: `research/experiments/generated/VOICE-004-browser-speech-demo-decision.json`
+- Generate: `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-decision.json`
   - Deterministic sample decision.
 
 ## Task 1: Add Failing Validator
@@ -94,9 +94,9 @@ Support:
 **Files:**
 - Create: `docs/product/VOICE_004_BROWSER_SPEECH_DEMO.md`
 - Create: `research/experiments/VOICE-004-browser-speech-demo.md`
-- Generate: `research/experiments/generated/VOICE-004-browser-speech-demo.html`
-- Generate: `research/experiments/generated/VOICE-004-browser-speech-demo-metadata.json`
-- Generate: `research/experiments/generated/VOICE-004-browser-speech-demo-decision.json`
+- Generate: `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo.html`
+- Generate: `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-metadata.json`
+- Generate: `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-decision.json`
 
 ## Task 4: Verify, Commit, And Push
 

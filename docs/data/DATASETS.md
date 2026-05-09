@@ -30,7 +30,7 @@ This file tracks the public datasets currently stored under `data/public/` and h
   - `MELD-master.zip`
   - extracted `MELD-master/`
 - Current status: downloaded and extracted
-- Notable local training file: `data/MELD/train_sent_emo.csv`
+- Notable local training file: `data/public/meld/MELD-master/data/MELD/train_sent_emo.csv`
 - Notable label situation:
   - column set includes `Utterance`, `Speaker`, `Emotion`, `Sentiment`, dialogue ids, and timing fields
   - local train split has 9,989 rows
@@ -52,9 +52,9 @@ This file tracks the public datasets currently stored under `data/public/` and h
   - extracted `persuasionforgood-master/`
 - Current status: downloaded and extracted
 - Notable local contents:
-  - `data/FullData/full_dialog.csv`
-  - `data/FullData/full_info.csv`
-  - annotated subset metadata in `data/AnnotatedData/`
+  - `data/public/persuasion-for-good/persuasionforgood-master/data/FullData/full_dialog.csv`
+  - `data/public/persuasion-for-good/persuasionforgood-master/data/FullData/full_info.csv`
+  - annotated subset metadata in `data/public/persuasion-for-good/persuasionforgood-master/data/AnnotatedData/`
 - Notable label situation:
   - full dataset has dialogue, role, turn, and utterance-unit structure
   - annotated subset documentation indicates persuasion labels and sentiment fields exist for 300 annotated dialogs

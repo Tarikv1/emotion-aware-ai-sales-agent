@@ -1,0 +1,68 @@
+# Checkpoint Index
+
+This index groups checkpoint docs by work track. Runners, validators, cases, and generated reports stay in `scripts/`, `research/experiments/cases/`, and `research/experiments/generated/`.
+
+## Brain
+
+- `docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md`
+- `docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md`
+- `docs/brain/PROD_011_DIALOGUE_POLICY_HARDENING.md`
+
+## Product Decision Layer
+
+- `PROD_007_FULL_CALL_GAUNTLET.md`
+- `PROD_008_GENERATED_FULL_CALL_PACKETS.md`
+- `PROD_009_CROSS_DOMAIN_GENERATED_GAUNTLET.md`
+- `PROD_010_LONG_CALL_UNIVERSAL_OBJECTIONS.md`
+- `PROD_012_CALLCENTEREN_SCENARIO_EVALUATION.md`
+- `PROD_013_CALLCENTEREN_PATTERN_EXTRACTION.md`
+- `PROD_014_CALLCENTEREN_SCENARIO_BANK.md`
+- `PROD_015_CALLCENTEREN_RUNTIME_COMPARISON.md`
+- `PROD_016_CALLCENTEREN_RETRIEVAL_NO_GAIN_DIAGNOSIS.md`
+- `PROD_017_CALLCENTEREN_SPECIFICITY_SCORING.md`
+- `PROD_018_CALLCENTEREN_COMPOSER_HOOK_TEST.md`
+- `PROD_019_GUARDED_RUNTIME_COMPOSER_HOOKS.md`
+- `PROD_020_NATURALIZED_CUSTOMER_TURN_EVALUATION.md`
+
+Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
+
+## Retrieval And RAG
+
+- `RAG_001_NOTEBOOKLM_SOURCE_INTAKE_BRIDGE.md` through `RAG_018_GUARDED_RUNTIME_RETRIEVAL.md`
+- `RAG_019_SALES_COMMUNICATION_SOURCE_EXPANSION.md`
+- `RAG_020_SALES_PERSUASION_EMOTION_DEEP_DIVE.md`
+- `RAG_021_BUYER_TRUST_CONVERSATION_REPAIR.md`
+
+Runtime rule: retrieval remains disabled by default unless a separate RAG gate explicitly promotes it.
+
+## Response Runtime
+
+- `RESP_001_GUARDED_RESPONSE_GENERATION.md`
+- `RESP_002_RUNTIME_VOICE_DELIVERY.md`
+- `RESP_003_RUNTIME_LIVE_TTS.md`
+- `RESP_004_VOICE_044_LISTENING_CHECK.md`
+- `RESP_005_RUNTIME_VERSION_AB_LISTENING_CHECK.md`
+- `RESP_006_GERMAN_RUNTIME_VERSION_AB_LISTENING_CHECK.md`
+- `RESP_007_GERMAN_PACING_STABILITY_FOLLOW_UP.md`
+
+Current voice blocker: record the `RESP-007` German pacing-stability listening decision before promoting a voice-personality selector.
+
+## Voice
+
+- `VOICE_001_TTS_PROTOTYPE.md` through `VOICE_044_BASELINE_DELIVERY_POLISH.md`
+- Provider boundary: `VOICE_PROVIDER_RUN_BOUNDARY.md`
+- Generated audio log: `VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+
+Default rule: dry-run/offline unless a command explicitly uses `--live` and provider boundary review is complete.
+
+## Core Product Docs
+
+- `PRODUCT_BRIEF.md`
+- `FULL_SALE_MVP_STRATEGY.md`
+- `CLIENT_MVP_WORKFLOW.md`
+- `REALTIME_AGENT_ARCHITECTURE.md`
+- `REALTIME_TURN_CLI.md`
+- `CALL_TERMINATION_POLICY.md`
+- `SALES_DIFFICULTY_TAXONOMY.md`
+- `CORE_SALES_DELIVERY_PLAYBOOK.md`
+- `COMMANDS.md`

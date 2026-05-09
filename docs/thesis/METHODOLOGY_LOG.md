@@ -16,6 +16,296 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-020 naturalized customer-turn evaluation
+
+- Objective: test whether the `PROD-019` opt-in runtime composer-hook gain survives when rubric-like generated customer turns are rewritten into natural customer wording.
+- Action taken: added a PROD-020 naturalization module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, and generated result/report artifacts over the fixed PROD-015 comparison output with the PROD-019 gate as prior evidence.
+- Data used: the generated `PROD-015` result artifact and the generated `PROD-019` gate result only. PROD-020 did not read raw CallCenterEN files, download data, call providers, call an LLM, use embeddings, write vectors, read private data, store raw source text, enable retrieval by default, or enable composer hooks by default.
+- Output created: `docs/product/PROD_020_NATURALIZED_CUSTOMER_TURN_EVALUATION.md`, `scripts/prod_020_naturalized_customer_turn_evaluation.py`, `scripts/run_prod_020_naturalized_customer_turn_evaluation.py`, `scripts/validate_prod_020_naturalized_customer_turn_evaluation.py`, `research/experiments/generated/PROD-020-naturalized-customer-turn-evaluation/result.json`, and `research/experiments/generated/PROD-020-naturalized-customer-turn-evaluation/report.md`.
+- What was learned: across `180` fixed turns, `120` source turns were rubric-like and `123` questions were changed into natural wording. Runtime prompts had `0` rubric-token findings, source-pattern refs were preserved for `180/180` rows, and expected outcomes were preserved for `180/180` rows. With retrieval and composer hooks explicitly enabled, `107` answers received hooks without evaluation-label input. Hooked total score was `1065` versus baseline score `734`, with `107` hooked wins, `0` baseline wins, and `73` ties. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, expected outcome correctness `180/180`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`.
+- Why it matters for the thesis: PROD-020 closes the main PROD-019 evidence weakness by showing that the hook gain was not only caused by obvious rubric tokens such as `too_expensive` or `timeline_question` in runtime prompts. It still remains opt-in candidate evidence, not default retrieval evidence.
+- Open questions: whether the naturalized hook gain survives live-shaped multi-turn simulation against the PROD-011 hardened dialogue policy, where state continuity, call-control decisions, protected contexts, and turn order matter more than single-turn wording.
+
+### 2026-05-09 - PROD-019 guarded runtime composer hooks
+
+- Objective: move the `PROD-018` offline hook idea into the actual guarded response composer behind an explicit opt-in flag, while proving default behavior stays unchanged.
+- Action taken: added a runtime composer-hook helper, wired `--composer-hooks-enabled` into `generate_guarded_response.py`, added a PROD-019 module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, and generated result/report artifacts over the fixed PROD-015 comparison output.
+- Data used: the generated `PROD-015` result artifact and the generated `PROD-018` gate result only. PROD-019 did not read raw CallCenterEN files, download data, call providers, call an LLM, use embeddings, write vectors, read private data, store source text, enable retrieval by default, or enable composer hooks by default.
+- Output created: `docs/product/PROD_019_GUARDED_RUNTIME_COMPOSER_HOOKS.md`, `scripts/runtime_composer_hooks.py`, `scripts/prod_019_guarded_runtime_composer_hooks.py`, `scripts/run_prod_019_guarded_runtime_composer_hooks.py`, `scripts/validate_prod_019_guarded_runtime_composer_hooks.py`, `research/experiments/generated/PROD-019-guarded-runtime-composer-hooks/result.json`, and `research/experiments/generated/PROD-019-guarded-runtime-composer-hooks/report.md`.
+- What was learned: on the same `180` fixed PROD-015 turns, default-off output drift was `0`, proving the new hook flag does not alter the existing guarded response path. With both retrieval and composer hooks explicitly enabled, `98` answers received runtime hooks without evaluation-label input. Hooked total score was `916` versus current retrieval score `663`, with `92` hooked wins, `0` current wins, and `88` ties. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`.
+- Why it matters for the thesis: PROD-019 turns the composer-improvement claim from an offline label-aware patch into real guarded-composer evidence while preserving the default-off runtime boundary. It still does not justify default retrieval because many evaluated turns use rubric-like generated wording that can expose easy textual signals.
+- Open questions: whether the opt-in runtime hooks still improve answers when rubric-like customer prompts are rewritten into natural customer language and when live-shaped multi-turn dialogue policy is tested.
+
+### 2026-05-09 - PROD-018 CallCenterEN composer-hook test
+
+- Objective: test whether a narrow offline composer-hook layer can turn `PROD-015` retrieved-but-not-used hints into safer, more specific answers before changing runtime behavior.
+- Action taken: added a PROD-018 product doc, offline composer-hook module, runner, validator, command-map coverage, checkpoint index entry, setup coverage, and generated result/report artifacts over the fixed PROD-015 comparison output.
+- Data used: the generated `PROD-015` result artifact only. PROD-018 did not read raw CallCenterEN files, download data, call providers, call an LLM, use embeddings, write vectors, read private data, store source text, change runtime behavior, or enable retrieval by default.
+- Output created: `docs/product/PROD_018_CALLCENTEREN_COMPOSER_HOOK_TEST.md`, `scripts/callcenteren_composer_hook_test.py`, `scripts/run_prod_018_callcenteren_composer_hook_test.py`, `scripts/validate_prod_018_callcenteren_composer_hook_test.py`, `research/experiments/generated/PROD-018-callcenteren-composer-hook-test/result.json`, and `research/experiments/generated/PROD-018-callcenteren-composer-hook-test/report.md`.
+- What was learned: on the same `180` fixed PROD-015 turns, the offline hook layer applied to `174` retrieved-not-used answers and preserved the `3` existing influenced answers. Hooked total score was `1421` versus current retrieval score `663` and old runtime score `652`; hooked answers won `174` turns versus current retrieval and `177` turns versus old runtime, with old runtime winning `0`. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`.
+- Why it matters for the thesis: PROD-018 shows the no-gain problem was mainly composition, not matching. However, the evidence is still offline and label-aware, so it justifies a red-first guarded runtime-composer candidate test, not a default retrieval promotion or commercial runtime claim.
+- Open questions: whether `PROD-019` can reproduce the PROD-018 gains through the actual guarded response composer without relying on evaluation labels, weakening generic fallback safety, or contaminating commercial runtime prompts with CallCenterEN-derived text.
+
+### 2026-05-09 - PROD-017 CallCenterEN specificity scoring
+
+- Objective: add an evaluation-only scorer that can distinguish safe-generic answers from safe-specific objection-fit answers on the unchanged `PROD-015` rows.
+- Action taken: added a PROD-017 product doc, specificity-scoring module, runner, validator, command-map coverage, checkpoint index entry, setup coverage, and generated result/report artifacts over the fixed PROD-015 comparison output.
+- Data used: the generated `PROD-015` result artifact only. PROD-017 did not read raw CallCenterEN files, download data, call providers, call an LLM, use embeddings, write vectors, read private data, store source text, or change runtime behavior.
+- Output created: `docs/product/PROD_017_CALLCENTEREN_SPECIFICITY_SCORING.md`, `scripts/callcenteren_specificity_scoring.py`, `scripts/run_prod_017_callcenteren_specificity_scoring.py`, `scripts/validate_prod_017_callcenteren_specificity_scoring.py`, `research/experiments/generated/PROD-017-callcenteren-specificity-scoring/result.json`, and `research/experiments/generated/PROD-017-callcenteren-specificity-scoring/report.md`.
+- What was learned: PROD-017 confirms the scoring blind spot. PROD-015 treated all `180` turns as ties, but specificity scoring gives retrieval `3` wins, old runtime `0` wins, and `177` ties, with old total score `652`, retrieval total score `663`, and score delta `11`. All `3` influenced retrieval answers win under the new scorer, but only `3` answers changed at all. Absolute quality gap count is `177`, generic old-answer rate is `1.0`, and generic retrieval-answer rate is `0.9833`.
+- Why it matters for the thesis: the project now has a more sensitive fixed-case evaluator before editing the runtime composer. The result is not broad retrieval-improvement evidence; it is evidence that safe-specific answers can be measured and that composer changes must increase the number of non-generic answers before runtime claims are justified.
+- Open questions: whether `PROD-018` should start with only authority/decision-maker hooks, or include a small set of price, callback, trust repair, support handoff, and cancellation-boundary hooks in one narrow fixed-case composer test.
+
+### 2026-05-09 - PROD-016 CallCenterEN retrieval no-gain diagnosis
+
+- Objective: explain why the `PROD-015` retrieval-enabled runtime tied the old retrieval-disabled runtime before making any runtime or retrieval-promotion change.
+- Action taken: added a PROD-016 product doc, diagnosis module, runner, validator, command-map coverage, checkpoint index entry, setup coverage, and generated result/report artifacts over the fixed PROD-015 output.
+- Data used: the generated `PROD-015` result artifact only. PROD-016 did not read raw CallCenterEN files, download data, call providers, call an LLM, use embeddings, write vectors, read private data, store source text, or change runtime behavior.
+- Output created: `docs/product/PROD_016_CALLCENTEREN_RETRIEVAL_NO_GAIN_DIAGNOSIS.md`, `scripts/callcenteren_retrieval_no_gain_diagnosis.py`, `scripts/run_prod_016_callcenteren_retrieval_no_gain_diagnosis.py`, `scripts/validate_prod_016_callcenteren_retrieval_no_gain_diagnosis.py`, `research/experiments/generated/PROD-016-callcenteren-retrieval-no-gain-diagnosis/result.json`, and `research/experiments/generated/PROD-016-callcenteren-retrieval-no-gain-diagnosis/report.md`.
+- What was learned: across `180` analyzed turns, retrieval matching was not the main bottleneck. Matching success was `1.0` and no-match rate was `0.0`, but `174` turns were retrieved-not-used, `177` answers were unchanged, only `3` answers changed, and all `3` changed answers still tied the old runtime. The diagnosis flags composer influence gap and scoring blind spot as high-severity, plus runtime classifier mismatch (`180/180` unknown-runtime-signal, `120` rubric-like prompts) and campaign domain mismatch (`8` domains through one B2B software campaign) as medium-severity.
+- Why it matters for the thesis: this prevents the project from mistaking safe retrieval matching for a better sales agent. It also creates a defensible sequence: improve the evaluator's specificity/objective-fit scoring first, then test composer changes on fixed cases, and only then consider larger full-bank evidence.
+- Open questions: whether `PROD-017` should only add evaluation scoring over the fixed PROD-015 rows, or also create a small natural-language scenario verbalization check as a separate later checkpoint.
+
+### 2026-05-09 - PROD-015 CallCenterEN runtime comparison
+
+- Objective: compare the old retrieval-disabled runtime and the opt-in retrieval-enabled runtime on the same `PROD-014` generated CallCenterEN scenario prompts.
+- Action taken: added a PROD-015 product doc, runtime-comparison module, runner, validator, command-map coverage, checkpoint index entry, setup coverage, and generated result/report artifacts with exact customer questions, exact old-runtime answers, exact retrieval-runtime answers, and selected decision traces.
+- Data used: the project-owned `PROD-014` scenario bank generated from abstract `PROD-013` CallCenterEN pattern IDs. The default run scanned `5,000` source sentences transiently from ignored local CallCenterEN ZIP files for leakage checks. No source sentence text, raw transcript body, company-specific wording, agent/customer names, private data, provider output, LLM output, embedding, vector database record, commercial runtime prompt text, or commercial model-training material was stored.
+- Output created: `docs/product/PROD_015_CALLCENTEREN_RUNTIME_COMPARISON.md`, `scripts/callcenteren_runtime_comparison.py`, `scripts/run_prod_015_callcenteren_runtime_comparison.py`, `scripts/validate_prod_015_callcenteren_runtime_comparison.py`, `research/experiments/generated/PROD-015-callcenteren-runtime-comparison/result.json`, and `research/experiments/generated/PROD-015-callcenteren-runtime-comparison/report.md`.
+- What was learned: on the default stratified slice of `60` scenarios and `180` turns, both runtimes scored `810`, retrieval won `0` turns, old runtime won `0` turns, and `180` turns tied. Retrieval influenced only `3` responses, was blocked `3` times, and was retrieved-but-not-used `174` times. Safety stayed clean: hard failures `0`, leakage findings `0`, non-sale correctness `120/120`, safe-close correctness `60/60`, discovery-before-close `180/180`, and emotional handling `180/180`.
+- Why it matters for the thesis: the result prevents overclaiming from the smaller PROD-012 retrieval win. It shows that retrieval can remain safe on a larger generated bank, but current scoring and composition do not yet prove a quality gain over the old runtime.
+- Open questions: whether to strengthen retrieval query/composition/scoring first, run the full `240`-scenario bank as a baseline, or move to live-shaped dialogue-policy simulation before trying another retrieval improvement.
+
+### 2026-05-09 - PROD-014 CallCenterEN scenario bank
+
+- Objective: turn the extracted `PROD-013` CallCenterEN pattern bank into a clean, leakage-tested scenario bank for old-runtime versus retrieval-runtime evaluation.
+- Action taken: added a PROD-014 product doc, scenario-bank module, runner, validator, command-map coverage, checkpoint index entry, setup coverage, and generated scenario-bank/report artifacts.
+- Data used: the abstract `PROD-013` pattern bank generated from approved local CallCenterEN files. The run also scanned `5,000` source sentences transiently from ignored local CallCenterEN ZIP files for leakage checks. No source sentence text, raw transcript body, company-specific wording, agent/customer names, private data, provider output, LLM output, embedding, vector database record, commercial runtime prompt text, or commercial model-training material was stored.
+- Output created: `docs/product/PROD_014_CALLCENTEREN_SCENARIO_BANK.md`, `scripts/callcenteren_scenario_bank.py`, `scripts/run_prod_014_callcenteren_scenario_bank.py`, `scripts/validate_prod_014_callcenteren_scenario_bank.py`, `research/experiments/generated/PROD-014-callcenteren-scenario-bank/scenario-bank.json`, and `research/experiments/generated/PROD-014-callcenteren-scenario-bank/report.md`.
+- What was learned: the generated bank contains `240` scenarios, `720` customer turns, `240` unique scenario recipes, `2,502` abstract source-pattern references, `10` source-pattern categories, and `0` leakage findings after a transient scan of `5,000` local source sentences. It covers `sale_eligible`, `price_objection`, `callback_request`, `cancellation_boundary`, `support_handoff`, and `trust_repair`, with scenario quality `1.0`, leakage failure rate `0.0`, safe-close coverage `0.3375`, non-sale boundary coverage `0.6625`, and emotion-label coverage `1.0`. The output is an expanded evaluation bank, not one scenario per source call.
+- Why it matters for the thesis: PROD-014 moves the project from hand-written seed scenarios toward a larger, auditably pattern-derived test bank while preserving the non-commercial dataset boundary and making hard failure, non-sale correctness, leakage, safe close, and emotional handling measurable in the next runtime comparison.
+- Open questions: whether `PROD-015` should compare old core versus opt-in retrieval on all `240` generated scenarios first, or start with a smaller stratified slice for faster iteration before expanding to the full bank.
+
+### 2026-05-09 - PROD-013 CallCenterEN abstract pattern extraction
+
+- Objective: replace hand-written CallCenterEN-style pattern assumptions with a local extractor that can build a clean pattern bank from approved local dataset files.
+- Action taken: added a PROD-013 product doc, extraction module, runner, validator, setup coverage, command-map coverage, checkpoint index entry, source-boundary documentation, full-run bounded extraction support, and a local download manifest with source file hashes.
+- Data used: after explicit approval, the public CallCenterEN ZIP files were downloaded to ignored local storage under `data/external/callcenteren/raw/`. The validation harness uses a temporary `.tmp` fixture only to prove the extractor shape. No provider call, private data read, customer audio, raw transcript body storage, commercial model training, or commercial runtime prompt contamination is used.
+- Output created: `docs/product/PROD_013_CALLCENTEREN_PATTERN_EXTRACTION.md`, `scripts/callcenteren_pattern_extraction.py`, `scripts/run_prod_013_callcenteren_pattern_extraction.py`, `scripts/validate_prod_013_callcenteren_pattern_extraction.py`, `research/experiments/generated/PROD-013-callcenteren-pattern-extraction/pattern-bank.json`, `research/experiments/generated/PROD-013-callcenteren-pattern-extraction/report.md`, and `research/experiments/generated/PROD-013-callcenteren-pattern-extraction/download-manifest.json`.
+- What was learned: the full bounded extraction scanned `95,946` source JSON payloads, parsed `95,934` conversations, and produced `4,313,595` pseudo-turns with `0` leakage findings. The real files often expose word-level timestamps without reliable speaker labels, so PROD-013 marks speaker roles as inferred for pattern mining only, not ground-truth diarization. The inference now uses role-specific language signals before file-direction fallback, distinguishing agent-like disclosures, permission checks, discovery, offer, repair, and handoff language from customer-like price questions, objections, busy/wrong-person boundaries, cancellation, support issues, and callback/info requests. The project now has a deterministic extraction contract for opening styles, customer intents, objections, emotion/tone transitions, persuasion tactics, discovery questions, conversation stages, close attempts, safety boundaries, timing/speech-naturalness signals, domain patterns, customer personas, scenario templates, and agent mistake labels without storing exact scripts.
+- Why it matters for the thesis: PROD-013 makes the real-call-pattern grounding auditable and repeatable, while preserving the non-commercial dataset boundary and leakage discipline needed before broader scenario generation.
+- Open questions: when PROD-012 should be switched from its hand-written seed patterns to the extracted PROD-013 bank, and whether a later diarization-quality review is needed before treating turn-role statistics as strong evidence.
+
+### 2026-05-09 - PROD-012 CallCenterEN scenario evaluation
+
+- Objective: strengthen the real-call-pattern evaluation lane by using CallCenterEN / AIxBlock as pattern grounding for fixed synthetic scenarios, then compare old core behavior against opt-in RAG-018 retrieval.
+- Action taken: added a PROD-012 product doc, case file, scenario-evaluation module, runner, validator, generated result/report, setup coverage, command-map coverage, checkpoint index entry, and source-boundary documentation.
+- Data used: six project-owned synthetic scenarios and twelve turns grounded in nine CallCenterEN-style source patterns. The source reference is the Hugging Face `AIxBlock/92k-real-world-call-center-scripts-english` dataset and arXiv paper, with no dataset download required by default. No provider call, private data read, customer audio, raw transcript body storage, vector database, embedding provider, LLM reranker, commercial model training, or commercial runtime prompt contamination was used.
+- Output created: `docs/product/PROD_012_CALLCENTEREN_SCENARIO_EVALUATION.md`, `scripts/callcenteren_scenario_evaluation.py`, `scripts/run_prod_012_callcenteren_scenario_evaluation.py`, `scripts/validate_prod_012_callcenteren_scenario_evaluation.py`, `research/experiments/cases/prod-012-callcenteren-scenario-evaluation.json`, and `research/experiments/generated/PROD-012-callcenteren-scenario-evaluation/`.
+- What was learned: on the fixed CallCenterEN-grounded synthetic scenarios, the retrieval version scored `14` versus old core score `5`, won `5` quality-scored turns, old core won `0`, protected turns were preserved `5/5`, hard failure rate stayed `0.0`, leakage failure rate stayed `0.0`, and non-sale correctness stayed `1.0`.
+- Why it matters for the thesis: PROD-012 tests retrieval improvement against scenarios grounded in real-world call-center patterns while preserving leakage controls and non-commercial dataset boundaries.
+- Open questions: whether the same improvement survives a larger locally downloaded CallCenterEN ZIP scan and later human review without making retrieval default.
+
+### 2026-05-09 - PROD-011 dialogue-policy hardening
+
+- Objective: turn PROD-010 long-call objection evidence into a compact policy-action layer before any live-runtime promotion.
+- Action taken: added a PROD-011 product doc, dialogue-policy module, runner, validator, derived case file, generated report/result, command-map coverage, setup coverage, drift coverage, roadmap update, and decision-log entry.
+- Data used: seven synthetic PROD-010 long-call scenarios and forty-nine turns across telecom, B2B software, insurance service, medical equipment, membership service, home service, and retail product scenarios. No provider call, private data read, customer audio, transcript body storage, dataset download, payment handling, checkout handling, vector database, embedding provider, commercial runtime prompt contamination, or runtime behavior change was used.
+- Output created: `docs/brain/PROD_011_DIALOGUE_POLICY_HARDENING.md`, `scripts/dialogue_policy_hardening.py`, `scripts/run_prod_011_dialogue_policy_hardening.py`, `scripts/validate_prod_011_dialogue_policy_hardening.py`, `research/experiments/cases/prod-011-dialogue-policy-hardening.json`, and `research/experiments/generated/PROD-011-dialogue-policy-hardening/`.
+- What was learned: the hardened policy layer preserved the targets: hard failure rate `0.0`, safe close rate `1.0`, non-sale correctness `1.0`, policy action correctness `1.0`, blocked action avoidance `1.0`, objection stack preservation `1.0`, state-reference completeness `1.0`, call-control correctness `1.0`, and max latency `16 ms`.
+- Why it matters for the thesis: PROD-011 separates state-packet generation from policy-action selection, making the full-sale pivot easier to evaluate and audit before any live-shaped runtime test.
+- Open questions: whether the same hardened policy remains stable when tested against fuller transcript simulations rather than compact turn metadata.
+
+### 2026-05-09 - PROD-010 long-call universal objections
+
+- Objective: stress the generated BRAIN-002 packet path on longer calls with repeated universal buyer objections before any dialogue-policy or runtime-promotion work.
+- Action taken: added a PROD-010 product doc, long-call case file, runner, validator, generated report/result, command-map coverage, setup coverage, drift coverage, roadmap update, and decision-log entry. The generated packet module now carries turn position, total turn count, and the call-level objection stack through each BRAIN-002 packet.
+- Data used: seven synthetic calls and forty-nine turns across telecom, B2B software, insurance service, medical equipment, membership service, home service, and retail product scenarios. The objection stack covers price, competitor comparison, timing, authority, procurement, privacy, claim boundary, technical risk, anger, cancellation, support, and trust. No provider call, private data read, customer audio, transcript body storage, dataset download, payment handling, checkout handling, vector database, embedding provider, commercial runtime prompt contamination, or runtime behavior change was used.
+- Output created: `docs/product/PROD_010_LONG_CALL_UNIVERSAL_OBJECTIONS.md`, `scripts/run_prod_010_long_call_universal_objections.py`, `scripts/validate_prod_010_long_call_universal_objections.py`, `research/experiments/cases/prod-010-long-call-universal-objections.json`, and `research/experiments/generated/PROD-010-long-call-universal-objections/`.
+- What was learned: the generated packet path preserved the long-call targets: safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, state packet completeness `1.0`, objection boundary correctness `1.0`, long-call state continuity `1.0`, close-attempt quality `0.9214`, and call-control correctness `1.0`.
+- Why it matters for the thesis: PROD-010 makes the full-sale pivot more credible by testing whether the agent can keep buyer-state and safety boundaries stable across longer multi-objection conversations, not only short fixed calls.
+- Open questions: how to turn the fixture-proven objection-state behavior into a hardened dialogue policy without overfitting to synthetic turn labels.
+
+### 2026-05-09 - PROD-009 cross-domain generated gauntlet
+
+- Objective: expand the generated BRAIN-002 full-call packet path beyond the SD-card/storage slice while preserving safety, non-sale correctness, and packet completeness.
+- Action taken: added a PROD-009 product doc, cross-domain case file, runner, validator, generated report/result, command-map coverage, setup coverage, drift coverage, roadmap update, and decision-log entry. The existing generated packet module now supports cross-domain final-turn signals while preserving PROD-008 behavior.
+- Data used: ten synthetic calls and twenty-eight turns across retail product, telecom, B2B software, insurance service, medical equipment, home service, membership service, and automotive service. Each call uses at least three source-pattern IDs from the PROD-006 pattern bank. No provider call, private data read, customer audio, transcript body storage, dataset download, payment handling, checkout handling, vector database, embedding provider, commercial runtime prompt contamination, or runtime behavior change was used.
+- Output created: `docs/product/PROD_009_CROSS_DOMAIN_GENERATED_GAUNTLET.md`, `scripts/run_prod_009_cross_domain_generated_gauntlet.py`, `scripts/validate_prod_009_cross_domain_generated_gauntlet.py`, `research/experiments/cases/prod-009-cross-domain-generated-gauntlet.json`, and `research/experiments/generated/PROD-009-cross-domain-generated-gauntlet/`.
+- What was learned: the generated packet path preserved targets across the broader first-pass domain set: safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, state packet completeness `1.0`, close-attempt quality `0.915`, and call-control correctness `1.0`.
+- Why it matters for the thesis: PROD-009 reduces the risk that the full-sale result is only an SD-card/storage artifact by testing the same generated BRAIN-002 contract across multiple domain and non-sale patterns.
+- Open questions: whether harder universal objections and longer calls expose failures that the current first-pass cross-domain cases do not catch.
+
+### 2026-05-09 - PROD-008 generated full-call packets
+
+- Objective: remove the fixture-scored packet shortcut from PROD-007 and test whether local runtime-style logic can create complete BRAIN-002 packets from every call turn.
+- Action taken: added a PROD-008 product doc, generated-packet module, runner, validator, fixed case file, generated report/result, command-map coverage, setup coverage, drift coverage, roadmap update, and decision-log entry.
+- Data used: the same six synthetic PROD-006-style SD-card/storage call shapes and thirteen turns used for the first full-call gauntlet, with generated BRAIN-002 packet fields derived from turn intent and signal metadata. No provider call, private data read, customer audio, transcript body storage, dataset download, payment handling, checkout handling, vector database, embedding provider, or runtime behavior change was used.
+- Output created: `docs/product/PROD_008_GENERATED_FULL_CALL_PACKETS.md`, `scripts/generated_full_call_packets.py`, `scripts/run_prod_008_generated_full_call_packets.py`, `scripts/validate_prod_008_generated_full_call_packets.py`, `research/experiments/cases/prod-008-generated-full-call-packets.json`, and `research/experiments/generated/PROD-008-generated-full-call-packets/`.
+- What was learned: the generated packet path preserved the PROD-007 decision gains: safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, state packet completeness `1.0`, close-attempt quality `0.92`, and call-control correctness `1.0`.
+- Why it matters for the thesis: PROD-008 makes the full-sale pivot less dependent on fixture answers by showing that the BRAIN-002 contract can be generated turn by turn before expanding scenario coverage.
+- Open questions: whether the generated packet logic holds across mixed domains, harder universal objections, and longer calls without sacrificing non-sale correctness.
+
+### 2026-05-09 - PROD-007 full-call gauntlet
+
+- Objective: run the first fixed full-call comparison between the older pre-full-sale core and the BRAIN-002/full-sale candidate before broad runtime changes.
+- Action taken: added a PROD-007 gauntlet doc, fixed-case file, local scorer, runner, validator, generated report/result, command-map coverage, setup coverage, drift coverage, roadmap update, and decision-log entry.
+- Data used: six synthetic PROD-006-style SD-card/storage calls with thirteen fixed turns covering sale eligibility, unclear compatibility, support-only context, complaint recovery, human escalation, and stop request. No provider call, private data read, customer audio, transcript body storage, dataset download, payment handling, checkout handling, vector database, embedding provider, or runtime behavior change was used.
+- Output created: `docs/product/PROD_007_FULL_CALL_GAUNTLET.md`, `scripts/full_call_gauntlet.py`, `scripts/run_prod_007_full_call_gauntlet.py`, `scripts/validate_prod_007_full_call_gauntlet.py`, `research/experiments/cases/prod-007-full-call-gauntlet.json`, and `research/experiments/generated/PROD-007-full-call-gauntlet/`.
+- What was learned: the BRAIN-002 candidate improves the fixture-level decision metrics against the older core: safe close rate `1.0` versus `0.0`, hard failure rate `0.0` versus `0.3333`, non-sale correctness `1.0` versus `0.4`, close-attempt quality `0.92` versus `0.55`, and call-control correctness `1.0` versus `0.5`.
+- Why it matters for the thesis: PROD-007 makes the full-sale pivot measurable as call-level decisions rather than only response text, while still preserving the warning that fixture-scored evidence is not live product evidence.
+- Open questions: whether the next generated-packet test can produce the same BRAIN-002 fields from runtime turn logic instead of pre-scored candidate packets, and how many additional domains are needed before the thesis can claim generalization.
+
+### 2026-05-09 - BRAIN-002 runtime state schema
+
+- Objective: convert the BRAIN-001 architecture and project-wide premortem result into a strict per-turn runtime state packet before building the full-call gauntlet.
+- Action taken: added a BRAIN-002 product doc, schema case file, local schema builder, runner, validator, generated report/result, setup coverage, drift coverage, command-map coverage, and call-control policy update.
+- Data used: synthetic PROD-006-style SD-card/full-sale examples and project-local architecture boundaries. No provider call, private data read, customer audio, transcript body storage, commercial runtime prompt change, payment handling, checkout handling, vector database, embedding provider, or RAG runtime promotion was used.
+- Output created: `docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md`, `scripts/brain_runtime_state_schema.py`, `scripts/run_brain_002_runtime_state_schema.py`, `scripts/validate_brain_002_runtime_state_schema.py`, `research/experiments/cases/brain-002-runtime-state-schema.json`, and `research/experiments/generated/BRAIN-002-runtime-state-schema/`.
+- What was learned: the project needs to score structured call-state decisions, not only final wording. `sale_ready` must share the packet with `non_sale_correct`, call control, blocked actions, retrieval status, and evidence logging.
+- Why it matters for the thesis: BRAIN-002 makes emotion-aware and persuasion-aware behavior inspectable as a runtime decision contract, which supports later comparison between the older core and the full-sale/RAG candidate.
+- Open questions: how the full-call gauntlet should weight close quality against non-sale correctness, and whether any RAG-020/RAG-021 rules should be promoted only after the BRAIN-002 packet is scored on fixed calls.
+
+### 2026-05-08 - PROD-006 full-sale MVP scenario grounding
+
+- Objective: pivot the product plan from appointment-setting only toward a full-sale MVP that can close eligible calls through a safe verbal-commitment outcome, while grounding scenarios in real-world call-center patterns without copying transcript text.
+- Action taken: added the `FULL_SALE_MVP_STRATEGY.md` product strategy, a PROD-006 scenario-grounding case file, a local runner, a leakage-aware validator, ignored external dataset storage, setup coverage, command-map coverage, and a thesis reference-registry entry for the CallCenterEN / AIxBlock dataset.
+- Data used: public dataset metadata from Hugging Face and the arXiv CallCenterEN paper, plus a project-owned fixture of multi-domain call-center pattern summaries. No dataset ZIP was downloaded, no raw transcript text was stored, no provider call was made, no real customer data was used, and no commercial runtime prompt was populated with transcript-derived text.
+- Output created: `docs/product/FULL_SALE_MVP_STRATEGY.md`, `scripts/full_sale_scenario_grounding.py`, `scripts/run_prod_006_full_sale_scenario_grounding.py`, `scripts/validate_prod_006_full_sale_scenario_grounding.py`, `research/experiments/cases/prod-006-full-sale-scenario-grounding.json`, and `research/experiments/generated/PROD-006-full-sale-scenario-grounding/`.
+- What was learned: the useful first step is not to copy real scripts; it is to extract multi-domain scenario patterns, require at least three source patterns per scenario, and score both safe close rate and non-sale correctness while treating leakage as a hard failure.
+- Why it matters for the thesis: PROD-006 creates a defensible bridge from real-world call-center evidence to controlled simulations without violating the dataset's non-commercial boundary or polluting runtime prompts with transcript-derived text.
+- Open questions: how the premortem should revise the full-sale MVP strategy before broad runtime changes, and when explicit approval should be requested to download and scan the full dataset locally.
+
+### 2026-05-08 - RESP-007 German pacing-stability follow-up
+
+- Objective: create a narrow German pacing-stability follow-up after RESP-006 without changing the same customer question or answer content.
+- Action taken: added a RESP-007 dry-run/live-capable runner, validator, case file, product doc, generated report/result, setup coverage, and command-map coverage. The validator first failed on the missing runner, then passed after the checkpoint was implemented.
+- Data used: local synthetic `RESP-007-DE-PACING-STABILITY-COMPLEX`, the same RESP-006 German question and answer content, the local `PROD-005` B2B software campaign fixture, deterministic guarded response output, and project-local provider-boundary helpers. No provider call, private customer data, private raw audio, transcription, voice cloning, vector database, embedding provider, or RAG runtime promotion was used.
+- Output created: `scripts/run_resp_007_german_pacing_stability_follow_up.py`, `scripts/validate_resp_007_german_pacing_stability_follow_up.py`, `research/experiments/cases/resp-007-german-pacing-stability-follow-up.json`, `research/experiments/generated/RESP-007-german-pacing-stability-follow-up/`, and `docs/product/RESP_007_GERMAN_PACING_STABILITY_FOLLOW_UP.md`.
+- What was learned: the German issue can be isolated as delivery stability: `old_plain_guarded` needs an opening rush guard and late-drag prevention, while `new_shaped_runtime` needs a speed cap and later answer spacing.
+- Why it matters for the thesis: RESP-007 preserves human-listening evidence discipline by changing one delivery surface while keeping answer content fixed and blocking any German voice-personality claim until review.
+- Open questions: whether Tarik accepts either stabilized German variant after listening, and whether that acceptance is enough to unblock the bounded voice-personality selector.
+
+### 2026-05-08 - BRAIN-001 project brain architecture
+
+- Objective: define what belongs inside the sales-agent brain before turning the recent RAG and voice work into more runtime behavior.
+- Action taken: added a BRAIN-001 product architecture doc and validator that define the brain as a small runtime decision architecture, not a prompt dump or uncontrolled memory.
+- Data used: project-local architecture and evidence from `REALTIME_AGENT_ARCHITECTURE.md`, `PRODUCT_BRIEF.md`, RAG-017/RAG-018/RAG-020/RAG-021, RESP-005/RESP-006 listening decisions, and the existing private-data boundary. No new public sources, provider calls, private customer data, raw private audio, raw private transcripts, vector database, embedding provider, or runtime retrieval promotion was used.
+- Output created: `docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md`, `scripts/validate_brain_001_project_brain_architecture.py`, setup-check coverage, command-map coverage, roadmap tracking, and this methodology entry.
+- What was learned: the project brain should be a compact live decision system: reusable sales core, `SalesCampaign`, short-term call state, conservative buyer-state/emotion estimates, sales strategy selector, optional guarded retrieval, voice delivery profile, and post-call learning outside the live path.
+- Why it matters for the thesis: BRAIN-001 connects RAG, voice, campaign guardrails, and emotional understanding into one inspectable architecture while preserving the evidence gates that prevent premature runtime claims.
+- Open questions: whether `BRAIN-002` should next become a strict runtime state schema, or whether the German pacing-stability follow-up should complete first so the voice-personality boundary is clearer.
+
+### 2026-05-08 - RAG-021 buyer trust and conversation-repair source expansion
+
+- Objective: find more source-backed RAG information after RAG-020, with an emphasis on buyer trust, value clarity, conversation repair, and emotion-safe support.
+- Action taken: added a new RAG-021 public-source pack with 10 reviewed URLs, 16 project-owned paraphrased advisory rules, a red-first validator, a runner, a product doc, generated evidence, setup coverage, and thesis source registry entries.
+- Data used: public web pages and public records only: Bain B2B Elements of Value, organizational trust research, autonomy-support meta-analysis, reactance communication research, Gross emotion regulation, conversation-repair analysis, cognitive-load theory, implementation-intention research, Digital.gov plain-language guidance, and OECD AI Principles. No private customer data, source excerpts, copied scripts, provider calls, NotebookLM API calls, vector database, or embedding provider was used.
+- Output created: `scripts/rag_buyer_trust_conversation_repair.py`, `scripts/run_rag_021_buyer_trust_conversation_repair.py`, `scripts/validate_rag_021_buyer_trust_conversation_repair.py`, `research/experiments/cases/rag-021-buyer-trust-conversation-repair.json`, `research/experiments/generated/RAG-021-buyer-trust-conversation-repair/`, and `docs/product/RAG_021_BUYER_TRUST_CONVERSATION_REPAIR.md`.
+- What was learned: a stronger sales agent needs more than persuasion tactics. It needs to diagnose value dimension, trust type, buyer autonomy risk, cognitive load, and conversation-repair needs before choosing a close or objection response.
+- Why it matters for the thesis: RAG-021 strengthens the emotional-understanding argument by replacing hidden-state guessing with observable repair, trust, clarity, and handoff patterns.
+- Open questions: whether RAG-020 and RAG-021 should be imported together into a future RAG-017 registry rebuild and tested against the same retrieval-vs-core simulation before any runtime promotion.
+
+### 2026-05-08 - RAG-020 sales persuasion and emotion-understanding deep dive
+
+- Objective: add deeper RAG information for sales strategy, ethical persuasion, buyer confidence, and emotion understanding while Tarik is away from the project.
+- Action taken: added a new RAG-020 public-source pack with 12 reviewed URLs, 20 project-owned paraphrased advisory rules, a red-first validator, a runner, a product doc, generated evidence, setup coverage, and thesis source registry entries.
+- Data used: public web pages and public records only: Gartner Challenger sales guidance, Stanford Fogg Behavior Model, COM-B/Behaviour Change Wheel, SAMHSA TIP 35 motivational interviewing, Harvard BATNA guidance, Elaboration Likelihood Model reference material, Barrett emotion-inference limits, Lieberman affect labeling, NIST AI RMF, NIST Generative AI Profile, EU AI Act text, and FTC AI deception guidance. No private customer data, source excerpts, copied scripts, provider calls, NotebookLM API calls, vector database, or embedding provider was used.
+- Output created: `scripts/rag_sales_persuasion_emotion_deep_dive.py`, `scripts/run_rag_020_sales_persuasion_emotion_deep_dive.py`, `scripts/validate_rag_020_sales_persuasion_emotion_deep_dive.py`, `research/experiments/cases/rag-020-sales-persuasion-emotion-deep-dive.json`, `research/experiments/generated/RAG-020-sales-persuasion-emotion-deep-dive/`, and `docs/product/RAG_020_SALES_PERSUASION_EMOTION_DEEP_DIVE.md`.
+- What was learned: the most useful next RAG material is not more generic closing scripts; it is a safer decision framework that teaches before pitching, lowers buyer friction before next-step asks, preserves autonomy, treats emotion signals as uncertain context, and blocks unvalidated or biometric emotion inference from runtime use.
+- Why it matters for the thesis: RAG-020 strengthens the product's research basis for persuasion and emotion awareness while keeping runtime retrieval gated behind RAG-017/RAG-018 validation.
+- Open questions: whether RAG-020 should be imported into a future RAG-017 registry rebuild and then tested against the existing retrieval-vs-core simulation before any runtime promotion.
+
+### 2026-05-08 - RESP-006 German runtime A/B listening packet
+
+- Objective: create the German counterpart to RESP-005 before turning the accepted English voice differences into selectable runtime personalities.
+- Action taken: added a RESP-006 dry-run/live-capable harness with one synthetic German send-info/trust/boss question, `old_plain_guarded` as direct `RESP-001` final response, and `new_shaped_runtime` as the `RESP-002`/`VOICE-044` provider-rendered German TTS input.
+- Data used: local synthetic `RESP-006-SAME-Q-DE-COMPLEX`, the local `PROD-005` B2B software campaign fixture, deterministic guarded response output, and the project-local TTS boundary. No provider call, private customer data, private raw audio, transcription, or voice cloning was used in the default run.
+- Output created: `scripts/run_resp_006_german_runtime_version_ab_listening_check.py`, `scripts/validate_resp_006_german_runtime_version_ab_listening_check.py`, `research/experiments/cases/resp-006-german-runtime-version-ab-listening-check.json`, `research/experiments/generated/RESP-006-german-runtime-version-ab-listening-check/`, and `docs/product/RESP_006_GERMAN_RUNTIME_VERSION_AB_LISTENING_CHECK.md`.
+- What was learned: the German harness produces two distinct provider inputs for the same longer German answer. Tarik's listening review found that `old_plain_guarded` starts a bit too fast and then becomes a bit too slow, while `new_shaped_runtime` starts strong but becomes a bit too fast later in the answer. The issue is pacing stability, not voice identity.
+- Why it matters for the thesis: this prevents an English-only personality decision from being promoted into a multilingual runtime assumption.
+- Open questions: which narrow pacing changes can stabilize German delivery while keeping the same question and answer content fixed for comparison.
+
+### 2026-05-08 - RESP-005 same-question runtime A/B listening packet
+
+- Objective: create one old-runtime versus new-runtime listening comparison where both variants answer the same more complex customer question.
+- Action taken: added a RESP-005 dry-run/live-capable harness with one synthetic English send-info/trust/boss question, `old_plain_guarded` as direct `RESP-001` final response, and `new_shaped_runtime` as the `RESP-002`/`VOICE-044` provider-rendered TTS input.
+- Data used: local synthetic `RESP-005-SAME-Q-EN-COMPLEX`, the local `PROD-005` B2B software campaign fixture, deterministic guarded response output, and the project-local TTS boundary. No provider call, private customer data, private raw audio, transcription, or voice cloning was used in the default run.
+- Output created: `scripts/run_resp_005_runtime_version_ab_listening_check.py`, `scripts/validate_resp_005_runtime_version_ab_listening_check.py`, `research/experiments/cases/resp-005-runtime-version-ab-listening-check.json`, `research/experiments/generated/RESP-005-runtime-version-ab-listening-check/`, and `docs/product/RESP_005_RUNTIME_VERSION_AB_LISTENING_CHECK.md`.
+- What was learned: the harness produces two clearly different provider inputs for the same longer answer. Tarik's listening review accepted both as strong but different personality directions: `old_plain_guarded` feels like a real laid-back salesperson, while `new_shaped_runtime` feels more serious and lower-energy. The current environment has voice IDs available through ignored local config but no provider API key, so this shell did not create fresh audio.
+- Why it matters for the thesis: this gives a tighter human-listening comparison than broad bilingual batches because it controls for question, answer content, provider target, and review criteria.
+- Open questions: how to expose these accepted personalities as bounded runtime profiles, and which campaigns or listener types should default to each voice style.
+
+### 2026-05-08 - RAG-018 retrieval-vs-core call simulation
+
+- Objective: answer whether the retrieval-enabled RAG-018 path is better than the older retrieval-disabled core path across a small multi-turn call simulation.
+- Action taken: added a fixed `4`-call, `12`-turn local simulation and a validator that compares core and retrieval scores, requires no core wins, preserves protected turns, and blocks default-retrieval promotion from this result alone.
+- Data used: local synthetic `PROD-005` campaign fixtures, `research/experiments/cases/rag-018-retrieval-vs-core-call-simulation.json`, the local RAG-017 runtime registry, and deterministic RESP-001 guarded response output. No provider call, private customer data, vector database, embedding provider, or LLM call was used.
+- Output created: `scripts/run_rag_018_retrieval_vs_core_call_simulation.py`, `scripts/validate_rag_018_retrieval_vs_core_call_simulation.py`, `research/experiments/cases/rag-018-retrieval-vs-core-call-simulation.json`, `research/experiments/generated/RAG-018-retrieval-vs-core-call-simulation/`, and updated RAG-018 product documentation.
+- What was learned: retrieval beats the older core path on the fixed validated objection turns (`4` retrieval wins, `0` core wins, `8` ties, `+8` score delta) while preserving `6/6` protected turns.
+- Why it matters for the thesis: this supports the hybrid teach-now/retrieve-live direction for validated objection handling while preserving the conservative default-off retrieval boundary.
+- Open questions: whether a larger call-outcome simulation or human review confirms that the improved objection handling also improves appointment-setting without increasing pressure.
+
+### 2026-05-08 - RAG-018 authority and trust influence paths
+
+- Objective: close the two remaining RAG-018 scripted-call quality gaps without making retrieval default.
+- Action taken: first changed the scripted-call validator to expect `RAG-018-SIM-C04` and `RAG-018-SIM-C05` to be influenced, watched the validator fail with only `2` influenced cases, then added gated English authority/boss and trust branches that require matching retrieved objection hints.
+- Data used: local synthetic `RAG-018-SIM-C04` and `RAG-018-SIM-C05`, the local RAG-017 runtime registry, and deterministic RESP-001 guarded response output. No provider call, private customer data, vector database, embedding provider, or LLM call was used.
+- Output created: updated `scripts/generate_guarded_response.py`, `scripts/validate_rag_018_scripted_call_simulation.py`, `research/experiments/cases/rag-018-scripted-call-simulation.json`, refreshed `research/experiments/generated/RAG-018-scripted-call-simulation/`, and updated RAG-018 product documentation.
+- What was learned: the authority/boss and trust gaps can be closed with narrow opt-in wording that asks for a shareable summary, one concern, or proof-oriented information instead of widening generic unknown-objection rewriting.
+- Why it matters for the thesis: all four current scripted influence paths now improve scored response quality while preserving the opt-in retrieval boundary and protected-context behavior.
+- Open questions: whether this should now move to a broader multi-turn call simulation before any default retrieval decision.
+
+### 2026-05-08 - RAG-018 send-me-info influence path
+
+- Objective: expand RAG-018 by one narrow safe behavior after the scripted-call simulation exposed send-me-info as a quality gap.
+- Action taken: first changed the scripted-call validator to expect `RAG-018-SIM-C03` to be influenced, watched it fail with only `1` influenced case, then added a gated English send-me-info response branch that only applies when the transcript asks to send information and retrieved hints include send-info/relevance guidance.
+- Data used: local synthetic `RAG-018-SIM-C03`, the local RAG-017 runtime registry, and deterministic RESP-001 guarded response output. No provider call, private customer data, vector database, embedding provider, or LLM call was used.
+- Output created: updated `scripts/generate_guarded_response.py`, `scripts/validate_rag_018_scripted_call_simulation.py`, `research/experiments/cases/rag-018-scripted-call-simulation.json`, refreshed `research/experiments/generated/RAG-018-scripted-call-simulation/`, and updated RAG-018 product documentation.
+- What was learned: send-me-info can safely become the second opt-in RAG influence path when the response asks what information would be relevant instead of sending a generic follow-up.
+- Why it matters for the thesis: this shows the hybrid design can expand incrementally with red-first validation while still keeping retrieval opt-in and protected contexts unchanged.
+- Open questions: whether authority/boss or trust objections should be the next narrow tested influence path.
+
+### 2026-05-08 - RAG-018 scripted-call simulation gate
+
+- Objective: test whether the first opt-in RAG-018 influence path improves broader call behavior before any default retrieval decision.
+- Action taken: added a fixed 10-case scripted-call simulation, scored objection resolution and next-step quality, validated protected-context preservation, and generated a RAG-018 simulation report.
+- Data used: local synthetic `PROD-005` campaign fixtures, `research/experiments/cases/rag-018-scripted-call-simulation.json`, the local RAG-017 runtime registry, and deterministic RESP-001 guarded response output. No provider call, private customer data, vector database, embedding provider, or LLM call was used.
+- Output created: `scripts/run_rag_018_scripted_call_simulation.py`, `scripts/validate_rag_018_scripted_call_simulation.py`, `research/experiments/cases/rag-018-scripted-call-simulation.json`, `research/experiments/generated/RAG-018-scripted-call-simulation/`, and updated RAG-018 product documentation.
+- What was learned: the narrow German price-objection influence path remains safe and improves one scored turn, but send-me-info, authority, and trust objections are still quality gaps because retrieved hints are not yet used by the composer.
+- Why it matters for the thesis: the hybrid teach-now/retrieve-live design now has a broader safety gate and an explicit negative result that blocks making retrieval default too early.
+- Open questions: which one of the remaining quality gaps should get the next narrow tested influence rule, with send-me-info as the lowest-risk candidate.
+
+### 2026-05-08 - RAG-018 opt-in retrieval influence pass
+
+- Objective: move RAG-018 beyond safe retrieval metadata by allowing one validated advisory hint path to improve runtime wording without making retrieval default.
+- Action taken: changed the German price-objection branch so opt-in retrieved objection-diagnosis/autonomy hints can produce a distinct clarifying question, updated RAG-018 and RESP-001 validators to require that influence, and regenerated the RESP-001 retrieval A/B evaluation.
+- Data used: local synthetic `PROD-005` campaign fixtures, the local RAG-017 runtime registry, and deterministic RESP-001 guarded response output. No provider call, private customer data, external vector database, embedding provider, or LLM call was used.
+- Output created: updated RAG-018/RESP-001 validators, updated guarded response composer, refreshed `research/experiments/generated/RESP-001-retrieval-ab-evaluation/`, and updated RAG-018 product documentation.
+- What was learned: live RAG can influence a safe, non-protected response when the composer has a narrow allowed wording path; blocked and protected contexts still prevent retrieval influence.
+- Why it matters for the thesis: this is the first evidence that the hybrid teach-now/retrieve-live design can affect runtime behavior while preserving opt-in retrieval, campaign-fact grounding, latency bounds, and guardrail blocks.
+- Open questions: which larger scripted call simulation should test whether the influenced wording improves objection resolution or next-step quality before any default retrieval decision.
+
+### 2026-05-08 - RESP-004 VOICE-044 listening-check harness
+
+- Objective: create a separate checkpoint for the VOICE-044 polished-baseline listening test instead of writing new evidence into RESP-003.
+- Action taken: added a RESP-004 dry-run/default, live-opt-in runner and validator that reuse RESP-003 as the TTS bridge while keeping RESP-004 as the test identity and artifact owner.
+- Data used: the first two official VOICE-044 synthetic focus cases: English fast-filler cleanup and German connector cleanup. No customer audio, raw private audio, transcription, voice cloning, provider call, or secret value was used.
+- Output created: `scripts/run_resp_004_voice_044_listening_check.py`, `scripts/validate_resp_004_voice_044_listening_check.py`, `docs/product/RESP_004_VOICE_044_LISTENING_CHECK.md`, and generated RESP-004 dry-run artifacts.
+- What was learned: follow-up listening checks should get their own checkpoint identity when they answer a new research question, even if they reuse the existing RESP-003 live-capable TTS bridge internally.
+- Why it matters for the thesis: this preserves the evidence chain by separating the stable TTS bridge from the human-listening experiment around VOICE-044.
+- Open questions: whether to run the RESP-004 live provider pass now or return directly to RAG-018 opt-in retrieval evaluation.
+
+### 2026-05-08 - VOICE-044 baseline delivery polish
+
+- Objective: improve the accepted baseline shaped runtime after VOICE-043 without promoting the rejected VOICE-041 private-pattern profile.
+- Action taken: added a VOICE-044 runtime layer after low-pressure focus and before optional private-pattern settings; removed narrow fast filler/connector artifacts in eligible English and German provider-facing text; added runner, validator, case file, product docs, setup coverage, and RESP-002 integration checks.
+- Data used: synthetic campaign fixtures and Tarik's listening feedback about baseline/private-pattern preference and specific voice artifacts. No customer audio, raw private audio read, transcription, voice cloning, provider call, or secret value was used.
+- Output created: `scripts/voice_baseline_delivery_polish.py`, `scripts/run_voice_044_baseline_delivery_polish.py`, `research/experiments/cases/voice-044-baseline-delivery-polish.json`, `docs/product/VOICE_044_BASELINE_DELIVERY_POLISH.md`, and generated VOICE-044 dry-run artifacts.
+- What was learned: after baseline wins an A/B, the next useful improvement is not broader personalization but targeted cleanup of the exact artifacts that make otherwise good speech sound robotic or rushed.
+- Why it matters for the thesis: this demonstrates a conservative human-in-the-loop iteration loop where subjective listening feedback becomes a bounded, testable runtime layer with protected-text and no-provider boundaries.
+- Open questions: whether the polished baseline should be checked with a short live RESP-003 listening run before moving back to broader RAG or product-learning work.
+
 ### 2026-05-08 - RESP-003 follow-up voice tuning
 
 - Objective: convert Tarik's second RESP-003 bilingual listening feedback into narrow runtime tuning without regressing the English objection and next-step samples that sounded strong.
@@ -119,7 +409,7 @@ Use this file as a chronological research journal for the thesis implementation.
 ### 2026-05-07 - Generated artifact folderization and drift guard
 
 - Objective: make the accumulated experiment evidence easier to audit before pushing the full project checkpoint to GitHub.
-- Action taken: grouped prior flat generated artifacts under milestone folders, added `research/experiments/generated/README.md`, expanded generated-audio ignore rules, and extended the project drift guard to fail on unexpected flat generated-root files.
+- Action taken: grouped prior flat generated artifacts under milestone folders, added `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/README.md`, expanded generated-audio ignore rules, and extended the project drift guard to fail on unexpected flat generated-root files.
 - Data used: existing generated experiment outputs only. No provider call, NotebookLM API call, LLM call, private audio, private transcript, API key, or new source gathering was used.
 - Output created: grouped `research/experiments/generated/<checkpoint>/` artifact folders, updated `.gitignore`, updated `scripts/check_project_drift.py`, updated `scripts/validate_project_drift_guard.py`, and this thesis trace.
 - What was learned: artifact organization is part of thesis method quality. If evidence folders are hard to scan, generated files can hide stale outputs, source excerpts, live-audio leakage, or mixed checkpoint claims.
@@ -585,12 +875,12 @@ Use this file as a chronological research journal for the thesis implementation.
 ### 2026-05-04 - VOICE-025 boundary-aware filler placement implementation
 
 - Objective: fix unnatural English/German filler placement while preserving the shared vertical-agnostic sales-agent runtime and protected campaign text boundaries.
-- Action taken: added a failing VOICE-025 validator first, changed `scripts/speech_realism.py` from mid-clause insertion to boundary-aware insertion, added German-specific `also`, `ähm`, `äh`, and `hm` placement rules, added a VOICE-025 runner/case set/report, updated setup checks, and regenerated the VOICE-023/VOICE-025 offline reports in organized generated folders.
+- Action taken: added a failing VOICE-025 validator first, changed `scripts/speech_realism.py` from mid-clause insertion to boundary-aware insertion, added German-specific `also`, `Ã¤hm`, `Ã¤h`, and `hm` placement rules, added a VOICE-025 runner/case set/report, updated setup checks, and regenerated the VOICE-023/VOICE-025 offline reports in organized generated folders.
 - Data used: VOICE-024 listening feedback, VOICE-025 filler-placement research, German filler-particle and German turn-beginning sources, and synthetic English/German sales-response cases.
 - Output created: `research/experiments/generated/VOICE-025-filler-placement/results.json`, `research/experiments/generated/VOICE-025-filler-placement/report.md`, `docs/product/VOICE_025_FILLER_PLACEMENT.md`, `scripts/run_voice_025_filler_placement.py`, and `scripts/validate_voice_025_filler_placement.py`.
-- What was learned: the old rule could split fluent clause frames such as `the important thing is that` and `Wichtig ist, dass`; the new rule moves fillers before the planning sentence or to a sentence boundary. German needed its own profile rather than translated English markers, especially for `also`, `äh`, and `ähm`.
+- What was learned: the old rule could split fluent clause frames such as `the important thing is that` and `Wichtig ist, dass`; the new rule moves fillers before the planning sentence or to a sentence boundary. German needed its own profile rather than translated English markers, especially for `also`, `Ã¤h`, and `Ã¤hm`.
 - Why it matters for the thesis: this is a clear example of using human listening feedback plus linguistic literature to refine an AI voice behavior layer under guardrails.
-- Open questions: the next live audio test should compare whether German `äh`/`ähm` are rendered naturally by ElevenLabs or whether some German campaigns should prefer `also`/pause-only cues.
+- Open questions: the next live audio test should compare whether German `Ã¤h`/`Ã¤hm` are rendered naturally by ElevenLabs or whether some German campaigns should prefer `also`/pause-only cues.
 
 ### 2026-05-04 - VOICE-025 filler-placement research
 
@@ -711,8 +1001,8 @@ Action:
 - Added `scripts/run_voice_022_spoken_text_normalization.py`.
 - Added `scripts/validate_voice_022_spoken_text_normalization.py`.
 - Added `research/experiments/cases/voice-022-spoken-text-normalization.json`.
-- Generated `research/experiments/generated/VOICE-022-spoken-text-normalization.json`.
-- Generated `research/experiments/generated/VOICE-022-spoken-text-normalization-report.md`.
+- Generated `research/experiments/generated/VOICE-022/VOICE-022-spoken-text-normalization.json`.
+- Generated `research/experiments/generated/VOICE-022/VOICE-022-spoken-text-normalization-report.md`.
 - Documented the layer in `docs/product/VOICE_022_SPOKEN_TEXT_NORMALIZATION.md`.
 - Wired VOICE-022 into `RESP-002` before prosody and provider rendering.
 - Extended `RESP-003` validation so optional live TTS uses spoken-normalized/provider-rendered text only for eligible freeform segments.
@@ -748,8 +1038,8 @@ Interpretation:
   - `scripts/validate_voice_008_local_tts_smoke.py`
   - `docs/product/VOICE_008_LOCAL_TTS_SMOKE_TEST.md`
   - `research/experiments/VOICE-008-local-tts-smoke-test.md`
-  - `research/experiments/generated/VOICE-008-local-tts-smoke.json`
-  - `research/experiments/generated/VOICE-008-local-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke.json`
+  - `research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke-report.md`
 - What was learned:
   - the local Windows SAPI command path can be attempted without API keys or cloud providers
   - the current environment does not have a usable local SAPI voice installed or allowed by the current security setting
@@ -789,8 +1079,8 @@ Interpretation:
   - `scripts/validate_voice_007_provider_readiness.py`
   - `docs/product/VOICE_007_PROVIDER_READINESS_GATE.md`
   - `research/experiments/VOICE-007-provider-readiness-gate.md`
-  - `research/experiments/generated/VOICE-007-provider-readiness.json`
-  - `research/experiments/generated/VOICE-007-provider-readiness-report.md`
+  - `research/experiments/generated/VOICE-007/VOICE-007-provider-readiness.json`
+  - `research/experiments/generated/VOICE-007/VOICE-007-provider-readiness-report.md`
 - What was learned:
   - the next safe no-key ASR path remains the browser speech recognition demo, with manual transcript as the regression baseline
   - the next safe no-key TTS path is local Windows SAPI, with dry-run TTS packets as the regression baseline
@@ -922,8 +1212,8 @@ Interpretation:
   - `research/experiments/cases/prod-001-qualification-simulation.json`
 - Output created:
   - `scripts/run_rule_baseline.py`
-  - `research/experiments/generated/PROD-001-rule-baseline-results.json`
-  - `research/experiments/generated/PROD-001-rule-baseline-report.md`
+  - `research/experiments/generated/PROD-001/PROD-001-rule-baseline-results.json`
+  - `research/experiments/generated/PROD-001/PROD-001-rule-baseline-report.md`
   - `research/experiments/PROD-001-rule-baseline.md`
 - What was learned:
   - transparent rules can match all final product outcomes in the current synthetic case set
@@ -943,14 +1233,14 @@ Interpretation:
   - implemented an importer that loads `PROD-001-db-records.json` into SQLite
   - generated a query report proving retrieval of interested leads, do-not-call leads, appointments, escalations, and turn-level decisions
 - Data used:
-  - `research/experiments/generated/PROD-001-db-records.json`
+  - `research/experiments/generated/PROD-001/PROD-001-db-records.json`
   - `docs/product/LEAD_DATABASE_DESIGN.md`
 - Output created:
   - `db/sqlite_schema.sql`
   - `scripts/import_simulation_records.py`
   - `docs/product/SQLITE_PROTOTYPE.md`
-  - `research/experiments/generated/PROD-001.sqlite`
-  - `research/experiments/generated/PROD-001-sqlite-report.md`
+  - `research/experiments/generated/PROD-001/PROD-001.sqlite`
+  - `research/experiments/generated/PROD-001/PROD-001-sqlite-report.md`
 - What was learned:
   - the synthetic simulation records fit cleanly into a relational schema
   - the current records support the product queries needed for the first MVP workflow
@@ -973,7 +1263,7 @@ Interpretation:
   - `docs/product/LEAD_DATABASE_DESIGN.md`
   - `docs/product/SIMULATION_CONTRACT.md`
 - Output created:
-  - `research/experiments/generated/PROD-001-db-records.json`
+  - `research/experiments/generated/PROD-001/PROD-001-db-records.json`
 - What was learned:
   - the simulation artifacts can now be shaped like future product persistence records
   - appointment and escalation records can be derived cleanly from the final `CallOutcome`
@@ -996,7 +1286,7 @@ Interpretation:
   - `docs/product/SIMULATION_CONTRACT.md`
 - Output created:
   - updated `scripts/run_product_simulation.py`
-  - updated `research/experiments/generated/PROD-001-evaluation-packet.md`
+  - updated `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md`
 - What was learned:
   - the simulation prompt can now represent the current customer conversation more realistically
   - the runner is closer to the eventual product database model, where `CallSession` accumulates state across turns
@@ -1041,7 +1331,7 @@ Interpretation:
   - compared candidate outcomes against expected reference labels and guardrails
 - Data used:
   - `research/experiments/cases/prod-001-qualification-simulation.json`
-  - `research/experiments/generated/PROD-001-evaluation-packet.md`
+  - `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md`
   - `docs/product/SIMULATION_CONTRACT.md`
 - Output created:
   - `research/experiments/PROD-001-first-simulation-pass.md`
@@ -1070,7 +1360,7 @@ Interpretation:
   - `docs/product/SIMULATION_CONTRACT.md`
   - `packages/prompts/product-qualification-agent.txt`
   - `scripts/run_product_simulation.py`
-  - `research/experiments/generated/PROD-001-evaluation-packet.md`
+  - `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md`
 - What was learned:
   - the product track now has a repeatable evaluation packet analogous to the thesis prompt-comparison packet
   - the first runner can validate structure and create scoring slots without committing to a model API yet
@@ -1095,7 +1385,7 @@ Interpretation:
   - `research/experiments/cases/prod-001-qualification-simulation.json`
   - `scripts/render_product_simulation.py`
   - `research/experiments/PROD-001-qualification-simulation.md`
-  - `research/experiments/generated/PROD-001-simulation-packet.md`
+  - `research/experiments/generated/PROD-001/PROD-001-simulation-packet.md`
 - What was learned:
   - the product workflow can be tested before telephony or calendar integration by checking turn-level state estimates and final outcome records
   - scheduling needs a separate confirmation check because an interested lead is not always a scheduled lead
@@ -1339,7 +1629,7 @@ Interpretation:
   - baseline prompt templates
 - Output created:
   - `scripts/run_prompt_baseline.py`
-  - `research/experiments/generated/EXP-002-prompt-packet.md`
+  - `research/experiments/generated/EXP-002/EXP-002-prompt-packet.md`
 - What was learned:
   - the workflow can be made more repeatable without committing to a heavy automation stack
   - structured case files are a better long-term format than prompt-only markdown when experiments need to scale
@@ -1515,8 +1805,8 @@ Interpretation:
   - `research/experiments/cases/prod-004-sales-difficulty-gauntlet.json`
 - Output created:
   - `research/experiments/PROD-004-rule-baseline.md`
-  - `research/experiments/generated/PROD-004-rule-baseline-results.json`
-  - `research/experiments/generated/PROD-004-rule-baseline-report.md`
+  - `research/experiments/generated/PROD-004/PROD-004-rule-baseline-results.json`
+  - `research/experiments/generated/PROD-004/PROD-004-rule-baseline-report.md`
 - What was learned:
   - the baseline preserved appointment caution with 14 / 14 final appointment matches
   - the baseline was much weaker on hard sales boundaries, with 6 / 14 final call-status matches and 7 / 14 final interest-state matches
@@ -1542,8 +1832,8 @@ Interpretation:
   - `docs/product/VOICE_009_TTS_PROVIDER_RESEARCH.md`
   - `research/experiments/VOICE-009-tts-provider-research.md`
   - `research/experiments/cases/voice-009-tts-provider-research.json`
-  - `research/experiments/generated/VOICE-009-tts-provider-research.json`
-  - `research/experiments/generated/VOICE-009-tts-provider-research-report.md`
+  - `research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research.json`
+  - `research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research-report.md`
   - `scripts/evaluate_voice_009_tts_provider_research.py`
   - `scripts/validate_voice_009_tts_provider_research.py`
 - What was learned:
@@ -1581,8 +1871,8 @@ Interpretation:
   - `docs/product/VOICE_010_CARTESIA_TTS_SMOKE_TEST.md`
   - `research/experiments/VOICE-010-cartesia-tts-smoke.md`
   - `research/experiments/cases/voice-010-cartesia-tts-smoke.json`
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke-report.md`
   - `scripts/run_voice_010_cartesia_tts_smoke.py`
   - `scripts/validate_voice_010_cartesia_tts_smoke.py`
 - What was learned:
@@ -1613,14 +1903,14 @@ Interpretation:
   - kept generated WAV files ignored by Git
   - recorded the first listening impression
 - Data used:
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke-report.md`
   - user listening feedback on the two generated WAV files
 - Output updated:
   - `docs/product/VOICE_010_CARTESIA_TTS_SMOKE_TEST.md`
   - `research/experiments/VOICE-010-cartesia-tts-smoke.md`
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke-report.md`
 - What was learned:
   - both Cartesia bytes-endpoint calls returned HTTP `200`
   - both German and English WAV files were created locally
@@ -1651,8 +1941,8 @@ Interpretation:
   - kept generated WAV files ignored by Git
   - compared the rerun against the first live VOICE-010 result
 - Data used:
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke.json`
-  - `research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke.json`
+  - `research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke-report.md`
   - user listening feedback on the German rerun
 - What was learned:
   - both Cartesia bytes-endpoint calls again returned HTTP `200`
@@ -1692,8 +1982,8 @@ Interpretation:
   - `docs/product/VOICE_011_CARTESIA_WEBSOCKET_SMOKE_TEST.md`
   - `research/experiments/VOICE-011-cartesia-websocket-smoke.md`
   - `research/experiments/cases/voice-011-cartesia-websocket-smoke.json`
-  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json`
-  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke-report.md`
+  - `research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke-report.md`
   - `scripts/run_voice_011_cartesia_websocket_smoke.py`
   - `scripts/validate_voice_011_cartesia_websocket_smoke.py`
 - What was learned:
@@ -1725,8 +2015,8 @@ Interpretation:
   - verified that generated JSON/Markdown artifacts did not contain API key or voice ID values
   - confirmed the shell no longer had Cartesia environment variables set after the run
 - Data used:
-  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json`
-  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke-report.md`
+  - `research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke-report.md`
   - user listening feedback on the longer generated audio
 - What was learned:
   - all four WebSocket calls produced audio files
@@ -1762,8 +2052,8 @@ Interpretation:
   - `docs/product/VOICE_012_SPEECH_NATURALNESS_LAYER.md`
   - `research/experiments/VOICE-012-speech-naturalness.md`
   - `research/experiments/cases/voice-012-speech-naturalness.json`
-  - `research/experiments/generated/VOICE-012-speech-naturalness.json`
-  - `research/experiments/generated/VOICE-012-speech-naturalness-report.md`
+  - `research/experiments/generated/VOICE-012/VOICE-012-speech-naturalness.json`
+  - `research/experiments/generated/VOICE-012/VOICE-012-speech-naturalness-report.md`
   - `scripts/speech_naturalness.py`
   - `scripts/run_voice_012_speech_naturalness.py`
   - `scripts/validate_voice_012_speech_naturalness.py`
@@ -1803,8 +2093,8 @@ Interpretation:
   - `docs/product/VOICE_013_ELEVENLABS_TTS_SMOKE_TEST.md`
   - `research/experiments/VOICE-013-elevenlabs-tts-smoke.md`
   - `research/experiments/cases/voice-013-elevenlabs-tts-smoke.json`
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke-report.md`
   - `scripts/run_voice_013_elevenlabs_tts_smoke.py`
   - `scripts/validate_voice_013_elevenlabs_tts_smoke.py`
 - What was learned:
@@ -1834,8 +2124,8 @@ Interpretation:
   - confirmed no API key or voice ID values were present in generated artifacts
   - removed provider request IDs from stored error bodies while keeping the useful error category and message
 - Data used:
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke-report.md`
 - What was learned:
   - ElevenLabs returned HTTP `402` for all four cases
   - provider error code was `paid_plan_required`
@@ -1864,8 +2154,8 @@ Interpretation:
   - confirmed no customer audio was uploaded
   - confirmed generated MP3 files remain ignored by Git
 - Data used:
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke-report.md`
   - user listening feedback on the generated MP3 files
 - What was learned:
   - all four ElevenLabs streaming requests returned HTTP `200`
@@ -1895,16 +2185,16 @@ Interpretation:
   - generated JSON, Markdown, and HTML listening comparison artifacts
   - added a validator that checks all audio pairs exist and that no quality claim is allowed before ratings are recorded
 - Data used:
-  - `research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json`
-  - `research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json`
+  - `research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke.json`
+  - `research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke.json`
   - local ignored WAV and MP3 files from the successful live runs
 - Output created:
   - `docs/product/VOICE_014_PROVIDER_LISTENING_COMPARISON.md`
   - `research/experiments/VOICE-014-provider-listening-comparison.md`
   - `research/experiments/cases/voice-014-provider-listening-comparison.json`
-  - `research/experiments/generated/VOICE-014-provider-listening-comparison.json`
-  - `research/experiments/generated/VOICE-014-provider-listening-comparison-report.md`
-  - `research/experiments/generated/VOICE-014-provider-listening-comparison.html`
+  - `research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison.json`
+  - `research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison-report.md`
+  - `research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison.html`
   - `scripts/run_voice_014_provider_listening_comparison.py`
   - `scripts/validate_voice_014_provider_listening_comparison.py`
 - What was learned:
@@ -1941,8 +2231,8 @@ Interpretation:
   - `scripts/run_voice_015_prosody_naturalness.py`
   - `scripts/validate_voice_015_prosody_naturalness.py`
   - `research/experiments/cases/voice-015-prosody-naturalness.json`
-  - `research/experiments/generated/VOICE-015-prosody-naturalness.json`
-  - `research/experiments/generated/VOICE-015-prosody-naturalness-report.md`
+  - `research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json`
+  - `research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness-report.md`
   - `docs/product/VOICE_015_PROSODY_NATURALNESS_LAYER.md`
   - `research/experiments/VOICE-015-prosody-naturalness.md`
 - What was learned:
@@ -1974,15 +2264,15 @@ Interpretation:
   - recorded unsupported pitch and emphasis cues instead of forcing unreliable provider tricks
   - added validation that provider tags do not enter protected segments
 - Data used:
-  - `research/experiments/generated/VOICE-015-prosody-naturalness.json`
+  - `research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json`
   - current provider documentation for Cartesia Sonic 3 SSML-style tags and ElevenLabs pause controls
 - Output created:
   - `scripts/provider_prosody_rendering.py`
   - `scripts/run_voice_016_provider_prosody_rendering.py`
   - `scripts/validate_voice_016_provider_prosody_rendering.py`
   - `research/experiments/cases/voice-016-provider-prosody-rendering.json`
-  - `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
-  - `research/experiments/generated/VOICE-016-provider-prosody-rendering-report.md`
+  - `research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json`
+  - `research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering-report.md`
   - `docs/product/VOICE_016_PROVIDER_PROSODY_RENDERING.md`
   - `research/experiments/VOICE-016-provider-prosody-rendering.md`
 - What was learned:
@@ -2013,14 +2303,14 @@ Interpretation:
   - blocked accidental live calls to both providers unless `--allow-both-live` is explicitly set
   - ignored generated VOICE-017 MP3 and WAV files in Git
 - Data used:
-  - `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
+  - `research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json`
   - previously validated ElevenLabs HTTP streaming and Cartesia WebSocket provider paths
 - Output created:
   - `scripts/run_voice_017_live_ab_audio.py`
   - `scripts/validate_voice_017_live_ab_audio.py`
   - `research/experiments/cases/voice-017-live-ab-audio.json`
-  - `research/experiments/generated/VOICE-017-live-ab-audio.json`
-  - `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+  - `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio-report.md`
   - `docs/product/VOICE_017_LIVE_AB_AUDIO.md`
   - `research/experiments/VOICE-017-live-ab-audio.md`
 - What was learned:
@@ -2049,13 +2339,13 @@ Interpretation:
   - confirmed no customer audio was uploaded and no voice cloning was used
   - recorded the project owner's listening judgment that prosody sounded much better than plain speech
 - Data used:
-  - `research/experiments/generated/VOICE-017-live-ab-audio.json`
-  - `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+  - `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio-report.md`
   - local ignored VOICE-017 ElevenLabs MP3 files
 - Output created:
-  - `research/experiments/generated/VOICE-017-human-listening-review.md`
-  - updated `research/experiments/generated/VOICE-017-live-ab-audio.json`
-  - updated `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+  - `research/experiments/generated/VOICE-017/VOICE-017-human-listening-review.md`
+  - updated `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio.json`
+  - updated `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio-report.md`
   - updated `research/experiments/VOICE-017-live-ab-audio.md`
   - updated `docs/product/VOICE_017_LIVE_AB_AUDIO.md`
 - What was learned:
@@ -2095,8 +2385,8 @@ Interpretation:
   - `scripts/validate_resp_002_runtime_voice_delivery.py`
   - `docs/product/RESP_002_RUNTIME_VOICE_DELIVERY.md`
   - `research/experiments/RESP-002-runtime-voice-delivery.md`
-  - `research/experiments/generated/RESP-002-runtime-voice-delivery-result.json`
-  - `research/experiments/generated/RESP-002-runtime-voice-delivery-report.md`
+  - `research/experiments/generated/RESP-002/RESP-002-runtime-voice-delivery-result.json`
+  - `research/experiments/generated/RESP-002/RESP-002-runtime-voice-delivery-report.md`
 - What was learned:
   - the runtime path can now prepare approved responses for voice delivery while preserving the exact guarded final response
   - prosody belongs after safety and response generation, not inside the compliance or call-control layer
@@ -2168,8 +2458,8 @@ Interpretation:
   - `scripts/validate_resp_003_runtime_live_tts.py`
   - `docs/product/RESP_003_RUNTIME_LIVE_TTS.md`
   - `research/experiments/RESP-003-runtime-live-tts.md`
-  - `research/experiments/generated/RESP-003-runtime-live-tts-result.json`
-  - `research/experiments/generated/RESP-003-runtime-live-tts-report.md`
+  - `research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-result.json`
+  - `research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-report.md`
 - What was learned:
   - live TTS can remain a separate opt-in layer after guarded response and delivery shaping
   - provider audio generation does not need to become part of default setup or validation
@@ -2202,10 +2492,10 @@ Interpretation:
   - environment-only `ELEVENLABS_VOICE_ID_DE`
   - environment-only `ELEVENLABS_VOICE_ID_EN`
 - Output created:
-  - `research/experiments/generated/RESP-003-live-elevenlabs-de-result.json`
-  - `research/experiments/generated/RESP-003-live-elevenlabs-de-report.md`
-  - `research/experiments/generated/RESP-003-live-elevenlabs-en-result.json`
-  - `research/experiments/generated/RESP-003-live-elevenlabs-en-report.md`
+  - `research/experiments/generated/RESP-003/RESP-003-live-elevenlabs-de-result.json`
+  - `research/experiments/generated/RESP-003/RESP-003-live-elevenlabs-de-report.md`
+  - `research/experiments/generated/RESP-003/RESP-003-live-elevenlabs-en-result.json`
+  - `research/experiments/generated/RESP-003/RESP-003-live-elevenlabs-en-report.md`
   - local ignored German MP3 audio artifact
   - local ignored English MP3 audio artifact
 - Technical result:
@@ -2241,10 +2531,10 @@ Interpretation:
   - recorded qualitative product feedback without forcing uncertain numeric ratings
   - documented the result as listening evidence, not as a production-readiness claim
 - Data used:
-  - `research/experiments/generated/RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
-  - `research/experiments/generated/RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-00aae825.mp3`
+  - `research/experiments/generated/RESP-003/RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
+  - `research/experiments/generated/RESP-003/RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-00aae825.mp3`
 - Output created:
-  - `research/experiments/generated/RESP-003-bilingual-human-listening-review.md`
+  - `research/experiments/generated/RESP-003/RESP-003-bilingual-human-listening-review.md`
 - What was learned:
   - both outputs are clear and pronunciation is good
   - the voices still sound obviously AI-generated
@@ -2339,7 +2629,7 @@ Interpretation:
   - kept protected campaign, disclosure, do-not-call, hang-up, and sensitive text exact
   - added a validator and generated JSON/Markdown evidence
 - Data used:
-  - `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
+  - `research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json`
   - first VOICE-017 and RESP-003 listening feedback
   - existing protected-segment taxonomy from VOICE-012 through VOICE-016
 - Output created:
@@ -2347,8 +2637,8 @@ Interpretation:
   - `scripts/run_voice_018_sales_voice_tuning.py`
   - `scripts/validate_voice_018_sales_voice_tuning.py`
   - `research/experiments/cases/voice-018-sales-voice-tuning.json`
-  - `research/experiments/generated/VOICE-018-sales-voice-tuning.json`
-  - `research/experiments/generated/VOICE-018-sales-voice-tuning-report.md`
+  - `research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning.json`
+  - `research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning-report.md`
   - `docs/product/VOICE_018_SALES_VOICE_TUNING.md`
 - Technical result:
   - cases: 8
@@ -2392,14 +2682,14 @@ Interpretation:
   - added forced-missing-key fallback validation for both providers
   - added Git ignore rules for future VOICE-019 MP3/WAV live audio artifacts
 - Data used:
-  - `research/experiments/generated/VOICE-018-sales-voice-tuning.json`
+  - `research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning.json`
   - `research/experiments/cases/voice-017-live-ab-audio.json`
 - Output created:
   - `scripts/run_voice_019_sales_tuned_live_ab_audio.py`
   - `scripts/validate_voice_019_sales_tuned_live_ab_audio.py`
   - `research/experiments/cases/voice-019-sales-tuned-live-ab-audio.json`
-  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio.json`
-  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio-report.md`
+  - `research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio-report.md`
   - `docs/product/VOICE_019_SALES_TUNED_LIVE_AB_AUDIO.md`
   - `research/experiments/VOICE-019-sales-tuned-live-ab-audio.md`
 - Dry-run result:
@@ -2467,8 +2757,8 @@ Interpretation:
   - collected project-owner listening feedback for both languages
   - updated the roadmap so `VOICE-020` targets emotional delivery and controlled human speech variation
 - Data used:
-  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio.json`
-  - `research/experiments/generated/VOICE-019-sales-tuned-live-ab-audio-report.md`
+  - `research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio.json`
+  - `research/experiments/generated/VOICE-019/VOICE-019-sales-tuned-live-ab-audio-report.md`
   - generated local MP3 files ignored by Git
   - project-owner listening judgment
 - Output created:
@@ -2628,8 +2918,8 @@ Interpretation:
   - project-owner clarification that private call-center audio may only inform local abstract tuning notes for future voice adjustment
 - Output created:
   - `research/experiments/cases/voice-020-elevenlabs-voice-design.json`
-  - `research/experiments/generated/VOICE-020-elevenlabs-voice-design.json`
-  - `research/experiments/generated/VOICE-020-elevenlabs-voice-design-report.md`
+  - `research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design.json`
+  - `research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design-report.md`
   - `docs/product/VOICE_020_ELEVENLABS_VOICE_DESIGN.md`
   - `research/experiments/VOICE-020-elevenlabs-voice-design.md`
   - `scripts/run_voice_020_elevenlabs_voice_design.py`
@@ -2705,8 +2995,8 @@ Interpretation:
   - previous owner feedback about roboticness, stale pacing, insufficient fillers, insufficient contractions/connectors, and unbundled voice effects
 - Output created:
   - updated `research/experiments/cases/voice-020-elevenlabs-voice-design.json`
-  - updated `research/experiments/generated/VOICE-020-elevenlabs-voice-design.json`
-  - updated `research/experiments/generated/VOICE-020-elevenlabs-voice-design-report.md`
+  - updated `research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design.json`
+  - updated `research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design-report.md`
   - updated `docs/product/VOICE_020_ELEVENLABS_VOICE_DESIGN.md`
 - What was learned:
   - Remixing can reduce local workload by improving the base voice before runtime synthesis
@@ -2736,8 +3026,8 @@ Interpretation:
   - project-owner requirements that future call-center audio stays local, raw audio is not uploaded, identifiers are ignored as learning signal, and both successful and unsuccessful sales calls can teach useful patterns
 - Output created:
   - `research/experiments/cases/private-call-learning-001.json`
-  - `research/experiments/generated/PRIVATE-CALL-LEARNING-001.json`
-  - `research/experiments/generated/PRIVATE-CALL-LEARNING-001-report.md`
+  - `research/experiments/generated/PRIVATE-CALL-LEARNING-001/PRIVATE-CALL-LEARNING-001.json`
+  - `research/experiments/generated/PRIVATE-CALL-LEARNING-001/PRIVATE-CALL-LEARNING-001-report.md`
   - `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md`
   - `research/experiments/PRIVATE-CALL-LEARNING-001.md`
   - `scripts/check_private_call_learning_pipeline.py`
@@ -2763,6 +3053,140 @@ Interpretation:
   - which local ASR and speaker-segmentation approach is accurate enough for German call-center audio
   - what redaction quality threshold is required before pattern notes can leave `data/private/`
   - whether sales-expert review should label success/failure patterns before RAG is built
+
+### 2026-05-08 - VOICE-030D recurring private speech-pattern extraction
+
+- Objective: correct the private speech-review method so it extracts recurring acoustic delivery patterns from the available sample set, not only from files that already had a runtime-candidate wrapper
+- Action taken:
+  - updated `scripts/run_voice_030d_private_feature_review.py` to derive candidate values from every usable VOICE-030C feature file
+  - kept all feature files counted for coverage while excluding no-measurable-speech files from recurring-pattern bands
+  - added plain-language private pattern interpretation for rhythm density, expressiveness variation, vocal presence, and diagnostic-only pause behavior
+  - added validator coverage so feature-only files are included in VOICE-030D summaries
+- Current private result:
+  - feature files read: 121
+  - usable for recurring-pattern summary: 119
+  - excluded from recurring-pattern summary: 2 no-measurable-speech feature files
+  - provider calls, transcription, voice cloning, and runtime profile application: false
+- What was learned:
+  - the earlier VOICE-030D summary underused the sample set because it only summarized `runtime_learning_candidates`
+  - the same acoustic values were present under `features`, so a safe local fallback can summarize recurring patterns without reading raw audio paths or transcripts
+  - long pause metrics should remain diagnostic-only because owner recordings can include thinking pauses that should not become sales-agent pacing
+- Why it matters for the thesis:
+  - it documents a privacy-preserving path from owner speech samples to reviewed aggregate delivery signals
+  - it separates recurring acoustic pattern extraction from voice cloning, provider upload, and automatic runtime personalization
+  - it gives future voice-personalization claims a clearer audit trail
+
+### 2026-05-08 - VOICE-041 accepted abstract private-pattern runtime bridge
+
+- Objective: add a guarded way for reviewed private speech-pattern findings to influence runtime voice delivery without reading private audio at runtime or cloning a voice
+- Action taken:
+  - added `scripts/voice_private_pattern_profile.py` as an opt-in layer after RESP-002 low-pressure focus
+  - added `scripts/validate_voice_041_private_pattern_profile.py` to lock no-provider, no-cloning, no-raw-audio-read, no-text-rewrite, and protected-segment no-op behavior
+  - integrated `voice_delivery.voice_private_pattern_profile` into RESP-002 output and validation
+  - documented `VOICE_041_PRIVATE_PATTERN_PROFILE.md`
+- Current behavior:
+  - default runtime behavior remains disabled
+  - an accepted abstract profile can adjust bounded ElevenLabs expressiveness settings for eligible freeform text
+  - rhythm density is metadata-only for now, so accepted pacing is not changed silently
+  - low vocal-presence findings are blocked from direct copying
+- What was learned:
+  - private owner speech can support abstract delivery hints without becoming voice cloning or automatic identity imitation
+  - provider settings must stay campaign-gated because they can affect the whole rendered segment
+  - protected responses must block the profile completely
+- Why it matters for the thesis:
+  - it shows a privacy-preserving middle path between ignoring private samples and training/cloning from them
+  - it keeps private evidence out of public generated artifacts while allowing reviewed aggregate behavior to be tested locally
+  - it preserves auditability for future claims about personalized delivery improvement
+
+### 2026-05-08 - VOICE-042 private-pattern listening A/B harness
+
+- Objective: test whether accepted VOICE-041 provider-setting hints improve perceived voice quality without confounding the result with text or pacing changes
+- Action taken:
+  - added `scripts/run_voice_042_private_pattern_live_ab.py`
+  - added `scripts/validate_voice_042_private_pattern_live_ab.py`
+  - added `research/experiments/cases/voice-042-private-pattern-live-ab.json`
+  - documented `VOICE_042_PRIVATE_PATTERN_LIVE_AB.md`
+- Method:
+  - compare `baseline_shaped_runtime` against `private_pattern_profile`
+  - keep provider-facing TTS text identical across both variants
+  - vary only accepted VOICE-041 provider settings
+  - keep dry-run as default and require `--live --limit-cases` for provider calls
+- Boundary:
+  - no raw private audio read at runtime
+  - no transcription
+  - no private/customer audio upload
+  - no voice cloning
+  - no quality claim before human listening review
+- Why it matters for the thesis:
+  - it creates an experiment design that can isolate private-pattern provider settings from text-generation changes
+  - it keeps the personalization claim testable without moving private recordings into provider training
+  - it preserves the distinction between technical generation success and subjective listening evidence
+
+### 2026-05-08 - VOICE-042 private-pattern listening feedback and profile softening
+
+- Objective: incorporate Tarik's first subjective listening feedback on the private-pattern A/B without overclaiming quality
+- Feedback:
+  - the private-pattern direction sounded good
+  - the profile was too loud
+  - the loudness made roboticness more obvious
+- Action taken:
+  - reduced VOICE-041 ElevenLabs `style` target from `0.12` to `0.06`
+  - reduced the maximum style cap from `0.16` to `0.08`
+  - reduced the stability delta from `-0.03` to `-0.01`
+  - regenerated VOICE-041 and VOICE-042 dry-run artifacts
+- Boundary:
+  - no raw private audio was read
+  - no transcription or voice cloning was used
+  - no customer or private audio was uploaded
+  - no quality acceptance claim was made
+- Why it matters for the thesis:
+  - it shows that private-pattern personalization must be tuned conservatively
+  - it records a human listening review as evidence without treating one pass as proof
+  - it keeps voice personalization tied to bounded provider settings and repeatable A/B checks
+
+### 2026-05-08 - VOICE-042 baseline preferred over private-pattern profile
+
+- Objective: record the second listening outcome after the softened VOICE-041 profile was tested
+- Feedback:
+  - baseline shaped runtime sounded better than the private-pattern profile
+- Decision:
+  - keep baseline shaped runtime as the preferred voice path
+  - do not promote VOICE-041 as a runtime quality improvement
+  - keep VOICE-041 available only as an experimental A/B harness for future variants
+- Boundary:
+  - no raw private audio was read
+  - no transcription or voice cloning was used
+  - no customer or private audio was uploaded
+  - no quality improvement claim was made for private-pattern delivery
+- Why it matters for the thesis:
+  - it preserves negative evidence instead of forcing personalization into the runtime
+  - it shows that subjective listening can reject an apparently reasonable provider-setting change
+  - it keeps the current voice stack grounded in measured comparison rather than assumptions about private-pattern benefit
+
+### 2026-05-08 - VOICE-043 baseline shaped runtime acceptance
+
+- Objective: convert Tarik's VOICE-042 baseline preference into a reusable runtime guard
+- Action taken:
+  - added `scripts/run_voice_043_baseline_shaped_runtime_acceptance.py`
+  - added `scripts/validate_voice_043_baseline_shaped_runtime_acceptance.py`
+  - added `research/experiments/cases/voice-043-baseline-shaped-runtime-acceptance.json`
+  - documented `VOICE_043_BASELINE_SHAPED_RUNTIME_ACCEPTANCE.md`
+  - generated `VOICE-043-baseline-shaped-runtime-acceptance` dry-run artifacts
+- Method:
+  - test English freeform, German freeform, and protected do-not-call turns
+  - require `voice_private_pattern_profile.enabled` and `applied` to remain false by default
+  - require ElevenLabs `style` to remain `0.0`
+  - require protected text to stay exact
+- Boundary:
+  - dry-run only
+  - no provider calls
+  - no raw private audio read
+  - no transcription or voice cloning
+  - no private or customer audio upload
+- Why it matters for the thesis:
+  - it shows how subjective listening feedback becomes an engineering guard
+  - it preserves a clear baseline for future voice-personalization experiments
+  - it prevents a rejected personalization variant from silently entering runtime behavior
 
 ### 2026-05-04 - SPEECH-STYLE-001 English/German speech realism references
 

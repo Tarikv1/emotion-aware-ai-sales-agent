@@ -39,8 +39,8 @@ The cases mirror the longer VOICE-011 Cartesia scripts:
 Generated artifacts:
 
 ```text
-research/experiments/generated/VOICE-013-elevenlabs-tts-smoke.json
-research/experiments/generated/VOICE-013-elevenlabs-tts-smoke-report.md
+research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke.json
+research/experiments/generated/VOICE-013/VOICE-013-elevenlabs-tts-smoke-report.md
 ```
 
 Current summary:
@@ -98,10 +98,10 @@ Live summary:
 
 Generated local MP3 files:
 
-- `research/experiments/generated/VOICE-013-C01-de-elevenlabs-stream.mp3`
-- `research/experiments/generated/VOICE-013-C02-de-elevenlabs-stream.mp3`
-- `research/experiments/generated/VOICE-013-C03-en-elevenlabs-stream.mp3`
-- `research/experiments/generated/VOICE-013-C04-en-elevenlabs-stream.mp3`
+- `research/experiments/generated/VOICE-013/VOICE-013-C01-de-elevenlabs-stream.mp3`
+- `research/experiments/generated/VOICE-013/VOICE-013-C02-de-elevenlabs-stream.mp3`
+- `research/experiments/generated/VOICE-013/VOICE-013-C03-en-elevenlabs-stream.mp3`
+- `research/experiments/generated/VOICE-013/VOICE-013-C04-en-elevenlabs-stream.mp3`
 
 User listening impression:
 

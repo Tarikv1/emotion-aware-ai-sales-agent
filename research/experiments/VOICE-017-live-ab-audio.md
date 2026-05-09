@@ -17,7 +17,7 @@ Live mode is available only with explicit `--live`, provider selection, environm
 The runner reads:
 
 ```text
-research/experiments/generated/VOICE-016-provider-prosody-rendering.json
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json
 ```
 
 It selects four cases:
@@ -110,8 +110,8 @@ The early result supports keeping the VOICE-015/VOICE-016 prosody stack. The nex
 scripts/run_voice_017_live_ab_audio.py
 scripts/validate_voice_017_live_ab_audio.py
 research/experiments/cases/voice-017-live-ab-audio.json
-research/experiments/generated/VOICE-017-live-ab-audio.json
-research/experiments/generated/VOICE-017-live-ab-audio-report.md
+research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio.json
+research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio-report.md
 docs/product/VOICE_017_LIVE_AB_AUDIO.md
 ```
 

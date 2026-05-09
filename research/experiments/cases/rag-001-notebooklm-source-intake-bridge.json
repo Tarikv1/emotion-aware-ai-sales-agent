@@ -1,4 +1,4 @@
-﻿{
+{
   "rag_intake_id": "RAG-001-notebooklm-source-intake-bridge",
   "title": "NotebookLM source intake bridge for source-tracked sales RAG",
   "description": "Creates a local, source-tracked RAG intake scaffold where NotebookLM is used only as an extraction helper.",

@@ -2,7 +2,7 @@
   "voice_milestone": "VOICE-016",
   "experiment_scope": "Offline provider-specific rendering of VOICE-015 prosody cues for Cartesia and ElevenLabs. This checkpoint creates provider-ready text/request previews only; it does not call providers or generate audio.",
   "case_file": "research\\experiments\\cases\\voice-016-provider-prosody-rendering.json",
-  "source_artifact": "research\\experiments\\generated\\VOICE-015-prosody-naturalness.json",
+  "source_artifact": "research\\experiments\\generated\\VOICE-015\\VOICE-015-prosody-naturalness.json",
   "providers": [
     {
       "provider_key": "cartesia",

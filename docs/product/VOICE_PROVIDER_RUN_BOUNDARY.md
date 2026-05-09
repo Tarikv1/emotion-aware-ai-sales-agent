@@ -106,6 +106,18 @@ For `RESP-003` runtime live-capable TTS:
 - generated-audio asset metadata must be included in the result packet
 - human listening review is required before making quality claims
 
+## RESP-004 Boundary
+
+For the `RESP-004` VOICE-044 listening check:
+
+- RESP-003 remains the TTS bridge
+- RESP-004 owns the separate listening-test artifact folder
+- default mode is dry-run
+- live provider calls require `--live`
+- generated text must come from validated RESP-002/RESP-003 packets
+- no quality claim is allowed until Tarik records the listening review
+- generated audio, if any, stays under `research/experiments/generated/RESP-004-voice-044-listening-check/`
+
 ## Review Gate
 
 Before a new provider integration becomes part of the active runtime path, the project must have:

@@ -55,8 +55,8 @@ Run:
 
 ```powershell
 python scripts\run_voice_008_local_tts_smoke.py `
-  --out research\experiments\generated\VOICE-008-local-tts-smoke.json `
-  --report-out research\experiments\generated\VOICE-008-local-tts-smoke-report.md
+  --out research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke.json `
+  --report-out research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke-report.md
 ```
 
 Validate:
@@ -73,18 +73,17 @@ The validator checks both:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-008-local-tts-smoke.json
-research/experiments/generated/VOICE-008-local-tts-smoke-report.md
+research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke.json
+research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke-report.md
 ```
 
-If local SAPI voices are available on a machine, the script may also create:
+If local SAPI voices are available on a machine, the script may also create local WAV artifacts under `research/experiments/generated/VOICE-008/`, for example:
 
 ```text
-research/experiments/generated/VOICE-008-C01-de-local-tts.wav
-research/experiments/generated/VOICE-008-C02-en-local-tts.wav
+research/experiments/generated/VOICE-008/<local-sapi-smoke-output>.wav
 ```
 
-Those WAV files are intentionally ignored by Git because they depend on the local machine's installed voices.
+Those WAV files are intentionally ignored by Git because they depend on the local machine's installed voices. They are not present in this workspace because the current run fell back to dry-run metadata.
 
 ## Product Meaning
 

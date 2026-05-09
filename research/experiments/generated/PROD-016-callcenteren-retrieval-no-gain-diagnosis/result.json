@@ -1,0 +1,376 @@
+{
+  "prod_016_id": "PROD-016-callcenteren-retrieval-no-gain-diagnosis",
+  "title": "PROD-016 CallCenterEN retrieval no-gain diagnosis",
+  "source_prod_015_result": {
+    "prod_015_id": "PROD-015-callcenteren-runtime-comparison",
+    "path": "research/experiments/generated/PROD-015-callcenteren-runtime-comparison/result.json",
+    "decision": "ready_for_review_no_retrieval_gain_on_slice",
+    "turn_count": 180,
+    "old_runtime_total_score": 810,
+    "retrieval_runtime_total_score": 810
+  },
+  "hypothesis": {
+    "statement": "PROD-015 tied because retrieval matched but did not influence the deterministic composer often enough, and the current scorer does not reward safe answer specificity.",
+    "fixed_cases": "Use the already generated PROD-015 turn results without changing prompts, retrieval registry, runtime composer, or scoring inputs.",
+    "editable_surface_changed": "none"
+  },
+  "summary": {
+    "source_turn_count": 180,
+    "analyzed_turn_count": 180,
+    "covered_scenario_labels": [
+      "callback_request",
+      "cancellation_boundary",
+      "price_objection",
+      "sale_eligible",
+      "support_handoff",
+      "trust_repair"
+    ],
+    "covered_domain_count": 8,
+    "campaign_id": "campaign-prod-005-b2b-software",
+    "hard_failure_count": 0,
+    "leakage_finding_count": 0,
+    "old_runtime_total_score": 810,
+    "retrieval_runtime_total_score": 810,
+    "score_delta": 0,
+    "retrieval_turn_wins": 0,
+    "old_runtime_turn_wins": 0,
+    "tie_turns": 180,
+    "no_gain_confirmed": true,
+    "retrieval_status_counts": {
+      "blocked": 3,
+      "influenced": 3,
+      "retrieved_not_used": 174
+    },
+    "winner_counts": {
+      "tie": 180
+    },
+    "answer_changed_count": 3,
+    "unchanged_answer_count": 177,
+    "unchanged_answer_rate": 0.9833,
+    "influenced_count": 3,
+    "influenced_but_tied_count": 3,
+    "changed_but_tied_count": 3,
+    "retrieved_not_used_rate": 0.9667,
+    "matching_success_rate": 1.0,
+    "no_match_rate": 0.0,
+    "matching_not_primary": true,
+    "composer_influence_gap": true,
+    "scoring_blind_spot_risk": true,
+    "unknown_runtime_signal_count": 180,
+    "unknown_runtime_signal_rate": 1.0,
+    "rubric_like_turn_count": 120,
+    "rubric_like_turn_rate": 0.6667,
+    "runtime_classifier_mismatch": true,
+    "campaign_domain_mismatch": true,
+    "dominant_old_answer_share": 0.85,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "commercial_runtime_prompt_text_from_callcenteren_allowed": false,
+    "top_retrieved_item_ids": [
+      {
+        "value": "rag019-objection-diagnose-before-answering",
+        "count": 161
+      },
+      {
+        "value": "rag010-response-impact-bridge",
+        "count": 108
+      },
+      {
+        "value": "rag016a-response-autonomy-reminder",
+        "count": 93
+      },
+      {
+        "value": "rag010-response-so-what-clarifier",
+        "count": 84
+      },
+      {
+        "value": "rag019-objection-timing-priority-fit",
+        "count": 65
+      },
+      {
+        "value": "rag014-response-consent-based-schedule-confirmation",
+        "count": 60
+      },
+      {
+        "value": "rag007-voice-tone-mismatch-uncertainty",
+        "count": 60
+      },
+      {
+        "value": "rag010-response-real-timing-check",
+        "count": 38
+      },
+      {
+        "value": "rag014-response-cost-of-inaction-check",
+        "count": 35
+      },
+      {
+        "value": "rag010-voice-cadence-as-weak-context",
+        "count": 3
+      },
+      {
+        "value": "rag007-response-prep-structure",
+        "count": 1
+      }
+    ],
+    "top_sales_difficulties": [
+      {
+        "value": "unknown-runtime-signal",
+        "count": 180
+      }
+    ],
+    "top_next_actions": [
+      {
+        "value": "ask-follow-up",
+        "count": 180
+      }
+    ],
+    "status_by_label": {
+      "callback_request": {
+        "retrieved_not_used": 30
+      },
+      "cancellation_boundary": {
+        "retrieved_not_used": 28,
+        "influenced": 1,
+        "blocked": 1
+      },
+      "price_objection": {
+        "retrieved_not_used": 30
+      },
+      "sale_eligible": {
+        "retrieved_not_used": 28,
+        "influenced": 1,
+        "blocked": 1
+      },
+      "support_handoff": {
+        "retrieved_not_used": 30
+      },
+      "trust_repair": {
+        "retrieved_not_used": 28,
+        "influenced": 1,
+        "blocked": 1
+      }
+    }
+  },
+  "failure_classes": [
+    {
+      "class_id": "composer_influence_gap",
+      "label": "Composer influence gap",
+      "severity": "high",
+      "evidence": "174 turns were retrieved-not-used and 177 answers were unchanged.",
+      "interpretation": "Retrieval matching exists, but retrieved hints rarely change the deterministic response composer."
+    },
+    {
+      "class_id": "scoring_blind_spot",
+      "label": "Scoring blind spot",
+      "severity": "high",
+      "evidence": "3 influenced turns and 3 changed-answer turns still tied.",
+      "interpretation": "The current score rewards safe generic follow-up behavior but does not measure answer specificity or objection-fit enough."
+    },
+    {
+      "class_id": "runtime_classifier_mismatch",
+      "label": "Runtime classifier mismatch",
+      "severity": "medium",
+      "evidence": "180 turns were classified as unknown-runtime-signal and 120 customer prompts looked rubric-like.",
+      "interpretation": "Generated test prompts may carry labels that the runtime classifier does not naturally parse from customer wording."
+    },
+    {
+      "class_id": "campaign_domain_mismatch",
+      "label": "Campaign domain mismatch",
+      "severity": "medium",
+      "evidence": "8 scenario domains were evaluated through one campaign id `campaign-prod-005-b2b-software`.",
+      "interpretation": "A single B2B software campaign can flatten domain-specific objections and make old/retrieval answers converge."
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendation_id": "add_specificity_scoring_before_claiming_gain",
+      "priority": "P0",
+      "target": "evaluation",
+      "action": "Add specificity and objection-fit sub-scores before claiming retrieval is better.",
+      "why": "A generic old answer can currently tie a more targeted retrieval answer if both are safe and ask a question.",
+      "runtime_change": false
+    },
+    {
+      "recommendation_id": "add_composer_hooks_for_generated_objection_labels",
+      "priority": "P0",
+      "target": "retrieval composer",
+      "action": "Add or test explicit composer hooks for generated objection labels such as needs_spouse_or_manager, callback_request, trust_repair, and price_objection.",
+      "why": "Retrieved-but-not-used rate is 0.9667, so matching is not enough.",
+      "runtime_change": false
+    },
+    {
+      "recommendation_id": "verbalize_rubric_like_scenario_turns",
+      "priority": "P1",
+      "target": "scenario bank",
+      "action": "Convert rubric-like customer turns into natural customer utterances before using them as runtime classifier evidence.",
+      "why": "Rubric-like turn rate is 0.6667, which can hide real classifier behavior.",
+      "runtime_change": false
+    },
+    {
+      "recommendation_id": "route_scenarios_to_domain_campaigns",
+      "priority": "P1",
+      "target": "evaluation routing",
+      "action": "Route multi-domain scenario slices to matching SalesCampaign profiles or mark the single-campaign result as baseline-only.",
+      "why": "8 domains were evaluated through `campaign-prod-005-b2b-software`.",
+      "runtime_change": false
+    },
+    {
+      "recommendation_id": "run_full_bank_only_after_diagnostic_scoring",
+      "priority": "P2",
+      "target": "experiment sequencing",
+      "action": "Run the full 240-scenario bank only after the scorer can distinguish safe-generic from safe-specific answers.",
+      "why": "A bigger run with the same blind spot would mostly confirm that both versions are safe, not which one is better.",
+      "runtime_change": false
+    }
+  ],
+  "examples": [
+    {
+      "turn_id": "prod-014-cancellation_boundary-003::turn-001",
+      "scenario_label": "cancellation_boundary",
+      "domain": "general_customer_service",
+      "retrieval_status": "influenced",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "I cannot decide alone, so help me understand what I would need to discuss with the other decision maker.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+      "retrieved_item_ids": [
+        "rag010-response-real-timing-check",
+        "rag010-voice-cadence-as-weak-context",
+        "rag014-response-consent-based-schedule-confirmation",
+        "rag016a-response-autonomy-reminder"
+      ]
+    },
+    {
+      "turn_id": "prod-014-trust_repair-004::turn-001",
+      "scenario_label": "trust_repair",
+      "domain": "healthcare_insurance",
+      "retrieval_status": "influenced",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "I cannot decide alone, so help me understand what I would need to discuss with the other decision maker.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+      "retrieved_item_ids": [
+        "rag010-response-real-timing-check",
+        "rag010-voice-cadence-as-weak-context",
+        "rag014-response-consent-based-schedule-confirmation",
+        "rag016a-response-autonomy-reminder"
+      ]
+    },
+    {
+      "turn_id": "prod-014-sale_eligible-009::turn-001",
+      "scenario_label": "sale_eligible",
+      "domain": "medicare",
+      "retrieval_status": "influenced",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "I cannot decide alone, so help me understand what I would need to discuss with the other decision maker.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+      "retrieved_item_ids": [
+        "rag010-response-real-timing-check",
+        "rag010-voice-cadence-as-weak-context",
+        "rag014-response-consent-based-schedule-confirmation",
+        "rag016a-response-autonomy-reminder"
+      ]
+    },
+    {
+      "turn_id": "prod-014-callback_request-001::turn-001",
+      "scenario_label": "callback_request",
+      "domain": "auto_insurance",
+      "retrieval_status": "retrieved_not_used",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "I need time to think, so do not rush me into a decision.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieved_item_ids": [
+        "rag010-response-real-timing-check",
+        "rag010-response-impact-bridge",
+        "rag014-response-consent-based-schedule-confirmation",
+        "rag016a-response-autonomy-reminder"
+      ]
+    },
+    {
+      "turn_id": "prod-014-callback_request-001::turn-002",
+      "scenario_label": "callback_request",
+      "domain": "auto_insurance",
+      "retrieval_status": "retrieved_not_used",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "Customer raises `needs_to_think` and needs a `pain_point_question` before any close.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieved_item_ids": [
+        "rag010-response-impact-bridge",
+        "rag010-response-so-what-clarifier",
+        "rag019-objection-diagnose-before-answering",
+        "rag014-response-consent-based-schedule-confirmation"
+      ]
+    },
+    {
+      "turn_id": "prod-014-callback_request-001::turn-003",
+      "scenario_label": "callback_request",
+      "domain": "auto_insurance",
+      "retrieval_status": "retrieved_not_used",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "Customer asks what the next safe step would be.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieved_item_ids": [
+        "rag016a-response-autonomy-reminder",
+        "rag019-objection-diagnose-before-answering",
+        "rag019-objection-timing-priority-fit",
+        "rag007-voice-tone-mismatch-uncertainty"
+      ]
+    },
+    {
+      "turn_id": "prod-014-cancellation_boundary-001::turn-001",
+      "scenario_label": "cancellation_boundary",
+      "domain": "auto_insurance",
+      "retrieval_status": "retrieved_not_used",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "I am confused about what you are offering, so explain the useful part before asking me to decide.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieved_item_ids": [
+        "rag010-response-real-timing-check",
+        "rag016a-response-autonomy-reminder",
+        "rag019-objection-diagnose-before-answering",
+        "rag019-objection-timing-priority-fit"
+      ]
+    },
+    {
+      "turn_id": "prod-014-cancellation_boundary-001::turn-002",
+      "scenario_label": "cancellation_boundary",
+      "domain": "auto_insurance",
+      "retrieval_status": "retrieved_not_used",
+      "winner": "tie",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_question": "Customer raises `confused_about_offer` and needs a `current_problem_question` before any close.",
+      "old_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_runtime_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieved_item_ids": [
+        "rag010-response-impact-bridge",
+        "rag010-response-real-timing-check",
+        "rag010-response-so-what-clarifier",
+        "rag014-response-cost-of-inaction-check"
+      ]
+    }
+  ],
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "dataset_download_performed": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "commercial_runtime_prompt_text_from_callcenteren_allowed": false,
+    "raw_dataset_text_stored": false
+  },
+  "decision": "diagnose_before_retrieval_runtime_promotion"
+}

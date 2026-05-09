@@ -144,8 +144,8 @@ The generated VOICE-015 packet contains:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-015-prosody-naturalness.json
-research/experiments/generated/VOICE-015-prosody-naturalness-report.md
+research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json
+research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness-report.md
 ```
 
 ## Product Meaning

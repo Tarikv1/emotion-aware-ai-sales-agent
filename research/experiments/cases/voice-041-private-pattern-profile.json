@@ -1,0 +1,63 @@
+{
+  "experiment_id": "VOICE-041-private-pattern-profile",
+  "title": "Accepted abstract private speech-pattern profile",
+  "description": "Applies accepted abstract VOICE-031 private speech-pattern hints to eligible provider settings without reading raw private audio or cloning a voice.",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "voice_private_pattern_profile": {
+    "enabled": true,
+    "review_status": "accepted",
+    "source_review_milestone": "VOICE-031",
+    "source_kind": "abstract_private_speech_patterns",
+    "rhythm_density_hint": "higher_turn_density_candidate",
+    "expressiveness_variation_hint": "higher_expressiveness_variation_candidate",
+    "presence_level_hint": "lower_presence_candidate"
+  },
+  "runtime_boundary": {
+    "changes_allowed": "Eligible freeform provider voice settings may receive bounded expressiveness adjustments from accepted abstract private speech-pattern hints.",
+    "changes_forbidden": [
+      "reading raw private audio at runtime",
+      "uploading private audio",
+      "transcribing private speech samples",
+      "voice cloning",
+      "changing the guarded final_response",
+      "rewriting provider text",
+      "changing accepted pacing speed",
+      "applying to protected campaign, compliance, handoff, hangup, or do-not-call text",
+      "logging API keys or raw voice IDs"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "voice-041-en-freeform-expressiveness",
+      "title": "English freeform accepted profile",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "That sounds expensive, and I am not sure it is worth another review.",
+      "candidate_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "expected": {
+        "profile_applied": true,
+        "style_after": 0.06,
+        "presence_action": "blocked_low_presence_copy",
+        "rhythm_density_action": "metadata_only_no_pacing_change",
+        "final_response_unchanged": true
+      }
+    },
+    {
+      "case_id": "voice-041-protected-human-handoff-lock",
+      "title": "Protected human handoff blocks profile",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "opening-permission",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "Please have a real person call me if this is about software.",
+      "expected": {
+        "profile_applied": false,
+        "blocked_reason": "protected_or_ineligible_segment_present",
+        "final_response_unchanged": true
+      }
+    }
+  ]
+}

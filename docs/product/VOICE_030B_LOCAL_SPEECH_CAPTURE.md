@@ -29,7 +29,7 @@ Import an existing audio file:
 
 ```powershell
 python scripts\run_voice_030b_local_speech_capture.py `
-  --import-file C:\path\to\sample.wav `
+  --import-file "<local-speech-sample.wav>" `
   --language en `
   --label "tarik local speech sample"
 ```

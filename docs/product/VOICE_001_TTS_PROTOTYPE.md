@@ -35,7 +35,7 @@ python scripts\generate_voice_response.py `
   --stage relevance-check `
   --transcript "Nur wenn Sie garantieren koennen, dass es stabil ist." `
   --dry-run `
-  --out-json research\experiments\generated\VOICE-001-tts-packet.json
+  --out-json research/experiments/generated/VOICE-001/VOICE-001-tts-packet.json
 ```
 
 Dry-run mode writes a deterministic JSON packet and requires no audio provider.
@@ -74,11 +74,11 @@ python scripts\generate_voice_response.py `
   --stage relevance-check `
   --transcript "Nur wenn Sie garantieren koennen, dass es stabil ist." `
   --provider windows-sapi `
-  --out-audio research\experiments\generated\VOICE-001-sample.wav `
-  --out-json research\experiments\generated\VOICE-001-windows-sapi-packet.json
+  --out-audio <local-windows-sapi-output.wav> `
+  --out-json <local-windows-sapi-packet.json>
 ```
 
-This provider uses the local Windows speech engine and does not require an API key.
+This provider uses the local Windows speech engine and does not require an API key. Choose output paths under `research/experiments/generated/VOICE-001/` only on a machine where Windows SAPI has an installed voice available.
 
 ## Safety Boundaries
 

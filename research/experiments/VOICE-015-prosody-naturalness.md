@@ -70,8 +70,8 @@ scripts/prosody_naturalness.py
 scripts/run_voice_015_prosody_naturalness.py
 scripts/validate_voice_015_prosody_naturalness.py
 research/experiments/cases/voice-015-prosody-naturalness.json
-research/experiments/generated/VOICE-015-prosody-naturalness.json
-research/experiments/generated/VOICE-015-prosody-naturalness-report.md
+research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json
+research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness-report.md
 docs/product/VOICE_015_PROSODY_NATURALNESS_LAYER.md
 ```
 

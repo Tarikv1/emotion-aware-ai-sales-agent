@@ -3,8 +3,8 @@
   "experiment_scope": "Structured local listening comparison between Cartesia VOICE-011 and ElevenLabs VOICE-013 using the same longer German and English synthetic sales-agent scripts.",
   "case_file": "research\\experiments\\cases\\voice-014-provider-listening-comparison.json",
   "source_artifacts": {
-    "cartesia": "research\\experiments\\generated\\VOICE-011-cartesia-websocket-smoke.json",
-    "elevenlabs": "research\\experiments\\generated\\VOICE-013-elevenlabs-tts-smoke.json"
+    "cartesia": "research\\experiments\\generated\\VOICE-011\\VOICE-011-cartesia-websocket-smoke.json",
+    "elevenlabs": "research\\experiments\\generated\\VOICE-013\\VOICE-013-elevenlabs-tts-smoke.json"
   },
   "safety_gate": {
     "provider_calls_made": false,
@@ -57,7 +57,7 @@
       "language": "de",
       "scenario": "German objection handling",
       "campaign_id": "campaign-prod-005-b2c-telecom",
-      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsÃ¤chliche Leistung von Adresse, Leitung und Tarif abhÃ¤ngt. Was ich anbieten kann: Ein Spezialist prÃ¼ft die verfÃ¼gbaren Optionen unverbindlich und erklÃ¤rt Ihnen klar, was realistisch ist. Wenn es nicht passt, mÃ¼ssen Sie nichts Ã¤ndern.",
       "providers": [
         {
           "provider_key": "cartesia",
@@ -70,7 +70,7 @@
           "total_latency_ms": 4490.608,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-011-C01-de-cartesia-websocket.wav",
+          "audio_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C01-de-cartesia-websocket.wav",
           "audio_exists": true,
           "audio_byte_size_on_disk": 612306,
           "html_audio_src": "VOICE-011-C01-de-cartesia-websocket.wav"
@@ -86,7 +86,7 @@
           "total_latency_ms": 1112.927,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-013-C01-de-elevenlabs-stream.mp3",
+          "audio_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C01-de-elevenlabs-stream.mp3",
           "audio_exists": true,
           "audio_byte_size_on_disk": 384985,
           "html_audio_src": "VOICE-013-C01-de-elevenlabs-stream.mp3"
@@ -128,7 +128,7 @@
       "language": "de",
       "scenario": "German bridge and handoff",
       "campaign_id": "campaign-prod-005-b2c-energy",
-      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen mÃ¶chte ich nicht schÃ¤tzen, weil sie sauber geprÃ¼ft werden mÃ¼ssen. Ich kann Ihnen aber den nÃ¤chsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zustÃ¤ndiger Fachberater meldet sich mit den passenden Informationen. Der RÃ¼ckruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
       "providers": [
         {
           "provider_key": "cartesia",
@@ -141,7 +141,7 @@
           "total_latency_ms": 4988.674,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-011-C02-de-cartesia-websocket.wav",
+          "audio_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C02-de-cartesia-websocket.wav",
           "audio_exists": true,
           "audio_byte_size_on_disk": 621222,
           "html_audio_src": "VOICE-011-C02-de-cartesia-websocket.wav"
@@ -157,7 +157,7 @@
           "total_latency_ms": 891.199,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-013-C02-de-elevenlabs-stream.mp3",
+          "audio_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C02-de-elevenlabs-stream.mp3",
           "audio_exists": true,
           "audio_byte_size_on_disk": 397524,
           "html_audio_src": "VOICE-013-C02-de-elevenlabs-stream.mp3"
@@ -212,7 +212,7 @@
           "total_latency_ms": 4493.621,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-011-C03-en-cartesia-websocket.wav",
+          "audio_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C03-en-cartesia-websocket.wav",
           "audio_exists": true,
           "audio_byte_size_on_disk": 650944,
           "html_audio_src": "VOICE-011-C03-en-cartesia-websocket.wav"
@@ -228,7 +228,7 @@
           "total_latency_ms": 843.897,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-013-C03-en-elevenlabs-stream.mp3",
+          "audio_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C03-en-elevenlabs-stream.mp3",
           "audio_exists": true,
           "audio_byte_size_on_disk": 347787,
           "html_audio_src": "VOICE-013-C03-en-elevenlabs-stream.mp3"
@@ -283,7 +283,7 @@
           "total_latency_ms": 4899.123,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-011-C04-en-cartesia-websocket.wav",
+          "audio_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C04-en-cartesia-websocket.wav",
           "audio_exists": true,
           "audio_byte_size_on_disk": 671750,
           "html_audio_src": "VOICE-011-C04-en-cartesia-websocket.wav"
@@ -299,7 +299,7 @@
           "total_latency_ms": 793.956,
           "fallback_used": false,
           "fallback_reason": null,
-          "audio_path": "research\\experiments\\generated\\VOICE-013-C04-en-elevenlabs-stream.mp3",
+          "audio_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C04-en-elevenlabs-stream.mp3",
           "audio_exists": true,
           "audio_byte_size_on_disk": 354474,
           "html_audio_src": "VOICE-013-C04-en-elevenlabs-stream.mp3"

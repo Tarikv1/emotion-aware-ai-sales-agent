@@ -61,8 +61,8 @@ VOICE-016 provider prosody rendering validation passed.
 ### Task 3: Generated Artifacts And Docs
 
 **Files:**
-- Create: `research/experiments/generated/VOICE-016-provider-prosody-rendering.json`
-- Create: `research/experiments/generated/VOICE-016-provider-prosody-rendering-report.md`
+- Create: `research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json`
+- Create: `research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering-report.md`
 - Create: `docs/product/VOICE_016_PROVIDER_PROSODY_RENDERING.md`
 - Create: `research/experiments/VOICE-016-provider-prosody-rendering.md`
 - Modify: `docs/product/COMMANDS.md`

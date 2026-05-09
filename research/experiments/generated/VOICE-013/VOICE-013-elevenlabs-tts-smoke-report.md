@@ -50,7 +50,7 @@ VOICE-013 defaults to dry-run mode. A live ElevenLabs request requires `--live`,
 - Generated text sent to provider: `True`
 - Selected voice env var: `ELEVENLABS_VOICE_ID_DE`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-013-C01-de-elevenlabs-stream.mp3`
+- Audio path: `research/experiments/generated/VOICE-013/VOICE-013-C01-de-elevenlabs-stream.mp3`
 - Audio bytes: `384985`
 - HTTP status: `200`
 - Response content type: `audio/mpeg`
@@ -70,7 +70,7 @@ VOICE-013 defaults to dry-run mode. A live ElevenLabs request requires `--live`,
 - Generated text sent to provider: `True`
 - Selected voice env var: `ELEVENLABS_VOICE_ID_DE`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-013-C02-de-elevenlabs-stream.mp3`
+- Audio path: `research/experiments/generated/VOICE-013/VOICE-013-C02-de-elevenlabs-stream.mp3`
 - Audio bytes: `397524`
 - HTTP status: `200`
 - Response content type: `audio/mpeg`
@@ -90,7 +90,7 @@ VOICE-013 defaults to dry-run mode. A live ElevenLabs request requires `--live`,
 - Generated text sent to provider: `True`
 - Selected voice env var: `ELEVENLABS_VOICE_ID_EN`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-013-C03-en-elevenlabs-stream.mp3`
+- Audio path: `research/experiments/generated/VOICE-013/VOICE-013-C03-en-elevenlabs-stream.mp3`
 - Audio bytes: `347787`
 - HTTP status: `200`
 - Response content type: `audio/mpeg`
@@ -110,7 +110,7 @@ VOICE-013 defaults to dry-run mode. A live ElevenLabs request requires `--live`,
 - Generated text sent to provider: `True`
 - Selected voice env var: `ELEVENLABS_VOICE_ID_EN`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-013-C04-en-elevenlabs-stream.mp3`
+- Audio path: `research/experiments/generated/VOICE-013/VOICE-013-C04-en-elevenlabs-stream.mp3`
 - Audio bytes: `354474`
 - HTTP status: `200`
 - Response content type: `audio/mpeg`

@@ -160,8 +160,8 @@ Interpretation:
 
 ```text
 research/experiments/cases/voice-010-cartesia-tts-smoke.json
-research/experiments/generated/VOICE-010-cartesia-tts-smoke.json
-research/experiments/generated/VOICE-010-cartesia-tts-smoke-report.md
+research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke.json
+research/experiments/generated/VOICE-010/VOICE-010-cartesia-tts-smoke-report.md
 ```
 
 ## Product Meaning

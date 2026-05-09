@@ -71,7 +71,7 @@ I understand the concern. The important thing is, um, that I do not want to prom
 ```
 
 ```text
-Ich verstehe den Punkt. Wichtig ist, ähm, dass ich Ihnen nichts verspreche, was von Details abhaengt.
+Ich verstehe den Punkt. Wichtig ist, Ã¤hm, dass ich Ihnen nichts verspreche, was von Details abhaengt.
 ```
 
 Bad examples that must stay blocked:
@@ -81,7 +81,7 @@ Do you, um, handle inbound lead routing?
 ```
 
 ```text
-Ich kann, ähm, keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.
+Ich kann, Ã¤hm, keine Gesundheits-, Rechts-, Leistungs- oder Auszahlungszusage machen.
 ```
 
 ## Campaign Configuration
@@ -122,12 +122,12 @@ Current English filler pool:
 
 Current German filler pool:
 
-- `ähm`
-- `äh`
+- `Ã¤hm`
+- `Ã¤h`
 - `hm`
 - `also`
 
-The layer can contextually replace a casual filler with a safer hesitation sound when the casual filler would change meaning. For example, before `that` or `dass`, it prefers `um` / `ähm`.
+The layer can contextually replace a casual filler with a safer hesitation sound when the casual filler would change meaning. For example, before `that` or `dass`, it prefers `um` / `Ã¤hm`.
 
 ## Validation
 
@@ -150,8 +150,8 @@ The validator checks:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-012-speech-naturalness.json
-research/experiments/generated/VOICE-012-speech-naturalness-report.md
+research/experiments/generated/VOICE-012/VOICE-012-speech-naturalness.json
+research/experiments/generated/VOICE-012/VOICE-012-speech-naturalness-report.md
 ```
 
 ## Product Meaning

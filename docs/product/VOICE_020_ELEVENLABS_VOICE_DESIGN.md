@@ -155,8 +155,8 @@ Then put the selected English and German ElevenLabs voice IDs into `config\local
 ## Generated Artifacts
 
 - `research/experiments/cases/voice-020-elevenlabs-voice-design.json`
-- `research/experiments/generated/VOICE-020-elevenlabs-voice-design.json`
-- `research/experiments/generated/VOICE-020-elevenlabs-voice-design-report.md`
+- `research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design.json`
+- `research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design-report.md`
 
 ## Product Meaning
 

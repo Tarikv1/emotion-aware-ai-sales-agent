@@ -65,8 +65,8 @@ VOICE-015 prosody naturalness validation passed.
 ### Task 3: Generated Artifacts And Documentation
 
 **Files:**
-- Create: `research/experiments/generated/VOICE-015-prosody-naturalness.json`
-- Create: `research/experiments/generated/VOICE-015-prosody-naturalness-report.md`
+- Create: `research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json`
+- Create: `research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness-report.md`
 - Create: `docs/product/VOICE_015_PROSODY_NATURALNESS_LAYER.md`
 - Create: `research/experiments/VOICE-015-prosody-naturalness.md`
 - Modify: `docs/product/COMMANDS.md`

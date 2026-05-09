@@ -49,8 +49,8 @@ Each script is paired only with same-language voice candidates.
 Generated artifacts:
 
 ```text
-research/experiments/generated/VOICE-021-custom-voice-comparison.json
-research/experiments/generated/VOICE-021-custom-voice-comparison-report.md
+research/experiments/generated/VOICE-021/VOICE-021-custom-voice-comparison.json
+research/experiments/generated/VOICE-021/VOICE-021-custom-voice-comparison-report.md
 ```
 
 Summary:

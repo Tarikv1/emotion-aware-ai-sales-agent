@@ -1,4 +1,4 @@
-﻿### Extraction Report: AI Sales Agent Strategy & RAG Synthesis
+### Extraction Report: AI Sales Agent Strategy & RAG Synthesis
 
 #### 1\. Source Coverage Table
 

@@ -29,8 +29,8 @@ The case set covers:
 - Case file: `research/experiments/cases/prod-005-realtime-latency-call-control.json`
 - Runner: `scripts/run_realtime_turn_simulation.py`
 - Validator: `scripts/validate_prod_005_realtime_latency.py`
-- Results JSON: `research/experiments/generated/PROD-005-realtime-results.json`
-- Report: `research/experiments/generated/PROD-005-realtime-report.md`
+- Results JSON: `research/experiments/generated/PROD-005/PROD-005-realtime-results.json`
+- Report: `research/experiments/generated/PROD-005/PROD-005-realtime-report.md`
 
 ## Aggregate Results
 

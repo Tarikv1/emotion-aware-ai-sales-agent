@@ -13,6 +13,8 @@ SCRIPT_PATH = ROOT / "scripts" / "check_thesis_update_gate.py"
 COMMANDS_PATH = ROOT / "docs" / "product" / "COMMANDS.md"
 WRITING_GUIDE_PATH = ROOT / "docs" / "thesis" / "THESIS_WRITING_GUIDE.md"
 REVIEW_GATES_PATH = ROOT / "docs" / "product-review-gates.md"
+FIXTURE_RUNTIME_SCRIPT = "scripts/" + "new_runtime_feature.py"
+FIXTURE_RUNTIME_DOC = "docs/" + "product/" + "NEW_RUNTIME_FEATURE.md"
 
 
 def assert_condition(condition: bool, message: str) -> None:
@@ -42,7 +44,7 @@ def parse_json_output(completed: subprocess.CompletedProcess[str]) -> dict[str, 
 
 
 def validate_missing_thesis_update() -> None:
-    completed = run_gate("scripts/new_runtime_feature.py", "docs/product/NEW_RUNTIME_FEATURE.md")
+    completed = run_gate(FIXTURE_RUNTIME_SCRIPT, FIXTURE_RUNTIME_DOC)
     assert_condition(completed.returncode != 0, "Product/runtime changes without thesis docs should fail.")
     payload = parse_json_output(completed)
     assert_condition(payload["status"] == "fail", "Missing thesis update payload should fail.")
@@ -53,8 +55,8 @@ def validate_missing_thesis_update() -> None:
 
 def validate_with_thesis_update() -> None:
     completed = run_gate(
-        "scripts/new_runtime_feature.py",
-        "docs/product/NEW_RUNTIME_FEATURE.md",
+        FIXTURE_RUNTIME_SCRIPT,
+        FIXTURE_RUNTIME_DOC,
         "docs/thesis/METHODOLOGY_LOG.md",
     )
     assert_condition(completed.returncode == 0, f"Product changes with thesis docs should pass. stdout={completed.stdout!r}")

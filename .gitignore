@@ -10,6 +10,9 @@ data/private/*
 data/processed/*
 !data/processed/.gitkeep
 
+data/external/*
+!data/external/.gitignore
+
 config/local/*
 !config/local/.gitignore
 !config/local/voice_ids.example.json

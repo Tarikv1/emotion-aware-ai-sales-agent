@@ -24,9 +24,9 @@ No provider calls are made.
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-014-provider-listening-comparison.json
-research/experiments/generated/VOICE-014-provider-listening-comparison-report.md
-research/experiments/generated/VOICE-014-provider-listening-comparison.html
+research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison.json
+research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison-report.md
+research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison.html
 ```
 
 ## Current Result

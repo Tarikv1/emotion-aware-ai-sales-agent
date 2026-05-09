@@ -45,8 +45,8 @@ Editable files or modules:
 - `scripts/run_product_simulation.py`
 - `packages/prompts/product-qualification-agent.txt`
 - `docs/product/SIMULATION_CONTRACT.md`
-- `research/experiments/generated/PROD-001-simulation-packet.md`
-- `research/experiments/generated/PROD-001-evaluation-packet.md`
+- `research/experiments/generated/PROD-001/PROD-001-simulation-packet.md`
+- `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md`
 
 Fixed constraints:
 
@@ -93,9 +93,9 @@ Secondary metrics:
 
 Runnable packet generation completed.
 
-- `research/experiments/generated/PROD-001-simulation-packet.md` renders the scenario scripts.
-- `research/experiments/generated/PROD-001-evaluation-packet.md` renders prompts, reference structured outputs, candidate-output slots, and manual checks.
-- `research/experiments/generated/PROD-001-db-records.json` exports database-shaped synthetic reference records.
+- `research/experiments/generated/PROD-001/PROD-001-simulation-packet.md` renders the scenario scripts.
+- `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md` renders prompts, reference structured outputs, candidate-output slots, and manual checks.
+- `research/experiments/generated/PROD-001/PROD-001-db-records.json` exports database-shaped synthetic reference records.
 - `research/experiments/PROD-001-first-simulation-pass.md` records the first three-case dry run.
 
 Live model execution has not been run yet.
@@ -112,16 +112,16 @@ Database-shaped export counts:
 
 SQLite import completed:
 
-- `research/experiments/generated/PROD-001.sqlite`
-- `research/experiments/generated/PROD-001-sqlite-report.md`
+- `research/experiments/generated/PROD-001/PROD-001.sqlite`
+- `research/experiments/generated/PROD-001/PROD-001-sqlite-report.md`
 
 The report verifies retrieval of interested leads, do-not-call leads, appointments, escalations, and turn-level decisions.
 
 Rule baseline completed:
 
 - `research/experiments/PROD-001-rule-baseline.md`
-- `research/experiments/generated/PROD-001-rule-baseline-results.json`
-- `research/experiments/generated/PROD-001-rule-baseline-report.md`
+- `research/experiments/generated/PROD-001/PROD-001-rule-baseline-results.json`
+- `research/experiments/generated/PROD-001/PROD-001-rule-baseline-report.md`
 
 The rule baseline matched all final outcome checks but only matched 18 / 32 turn-level emotion labels.
 

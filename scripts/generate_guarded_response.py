@@ -13,6 +13,7 @@ from rag_guarded_retrieval_policy import (
 )
 from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
 from run_realtime_turn_simulation import load_realtime_cases, normalize_response_language
+from runtime_composer_hooks import apply_runtime_composer_hooks
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -148,9 +149,9 @@ def compose_german_candidate_response(
         )
 
     if difficulty == "price-objection":
-        if hint_mentions(advisory_hints, "freedom", "pause", "compare", "objection"):
+        if hint_mentions(advisory_hints, "freedom", "pause", "compare", "objection", "diagnose"):
             return (
-                "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen "
+                "Das verstehe ich. Damit ich nicht am Punkt vorbeirede: Geht es Ihnen eher um den Preis, die Bedingungen "
                 "oder darum, ob sich der Aufwand lohnt?"
             )
         return (
@@ -218,6 +219,21 @@ def compose_unknown_follow_up(transcript: str) -> str:
     return "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
 
 
+def is_send_info_request(transcript: str) -> bool:
+    lowered = transcript.lower()
+    return "send" in lowered and any(token in lowered for token in ["info", "information", "details", "summary"])
+
+
+def is_authority_request(transcript: str) -> bool:
+    lowered = transcript.lower()
+    return any(token in lowered for token in ["boss", "manager", "partner", "decision maker", "deciding"])
+
+
+def is_trust_request(transcript: str) -> bool:
+    lowered = transcript.lower()
+    return "trust" in lowered or any(phrase in lowered for phrase in ["do not know your company", "don't know your company"])
+
+
 def compose_candidate_response(
     decision: dict,
     campaign: dict,
@@ -280,6 +296,21 @@ def compose_candidate_response(
         return "I will end the call for now. Goodbye."
 
     if next_action == "ask-follow-up":
+        if is_send_info_request(transcript) and hint_mentions(advisory_hints, "send", "information", "qualify", "relevant"):
+            return (
+                "I can send information. To make it relevant, should I send details about fit, pricing, "
+                "or how a specialist would review this with you?"
+            )
+        if is_authority_request(transcript) and hint_mentions(advisory_hints, "objection", "decision", "constraint", "commitment"):
+            return (
+                "That makes sense. Should I send a short summary you can share with your boss, "
+                "or is there one concern I should address first?"
+            )
+        if is_trust_request(transcript) and hint_mentions(advisory_hints, "objection", "trust", "proof", "evidence"):
+            return (
+                "Fair. Trust matters on a cold call. To make this useful, should I send company context, "
+                "security details, or a specialist review path first?"
+            )
         return compose_unknown_follow_up(transcript)
 
     return decision["agent_response"]
@@ -505,6 +536,7 @@ def build_guarded_response_packet(
     retrieval_min_score: int = DEFAULT_RETRIEVAL_MIN_SCORE,
     retrieval_target_latency_ms: int = DEFAULT_RETRIEVAL_TARGET_MS,
     retrieval_acceptable_latency_ms: int = DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
+    composer_hooks_enabled: bool = False,
 ) -> dict:
     case = build_turn_case(campaign["campaign_id"], stage, transcript, input_type, silence_count)
     decision = run_turn_decision(case, campaign)
@@ -522,6 +554,7 @@ def build_guarded_response_packet(
         retrieval_min_score=retrieval_min_score,
         retrieval_target_latency_ms=retrieval_target_latency_ms,
         retrieval_acceptable_latency_ms=retrieval_acceptable_latency_ms,
+        composer_hooks_enabled=composer_hooks_enabled,
     )
 
 
@@ -539,6 +572,7 @@ def apply_guarded_response_to_decision(
     retrieval_min_score: int = DEFAULT_RETRIEVAL_MIN_SCORE,
     retrieval_target_latency_ms: int = DEFAULT_RETRIEVAL_TARGET_MS,
     retrieval_acceptable_latency_ms: int = DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
+    composer_hooks_enabled: bool = False,
 ) -> dict:
     policy_response = decision["agent_response"]
     guardrails = build_guardrails(campaign)
@@ -572,6 +606,29 @@ def apply_guarded_response_to_decision(
         core_pack=core_pack,
         advisory_hints=retrieval.get("advisory_hints", []),
     )
+    if candidate_response_override:
+        composer_hooks = {
+            "enabled": composer_hooks_enabled,
+            "status": "blocked" if composer_hooks_enabled else "disabled",
+            "applied": False,
+            "hook_id": "",
+            "hook_name": "",
+            "hook_basis": [],
+            "blocked_reason": "candidate_response_override",
+            "protected_context_preserved": False,
+            "no_evaluation_labels_used": True,
+            "allowed_runtime_surface": "candidate_response_wording_only",
+            "original_candidate_response": candidate_response,
+            "final_candidate_response": candidate_response,
+        }
+    else:
+        candidate_response, composer_hooks = apply_runtime_composer_hooks(
+            candidate_response,
+            enabled=composer_hooks_enabled,
+            decision=decision,
+            transcript=transcript,
+            retrieval=retrieval,
+        )
     validation = validate_candidate_response(candidate_response, guardrails)
     final_response = policy_response if validation["fallback_used"] else candidate_response
     retrieval = finalize_retrieval_packet(
@@ -599,6 +656,7 @@ def apply_guarded_response_to_decision(
         "final_response": final_response,
         "validation": validation,
         "retrieval": retrieval,
+        "composer_hooks": composer_hooks,
         "core_pack": {
             "core_pack_id": core_pack["core_pack_id"],
             "campaign_facts_override_rag": core_pack["campaign_facts_override_rag"],
@@ -626,6 +684,7 @@ def apply_guarded_response_to_decision(
             "must_not_invent_product_claims": True,
             "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response.",
             "retrieval_rule": "Retrieval is opt-in, advisory-only, and cannot alter protected text or override guardrail fallback.",
+            "composer_hook_rule": "Composer hooks are explicit opt-in candidate wording hooks and remain off by default.",
         },
         "latency": {
             "generation_latency_ms": generation_latency_ms,
@@ -660,6 +719,8 @@ def render_report(packet: dict) -> str:
         f"- Fallback used: `{validation['fallback_used']}`",
         f"- Retrieval status: `{retrieval['status']}`",
         f"- Retrieval used in runtime: `{retrieval['retrieval_used_in_runtime']}`",
+        f"- Composer hooks enabled: `{packet['composer_hooks']['enabled']}`",
+        f"- Composer hook applied: `{packet['composer_hooks']['applied']}`",
         "",
         "## Responses",
         "",
@@ -696,6 +757,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cases", default=str(DEFAULT_CASES_PATH), help="Campaign wrapper case file to load.")
     parser.add_argument("--candidate-response", help="Optional candidate response override for guardrail testing.")
     parser.add_argument("--retrieval-enabled", action="store_true", help="Enable local guarded retrieval for this run.")
+    parser.add_argument(
+        "--composer-hooks-enabled",
+        action="store_true",
+        help="Enable explicit opt-in runtime composer hooks after guarded retrieval creates advisory hints.",
+    )
     parser.add_argument(
         "--retrieval-registry",
         default=str(DEFAULT_RETRIEVAL_REGISTRY),
@@ -740,6 +806,7 @@ def main() -> None:
         retrieval_min_score=args.retrieval_min_score,
         retrieval_target_latency_ms=args.retrieval_target_latency_ms,
         retrieval_acceptable_latency_ms=args.retrieval_acceptable_latency_ms,
+        composer_hooks_enabled=args.composer_hooks_enabled,
     )
 
     out_path = resolve_project_path(args.out)

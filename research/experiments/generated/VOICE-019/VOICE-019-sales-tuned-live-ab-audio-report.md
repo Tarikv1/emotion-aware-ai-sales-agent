@@ -33,7 +33,7 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
 - Source prosody cues: `4`
 - `elevenlabs` `prosody`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-019-C01-en-elevenlabs-prosody.mp3`
+  audio path: `research/experiments/generated/VOICE-019/VOICE-019-C01-en-elevenlabs-prosody.mp3`
   API call made: `True`
   fallback reason: `not needed`
   source checkpoint: `VOICE-017-style-prosody`
@@ -42,7 +42,7 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
   total latency: `2058.027 ms`
 - `elevenlabs` `sales_tuned`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-019-C01-en-elevenlabs-sales_tuned.mp3`
+  audio path: `research/experiments/generated/VOICE-019/VOICE-019-C01-en-elevenlabs-sales_tuned.mp3`
   API call made: `True`
   fallback reason: `not needed`
   source checkpoint: `VOICE-018`
@@ -57,7 +57,7 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
 - Source prosody cues: `5`
 - `elevenlabs` `prosody`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-019-C02-de-elevenlabs-prosody.mp3`
+  audio path: `research/experiments/generated/VOICE-019/VOICE-019-C02-de-elevenlabs-prosody.mp3`
   API call made: `True`
   fallback reason: `not needed`
   source checkpoint: `VOICE-017-style-prosody`
@@ -66,7 +66,7 @@ Default mode is dry-run. Live mode requires `--live`, provider-specific environm
   total latency: `1030.56 ms`
 - `elevenlabs` `sales_tuned`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-019-C02-de-elevenlabs-sales_tuned.mp3`
+  audio path: `research/experiments/generated/VOICE-019/VOICE-019-C02-de-elevenlabs-sales_tuned.mp3`
   API call made: `True`
   fallback reason: `not needed`
   source checkpoint: `VOICE-018`

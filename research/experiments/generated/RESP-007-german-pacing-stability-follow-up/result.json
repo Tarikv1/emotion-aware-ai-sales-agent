@@ -1,0 +1,302 @@
+{
+  "campaign_case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "case_file": "research\\experiments\\cases\\resp-007-german-pacing-stability-follow-up.json",
+  "cases": [
+    {
+      "answer_content_text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "RESP-007-DE-PACING-STABILITY-COMPLEX",
+      "editable_surface": "provider-facing TTS input break tags and voice speed settings only",
+      "final_response": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+      "language": "de",
+      "pacing_problem": {
+        "new_shaped_runtime": "starts strong but becomes a bit too fast later",
+        "old_plain_guarded": "starts a bit too fast and then becomes a bit too slow"
+      },
+      "quality_review": {
+        "criteria": [
+          "old starts less rushed",
+          "old avoids late drag",
+          "new keeps strong opening",
+          "new avoids late speedup",
+          "same answer content",
+          "German naturalness",
+          "trustworthiness"
+        ],
+        "human_listening_review_recorded": false,
+        "human_listening_review_required": true,
+        "quality_claim_allowed": false,
+        "voice_personality_selector_unblocked": false
+      },
+      "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+      "review_focus": [
+        "Does old_plain_pacing_stabilized start less rushed without dragging later?",
+        "Does new_shaped_pacing_stabilized keep the strong opening without speeding up late?",
+        "Is the answer content unchanged from RESP-006?",
+        "Can either German variant move toward the later voice-personality selector?"
+      ],
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "source_resp_006_case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+      "stage": "relevance-check",
+      "title": "Same German question with pacing-stabilized old and new runtime variants",
+      "variants": [
+        {
+          "answer_content_text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "api_call_made": true,
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "api_key_present": true,
+          "api_key_value_logged": false,
+          "asset_log": {
+            "asset_id": "research\\experiments\\generated\\RESP-007-german-pacing-stability-follow-up\\audio\\RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-old_plain_pacing_stabilized.mp3",
+            "asset_log_id": "RESP-007-generated-audio-asset-log",
+            "consent_rights": "No customer audio, no private audio, no voice cloning.",
+            "input_source_status": "synthetic project-local German test case; same answer content as RESP-006",
+            "language": "de",
+            "output_path": "research\\experiments\\generated\\RESP-007-german-pacing-stability-follow-up\\audio\\RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-old_plain_pacing_stabilized.mp3",
+            "provider": "elevenlabs",
+            "provider_model": "eleven_flash_v2_5",
+            "provider_voice_env_var": "local_voice_ids:elevenlabs.de",
+            "review_decision": "needs human listening review",
+            "source_text_path": "research\\experiments\\cases\\resp-007-german-pacing-stability-follow-up.json",
+            "status": "needs review"
+          },
+          "audio_byte_size": 351966,
+          "audio_file_created": true,
+          "audio_filename": "RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-old_plain_pacing_stabilized.mp3",
+          "audio_output_path": "research\\experiments\\generated\\RESP-007-german-pacing-stability-follow-up\\audio\\RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-old_plain_pacing_stabilized.mp3",
+          "case_id": "RESP-007-DE-PACING-STABILITY-COMPLEX",
+          "customer_audio_uploaded": false,
+          "endpoint_type": "tts-http-stream",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "generated_text_sent_to_provider": true,
+          "http_status": 200,
+          "label": "Old runtime stabilized: less rushed opening, less late drag",
+          "language": "de",
+          "live_call_requested": true,
+          "model_id": "eleven_flash_v2_5",
+          "normalized_tts_content_text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "pacing_stability": {
+            "content_changed": false,
+            "editable_surface": "break tags and bounded speed setting only",
+            "final_break_ms": 95,
+            "middle_break_ms": 125,
+            "opening_break_ms": 165,
+            "targets": [
+              "opening_rush_guard",
+              "late_drag_prevention"
+            ]
+          },
+          "provider_error": null,
+          "provider_error_summary": {
+            "code": null,
+            "message": null,
+            "type": null
+          },
+          "provider_id": "elevenlabs-stream",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs",
+          "provider_rendering_used": false,
+          "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+          "request_id_present": true,
+          "request_preview": {
+            "body": {
+              "language_code": "de",
+              "model_id": "eleven_flash_v2_5",
+              "text": "Gute Frage. <break time=\"165ms\"/> Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. <break time=\"125ms\"/> Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. <break time=\"95ms\"/> Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+              "voice_settings": {
+                "similarity_boost": 0.75,
+                "speed": 1.02,
+                "stability": 0.48,
+                "style": 0.0,
+                "use_speaker_boost": true
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json",
+              "xi-api-key": "<redacted>"
+            },
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false"
+          },
+          "response_content_type": "audio/mpeg",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "source_checkpoint": "RESP-006 old_plain_guarded",
+          "source_resp_006_case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+          "source_variant_kind": "old_plain_guarded",
+          "source_voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.0,
+            "stability": 0.45,
+            "style": 0.0,
+            "use_speaker_boost": true
+          },
+          "synthetic_prompt_only": true,
+          "time_to_first_audio_ms": 473.662,
+          "total_provider_latency_ms": 1073.622,
+          "tts_input_chars": 453,
+          "tts_input_source": "final_response_with_pacing_tags",
+          "tts_input_text": "Gute Frage. <break time=\"165ms\"/> Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. <break time=\"125ms\"/> Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. <break time=\"95ms\"/> Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "variant_kind": "old_plain_pacing_stabilized",
+          "voice_cloning_used": false,
+          "voice_id_present": true,
+          "voice_id_value_logged": false,
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.02,
+            "stability": 0.48,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        },
+        {
+          "answer_content_text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "api_call_made": true,
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "api_key_present": true,
+          "api_key_value_logged": false,
+          "asset_log": {
+            "asset_id": "research\\experiments\\generated\\RESP-007-german-pacing-stability-follow-up\\audio\\RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-new_shaped_pacing_stabilized.mp3",
+            "asset_log_id": "RESP-007-generated-audio-asset-log",
+            "consent_rights": "No customer audio, no private audio, no voice cloning.",
+            "input_source_status": "synthetic project-local German test case; same answer content as RESP-006",
+            "language": "de",
+            "output_path": "research\\experiments\\generated\\RESP-007-german-pacing-stability-follow-up\\audio\\RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-new_shaped_pacing_stabilized.mp3",
+            "provider": "elevenlabs",
+            "provider_model": "eleven_flash_v2_5",
+            "provider_voice_env_var": "local_voice_ids:elevenlabs.de",
+            "review_decision": "needs human listening review",
+            "source_text_path": "research\\experiments\\cases\\resp-007-german-pacing-stability-follow-up.json",
+            "status": "needs review"
+          },
+          "audio_byte_size": 374954,
+          "audio_file_created": true,
+          "audio_filename": "RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-new_shaped_pacing_stabilized.mp3",
+          "audio_output_path": "research\\experiments\\generated\\RESP-007-german-pacing-stability-follow-up\\audio\\RESP-007-DE-PACING-STABILITY-COMPLEX-de-elevenlabs-new_shaped_pacing_stabilized.mp3",
+          "case_id": "RESP-007-DE-PACING-STABILITY-COMPLEX",
+          "customer_audio_uploaded": false,
+          "endpoint_type": "tts-http-stream",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "generated_text_sent_to_provider": true,
+          "http_status": 200,
+          "label": "New runtime stabilized: strong opening with late speed cap",
+          "language": "de",
+          "live_call_requested": true,
+          "model_id": "eleven_flash_v2_5",
+          "normalized_tts_content_text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "pacing_stability": {
+            "content_changed": false,
+            "editable_surface": "break tags and bounded speed setting only",
+            "final_break_ms": 210,
+            "middle_break_ms": 165,
+            "opening_break_ms": 145,
+            "targets": [
+              "late_speed_cap",
+              "late_answer_spacing"
+            ]
+          },
+          "provider_error": null,
+          "provider_error_summary": {
+            "code": null,
+            "message": null,
+            "type": null
+          },
+          "provider_id": "elevenlabs-stream",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs",
+          "provider_rendering_used": true,
+          "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+          "request_id_present": true,
+          "request_preview": {
+            "body": {
+              "language_code": "de",
+              "model_id": "eleven_flash_v2_5",
+              "text": "Gute Frage. <break time=\"145ms\"/> Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. <break time=\"165ms\"/> Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. <break time=\"210ms\"/> Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+              "voice_settings": {
+                "similarity_boost": 0.75,
+                "speed": 1.02,
+                "stability": 0.56,
+                "style": 0.0,
+                "use_speaker_boost": true
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json",
+              "xi-api-key": "<redacted>"
+            },
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false"
+          },
+          "response_content_type": "audio/mpeg",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "source_checkpoint": "RESP-006 new_shaped_runtime",
+          "source_resp_006_case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+          "source_variant_kind": "new_shaped_runtime",
+          "source_voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.127,
+            "stability": 0.56,
+            "style": 0.0,
+            "use_speaker_boost": true
+          },
+          "synthetic_prompt_only": true,
+          "time_to_first_audio_ms": 233.864,
+          "total_provider_latency_ms": 858.266,
+          "tts_input_chars": 454,
+          "tts_input_source": "same_content_with_pacing_tags_and_speed_cap",
+          "tts_input_text": "Gute Frage. <break time=\"145ms\"/> Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. <break time=\"165ms\"/> Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. <break time=\"210ms\"/> Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "variant_kind": "new_shaped_pacing_stabilized",
+          "voice_cloning_used": false,
+          "voice_id_present": true,
+          "voice_id_value_logged": false,
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.02,
+            "stability": 0.56,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        }
+      ]
+    }
+  ],
+  "experiment_id": "RESP-007-german-pacing-stability-follow-up",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "customer_audio_uploaded": false,
+    "default_mode": "dry-run",
+    "provider_calls_made": true,
+    "quality_claim_allowed_without_human_rating": false,
+    "requires_api_key": true,
+    "voice_cloning_used": false,
+    "voice_personality_selector_unblocked": false
+  },
+  "source_checkpoint": "RESP-006-german-runtime-version-ab-listening-check",
+  "summary": {
+    "api_calls_made": 2,
+    "audio_files_created": 2,
+    "case_count": 1,
+    "customer_audio_uploaded": false,
+    "fallback_count": 0,
+    "german_case_count": 1,
+    "human_listening_review_recorded": false,
+    "live_call_requested": true,
+    "maximum_tts_input_chars": 454,
+    "minimum_tts_input_chars": 453,
+    "new_stabilized_variant_count": 1,
+    "old_stabilized_variant_count": 1,
+    "only_delivery_surface_changed": true,
+    "provider": "elevenlabs",
+    "quality_claim_allowed": false,
+    "raw_secret_values_logged": false,
+    "same_answer_content_for_all_variants": true,
+    "same_question_for_all_variants": true,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "variant_count": 2,
+    "voice_cloning_used": false,
+    "voice_personality_selector_unblocked": false
+  },
+  "title": "German pacing-stability follow-up for RESP-006"
+}

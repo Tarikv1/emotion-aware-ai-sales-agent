@@ -124,7 +124,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-010-C01-de-cartesia.wav",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-010\\VOICE-010-C01-de-cartesia.wav",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -185,7 +185,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-010-C01-de-cartesia.wav",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-010\\VOICE-010-C01-de-cartesia.wav",
         "audio_byte_size": 92676,
         "http_status": 200,
         "response_content_type": "audio/wav",
@@ -252,7 +252,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-010-C02-en-cartesia.wav",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-010\\VOICE-010-C02-en-cartesia.wav",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -313,7 +313,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-010-C02-en-cartesia.wav",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-010\\VOICE-010-C02-en-cartesia.wav",
         "audio_byte_size": 93418,
         "http_status": 200,
         "response_content_type": "audio/wav",

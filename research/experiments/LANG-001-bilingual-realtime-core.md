@@ -17,8 +17,8 @@ The validator calls:
 ```powershell
 python scripts\run_realtime_turn_simulation.py `
   --cases research\experiments\cases\lang-001-bilingual-realtime-core.json `
-  --out research\experiments\generated\LANG-001-bilingual-realtime-results.json `
-  --report-out research\experiments\generated\LANG-001-bilingual-realtime-report.md
+  --out research/experiments/generated/LANG-001/LANG-001-bilingual-realtime-results.json `
+  --report-out research/experiments/generated/LANG-001/LANG-001-bilingual-realtime-report.md
 ```
 
 ## Case Design

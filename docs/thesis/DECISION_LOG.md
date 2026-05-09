@@ -15,6 +15,668 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-067 - Keep PROD-020 naturalized runtime hooks opt-in
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: keep the naturalized customer-turn runtime composer hooks as an explicit opt-in candidate only; retrieval and composer hooks remain disabled by default
+- Why:
+  - PROD-020 reran the actual guarded composer over naturalized customer turns instead of rubric-like prompts
+  - `120` source turns were rubric-like, `123` questions were changed, and the naturalized runtime prompts had `0` rubric-token findings
+  - source-pattern refs and expected outcomes were preserved for `180/180` rows as metadata, not composer input
+  - with retrieval and composer hooks explicitly enabled, `107` answers received hooks without passing evaluation labels into the composer
+  - hooked total score was `1065` versus baseline score `734`, with `107` hooked wins, `0` baseline wins, and `73` ties
+  - safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, expected outcome correctness `180/180`, non-sale correctness `1.0`, safe-close correctness `1.0`, and provider calls `false`
+- Alternatives considered:
+  - promote retrieval or composer hooks by default after the naturalized score gain
+  - treat PROD-019 as enough and skip naturalized prompt evidence
+  - change runtime hooks during the naturalization test instead of keeping runtime behavior fixed
+  - move directly to provider/live-call testing before live-shaped local simulation
+- Consequences:
+  - `--composer-hooks-enabled` remains explicit opt-in and still requires guarded retrieval advisory hints
+  - naturalized single-turn evidence can support the next local simulation gate, but not default promotion
+  - the next product checkpoint should test live-shaped multi-turn behavior against the PROD-011 hardened dialogue policy
+
+### DEC-066 - Keep PROD-019 runtime composer hooks opt-in
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: keep the guarded runtime composer hooks as an explicit opt-in candidate behind `--composer-hooks-enabled`, with retrieval and composer hooks disabled by default
+- Why:
+  - PROD-019 ran through the actual `generate_guarded_response.py` composer rather than the offline PROD-018 substitution path
+  - default-off answer drift was `0`, so the existing guarded response path stayed unchanged
+  - with retrieval and composer hooks explicitly enabled, `98` answers received runtime hooks without passing evaluation labels into the composer
+  - hooked total score was `916` versus current retrieval score `663`, with `92` hooked wins, `0` current wins, and `88` ties
+  - safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and provider calls `false`
+  - the evidence still uses generated rubric-like customer turns, so it is not enough for default retrieval or production promotion
+- Alternatives considered:
+  - promote the runtime hooks as default because the score improved
+  - keep only PROD-018 offline hooks and avoid touching the real composer
+  - require the runtime hooks to match every PROD-018 label-aware gain
+  - move straight to live/provider tests before naturalizing the customer turns
+- Consequences:
+  - `--composer-hooks-enabled` remains explicit opt-in and requires guarded retrieval to provide advisory hints
+  - PROD-017 specificity scoring remains the promotion gate
+  - default runtime retrieval and default composer hooks remain disabled
+  - the next evidence checkpoint should test naturalized customer wording or live-shaped simulation before any broader runtime claim
+
+### DEC-065 - Keep PROD-018 composer hooks as a runtime candidate only
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: keep the `PROD-018` composer-hook layer as evidence for a guarded runtime-composer candidate test, not as a default retrieval or production-runtime promotion
+- Why:
+  - PROD-018 used unchanged `PROD-015` rows and changed only an offline composer-hook surface
+  - hooked total score was `1421` versus current retrieval score `663` and old runtime score `652`
+  - hooked answers won `174` turns versus current retrieval and `177` turns versus old runtime, while old runtime won `0`
+  - safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and runtime behavior changed `false`
+  - the evidence is still label-aware and offline, so it cannot prove the actual runtime composer will make the same decisions in live-shaped turns
+- Alternatives considered:
+  - promote retrieval by default after the large score gain
+  - treat PROD-018 as final product evidence instead of an offline candidate gate
+  - skip runtime-composer tests and move directly to naturalized prompt variants
+  - discard the hook idea because PROD-015 showed no original quality gain
+- Consequences:
+  - `PROD-019` should implement a red-first guarded runtime-composer candidate behind an explicit opt-in flag
+  - PROD-017 specificity scoring remains the promotion gate
+  - retrieval remains disabled by default
+  - CallCenterEN-derived raw or transcript-like text remains blocked from commercial runtime prompts
+
+### DEC-064 - Use PROD-017 as the gate for composer-hook experiments
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use the `PROD-017` specificity and objection-fit scorer as the evaluation gate for the next narrow retrieval composer-hook test, while still keeping retrieval disabled by default
+- Why:
+  - PROD-017 re-scored the same fixed `PROD-015` rows without changing prompts, answers, runtime behavior, or retrieval
+  - the new scorer found `3` retrieval wins, `0` old-runtime wins, and `177` ties where PROD-015 had `180` ties
+  - all `3` changed retrieval answers won under specificity scoring, confirming the earlier scoring blind spot
+  - the result remains small: only `3/180` answers changed, absolute quality gap count is `177`, and generic-answer rates remain high
+- Alternatives considered:
+  - claim retrieval is better based on the `11` point specificity-score delta
+  - change composer hooks before stabilizing the evaluator
+  - run the full `240` scenario bank before fixing the generic-answer problem
+  - discard retrieval because the improvement only appears on the changed answers
+- Consequences:
+  - `PROD-018` should be a narrow composer-hook experiment on fixed no-gain examples, not a runtime promotion
+  - the pass condition should include higher PROD-017 specificity/objection-fit score plus unchanged hard-failure, non-sale, safe-close, and leakage boundaries
+  - broad retrieval claims remain blocked until more answers improve under fixed-case scoring
+
+### DEC-063 - Fix retrieval evaluation before changing runtime retrieval
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: after `PROD-016`, improve evaluation specificity and objection-fit scoring before adding retrieval composer hooks or promoting retrieval runtime behavior
+- Why:
+  - `PROD-016` found retrieval matching was not the main bottleneck: matching success was `1.0` and no-match rate was `0.0`
+  - the main high-severity blockers were composer influence gap (`174` retrieved-not-used turns and `177` unchanged answers) and scoring blind spot (`3` influenced answers still tied)
+  - the current scorer rewards safe generic follow-up behavior, so it cannot reliably distinguish safe-specific retrieval answers from safe-generic old answers
+  - classifier and evaluation-shape issues also exist: `180/180` turns were classified as unknown-runtime-signal, `120` prompts were rubric-like, and `8` domains were run through one B2B software campaign
+- Alternatives considered:
+  - add retrieval composer hooks immediately
+  - run the full `240` scenario bank with the current scorer
+  - promote retrieval because matching and safety passed
+  - discard retrieval entirely because PROD-015 showed no score gain
+- Consequences:
+  - `PROD-017` should be an evaluation-only scoring refinement over the same fixed PROD-015 rows
+  - retrieval stays disabled by default
+  - composer changes should wait until the evaluator can reward answer specificity and objection fit
+  - full-bank runs should wait until the diagnostic scoring blind spot is addressed
+
+### DEC-062 - Treat PROD-015 as safe no-gain retrieval evidence
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: keep retrieval disabled by default after `PROD-015` because the larger CallCenterEN-derived scenario slice showed safety but no quality gain over the old runtime
+- Why:
+  - the default `PROD-015` run evaluated the same `60` scenario / `180` turn stratified slice with both old runtime and retrieval runtime
+  - retrieval and old runtime tied on all `180` turns under the current scorer, with total score `810` versus `810`
+  - retrieval influenced only `3` responses and was retrieved-but-not-used `174` times, so the current retrieval composition path is not yet materially changing enough answers
+  - hard failures, leakage findings, unsafe non-sale handling, and unsafe close behavior stayed at `0`, so the problem is usefulness rather than safety
+- Alternatives considered:
+  - promote retrieval because earlier smaller tests showed wins
+  - ignore the no-gain slice and move straight to default runtime retrieval
+  - rerun only hand-picked retrieval-friendly prompts
+  - run the full `240`-scenario bank before diagnosing why retrieval rarely influences answers
+- Consequences:
+  - `PROD-015` becomes honest negative or neutral evidence, not promotion evidence
+  - the next product step should diagnose retrieval query/composition/scoring or run a full-bank baseline before any retrieval-default claim
+  - non-sale correctness and hard failure rate remain hard gates
+  - commercial runtime prompts still must not receive CallCenterEN-derived source text
+
+### DEC-061 - Generate scenarios from abstract multi-pattern recipes only
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-014` to generate CallCenterEN-derived scenario packets only from abstract multi-pattern recipes, never from one transcript, copied transcript wording, transcript-derived runtime prompt text, company-specific wording, names, or long call summaries
+- Why:
+  - Tarik wants realistic call openings, intents, objections, emotion shifts, discovery, close attempts, and support boundaries grounded in the downloaded CallCenterEN corpus
+  - `PROD-013` already gives enough abstract structure to build scenarios without copying source wording
+  - the next old-runtime versus retrieval-runtime comparison needs exact synthetic customer prompts plus expected answer requirements, not raw calls
+  - leakage controls need to be part of the generation artifact, not a later manual concern
+- Alternatives considered:
+  - continue using only the smaller hand-written PROD-012 scenario set
+  - generate scenarios from one source call at a time
+  - feed transcript-like text into commercial runtime prompts
+  - promote retrieval before building a larger scenario bank
+- Consequences:
+  - each scenario cites at least five abstract pattern IDs across multiple pattern categories
+  - safe close remains verbal commitment or sale-ready outcome without payment collection
+  - support, cancellation, trust repair, and other non-sale boundaries remain first-class outcomes
+  - the 2026-05-09 run produced `240` scenarios, `720` customer turns, `240` unique scenario recipes, and `0` leakage findings after a transient `5,000` sentence source scan
+  - `PROD-014` changes no runtime behavior; `PROD-015` should use the bank to compare old runtime and opt-in retrieval on the same prompts
+
+### DEC-060 - Extract CallCenterEN as abstract pattern banks only
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-013` to extract abstract pattern banks from approved local CallCenterEN files, covering openings, intents, objections, emotion transitions, persuasion tactics, discovery questions, stages, close attempts, safety boundaries, timing signals, domain patterns, personas, scenario templates, and agent mistakes without storing exact scripts
+- Why:
+  - Tarik wants scenarios grounded in real call behavior instead of only hand-written synthetic patterns
+  - the useful learning is structural: what customers say, how emotions shift, which tactics work, what fails, and when to stop or escalate
+  - exact transcript wording, company names, agent/customer names, and long call summaries create leakage and licensing risk
+  - the dataset is observed as `cc-by-nc-4.0`, so extraction must stay research-local and abstract until separate license clearance exists
+- Alternatives considered:
+  - copy real call text into scenarios or prompts
+  - store long call summaries as training material
+  - extract only objections and ignore openings, discovery, close attempts, timing, and agent mistakes
+  - download and process the dataset automatically without an explicit local import step
+- Consequences:
+  - `PROD-013` produces `pattern-bank.json` and `report.md` from local ignored files
+  - default runs do not download the dataset and do not call providers
+  - after explicit approval, the full local bounded extraction scanned `95,946` source JSON payloads, parsed `95,934` conversations, produced `4,313,595` pseudo-turns, and kept high-volume sample records capped while aggregate counts covered the full scan
+  - many source files provide word-level timestamps without reliable speaker labels, so speaker-role assignment is treated as inference for pattern mining only, not ground-truth diarization; the extractor uses role-specific sales/customer language signals before file-direction fallback
+  - later scenario-generation checkpoints can consume abstract pattern labels instead of hand-written seed patterns
+  - commercial runtime use remains blocked until leakage, license, and runtime-promotion gates are separately cleared
+
+### DEC-059 - Keep CallCenterEN as pattern-grounding evidence, not commercial runtime data
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-012` to evaluate CallCenterEN-grounded synthetic scenarios against old core and opt-in RAG-018 retrieval, while keeping the dataset out of commercial runtime prompts, training data, and default runtime retrieval
+- Why:
+  - Tarik wanted real-world call-center scripts to ground scenarios instead of fully synthetic examples
+  - the dataset is observed as `cc-by-nc-4.0`, so it should not become commercial runtime training or prompt material without separate license clearance
+  - leakage protections must be first-class metrics, not a note after the fact
+  - retrieval should prove value on fixed scenarios before any broader runtime promotion
+- Alternatives considered:
+  - copy transcript sentences into generated scenarios
+  - generate scenarios from one transcript at a time
+  - put transcript-derived text into commercial runtime prompts
+  - make retrieval default because it beat the old core on the fixed scenario set
+- Consequences:
+  - PROD-012 adds hard failure rate, non-sale correctness, leakage failure rate, scenario quality, sales/emotional handling score, and retrieval win rate in one local checkpoint
+  - default runs require no dataset download and no provider call
+  - ignored local ZIPs can be scanned transiently for leakage if Tarik later approves/downloads them into `data/external/callcenteren/raw/`
+  - the decision remains `keep_retrieval_opt_in_for_callcenteren_grounded_scenarios`, not default retrieval
+
+### DEC-058 - Keep dialogue-policy hardening as design evidence before runtime promotion
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-011` as a local dialogue-policy hardening checkpoint over PROD-010 packet evidence, not as a live runtime promotion
+- Why:
+  - PROD-010 proved objection-state continuity, but policy-action selection still needed its own measurable gate
+  - multi-turn sales safety depends on choosing the right action before drafting persuasive language
+  - premature closes, unsafe reassurance, support-to-sales drift, and refusal pressure should be blocked at policy level
+  - retrieval and providers should remain disabled until separate gates explicitly enable them
+- Alternatives considered:
+  - promote PROD-010 packet evidence directly into runtime behavior
+  - test full transcript responses before policy actions were measurable
+  - make RAG default for hard objections before the local policy can route them safely
+  - focus on more voice variants before the sales decision layer is stable
+- Consequences:
+  - policy action correctness, blocked action avoidance, objection stack preservation, and state-reference completeness are now first-class metrics
+  - the next gate should be live-shaped transcript or simulation behavior against the hardened policy
+  - no provider call, private data read, dataset download, payment handling, checkout handling, commercial runtime prompt contamination, or live runtime change occurs
+  - PROD-011 guides runtime design without changing runtime behavior
+
+### DEC-057 - Require long-call objection continuity before dialogue-policy hardening
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-010` as the long-call universal-objection gate before hardening the dialogue policy for multi-turn objection handling
+- Why:
+  - PROD-009 proved cross-domain packet generation on shorter calls, but not objection persistence across longer conversations
+  - full-sale behavior is unsafe if repeated price, authority, privacy, support, anger, or technical-risk objections are collapsed into a close
+  - the BRAIN-002 packet must carry turn position, total turn count, and objection stack so downstream policy work can reason over the call, not only the latest turn
+  - retrieval and providers should remain disabled until separate gates explicitly enable them
+- Alternatives considered:
+  - jump directly from PROD-009 into live-runtime-shaped transcript tests
+  - harden dialogue policy without first proving objection-state continuity
+  - make RAG default for objections before the generated state packet handles them locally
+  - focus on voice personality before the sales decision layer is stable on longer calls
+- Consequences:
+  - long-call state continuity and objection boundary correctness are now first-class metrics
+  - dialogue-policy hardening can build on packet evidence instead of only final-response text
+  - no provider call, private data read, dataset download, payment handling, checkout handling, commercial runtime prompt contamination, or live runtime change occurs
+  - the next gate is dialogue-policy hardening, not production promotion
+
+### DEC-056 - Require cross-domain generated packet evidence before harder objections
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-009` as the first cross-domain generated BRAIN-002 gauntlet before moving into harder universal objections and longer calls
+- Why:
+  - PROD-008 proved generated packets only on the first SD-card/storage-shaped call set
+  - the project should not mistake a narrow fixture win for domain-general behavior
+  - source-pattern grounding and leakage boundaries need to remain active while the domain set expands
+  - retrieval and providers should remain disabled until separate gates explicitly enable them
+- Alternatives considered:
+  - jump directly from PROD-008 into runtime promotion
+  - add RAG by default before cross-domain packet stability
+  - expand with generated text only and skip packet-completeness scoring
+  - test more voices before the sales decision layer is robust across domains
+- Consequences:
+  - cross-domain coverage is now part of the evidence chain before harder objection work
+  - every broader call still needs at least three source-pattern IDs and no copied transcript text
+  - no provider call, private data read, dataset download, payment handling, checkout handling, commercial runtime prompt contamination, or live runtime change occurs
+  - the next gate is harder universal objections and longer calls, not production promotion
+
+### DEC-055 - Require generated BRAIN-002 packets before broader gauntlet expansion
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-008` as the bridge from fixture-scored BRAIN-002 packet evidence to generated turn-by-turn packet evidence before expanding the full-call gauntlet across domains
+- Why:
+  - PROD-007 showed a useful fixture-level win but still embedded the expected state packet answer in the case file
+  - the project-wide premortem risk is still evaluation theater if the runtime cannot produce the packet fields itself
+  - broader scenario coverage should only happen after packet completeness, non-sale correctness, and hard-failure targets survive generated packet construction
+  - retrieval and providers should remain disabled until separate gates explicitly enable them
+- Alternatives considered:
+  - expand domains immediately from PROD-007
+  - treat fixture-scored packets as enough proof for runtime behavior
+  - make retrieval default before generated packet scoring is stable
+  - run live/provider calls before the local generated-packet contract is validated
+- Consequences:
+  - PROD-008 becomes the required handoff from state-schema design to broader full-call evaluation
+  - generated packet completeness is now a first-class metric
+  - no provider call, private data read, dataset download, payment handling, checkout handling, or live runtime change occurs
+  - the next gate is broader generated full-call coverage, not production promotion
+
+### DEC-054 - Keep PROD-007 as fixture evidence, not runtime promotion
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: use `PROD-007` as the first fixed full-call gauntlet comparing the old core against the BRAIN-002/full-sale candidate, but do not promote the candidate to live runtime from fixture-scored evidence alone
+- Why:
+  - the project-wide premortem identified evaluation theater as a risk
+  - BRAIN-002 needs call-level scoring before broader runtime changes
+  - the first gauntlet should test the decision contract under fixed cases before connecting it to generated runtime packets
+  - safe close rate is only meaningful if hard failure rate stays `0.0` and non-sale correctness stays strong
+- Alternatives considered:
+  - move directly to live/provider testing
+  - treat the BRAIN-002 schema as enough evidence without a call-level gauntlet
+  - optimize close rate before testing support, escalation, refusal, and unclear-fit cases
+  - make RAG default before proving full-sale call-control behavior
+- Consequences:
+  - PROD-007 reports a fixture-level BRAIN-002 candidate win, not a production-readiness claim
+  - retrieval remains disabled by default
+  - no provider call, private data read, dataset download, payment handling, checkout handling, or live runtime change occurs
+  - the next gate is a generated full-call packet test where runtime logic creates BRAIN-002 fields from turns
+
+### DEC-053 - Make BRAIN-002 the runtime state contract before the full-call gauntlet
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: define `BRAIN-002` as the per-turn runtime state schema before implementing the full-call old-core-versus-full-sale comparison
+- Why:
+  - the project-wide premortem identified convergence risk as the most likely failure mode
+  - final response text alone is not enough to evaluate a sales agent
+  - safe full-sale behavior needs explicit `sale_ready`, `non_sale_correct`, safety, call-control, retrieval, voice, and evidence-log fields
+  - retrieval must remain disabled by default until a separate RAG-017/RAG-018 promotion path
+  - voice should carry delivery metadata only, not choose sales strategy or infer hidden emotion
+- Alternatives considered:
+  - build the full-call gauntlet directly without a shared state schema
+  - keep using the older output contract as the only runtime packet
+  - make RAG or voice the next primary implementation focus
+  - optimize close rate before making non-sale correctness first-class
+- Consequences:
+  - full-sale simulations can now score structured state decisions, not only wording quality
+  - `close-and-log-sale-ready` is the explicit full-sale call-control value
+  - non-sale correctness is a required output for support, escalation, refusal, unclear fit, and trust-repair cases
+  - BRAIN-002 changes no live runtime behavior by itself
+  - the next implementation target is the fixed full-call gauntlet
+
+### DEC-052 - Use CallCenterEN only for pattern-grounded full-sale scenarios
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: use the Hugging Face `AIxBlock/92k-real-world-call-center-scripts-english` / CallCenterEN dataset only as a pattern-grounding source for the full-sale MVP scenario bank, not as copied script text, commercial runtime prompt text, or commercial model-training data
+- Why:
+  - Tarik wants scenarios grounded in real call-center conversations rather than fully synthetic scripts
+  - the dataset is useful for domains, call directions, objections, escalation, support-only patterns, and close resistance
+  - the observed license is `cc-by-nc-4.0`, and the dataset/paper frame use as non-commercial research
+  - copied transcript text or close paraphrases would weaken both license safety and thesis defensibility
+  - the first full-sale MVP needs explicit sub-metrics: hard failure rate and non-sale correctness, not only close rate
+- Alternatives considered:
+  - keep scenarios completely synthetic
+  - use direct transcript excerpts as evaluation cases
+  - train or fine-tune a commercial runtime model on the dataset
+  - generate scenarios from one source transcript at a time
+- Consequences:
+  - PROD-006 uses project-owned scenario rewrites and multi-source pattern grounding
+  - every generated scenario must use at least three source patterns
+  - leakage tests become hard gates: no exact transcript sentence, no high-similarity paraphrase, no single-source scenario, and no transcript-derived commercial runtime prompt
+  - dataset ZIP downloads remain explicit-approval, ignored local-only inputs
+  - safe close rate cannot be optimized unless hard failure rate remains zero and non-sale correctness stays strong
+
+### DEC-051 - Keep RESP-007 as a pacing-only German follow-up
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: implement RESP-007 as a same-question, same-answer-content German pacing-stability checkpoint and keep the voice-personality selector blocked until human listening review
+- Why:
+  - RESP-006 found pacing instability, not a need to change voice identity or sales strategy
+  - changing the question, answer, campaign, or strategy would make the listening result hard to interpret
+  - `old_plain_guarded` needs an opening rush guard and late-drag prevention
+  - `new_shaped_runtime` needs a late speed cap and later answer spacing
+  - provider calls and quality claims still require explicit opt-in and listening evidence
+- Alternatives considered:
+  - promote the English RESP-005 personalities immediately despite the German pacing issue
+  - rewrite the German answer to sound more natural
+  - change voice identity or provider settings broadly
+  - make BRAIN-002 or RAG promotion the next active checkpoint before resolving the current voice blocker
+- Consequences:
+  - RESP-007 changes only provider-facing break tags and bounded speed settings
+  - the German answer content remains fixed after delivery tags are stripped
+  - no provider call, private audio read, transcription, voice cloning, or customer audio upload occurs by default
+  - the next user-facing step is to listen to RESP-007 audio and record a human decision before the voice-personality selector
+
+### DEC-050 - Define the project brain as a bounded runtime architecture
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: define the project brain through `BRAIN-001` as a compact runtime decision architecture instead of a single giant prompt, hidden memory dump, or slow multi-agent chain
+- Why:
+  - recent RAG and voice work created useful knowledge, but not all of it is ready for default runtime use
+  - the live call path must stay low-latency and campaign-grounded
+  - buyer emotion should guide repair and strategy cautiously, not become hidden-state persuasion
+  - RAG-020 and RAG-021 are still advisory-only until a separate RAG-017/RAG-018 promotion path
+  - the voice-personality selector remains blocked until the German pacing-stability follow-up resolves the RESP-006 issue
+- Alternatives considered:
+  - merge all RAG and voice notes into one large system prompt
+  - make retrieval default after the retrieval-vs-core simulation
+  - treat the accepted English voice personalities as ready for all languages
+  - put private/raw call memory directly into the runtime brain
+- Consequences:
+  - the always-on brain remains the reusable sales-agent core, `SalesCampaign`, short-term call state, conservative buyer-state estimate, strategy selector, safety checks, and voice delivery profile
+  - optional retrieval remains explicitly gated and disabled by default
+  - raw private audio, raw private transcripts, identifiers, copied source excerpts, and provider secrets are excluded
+  - `BRAIN-002` can later define a strict runtime state schema without changing these boundaries
+
+### DEC-049 - Revise German pacing before voice-personality selector
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: do not promote RESP-006 German variants into the voice-personality selector yet; run a narrow German pacing-stability revision first
+- Why:
+  - Tarik's German listening review found the old variant starts a bit fast and then becomes a bit slow
+  - Tarik's German listening review found the new variant starts strong but becomes a bit too fast later
+  - the issue is pacing stability rather than a need to change voice identity or broaden personality design
+  - the English RESP-005 personality decision should not be generalized to German until German pacing is stable
+- Alternatives considered:
+  - accept both German variants as direct equivalents of the English personality lanes
+  - choose the newer shaped runtime because it starts stronger
+  - choose the older plain runtime because it avoids the later fast shaped-runtime section
+- Consequences:
+  - the next checkpoint should keep the RESP-006 German question/content fixed and change only pacing-related delivery surfaces
+  - the voice-personality selector remains blocked until the German pacing follow-up is reviewed
+  - no production-wide claim is made for either German style across all campaigns, providers, voice IDs, or real leads
+
+### DEC-048 - Treat RESP-005 variants as accepted voice personalities
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: keep both `old_plain_guarded` and `new_shaped_runtime` as accepted voice personality directions instead of selecting a single universal winner
+- Why:
+  - Tarik's listening review found both versions strong
+  - `old_plain_guarded` feels like a real laid-back salesperson
+  - `new_shaped_runtime` feels more serious and lower-energy
+  - the useful difference is now listener and campaign preference, not a clear quality failure in either path
+  - the comparison reframes voice work as selectable personality design rather than endless polishing toward one generic voice
+- Alternatives considered:
+  - promote only the old plain runtime because it sounded more like a relaxed salesperson
+  - promote only the newer shaped runtime because it carries the latest provider-facing delivery polish
+  - continue tuning both until one becomes objectively better
+- Consequences:
+  - the next voice/runtime checkpoint should define bounded style or personality profiles
+  - future listening checks should evaluate campaign fit, listener preference, and safety instead of only asking which version is better
+  - no production-wide claim is made for either voice across all campaigns, providers, voice IDs, or real leads
+
+### DEC-047 - Keep RAG-018 retrieval opt-in after retrieval-vs-core call simulation
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: keep RAG-018 retrieval opt-in for the four validated objection paths, but do not make retrieval the default response path yet
+- Why:
+  - the fixed retrieval-vs-core call simulation compared the older retrieval-disabled core path against opt-in retrieval across `4` synthetic calls and `12` turns
+  - retrieval won `4` turns, the older core won `0`, and `8` turns tied
+  - retrieval total score was `12` versus core total score `4`, for a `+8` delta on the fixed scoring rubric
+  - protected turns were preserved `6/6`, and the run used no provider calls, private customer data, vector database, embedding provider, or LLM reranker
+- Alternatives considered:
+  - make retrieval default immediately after winning the scripted comparison
+  - keep the older core path for all turns until a live provider or human review is available
+  - expand retrieval to additional unvalidated objection categories
+- Consequences:
+  - retrieval is better than the older core path on the currently validated synthetic objection turns
+  - the default runtime path remains retrieval-disabled unless explicitly enabled
+  - making retrieval default still needs a larger call-outcome simulation or human review focused on appointment-setting quality and pressure risk
+
+### DEC-046 - Accept authority and trust as narrow RAG-018 opt-in influence paths
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: keep guarded runtime retrieval opt-in, but allow safe English authority/boss and trust turns to use retrieved objection guidance for one low-pressure clarifying question
+- Why:
+  - `RAG-018-SIM-C04` and `RAG-018-SIM-C05` failed the red test as retrieved-but-unused quality gaps
+  - the authority response offers a shareable boss summary or one concern to address first
+  - the trust response asks which proof-oriented information would be useful first without inventing claims or social proof
+  - the scripted simulation now reports `4` retrieval-influenced responses, `4` objection-resolution improvements, `4` next-step quality improvements, and `4/4` protected contexts preserved
+- Alternatives considered:
+  - leave authority and trust as known gaps
+  - broaden all unknown objections into RAG-shaped wording
+  - make retrieval default after closing the scripted gaps
+- Consequences:
+  - price objection, send-me-info, authority/boss, and trust are the only validated influence paths
+  - retrieval remains disabled by default and requires explicit `--retrieval-enabled`
+  - default retrieval still needs broader multi-turn evidence, not just scripted single-turn success
+
+### DEC-045 - Accept RAG-018 send-me-info as the second opt-in influence path
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: keep guarded runtime retrieval opt-in, but allow a safe English send-me-info turn to use retrieved send-info/qualification hints for one clarifying question before sending follow-up information
+- Why:
+  - `RAG-018-SIM-C03` failed the new red test as a retrieved-but-unused quality gap
+  - the implemented response asks what information would be relevant instead of inventing product claims or forcing a meeting
+  - the scripted simulation now reports `2` retrieval-influenced responses, `2` objection-resolution improvements, `2` next-step quality improvements, and `4/4` protected contexts preserved
+  - retrieval remains disabled by default and campaign facts still override RAG
+- Alternatives considered:
+  - leave send-me-info as a known quality gap
+  - add broader generic unknown-objection rewriting
+  - make all RAG-019 objection hints change runtime wording
+- Consequences:
+  - price objection and send-me-info are the only validated influence paths
+  - authority/boss and trust objections remain retrieved-but-unused quality gaps
+  - each further expansion still needs its own failing scripted-call expectation first
+
+### DEC-044 - Keep RAG-018 opt-in after broader scripted-call simulation
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: keep guarded runtime retrieval opt-in and do not make it default after the 10-case RAG-018 scripted-call simulation
+- Why:
+  - the simulation preserved `10/10` safe cases and `4/4` protected contexts
+  - only the German price-objection case improved objection resolution and next-step quality
+  - send-me-info, authority, and trust objections retrieved useful hints but did not yet change runtime wording
+  - default retrieval would add complexity before broader measurable improvement exists
+- Alternatives considered:
+  - make retrieval default after the first safe influence path
+  - expand all retrieved response-wording hints into runtime wording immediately
+  - return to metadata-only retrieval and remove the first influence path
+- Consequences:
+  - RAG-018 remains live-capable only behind explicit `--retrieval-enabled`
+  - the current validated influence path stays narrow
+  - the next expansion should target one remaining quality gap with a failing test first
+
+### DEC-043 - Keep RAG-018 opt-in while allowing one validated safe influence path
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: keep guarded runtime retrieval disabled by default, but allow opt-in RAG-018 hints to influence the German price-objection composer when the response remains non-protected, validated, and different from the no-retrieval core-playbook baseline
+- Why:
+  - the previous RAG-018 path proved safe retrieval but produced zero runtime influence
+  - the first influence should be narrow enough to inspect and validate directly
+  - objection-diagnosis and autonomy hints can improve a clarifying question without adding product claims, urgency, or hidden-emotion inference
+  - the runtime still needs stronger evidence before any default retrieval decision
+- Alternatives considered:
+  - keep retrieval as metadata-only until a larger simulation exists
+  - let all retrieved response-wording hints freely rewrite candidate responses
+  - make retrieval default for safe cases after the first successful A/B run
+- Consequences:
+  - `retrieval_used_in_runtime=true` is now expected for the validated safe German price-objection case only
+  - blocked/protected contexts still return `retrieval_used_in_runtime=false`
+  - the next gate is a larger scripted call simulation with scored objection resolution and next-step quality
+
+### DEC-042 - Keep the VOICE-044 listening check separate as RESP-004
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: create RESP-004 for the VOICE-044 polished-baseline listening check instead of overwriting or repurposing RESP-003
+- Why:
+  - RESP-003 is already the runtime live-capable TTS bridge and has its own evidence trail
+  - the VOICE-044 follow-up answers a new test question: whether the polished baseline should be heard before returning to RAG-018
+  - keeping a separate checkpoint prevents confusion between core TTS capability and a specific listening-review experiment
+- Alternatives considered:
+  - append the new test to RESP-003 artifacts
+  - rename the existing RESP-003 A/B harness
+  - skip the listening-check harness and move directly to RAG-018
+- Consequences:
+  - RESP-004 owns the VOICE-044 listening-check runner, validator, product doc, and generated artifact folder
+  - RESP-003 remains the TTS bridge used by RESP-004 under the hood
+  - live RESP-004 runs still require explicit provider approval and human listening review before any quality claim
+
+### DEC-041 - Improve accepted baseline voice with narrow provider-facing polish
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: add VOICE-044 after VOICE-043 to polish the accepted baseline shaped runtime directly, without promoting VOICE-041 private-pattern settings
+- Why:
+  - Tarik preferred baseline shaped runtime over the private-pattern profile
+  - later listening feedback pointed to specific baseline artifacts, not a need to copy private speech patterns
+  - the safest improvement is narrow cleanup of brittle filler/connector cases while preserving provider settings and protected text
+- Alternatives considered:
+  - promote VOICE-041 despite the baseline winning the A/B
+  - keep baseline unchanged and only collect more audio
+  - change guarded `final_response` text instead of provider-facing TTS input
+- Consequences:
+  - VOICE-044 removes narrow fast filler/connector artifacts in eligible English/German freeform provider text
+  - provider voice identity, style, and speed settings remain unchanged
+  - protected campaign, compliance, handoff, hangup, and do-not-call text stays exact
+  - future private-pattern variants still must beat the VOICE-043/VOICE-044 baseline before promotion
+
+### DEC-040 - Lock baseline shaped runtime as the current preferred voice path
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: add VOICE-043 to lock RESP-002 baseline shaped runtime as the preferred voice path and prevent VOICE-041 private-pattern settings from being treated as promoted runtime behavior
+- Why:
+  - Tarik preferred baseline shaped runtime over the softened private-pattern profile in VOICE-042 listening
+  - the project needs a checkpoint that turns that listening result into a runtime guard
+  - future personalization experiments should compare against baseline instead of replacing it by assumption
+- Alternatives considered:
+  - leave the decision only in the listening note
+  - remove VOICE-041 entirely
+  - keep testing private-pattern settings without a baseline acceptance marker
+- Consequences:
+  - VOICE-043 verifies English, German, and protected do-not-call baseline behavior
+  - default runtime keeps `voice_private_pattern_profile.enabled` and `applied` false
+  - private-pattern work must remain experimental unless a later A/B beats baseline
+
+### DEC-039 - Do not promote the private-pattern voice profile after baseline wins A/B
+
+- Date: 2026-05-08
+- Status: changed
+- Decision: do not promote VOICE-041 as a runtime voice improvement after Tarik preferred baseline shaped runtime in VOICE-042 listening; keep the softened profile only as an experimental A/B harness
+- Why:
+  - Tarik's first VOICE-042 listening review found the private-pattern direction useful
+  - the stronger profile sounded too loud and made roboticness more obvious
+  - after softening the profile, baseline shaped runtime still sounded better
+  - private-pattern personalization should not be promoted unless it beats the current shaped runtime in listening review
+- Alternatives considered:
+  - keep the stronger `0.12` profile
+  - promote the softer `0.06` profile because it was less aggressive
+  - disable VOICE-041 entirely
+  - alter text, pacing, or filler placement in the same A/B checkpoint
+- Consequences:
+  - default runtime remains baseline shaped RESP-002 delivery
+  - VOICE-041 remains opt-in and experimental only
+  - no private-pattern quality improvement claim is allowed from this checkpoint
+  - future private-pattern work must test against baseline and win before promotion
+
+### DEC-038 - Isolate VOICE-041 listening tests by keeping A/B text identical
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: use VOICE-042 as a live-capable A/B listening harness that compares baseline shaped runtime against VOICE-041 profile-enabled runtime while keeping provider-facing TTS text identical
+- Why:
+  - Tarik needs to know whether the private speech-pattern profile improves the voice
+  - if the text, pause tags, or pacing seed changes between variants, listening cannot isolate the profile effect
+  - VOICE-041 should first prove value through bounded provider settings before changing rhythm or wording
+  - live TTS calls must remain explicit, bounded, and review-gated
+- Alternatives considered:
+  - compare the full VOICE-041 pipeline with a different seed
+  - immediately apply rhythm-density changes to pacing
+  - run live audio without a dry-run validator
+- Consequences:
+  - VOICE-042 uses one shared seed for both variants
+  - `baseline_shaped_runtime` and `private_pattern_profile` send the same text to TTS
+  - the profile variant changes only provider settings such as ElevenLabs `style` and `stability`
+  - audio quality claims remain blocked until Tarik records a listening review
+
+### DEC-037 - Apply private speech patterns only as accepted abstract provider-setting hints
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: add VOICE-041 as an opt-in RESP-002 layer that applies only human-accepted abstract private speech-pattern hints to eligible freeform provider delivery settings
+- Why:
+  - Tarik wants recurring speech patterns to improve the agent, but not through raw audio upload or voice cloning
+  - VOICE-030D/VOICE-031 now identify useful abstract hints: higher rhythm density, higher expressiveness variation, and lower vocal presence that should not be copied
+  - provider setting changes can influence protected text, so protected or ineligible segments must block the profile completely
+  - accepted pacing from recent listening checks should not be changed silently
+- Alternatives considered:
+  - read the private VOICE-030D/VOICE-031 files directly during every runtime turn
+  - clone or train on Tarik's voice samples
+  - hard-code private speech findings globally into the reusable sales core
+  - use rhythm density to alter speed immediately
+- Consequences:
+  - VOICE-041 is disabled by default
+  - accepted abstract profiles can raise bounded ElevenLabs expressiveness settings for eligible freeform segments
+  - rhythm density is metadata-only until a listening checkpoint proves it should change phrasing or pacing
+  - low presence is explicitly blocked from direct copying
+  - no raw private audio, transcription, provider upload, voice cloning, or `final_response` rewrite occurs
+
+### DEC-036 - Extract recurring private speech patterns from usable feature files, not pre-wrapped candidates only
+
+- Date: 2026-05-08
+- Status: accepted
+- Decision: VOICE-030D must read all available private VOICE-030C feature files, count them for coverage, exclude only feature files with no measurable speech from recurring-pattern summaries, and derive candidate values from `features` when `runtime_learning_candidates` is absent
+- Why:
+  - the first VOICE-030D private review summarized only 8 runtime-candidate-wrapped files even though 121 feature files existed
+  - Tarik wants recurring speaking patterns across the sample set, not isolated single-sample candidates
+  - feature-only files contain the same acoustic measurements needed for aggregate rhythm, expressiveness, and presence review
+  - no-measurable-speech files should not teach the agent silence or flatness
+- Alternatives considered:
+  - keep using only explicitly wrapped runtime candidates
+  - include silent/no-measurable-speech files in the pattern averages
+  - apply private speech patterns directly to runtime voice settings
+- Consequences:
+  - VOICE-030D now reports feature files read, usable recurring-pattern files, and exclusions
+  - recurring pattern summaries include normalized speech-burst rhythm and plain-language interpretation
+  - pause duration and silence metrics remain diagnostic-only
+  - runtime voice behavior still requires human review and a later mapping/application gate
+
 ### DEC-035 - Keep voice-listening fixes narrow and case-protected
 
 - Date: 2026-05-08
@@ -55,7 +717,7 @@ Record important thesis and implementation decisions here with enough context to
   - reorganize only new artifacts while leaving older artifacts flat
 - Consequences:
   - existing generated reports/results are preserved under checkpoint folders where practical
-  - `research/experiments/generated/README.md` records the convention
+  - `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/README.md` records the convention
   - `check_project_drift.py` now fails on unexpected flat generated-root files
   - generated `.wav` and `.mp3` files under nested output folders remain ignored by default
   - thesis and product claims should cite the checkpoint folder, not an unstable flat filename

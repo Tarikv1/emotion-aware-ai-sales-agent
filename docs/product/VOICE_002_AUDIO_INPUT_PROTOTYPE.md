@@ -46,11 +46,11 @@ Example:
 python scripts\run_voice_input_turn.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage relevance-check `
-  --audio research\experiments\generated\VOICE-002-customer-placeholder.wav `
+  --audio research/experiments/generated/VOICE-002/VOICE-002-customer-placeholder.wav `
   --transcript "Nur wenn Sie garantieren koennen, dass es stabil ist." `
   --consent-confirmed `
-  --out-json research\experiments\generated\VOICE-002-audio-input-packet.json `
-  --listener-out research\experiments\generated\VOICE-002-listen.html
+  --out-json research/experiments/generated/VOICE-002/VOICE-002-audio-input-packet.json `
+  --listener-out research/experiments/generated/VOICE-002/VOICE-002-listen.html
 ```
 
 ## Consent Gate
@@ -83,9 +83,9 @@ VOICE-002 now preserves campaign language through the recorded-audio path:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-002-customer-placeholder.wav
-research/experiments/generated/VOICE-002-audio-input-packet.json
-research/experiments/generated/VOICE-002-listen.html
+research/experiments/generated/VOICE-002/VOICE-002-customer-placeholder.wav
+research/experiments/generated/VOICE-002/VOICE-002-audio-input-packet.json
+research/experiments/generated/VOICE-002/VOICE-002-listen.html
 ```
 
 The listener page uses browser speech synthesis to play the selected agent response.

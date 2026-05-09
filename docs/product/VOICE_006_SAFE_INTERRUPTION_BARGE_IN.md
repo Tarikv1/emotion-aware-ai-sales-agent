@@ -155,10 +155,10 @@ The validator checks:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-006-interruption-results.json
-research/experiments/generated/VOICE-006-interruption-report.md
-research/experiments/generated/VOICE-006-browser-speech-demo.html
-research/experiments/generated/VOICE-006-browser-speech-demo-metadata.json
+research/experiments/generated/VOICE-006/VOICE-006-interruption-results.json
+research/experiments/generated/VOICE-006/VOICE-006-interruption-report.md
+research/experiments/generated/VOICE-006/VOICE-006-browser-speech-demo.html
+research/experiments/generated/VOICE-006/VOICE-006-browser-speech-demo-metadata.json
 ```
 
 ## Next Work

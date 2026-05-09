@@ -5,8 +5,8 @@ This comparison uses the same sales difficulty gauntlet cases and campaign profi
 ## Runs Compared
 
 - Initial rule baseline: first `PROD-004` rule run before LLM-informed fixes
-- Improved rule baseline: `research/experiments/generated/PROD-004-rule-baseline-report.md`
-- Original LLM agent: `research/experiments/generated/PROD-004-llm-agent-report.md`
+- Improved rule baseline: `research/experiments/generated/PROD-004/PROD-004-rule-baseline-report.md`
+- Original LLM agent: `research/experiments/generated/PROD-004/PROD-004-llm-agent-report.md`
 - LLM model: `gpt-4o-mini`
 
 ## Aggregate Results

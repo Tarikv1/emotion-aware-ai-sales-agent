@@ -74,8 +74,8 @@ Generate:
 ```powershell
 python scripts\evaluate_voice_009_tts_provider_research.py `
   --candidates research\experiments\cases\voice-009-tts-provider-research.json `
-  --out research\experiments\generated\VOICE-009-tts-provider-research.json `
-  --report-out research\experiments\generated\VOICE-009-tts-provider-research-report.md
+  --out research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research.json `
+  --report-out research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research-report.md
 ```
 
 Validate:
@@ -87,8 +87,8 @@ python scripts\validate_voice_009_tts_provider_research.py
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-009-tts-provider-research.json
-research/experiments/generated/VOICE-009-tts-provider-research-report.md
+research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research.json
+research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research-report.md
 ```
 
 ## Product Meaning

@@ -94,6 +94,6 @@ python scripts\validate_voice_009_tts_provider_research.py
 ## Generated Evidence
 
 ```text
-research/experiments/generated/VOICE-009-tts-provider-research.json
-research/experiments/generated/VOICE-009-tts-provider-research-report.md
+research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research.json
+research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research-report.md
 ```

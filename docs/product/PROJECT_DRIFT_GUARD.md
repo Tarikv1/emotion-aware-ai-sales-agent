@@ -12,6 +12,7 @@ It is a detection layer, not an auto-editor. The guard reports issues and exits 
 - Git conflict markers are not left in text files
 - secret-like values are not committed into project files
 - generated voice/audio artifacts are ignored unless explicitly curated
+- docs do not reference old moved brain docs or old flat generated artifact paths when a milestone-folder artifact exists
 - product files do not silently depend on another local workspace project
 - `data/private/` exists for raw private call-center audio and is ignored/skipped so private files are not scanned or surfaced in reports
 
@@ -51,7 +52,7 @@ python scripts\check_project_drift.py --json
 Write a Markdown report:
 
 ```powershell
-python scripts\check_project_drift.py --report-out research\experiments\generated\GUARD-001-project-drift-report.md
+python scripts\check_project_drift.py --report-out research/experiments/generated/GUARD-001/GUARD-001-project-drift-report.md
 ```
 
 Validate the guard behavior:

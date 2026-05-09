@@ -22,9 +22,9 @@
   - Documents the product decision and adapter boundary.
 - Create: `research/experiments/VOICE-003-asr-provider-comparison.md`
   - Records the experiment result and interpretation.
-- Generate: `research/experiments/generated/VOICE-003-asr-provider-comparison.json`
+- Generate: `research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison.json`
   - Stores comparison results.
-- Generate: `research/experiments/generated/VOICE-003-asr-provider-comparison-report.md`
+- Generate: `research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison-report.md`
   - Stores the generated report.
 
 ## Task 1: Add Failing Validator

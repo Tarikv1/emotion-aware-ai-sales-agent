@@ -62,8 +62,8 @@ Voice cloning remains explicitly blocked because it needs voice consent, legal r
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-007-provider-readiness.json
-research/experiments/generated/VOICE-007-provider-readiness-report.md
+research/experiments/generated/VOICE-007/VOICE-007-provider-readiness.json
+research/experiments/generated/VOICE-007/VOICE-007-provider-readiness-report.md
 ```
 
 ## Interpretation

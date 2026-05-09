@@ -46,5 +46,5 @@ This checkpoint proves the architecture where the deterministic realtime core ow
 - `scripts/validate_resp_001_guarded_response_generation.py`
 - `docs/product/RESP_001_GUARDED_RESPONSE_GENERATION.md`
 - `research/experiments/RESP-001-guarded-response-generation.md`
-- `research/experiments/generated/RESP-001-guarded-response-result.json`
-- `research/experiments/generated/RESP-001-guarded-response-report.md`
+- `research/experiments/generated/RESP-001/RESP-001-guarded-response-result.json`
+- `research/experiments/generated/RESP-001/RESP-001-guarded-response-report.md`

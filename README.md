@@ -24,6 +24,7 @@ emotion-aware-ai-sales-agent/
     notes/
     experiments/
   docs/
+    brain/
     thesis/
     product/
     data/
@@ -42,6 +43,7 @@ emotion-aware-ai-sales-agent/
 - `data/processed/`: cleaned, derived, or intermediate data safe to keep under project rules.
 - `research/notes/`: evolving thinking, open questions, and working notes.
 - `research/experiments/`: experiment logs and exploratory work.
+- `docs/brain/`: sales-agent brain architecture, runtime state schema, and dialogue-policy evidence.
 - `docs/thesis/`: thesis framing, scope, and planning documents.
 - `docs/product/`: product positioning, MVP scope, client-facing assumptions, and launch considerations.
 - `docs/data/`: data policy, data readiness, and source documentation.
@@ -63,6 +65,9 @@ The project keeps reusable thesis-writing material under `docs/thesis/`.
 Use that folder to record decisions, methodology changes, and experiment rationale while building, so the final thesis can be drafted from project evidence instead of memory.
 
 The main steering document is `docs/thesis/ROADMAP.md`.
+The main navigation map is `docs/PROJECT_NAVIGATION.md`.
+The brain folder starts at `docs/brain/README.md`.
+Checkpoint docs are grouped in `docs/product/CHECKPOINT_INDEX.md`.
 The product-facing brief is `docs/product/PRODUCT_BRIEF.md`.
 Use `docs/product-review-gates.md` before larger product/runtime changes, provider work, or customer setup changes.
 Use `docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md` before any future private call-center pattern mining, RAG export, or fine-tuning work.

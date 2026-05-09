@@ -447,8 +447,8 @@ The simulation runner can export database-shaped synthetic records:
 ```text
 python scripts/run_product_simulation.py \
   --cases research/experiments/cases/prod-001-qualification-simulation.json \
-  --out research/experiments/generated/PROD-001-evaluation-packet.md \
-  --export-records research/experiments/generated/PROD-001-db-records.json
+  --out research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md \
+  --export-records research/experiments/generated/PROD-001/PROD-001-db-records.json
 ```
 
 The export contains:

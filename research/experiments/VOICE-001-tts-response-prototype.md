@@ -36,7 +36,7 @@ The packet records `campaign.language`, `decision.campaign_language`, and `decis
 ## Generated Artifact
 
 ```text
-research/experiments/generated/VOICE-001-tts-packet.json
+research/experiments/generated/VOICE-001/VOICE-001-tts-packet.json
 ```
 
 The artifact stores the full realtime decision and the TTS packet metadata. The `tts_text` field matches `decision.agent_response`.

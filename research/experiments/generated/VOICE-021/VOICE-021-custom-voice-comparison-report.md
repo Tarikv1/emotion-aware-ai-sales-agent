@@ -40,7 +40,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `English opening plus objection handling`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-en-english_v1-en-opening-objection.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-en-english_v1-en-opening-objection.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `251.186`
@@ -54,7 +54,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `English opening plus objection handling`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-en-english_v2_improved-en-opening-objection.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-en-english_v2_improved-en-opening-objection.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `216.408`
@@ -68,7 +68,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `English empathy plus bridge response`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-en-english_v1-en-empathy-bridge.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-en-english_v1-en-empathy-bridge.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `234.805`
@@ -82,7 +82,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `English empathy plus bridge response`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-en-english_v2_improved-en-empathy-bridge.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-en-english_v2_improved-en-empathy-bridge.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `232.458`
@@ -96,7 +96,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `German opening plus objection handling`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-de-german_v1-de-opening-objection.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-de-german_v1-de-opening-objection.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `241.27`
@@ -110,7 +110,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `German opening plus objection handling`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-de-german_v2_improved-de-opening-objection.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-de-german_v2_improved-de-opening-objection.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `245.255`
@@ -124,7 +124,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `German empathy plus bridge response`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-de-german_v1-de-empathy-bridge.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-de-german_v1-de-empathy-bridge.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `220.56`
@@ -138,7 +138,7 @@ Raw voice IDs and API keys are not written to this report.
 - Voice ID present: `True`
 - Script: `German empathy plus bridge response`
 - Audio created: `True`
-- Audio path: `research\experiments\generated\VOICE-021-de-german_v2_improved-de-empathy-bridge.mp3`
+- Audio path: `research/experiments/generated/VOICE-021/VOICE-021-de-german_v2_improved-de-empathy-bridge.mp3`
 - API call made: `True`
 - Fallback reason: `not needed`
 - Time to first audio: `225.391`

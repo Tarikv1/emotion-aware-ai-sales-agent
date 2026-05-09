@@ -11,7 +11,7 @@ The goal is to inspect exactly what would be sent to each TTS provider before ru
 ## Source Artifact
 
 ```text
-research/experiments/generated/VOICE-015-prosody-naturalness.json
+research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json
 ```
 
 ## Providers
@@ -130,8 +130,8 @@ The validator checks:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-016-provider-prosody-rendering.json
-research/experiments/generated/VOICE-016-provider-prosody-rendering-report.md
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering-report.md
 ```
 
 ## Product Meaning

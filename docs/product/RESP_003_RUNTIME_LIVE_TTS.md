@@ -52,7 +52,7 @@ Live provider calls require:
 RESP-003 receives a RESP-002 packet and selects TTS input safely:
 
 - freeform prosody-eligible text can use `voice_delivery.provider_rendering.rendered_text`
-- provider-rendered text may include VOICE-022 spoken normalization, VOICE-034 pacing calibration, VOICE-035 connected speech, VOICE-036 listening calibration, VOICE-037 emotion-transition smoothing, VOICE-039 semantic-emphasis wording candidates, and VOICE-040 low-pressure focus corrections
+- provider-rendered text may include VOICE-022 spoken normalization, VOICE-034 pacing calibration, VOICE-035 connected speech, VOICE-036 listening calibration, VOICE-037 emotion-transition smoothing, VOICE-039 semantic-emphasis wording candidates, VOICE-040 low-pressure focus corrections, and VOICE-044 baseline delivery polish
 - protected text uses `final_response`
 - do-not-call, human handoff, claim-boundary, hang-up, appointment confirmation, campaign questions, and compliance statements do not get provider prosody tags
 
@@ -93,8 +93,8 @@ python scripts\generate_runtime_tts_delivery.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage relevance-check `
   --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
-  --out research\experiments\generated\RESP-003-runtime-live-tts-result.json `
-  --report-out research\experiments\generated\RESP-003-runtime-live-tts-report.md
+  --out research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-result.json `
+  --report-out research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-report.md
 ```
 
 Validate:
@@ -118,6 +118,53 @@ The harness compares:
 - `shaped_runtime`: the RESP-002 provider-rendered TTS input selected by RESP-003
 
 It uses the same German/English matched objection, trust-repair, and next-step scenarios as the RESP-002 parity suite. Default mode is dry-run. Live provider calls still require `--live`, environment-only provider keys and voice IDs, no customer audio upload, no voice cloning, and human listening review before any quality claim.
+
+## Private Pattern A/B
+
+VOICE-042 uses RESP-003 provider handling to compare:
+
+- `baseline_shaped_runtime`: normal RESP-002 shaped runtime
+- `private_pattern_profile`: the same TTS text with accepted VOICE-041 provider settings
+
+The harness keeps provider-facing text the same across both variants so listening isolates the effect of the private-pattern provider settings.
+
+Tarik's VOICE-042 listening review preferred `baseline_shaped_runtime`. VOICE-043 locks that as the current path, so VOICE-041 is not promoted to live runtime.
+
+VOICE-044 then improves that accepted baseline path directly by removing narrow fast filler/connector artifacts in provider-facing text while keeping VOICE-041 disabled by default.
+
+```powershell
+python scripts\run_voice_042_private_pattern_live_ab.py
+python scripts\validate_voice_042_private_pattern_live_ab.py
+```
+
+Baseline acceptance checkpoint:
+
+```powershell
+python scripts\run_voice_043_baseline_shaped_runtime_acceptance.py
+python scripts\validate_voice_043_baseline_shaped_runtime_acceptance.py
+```
+
+Baseline polish checkpoint:
+
+```powershell
+python scripts\run_voice_044_baseline_delivery_polish.py
+python scripts\validate_voice_044_baseline_delivery_polish.py
+```
+
+The follow-up VOICE-044 listening check is intentionally separate:
+
+```powershell
+python scripts\run_resp_004_voice_044_listening_check.py
+python scripts\validate_resp_004_voice_044_listening_check.py
+```
+
+RESP-003 remains the TTS bridge. RESP-004 owns that new test's scope, evidence folder, and listening-review gate.
+
+Live mode remains explicit and bounded:
+
+```powershell
+python scripts\run_voice_042_private_pattern_live_ab.py --provider elevenlabs --live --limit-cases 1 --timeout-seconds 8
+```
 
 ## Live Command Shape
 
@@ -241,7 +288,7 @@ Naturalness, pitch, and emotion need improvement.
 Use with real leads right now: no.
 ```
 
-Detailed review: `research/experiments/generated/RESP-003-bilingual-human-listening-review.md`
+Detailed review: `research/experiments/generated/RESP-003/RESP-003-bilingual-human-listening-review.md`
 
 ## Product Meaning
 

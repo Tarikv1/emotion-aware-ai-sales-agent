@@ -34,9 +34,9 @@ The default VOICE-004 campaign is German, so the response packet records `campai
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-004-browser-speech-demo.html
-research/experiments/generated/VOICE-004-browser-speech-demo-metadata.json
-research/experiments/generated/VOICE-004-browser-speech-demo-decision.json
+research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo.html
+research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-metadata.json
+research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-decision.json
 ```
 
 ## Safety Result

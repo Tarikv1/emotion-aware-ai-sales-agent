@@ -58,8 +58,8 @@ python scripts\run_voice_021_custom_voice_comparison.py
 This writes:
 
 ```text
-research/experiments/generated/VOICE-021-custom-voice-comparison.json
-research/experiments/generated/VOICE-021-custom-voice-comparison-report.md
+research/experiments/generated/VOICE-021/VOICE-021-custom-voice-comparison.json
+research/experiments/generated/VOICE-021/VOICE-021-custom-voice-comparison-report.md
 ```
 
 Dry run makes no provider calls and creates no audio.

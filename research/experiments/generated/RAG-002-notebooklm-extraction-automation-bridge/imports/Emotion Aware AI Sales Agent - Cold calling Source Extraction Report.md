@@ -1,4 +1,4 @@
-﻿### Emotion Aware AI Sales Agent \- Cold calling Source Extraction Report
+### Emotion Aware AI Sales Agent \- Cold calling Source Extraction Report
 
 ##### 1\. Source Coverage Table
 

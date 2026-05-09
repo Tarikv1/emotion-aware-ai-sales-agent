@@ -29,33 +29,71 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: source-tracked RAG foundation, voice/runtime quality, and thesis evidence preservation.
+Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped dialogue-policy validation, baseline voice/runtime quality, and thesis evidence preservation.
 
 Current checkpoint:
 
-- [ ] Current: choose the first reviewed campaign/test set that may explicitly opt in to RAG-018 guarded local retrieval, then compare response quality and safety against retrieval-disabled RESP-001 output.
+- [ ] Current: add `PROD-021` live-shaped dialogue-policy simulation for the `PROD-020` opt-in runtime composer hooks. Test multi-turn transcript-shaped behavior against the PROD-011 hardened dialogue policy before any runtime promotion. Preserve call state, call-control decisions, protected contexts, support/non-sale boundaries, no-provider defaults, no-private-data defaults, and retrieval/composer-hook default-off behavior.
 
 Next checkpoints:
 
-- [ ] Next: record Tarik's VOICE-040 longer-script listening review and decide whether the low-pressure focus correction stays active, needs another wording pass, or should be campaign-configurable.
-- [ ] Next: test one or two additional English voice candidates only if `VOICE-038` shows the emphasis problem is mostly voice-specific rather than text/prosody-specific.
+- [ ] Next: after `PROD-021`, decide whether the `PROD-020` opt-in hooks should be kept, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
+- [ ] Next: if `PROD-021` passes, create a compact product-review packet showing exact customer turns, exact agent answers, hook decisions, retrieval status, and policy/call-control traces before any runtime-promotion discussion.
+- [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
+- [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
+- [ ] Next: treat remaining RAG source-mapping cleanup as thesis/source-registry hygiene, not a blocker for `PROD-021` or runtime-hook evaluation. Resume it only when the work target is RAG registry cleanup or thesis citation hygiene.
+- [ ] Next: only revisit `VOICE-041` private-pattern provider settings through a new A/B variant that beats `VOICE-043` baseline shaped runtime before any runtime promotion.
+- [ ] Next: test one or two additional English voice candidates only if the current baseline voice starts showing voice-ID-specific artifacts again rather than text/prosody-specific issues.
 - [ ] Next: keep collecting local Tarik speech samples and use `VOICE-033` to decide when the private sample set is ready for `VOICE-030D`.
 - [ ] Next: use `VOICE-032` when Tarik exports WhatsApp `.ogg` voice notes into `data/private/tarik-speech-samples/whatsapp-voice-notes/`, converting them locally to WAV before VOICE-030C/VOICE-030D review once ffmpeg is available.
-- [ ] Next: run `VOICE-030D` on Tarik's real private English WAV feature set and review whether any non-pause acoustic candidates are useful.
-- [ ] Next: use `VOICE-031` on the reviewed private `VOICE-030D` summary to prepare campaign-level voice-setting proposals, still without automatic runtime application.
+- [ ] Next: use `VOICE-031` only for reviewed future private-pattern proposals, still without automatic runtime application and only after a new A/B design is defined.
 - [ ] Next: add local transcription support for Tarik speech samples only after a local ASR option is selected and the no-provider/no-upload boundary is validated.
 - [ ] Next: add local audio conversion/decoder support for manually imported MP3, M4A, AAC, OGG, FLAC, or WebM files.
 - [ ] Next: map reviewed `VOICE-029` aggregate profile outputs into campaign-level voice settings only after human review confirms they improve naturalness without reducing professionalism.
-- [ ] Next: implement provider pacing tuning using VOICE-027/VOICE-028 feedback as the baseline and changing pacing only before touching markers, emotion, or voice identity again.
+- [ ] Next: implement any provider pacing tuning from the RESP-007 listening decision, not from older VOICE-027/VOICE-028 assumptions. Change pacing before touching markers, emotion, or voice identity again.
 - [ ] Next: connect `RESP-003` audio output to the local demo/playback flow after dry-run, missing-key, timeout, and asset-log gates remain stable.
 - [ ] Next: expand `RESP-002` from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn.
-- [ ] Next: resume source-mapping cleanup only after the first RAG-018 opt-in retrieval test confirms that blocked contexts, protected text, and advisory-only voice/prosody behavior remain stable.
-- [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections before broad industry expansion.
-- [ ] Next: continue dataset-grounded thesis expansion once the current voice/runtime checkpoint is stable.
+- [ ] Next: resume the product-learning track by strengthening the reusable sales core against universal objections after `PROD-021` identifies which multi-turn gaps remain, not by broad industry expansion first.
+- [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
 
-- [x] Generated artifact folderization and drift-guard tightening, which moved old flat generated evidence into checkpoint folders, added `research/experiments/generated/README.md`, expanded nested generated-audio ignore rules, and made `check_project_drift.py` fail on unexpected flat generated-root files. This keeps public-safe generated reports/results auditable while live provider audio remains ignored unless deliberately curated.
+- [x] `PROD-020` naturalized customer-turn evaluation, which reruns the PROD-019 opt-in runtime composer hooks after rewriting rubric-like customer prompts into natural customer wording while preserving expected outcomes and source-pattern refs as metadata only. Across `180` fixed turns, `120` source turns were rubric-like, `123` questions were changed, naturalized runtime prompts had `0` rubric-token findings, source-pattern refs were preserved for `180/180` rows, and expected outcomes were preserved for `180/180` rows. Hooked total score was `1065` versus baseline score `734`; hooked answers won `107` turns, baseline won `0`, and `73` tied. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, expected outcome correctness `180/180`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`. The decision is `keep_naturalized_runtime_hooks_as_opt_in_candidate_not_default`; retrieval and composer hooks remain disabled by default, and the next step is live-shaped multi-turn dialogue-policy simulation before broader runtime claims.
+- [x] `PROD-019` guarded runtime composer hooks, which moves the PROD-018 composer-hook idea into the actual `generate_guarded_response.py` path behind explicit `--composer-hooks-enabled` opt-in. Across the unchanged `180` fixed PROD-015 turns, default-off answer drift was `0`, proving the existing guarded response path stayed unchanged. With retrieval and composer hooks explicitly enabled, `98` answers received hooks without passing evaluation labels into the composer. Hooked total score was `916` versus current retrieval score `663`; hooked answers won `92` turns, current retrieval won `0`, and `88` tied. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`. The decision is `keep_runtime_composer_hooks_opt_in_candidate_not_default`; retrieval and composer hooks remain disabled by default, and the next step is naturalized customer-turn evaluation before broader runtime claims.
+- [x] `PROD-018` CallCenterEN composer-hook test, which applies a narrow offline hook layer to the unchanged `PROD-015` rows and scores old/current/hooked answers with the `PROD-017` specificity scorer. Across `180` fixed turns, `174` retrieved-not-used answers received hooks and the `3` existing influenced answers were preserved. Hooked total score was `1421` versus current retrieval score `663` and old runtime score `652`; hooked answers won `174` turns versus current retrieval and `177` turns versus old runtime, with old runtime winning `0`. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`. The decision is `keep_composer_hooks_for_runtime_candidate_not_default`; retrieval remains disabled by default, and the next step is a red-first guarded runtime-composer candidate test.
+- [x] `PROD-017` CallCenterEN specificity scoring, which re-scores the unchanged `PROD-015` rows with an evaluation-only scorer for safety gate, question relevance, customer specificity, requirement fit, objection fit, and generic-answer penalty. PROD-015 reported `180` ties; PROD-017 reports retrieval `3` wins, old runtime `0` wins, and `177` ties, with old score `652`, retrieval score `663`, and score delta `11`. This confirms the specificity scoring blind spot because all `3` changed retrieval answers now win, but it is not broad retrieval evidence because only `3/180` answers changed, absolute quality gap count is `177`, generic old-answer rate is `1.0`, and generic retrieval-answer rate is `0.9833`. The decision is `use_specificity_scoring_before_composer_hook_test`; retrieval remains disabled by default.
+- [x] `PROD-016` CallCenterEN retrieval no-gain diagnosis, which explains the `PROD-015` tie without changing runtime behavior. Across `180` analyzed turns, retrieval matching was not the main bottleneck: matching success was `1.0`, no-match rate was `0.0`, and retrieval stayed safe. The high-severity blockers were composer influence gap (`174` retrieved-not-used turns, `177` unchanged answers) and scoring blind spot (`3` influenced answers still tied). Medium-severity blockers were runtime classifier mismatch (`180/180` unknown-runtime-signal turns, `120` rubric-like customer prompts) and campaign domain mismatch (`8` scenario domains through `campaign-prod-005-b2b-software`). The decision is `diagnose_before_retrieval_runtime_promotion`; retrieval remains disabled by default, and the next work is evaluation-only specificity and objection-fit scoring before composer changes or full-bank reruns.
+- [x] `PROD-015` CallCenterEN runtime comparison, which compares the old retrieval-disabled runtime and the opt-in retrieval-enabled runtime on a default stratified `60`-scenario / `180`-turn slice from the `PROD-014` scenario bank. Both runtimes scored `810`; retrieval won `0` turns, old runtime won `0` turns, and `180` turns tied. Retrieval influenced `3` responses, was blocked `3` times, and was retrieved-but-not-used `174` times, with max retrieval latency `5 ms` and average retrieval latency `2.11 ms`. Safety stayed clean: hard failures `0`, leakage findings `0`, non-sale correctness `120/120`, safe-close correctness `60/60`, discovery-before-close `180/180`, and emotional handling `180/180`. The decision is `ready_for_review_no_retrieval_gain_on_slice`, so retrieval remains disabled by default and this is no-gain evidence, not promotion evidence.
+- [x] `PROD-014` CallCenterEN scenario bank, which consumes the `PROD-013` abstract pattern bank and generates `240` project-owned scenarios with `720` customer turns, `240` unique scenario recipes, `2,502` abstract source-pattern references, and `10` source-pattern categories. It expands `7` scenario templates, `8` domains, `5,000` objection patterns, `5,000` emotion-transition patterns, `5,000` persuasion-strategy patterns, `9` discovery-question patterns, and `5,000` close-attempt patterns into a configurable evaluation bank, not one scenario per source call. It covers `sale_eligible`, `price_objection`, `callback_request`, `cancellation_boundary`, `support_handoff`, and `trust_repair`, with scenario quality score `1.0`, leakage failure rate `0.0`, safe-close coverage `0.3375`, non-sale boundary coverage `0.6625`, emotion-label coverage `1.0`, and `0` leakage findings after a transient scan of `5,000` local source sentences. It stores no exact transcript text, no raw call summaries, no names, no company-specific wording, no transcript-derived runtime prompt material, and makes no provider calls, LLM calls, embedding calls, vector writes, private data reads, commercial training use, runtime behavior changes, or retrieval promotion.
+- [x] `PROD-013` CallCenterEN abstract pattern extraction, which turns approved local CallCenterEN ZIP/JSON/JSONL files into an abstract pattern bank for opening styles, customer intents, objection types, emotion/tone transitions, persuasion tactics, discovery questions, turn stages, close attempts, safety/compliance boundaries, timing and speech-naturalness signals, domain-specific patterns, customer personas, scenario templates, and agent mistake labels. After explicit approval, the full local bounded extraction scanned `95,946` source JSON payloads, parsed `95,934` conversations, produced `4,313,595` pseudo-turns, and produced `0` leakage findings. It stores no exact scripts, full call wording, company-specific wording, PII placeholders as features, agent names, customer names, long call summaries, commercial runtime prompt text, or commercial model training material. Provider calls, private data reads, customer audio reads, vector database writes, embedding provider calls, and LLM calls remain disabled. The next dataset-grounded step is to let a later scenario-generation checkpoint consume the extracted abstract bank while treating speaker roles from unlabeled word-level files as role-signal inference rather than diarization ground truth.
+- [x] `PROD-012` CallCenterEN scenario evaluation, which turns the AIxBlock / CallCenterEN real-world call-center scripts source into a pattern-grounded local evaluation lane without copying transcript text or using it as commercial runtime prompt/training material. It uses `6` project-owned synthetic scenarios, `12` turns, and `9` source-pattern IDs, runs old core retrieval-disabled behavior against opt-in RAG-018 retrieval, and reports hard failure rate `0.0`, non-sale correctness `1.0`, leakage failure rate `0.0`, scenario quality score `1.0`, sales/emotional handling score `1.0`, retrieval score `14` versus old core score `5`, retrieval wins `5`, old core wins `0`, and protected turns preserved `5/5`. This keeps provider calls, private data reads, dataset downloads, raw transcript body storage, vector databases, embedding providers, LLM rerankers, commercial model training, commercial runtime prompt contamination, live runtime changes, and default retrieval disabled.
+- [x] `PROD-011` dialogue-policy hardening, which derives one compact policy action per PROD-010 long-call turn across `7` calls and `49` turns. It preserves PROD-010 source packet references, turn position, and objection stacks while reporting hard failure rate `0.0`, safe close rate `1.0`, non-sale correctness `1.0`, policy action correctness `1.0`, blocked action avoidance `1.0`, objection stack preservation `1.0`, state reference completeness `1.0`, call-control correctness `1.0`, max latency `16 ms`, and decision `keep_dialogue_policy_hardening_for_runtime_design_not_runtime_promotion`. This keeps provider calls, private data reads, dataset downloads, payment handling, checkout handling, commercial runtime prompt contamination, live runtime changes, and default retrieval disabled.
+- [x] `PROD-010` long-call universal objections, which expands the generated BRAIN-002 packet path into `7` longer calls and `49` turns with repeated buyer objections across telecom, B2B software, insurance service, medical equipment, membership service, home service, and retail product scenarios. It carries the call-level objection stack through every generated packet and reports safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, state packet completeness `1.0`, objection boundary correctness `1.0`, long-call state continuity `1.0`, close-attempt quality `0.9214`, call-control correctness `1.0`, max latency `24 ms`, and decision `keep_long_call_objection_packets_for_dialogue_policy_hardening_not_runtime_promotion`. This keeps provider calls, private data reads, dataset downloads, payment handling, checkout handling, commercial runtime prompt contamination, live runtime changes, and default retrieval disabled.
+- [x] `PROD-009` cross-domain generated gauntlet, which expands the generated BRAIN-002 packet path from the SD-card/storage slice into `10` fixed calls and `28` turns across retail product, telecom, B2B software, insurance service, medical equipment, home service, membership service, and automotive service. Each call uses at least three source-pattern IDs, copied transcript text remains blocked, and the generated side reports safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, state packet completeness `1.0`, close-attempt quality `0.915`, call-control correctness `1.0`, max latency `24 ms`, and decision `keep_cross_domain_generated_packets_for_harder_objection_expansion_not_runtime_promotion`. This keeps provider calls, private data reads, dataset downloads, payment handling, checkout handling, commercial runtime prompt contamination, live runtime changes, and default retrieval disabled.
+- [x] `PROD-008` generated full-call packets, which keeps the six PROD-007-style calls and thirteen turns fixed while creating one BRAIN-002 state packet per turn with local runtime-style logic instead of reading fixture-scored packet answers. The generated side reports safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, state packet completeness `1.0`, close-attempt quality `0.92`, call-control correctness `1.0`, max latency `24 ms`, and decision `keep_generated_packets_for_cross_domain_gauntlet_not_runtime_promotion`. This keeps provider calls, private data reads, dataset downloads, payment handling, checkout handling, live runtime changes, and default retrieval disabled.
+- [x] `PROD-007` full-call gauntlet, which compares `old_core_pre_full_sale` against `brain_002_full_sale_candidate` on the same six PROD-006-style SD-card calls and thirteen fixed turns. The fixture-level result keeps provider calls, private data reads, dataset downloads, payment handling, checkout handling, live runtime changes, and default retrieval disabled. The BRAIN-002 candidate reports safe close rate `1.0`, hard failure rate `0.0`, non-sale correctness `1.0`, close-attempt quality `0.92`, call-control correctness `1.0`, max latency `22 ms`, and decision `keep_brain_002_candidate_for_next_gauntlet_expansion_not_runtime_promotion`. This is not production evidence; it unlocks a generated full-call packet test.
+- [x] `BRAIN-002` runtime state schema, which turns the BRAIN-001 architecture into a compact per-turn packet with buyer state, strategy, safety, call control, retrieval status, voice profile, response outcome, and evidence log fields. It adds `close-and-log-sale-ready` as the full-sale call-control value, keeps retrieval disabled by default, keeps RAG-020/RAG-021 advisory-only, treats voice as delivery metadata only, stores no transcript bodies or private audio, makes no provider calls, changes no runtime behavior, and uses synthetic PROD-006-style SD-card examples to make non-sale correctness first-class before the full-call gauntlet.
+- [x] `PROD-006` full-sale MVP scenario grounding, which pivots the product strategy from appointment-setting only toward safe autonomous verbal-commitment closing for eligible calls, starts with an SD-card/storage-accessory consumer campaign, adds hard-failure-rate and non-sale-correctness sub-metrics, registers the CallCenterEN / AIxBlock dataset as pattern-grounding only, blocks copied transcript text and commercial runtime prompt contamination, requires at least three source patterns per generated scenario, makes no dataset download by default, stores no raw transcript text, uses no real customer data, makes no provider calls, and prepares the improved plan for a premortem before broad runtime changes.
+- [x] `RESP-007` German pacing-stability dry-run packet, which keeps the RESP-006 German question and answer content fixed while creating `old_plain_pacing_stabilized` and `new_shaped_pacing_stabilized` variants. The old variant adds an opening rush guard and slight late-drag prevention; the new variant caps the previous shaped-runtime speed and adds later answer spacing. It changes only provider-facing break tags and bounded speed settings, makes no provider call by default, uploads no customer audio, uses no private raw audio, uses no transcription or voice cloning, and keeps the voice-personality selector blocked until human listening review.
+- [x] `BRAIN-001` project brain architecture, which defines the project brain as a small runtime decision architecture rather than a prompt dump: reusable sales-agent core, configurable `SalesCampaign`, short-term call state, conservative buyer-state/emotion estimates, strategy selector, optional guarded retrieval, voice delivery profile, and post-call learning outside the live path. It keeps retrieval disabled by default, leaves RAG-020 and RAG-021 advisory-only until a separate RAG-017/RAG-018 promotion path, blocks raw private audio/transcripts from memory, and keeps the voice-personality selector blocked until the German pacing-stability follow-up.
+- [x] `RAG-021` buyer trust and conversation-repair source expansion, which added `10` public sources and `16` project-owned advisory rules for buyer value mapping, trust repair, autonomy/reactance, cognitive-load reduction, plain-language summaries, conversation repair, emotion-regulation support, consented next-step planning, and AI transparency/human handoff. It stores no source excerpts, copied scripts, private customer data, provider outputs, embeddings, or vector database records, and it is not imported into the RAG-017 runtime registry until a separate rebuild and RAG-018 evaluation.
+- [x] `RAG-020` sales persuasion and emotion-understanding deep dive, which added `12` public sources and `20` project-owned advisory rules for insight-led selling, behavior-change diagnosis, autonomy-supportive persuasion, buyer confidence, BATNA-style comparison, emotion-inference limits, affect-labeling repair, AI risk governance, EU AI Act emotion-recognition review, and FTC synthetic-media deception boundaries. It stores no source excerpts, copied scripts, private customer data, provider outputs, embeddings, or vector database records, and it is not imported into the RAG-017 runtime registry until a separate rebuild and RAG-018 evaluation.
+- [x] `RESP-006` German listening decision, which blocks immediate promotion into the voice-personality selector. Tarik found `old_plain_guarded` starts a bit too fast and then becomes a bit too slow, while `new_shaped_runtime` starts strong but becomes a bit too fast later. The next step is a narrow German pacing-stability follow-up, not a voice-identity change.
+- [x] `RESP-006` German same-question runtime A/B listening packet, which prepares one longer German send-info/trust/boss answer as `old_plain_guarded` and `new_shaped_runtime` variants for the same customer question. The dry-run packet validates German-only same-question coverage, redacted provider previews, no provider call, no customer audio upload, no private raw audio, no transcription, no voice cloning, and no quality claim before human review.
+- [x] `RESP-005` human listening decision, which accepted both same-question runtime variants as useful personality directions instead of selecting one universal winner. `old_plain_guarded` is kept as a natural, real, laid-back salesperson direction. `new_shaped_runtime` is kept as a more serious and lower-energy direction. The next voice/runtime checkpoint is a bounded style/personality selector, not more generic voice polishing.
+- [x] `RESP-005` same-question runtime A/B listening packet, which prepares one longer English send-info/trust/boss answer as `old_plain_guarded` and `new_shaped_runtime` variants for the same customer question. The dry-run packet validates same-question coverage, redacted provider previews, no provider call, no customer audio upload, no private raw audio, no transcription, no voice cloning, and no quality claim before human review. Fresh audio is blocked until an ElevenLabs or Cartesia provider key is available in the shell.
+- [x] `RAG-018` retrieval-vs-core call simulation, which compared the older retrieval-disabled core path against opt-in RAG-018 retrieval across `4` fixed synthetic calls and `12` turns. Retrieval won `4` turns, core won `0`, `8` turns tied, total retrieval score was `12` versus core score `4`, protected turns were preserved `6/6`, max retrieval latency was `3 ms`, and no provider calls, private customer data, vector database, embedding provider, or LLM reranker were used. The decision is to keep retrieval opt-in for validated objection paths and not make retrieval default yet.
+- [x] `RAG-018` authority and trust influence paths, which added red-first scripted-call expectations for `RAG-018-SIM-C04` and `RAG-018-SIM-C05`, then allowed retrieved objection guidance to produce low-pressure boss-summary/one-concern wording and proof-oriented trust wording. The refreshed scripted-call simulation reports `10/10` safe cases, `6` quality-scored cases, `4` retrieval-influenced responses, `4` objection-resolution improvements, `4` next-step quality improvements, `4/4` protected contexts preserved, no remaining scripted quality gaps, max retrieval latency of `3 ms`, no provider calls, no private customer data, no vector database, no embedding provider, and no LLM reranker.
+- [x] `RAG-018` send-me-info influence path, which added a red-first scripted-call expectation for `RAG-018-SIM-C03` and then allowed retrieved send-info/qualification hints to produce a relevant follow-up question before sending information. The refreshed scripted-call simulation reports `10/10` safe cases, `6` quality-scored cases, `2` retrieval-influenced responses, `2` objection-resolution improvements, `2` next-step quality improvements, `4/4` protected contexts preserved, quality gaps only for authority and trust turns, max retrieval latency of `3 ms`, no provider calls, no private customer data, no vector database, no embedding provider, and no LLM reranker.
+- [x] `RAG-018` scripted-call simulation gate, which tested 10 synthetic call turns with scored objection resolution and next-step quality before any default retrieval decision. It reports `10/10` safe cases, `6` quality-scored cases, `1` retrieval-influenced response, `1` objection-resolution improvement, `1` next-step quality improvement, `4/4` protected contexts preserved, quality gaps for send-me-info, authority, and trust turns, max retrieval latency of `12 ms`, no provider calls, no private customer data, no vector database, no embedding provider, and no LLM reranker. The decision was to keep RAG-018 opt-in and not make retrieval default.
+- [x] `RAG-018` opt-in retrieval influence pass, which keeps retrieval disabled by default but allows one validated safe German price-objection path to use retrieved objection-diagnosis/autonomy hints for a clearer clarifying question. The refreshed RESP-001 retrieval A/B run reports `9/9` safe cases, `1` retrieval-influenced response, `7` guardrail-blocked retrieval contexts, `0` no-match cases, max retrieval latency of `3 ms`, no provider calls, no private customer data, no vector database, no embedding provider, and no LLM reranker.
+- [x] `RESP-004` VOICE-044 listening-check harness, which keeps RESP-003 as the existing runtime live-capable TTS bridge and creates a separate dry-run/default, live-opt-in checkpoint for the VOICE-044 polished baseline. It writes separate RESP-004 evidence, focuses on English/German trust-repair artifacts, blocks quality claims until human listening review, validates forced missing-key fallback and secret redaction, and makes no provider calls unless `--live` is explicitly approved.
+- [x] `VOICE-044` baseline delivery polish, which improves the accepted VOICE-043 baseline shaped runtime directly instead of promoting the rejected private-pattern profile. It removes narrow English/German fast filler and connector artifacts in eligible provider-facing freeform text, keeps provider voice identity/style/speed unchanged, preserves protected campaign/compliance/handoff/hangup/do-not-call text exactly, makes no provider calls, reads no raw private audio, uploads no private/customer audio, uses no transcription or voice cloning, and keeps VOICE-041 disabled by default.
+- [x] `VOICE-043` baseline shaped runtime acceptance, which records Tarik's VOICE-042 preference for baseline shaped runtime over the softened private-pattern profile. It verifies English freeform, German freeform, and protected do-not-call turns; keeps `voice_private_pattern_profile.enabled` and `applied` false by default; keeps ElevenLabs `style` at `0.0`; preserves protected text exactly; makes no provider calls; reads no raw private audio; uploads no private/customer audio; uses no transcription or voice cloning; and establishes the baseline as the current voice path.
+- [x] `VOICE-042` private-pattern live A/B and listening decision, which compared baseline shaped runtime against the same TTS text with accepted VOICE-041 provider settings. Tarik first found the private-pattern profile direction useful but too loud, then preferred baseline shaped runtime after the profile was softened. The result blocks private-pattern runtime promotion and preserves the negative evidence for thesis methodology.
+- [x] `VOICE-041` accepted abstract private-pattern profile bridge, which created an opt-in RESP-002 layer for accepted abstract private speech-pattern hints while blocking protected segments, raw private audio reads, transcription, provider upload, voice cloning, and `final_response` rewrites. It remains experimental only after VOICE-043.
+- [x] `VOICE-030D` recurring private speech-pattern extraction correction, which switched review from only `8` pre-wrapped runtime candidates to all `121` available feature files, used `119` usable files for recurring-pattern summaries, excluded `2` no-measurable-speech files, and kept pause-heavy findings diagnostic-only rather than copying them into runtime delivery.
+- [x] Generated artifact folderization and drift-guard tightening, which moved old flat generated evidence into checkpoint folders, added `research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/README.md`, expanded nested generated-audio ignore rules, and made `check_project_drift.py` fail on unexpected flat generated-root files. This keeps public-safe generated reports/results auditable while live provider audio remains ignored unless deliberately curated.
 - [x] `RAG-016B` through `RAG-018` guarded retrieval integration, which accepted the remaining `19` voice-delivery quote-clearance candidates as advisory-only project-owned rules, built a `59` item RAG-017 runtime registry from accepted safe slices, excluded the unresolved `58` source-mapping chunks, `43` source-mapping groups, and `21` latent quote follow-ups, extended RAG-008 to retrieve from the registry, and connected RESP-001 to local deterministic retrieval only behind explicit `--retrieval-enabled` flags. Runtime retrieval remains disabled by default, no vector DB or embedding provider is used, no private data or source excerpts are read, and refusal/do-not-call/human-escalation/protected-text contexts block retrieval influence.
 - [x] `RAG-016A` quote-clearance decision slice, which accepted the `11` ethical-persuasion RAG-016 cards as project-owned low-pressure guidance without accepting any voice-delivery cards. It created `10` response-wording rules and `1` rational-agency safety guardrail, rejected `0` candidates in this slice, reduced original quote-clearance blockers from `30` to `19`, left `0` ethical-persuasion blockers and `19` voice-delivery blockers, carried forward RAG-015's `58` pending source-mapping chunks and `21` latent quote follow-ups, stored no source excerpt text, made no provider or NotebookLM calls, used no private customer data, auto-promoted `0` chunks, and kept runtime retrieval plus chunk import disabled.
 - [x] `RAG-016` quote-clearance batches, which organized the remaining `30` original quote-clearance chunks without applying any quote decisions. It reports `3` review batches across `15` source-title groups: `11` ethical-persuasion response-wording chunks, `10` speech/prosody advisory chunks, and `9` emotion-recognition delivery advisory chunks, for `19` voice-delivery chunks total. It carries forward RAG-015's `58` pending source-mapping chunks across `43` source-title groups and `21` latent quote follow-ups. It resolves `0` blockers, stores no source excerpt text, makes no provider or NotebookLM calls, uses no private customer data, auto-promotes `0` chunks, and keeps runtime retrieval plus chunk import disabled.
@@ -101,7 +139,7 @@ Recently completed checkpoints:
 - [x] `VOICE-026` interaction-prosody layer, separating lookup acknowledgements, neutral backchannels, and bounded sales-pace cues from filler placement, with English/German unsafe-agreement guards, protected-text locks, RESP-002 runtime integration, a listening rubric, and generated offline report.
 - [x] `SPEECH-STYLE-003` final broad speech-realism sweep, adding general prosody, acoustic emotion, vocal first impressions, turn-taking distributions, spoken-dialogue timing, entrainment, connected speech, spoken corpora, acoustic charisma, and TTS evaluation references before `VOICE-026`.
 - [x] `SPEECH-STYLE-002` deep English/German speech-pattern review, covering speaker fillers, discourse markers, listener backchannels, turn-taking timing, provider prosody controls, breath/smiled speech, and sales/call-center vocal cues.
-- [x] `VOICE-025` boundary-aware filler placement implementation, with English/German rules, German-specific `also`/`äh`/`ähm` handling, protected campaign text locks, a dedicated offline case set, runner, validator, and generated report.
+- [x] `VOICE-025` boundary-aware filler placement implementation, with English/German rules, German-specific `also`/`Ã¤h`/`Ã¤hm` handling, protected campaign text locks, a dedicated offline case set, runner, validator, and generated report.
 - [x] `VOICE-024` dry-run/live-capable A/B harness comparing the same improved English/German voice with and without VOICE-023 speech realism, including local voice-ID redaction, forced missing-key fallback, protected-text checks, generated live MP3 organization, and generated evaluation packet.
 - [x] `VOICE-023` offline speech-realism layer with English/German bounded thinking-filler bundles, protected-text locks, customer stop/anger suppression, and RESP-002/RESP-003 runtime integration.
 - [x] `TRACE-001` pre-push thesis traceability automation, including source-reference coverage and thesis-update gates before GitHub checkpoints.
@@ -194,7 +232,7 @@ Product track:
 
 ## Phase 1: Text And Strategy Baseline
 
-Status: in progress
+Status: completed enough for current product work; superseded by the product-runtime checkpoint board
 
 Goal:
 
@@ -223,32 +261,31 @@ Current result:
 
 Next:
 
-- expand from six-case experiments to a larger mixed case set
-- reduce manual adaptation where possible
-- decide how much of rubric scoring should remain manual versus semi-structured
-- document limitations clearly before treating results as thesis evidence
+- do not start new implementation from this old six-case baseline plan
+- use the checkpoint board for current product/runtime work
+- keep the Phase 1 results as early thesis evidence and limitation context only
 
 ## Phase 2: Dataset-Grounded Expansion
 
-Status: planned
+Status: in progress through the CallCenterEN / PROD-012 through PROD-020 evidence chain
 
 Goal:
 
-- create a larger, more defensible case set grounded in public datasets
+- create leakage-safe, pattern-grounded evaluation cases and runtime checks using public/non-commercial datasets as research-only grounding
 
 Likely work:
 
-- extract more candidate emotional dialogue snippets from `MELD`
-- extract more persuasion strategy examples from `Persuasion for Good`
-- create a larger mixed case set
-- compare adaptive and non-adaptive behavior across more examples
-- decide whether rubric scoring remains sufficient or needs additional evaluator support
+- keep CallCenterEN-derived material as abstract pattern grounding only, not transcript text or commercial runtime prompt material
+- test live-shaped multi-turn behavior in `PROD-021` before expanding the fixed bank again
+- expand scenario-bank coverage only after stateful dialogue gaps are known
+- keep hard failure rate, non-sale correctness, safe-close correctness, leakage checks, and scorer sensitivity as first-class metrics
+- decide whether the `PROD-017` specificity scorer needs a stateful extension after `PROD-021`
 
 Open questions:
 
-- how much manual domain adaptation is acceptable
+- how much deterministic naturalization and scenario generation is acceptable before human review is needed
 - whether to include human evaluator judgments
-- whether to add automated consistency checks
+- whether multi-turn scoring needs a separate policy/state-continuity metric instead of only single-turn specificity
 
 ## Phase 3: Voice Feature Module
 
@@ -325,11 +362,11 @@ Out of scope:
 
 ## Product MVP Track
 
-Status: planned
+Status: in progress, evidence-gated
 
 Goal:
 
-- define and build the smallest autonomous client-usable lead-qualification and appointment-setting workflow that comes out of the thesis work
+- define and build the smallest client-usable sales-call workflow that can qualify a lead, handle objections, preserve safety boundaries, and reach a sale-ready verbal commitment or callback/handoff outcome without collecting payment
 
 Likely MVP:
 
@@ -341,7 +378,8 @@ Likely MVP:
 - select a strategy
 - generate and execute the next response autonomously
 - decide whether to continue, bridge, transfer, end, or schedule-and-end the call
-- schedule a human follow-up call if the lead is interested
+- schedule a human follow-up call if the lead is interested or a human handoff is required
+- record a sale-ready verbal commitment only when the customer is eligible and explicitly ready, without checkout or payment collection
 - log the strategy choice and rationale
 - escalate or pause when confidence or safety boundaries require it
 - collect sales-expert feedback during development and testing
@@ -358,6 +396,7 @@ Open questions:
 - what workflow the ready client actually needs first
 - what data the client can legally and practically provide
 - what claims can be made safely at launch
+- whether first client value should be appointment-setting, sale-ready verbal commitment, or support-safe handoff routing for each campaign
 - how sales experts should label, correct, and rate agent behavior during development
 - how calendar/availability integration should work for human sales-agent scheduling
 - how much the first B2C flow should differ from the first B2B lead-qualification flow
@@ -395,61 +434,28 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Expand the case inventory beyond the first six-case sets and move toward a larger mixed evaluation pool with stronger dataset grounding.
+Run `PROD-021`: a local, offline, live-shaped multi-turn dialogue-policy simulation for the `PROD-020` opt-in runtime composer hooks.
 
-Parallel product step:
+Purpose:
 
-Define the first autonomous lead-qualification and appointment-setting workflow before building a UI, so product decisions are grounded in the real client use case rather than a generic demo.
+- verify that the naturalized single-turn hook gain survives transcript-shaped, stateful conversation flow
+- test against the `PROD-011` hardened dialogue policy before any runtime-promotion discussion
+- preserve no-provider, no-private-data, retrieval-default-off, and composer-hook-default-off boundaries
+- keep exact customer questions, exact agent answers, retrieval status, hook decisions, and call-control traces visible for review
 
-Immediate product artifact:
+Immediate product artifact for `PROD-021`:
 
-- qualification-question flow
-- interest-state decision rules
-- scheduling trigger
-- escalation trigger
-- turn-based product simulation case set
-- mixed B2B/B2C simulation expansion
-- B2C insurance-specific simulation cases
-- mixed campaign wrappers that combine consumer and B2B product profiles
-- sales difficulty gauntlet before broad industry-library expansion
-- real-time agent architecture and latency budget
-- call termination and hang-up policy
-- PROD-005 realtime latency and call-control simulation
-- realtime single-turn CLI prototype
-- active bilingual runtime-language checks
-- documented debugging trail for bilingual routing, guarded response language, and interruption campaign routing
-- VOICE-007 ASR/TTS provider-readiness gate
-- VOICE-008 local TTS smoke test with dry-run fallback
-- VOICE-009 vendor-specific TTS provider research
-- VOICE-010 Cartesia no-key-safe TTS smoke harness
-- VOICE-011 Cartesia WebSocket smoke harness with longer German/English dry-run samples
-- VOICE-012 speech naturalness layer for controlled mid-utterance fillers and protected scripted text
-- VOICE-013 ElevenLabs no-key-safe streaming TTS smoke harness
-- VOICE-014 provider listening comparison for Cartesia vs ElevenLabs
-- VOICE-015 provider-neutral prosody naturalness layer for professional-human rhythm and pitch cues
-- VOICE-016 provider-specific prosody rendering previews for Cartesia and ElevenLabs
-- VOICE-017 guarded live-capable A/B audio harness for plain vs prosody-shaped text
-- VOICE-017 first live ElevenLabs A/B result with prosody strongly preferred in the two-case human listening review
-- VOICE-018 offline professional-sales tuning after listening feedback found RESP-003 clear but too slow and still obviously AI-generated
-- VOICE-019 dry-run harness comparing VOICE-017-style prosody against VOICE-018 sales-tuned input before live provider calls
-- VOICE-021 dry-run ElevenLabs custom voice comparison for English/German original-vs-improved voices with local-only voice IDs
-- VOICE-021 live comparison result: improved English/German voices preferred; next target is thinking-time fillers and less theatrical pitch behavior
-- VOICE-022 bilingual spoken-text normalization for English contractions and conservative German spoken forms, wired into RESP-002/RESP-003 with protected-text locks
-- PRIVATE-CALL-LEARNING-001 local-only private call learning scaffold for future positive/negative sales-pattern mining without exporting raw audio or identifiers
-- RESP-002 runtime voice-delivery bridge from guarded response to offline ElevenLabs/Cartesia provider preview
-- project-local self-containment, voice provider run-boundary, and generated-audio asset-log policies
-- RESP-003 runtime live-capable TTS bridge from validated voice-delivery packet to optional provider audio
-- RESP-003 first bilingual ElevenLabs live TTS result for German and English campaign responses
-- RESP-003 human listening review showing the next voice quality target: faster, less robotic, better pitch/emotion, while preserving clarity
-- VOICE-034 pacing calibration V2 and VOICE-035 connected-speech phrase-flow tuning as separate bounded runtime layers before RESP-003 live TTS
-- VOICE-036 listening-feedback calibration for German over-compression and conservative emphasis-target filtering
-- VOICE-037 emotion-transition smoothing for abrupt vocal mood changes
-- VOICE-038 semantic-emphasis diagnosis and VOICE-039 runtime promotion for the preferred English clear/simple worth-your-time wording pattern
+- case file or generated fixed simulation set
+- runner, validator, product doc, generated JSON result, and Markdown report
+- per-turn comparison of baseline versus opt-in hook behavior
+- state-continuity, call-control, protected-context, non-sale, safe-close, hard-failure, and leakage metrics
+- thesis log and decision log updates after the run
 
 Next voice checkpoint:
 
-- run a short RESP-003 live listening check with VOICE-039 active and a longer English script before changing voice IDs, filler placement, or broader semantic emphasis behavior again
-- compare the VOICE-039 promoted wording against the VOICE-038 baseline/control impression
+- optionally run a short live RESP-004 listening check of the VOICE-044 polished baseline before broadening voice changes
+- keep VOICE-043 and VOICE-044 as the acceptance guards before and after any future baseline voice change
+- compare any future private-pattern or personalization variant against VOICE-043 baseline and promote it only if it wins a human listening review
 - connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
 - expand RESP-002 from single-response segment wrapping to multi-segment runtime packets when campaign questions or disclosures are spoken in the same turn
 - expand the VOICE-017 live A/B beyond the first two ElevenLabs cases, or add a second listener before treating the result as stronger evaluation evidence
