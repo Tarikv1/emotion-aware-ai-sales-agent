@@ -1,0 +1,49 @@
+{
+  "experiment_id": "VOICE-042-private-pattern-live-ab",
+  "title": "Private pattern profile live A/B",
+  "description": "Compares baseline RESP-002 shaped runtime against RESP-002 shaped runtime plus accepted VOICE-041 abstract private speech-pattern provider settings.",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "voice_private_pattern_profile": {
+    "enabled": true,
+    "review_status": "accepted",
+    "source_review_milestone": "VOICE-031",
+    "source_kind": "abstract_private_speech_patterns",
+    "rhythm_density_hint": "higher_turn_density_candidate",
+    "expressiveness_variation_hint": "higher_expressiveness_variation_candidate",
+    "presence_level_hint": "lower_presence_candidate"
+  },
+  "runtime_boundary": {
+    "changes_allowed": "Eligible freeform provider voice settings may receive bounded expressiveness adjustments for A/B listening.",
+    "changes_forbidden": [
+      "reading raw private audio at runtime",
+      "uploading private audio",
+      "transcribing private speech samples",
+      "voice cloning",
+      "changing the guarded final_response",
+      "rewriting provider text between A/B variants",
+      "changing accepted pacing speed",
+      "logging API keys or raw voice IDs",
+      "making audio quality claims before human review"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "voice-042-en-freeform-expressiveness-ab",
+      "title": "English freeform baseline versus private profile",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "That sounds expensive, and I am not sure it is worth another review.",
+      "candidate_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "expected": {
+        "profile_variant_applied": true,
+        "baseline_profile_applied": false,
+        "same_tts_text": true,
+        "profile_style_after": 0.06,
+        "quality_claim_allowed": false
+      }
+    }
+  ]
+}

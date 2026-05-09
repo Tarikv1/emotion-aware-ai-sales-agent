@@ -6,7 +6,7 @@ Test whether the sales-agent voice path can become more human-like by adding rar
 
 ## Motivation
 
-VOICE-011 showed that the provider audio was usable but still sounded obviously AI-generated. A human sales agent does not usually convert thoughts into perfectly smooth speech. They may occasionally say `um`, `uh`, `hm`, `ähm`, or short discourse markers.
+VOICE-011 showed that the provider audio was usable but still sounded obviously AI-generated. A human sales agent does not usually convert thoughts into perfectly smooth speech. They may occasionally say `um`, `uh`, `hm`, `Ã¤hm`, or short discourse markers.
 
 However, a real call-center agent also reads certain material cleanly:
 
@@ -57,8 +57,8 @@ It includes:
 Generated artifacts:
 
 ```text
-research/experiments/generated/VOICE-012-speech-naturalness.json
-research/experiments/generated/VOICE-012-speech-naturalness-report.md
+research/experiments/generated/VOICE-012/VOICE-012-speech-naturalness.json
+research/experiments/generated/VOICE-012/VOICE-012-speech-naturalness-report.md
 ```
 
 Current summary:

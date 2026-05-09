@@ -20,15 +20,15 @@ PROD-004 tests whether the reusable sales-agent core can handle difficult sellin
 ```powershell
 python scripts\run_llm_product_agent.py `
   --cases research\experiments\cases\prod-004-sales-difficulty-gauntlet.json `
-  --out research\experiments\generated\PROD-004-llm-agent-results.json `
-  --report-out research\experiments\generated\PROD-004-llm-agent-report.md
+  --out research/experiments/generated/PROD-004/PROD-004-llm-agent-results.json `
+  --report-out research/experiments/generated/PROD-004/PROD-004-llm-agent-report.md
 ```
 
 ## Result
 
 - Model: `gpt-4o-mini`
-- Results JSON: `research/experiments/generated/PROD-004-llm-agent-results.json`
-- Report: `research/experiments/generated/PROD-004-llm-agent-report.md`
+- Results JSON: `research/experiments/generated/PROD-004/PROD-004-llm-agent-results.json`
+- Report: `research/experiments/generated/PROD-004/PROD-004-llm-agent-report.md`
 - Comparison: `research/experiments/PROD-004-llm-vs-rule-comparison.md`
 
 Aggregate LLM results:

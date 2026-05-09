@@ -16,26 +16,26 @@ This controlled local run compares the existing policy response, the always-on c
 ## Result
 
 - Safe cases: `9/9`
-- Retrieval influenced responses: `0`
+- Retrieval influenced responses: `1`
 - Retrieval blocked by guardrails: `7`
 - Retrieval no-match cases: `0`
-- Max retrieval latency: `5 ms`
-- Average retrieval latency: `2.33 ms`
+- Max retrieval latency: `4 ms`
+- Average retrieval latency: `1.56 ms`
 - Over 150 ms target: `0`
 - Over 300 ms acceptable: `0`
-- Decision: `keep_core_playbook_and_raise_retrieval_relevance`
+- Decision: `keep_hybrid_opt_in_and_run_larger_call_simulation`
 
 ## Case Table
 
 | Case | Difficulty | Retrieval | Used | Latency | Safe | Change |
 | --- | --- | --- | --- | ---: | --- | --- |
-| PROD-005-C01 | price-objection | retrieved_not_used | False | 5 ms | True | core changed policy |
-| PROD-005-C02 | product-detail-lookup | retrieved_not_used | False | 4 ms | True | core changed policy |
-| PROD-005-C03 | do-not-call | blocked | False | 2 ms | True | no wording change |
-| PROD-005-C04 | voicemail | blocked | False | 2 ms | True | core changed policy |
-| PROD-005-C05 | human-request | blocked | False | 2 ms | True | core changed policy |
-| PROD-005-C06 | scheduling-confirmation | blocked | False | 2 ms | True | core changed policy |
-| PROD-005-C07 | timing-delay | blocked | False | 2 ms | True | core changed policy |
+| PROD-005-C01 | price-objection | influenced | True | 4 ms | True | RAG changed core |
+| PROD-005-C02 | product-detail-lookup | retrieved_not_used | False | 3 ms | True | core changed policy |
+| PROD-005-C03 | do-not-call | blocked | False | 1 ms | True | no wording change |
+| PROD-005-C04 | voicemail | blocked | False | 1 ms | True | core changed policy |
+| PROD-005-C05 | human-request | blocked | False | 1 ms | True | core changed policy |
+| PROD-005-C06 | scheduling-confirmation | blocked | False | 1 ms | True | core changed policy |
+| PROD-005-C07 | timing-delay | blocked | False | 1 ms | True | core changed policy |
 | PROD-005-C08 | claim-boundary | blocked | False | 1 ms | True | core changed policy |
 | PROD-005-C09 | repeated-silence | blocked | False | 1 ms | True | no wording change |
 

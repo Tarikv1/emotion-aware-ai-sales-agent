@@ -70,8 +70,8 @@ VOICE-017 live A/B audio validation passed.
 ### Task 3: Generated Artifacts And Docs
 
 **Files:**
-- Create: `research/experiments/generated/VOICE-017-live-ab-audio.json`
-- Create: `research/experiments/generated/VOICE-017-live-ab-audio-report.md`
+- Create: `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio.json`
+- Create: `research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio-report.md`
 - Create: `docs/product/VOICE_017_LIVE_AB_AUDIO.md`
 - Create: `research/experiments/VOICE-017-live-ab-audio.md`
 - Modify: `docs/product/COMMANDS.md`

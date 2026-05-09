@@ -1,0 +1,32 @@
+{
+  "experiment_id": "RESP-006-german-runtime-version-ab-listening-check",
+  "title": "German old runtime versus new runtime same-question listening check",
+  "description": "One German same-question A/B for hearing old plain guarded runtime text against newer shaped runtime delivery on a longer sales answer.",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "live_requires": ["--live", "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID_DE or ignored local voice config"],
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "private_audio_used": false,
+    "quality_claim_allowed_without_human_review": false
+  },
+  "cases": [
+    {
+      "case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+      "title": "German same customer question with a longer trust and send-info answer",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+      "candidate_response": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+      "review_focus": [
+        "Klingt die alte Runtime im Deutschen natürlicher oder zu geschrieben?",
+        "Klingt die neue Runtime seriöser, ohne steif oder künstlich zu werden?",
+        "Bleiben Höflichkeit, Formalität und Verkaufsgesprächs-Pacing passend?",
+        "Wirkt eine Variante wie eine klarere Persönlichkeit statt nur wie bessere Qualität?"
+      ]
+    }
+  ]
+}

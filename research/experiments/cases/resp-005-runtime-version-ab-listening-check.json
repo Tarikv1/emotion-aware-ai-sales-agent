@@ -1,0 +1,32 @@
+{
+  "experiment_id": "RESP-005-runtime-version-ab-listening-check",
+  "title": "Old runtime versus new runtime same-question listening check",
+  "description": "One same-question A/B for hearing old plain guarded runtime text against newer shaped runtime delivery on a longer sales answer.",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "live_requires": ["--live", "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID_EN or ignored local voice config"],
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "private_audio_used": false,
+    "quality_claim_allowed_without_human_review": false
+  },
+  "cases": [
+    {
+      "case_id": "RESP-005-SAME-Q-EN-COMPLEX",
+      "title": "Same customer question with a longer trust and send-info answer",
+      "language": "en",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "question": "Can you send me something first? I do not know your company, I do not want a sales pitch, and I need to understand what would actually happen next before I involve my boss.",
+      "candidate_response": "Good question. I am not asking you to decide on this call. The practical version is this: I can send a short summary that explains why we called, what the workflow review would check, and what a specialist would confirm before anything moves forward. If it is not relevant after that, you can ignore it or say no.",
+      "review_focus": [
+        "Does the old runtime sound too flat or written?",
+        "Does the new runtime sound more natural without adding pressure?",
+        "Are transitions, pacing, and contractions better in the new runtime?",
+        "Does the answer still feel like a sales call rather than a scripted monologue?"
+      ]
+    }
+  ]
+}

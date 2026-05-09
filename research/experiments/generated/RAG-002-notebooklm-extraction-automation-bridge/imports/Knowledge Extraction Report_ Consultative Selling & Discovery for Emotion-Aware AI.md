@@ -1,4 +1,4 @@
-﻿### Knowledge Extraction Report: Consultative Selling & Discovery for Emotion-Aware AI
+### Knowledge Extraction Report: Consultative Selling & Discovery for Emotion-Aware AI
 
 #### 1\. Source Coverage Table
 

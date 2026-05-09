@@ -15,6 +15,7 @@ Every live turn should produce a `call_control` value:
 - `transfer-or-escalate`: route to a human or specialist workflow instead of continuing autonomous qualification.
 - `end-call`: say the appropriate closing sentence, update records, and hang up.
 - `schedule-and-end`: confirm the appointment or callback, update records, and end the call politely.
+- `close-and-log-sale-ready`: confirm a campaign-approved verbal commitment, log `sale_ready=true`, and end or hand off according to the campaign.
 
 ## Immediate End-Call Triggers
 
@@ -98,6 +99,28 @@ Customer: Wednesday at 10 works.
 Agent: Confirmed. I will record Wednesday at 10 for the specialist callback. Goodbye.
 call_control: schedule-and-end
 next_action: confirm-scheduling
+```
+
+## Full-Sale Close Then End Or Hand Off
+
+Use `close-and-log-sale-ready` only when the campaign allows an autonomous verbal-commitment close and the buyer has confirmed fit, intent, and required disclosure.
+
+Requirements:
+
+- the buyer is eligible and interested
+- product fit or compatibility is confirmed
+- required campaign disclosure is satisfied
+- no unsupported warranty, performance, health, legal, financial, or savings claim is needed
+- no payment, checkout, contract, or private-data handling is required
+- no refusal, do-not-call, support-only, or human-request trigger is active
+
+Example:
+
+```text
+Customer: Yes, the 128 GB card with the adapter is what I want.
+Agent: Confirmed. I will mark that option as sale-ready, and the order team can confirm the final details. Goodbye.
+call_control: close-and-log-sale-ready
+next_action: sale-ready-log
 ```
 
 ## Bridge Then Continue

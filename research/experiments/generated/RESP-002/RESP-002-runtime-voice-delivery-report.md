@@ -6,12 +6,25 @@ RESP-002 runs after RESP-001. It prepares guarded text for voice delivery withou
 
 ## Result
 
-- Campaign: `campaign-prod-005-b2c-telecom`
+- Campaign: `campaign-prod-005-b2b-software`
 - Provider preview: `elevenlabs`
-- Sales difficulty: `price-objection`
+- Sales difficulty: `unknown-runtime-signal`
 - Strategy: `inquiry`
 - Call control: `continue-call`
 - Final response unchanged: `True`
+- Spoken-text normalizations: `2`
+- Interaction markers: `1`
+- Controlled imperfections: `0`
+- Pacing calibrated: `True`
+- Avg voice speed ratio: `1.093`
+- Connected-speech flow joins: `1`
+- Listening calibration adjustments: `0`
+- Emphasis targets blocked: `1`
+- Emotion transitions smoothed: `2`
+- Over-emotional cues blocked: `0`
+- Semantic emphasis rewrites: `0`
+- Low-pressure focus rewrites: `0`
+- Private pattern profile applied: `False`
 - Provider calls made: `False`
 - Requires API key: `False`
 - Customer audio uploaded: `False`
@@ -21,8 +34,33 @@ RESP-002 runs after RESP-001. It prepares guarded text for voice delivery withou
 ## Delivery Segments
 
 - `resp-002-final-response`
-  type: `freeform_objection_handling`
+  type: `freeform_clarification`
   eligible for prosody: `True`
+
+## Spoken Text Normalization
+
+- Validation passed: `True`
+- Eligible segments: `1`
+- Protected segments: `0`
+- Normalization count: `2`
+- Spoken TTS text: I'll keep this practical. You're right to ask. It only matters if the next step is useful.
+- `en-i-will` on `resp-002-final-response`: `I will` -> `I'll`
+- `en-you-are` on `resp-002-final-response`: `You are` -> `You're`
+
+## Interaction Prosody
+
+- Validation passed: `True`
+- Marker count: `1`
+- Unsafe claim context: `False`
+- Interaction TTS text: I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.
+- `sales_pace_variation` on `resp-002-final-response`: visible `False`, placement `whole_segment`, phrase ``, rate `1.061`, pitch `confident-forward`
+
+## Controlled Imperfections
+
+- Validation passed: `True`
+- Imperfection count: `0`
+- Unsafe claim context: `False`
+- Imperfection TTS text: I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.
 
 ## Prosody
 
@@ -30,18 +68,87 @@ RESP-002 runs after RESP-001. It prepares guarded text for voice delivery withou
 - Cue counts: `{"emphasis": 0, "pause": 1, "pitch": 1, "rate": 0, "stretch": 0}`
 - Protected segment cue count: `0`
 
+## Pacing Calibration
+
+- Calibration ID: `VOICE-034-pacing-calibration-v2`
+- Language: `en`
+- Tuned segments: `1`
+- German word-gap reduction: `False`
+- Avg break before: `265.0` ms
+- Avg break after: `216.0` ms
+- Validation passed: `True`
+
+## Connected Speech
+
+- Connected speech ID: `VOICE-035-connected-speech-phrase-flow`
+- Language: `en`
+- Flow joins: `1`
+- Tuned segments: `1`
+- Validation passed: `True`
+
+## Listening Calibration
+
+- Calibration ID: `VOICE-036-listening-feedback-calibration`
+- Language: `en`
+- German connected speech relaxed: `False`
+- Listening adjustments: `0`
+- Blocked emphasis count: `1`
+- Validation passed: `True`
+
+## Emotion Transition Smoothing
+
+- Smoothing ID: `VOICE-037-emotion-transition-smoothing`
+- Language: `en`
+- Eligible for smoothing: `True`
+- Transition smoothing applied: `True`
+- Detected transitions: `2`
+- Smoothed transitions: `2`
+- Blocked over-emotional cues: `0`
+- Validation passed: `True`
+
+## Semantic Emphasis
+
+- Semantic emphasis ID: `VOICE-039-runtime-semantic-emphasis`
+- Language: `en`
+- Language allowed: `True`
+- Eligible segments: `1`
+- Protected segments: `0`
+- Rewrites: `0`
+- Validation passed: `True`
+
+## Low-Pressure Focus
+
+- Low-pressure focus ID: `VOICE-040-low-pressure-focus`
+- Language: `en`
+- Language allowed: `True`
+- Eligible segments: `1`
+- Protected segments: `0`
+- Rewrites: `0`
+- Validation passed: `True`
+
+## Private Pattern Profile
+
+- Profile ID: `VOICE-041-private-pattern-profile`
+- Enabled: `False`
+- Applied: `False`
+- Blocked reason: `profile_disabled`
+- Rhythm density action: `not_applied`
+- Presence action: `not_applicable`
+- Setting adjustments: `[]`
+- Validation passed: `True`
+
 ## Provider Rendering
 
 - Provider rendering mode: `break_tags_and_request_settings`
-- Provider tag count: `1`
+- Provider tag count: `0`
 - Protected segment provider tag count: `0`
 - API call made: `False`
 
 ## Text
 
-- Final response: Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
-- Clean TTS text: Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
-- Provider-rendered text: Das verstehe ich. <break time="0.199s" /> Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?
+- Final response: I will keep this practical. You are right to ask. It only matters if the next step is useful.
+- Clean TTS text: I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.
+- Provider-rendered text: I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.
 
 ## Boundary
 

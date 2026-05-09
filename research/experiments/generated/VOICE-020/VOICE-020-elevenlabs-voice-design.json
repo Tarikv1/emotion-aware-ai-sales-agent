@@ -4,12 +4,12 @@
   "case_file": "research\\experiments\\cases\\voice-020-elevenlabs-voice-design.json",
   "source_artifacts": [
     {
-      "path": "research\\experiments\\generated\\VOICE-018-sales-voice-tuning.json",
+      "path": "research\\experiments\\generated\\VOICE-018\\VOICE-018-sales-voice-tuning.json",
       "exists": true,
       "used_as_private_data_source": false
     },
     {
-      "path": "research\\experiments\\generated\\VOICE-019-sales-tuned-live-ab-audio.json",
+      "path": "research\\experiments\\generated\\VOICE-019\\VOICE-019-sales-tuned-live-ab-audio.json",
       "exists": true,
       "used_as_private_data_source": false
     },

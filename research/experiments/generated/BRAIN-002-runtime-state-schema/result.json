@@ -1,0 +1,671 @@
+{
+  "brain_002_id": "BRAIN-002-runtime-state-schema",
+  "schema_version": "brain-runtime-state-v1",
+  "status": "schema_checkpoint_only",
+  "summary": {
+    "turn_count": 6,
+    "sale_ready_count": 1,
+    "non_sale_correct_count": 5,
+    "hard_failure_count": 0,
+    "provider_calls_made": false,
+    "private_data_read": false,
+    "runtime_behavior_changed": false,
+    "retrieval_default": "disabled",
+    "schema_layer_count": 8,
+    "call_control_value_count": 6
+  },
+  "state_schema": {
+    "buyer_state": {
+      "required_fields": [
+        "conversation_stage",
+        "interest_state",
+        "objection_type",
+        "emotional_signal",
+        "emotion_confidence",
+        "buyer_goal",
+        "risk_level",
+        "evidence_refs"
+      ],
+      "allowed_values": {
+        "conversation_stage": [
+          "opening",
+          "discovery",
+          "objection",
+          "proof_request",
+          "support",
+          "handoff",
+          "refusal",
+          "close"
+        ],
+        "interest_state": [
+          "interested",
+          "maybe_interested",
+          "not_interested",
+          "needs_support",
+          "do_not_call"
+        ],
+        "emotion_confidence": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "risk_level": [
+          "low",
+          "medium",
+          "high"
+        ]
+      }
+    },
+    "strategy": {
+      "required_fields": [
+        "selected_move",
+        "reason_code",
+        "primary_goal",
+        "next_best_action",
+        "tactic_stack_count"
+      ],
+      "allowed_values": {
+        "selected_move": [
+          "clarify_fit",
+          "answer_from_approved_facts",
+          "trust_repair",
+          "autonomy_preserving_close",
+          "schedule",
+          "escalate",
+          "end_cleanly"
+        ],
+        "tactic_stack_count": [
+          1
+        ]
+      }
+    },
+    "safety": {
+      "required_fields": [
+        "blocked_actions",
+        "escalation_needed",
+        "escalation_reason",
+        "claim_boundary",
+        "protected_text_required",
+        "hard_failure"
+      ],
+      "allowed_values": {
+        "claim_boundary": [
+          "campaign_approved_only",
+          "handoff_required",
+          "no_product_claims"
+        ],
+        "hard_failure": [
+          false
+        ]
+      }
+    },
+    "call_control": {
+      "required_fields": [
+        "decision",
+        "reason_code",
+        "terminal",
+        "next_action"
+      ],
+      "allowed_values": [
+        "continue-call",
+        "bridge-then-continue",
+        "transfer-or-escalate",
+        "end-call",
+        "schedule-and-end",
+        "close-and-log-sale-ready"
+      ]
+    },
+    "retrieval": {
+      "required_fields": [
+        "enabled",
+        "status",
+        "registry_id",
+        "latency_budget_ms",
+        "influence_allowed",
+        "blocked_reason"
+      ],
+      "allowed_values": {
+        "status": [
+          "disabled_by_default",
+          "blocked_by_guardrail"
+        ],
+        "enabled": [
+          false
+        ]
+      }
+    },
+    "voice": {
+      "required_fields": [
+        "language",
+        "delivery_profile_id",
+        "pacing_profile",
+        "protected_text_lock",
+        "provider_live_enabled"
+      ],
+      "allowed_values": {
+        "language": [
+          "en",
+          "de"
+        ],
+        "provider_live_enabled": [
+          false
+        ]
+      }
+    },
+    "response": {
+      "required_fields": [
+        "final_response",
+        "response_language",
+        "sale_ready",
+        "non_sale_correct",
+        "outcome_reason",
+        "output_contract_version"
+      ],
+      "allowed_values": {
+        "output_contract_version": [
+          "product-agent-output-v1"
+        ]
+      }
+    },
+    "evidence_log": {
+      "required_fields": [
+        "state_source",
+        "stores_raw_transcript_text",
+        "stores_private_audio",
+        "logs_selected_strategy",
+        "logs_safety_reason",
+        "stores_provider_payload"
+      ],
+      "allowed_values": {
+        "state_source": [
+          "synthetic_case_fixture",
+          "runtime_turn_packet"
+        ],
+        "stores_raw_transcript_text": [
+          false
+        ],
+        "stores_private_audio": [
+          false
+        ],
+        "stores_provider_payload": [
+          false
+        ]
+      }
+    }
+  },
+  "example_turns": [
+    {
+      "turn_id": "BRAIN-002-SD-001",
+      "source_case_id": "PROD-006-SD-001",
+      "expected_outcome": "sale_ready",
+      "response_preview": "That sounds like the right fit. I will mark the 128 GB card with the standard adapter as sale-ready, and the order team can confirm the final details.",
+      "state_packet": {
+        "buyer_state": {
+          "conversation_stage": "close",
+          "interest_state": "interested",
+          "objection_type": "none",
+          "emotional_signal": "calm_interest",
+          "emotion_confidence": "medium",
+          "buyer_goal": "expand phone storage with a compatible card",
+          "risk_level": "low",
+          "evidence_refs": [
+            "confirmed_capacity_need",
+            "confirmed_adapter_need",
+            "accepted_campaign_disclosure"
+          ]
+        },
+        "strategy": {
+          "selected_move": "autonomy_preserving_close",
+          "reason_code": "fit_confirmed_and_buyer_committed",
+          "primary_goal": "confirm sale-ready status without pressure",
+          "next_best_action": "log_sale_ready",
+          "tactic_stack_count": 1
+        },
+        "safety": {
+          "blocked_actions": [
+            "payment_collection",
+            "unsupported_performance_claim",
+            "warranty_guarantee"
+          ],
+          "escalation_needed": false,
+          "escalation_reason": "none",
+          "claim_boundary": "campaign_approved_only",
+          "protected_text_required": false,
+          "hard_failure": false
+        },
+        "call_control": {
+          "decision": "close-and-log-sale-ready",
+          "reason_code": "eligible_customer_confirmed_purchase_intent",
+          "terminal": true,
+          "next_action": "sale_ready_log"
+        },
+        "retrieval": {
+          "enabled": false,
+          "status": "disabled_by_default",
+          "registry_id": "none",
+          "latency_budget_ms": 0,
+          "influence_allowed": false,
+          "blocked_reason": "not_needed_for_approved_campaign_fact"
+        },
+        "voice": {
+          "language": "en",
+          "delivery_profile_id": "campaign_default_neutral",
+          "pacing_profile": "clear_close",
+          "protected_text_lock": true,
+          "provider_live_enabled": false
+        },
+        "response": {
+          "final_response": "That sounds like the right fit. I will mark the 128 GB card with the standard adapter as sale-ready, and the order team can confirm the final details.",
+          "response_language": "en",
+          "sale_ready": true,
+          "non_sale_correct": false,
+          "outcome_reason": "buyer_confirmed_fit_and_campaign_close_criteria",
+          "output_contract_version": "product-agent-output-v1"
+        },
+        "evidence_log": {
+          "state_source": "synthetic_case_fixture",
+          "stores_raw_transcript_text": false,
+          "stores_private_audio": false,
+          "logs_selected_strategy": true,
+          "logs_safety_reason": true,
+          "stores_provider_payload": false
+        }
+      }
+    },
+    {
+      "turn_id": "BRAIN-002-SD-002",
+      "source_case_id": "PROD-006-SD-002",
+      "expected_outcome": "non_sale_correct",
+      "response_preview": "I should not guess on compatibility. The safe next step is to check your device model first, then decide whether this card is a fit.",
+      "state_packet": {
+        "buyer_state": {
+          "conversation_stage": "objection",
+          "interest_state": "maybe_interested",
+          "objection_type": "compatibility_unclear",
+          "emotional_signal": "uncertain",
+          "emotion_confidence": "medium",
+          "buyer_goal": "avoid buying the wrong storage card",
+          "risk_level": "medium",
+          "evidence_refs": [
+            "device_model_missing",
+            "fit_question_open"
+          ]
+        },
+        "strategy": {
+          "selected_move": "clarify_fit",
+          "reason_code": "required_fit_information_missing",
+          "primary_goal": "prevent unsupported close",
+          "next_best_action": "ask_device_model",
+          "tactic_stack_count": 1
+        },
+        "safety": {
+          "blocked_actions": [
+            "close_without_fit",
+            "compatibility_guarantee"
+          ],
+          "escalation_needed": false,
+          "escalation_reason": "none",
+          "claim_boundary": "campaign_approved_only",
+          "protected_text_required": false,
+          "hard_failure": false
+        },
+        "call_control": {
+          "decision": "continue-call",
+          "reason_code": "clarification_required_before_close",
+          "terminal": false,
+          "next_action": "ask_clarifying_question"
+        },
+        "retrieval": {
+          "enabled": false,
+          "status": "disabled_by_default",
+          "registry_id": "none",
+          "latency_budget_ms": 0,
+          "influence_allowed": false,
+          "blocked_reason": "campaign_fact_needed_not_generic_rag"
+        },
+        "voice": {
+          "language": "en",
+          "delivery_profile_id": "campaign_default_neutral",
+          "pacing_profile": "slow_clarification",
+          "protected_text_lock": true,
+          "provider_live_enabled": false
+        },
+        "response": {
+          "final_response": "I should not guess on compatibility. The safe next step is to check your device model first, then decide whether this card is a fit.",
+          "response_language": "en",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "outcome_reason": "fit_not_confirmed",
+          "output_contract_version": "product-agent-output-v1"
+        },
+        "evidence_log": {
+          "state_source": "synthetic_case_fixture",
+          "stores_raw_transcript_text": false,
+          "stores_private_audio": false,
+          "logs_selected_strategy": true,
+          "logs_safety_reason": true,
+          "stores_provider_payload": false
+        }
+      }
+    },
+    {
+      "turn_id": "BRAIN-002-SD-003",
+      "source_case_id": "PROD-006-SD-003",
+      "expected_outcome": "non_sale_correct",
+      "response_preview": "This sounds like support for an order you already have. I will route it to support instead of trying to sell you another card.",
+      "state_packet": {
+        "buyer_state": {
+          "conversation_stage": "support",
+          "interest_state": "needs_support",
+          "objection_type": "existing_order_issue",
+          "emotional_signal": "frustrated",
+          "emotion_confidence": "medium",
+          "buyer_goal": "resolve an existing order problem",
+          "risk_level": "high",
+          "evidence_refs": [
+            "existing_order_reference",
+            "support_request"
+          ]
+        },
+        "strategy": {
+          "selected_move": "escalate",
+          "reason_code": "support_request_not_sale_opportunity",
+          "primary_goal": "avoid wrong sale attempt",
+          "next_best_action": "route_to_support",
+          "tactic_stack_count": 1
+        },
+        "safety": {
+          "blocked_actions": [
+            "new_sale_attempt",
+            "discount_offer_without_approval"
+          ],
+          "escalation_needed": true,
+          "escalation_reason": "support_request",
+          "claim_boundary": "no_product_claims",
+          "protected_text_required": false,
+          "hard_failure": false
+        },
+        "call_control": {
+          "decision": "transfer-or-escalate",
+          "reason_code": "support_context",
+          "terminal": true,
+          "next_action": "support_handoff"
+        },
+        "retrieval": {
+          "enabled": false,
+          "status": "blocked_by_guardrail",
+          "registry_id": "none",
+          "latency_budget_ms": 0,
+          "influence_allowed": false,
+          "blocked_reason": "support_handoff_overrides_retrieval"
+        },
+        "voice": {
+          "language": "en",
+          "delivery_profile_id": "campaign_default_neutral",
+          "pacing_profile": "calm_handoff",
+          "protected_text_lock": true,
+          "provider_live_enabled": false
+        },
+        "response": {
+          "final_response": "This sounds like support for an order you already have. I will route it to support instead of trying to sell you another card.",
+          "response_language": "en",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "outcome_reason": "support_request_detected",
+          "output_contract_version": "product-agent-output-v1"
+        },
+        "evidence_log": {
+          "state_source": "synthetic_case_fixture",
+          "stores_raw_transcript_text": false,
+          "stores_private_audio": false,
+          "logs_selected_strategy": true,
+          "logs_safety_reason": true,
+          "stores_provider_payload": false
+        }
+      }
+    },
+    {
+      "turn_id": "BRAIN-002-SD-004",
+      "source_case_id": "PROD-006-SD-004",
+      "expected_outcome": "non_sale_correct",
+      "response_preview": "Before we talk about a new card, I should address the problem you had last time. What failed: delivery, compatibility, or the card itself?",
+      "state_packet": {
+        "buyer_state": {
+          "conversation_stage": "objection",
+          "interest_state": "maybe_interested",
+          "objection_type": "trust_repair_needed",
+          "emotional_signal": "skeptical",
+          "emotion_confidence": "medium",
+          "buyer_goal": "avoid repeating a previous bad experience",
+          "risk_level": "medium",
+          "evidence_refs": [
+            "previous_bad_experience",
+            "open_trust_concern"
+          ]
+        },
+        "strategy": {
+          "selected_move": "trust_repair",
+          "reason_code": "trust_gap_before_close",
+          "primary_goal": "repair concern before any close",
+          "next_best_action": "ask_problem_category",
+          "tactic_stack_count": 1
+        },
+        "safety": {
+          "blocked_actions": [
+            "pressure_close",
+            "guaranteed_fix_claim"
+          ],
+          "escalation_needed": false,
+          "escalation_reason": "none",
+          "claim_boundary": "campaign_approved_only",
+          "protected_text_required": false,
+          "hard_failure": false
+        },
+        "call_control": {
+          "decision": "continue-call",
+          "reason_code": "trust_repair_before_close",
+          "terminal": false,
+          "next_action": "ask_repair_question"
+        },
+        "retrieval": {
+          "enabled": false,
+          "status": "disabled_by_default",
+          "registry_id": "none",
+          "latency_budget_ms": 0,
+          "influence_allowed": false,
+          "blocked_reason": "brain_002_does_not_promote_rag"
+        },
+        "voice": {
+          "language": "en",
+          "delivery_profile_id": "campaign_default_neutral",
+          "pacing_profile": "low_pressure_repair",
+          "protected_text_lock": true,
+          "provider_live_enabled": false
+        },
+        "response": {
+          "final_response": "Before we talk about a new card, I should address the problem you had last time. What failed: delivery, compatibility, or the card itself?",
+          "response_language": "en",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "outcome_reason": "trust_repair_needed_before_close",
+          "output_contract_version": "product-agent-output-v1"
+        },
+        "evidence_log": {
+          "state_source": "synthetic_case_fixture",
+          "stores_raw_transcript_text": false,
+          "stores_private_audio": false,
+          "logs_selected_strategy": true,
+          "logs_safety_reason": true,
+          "stores_provider_payload": false
+        }
+      }
+    },
+    {
+      "turn_id": "BRAIN-002-SD-005",
+      "source_case_id": "PROD-006-SD-005",
+      "expected_outcome": "escalate",
+      "response_preview": "Of course. I will not continue the sales part myself. I will mark this for a person to help with the details.",
+      "state_packet": {
+        "buyer_state": {
+          "conversation_stage": "handoff",
+          "interest_state": "needs_support",
+          "objection_type": "human_requested",
+          "emotional_signal": "firm",
+          "emotion_confidence": "high",
+          "buyer_goal": "speak with a person",
+          "risk_level": "high",
+          "evidence_refs": [
+            "human_request"
+          ]
+        },
+        "strategy": {
+          "selected_move": "escalate",
+          "reason_code": "customer_asked_for_human",
+          "primary_goal": "respect handoff request",
+          "next_best_action": "human_handoff",
+          "tactic_stack_count": 1
+        },
+        "safety": {
+          "blocked_actions": [
+            "continue_autonomous_pitch",
+            "close_after_human_request"
+          ],
+          "escalation_needed": true,
+          "escalation_reason": "human_requested",
+          "claim_boundary": "handoff_required",
+          "protected_text_required": false,
+          "hard_failure": false
+        },
+        "call_control": {
+          "decision": "transfer-or-escalate",
+          "reason_code": "human_requested",
+          "terminal": true,
+          "next_action": "human_handoff"
+        },
+        "retrieval": {
+          "enabled": false,
+          "status": "blocked_by_guardrail",
+          "registry_id": "none",
+          "latency_budget_ms": 0,
+          "influence_allowed": false,
+          "blocked_reason": "human_handoff_overrides_retrieval"
+        },
+        "voice": {
+          "language": "en",
+          "delivery_profile_id": "campaign_default_neutral",
+          "pacing_profile": "brief_respectful_handoff",
+          "protected_text_lock": true,
+          "provider_live_enabled": false
+        },
+        "response": {
+          "final_response": "Of course. I will not continue the sales part myself. I will mark this for a person to help with the details.",
+          "response_language": "en",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "outcome_reason": "human_requested",
+          "output_contract_version": "product-agent-output-v1"
+        },
+        "evidence_log": {
+          "state_source": "synthetic_case_fixture",
+          "stores_raw_transcript_text": false,
+          "stores_private_audio": false,
+          "logs_selected_strategy": true,
+          "logs_safety_reason": true,
+          "stores_provider_payload": false
+        }
+      }
+    },
+    {
+      "turn_id": "BRAIN-002-SD-006",
+      "source_case_id": "PROD-006-SD-006",
+      "expected_outcome": "end_call",
+      "response_preview": "Understood. I will end the call and mark that you do not want to continue. Goodbye.",
+      "state_packet": {
+        "buyer_state": {
+          "conversation_stage": "refusal",
+          "interest_state": "do_not_call",
+          "objection_type": "stop_request",
+          "emotional_signal": "firm_negative",
+          "emotion_confidence": "high",
+          "buyer_goal": "stop contact",
+          "risk_level": "high",
+          "evidence_refs": [
+            "stop_request",
+            "do_not_continue"
+          ]
+        },
+        "strategy": {
+          "selected_move": "end_cleanly",
+          "reason_code": "stop_request_overrides_sales",
+          "primary_goal": "end without pressure",
+          "next_best_action": "suppress_contact",
+          "tactic_stack_count": 1
+        },
+        "safety": {
+          "blocked_actions": [
+            "ask_one_more_question",
+            "offer_discount",
+            "continue_pitch"
+          ],
+          "escalation_needed": false,
+          "escalation_reason": "none",
+          "claim_boundary": "no_product_claims",
+          "protected_text_required": true,
+          "hard_failure": false
+        },
+        "call_control": {
+          "decision": "end-call",
+          "reason_code": "do_not_continue_request",
+          "terminal": true,
+          "next_action": "suppress_contact"
+        },
+        "retrieval": {
+          "enabled": false,
+          "status": "blocked_by_guardrail",
+          "registry_id": "none",
+          "latency_budget_ms": 0,
+          "influence_allowed": false,
+          "blocked_reason": "refusal_overrides_retrieval"
+        },
+        "voice": {
+          "language": "en",
+          "delivery_profile_id": "campaign_default_neutral",
+          "pacing_profile": "short_final",
+          "protected_text_lock": true,
+          "provider_live_enabled": false
+        },
+        "response": {
+          "final_response": "Understood. I will end the call and mark that you do not want to continue. Goodbye.",
+          "response_language": "en",
+          "sale_ready": false,
+          "non_sale_correct": true,
+          "outcome_reason": "stop_request",
+          "output_contract_version": "product-agent-output-v1"
+        },
+        "evidence_log": {
+          "state_source": "synthetic_case_fixture",
+          "stores_raw_transcript_text": false,
+          "stores_private_audio": false,
+          "logs_selected_strategy": true,
+          "logs_safety_reason": true,
+          "stores_provider_payload": false
+        }
+      }
+    }
+  ],
+  "architecture_boundary": {
+    "core_loop": "SalesCampaign plus short-term state plus strategy plus safety plus call control plus response contract",
+    "retrieval": "retrieval disabled by default; RAG hints need separate RAG-017/RAG-018 promotion",
+    "voice": "voice profile is delivery metadata only and makes no live provider call",
+    "learning": "post-call learning stays outside the live path",
+    "runtime_effect": "no runtime behavior changed by this checkpoint"
+  },
+  "data_boundary": {
+    "real_customer_data_used": false,
+    "private_data_read": false,
+    "transcript_bodies_persisted": false,
+    "provider_calls_made": false,
+    "payment_or_checkout_enabled": false,
+    "commercial_runtime_prompt_changed": false
+  }
+}

@@ -20,9 +20,9 @@
   - Documents the milestone and explains why `manual-transcript` comes before cloud ASR.
 - Create: `research/experiments/VOICE-002-audio-input-prototype.md`
   - Records the experiment setup and interpretation.
-- Generate: `research/experiments/generated/VOICE-002-audio-input-packet.json`
+- Generate: `research/experiments/generated/VOICE-002/VOICE-002-audio-input-packet.json`
   - Stores the deterministic VOICE-002 packet.
-- Generate: `research/experiments/generated/VOICE-002-listen.html`
+- Generate: `research/experiments/generated/VOICE-002/VOICE-002-listen.html`
   - Local browser listener for the resulting agent response.
 
 ## Task 1: Add Failing Validator

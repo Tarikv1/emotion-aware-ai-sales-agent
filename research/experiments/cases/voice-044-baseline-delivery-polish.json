@@ -1,0 +1,79 @@
+{
+  "experiment_id": "VOICE-044-baseline-delivery-polish",
+  "title": "Baseline delivery polish",
+  "description": "Applies a narrow polish to the accepted baseline shaped runtime after VOICE-043, without promoting VOICE-041 private-pattern settings.",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "runtime_boundary": {
+    "changes_allowed": "Provider-facing baseline TTS polish for eligible freeform segments only.",
+    "changes_forbidden": [
+      "changing final_response",
+      "changing protected campaign, compliance, handoff, hangup, or do-not-call text",
+      "changing provider voice identity",
+      "changing provider style or speed settings",
+      "promoting VOICE-041 private-pattern profile",
+      "reading raw private audio",
+      "uploading private or customer audio",
+      "voice cloning",
+      "making provider calls in the default checkpoint"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "voice-044-en-fast-filler-cleanup",
+      "title": "English trust-style filler is converted to a clear sentence boundary",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "That sounds expensive.",
+      "candidate_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "expected": {
+        "baseline_polish_applied": true,
+        "required_fragment": "I'll keep this practical. You're right to ask.",
+        "forbidden_fragment": ", so, you're right to ask",
+        "private_pattern_profile_applied": false,
+        "style_after": 0.0,
+        "final_response_unchanged": true,
+        "provider_calls_made": false
+      }
+    },
+    {
+      "case_id": "voice-044-de-connector-cleanup",
+      "title": "German connector cleanup keeps baseline pacing but removes artificial sentence case",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Das klingt zu teuer.",
+      "candidate_response": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+      "expected": {
+        "baseline_polish_applied": true,
+        "required_fragment": "also wenn's",
+        "forbidden_fragment": "Also, Wenn's",
+        "private_pattern_profile_applied": false,
+        "style_after": 0.0,
+        "final_response_unchanged": true,
+        "provider_calls_made": false
+      }
+    },
+    {
+      "case_id": "voice-044-protected-do-not-call-noop",
+      "title": "Protected do-not-call text stays exact",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "expected": {
+        "baseline_polish_applied": false,
+        "private_pattern_profile_applied": false,
+        "style_after": 0.0,
+        "segment_type": "do_not_call",
+        "protected_text_locked": true,
+        "final_response_unchanged": true,
+        "provider_calls_made": false
+      }
+    }
+  ]
+}

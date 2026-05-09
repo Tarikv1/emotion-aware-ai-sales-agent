@@ -28,8 +28,8 @@ python scripts\generate_runtime_tts_delivery.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage relevance-check `
   --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
-  --out research\experiments\generated\RESP-003-runtime-live-tts-result.json `
-  --report-out research\experiments\generated\RESP-003-runtime-live-tts-report.md
+  --out research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-result.json `
+  --report-out research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-report.md
 ```
 
 Validator:
@@ -125,7 +125,7 @@ It is too slow for a sales-agent call.
 Use with real leads right now: no.
 ```
 
-Detailed review: `research/experiments/generated/RESP-003-bilingual-human-listening-review.md`
+Detailed review: `research/experiments/generated/RESP-003/RESP-003-bilingual-human-listening-review.md`
 
 ## Interpretation
 

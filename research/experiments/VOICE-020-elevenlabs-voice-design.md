@@ -50,13 +50,13 @@ Voice IDs can be stored in ignored local config for repeat testing, but API keys
 The generated packet is:
 
 ```text
-research/experiments/generated/VOICE-020-elevenlabs-voice-design.json
+research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design.json
 ```
 
 The generated report is:
 
 ```text
-research/experiments/generated/VOICE-020-elevenlabs-voice-design-report.md
+research/experiments/generated/VOICE-020/VOICE-020-elevenlabs-voice-design-report.md
 ```
 
 ## Expected Next Step

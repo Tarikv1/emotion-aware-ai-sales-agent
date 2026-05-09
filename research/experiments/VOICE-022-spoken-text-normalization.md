@@ -45,8 +45,8 @@ Coverage:
 Generated artifacts:
 
 ```text
-research/experiments/generated/VOICE-022-spoken-text-normalization.json
-research/experiments/generated/VOICE-022-spoken-text-normalization-report.md
+research/experiments/generated/VOICE-022/VOICE-022-spoken-text-normalization.json
+research/experiments/generated/VOICE-022/VOICE-022-spoken-text-normalization-report.md
 ```
 
 Summary:

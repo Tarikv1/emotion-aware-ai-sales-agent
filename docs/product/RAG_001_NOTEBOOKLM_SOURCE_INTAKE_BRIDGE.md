@@ -1,4 +1,4 @@
-﻿# RAG-001 NotebookLM Source Intake Bridge
+# RAG-001 NotebookLM Source Intake Bridge
 
 RAG-001 creates the first local source-intake bridge for the sales knowledge base.
 

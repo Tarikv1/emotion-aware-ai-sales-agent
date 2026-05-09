@@ -15,7 +15,7 @@ RESP-003 runs after RESP-002. It can turn provider-ready guarded text into audio
 - Provider calls made: `True`
 - Generated text sent to provider: `True`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
+- Audio path: `research\experiments\generated\RESP-003\RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
 - Fallback used: `False`
 - Fallback reason: `not needed`
 - Customer audio uploaded: `False`
@@ -36,7 +36,7 @@ RESP-003 runs after RESP-002. It can turn provider-ready guarded text into audio
 ## Asset Log Summary
 
 - Asset status: `needs review`
-- Output path: `research\experiments\generated\RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
+- Output path: `research\experiments\generated\RESP-003\RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
 - API key location: `environment-only`
 - Network used: `True`
 - Upload used: `False`

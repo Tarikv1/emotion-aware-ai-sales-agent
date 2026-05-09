@@ -60,16 +60,16 @@ No real customer conversations or copied call transcripts are stored in the repo
 
 Packet generation completed:
 
-- `research/experiments/generated/PROD-004-evaluation-packet.md`
+- `research/experiments/generated/PROD-004/PROD-004-evaluation-packet.md`
 
 Database-shaped export completed:
 
-- `research/experiments/generated/PROD-004-db-records.json`
+- `research/experiments/generated/PROD-004/PROD-004-db-records.json`
 
 SQLite import completed:
 
-- `research/experiments/generated/PROD-004.sqlite`
-- `research/experiments/generated/PROD-004-sqlite-report.md`
+- `research/experiments/generated/PROD-004/PROD-004.sqlite`
+- `research/experiments/generated/PROD-004/PROD-004-sqlite-report.md`
 
 Validation completed:
 
@@ -78,8 +78,8 @@ Validation completed:
 Rule baseline completed:
 
 - `research/experiments/PROD-004-rule-baseline.md`
-- `research/experiments/generated/PROD-004-rule-baseline-results.json`
-- `research/experiments/generated/PROD-004-rule-baseline-report.md`
+- `research/experiments/generated/PROD-004/PROD-004-rule-baseline-results.json`
+- `research/experiments/generated/PROD-004/PROD-004-rule-baseline-report.md`
 
 Observed table counts:
 

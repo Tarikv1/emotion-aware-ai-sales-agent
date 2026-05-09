@@ -1,4 +1,4 @@
-﻿### Emotion-Aware AI Sales Agent: Behavioral Strategy & Persuasion Extraction Report
+### Emotion-Aware AI Sales Agent: Behavioral Strategy & Persuasion Extraction Report
 
 ##### 1\. Source Coverage Table
 

@@ -49,6 +49,8 @@ voice_delivery.voice_listening_calibration
 voice_delivery.voice_emotion_smoothing
 voice_delivery.voice_semantic_emphasis
 voice_delivery.voice_low_pressure_focus
+voice_delivery.voice_baseline_delivery_polish
+voice_delivery.voice_private_pattern_profile
 voice_delivery.provider_rendering
 voice_delivery.validation
 ```
@@ -69,7 +71,7 @@ Eligible for prosody:
 - freeform empathy
 - freeform explanations
 
-Eligible freeform text may also receive spoken-text normalization, speech-realism/filler placement, interaction-prosody shaping, opt-in controlled imperfections, provider prosody, `VOICE-034` pacing calibration, `VOICE-035` connected speech, `VOICE-036` listening calibration, `VOICE-037` emotion-transition smoothing, `VOICE-039` semantic-emphasis wording candidates, and `VOICE-040` low-pressure focus correction before live TTS. This lets `I will` become `I'll` in English or `Ich habe` become `Ich hab` in German for provider-facing TTS text, while allowing bounded lookup acknowledgements, neutral backchannels, pace cues, professional sentence-boundary imperfections, tighter provider break/speed settings, connected phrase flow, weak-emphasis filtering, smoother emotional inertia, one controlled English clear/simple wording candidate, and one low-pressure phrase correction only where safe.
+Eligible freeform text may also receive spoken-text normalization, speech-realism/filler placement, interaction-prosody shaping, opt-in controlled imperfections, provider prosody, `VOICE-034` pacing calibration, `VOICE-035` connected speech, `VOICE-036` listening calibration, `VOICE-037` emotion-transition smoothing, `VOICE-039` semantic-emphasis wording candidates, `VOICE-040` low-pressure focus correction, and `VOICE-044` baseline delivery polish before live TTS. `VOICE-041` private-pattern settings remain experimental after VOICE-042/VOICE-043 and must not be enabled by default. This lets `I will` become `I'll` in English or `Ich habe` become `Ich hab` in German for provider-facing TTS text, while allowing bounded lookup acknowledgements, neutral backchannels, pace cues, professional sentence-boundary imperfections, tighter provider break/speed settings, connected phrase flow, weak-emphasis filtering, smoother emotional inertia, one controlled English clear/simple wording candidate, one low-pressure phrase correction, and narrow cleanup of brittle filler/connector artifacts.
 
 Protected from prosody:
 
@@ -109,8 +111,8 @@ python scripts\generate_runtime_voice_delivery.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage relevance-check `
   --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
-  --out research\experiments\generated\RESP-002-runtime-voice-delivery-result.json `
-  --report-out research\experiments\generated\RESP-002-runtime-voice-delivery-report.md
+  --out research\experiments\generated\RESP-002\RESP-002-runtime-voice-delivery-result.json `
+  --report-out research\experiments\generated\RESP-002\RESP-002-runtime-voice-delivery-report.md
 ```
 
 Validate:
@@ -148,6 +150,8 @@ voice listening calibration validation: true
 voice emotion smoothing validation: true
 voice semantic emphasis validation: true
 voice low-pressure focus validation: true
+voice baseline delivery polish validation: true
+voice private pattern profile validation: true
 provider_calls_made: false
 requires_api_key: false
 customer_audio_uploaded: false
@@ -160,6 +164,9 @@ VOICE-036 listening calibration applied: true
 VOICE-037 emotion smoothing applied: true
 VOICE-039 semantic emphasis rewrites: 0 for the default German turn
 VOICE-040 low-pressure focus rewrites: 0 for the default German turn
+VOICE-044 baseline delivery polish adjustments: validated when eligible artifacts appear
+VOICE-041 private pattern profile applied: false by default
+VOICE-043 baseline shaped runtime preferred: true
 provider tags in protected segments: 0
 ```
 
@@ -171,5 +178,6 @@ This keeps the architecture clean:
 
 - policy decides what can be said
 - RESP-001 decides guarded wording
-- RESP-002 decides how the approved wording should be spoken and delivered by voice, including spoken normalization, bounded speech realism, interaction prosody, opt-in controlled imperfections, provider preview rendering, pacing calibration, connected speech, listening calibration, emotion-transition smoothing, controlled semantic-emphasis candidates, and low-pressure focus corrections
+- RESP-002 decides how the approved wording should be spoken and delivered by voice, including spoken normalization, bounded speech realism, interaction prosody, opt-in controlled imperfections, provider preview rendering, pacing calibration, connected speech, listening calibration, emotion-transition smoothing, controlled semantic-emphasis candidates, low-pressure focus corrections, and VOICE-044 baseline delivery polish
+- VOICE-041 private-pattern provider settings remain experimental and off by default because VOICE-043 records baseline shaped runtime as the preferred path
 - live TTS remains a separate explicit provider step

@@ -1,4 +1,4 @@
-﻿### Tailored Report: Emotion-Aware AI Sales Agent Closing Techniques
+### Tailored Report: Emotion-Aware AI Sales Agent Closing Techniques
 
 #### 1\. Source Coverage Table
 

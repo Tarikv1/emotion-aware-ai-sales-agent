@@ -28,13 +28,13 @@ The product must also be low-latency. In a live call, the customer should normal
 
 ## Initial Product Positioning
 
-The first sellable version should be framed as a configurable autonomous lead-qualification and appointment-setting agent for constrained outbound calling workflows, not as a universal call-center replacement.
+The current product direction is a configurable autonomous sales agent for constrained outbound calling workflows, with appointment-setting as a lower-risk campaign mode rather than the full product boundary.
 
 A more realistic early product positioning is:
 
-`A configurable emotion-aware autonomous calling agent that qualifies potential customers, adapts to their conversational state, follows campaign-specific guardrails, and schedules or logs the right next action.`
+`A configurable emotion-aware autonomous calling agent that qualifies potential customers, adapts to their conversational state, follows campaign-specific guardrails, and either closes the campaign-defined next step or logs the right non-sale outcome.`
 
-This keeps the product credible while the underlying system matures.
+For full-sale campaigns, "close" means a verbal commitment, confirmed next action, sale-ready outcome, or approved handoff. It does not mean autonomous payment collection, contract signing, regulated advice, or unsupported product claims.
 
 The first simulation case set is B2B-leaning because the initial client workflow focused on business lead qualification. That should not constrain the long-term product scope.
 
@@ -57,7 +57,7 @@ The client is probably not buying academic metrics directly, but thesis experime
 
 ## Product MVP
 
-Start with a constrained autonomous lead-qualification and scheduling agent before attempting broader sales automation.
+Start with a constrained autonomous full-sale simulation for approved campaign types, while keeping lead qualification, scheduling, and handoff as supported lower-risk modes.
 
 MVP capabilities:
 
@@ -69,8 +69,10 @@ MVP capabilities:
 - generate and execute the next response autonomously in the target channel
 - ask a short sequence of client-approved qualification questions
 - classify interest state
-- schedule a follow-up call with a human sales agent when appropriate
-- decide whether to continue, bridge, transfer, end, or schedule-and-end each call turn
+- attempt a campaign-approved close when the customer is eligible and interested
+- correctly avoid closing when the right outcome is support, escalation, do-not-call, or no sale
+- schedule a follow-up call with a human sales agent when that is the approved close or fallback
+- decide whether to continue, bridge, transfer, end, close, or schedule-and-end each call turn
 - log why the strategy was selected
 - escalate or pause when confidence is low, policy boundaries are hit, or the user asks for a human
 
@@ -80,7 +82,7 @@ The live response path also needs explicit call-control behavior. The agent shou
 
 Development and testing may use human review, but launch behavior should not require human approval for every normal response.
 
-For B2C workflows, "follow-up" may mean a human sales call, consultation, service appointment, demo, or callback depending on the client's product.
+For B2C workflows, the approved close may mean verbal purchase intent, a human sales call, consultation, service appointment, demo, callback, or other client-approved next step depending on the product.
 
 For insurance workflows, the agent should qualify interest and schedule an approved human callback or specialist conversation. It should not act as a full autonomous insurance advisor or make detailed coverage, health, legal, or savings claims.
 

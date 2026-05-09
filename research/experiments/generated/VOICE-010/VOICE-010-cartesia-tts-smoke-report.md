@@ -44,7 +44,7 @@ VOICE-010 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - API call made: `True`
 - Generated text sent to provider: `True`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-010-C01-de-cartesia.wav`
+- Audio path: `research/experiments/generated/VOICE-010/VOICE-010-C01-de-cartesia.wav`
 - Audio bytes: `92676`
 - HTTP status: `200`
 - Time to first audio byte: `1035.629`
@@ -59,7 +59,7 @@ VOICE-010 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - API call made: `True`
 - Generated text sent to provider: `True`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-010-C02-en-cartesia.wav`
+- Audio path: `research/experiments/generated/VOICE-010/VOICE-010-C02-en-cartesia.wav`
 - Audio bytes: `93418`
 - HTTP status: `200`
 - Time to first audio byte: `347.719`

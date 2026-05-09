@@ -18,8 +18,8 @@ It then:
 ## Current Artifact
 
 ```text
-research/experiments/generated/RESP-002-runtime-voice-delivery-result.json
-research/experiments/generated/RESP-002-runtime-voice-delivery-report.md
+research/experiments/generated/RESP-002/RESP-002-runtime-voice-delivery-result.json
+research/experiments/generated/RESP-002/RESP-002-runtime-voice-delivery-report.md
 ```
 
 ## Current Case

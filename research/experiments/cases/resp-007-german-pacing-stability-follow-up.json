@@ -1,0 +1,44 @@
+{
+  "experiment_id": "RESP-007-german-pacing-stability-follow-up",
+  "title": "German pacing-stability follow-up for RESP-006",
+  "description": "A narrow same-question follow-up that keeps the German answer content fixed while changing only provider-facing pacing delivery surfaces.",
+  "source_checkpoint": "RESP-006-german-runtime-version-ab-listening-check",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "default_mode": "dry-run",
+    "live_requires": [
+      "--live",
+      "ELEVENLABS_API_KEY",
+      "ELEVENLABS_VOICE_ID_DE or ignored local voice config"
+    ],
+    "customer_audio_uploaded": false,
+    "voice_cloning_used": false,
+    "private_audio_used": false,
+    "quality_claim_allowed_without_human_review": false,
+    "voice_personality_selector_unblocked": false
+  },
+  "cases": [
+    {
+      "case_id": "RESP-007-DE-PACING-STABILITY-COMPLEX",
+      "source_resp_006_case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+      "title": "Same German question with pacing-stabilized old and new runtime variants",
+      "language": "de",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "question": "K\u00f6nnen Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich m\u00f6chte kein Verkaufsgespr\u00e4ch, und ich muss verstehen, was danach konkret passieren w\u00fcrde, bevor ich meinen Chef einbeziehe.",
+      "candidate_response": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespr\u00e4ch eine Entscheidung treffen. Die praktische Variante w\u00e4re: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Pr\u00fcfung angeschaut w\u00fcrde und was ein Spezialist best\u00e4tigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, k\u00f6nnen Sie es ignorieren oder einfach Nein sagen.",
+      "pacing_problem": {
+        "old_plain_guarded": "starts a bit too fast and then becomes a bit too slow",
+        "new_shaped_runtime": "starts strong but becomes a bit too fast later"
+      },
+      "editable_surface": "provider-facing TTS input break tags and voice speed settings only",
+      "review_focus": [
+        "Does old_plain_pacing_stabilized start less rushed without dragging later?",
+        "Does new_shaped_pacing_stabilized keep the strong opening without speeding up late?",
+        "Is the answer content unchanged from RESP-006?",
+        "Can either German variant move toward the later voice-personality selector?"
+      ]
+    }
+  ]
+}

@@ -39,8 +39,8 @@ Cloud streaming ASR remains the likely production-relevant class for low-latency
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-003-asr-provider-comparison.json
-research/experiments/generated/VOICE-003-asr-provider-comparison-report.md
+research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison.json
+research/experiments/generated/VOICE-003/VOICE-003-asr-provider-comparison-report.md
 ```
 
 ## Interpretation

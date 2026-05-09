@@ -1,0 +1,79 @@
+{
+  "experiment_id": "VOICE-043-baseline-shaped-runtime-acceptance",
+  "title": "Baseline shaped runtime acceptance",
+  "description": "Locks baseline RESP-002 shaped runtime as the preferred voice path after VOICE-042 listening showed it beat the private-pattern profile.",
+  "provider": "elevenlabs",
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "baseline_shaped_runtime_preferred": true,
+  "private_pattern_profile_promoted": false,
+  "runtime_boundary": {
+    "changes_allowed": "Baseline shaped runtime may keep the existing accepted RESP-002 delivery layers.",
+    "changes_forbidden": [
+      "enabling VOICE-041 private-pattern profile by default",
+      "promoting private-pattern settings without a later winning A/B listening review",
+      "reading raw private audio at runtime",
+      "uploading private audio",
+      "transcribing private speech samples",
+      "voice cloning",
+      "changing protected campaign, compliance, handoff, hangup, or do-not-call text",
+      "logging API keys or raw voice IDs"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "voice-043-en-baseline-objection-lock",
+      "title": "English baseline freeform objection remains preferred",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "en",
+      "transcript": "That sounds expensive, and I am not sure it is worth another review.",
+      "candidate_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "expected": {
+        "profile_enabled": false,
+        "profile_applied": false,
+        "blocked_reason": "profile_disabled",
+        "style_after": 0.0,
+        "final_response_unchanged": true,
+        "provider_calls_made": false
+      }
+    },
+    {
+      "case_id": "voice-043-de-baseline-price-objection-lock",
+      "title": "German baseline freeform objection remains preferred",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Nur wenn es wirklich guenstiger ist. Sonst lohnt sich der Aufwand nicht.",
+      "candidate_response": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+      "expected": {
+        "profile_enabled": false,
+        "profile_applied": false,
+        "blocked_reason": "profile_disabled",
+        "style_after": 0.0,
+        "final_response_unchanged": true,
+        "provider_calls_made": false
+      }
+    },
+    {
+      "case_id": "voice-043-protected-do-not-call-baseline-lock",
+      "title": "Protected do-not-call text remains exact",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "relevance-check",
+      "input_type": "speech-final",
+      "language": "de",
+      "transcript": "Rufen Sie mich bitte nicht mehr an.",
+      "expected": {
+        "profile_enabled": false,
+        "profile_applied": false,
+        "blocked_reason": "profile_disabled",
+        "style_after": 0.0,
+        "segment_type": "do_not_call",
+        "protected_text_locked": true,
+        "final_response_unchanged": true,
+        "provider_calls_made": false
+      }
+    }
+  ]
+}

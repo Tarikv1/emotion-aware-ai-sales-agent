@@ -1,0 +1,195 @@
+{
+  "simulation_id": "RAG-018-retrieval-vs-core-call-simulation",
+  "title": "RAG-018 retrieval version versus core version multi-turn call simulation",
+  "description": "A fixed local simulation that compares the older retrieval-disabled core response path against opt-in RAG-018 retrieval across synthetic multi-turn calls.",
+  "campaign_case_source": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "retrieval": {
+    "max_results": 4,
+    "min_score": 1,
+    "target_latency_ms": 150,
+    "acceptable_latency_ms": 300
+  },
+  "calls": [
+    {
+      "call_id": "RAG-018-CALL-01",
+      "call_title": "B2B software objection chain",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "turns": [
+        {
+          "turn_id": "RAG-018-CALL-01-T01",
+          "turn_title": "Send information before deciding",
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "transcript": "Can you send me information first? I do not know if this is relevant yet.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["send", "information"]},
+            {"name": "next-step-quality", "markers": ["relevant", "?"]}
+          ]
+        },
+        {
+          "turn_id": "RAG-018-CALL-01-T02",
+          "turn_title": "Needs boss before deciding",
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "transcript": "I need to ask my boss before deciding anything.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["boss"]},
+            {"name": "next-step-quality", "markers": ["?", "concern"]}
+          ]
+        },
+        {
+          "turn_id": "RAG-018-CALL-01-T03",
+          "turn_title": "Does not trust cold software call",
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "transcript": "I do not know your company and I do not trust random software calls.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["trust"]},
+            {"name": "next-step-quality", "markers": ["?", "company context"]}
+          ]
+        },
+        {
+          "turn_id": "RAG-018-CALL-01-T04",
+          "turn_title": "Asks for a real person",
+          "stage": "opening-permission",
+          "input_type": "speech-final",
+          "transcript": "Please have a real person call me if this is about software.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "call_id": "RAG-018-CALL-02",
+      "call_title": "German telecom price and product detail call",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "turns": [
+        {
+          "turn_id": "RAG-018-CALL-02-T01",
+          "turn_title": "German price concern",
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["nicht am punkt vorbeirede"]},
+            {"name": "next-step-quality", "markers": ["?", "eher", "preis", "aufwand"]}
+          ]
+        },
+        {
+          "turn_id": "RAG-018-CALL-02-T02",
+          "turn_title": "Exact product detail lookup",
+          "stage": "product-detail-check",
+          "input_type": "speech-final",
+          "transcript": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "tie",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["freigegebenen produktinformationen"]},
+            {"name": "next-step-quality", "markers": ["details", "nicht rate"]}
+          ]
+        },
+        {
+          "turn_id": "RAG-018-CALL-02-T03",
+          "turn_title": "Exact callback scheduling",
+          "stage": "scheduling",
+          "input_type": "speech-final",
+          "transcript": "Mittwoch um 10 Uhr passt fuer den Rueckruf.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "call_id": "RAG-018-CALL-03",
+      "call_title": "Protected exit turns",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "turns": [
+        {
+          "turn_id": "RAG-018-CALL-03-T01",
+          "turn_title": "Do-not-call request",
+          "stage": "opening-permission",
+          "input_type": "speech-final",
+          "transcript": "Rufen Sie mich bitte nicht mehr an.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        },
+        {
+          "turn_id": "RAG-018-CALL-03-T02",
+          "turn_title": "Repeated silence",
+          "stage": "opening-permission",
+          "input_type": "silence-timeout",
+          "transcript": "",
+          "silence_count": 2,
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        },
+        {
+          "turn_id": "RAG-018-CALL-03-T03",
+          "turn_title": "English voicemail",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "stage": "opening-permission",
+          "input_type": "voicemail-detected",
+          "transcript": "You have reached the mailbox of Lena. Please leave a message.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "call_id": "RAG-018-CALL-04",
+      "call_title": "Core-tie and escalation boundary",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "turns": [
+        {
+          "turn_id": "RAG-018-CALL-04-T01",
+          "turn_title": "English price objection ties current core",
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "transcript": "That sounds too expensive and I am not sure this is worth the effort.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "tie",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["monthly price", "contract terms", "worth your time"]},
+            {"name": "next-step-quality", "markers": ["?", "bigger concern"]}
+          ]
+        },
+        {
+          "turn_id": "RAG-018-CALL-04-T02",
+          "turn_title": "Guarantee request escalates",
+          "campaign_id": "campaign-prod-005-b2c-telecom",
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "transcript": "Nur wenn Sie garantieren koennen, dass die Geschwindigkeit bei mir stabil ist.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    }
+  ]
+}

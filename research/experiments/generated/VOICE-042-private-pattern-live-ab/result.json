@@ -1,0 +1,441 @@
+{
+  "case_file": "research\\experiments\\cases\\voice-042-private-pattern-live-ab.json",
+  "cases": [
+    {
+      "ab_results": [
+        {
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "api_key_present": true,
+          "api_key_value_logged": false,
+          "asset_log": {
+            "asset_id": "research\\experiments\\generated\\VOICE-042-private-pattern-live-ab\\audio\\baseline_shaped_runtime\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-8c16cb33.mp3",
+            "asset_log_id": "RESP-003-generated-audio-asset-log",
+            "audio_format": "mp3",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "experiment_id": "RESP-003-runtime-live-tts",
+            "inputs": {
+              "consent_note": "No customer audio or voice cloning used by RESP-003.",
+              "customer_audio_uploaded": false,
+              "person_or_voice_likeness_involved": false,
+              "provider_rendered_text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+              "source_audio_rights": "not applicable",
+              "source_audio_used": false,
+              "source_text": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+              "source_text_path": "runtime guarded response packet",
+              "synthetic_prompt": true,
+              "voice_cloning_used": false
+            },
+            "language": "en",
+            "output_path": "research\\experiments\\generated\\VOICE-042-private-pattern-live-ab\\audio\\baseline_shaped_runtime\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-8c16cb33.mp3",
+            "provider": "elevenlabs",
+            "provider_model": "eleven_flash_v2_5",
+            "provider_voice_env_var": "local_voice_ids:elevenlabs.en",
+            "review": {
+              "clarity": null,
+              "compliance_concern": false,
+              "decision": "needs review",
+              "emotional_appropriateness": null,
+              "follow_up": "Listen to generated audio before making quality claims.",
+              "human_listening_review": false,
+              "language_pronunciation": null,
+              "muffling_or_artifacts": null,
+              "naturalness": null,
+              "pacing": null,
+              "sales_usefulness": null,
+              "trustworthiness": null
+            },
+            "run_boundary": {
+              "api_key_location": "environment-only",
+              "command": "scripts/run_voice_042_private_pattern_live_ab.py",
+              "cost": "provider API call",
+              "environment_variables_used": [
+                "ELEVENLABS_API_KEY",
+                "local_voice_ids:elevenlabs.en"
+              ],
+              "fallback_used": false,
+              "network_used": true,
+              "provider_error": null,
+              "timeout_seconds": 8.0,
+              "upload_used": false
+            },
+            "status": "needs review"
+          },
+          "audio_byte_size": 85308,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-042-private-pattern-live-ab\\audio\\baseline_shaped_runtime\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-8c16cb33.mp3",
+          "customer_audio_uploaded": false,
+          "endpoint_type": "tts-http-stream",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+          "generated_text_sent_to_provider": true,
+          "http_status": 200,
+          "language": "en",
+          "live_call_requested": true,
+          "model_id": "eleven_flash_v2_5",
+          "provider_calls_made": true,
+          "provider_error_summary": {
+            "code": null,
+            "message": null,
+            "type": null
+          },
+          "provider_id": "elevenlabs-stream",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs",
+          "provider_rendering_used": true,
+          "request_id_present": true,
+          "request_preview": {
+            "body": {
+              "language_code": "en",
+              "model_id": "eleven_flash_v2_5",
+              "text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+              "voice_settings": {
+                "similarity_boost": 0.75,
+                "speed": 1.096,
+                "stability": 0.56,
+                "style": 0.0,
+                "use_speaker_boost": true
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json",
+              "xi-api-key": "<redacted>"
+            },
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false"
+          },
+          "requires_api_key": true,
+          "response_content_type": "audio/mpeg",
+          "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "source_checkpoint": "RESP-002 shaped runtime without VOICE-041",
+          "source_runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+          "synthetic_prompt_only": true,
+          "time_to_first_audio_ms": 366.98,
+          "timeout_seconds": 8.0,
+          "total_provider_latency_ms": 448.402,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+          "validation": {
+            "customer_audio_uploaded": false,
+            "final_response_unchanged": true,
+            "notes": "RESP-003 respected provider boundary and audio asset logging rules.",
+            "passed": true,
+            "provider_calls_made": true,
+            "redacted_request_preview": true,
+            "timeout_within_limit": true,
+            "validator": "RESP-003 runtime live TTS safety check",
+            "voice_cloning_used": false
+          },
+          "variant_kind": "baseline_shaped_runtime",
+          "voice_cloning_used": false,
+          "voice_id_present": true,
+          "voice_id_value_logged": false,
+          "voice_private_pattern_profile": {
+            "applied": false,
+            "blocked_reason": "profile_disabled",
+            "enabled": false,
+            "presence_action": "not_applicable",
+            "rhythm_density_action": "not_applied",
+            "runtime_boundary": {
+              "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+              "changes_forbidden": [
+                "reading raw private audio at runtime",
+                "uploading private audio",
+                "voice cloning",
+                "changing final_response",
+                "rewriting provider text",
+                "changing accepted pacing speed",
+                "applying to protected or ineligible segments",
+                "copying low vocal presence into the agent"
+              ],
+              "customer_audio_uploaded": false,
+              "generated_audio_created": false,
+              "provider_calls_made": false,
+              "raw_audio_read": false,
+              "requires_api_key": false,
+              "transcription_created": false,
+              "voice_cloning_used": false
+            },
+            "setting_adjustments": [],
+            "validation": {
+              "applied": false,
+              "boundary_flags_changed": false,
+              "customer_audio_uploaded": false,
+              "passed": true,
+              "provider_call_made": false,
+              "rendered_text_unchanged": true,
+              "segment_text_changes": [],
+              "voice_cloning_used": false
+            }
+          },
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.096,
+            "stability": 0.56,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        },
+        {
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "api_key_present": true,
+          "api_key_value_logged": false,
+          "asset_log": {
+            "asset_id": "research\\experiments\\generated\\VOICE-042-private-pattern-live-ab\\audio\\private_pattern_profile\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-8c16cb33.mp3",
+            "asset_log_id": "RESP-003-generated-audio-asset-log",
+            "audio_format": "mp3",
+            "campaign_id": "campaign-prod-005-b2b-software",
+            "experiment_id": "RESP-003-runtime-live-tts",
+            "inputs": {
+              "consent_note": "No customer audio or voice cloning used by RESP-003.",
+              "customer_audio_uploaded": false,
+              "person_or_voice_likeness_involved": false,
+              "provider_rendered_text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+              "source_audio_rights": "not applicable",
+              "source_audio_used": false,
+              "source_text": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+              "source_text_path": "runtime guarded response packet",
+              "synthetic_prompt": true,
+              "voice_cloning_used": false
+            },
+            "language": "en",
+            "output_path": "research\\experiments\\generated\\VOICE-042-private-pattern-live-ab\\audio\\private_pattern_profile\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-8c16cb33.mp3",
+            "provider": "elevenlabs",
+            "provider_model": "eleven_flash_v2_5",
+            "provider_voice_env_var": "local_voice_ids:elevenlabs.en",
+            "review": {
+              "clarity": null,
+              "compliance_concern": false,
+              "decision": "needs review",
+              "emotional_appropriateness": null,
+              "follow_up": "Listen to generated audio before making quality claims.",
+              "human_listening_review": false,
+              "language_pronunciation": null,
+              "muffling_or_artifacts": null,
+              "naturalness": null,
+              "pacing": null,
+              "sales_usefulness": null,
+              "trustworthiness": null
+            },
+            "run_boundary": {
+              "api_key_location": "environment-only",
+              "command": "scripts/run_voice_042_private_pattern_live_ab.py",
+              "cost": "provider API call",
+              "environment_variables_used": [
+                "ELEVENLABS_API_KEY",
+                "local_voice_ids:elevenlabs.en"
+              ],
+              "fallback_used": false,
+              "network_used": true,
+              "provider_error": null,
+              "timeout_seconds": 8.0,
+              "upload_used": false
+            },
+            "status": "needs review"
+          },
+          "audio_byte_size": 85308,
+          "audio_file_created": true,
+          "audio_output_path": "research\\experiments\\generated\\VOICE-042-private-pattern-live-ab\\audio\\private_pattern_profile\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-8c16cb33.mp3",
+          "customer_audio_uploaded": false,
+          "endpoint_type": "tts-http-stream",
+          "fallback_reason": null,
+          "fallback_used": false,
+          "final_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+          "generated_text_sent_to_provider": true,
+          "http_status": 200,
+          "language": "en",
+          "live_call_requested": true,
+          "model_id": "eleven_flash_v2_5",
+          "provider_calls_made": true,
+          "provider_error_summary": {
+            "code": null,
+            "message": null,
+            "type": null
+          },
+          "provider_id": "elevenlabs-stream",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs",
+          "provider_rendering_used": true,
+          "request_id_present": true,
+          "request_preview": {
+            "body": {
+              "language_code": "en",
+              "model_id": "eleven_flash_v2_5",
+              "text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+              "voice_settings": {
+                "similarity_boost": 0.75,
+                "speed": 1.096,
+                "stability": 0.55,
+                "style": 0.06,
+                "use_speaker_boost": true
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json",
+              "xi-api-key": "<redacted>"
+            },
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false"
+          },
+          "requires_api_key": true,
+          "response_content_type": "audio/mpeg",
+          "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+          "source_checkpoint": "RESP-002 shaped runtime with accepted VOICE-041 private pattern profile",
+          "source_runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+          "synthetic_prompt_only": true,
+          "time_to_first_audio_ms": 210.67,
+          "timeout_seconds": 8.0,
+          "total_provider_latency_ms": 329.408,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+          "validation": {
+            "customer_audio_uploaded": false,
+            "final_response_unchanged": true,
+            "notes": "RESP-003 respected provider boundary and audio asset logging rules.",
+            "passed": true,
+            "provider_calls_made": true,
+            "redacted_request_preview": true,
+            "timeout_within_limit": true,
+            "validator": "RESP-003 runtime live TTS safety check",
+            "voice_cloning_used": false
+          },
+          "variant_kind": "private_pattern_profile",
+          "voice_cloning_used": false,
+          "voice_id_present": true,
+          "voice_id_value_logged": false,
+          "voice_private_pattern_profile": {
+            "applied": true,
+            "blocked_reason": null,
+            "enabled": true,
+            "presence_action": "blocked_low_presence_copy",
+            "rhythm_density_action": "metadata_only_no_pacing_change",
+            "runtime_boundary": {
+              "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+              "changes_forbidden": [
+                "reading raw private audio at runtime",
+                "uploading private audio",
+                "voice cloning",
+                "changing final_response",
+                "rewriting provider text",
+                "changing accepted pacing speed",
+                "applying to protected or ineligible segments",
+                "copying low vocal presence into the agent"
+              ],
+              "customer_audio_uploaded": false,
+              "generated_audio_created": false,
+              "provider_calls_made": false,
+              "raw_audio_read": false,
+              "requires_api_key": false,
+              "transcription_created": false,
+              "voice_cloning_used": false
+            },
+            "setting_adjustments": [
+              {
+                "after": 0.06,
+                "before": 0.0,
+                "reason": "higher_expressiveness_variation_candidate",
+                "setting": "style"
+              },
+              {
+                "after": 0.55,
+                "before": 0.56,
+                "reason": "bounded_variation_without_voice_cloning",
+                "setting": "stability"
+              }
+            ],
+            "validation": {
+              "applied": true,
+              "boundary_flags_changed": false,
+              "customer_audio_uploaded": false,
+              "passed": true,
+              "provider_call_made": false,
+              "rendered_text_unchanged": true,
+              "segment_text_changes": [],
+              "voice_cloning_used": false
+            }
+          },
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.096,
+            "stability": 0.55,
+            "style": 0.06,
+            "use_speaker_boost": true
+          }
+        }
+      ],
+      "baseline_tts_input_text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "voice-042-en-freeform-expressiveness-ab",
+      "final_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "language": "en",
+      "profiled_tts_input_text": "I'll keep this practical. <break time=\"0.194s\" /> Um, you're right to ask. It only matters if the next step is useful.",
+      "quality_review": {
+        "criteria": [
+          "baseline shaped runtime vs VOICE-041 profile preference",
+          "naturalness",
+          "clarity",
+          "sales-call pacing",
+          "AI-obviousness",
+          "emotional appropriateness without hidden-state claims",
+          "trustworthiness",
+          "whether style increase causes artifacts or overacting"
+        ],
+        "human_listening_review_recorded": false,
+        "human_listening_review_required": true,
+        "quality_claim_allowed": false
+      },
+      "source_cases": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "stage": "relevance-check",
+      "title": "English freeform baseline versus private profile",
+      "transcript": "That sounds expensive, and I am not sure it is worth another review.",
+      "validation": {
+        "baseline_profile_applied": false,
+        "passed": true,
+        "profile_variant_applied": true,
+        "runtime_boundary_passed": true,
+        "same_tts_text": true,
+        "stability_reduced": true,
+        "style_changed": true
+      }
+    }
+  ],
+  "experiment_id": "VOICE-042-private-pattern-live-ab",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "customer_audio_uploaded": false,
+    "default_mode": "dry-run",
+    "provider_calls_made": true,
+    "quality_claim_allowed_without_human_rating": false,
+    "raw_audio_read": false,
+    "requires_api_key": true,
+    "transcription_created": false,
+    "voice_cloning_used": false
+  },
+  "summary": {
+    "ab_variant_count": 2,
+    "api_calls_made": 2,
+    "audio_files_created": 2,
+    "baseline_variant_count": 1,
+    "case_count": 1,
+    "customer_audio_uploaded": false,
+    "fallback_count": 0,
+    "human_listening_review_recorded": false,
+    "live_call_requested": true,
+    "max_time_to_first_audio_ms": 366.98,
+    "max_total_provider_latency_ms": 448.402,
+    "profiled_variant_count": 1,
+    "provider_count": 1,
+    "providers": [
+      "elevenlabs"
+    ],
+    "quality_claim_allowed": false,
+    "raw_audio_read": false,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "transcription_created": false,
+    "validation_passed": true,
+    "voice_cloning_used": false
+  }
+}

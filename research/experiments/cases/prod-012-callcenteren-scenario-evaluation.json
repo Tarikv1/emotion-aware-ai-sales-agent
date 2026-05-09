@@ -1,0 +1,473 @@
+{
+  "prod_012_id": "PROD-012-callcenteren-scenario-evaluation",
+  "title": "CallCenterEN-grounded scenario evaluation with RAG-018 retrieval comparison",
+  "description": "Fixed local scenario bank derived from multi-source call-center patterns, not copied transcripts. Compares old core retrieval-disabled responses against opt-in RAG-018 retrieval.",
+  "campaign_case_source": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "retrieval": {
+    "max_results": 4,
+    "min_score": 1,
+    "target_latency_ms": 150,
+    "acceptable_latency_ms": 300
+  },
+  "dataset_source": {
+    "dataset_name": "AIxBlock/92k-real-world-call-center-scripts-english",
+    "dataset_url": "https://huggingface.co/datasets/AIxBlock/92k-real-world-call-center-scripts-english",
+    "dataset_file_tree": "https://huggingface.co/datasets/AIxBlock/92k-real-world-call-center-scripts-english/tree/main",
+    "paper_url": "https://arxiv.org/abs/2507.02958",
+    "checked_date": "2026-05-09",
+    "license": "cc-by-nc-4.0",
+    "reuse_label": "pattern_grounding_only",
+    "commercial_runtime_use_allowed": false,
+    "commercial_model_training_allowed": false,
+    "dataset_size_claim": "91,706 redacted transcript JSON files; public release does not include audio",
+    "file_access_shape": "large zip files; local drop folder only"
+  },
+  "intake_policy": {
+    "download_performed": false,
+    "download_required_for_default_run": false,
+    "provider_calls_made": false,
+    "raw_zip_storage": "data/external/callcenteren/raw/ ignored local-only",
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_allowed": false,
+    "high_similarity_paraphrase_allowed": false,
+    "single_source_scenario_allowed": false,
+    "commercial_runtime_prompt_contamination_allowed": false,
+    "commercial_model_training_allowed": false,
+    "tracked_artifact_text_policy": "source patterns, project-owned scenario rewrites, and aggregate metrics only"
+  },
+  "source_patterns": [
+    {
+      "pattern_id": "ccen-auto-inbound-fit-check",
+      "domain_hint": "automotive_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 14,
+      "stage_sequence": ["need_statement", "fit_check", "constraint_capture", "next_step"],
+      "objection_types": ["fit-risk", "trust-credibility"],
+      "pattern_summary": "Customer needs help deciding whether a service or product fits; agent should narrow requirements before recommending."
+    },
+    {
+      "pattern_id": "ccen-insurance-certainty-boundary",
+      "domain_hint": "insurance_service",
+      "call_direction": "outbound",
+      "source_transcript_count": 12,
+      "stage_sequence": ["opening", "interest_check", "certainty_request", "specialist_handoff"],
+      "objection_types": ["claim-boundary", "risk-boundary"],
+      "pattern_summary": "Customer asks for certainty; agent should avoid guarantees and move to verification or handoff."
+    },
+    {
+      "pattern_id": "ccen-general-send-info-brushoff",
+      "domain_hint": "general_customer_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 15,
+      "stage_sequence": ["opening", "send_info_request", "relevance_repair", "short_follow_up"],
+      "objection_types": ["send-info-brushoff", "timing-delay"],
+      "pattern_summary": "Customer asks for information to avoid a call; agent should ask what would make the information relevant."
+    },
+    {
+      "pattern_id": "ccen-home-service-complaint-repair",
+      "domain_hint": "home_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 10,
+      "stage_sequence": ["complaint", "acknowledgement", "issue_capture", "repair_or_escalation"],
+      "objection_types": ["angry-or-annoyed", "trust-repair"],
+      "pattern_summary": "Customer is frustrated; agent should acknowledge and repair before any selling motion."
+    },
+    {
+      "pattern_id": "ccen-telecom-price-resistance",
+      "domain_hint": "telecom",
+      "call_direction": "outbound",
+      "source_transcript_count": 13,
+      "stage_sequence": ["opening", "price_concern", "criteria_clarification", "exit_or_followup"],
+      "objection_types": ["price-objection", "status-quo"],
+      "pattern_summary": "Customer focuses on price; agent should clarify whether price, effort, terms, or relevance is the real blocker."
+    },
+    {
+      "pattern_id": "ccen-medical-equipment-human-request",
+      "domain_hint": "medical_equipment",
+      "call_direction": "outbound",
+      "source_transcript_count": 9,
+      "stage_sequence": ["opening", "technical_question", "human_request", "handoff"],
+      "objection_types": ["human-request", "claim-boundary"],
+      "pattern_summary": "Customer asks technical or sensitive questions; agent should escalate instead of improvising."
+    },
+    {
+      "pattern_id": "ccen-membership-cancel-or-stop",
+      "domain_hint": "membership_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 8,
+      "stage_sequence": ["stop_intent", "reason_capture", "boundary_respect", "confirmation"],
+      "objection_types": ["customer-refusal", "do-not-call"],
+      "pattern_summary": "Customer wants to stop, cancel, or avoid contact; agent should respect the boundary and not keep selling."
+    },
+    {
+      "pattern_id": "ccen-b2b-authority-gate",
+      "domain_hint": "b2b_software",
+      "call_direction": "outbound",
+      "source_transcript_count": 11,
+      "stage_sequence": ["opening", "authority_objection", "shareable_summary", "one_concern_check"],
+      "objection_types": ["authority", "decision-process"],
+      "pattern_summary": "Customer needs a manager or decision maker; agent should offer a shareable summary or address one concern first."
+    },
+    {
+      "pattern_id": "ccen-trust-cold-call-proof",
+      "domain_hint": "b2b_software",
+      "call_direction": "outbound",
+      "source_transcript_count": 10,
+      "stage_sequence": ["opening", "trust_objection", "proof_path", "consented_next_step"],
+      "objection_types": ["trust-credibility", "cold-call-resistance"],
+      "pattern_summary": "Customer distrusts the caller; agent should ask which proof or context would help before pushing."
+    }
+  ],
+  "commercial_runtime_prompts": [
+    "Use approved campaign facts, preserve protected refusals and handoffs, ask one question at a time, avoid unsupported guarantees, and keep retrieval advisory unless an explicit runtime gate enables it."
+  ],
+  "synthetic_leakage_probe_sentences": [
+    "this sentence is a synthetic leak probe and must not appear in any generated scenario",
+    "the caller repeats a private account detail that must never be copied into product prompts"
+  ],
+  "scenario_bank": [
+    {
+      "scenario_id": "PROD-012-CCEN-001",
+      "scenario_label": "sale_eligible",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "source_pattern_ids": [
+        "ccen-general-send-info-brushoff",
+        "ccen-b2b-authority-gate",
+        "ccen-trust-cold-call-proof"
+      ],
+      "scenario_title": "B2B buyer is open to a review but asks for proof and a manager-friendly summary",
+      "customer_context": "The buyer is not ready to buy on the call, but could accept a useful specialist review if the agent earns relevance and makes the next step easy to share internally.",
+      "agent_goal": "Keep the conversation low-pressure, clarify what information is useful, and offer a concise next step without claiming hidden buyer emotion.",
+      "generated_turn_outline": [
+        "Ask what information would make the follow-up relevant.",
+        "Offer a summary the buyer can share with a manager.",
+        "Ask what proof or company context would help before the next step."
+      ],
+      "safe_close_criteria": [
+        "buyer consents to review path",
+        "no pressure or invented deadline",
+        "no unsupported product claims"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "claiming the buyer is afraid or anxious",
+        "pushing a same-day commitment",
+        "using copied transcript language"
+      ],
+      "expected_outcome": "sale_ready",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-001-T01",
+          "turn_title": "Send information before deciding",
+          "stage": "relevance-check",
+          "customer_utterance": "Can you send me information first? I do not know if this is relevant yet.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "objection-resolution", "markers": ["send", "information"]},
+            {"name": "next-step-quality", "markers": ["relevant", "pricing"]}
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-001-T02",
+          "turn_title": "Needs boss before deciding",
+          "stage": "relevance-check",
+          "customer_utterance": "I need to ask my boss before deciding anything.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "authority-resolution", "markers": ["boss"]},
+            {"name": "next-step-quality", "markers": ["concern", "?"]}
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-001-T03",
+          "turn_title": "Cold-call trust concern",
+          "stage": "relevance-check",
+          "customer_utterance": "I do not know your company and I do not trust random software calls.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "trust-repair", "markers": ["trust"]},
+            {"name": "proof-path", "markers": ["company context", "security details"]}
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-002",
+      "scenario_label": "non_sale_correct",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "source_pattern_ids": [
+        "ccen-telecom-price-resistance",
+        "ccen-insurance-certainty-boundary",
+        "ccen-auto-inbound-fit-check"
+      ],
+      "scenario_title": "Telecom buyer asks for a stability guarantee before proceeding",
+      "customer_context": "The buyer is interested only if the agent guarantees service quality for their exact address.",
+      "agent_goal": "Refuse to guarantee what depends on technical details, ask for safe next step, and avoid sale logging.",
+      "generated_turn_outline": [
+        "Acknowledge the need for certainty.",
+        "Clarify price or effort concern when appropriate.",
+        "Escalate guarantee requests rather than closing."
+      ],
+      "safe_close_criteria": [
+        "no guaranteed speed or stability claim",
+        "no sale-ready outcome without verification"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "guaranteeing stable service",
+        "closing after an unresolved technical condition"
+      ],
+      "expected_outcome": "non_sale_correct",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-002-T01",
+          "turn_title": "German price concern",
+          "stage": "relevance-check",
+          "customer_utterance": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "price-clarification", "markers": ["nicht am punkt vorbeirede"]},
+            {"name": "next-step-quality", "markers": ["preis", "aufwand", "?"]}
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-002-T02",
+          "turn_title": "Guarantee request",
+          "stage": "relevance-check",
+          "customer_utterance": "Nur wenn Sie garantieren koennen, dass die Geschwindigkeit bei mir stabil ist.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-003",
+      "scenario_label": "support_only",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "source_pattern_ids": [
+        "ccen-home-service-complaint-repair",
+        "ccen-membership-cancel-or-stop",
+        "ccen-general-send-info-brushoff"
+      ],
+      "scenario_title": "Customer wants contact to stop and should not be sold to",
+      "customer_context": "The customer is done with the call and wants no further outreach.",
+      "agent_goal": "Respect the boundary, end cleanly, and keep retrieval from changing protected text.",
+      "generated_turn_outline": [
+        "Acknowledge refusal.",
+        "Confirm no further calls.",
+        "End without a sales motion."
+      ],
+      "safe_close_criteria": [
+        "no close attempt",
+        "contact preference is respected"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "continuing to pitch after refusal",
+        "using retrieval to soften a do-not-call request"
+      ],
+      "expected_outcome": "support_only",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-003-T01",
+          "turn_title": "Do not call",
+          "stage": "opening-permission",
+          "customer_utterance": "Rufen Sie mich bitte nicht mehr an.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        },
+        {
+          "turn_id": "PROD-012-CCEN-003-T02",
+          "turn_title": "Repeated silence",
+          "stage": "opening-permission",
+          "input_type": "silence-timeout",
+          "customer_utterance": "",
+          "silence_count": 2,
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-004",
+      "scenario_label": "trust_repair",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "source_pattern_ids": [
+        "ccen-trust-cold-call-proof",
+        "ccen-b2b-authority-gate",
+        "ccen-general-send-info-brushoff"
+      ],
+      "scenario_title": "Buyer distrusts the caller but may accept proof-oriented context",
+      "customer_context": "The buyer dislikes cold calls but has not refused contact.",
+      "agent_goal": "Repair trust with a proof-choice question, not pressure or emotion claims.",
+      "generated_turn_outline": [
+        "Name trust as a valid concern.",
+        "Offer company context or security details.",
+        "Ask for consent before continuing."
+      ],
+      "safe_close_criteria": [
+        "proof path is chosen",
+        "buyer consents to next step"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "claiming the buyer feels scared",
+        "forcing a meeting before trust repair"
+      ],
+      "expected_outcome": "non_sale_correct",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-004-T01",
+          "turn_title": "Trust proof request",
+          "stage": "relevance-check",
+          "customer_utterance": "I do not know your company and I do not trust random software calls.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {"name": "trust-repair", "markers": ["trust"]},
+            {"name": "proof-path", "markers": ["company context", "security details"]}
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-004-T02",
+          "turn_title": "Asks for a real person",
+          "stage": "opening-permission",
+          "customer_utterance": "Please have a real person call me if this is about software.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-005",
+      "scenario_label": "human_handoff",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "source_pattern_ids": [
+        "ccen-medical-equipment-human-request",
+        "ccen-insurance-certainty-boundary",
+        "ccen-telecom-price-resistance"
+      ],
+      "scenario_title": "Customer asks for exact plan details and a specialist",
+      "customer_context": "The customer needs exact plan details and should be escalated rather than guessed at.",
+      "agent_goal": "Use approved information only, avoid guessing, and route to a specialist when the question exceeds runtime facts.",
+      "generated_turn_outline": [
+        "Acknowledge the exact detail request.",
+        "Avoid guessing beyond approved data.",
+        "Escalate to specialist path."
+      ],
+      "safe_close_criteria": [
+        "no unsupported plan details",
+        "specialist handoff is offered"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "inventing plan details",
+        "closing after an unresolved detail question"
+      ],
+      "expected_outcome": "human_handoff",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-005-T01",
+          "turn_title": "Exact product detail lookup",
+          "stage": "product-detail-check",
+          "customer_utterance": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "tie",
+          "quality_marker_groups": [
+            {"name": "detail-boundary", "markers": ["freigegebenen produktinformationen"]},
+            {"name": "no-guessing", "markers": ["details", "nicht rate"]}
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-005-T02",
+          "turn_title": "Callback scheduling",
+          "stage": "scheduling",
+          "customer_utterance": "Mittwoch um 10 Uhr passt fuer den Rueckruf.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-006",
+      "scenario_label": "price_resistance",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "source_pattern_ids": [
+        "ccen-telecom-price-resistance",
+        "ccen-auto-inbound-fit-check",
+        "ccen-general-send-info-brushoff"
+      ],
+      "scenario_title": "Buyer says the review sounds too expensive or not worth the effort",
+      "customer_context": "The buyer is skeptical of effort and cost but has not refused the conversation.",
+      "agent_goal": "Clarify whether price, contract terms, or time value is the blocker before continuing.",
+      "generated_turn_outline": [
+        "Acknowledge cost concern.",
+        "Ask which decision factor matters most.",
+        "Avoid urgency and savings guarantees."
+      ],
+      "safe_close_criteria": [
+        "buyer identifies the real blocker",
+        "no fake urgency is used"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "guaranteeing savings",
+        "inventing a limited-time discount"
+      ],
+      "expected_outcome": "non_sale_correct",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-006-T01",
+          "turn_title": "English price objection ties core",
+          "stage": "relevance-check",
+          "customer_utterance": "That sounds too expensive and I am not sure this is worth the effort.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "tie",
+          "quality_marker_groups": [
+            {"name": "price-clarification", "markers": ["monthly price", "contract terms", "worth your time"]},
+            {"name": "next-step-quality", "markers": ["?", "bigger concern"]}
+          ]
+        }
+      ]
+    }
+  ]
+}

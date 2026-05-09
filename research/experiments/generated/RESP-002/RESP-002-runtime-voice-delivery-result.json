@@ -6,20 +6,20 @@
   "api_calls_made": false,
   "generation_mode": "local deterministic composer with guardrail validation",
   "campaign": {
-    "campaign_id": "campaign-prod-005-b2c-telecom",
-    "client_name": "Synthetic Telecom Call Center",
-    "product_name": "Internet and mobile plan review",
-    "product_category": "telecom",
-    "customer_type": "b2c",
+    "campaign_id": "campaign-prod-005-b2b-software",
+    "client_name": "Synthetic B2B Software Client",
+    "product_name": "Lead routing workflow software",
+    "product_category": "software-b2b",
+    "customer_type": "b2b",
     "country_or_region": "DE",
-    "language": "de"
+    "language": "en"
   },
   "stage": "relevance-check",
   "input_type": "speech-final",
-  "transcript": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
-  "policy_response": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
-  "candidate_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-  "final_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+  "transcript": "That sounds expensive.",
+  "policy_response": "Thanks. May I ask one quick clarifying question?",
+  "candidate_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+  "final_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
   "validation": {
     "validator": "RESP-001 substring forbidden-claim check",
     "checked_text_source": "candidate_response",
@@ -29,11 +29,46 @@
     "fallback_used": false,
     "notes": "Candidate passed local guardrail validation."
   },
+  "retrieval": {
+    "enabled": false,
+    "status": "disabled",
+    "blocked_reason": "retrieval_not_enabled",
+    "retrieval_decision": "disabled",
+    "retrieval_position": "not_run",
+    "retrieval_used_in_runtime": false,
+    "influenced_response": false,
+    "retrieved_item_ids": [],
+    "citation_trace": [],
+    "advisory_hints": [],
+    "rejected_items": [],
+    "relevance_gate": {
+      "min_score": 1
+    },
+    "campaign_fact_grounding": {
+      "campaign_facts_override_rag": true
+    },
+    "used_hint_count": 0,
+    "max_results": 0,
+    "registry_path": "",
+    "context_flags": [],
+    "latency": {
+      "target_ms": 150,
+      "acceptable_ms": 300,
+      "elapsed_ms": 0
+    },
+    "influence_basis": "candidate_diff_from_no_retrieval_baseline"
+  },
+  "core_pack": {
+    "core_pack_id": "CORE-sales-delivery-playbook",
+    "campaign_facts_override_rag": true,
+    "ethical_persuasion_allowed": true,
+    "hidden_state_certainty_allowed": false
+  },
   "guardrails": {
     "guardrail_source": "SalesCampaign plus universal response-safety rules",
     "allowed_claims": [
-      "A human specialist can review available plan options.",
-      "Plan details must be checked against approved product data."
+      "A specialist can review workflow fit.",
+      "The first callback is non-binding."
     ],
     "forbidden_claims": [
       "guarantee",
@@ -46,27 +81,27 @@
       "payout",
       "legal advice",
       "medical advice",
-      "guaranteed coverage",
-      "guaranteed speed",
-      "unsupported technical claims"
+      "guaranteed conversion lift",
+      "unsupported integration claims",
+      "unsupported security claims"
     ],
     "required_disclosures": [
-      "Technical details depend on address and plan availability."
+      "Integration details require specialist review."
     ],
     "escalation_triggers": [
-      "coverage guarantee",
-      "technical certainty request",
+      "integration question",
+      "security question",
       "human request"
     ],
-    "human_handoff_role": "telecom specialist",
+    "human_handoff_role": "solutions specialist",
     "compliance_notes": "Synthetic runtime campaign for latency and call-control simulation."
   },
   "decision_snapshot": {
     "response_mode": "fast-response",
-    "campaign_language": "de",
-    "response_language": "de",
-    "detected_emotion": "skeptical-or-negative",
-    "sales_difficulty": "price-objection",
+    "campaign_language": "en",
+    "response_language": "en",
+    "detected_emotion": "neutral",
+    "sales_difficulty": "unknown-runtime-signal",
     "interest_state": "maybe-interested",
     "selected_strategy": "inquiry",
     "next_action": "ask-follow-up",
@@ -79,7 +114,8 @@
     "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",
     "max_sentences": 2,
     "must_not_invent_product_claims": true,
-    "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response."
+    "fallback_rule": "If validation fails, speak the policy_response instead of the candidate_response.",
+    "retrieval_rule": "Retrieval is opt-in, advisory-only, and cannot alter protected text or override guardrail fallback."
   },
   "latency": {
     "generation_latency_ms": 0,
@@ -92,33 +128,719 @@
     "enabled": true,
     "provider_key": "elevenlabs",
     "provider_name": "ElevenLabs Flash v2.5",
-    "language": "de",
+    "language": "en",
     "final_response_unchanged": true,
     "provider_calls_made": false,
     "requires_api_key": false,
     "customer_audio_uploaded": false,
     "voice_cloning_used": false,
     "generated_audio_created": false,
+    "core_delivery_pack": {
+      "core_pack_id": "CORE-sales-delivery-playbook",
+      "final_response_policy_owned": true,
+      "observable_empathy_allowed": true,
+      "hidden_state_certainty_allowed": false,
+      "speech_delivery_rule_count": 9,
+      "voice_layer_contract": "Feeds RESP-002 and VOICE layers; final_response remains policy-owned."
+    },
     "segments": [
       {
         "segment_id": "resp-002-final-response",
-        "segment_type": "freeform_objection_handling",
+        "segment_type": "freeform_clarification",
         "source": "runtime_guarded_response",
-        "text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+        "text": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
         "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
         "allow_prosody": true,
         "eligible_for_prosody": true,
         "decision_source": {
-          "sales_difficulty": "price-objection",
+          "sales_difficulty": "unknown-runtime-signal",
           "interest_state": "maybe-interested",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         }
       }
     ],
+    "spoken_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_clarification",
+        "source": "runtime_guarded_response",
+        "text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+        "spoken_text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "spoken_normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll"
+          },
+          {
+            "rule_id": "en-you-are",
+            "before": "You are",
+            "after": "You're"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null
+      }
+    ],
+    "realistic_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_clarification",
+        "source": "runtime_guarded_response",
+        "text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+        "spoken_text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "spoken_normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll"
+          },
+          {
+            "rule_id": "en-you-are",
+            "before": "You are",
+            "after": "You're"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null,
+        "speech_realism_text_before": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "speech_realism_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_realism_bundles": [
+          {
+            "bundle_id": "resp-002-final-response:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "filler": "so",
+            "position": "sentence_boundary",
+            "pause_ms": 244,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.078,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "eligible_for_speech_realism": true,
+        "speech_realism_protected_reason": null
+      }
+    ],
+    "interaction_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_clarification",
+        "source": "runtime_guarded_response",
+        "text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+        "spoken_text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "spoken_normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll"
+          },
+          {
+            "rule_id": "en-you-are",
+            "before": "You are",
+            "after": "You're"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null,
+        "speech_realism_text_before": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "speech_realism_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_realism_bundles": [
+          {
+            "bundle_id": "resp-002-final-response:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "filler": "so",
+            "position": "sentence_boundary",
+            "pause_ms": 244,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.078,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "eligible_for_speech_realism": true,
+        "speech_realism_protected_reason": null,
+        "speech_interaction_text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_interaction_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_interaction_markers": [
+          {
+            "marker_id": "resp-002-final-response:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "resp-002-final-response",
+            "language": "en",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.061,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "eligible_for_speech_interaction": true,
+        "speech_interaction_protected_reason": null
+      }
+    ],
+    "imperfect_segments": [
+      {
+        "segment_id": "resp-002-final-response",
+        "segment_type": "freeform_clarification",
+        "source": "runtime_guarded_response",
+        "text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "allow_fillers": true,
+        "allow_interaction_prosody": true,
+        "allow_speech_imperfections": true,
+        "allow_prosody": true,
+        "eligible_for_prosody": true,
+        "decision_source": {
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
+        },
+        "spoken_text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+        "spoken_text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "spoken_normalizations": [
+          {
+            "rule_id": "en-i-will",
+            "before": "I will",
+            "after": "I'll"
+          },
+          {
+            "rule_id": "en-you-are",
+            "before": "You are",
+            "after": "You're"
+          }
+        ],
+        "eligible_for_spoken_normalization": true,
+        "spoken_protected_reason": null,
+        "speech_realism_text_before": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "speech_realism_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_realism_bundles": [
+          {
+            "bundle_id": "resp-002-final-response:thinking:1",
+            "bundle_type": "thinking_filler",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "filler": "so",
+            "position": "sentence_boundary",
+            "pause_ms": 244,
+            "pitch_intent": "slight-rise",
+            "rate_after": 1.078,
+            "delivery_intent": "thinking-then-confident-follow-through",
+            "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+            "insertion_strategy": "sentence_boundary"
+          }
+        ],
+        "eligible_for_speech_realism": true,
+        "speech_realism_protected_reason": null,
+        "speech_interaction_text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_interaction_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_interaction_markers": [
+          {
+            "marker_id": "resp-002-final-response:sales_pace_variation",
+            "marker_type": "sales_pace_variation",
+            "segment_id": "resp-002-final-response",
+            "language": "en",
+            "visible": false,
+            "marker_text": "",
+            "placement": "whole_segment",
+            "pause_ms": 0,
+            "pitch_intent": "confident-forward",
+            "rate_multiplier": 1.061,
+            "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+          }
+        ],
+        "eligible_for_speech_interaction": true,
+        "speech_interaction_protected_reason": null,
+        "speech_imperfections_text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_imperfections_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "speech_imperfections": [],
+        "eligible_for_speech_imperfections": true,
+        "speech_imperfections_protected_reason": null
+      }
+    ],
+    "spoken_text_normalization": {
+      "spoken_text_normalization_id": "VOICE-022-spoken-text-normalization",
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "professional-spoken",
+        "english_contractions": true,
+        "german_spoken_forms": true,
+        "max_rewrites_per_response": 4,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ]
+      },
+      "rule_count": 17,
+      "segment_count": 1,
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "normalization_count": 2,
+      "normalizations": [
+        {
+          "rule_id": "en-i-will",
+          "before": "I will",
+          "after": "I'll",
+          "language": "en",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification"
+        },
+        {
+          "rule_id": "en-you-are",
+          "before": "You are",
+          "after": "You're",
+          "language": "en",
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification"
+        }
+      ],
+      "input_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "source": "runtime_guarded_response",
+          "text": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+          "allow_fillers": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true,
+          "eligible_for_prosody": true,
+          "decision_source": {
+            "sales_difficulty": "unknown-runtime-signal",
+            "interest_state": "maybe-interested",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call"
+          }
+        }
+      ],
+      "output_segments": [
+        {
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "source": "runtime_guarded_response",
+          "eligible_for_spoken_normalization": true,
+          "protected_reason": null,
+          "text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+          "text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+          "normalizations": [
+            {
+              "rule_id": "en-i-will",
+              "before": "I will",
+              "after": "I'll"
+            },
+            {
+              "rule_id": "en-you-are",
+              "before": "You are",
+              "after": "You're"
+            }
+          ]
+        }
+      ],
+      "tts_text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+      "validation": {
+        "validator": "VOICE-022 segment protection and spoken-normalization check",
+        "passed": true,
+        "protected_segment_changes": [],
+        "normalization_in_protected_segments": [],
+        "source_protection_changes": [],
+        "notes": "Spoken-text normalization preserved protected segments and sources."
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "changes_allowed": "safe spoken phrasing for eligible freeform TTS text only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing protected campaign questions",
+          "changing disclosures or compliance statements",
+          "changing call-control lines",
+          "adding claims or promises"
+        ]
+      }
+    },
+    "speech_realism": {
+      "speech_realism_id": "VOICE-023-speech-realism-layer",
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "professional-human",
+        "filler_frequency": "low",
+        "max_bundles_per_response": 2,
+        "allow_thinking_fillers": true,
+        "allow_empathy_acknowledgements": true,
+        "min_chars_for_thinking_bundle": 72,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "pause_ms_ranges": {
+          "thinking": [
+            150,
+            260
+          ],
+          "empathy": [
+            120,
+            220
+          ]
+        },
+        "rate_ranges": {
+          "follow_through": [
+            1.04,
+            1.12
+          ],
+          "empathy": [
+            0.96,
+            1.03
+          ]
+        }
+      },
+      "segment_count": 1,
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "bundle_quota": 1,
+      "bundle_count": 1,
+      "speech_bundles": [
+        {
+          "bundle_id": "resp-002-final-response:thinking:1",
+          "bundle_type": "thinking_filler",
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "filler": "so",
+          "position": "sentence_boundary",
+          "pause_ms": 244,
+          "pitch_intent": "slight-rise",
+          "rate_after": 1.078,
+          "delivery_intent": "thinking-then-confident-follow-through",
+          "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+          "insertion_strategy": "sentence_boundary"
+        }
+      ],
+      "customer_state_suppressed": false,
+      "input_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "source": "runtime_guarded_response",
+          "text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+          "allow_fillers": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
+          "allow_prosody": true,
+          "eligible_for_prosody": true,
+          "decision_source": {
+            "sales_difficulty": "unknown-runtime-signal",
+            "interest_state": "maybe-interested",
+            "next_action": "ask-follow-up",
+            "call_control": "continue-call"
+          },
+          "spoken_text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+          "spoken_text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+          "spoken_normalizations": [
+            {
+              "rule_id": "en-i-will",
+              "before": "I will",
+              "after": "I'll"
+            },
+            {
+              "rule_id": "en-you-are",
+              "before": "You are",
+              "after": "You're"
+            }
+          ],
+          "eligible_for_spoken_normalization": true,
+          "spoken_protected_reason": null
+        }
+      ],
+      "output_segments": [
+        {
+          "segment_index": 0,
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "source": "runtime_guarded_response",
+          "eligible_for_speech_realism": true,
+          "protected_reason": null,
+          "text_before": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+          "text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "bundles": [
+            {
+              "bundle_id": "resp-002-final-response:thinking:1",
+              "bundle_type": "thinking_filler",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "filler": "so",
+              "position": "sentence_boundary",
+              "pause_ms": 244,
+              "pitch_intent": "slight-rise",
+              "rate_after": 1.078,
+              "delivery_intent": "thinking-then-confident-follow-through",
+              "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+              "insertion_strategy": "sentence_boundary"
+            }
+          ]
+        }
+      ],
+      "tts_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+      "validation": {
+        "validator": "VOICE-023 segment protection, language, and bounded speech-realism check",
+        "passed": true,
+        "protected_segment_changes": [],
+        "bundle_in_protected_segments": [],
+        "language_mismatch_segments": [],
+        "unsafe_pause_bundles": [],
+        "unsafe_rate_bundles": [],
+        "notes": "Speech-realism bundles stayed bounded and outside protected segments."
+      },
+      "provider_calls_made": false,
+      "requires_api_key": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false,
+      "generated_audio_created": false,
+      "runtime_boundary": {
+        "position": "after spoken text normalization and before prosody/provider rendering",
+        "changes_allowed": "bounded filler words and delivery metadata for eligible freeform TTS text only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing campaign questions",
+          "changing disclosures or compliance statements",
+          "changing call-control lines",
+          "adding claims, promises, or pressure"
+        ]
+      }
+    },
+    "speech_interaction": {
+      "speech_interaction_id": "VOICE-026-interaction-prosody-layer",
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "professional-human",
+        "max_markers_per_response": 2,
+        "allow_backchannels": true,
+        "allow_latency_acknowledgement": true,
+        "allow_sales_pace_variation": true,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ]
+      },
+      "customer_state_used": {},
+      "unsafe_claim_context": false,
+      "interaction_markers": [
+        {
+          "marker_id": "resp-002-final-response:sales_pace_variation",
+          "marker_type": "sales_pace_variation",
+          "segment_id": "resp-002-final-response",
+          "language": "en",
+          "visible": false,
+          "marker_text": "",
+          "placement": "whole_segment",
+          "pause_ms": 0,
+          "pitch_intent": "confident-forward",
+          "rate_multiplier": 1.061,
+          "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+        }
+      ],
+      "marker_count": 1,
+      "output_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "source": "runtime_guarded_response",
+          "text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "eligible": true,
+          "protection_reason": null,
+          "markers": [
+            {
+              "marker_id": "resp-002-final-response:sales_pace_variation",
+              "marker_type": "sales_pace_variation",
+              "segment_id": "resp-002-final-response",
+              "language": "en",
+              "visible": false,
+              "marker_text": "",
+              "placement": "whole_segment",
+              "pause_ms": 0,
+              "pitch_intent": "confident-forward",
+              "rate_multiplier": 1.061,
+              "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+            }
+          ]
+        }
+      ],
+      "tts_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+      "evaluation_rubric": {
+        "naturalness": "Does the response sound like a live professional rather than a fixed script?",
+        "trust": "Does the response avoid false agreement, pressure, and over-familiarity?",
+        "confidence": "Does the agent sound clear and capable without sounding theatrical?",
+        "warmth": "Does the agent acknowledge the customer without becoming casual or manipulative?",
+        "pace": "Does the response include bounded pace variation instead of a flat constant rate?",
+        "interruption_safety": "Does the agent avoid talking over stop/refusal signals or protected handoff moments?",
+        "sales_usefulness": "Does the prosody support forward motion toward the campaign goal?",
+        "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_changes": [],
+        "protected_marker_violations": [],
+        "language_mismatched_markers": [],
+        "unsafe_agreement_markers": [],
+        "rate_range_violations": [],
+        "missing_rubric_keys": []
+      },
+      "provider_calls_made": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false
+    },
+    "speech_imperfections": {
+      "speech_imperfections_id": "VOICE-028-controlled-delivery-imperfections-layer",
+      "language": "en",
+      "profile": {
+        "enabled": false,
+        "style": "professional-human",
+        "max_imperfections_per_response": 1,
+        "min_chars_for_imperfection": 60,
+        "allow_clarifying_rephrases": true,
+        "allow_breath_pauses": true,
+        "allow_soft_restarts": true,
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ]
+      },
+      "customer_state_used": {},
+      "unsafe_claim_context": false,
+      "imperfections": [],
+      "imperfection_count": 0,
+      "output_segments": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "source": "runtime_guarded_response",
+          "text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "eligible": true,
+          "protection_reason": null,
+          "imperfections": []
+        }
+      ],
+      "tts_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+      "evaluation_rubric": {
+        "believability": "Does the small imperfection make the delivery feel less machine-perfect?",
+        "professionalism": "Does the agent remain clear, competent, and sales-appropriate?",
+        "trust": "Does the imperfection avoid sounding evasive, uncertain, or manipulative?",
+        "placement": "Does the imperfection occur at a sentence or thought boundary?",
+        "protected_text_safety": "Do campaign questions, disclosures, and compliance lines stay exact?"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_changes": [],
+        "protected_imperfection_violations": [],
+        "language_mismatched_imperfections": [],
+        "unsafe_visible_imperfections": []
+      },
+      "provider_calls_made": false,
+      "customer_audio_uploaded": false,
+      "voice_cloning_used": false
+    },
     "prosody": {
       "prosody_naturalness_id": "VOICE-015-segment-aware-prosody",
-      "language": "de",
+      "language": "en",
       "profile": {
         "enabled": true,
         "style": "professional-human",
@@ -171,7 +893,7 @@
       },
       "randomization": {
         "seeded": true,
-        "seed": "RESP-001-local-guarded:campaign-prod-005-b2c-telecom:relevance-check:Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+        "seed": "RESP-001-local-guarded:campaign-prod-005-b2b-software:relevance-check:That sounds expensive.",
         "deterministic_for_same_input": true,
         "dimensions": [
           "pause duration",
@@ -195,41 +917,103 @@
       "input_segments": [
         {
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
+          "segment_type": "freeform_clarification",
           "source": "runtime_guarded_response",
-          "text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
           "allow_fillers": true,
+          "allow_interaction_prosody": true,
+          "allow_speech_imperfections": true,
           "allow_prosody": true,
           "eligible_for_prosody": true,
           "decision_source": {
-            "sales_difficulty": "price-objection",
+            "sales_difficulty": "unknown-runtime-signal",
             "interest_state": "maybe-interested",
             "next_action": "ask-follow-up",
             "call_control": "continue-call"
-          }
+          },
+          "spoken_text_before": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+          "spoken_text_after": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+          "spoken_normalizations": [
+            {
+              "rule_id": "en-i-will",
+              "before": "I will",
+              "after": "I'll"
+            },
+            {
+              "rule_id": "en-you-are",
+              "before": "You are",
+              "after": "You're"
+            }
+          ],
+          "eligible_for_spoken_normalization": true,
+          "spoken_protected_reason": null,
+          "speech_realism_text_before": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+          "speech_realism_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "speech_realism_bundles": [
+            {
+              "bundle_id": "resp-002-final-response:thinking:1",
+              "bundle_type": "thinking_filler",
+              "segment_id": "resp-002-final-response",
+              "segment_type": "freeform_clarification",
+              "filler": "so",
+              "position": "sentence_boundary",
+              "pause_ms": 244,
+              "pitch_intent": "slight-rise",
+              "rate_after": 1.078,
+              "delivery_intent": "thinking-then-confident-follow-through",
+              "safety_note": "Eligible freeform speech only; protected campaign and compliance text remains exact.",
+              "insertion_strategy": "sentence_boundary"
+            }
+          ],
+          "eligible_for_speech_realism": true,
+          "speech_realism_protected_reason": null,
+          "speech_interaction_text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "speech_interaction_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "speech_interaction_markers": [
+            {
+              "marker_id": "resp-002-final-response:sales_pace_variation",
+              "marker_type": "sales_pace_variation",
+              "segment_id": "resp-002-final-response",
+              "language": "en",
+              "visible": false,
+              "marker_text": "",
+              "placement": "whole_segment",
+              "pause_ms": 0,
+              "pitch_intent": "confident-forward",
+              "rate_multiplier": 1.061,
+              "safety_note": "Provider-neutral pace cue; does not alter campaign wording."
+            }
+          ],
+          "eligible_for_speech_interaction": true,
+          "speech_interaction_protected_reason": null,
+          "speech_imperfections_text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "speech_imperfections_text_after": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "speech_imperfections": [],
+          "eligible_for_speech_imperfections": true,
+          "speech_imperfections_protected_reason": null
         }
       ],
       "output_segments": [
         {
           "segment_index": 0,
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
+          "segment_type": "freeform_clarification",
           "source": "runtime_guarded_response",
           "eligible_for_prosody": true,
           "protected_reason": null,
-          "text_before": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-          "tts_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-          "debug_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "text_before": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "tts_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "debug_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
           "cue_count": 2,
           "cues": [
             {
               "type": "pitch",
               "segment_index": 0,
               "segment_id": "resp-002-final-response",
-              "segment_type": "freeform_objection_handling",
-              "target": "Das verstehe ich.",
-              "direction": "slight-rise",
-              "relative_pitch_semitones": 0.371,
+              "segment_type": "freeform_clarification",
+              "target": "I'll keep this practical.",
+              "direction": "steady-low",
+              "relative_pitch_semitones": -0.476,
               "provider_hint": "Render as a subtle contour change, not theatrical acting.",
               "cue_id": "cue-01"
             },
@@ -237,10 +1021,10 @@
               "type": "pause",
               "segment_index": 0,
               "segment_id": "resp-002-final-response",
-              "segment_type": "freeform_objection_handling",
-              "after": "Das verstehe ich.",
-              "mode": "thinking",
-              "duration_ms": 199,
+              "segment_type": "freeform_clarification",
+              "after": "I'll keep this practical.",
+              "mode": "transition",
+              "duration_ms": 265,
               "provider_hint": "Render as a bounded pause or break; do not add visible words.",
               "cue_id": "cue-02"
             }
@@ -252,10 +1036,10 @@
           "type": "pitch",
           "segment_index": 0,
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
-          "target": "Das verstehe ich.",
-          "direction": "slight-rise",
-          "relative_pitch_semitones": 0.371,
+          "segment_type": "freeform_clarification",
+          "target": "I'll keep this practical.",
+          "direction": "steady-low",
+          "relative_pitch_semitones": -0.476,
           "provider_hint": "Render as a subtle contour change, not theatrical acting.",
           "cue_id": "cue-01"
         },
@@ -263,16 +1047,16 @@
           "type": "pause",
           "segment_index": 0,
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
-          "after": "Das verstehe ich.",
-          "mode": "thinking",
-          "duration_ms": 199,
+          "segment_type": "freeform_clarification",
+          "after": "I'll keep this practical.",
+          "mode": "transition",
+          "duration_ms": 265,
           "provider_hint": "Render as a bounded pause or break; do not add visible words.",
           "cue_id": "cue-02"
         }
       ],
-      "tts_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-      "debug_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "tts_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+      "debug_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
       "provider_rendering_boundary": {
         "clean_tts_text": "Plain text remains available for every provider.",
         "debug_text": "Debug text may show emphasis or stretch cues for human review.",
@@ -297,6 +1081,1717 @@
         "customer_audio_uploaded": false,
         "voice_cloning_used": false,
         "changes_allowed": "provider-neutral delivery cues only; protected campaign, compliance, call-control, and safety text stay exact"
+      },
+      "voice_emphasis_guard_id": "VOICE-036-listening-feedback-calibration"
+    },
+    "voice_pacing_calibration": {
+      "voice_milestone": "VOICE-034",
+      "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+      "enabled": true,
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "professional-sales-pacing-v2",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "speed_bounds": {
+          "en": [
+            1.07,
+            1.15
+          ],
+          "de": [
+            0.975,
+            1.04
+          ]
+        },
+        "english_trust_repair_speed_bounds": [
+          1.13,
+          1.14
+        ],
+        "break_bounds_ms": {
+          "en": [
+            80,
+            240
+          ],
+          "de": [
+            110,
+            280
+          ]
+        },
+        "break_scale_ranges": {
+          "en": [
+            0.62,
+            0.82
+          ],
+          "de": [
+            0.9,
+            1.08
+          ]
+        },
+        "max_breaks_per_segment": 3,
+        "german_word_gap_reduction": true,
+        "min_provider_tags_preserved": 0
+      },
+      "german_word_gap_reduction_applied": false,
+      "source_provider_tag_count": 1,
+      "calibrated_provider_tag_count": 1,
+      "average_break_duration_before_ms": 265.0,
+      "average_break_duration_after_ms": 216.0,
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "protected": false,
+          "protected_reason": null,
+          "tuned": true,
+          "source_text": "I'll keep this practical. <break time=\"0.265s\" /> So, you're right to ask. It only matters if the next step is useful.",
+          "pacing_text": "I'll keep this practical. <break time=\"0.216s\" /> So, you're right to ask. It only matters if the next step is useful.",
+          "speed_ratio": 1.093,
+          "break_operations": [
+            {
+              "operation": "compress_break",
+              "original_ms": 265,
+              "tuned_ms": 216,
+              "scale": 0.816
+            }
+          ],
+          "provider_hint": "Professional sales pacing calibrated; wording unchanged."
+        }
+      ],
+      "tuned_segment_count": 1,
+      "average_speed_ratio": 1.093,
+      "calibrated_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical. <break time=\"0.216s\" /> So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I'll keep this practical. &lt;break time=\"0.216s\" /&gt; So, you're right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical. <break time=\"0.216s\" /> So, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [
+              "<break time=\"0.265s\" />"
+            ],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 1,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_text_changes": [],
+        "speed_out_of_bounds": [],
+        "protected_tags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-rendered pacing tags and voice speed settings only; wording and protected text stay exact"
+      }
+    },
+    "voice_connected_speech": {
+      "voice_milestone": "VOICE-035",
+      "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+      "enabled": true,
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "professional-connected-speech-v1",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "join_sentence_to_thinking_filler": true,
+        "join_short_bridge_sentence": true,
+        "max_flow_joins_per_segment": 3
+      },
+      "source_provider_tag_count": 1,
+      "connected_provider_tag_count": 0,
+      "flow_join_count": 1,
+      "tuned_segment_count": 1,
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "protected": false,
+          "protected_reason": null,
+          "source_text": "I'll keep this practical. <break time=\"0.216s\" /> So, you're right to ask. It only matters if the next step is useful.",
+          "connected_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "flow_join_count": 1,
+          "flow_operations": [
+            {
+              "rule_id": "en-join-filler-after-so",
+              "before": ". <break time=\"0.216s\" /> So, ",
+              "after_text_changed": true,
+              "remaining_same_pattern": false
+            }
+          ],
+          "provider_hint": "Sentence-boundary filler and short bridge phrases joined for provider-facing spoken flow."
+        }
+      ],
+      "connected_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "en-join-filler-after-so",
+                  "before": ". <break time=\"0.216s\" /> So, ",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_text_changes": [],
+        "markdown_in_rendered_text": false,
+        "boundary_flags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-facing connected-speech punctuation for eligible freeform TTS text only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing protected campaign questions",
+          "changing compliance, handoff, hangup, or do-not-call text",
+          "adding product claims or promises"
+        ]
+      }
+    },
+    "voice_listening_calibration": {
+      "voice_milestone": "VOICE-036",
+      "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+      "enabled": true,
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "listening-feedback-calibration-v1",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "german_connected_break_seconds": 0.08,
+        "german_relaxed_speed": 0.995,
+        "german_relaxed_speed_bounds": [
+          0.97,
+          1.02
+        ],
+        "emphasis_guard_enabled": true,
+        "allowed_emphasis_targets": {
+          "en": [
+            "specialist",
+            "verified",
+            "non-binding",
+            "next step",
+            "budget",
+            "decision"
+          ],
+          "de": [
+            "fachberater",
+            "geprueft",
+            "unverbindlich",
+            "naechster schritt",
+            "budget",
+            "entscheidung"
+          ]
+        },
+        "blocked_single_word_emphasis": {
+          "en": [
+            "important",
+            "practical",
+            "realistic",
+            "safe"
+          ],
+          "de": [
+            "wichtig",
+            "praktisch",
+            "realistisch",
+            "sicher"
+          ]
+        }
+      },
+      "emphasis_guard": {
+        "blocked_emphasis_count": 1,
+        "allowed_emphasis_count": 0,
+        "blocked_emphasis": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "practical",
+            "reason": "blocked_by_conservative_emphasis_guard"
+          }
+        ]
+      },
+      "german_connected_speech_relaxed": false,
+      "listening_adjustment_count": 0,
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "protected": false,
+          "source_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "calibrated_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "adjustments": []
+        }
+      ],
+      "calibrated_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.45,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "en-join-filler-after-so",
+                  "before": ". <break time=\"0.216s\" /> So, ",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            },
+            "voice_listening_calibration": {
+              "tuned": false,
+              "adjustments": []
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+        "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_text_changes": [],
+        "markdown_in_rendered_text": false,
+        "speed_out_of_bounds": false,
+        "boundary_flags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-facing emphasis filtering, tiny German breath tag, and bounded German speed relaxation only",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing campaign or compliance text",
+          "changing sales policy decisions",
+          "adding product claims or promises",
+          "uploading customer audio"
+        ]
+      }
+    },
+    "voice_emotion_smoothing": {
+      "voice_milestone": "VOICE-037",
+      "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+      "enabled": true,
+      "language": "en",
+      "profile": {
+        "enabled": true,
+        "style": "emotion-transition-smoothing-v1",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "max_transition_delta": 0.42,
+        "min_stability_when_smoothed": 0.56,
+        "max_stability_when_smoothed": 0.64,
+        "max_style_when_smoothed": 0.18,
+        "blocked_overemotional_intents": [
+          "angry",
+          "furious",
+          "hostile",
+          "abusive",
+          "excited-high",
+          "theatrical",
+          "dramatic",
+          "overexcited"
+        ]
+      },
+      "eligible_for_smoothing": true,
+      "transition_smoothing_applied": true,
+      "detected_transition_count": 2,
+      "smoothed_transition_count": 2,
+      "blocked_overemotional_cue_count": 0,
+      "source_voice_settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.093
+      },
+      "smoothed_voice_settings": {
+        "stability": 0.56,
+        "similarity_boost": 0.75,
+        "style": 0.0,
+        "use_speaker_boost": true,
+        "speed": 1.093
+      },
+      "source_rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+      "transition_plan": {
+        "source_signals": [
+          {
+            "signal_id": "decision-emotion",
+            "source": "decision_snapshot.detected_emotion",
+            "intent": "neutral",
+            "arousal": 0.25,
+            "valence": 0.5,
+            "blocked": false
+          },
+          {
+            "signal_id": "resp-002-final-response:sales_pace_variation",
+            "source": "speech_interaction.sales_pace_variation",
+            "intent": "confident-forward",
+            "arousal": 0.7,
+            "valence": 0.58,
+            "blocked": false
+          },
+          {
+            "signal_id": "cue-01",
+            "source": "prosody.pitch",
+            "intent": "steady-low",
+            "arousal": 0.26,
+            "valence": 0.42,
+            "blocked": false
+          }
+        ],
+        "usable_signal_count": 3,
+        "blocked_overemotional_signals": [],
+        "smoothed_signals": [
+          {
+            "signal_id": "decision-emotion",
+            "source": "decision_snapshot.detected_emotion",
+            "intent": "neutral",
+            "arousal": 0.25,
+            "valence": 0.5,
+            "blocked": false
+          },
+          {
+            "signal_id": "resp-002-final-response:sales_pace_variation",
+            "source": "speech_interaction.sales_pace_variation",
+            "intent": "confident-forward",
+            "arousal": 0.607,
+            "valence": 0.563,
+            "blocked": false,
+            "smoothed": true
+          },
+          {
+            "signal_id": "cue-01",
+            "source": "prosody.pitch",
+            "intent": "steady-low",
+            "arousal": 0.31,
+            "valence": 0.44,
+            "blocked": false,
+            "smoothed": true
+          }
+        ],
+        "transitions": [
+          {
+            "from_signal_id": "decision-emotion",
+            "to_signal_id": "resp-002-final-response:sales_pace_variation",
+            "from_intent": "neutral",
+            "to_intent": "confident-forward",
+            "transition_delta": 0.53,
+            "max_allowed_delta": 0.42,
+            "smoothed_arousal": 0.607,
+            "smoothed_valence": 0.563,
+            "reason": "bounded_emotional_inertia"
+          },
+          {
+            "from_signal_id": "resp-002-final-response:sales_pace_variation",
+            "to_signal_id": "cue-01",
+            "from_intent": "confident-forward",
+            "to_intent": "steady-low",
+            "transition_delta": 0.49,
+            "max_allowed_delta": 0.42,
+            "smoothed_arousal": 0.31,
+            "smoothed_valence": 0.44,
+            "reason": "bounded_emotional_inertia"
+          }
+        ]
+      },
+      "smoothed_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.56,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "en-join-filler-after-so",
+                  "before": ". <break time=\"0.216s\" /> So, ",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            },
+            "voice_listening_calibration": {
+              "tuned": false,
+              "adjustments": []
+            },
+            "voice_emotion_smoothing": {
+              "tuned": true,
+              "transition_count": 2,
+              "blocked_overemotional_cue_count": 0
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+        "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+        "emotion_transition_smoothing_applied": true,
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing"
+      },
+      "validation": {
+        "passed": true,
+        "protected_segment_text_changes": [],
+        "rendered_text_changed": false,
+        "boundary_flags_changed": false,
+        "speed_changed": false,
+        "style_out_of_bounds": false,
+        "stability_out_of_bounds": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-facing voice stability/style smoothing only; wording, speed, call policy, and protected text stay exact",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing rendered text",
+          "changing protected campaign or compliance text",
+          "adding claims",
+          "uploading customer audio",
+          "voice cloning"
+        ]
+      }
+    },
+    "voice_semantic_emphasis": {
+      "voice_milestone": "VOICE-039",
+      "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis",
+      "enabled": true,
+      "language": "en",
+      "language_allowed": true,
+      "profile": {
+        "enabled": true,
+        "style": "clear-simple-runtime-wording-v1",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "languages": [
+          "en"
+        ],
+        "max_rewrites_per_segment": 1,
+        "rewrite_rules": [
+          {
+            "rule_id": "en-clear-open-review-worth-time",
+            "pattern": "\\bthe practical next step is to check whether reviewing options is worth your time\\b",
+            "replacement": "we can quickly check if a review is worth your time",
+            "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+          },
+          {
+            "rule_id": "en-clear-open-a-review-worth-time",
+            "pattern": "\\bthe practical next step is to check whether a review is worth your time\\b",
+            "replacement": "we can quickly check if a review is worth your time",
+            "reason": "VOICE-038 listening review preferred the clear/simple clause over the fragile abstract clause."
+          }
+        ]
+      },
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "rewrite_count": 0,
+      "rewrites": [],
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "protected": false,
+          "protected_reason": null,
+          "source_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "semantic_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "rewrite_count": 0
+        }
+      ],
+      "source_rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+      "semantic_rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+      "semantic_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.56,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "en-join-filler-after-so",
+                  "before": ". <break time=\"0.216s\" /> So, ",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            },
+            "voice_listening_calibration": {
+              "tuned": false,
+              "adjustments": []
+            },
+            "voice_emotion_smoothing": {
+              "tuned": true,
+              "transition_count": 2,
+              "blocked_overemotional_cue_count": 0
+            },
+            "voice_semantic_emphasis": {
+              "tuned": false,
+              "rewrite_count": 0,
+              "rewrites": []
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+        "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+        "emotion_transition_smoothing_applied": true,
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+        "semantic_emphasis_candidate_applied": false,
+        "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis"
+      },
+      "validation": {
+        "passed": true,
+        "enabled": true,
+        "protected_segment_text_changes": [],
+        "non_english_rewrite_count": 0,
+        "markdown_in_rendered_text": false,
+        "plain_text_changed": false,
+        "boundary_flags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-facing freeform English TTS wording only, promoted from VOICE-038 listening feedback",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing call_control",
+          "changing protected campaign or compliance text",
+          "rewriting German text",
+          "adding claims",
+          "uploading customer audio",
+          "voice cloning"
+        ]
+      }
+    },
+    "voice_low_pressure_focus": {
+      "voice_milestone": "VOICE-040",
+      "voice_low_pressure_focus_id": "VOICE-040-low-pressure-focus",
+      "enabled": true,
+      "language": "en",
+      "language_allowed": true,
+      "profile": {
+        "enabled": true,
+        "style": "low-pressure-focus-v1",
+        "protected_segment_types": [
+          "appointment_confirmation",
+          "approved_opening",
+          "campaign_qualification_question",
+          "claim_boundary",
+          "company_script",
+          "compliance_statement",
+          "coverage_or_claim_boundary",
+          "do_not_call",
+          "hangup",
+          "human_handoff_exact_script",
+          "legal_or_medical_boundary",
+          "required_disclosure",
+          "sensitive_escalation"
+        ],
+        "languages": [
+          "en"
+        ],
+        "max_rewrites_per_segment": 1,
+        "rewrite_rules": [
+          {
+            "rule_id": "en-low-pressure-focus-with-bridge",
+            "pattern": "\\byou (?:do not|don't) need to change anything today,\\s+well,\\s+(we can quickly check)",
+            "replacement": "no changes needed today, \\1",
+            "reason": "VOICE-039 listening feedback: avoid risky emphasis on the low-pressure phrase and keep the next step flowing."
+          },
+          {
+            "rule_id": "en-low-pressure-focus-plain",
+            "pattern": "\\byou (?:do not|don't) need to change anything today\\b",
+            "replacement": "no changes needed today",
+            "reason": "VOICE-039 listening feedback: avoid risky emphasis on the low-pressure phrase."
+          }
+        ]
+      },
+      "eligible_segment_count": 1,
+      "protected_segment_count": 0,
+      "rewrite_count": 0,
+      "rewrites": [],
+      "segment_plan": [
+        {
+          "segment_id": "resp-002-final-response",
+          "segment_type": "freeform_clarification",
+          "protected": false,
+          "protected_reason": null,
+          "source_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "focused_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "rewrite_count": 0
+        }
+      ],
+      "source_rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+      "focused_rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+      "focused_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.56,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "en-join-filler-after-so",
+                  "before": ". <break time=\"0.216s\" /> So, ",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            },
+            "voice_listening_calibration": {
+              "tuned": false,
+              "adjustments": []
+            },
+            "voice_emotion_smoothing": {
+              "tuned": true,
+              "transition_count": 2,
+              "blocked_overemotional_cue_count": 0
+            },
+            "voice_semantic_emphasis": {
+              "tuned": false,
+              "rewrite_count": 0,
+              "rewrites": []
+            },
+            "voice_low_pressure_focus": {
+              "tuned": false,
+              "rewrite_count": 0,
+              "rewrites": []
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+        "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+        "emotion_transition_smoothing_applied": true,
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+        "semantic_emphasis_candidate_applied": false,
+        "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis",
+        "low_pressure_focus_applied": false,
+        "voice_low_pressure_focus_id": "VOICE-040-low-pressure-focus"
+      },
+      "validation": {
+        "passed": true,
+        "enabled": true,
+        "protected_segment_text_changes": [],
+        "non_english_rewrite_count": 0,
+        "markdown_in_rendered_text": false,
+        "plain_text_changed": false,
+        "boundary_flags_changed": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "changes_allowed": "provider-facing freeform English low-pressure wording only, based on VOICE-039 listening feedback",
+        "changes_forbidden": [
+          "changing final_response",
+          "changing call_control",
+          "changing protected campaign or compliance text",
+          "rewriting German text",
+          "adding claims",
+          "uploading customer audio",
+          "voice cloning"
+        ]
+      }
+    },
+    "voice_private_pattern_profile": {
+      "voice_milestone": "VOICE-041",
+      "voice_private_pattern_profile_id": "VOICE-041-private-pattern-profile",
+      "enabled": false,
+      "applied": false,
+      "blocked_reason": "profile_disabled",
+      "language": "en",
+      "profile": {
+        "enabled": false,
+        "review_status": "not_configured",
+        "source_review_milestone": null,
+        "source_kind": null,
+        "rhythm_density_hint": null,
+        "expressiveness_variation_hint": null,
+        "presence_level_hint": null,
+        "elevenlabs_style_target": 0.06,
+        "elevenlabs_stability_delta": -0.01,
+        "elevenlabs_min_stability": 0.4,
+        "elevenlabs_max_style": 0.08
+      },
+      "eligible_segment_count": 1,
+      "setting_adjustments": [],
+      "provider_action": "blocked_or_disabled",
+      "rhythm_density_action": "not_applied",
+      "presence_action": "not_applicable",
+      "profiled_provider_rendering": {
+        "provider_rendering_id": "VOICE-016-provider-prosody-rendering",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs Flash v2.5",
+        "provider_rendering_mode": "break_tags_and_request_settings",
+        "model_id": "eleven_flash_v2_5",
+        "language": "en",
+        "case_id": "RESP-002-runtime-turn",
+        "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+        "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "stability": 0.56,
+          "similarity_boost": 0.75,
+          "style": 0.0,
+          "use_speaker_boost": true,
+          "speed": 1.093
+        },
+        "segment_renderings": [
+          {
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "protected_reason": null,
+            "eligible_for_prosody": true,
+            "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+            "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+            "provider_tags_inserted": [],
+            "mapped_cues": [
+              {
+                "type": "pause",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "after": "I'll keep this practical.",
+                "mode": "transition",
+                "duration_ms": 265,
+                "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+                "cue_id": "cue-02",
+                "rendered_as": "break_tag"
+              }
+            ],
+            "unsupported_cues": [
+              {
+                "type": "pitch",
+                "segment_index": 0,
+                "segment_id": "resp-002-final-response",
+                "segment_type": "freeform_clarification",
+                "target": "I'll keep this practical.",
+                "direction": "steady-low",
+                "relative_pitch_semitones": -0.476,
+                "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+                "cue_id": "cue-01",
+                "reason": "elevenlabs_pitch_direct_mapping_not_used"
+              }
+            ],
+            "voice_pacing_calibration": {
+              "tuned": true,
+              "speed_ratio": 1.093,
+              "break_operations": [
+                {
+                  "operation": "compress_break",
+                  "original_ms": 265,
+                  "tuned_ms": 216,
+                  "scale": 0.816
+                }
+              ]
+            },
+            "voice_connected_speech": {
+              "tuned": true,
+              "flow_join_count": 1,
+              "flow_operations": [
+                {
+                  "rule_id": "en-join-filler-after-so",
+                  "before": ". <break time=\"0.216s\" /> So, ",
+                  "after_text_changed": true,
+                  "remaining_same_pattern": false
+                }
+              ]
+            },
+            "voice_listening_calibration": {
+              "tuned": false,
+              "adjustments": []
+            },
+            "voice_emotion_smoothing": {
+              "tuned": true,
+              "transition_count": 2,
+              "blocked_overemotional_cue_count": 0
+            },
+            "voice_semantic_emphasis": {
+              "tuned": false,
+              "rewrite_count": 0,
+              "rewrites": []
+            },
+            "voice_low_pressure_focus": {
+              "tuned": false,
+              "rewrite_count": 0,
+              "rewrites": []
+            }
+          }
+        ],
+        "mapped_cues": [
+          {
+            "type": "pause",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "after": "I'll keep this practical.",
+            "mode": "transition",
+            "duration_ms": 265,
+            "provider_hint": "Render as a bounded pause or break; do not add visible words.",
+            "cue_id": "cue-02",
+            "rendered_as": "break_tag"
+          }
+        ],
+        "unsupported_cues": [
+          {
+            "type": "pitch",
+            "segment_index": 0,
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification",
+            "target": "I'll keep this practical.",
+            "direction": "steady-low",
+            "relative_pitch_semitones": -0.476,
+            "provider_hint": "Render as a subtle contour change, not theatrical acting.",
+            "cue_id": "cue-01",
+            "reason": "elevenlabs_pitch_direct_mapping_not_used"
+          }
+        ],
+        "mapped_cue_counts": {
+          "emphasis": 0,
+          "pause": 1,
+          "pitch": 0,
+          "rate": 0,
+          "stretch": 0
+        },
+        "unsupported_cue_counts": {
+          "emphasis": 0,
+          "pause": 0,
+          "pitch": 1,
+          "rate": 0,
+          "stretch": 0
+        },
+        "provider_tag_count": 0,
+        "protected_segment_provider_tag_count": 0,
+        "api_call_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "generated_audio_created": false,
+        "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+        "pacing_calibrated": true,
+        "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+        "connected_speech_applied": true,
+        "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+        "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+        "emotion_transition_smoothing_applied": true,
+        "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+        "semantic_emphasis_candidate_applied": false,
+        "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis",
+        "low_pressure_focus_applied": false,
+        "voice_low_pressure_focus_id": "VOICE-040-low-pressure-focus"
+      },
+      "validation": {
+        "passed": true,
+        "applied": false,
+        "rendered_text_unchanged": true,
+        "segment_text_changes": [],
+        "boundary_flags_changed": false,
+        "provider_call_made": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false
+      },
+      "runtime_boundary": {
+        "provider_calls_made": false,
+        "requires_api_key": false,
+        "customer_audio_uploaded": false,
+        "voice_cloning_used": false,
+        "raw_audio_read": false,
+        "transcription_created": false,
+        "generated_audio_created": false,
+        "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+        "changes_forbidden": [
+          "reading raw private audio at runtime",
+          "uploading private audio",
+          "voice cloning",
+          "changing final_response",
+          "rewriting provider text",
+          "changing accepted pacing speed",
+          "applying to protected or ineligible segments",
+          "copying low vocal presence into the agent"
+        ]
       }
     },
     "provider_rendering": {
@@ -305,38 +2800,36 @@
       "provider_name": "ElevenLabs Flash v2.5",
       "provider_rendering_mode": "break_tags_and_request_settings",
       "model_id": "eleven_flash_v2_5",
-      "language": "de",
+      "language": "en",
       "case_id": "RESP-002-runtime-turn",
-      "plain_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-      "rendered_text": "Das verstehe ich. <break time=\"0.199s\" /> Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-      "rendered_text_html_preview": "Das verstehe ich. &lt;break time=&quot;0.199s&quot; /&gt; Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+      "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+      "rendered_text_html_preview": "I&#x27;ll keep this practical, so, you&#x27;re right to ask. It only matters if the next step is useful.",
       "voice_settings": {
-        "stability": 0.45,
+        "stability": 0.56,
         "similarity_boost": 0.75,
         "style": 0.0,
         "use_speaker_boost": true,
-        "speed": 1.0
+        "speed": 1.093
       },
       "segment_renderings": [
         {
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
+          "segment_type": "freeform_clarification",
           "protected_reason": null,
           "eligible_for_prosody": true,
-          "plain_text": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-          "rendered_text": "Das verstehe ich. <break time=\"0.199s\" /> Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
-          "provider_tags_inserted": [
-            "<break time=\"0.199s\" />"
-          ],
+          "plain_text": "I'll keep this practical. So, you're right to ask. It only matters if the next step is useful.",
+          "rendered_text": "I'll keep this practical, so, you're right to ask. It only matters if the next step is useful.",
+          "provider_tags_inserted": [],
           "mapped_cues": [
             {
               "type": "pause",
               "segment_index": 0,
               "segment_id": "resp-002-final-response",
-              "segment_type": "freeform_objection_handling",
-              "after": "Das verstehe ich.",
-              "mode": "thinking",
-              "duration_ms": 199,
+              "segment_type": "freeform_clarification",
+              "after": "I'll keep this practical.",
+              "mode": "transition",
+              "duration_ms": 265,
               "provider_hint": "Render as a bounded pause or break; do not add visible words.",
               "cue_id": "cue-02",
               "rendered_as": "break_tag"
@@ -347,15 +2840,58 @@
               "type": "pitch",
               "segment_index": 0,
               "segment_id": "resp-002-final-response",
-              "segment_type": "freeform_objection_handling",
-              "target": "Das verstehe ich.",
-              "direction": "slight-rise",
-              "relative_pitch_semitones": 0.371,
+              "segment_type": "freeform_clarification",
+              "target": "I'll keep this practical.",
+              "direction": "steady-low",
+              "relative_pitch_semitones": -0.476,
               "provider_hint": "Render as a subtle contour change, not theatrical acting.",
               "cue_id": "cue-01",
               "reason": "elevenlabs_pitch_direct_mapping_not_used"
             }
-          ]
+          ],
+          "voice_pacing_calibration": {
+            "tuned": true,
+            "speed_ratio": 1.093,
+            "break_operations": [
+              {
+                "operation": "compress_break",
+                "original_ms": 265,
+                "tuned_ms": 216,
+                "scale": 0.816
+              }
+            ]
+          },
+          "voice_connected_speech": {
+            "tuned": true,
+            "flow_join_count": 1,
+            "flow_operations": [
+              {
+                "rule_id": "en-join-filler-after-so",
+                "before": ". <break time=\"0.216s\" /> So, ",
+                "after_text_changed": true,
+                "remaining_same_pattern": false
+              }
+            ]
+          },
+          "voice_listening_calibration": {
+            "tuned": false,
+            "adjustments": []
+          },
+          "voice_emotion_smoothing": {
+            "tuned": true,
+            "transition_count": 2,
+            "blocked_overemotional_cue_count": 0
+          },
+          "voice_semantic_emphasis": {
+            "tuned": false,
+            "rewrite_count": 0,
+            "rewrites": []
+          },
+          "voice_low_pressure_focus": {
+            "tuned": false,
+            "rewrite_count": 0,
+            "rewrites": []
+          }
         }
       ],
       "mapped_cues": [
@@ -363,10 +2899,10 @@
           "type": "pause",
           "segment_index": 0,
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
-          "after": "Das verstehe ich.",
-          "mode": "thinking",
-          "duration_ms": 199,
+          "segment_type": "freeform_clarification",
+          "after": "I'll keep this practical.",
+          "mode": "transition",
+          "duration_ms": 265,
           "provider_hint": "Render as a bounded pause or break; do not add visible words.",
           "cue_id": "cue-02",
           "rendered_as": "break_tag"
@@ -377,10 +2913,10 @@
           "type": "pitch",
           "segment_index": 0,
           "segment_id": "resp-002-final-response",
-          "segment_type": "freeform_objection_handling",
-          "target": "Das verstehe ich.",
-          "direction": "slight-rise",
-          "relative_pitch_semitones": 0.371,
+          "segment_type": "freeform_clarification",
+          "target": "I'll keep this practical.",
+          "direction": "steady-low",
+          "relative_pitch_semitones": -0.476,
           "provider_hint": "Render as a subtle contour change, not theatrical acting.",
           "cue_id": "cue-01",
           "reason": "elevenlabs_pitch_direct_mapping_not_used"
@@ -400,19 +2936,42 @@
         "rate": 0,
         "stretch": 0
       },
-      "provider_tag_count": 1,
+      "provider_tag_count": 0,
       "protected_segment_provider_tag_count": 0,
       "api_call_made": false,
       "requires_api_key": false,
       "customer_audio_uploaded": false,
       "voice_cloning_used": false,
       "generated_audio_created": false,
-      "runtime_boundary": "offline rendering preview only; live audio belongs to VOICE-017"
+      "runtime_boundary": "offline rendering preview only; live audio belongs to explicit opt-in provider checkpoints such as VOICE-017 or RESP-003",
+      "pacing_calibrated": true,
+      "voice_pacing_calibration_id": "VOICE-034-pacing-calibration-v2",
+      "connected_speech_applied": true,
+      "voice_connected_speech_id": "VOICE-035-connected-speech-phrase-flow",
+      "voice_listening_calibration_id": "VOICE-036-listening-feedback-calibration",
+      "emotion_transition_smoothing_applied": true,
+      "voice_emotion_smoothing_id": "VOICE-037-emotion-transition-smoothing",
+      "semantic_emphasis_candidate_applied": false,
+      "voice_semantic_emphasis_id": "VOICE-039-runtime-semantic-emphasis",
+      "low_pressure_focus_applied": false,
+      "voice_low_pressure_focus_id": "VOICE-040-low-pressure-focus"
     },
     "validation": {
       "validator": "RESP-002 guarded response voice delivery check",
       "passed": true,
       "final_response_unchanged": true,
+      "tts_text_equals_final_response": false,
+      "spoken_text_normalization_passed": true,
+      "speech_realism_passed": true,
+      "speech_interaction_passed": true,
+      "speech_imperfections_passed": true,
+      "voice_pacing_calibration_passed": true,
+      "voice_connected_speech_passed": true,
+      "voice_listening_calibration_passed": true,
+      "voice_emotion_smoothing_passed": true,
+      "voice_semantic_emphasis_passed": true,
+      "voice_low_pressure_focus_passed": true,
+      "voice_private_pattern_profile_passed": true,
       "prosody_validation_passed": true,
       "provider_validation": {
         "passed": true,
@@ -420,12 +2979,26 @@
         "protected_segment_tags": [],
         "protected_segment_changes": []
       },
+      "protected_segment_change_count": 0,
+      "speech_realism_protected_segment_change_count": 0,
+      "speech_interaction_protected_segment_change_count": 0,
+      "speech_interaction_protected_marker_count": 0,
+      "speech_imperfections_protected_segment_change_count": 0,
+      "speech_imperfections_protected_violation_count": 0,
+      "speech_imperfections_unsafe_visible_count": 0,
+      "voice_pacing_tuned_segment_count": 1,
+      "voice_connected_speech_flow_join_count": 1,
+      "voice_listening_adjustment_count": 0,
+      "voice_emotion_transition_smoothed_count": 2,
+      "voice_semantic_emphasis_rewrite_count": 0,
+      "voice_low_pressure_focus_rewrite_count": 0,
+      "voice_private_pattern_profile_applied": false,
       "cue_in_protected_segment_count": 0,
       "notes": "Runtime voice delivery preserved guarded text and kept provider rendering offline."
     },
     "runtime_boundary": {
       "position": "after RESP-001 guarded response generation and before live TTS",
-      "changes_allowed": "delivery metadata and provider-specific TTS input only",
+      "changes_allowed": "delivery metadata, safe spoken freeform TTS wording, interaction prosody cues, opt-in controlled imperfections, pacing calibration, connected-speech flow, listening-feedback calibration, emotion-transition smoothing, semantic-emphasis wording candidates, low-pressure focus corrections, accepted abstract private-pattern provider settings, and provider-specific TTS input only",
       "changes_forbidden": [
         "changing final_response",
         "changing call_control",

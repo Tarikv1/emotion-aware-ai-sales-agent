@@ -25,7 +25,7 @@ Manual dry run using:
 - `docs/product/SIMULATION_CONTRACT.md`
 - `packages/prompts/product-qualification-agent.txt`
 - `research/experiments/cases/prod-001-qualification-simulation.json`
-- `research/experiments/generated/PROD-001-evaluation-packet.md`
+- `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md`
 
 Live model execution: `not-run`
 
@@ -199,7 +199,7 @@ Follow-up implemented:
 
 - `scripts/run_product_simulation.py` now builds an accumulated state object for each turn.
 - `packages/prompts/product-qualification-agent.txt` now receives that state in the rendered prompt.
-- `research/experiments/generated/PROD-001-evaluation-packet.md` now includes prior turns and current call state for later turns.
+- `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md` now includes prior turns and current call state for later turns.
 
 The final `CallOutcome` schema is strong enough for the planned lead database design. The database should preserve:
 

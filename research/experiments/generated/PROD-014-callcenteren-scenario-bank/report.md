@@ -1,0 +1,282 @@
+# PROD-014 CallCenterEN Scenario Bank
+
+This scenario bank generated from PROD-013 turns abstract CallCenterEN pattern labels into testable, project-owned scenario packets.
+
+The main bank is expanded from multi-pattern combinations rather than capped to the old 24-scenario smoke slice.
+
+It uses no exact transcript text, no raw call summaries, no names, no provider calls, no LLM calls, and no transcript-derived runtime prompt material.
+
+Safe close means verbal commitment or sale-ready outcome without payment collection.
+
+## Summary
+
+- Scenarios: `240`
+- Requested scenarios: `240`
+- Unique scenario recipes: `240`
+- Turns: `720`
+- Source pattern references: `2502`
+- Source pattern categories: `10`
+- Leakage findings: `0`
+- Ready for PROD-015: `True`
+
+## Metrics
+
+- scenario_quality_score: `1.0`
+- leakage_failure_rate: `0.0`
+- safe_close_coverage: `0.3375`
+- non_sale_boundary_coverage: `0.6625`
+- emotion_transition_coverage: `1.0`
+
+## Leakage Tests
+
+- exact_transcript_sentence_check: `pass`
+- high_similarity_paraphrase_check: `pass`
+- single_source_scenario_check: `pass`
+- commercial_runtime_prompt_check: `pass`
+
+## Scenario Packets
+
+- `prod-014-sale_eligible-001` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-001` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-002` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-001` `callback_request` domain `auto_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-001` `cancellation_boundary` domain `auto_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-001` `support_handoff` domain `auto_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-001` `trust_repair` domain `auto_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-002` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-003` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-004` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-002` `callback_request` domain `automotive` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-002` `cancellation_boundary` domain `automotive` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-002` `support_handoff` domain `automotive` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-002` `trust_repair` domain `automotive` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-003` `sale_eligible` domain `general_customer_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-005` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-006` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-003` `callback_request` domain `general_customer_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-003` `cancellation_boundary` domain `general_customer_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-003` `support_handoff` domain `general_customer_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-003` `trust_repair` domain `general_customer_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-004` `sale_eligible` domain `healthcare_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-007` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-008` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-004` `callback_request` domain `healthcare_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-004` `cancellation_boundary` domain `healthcare_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-004` `support_handoff` domain `healthcare_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-004` `trust_repair` domain `healthcare_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-005` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-006` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-009` `price_objection` domain `home_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-005` `callback_request` domain `home_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-005` `cancellation_boundary` domain `home_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-005` `support_handoff` domain `home_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-005` `trust_repair` domain `home_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-007` `sale_eligible` domain `insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-010` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-011` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-006` `callback_request` domain `insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-006` `cancellation_boundary` domain `insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-006` `support_handoff` domain `insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-006` `trust_repair` domain `insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-008` `sale_eligible` domain `medical_equipment` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-012` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-013` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-007` `callback_request` domain `medical_equipment` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-007` `cancellation_boundary` domain `medical_equipment` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-007` `support_handoff` domain `medical_equipment` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-007` `trust_repair` domain `medical_equipment` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-009` `sale_eligible` domain `medicare` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-010` `sale_eligible` domain `medicare` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-014` `price_objection` domain `medicare` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-008` `callback_request` domain `medicare` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-008` `cancellation_boundary` domain `medicare` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-008` `support_handoff` domain `medicare` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-008` `trust_repair` domain `medicare` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-011` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-012` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-015` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-009` `callback_request` domain `auto_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-009` `cancellation_boundary` domain `auto_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-009` `support_handoff` domain `auto_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-009` `trust_repair` domain `auto_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-013` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-014` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-016` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-010` `callback_request` domain `automotive` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-010` `cancellation_boundary` domain `automotive` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-010` `support_handoff` domain `automotive` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-010` `trust_repair` domain `automotive` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-015` `sale_eligible` domain `general_customer_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-017` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-018` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-011` `callback_request` domain `general_customer_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-011` `cancellation_boundary` domain `general_customer_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-011` `support_handoff` domain `general_customer_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-011` `trust_repair` domain `general_customer_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-016` `sale_eligible` domain `healthcare_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-019` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-020` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-012` `callback_request` domain `healthcare_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-012` `cancellation_boundary` domain `healthcare_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-012` `support_handoff` domain `healthcare_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-012` `trust_repair` domain `healthcare_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-017` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-018` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-021` `price_objection` domain `home_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-013` `callback_request` domain `home_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-013` `cancellation_boundary` domain `home_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-013` `support_handoff` domain `home_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-013` `trust_repair` domain `home_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-019` `sale_eligible` domain `insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-022` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-023` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-014` `callback_request` domain `insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-014` `cancellation_boundary` domain `insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-014` `support_handoff` domain `insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-014` `trust_repair` domain `insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-020` `sale_eligible` domain `medical_equipment` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-024` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-025` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-015` `callback_request` domain `medical_equipment` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-015` `cancellation_boundary` domain `medical_equipment` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-015` `support_handoff` domain `medical_equipment` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-015` `trust_repair` domain `medical_equipment` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-021` `sale_eligible` domain `medicare` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-026` `price_objection` domain `medicare` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-027` `price_objection` domain `medicare` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-016` `callback_request` domain `medicare` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-016` `cancellation_boundary` domain `medicare` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-016` `support_handoff` domain `medicare` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-016` `trust_repair` domain `medicare` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-022` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-028` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-029` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-017` `callback_request` domain `auto_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-017` `cancellation_boundary` domain `auto_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-017` `support_handoff` domain `auto_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-017` `trust_repair` domain `auto_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-023` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-024` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-030` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-018` `callback_request` domain `automotive` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-018` `cancellation_boundary` domain `automotive` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-018` `support_handoff` domain `automotive` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-018` `trust_repair` domain `automotive` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-025` `sale_eligible` domain `general_customer_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-031` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-032` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-019` `callback_request` domain `general_customer_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-019` `cancellation_boundary` domain `general_customer_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-019` `support_handoff` domain `general_customer_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-019` `trust_repair` domain `general_customer_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-026` `sale_eligible` domain `healthcare_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-033` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-034` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-020` `callback_request` domain `healthcare_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-020` `cancellation_boundary` domain `healthcare_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-020` `support_handoff` domain `healthcare_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-020` `trust_repair` domain `healthcare_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-027` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-028` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-035` `price_objection` domain `home_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-021` `callback_request` domain `home_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-021` `cancellation_boundary` domain `home_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-021` `support_handoff` domain `home_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-021` `trust_repair` domain `home_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-029` `sale_eligible` domain `insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-036` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-037` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-022` `callback_request` domain `insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-022` `cancellation_boundary` domain `insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-022` `support_handoff` domain `insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-022` `trust_repair` domain `insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-030` `sale_eligible` domain `medical_equipment` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-038` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-039` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-023` `callback_request` domain `medical_equipment` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-023` `cancellation_boundary` domain `medical_equipment` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-023` `support_handoff` domain `medical_equipment` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-023` `trust_repair` domain `medical_equipment` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-031` `sale_eligible` domain `medicare` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-032` `sale_eligible` domain `medicare` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-040` `price_objection` domain `medicare` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-024` `callback_request` domain `medicare` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-024` `cancellation_boundary` domain `medicare` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-024` `support_handoff` domain `medicare` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-024` `trust_repair` domain `medicare` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-033` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-034` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-041` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-025` `callback_request` domain `auto_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-025` `cancellation_boundary` domain `auto_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-025` `support_handoff` domain `auto_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-025` `trust_repair` domain `auto_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-035` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-042` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-043` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-026` `callback_request` domain `automotive` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-026` `cancellation_boundary` domain `automotive` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-026` `support_handoff` domain `automotive` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-026` `trust_repair` domain `automotive` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-036` `sale_eligible` domain `general_customer_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-044` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-045` `price_objection` domain `general_customer_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-027` `callback_request` domain `general_customer_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-027` `cancellation_boundary` domain `general_customer_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-027` `support_handoff` domain `general_customer_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-027` `trust_repair` domain `general_customer_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-037` `sale_eligible` domain `healthcare_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-038` `sale_eligible` domain `healthcare_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-046` `price_objection` domain `healthcare_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-028` `callback_request` domain `healthcare_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-028` `cancellation_boundary` domain `healthcare_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-028` `support_handoff` domain `healthcare_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-028` `trust_repair` domain `healthcare_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-039` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-040` `sale_eligible` domain `home_service` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-047` `price_objection` domain `home_service` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-029` `callback_request` domain `home_service` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-029` `cancellation_boundary` domain `home_service` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-029` `support_handoff` domain `home_service` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-029` `trust_repair` domain `home_service` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-041` `sale_eligible` domain `insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-048` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-049` `price_objection` domain `insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-030` `callback_request` domain `insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-030` `cancellation_boundary` domain `insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-030` `support_handoff` domain `insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-030` `trust_repair` domain `insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-042` `sale_eligible` domain `medical_equipment` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-050` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-051` `price_objection` domain `medical_equipment` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-031` `callback_request` domain `medical_equipment` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-031` `cancellation_boundary` domain `medical_equipment` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-031` `support_handoff` domain `medical_equipment` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-031` `trust_repair` domain `medical_equipment` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-043` `sale_eligible` domain `medicare` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-052` `price_objection` domain `medicare` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-053` `price_objection` domain `medicare` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-032` `callback_request` domain `medicare` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-032` `cancellation_boundary` domain `medicare` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-032` `support_handoff` domain `medicare` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-032` `trust_repair` domain `medicare` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-044` `sale_eligible` domain `auto_insurance` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-054` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-055` `price_objection` domain `auto_insurance` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-033` `callback_request` domain `auto_insurance` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-033` `cancellation_boundary` domain `auto_insurance` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-033` `support_handoff` domain `auto_insurance` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-033` `trust_repair` domain `auto_insurance` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-045` `sale_eligible` domain `automotive` outcome `sale_ready` patterns `10`
+- `prod-014-price_objection-056` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-price_objection-057` `price_objection` domain `automotive` outcome `non_sale_correct` patterns `10`
+- `prod-014-callback_request-034` `callback_request` domain `automotive` outcome `callback_agreed` patterns `10`
+- `prod-014-cancellation_boundary-034` `cancellation_boundary` domain `automotive` outcome `end_call` patterns `11`
+- `prod-014-support_handoff-034` `support_handoff` domain `automotive` outcome `human_handoff` patterns `11`
+- `prod-014-trust_repair-034` `trust_repair` domain `automotive` outcome `support_only` patterns `11`
+- `prod-014-sale_eligible-046` `sale_eligible` domain `general_customer_service` outcome `sale_ready` patterns `10`
+- `prod-014-sale_eligible-047` `sale_eligible` domain `general_customer_service` outcome `sale_ready` patterns `10`
+
+## Runtime Boundary
+
+PROD-014 does not change runtime behavior. Use it as the input bank for PROD-015 evaluation, where old runtime and retrieval runtime can answer the same generated customer prompts under leakage, safe-close, and non-sale correctness metrics.

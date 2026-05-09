@@ -7,7 +7,7 @@ VOICE-030D summarizes private VOICE-030C acoustic feature files before any runti
 - Read private derived feature files under `data/private`.
 - Create a human-reviewable private summary.
 - Keep pause ratio and pause-duration metrics diagnostic-only.
-- Summarize safer runtime candidates without changing runtime behavior.
+- Summarize recurring acoustic patterns across usable samples without changing runtime behavior.
 
 ## Inputs
 
@@ -22,6 +22,16 @@ data/private/tarik-speech-samples/derived/review/voice-030d-feature-review-summa
 data/private/tarik-speech-samples/derived/review/voice-030d-feature-review-summary.md
 ```
 
+## Sample Quality
+
+VOICE-030D now separates:
+
+- feature files read
+- feature files usable for recurring-pattern analysis
+- feature files excluded because no measurable speech was detected
+
+Excluded files remain counted for coverage. They are not allowed to drag the pattern summary toward silence or flat delivery.
+
 ## Runtime Candidate Summary
 
 VOICE-030D summarizes only:
@@ -30,7 +40,18 @@ VOICE-030D summarizes only:
 - `energy_variation`
 - `mean_speech_rms`
 
+These are derived from all usable feature files. If an older feature file does not have a `runtime_learning_candidates` wrapper, VOICE-030D falls back to the same acoustic values under `features`.
+
 These are still only review candidates. They do not change runtime voice settings.
+
+## Recurring Pattern Summary
+
+VOICE-030D also writes a plain-language recurring-pattern section. It currently interprets:
+
+- normalized speech-burst rhythm using `speech_bursts_per_minute`
+- expressiveness variation using `energy_variation`
+- vocal presence using `mean_speech_rms`
+- pause behavior as diagnostic-only context, not an agent pacing target
 
 ## Diagnostic-Only Summary
 

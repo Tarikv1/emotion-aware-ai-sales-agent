@@ -1,4 +1,4 @@
-﻿### Technical Extraction Report: Negotiation Tactics & Cross-Cultural Sales Logic
+### Technical Extraction Report: Negotiation Tactics & Cross-Cultural Sales Logic
 
 #### 1\. Source Coverage Analysis Table
 

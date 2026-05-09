@@ -1,4 +1,4 @@
-﻿### Emotion Aware AI Sales Agent \- Objection Handling Source Extraction Report
+### Emotion Aware AI Sales Agent \- Objection Handling Source Extraction Report
 
 #### 1\. Source Coverage & Analysis Matrix
 

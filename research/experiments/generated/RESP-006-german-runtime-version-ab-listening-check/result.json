@@ -1,0 +1,247 @@
+{
+  "campaign_case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "case_file": "research\\experiments\\cases\\resp-006-german-runtime-version-ab-listening-check.json",
+  "cases": [
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+      "final_response": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+      "language": "de",
+      "provider_rendering_changed": true,
+      "quality_review": {
+        "criteria": [
+          "German naturalness",
+          "German formality",
+          "more complex speaking flow",
+          "sales-call pacing",
+          "clarity",
+          "AI-obviousness",
+          "trustworthiness",
+          "old runtime versus new runtime preference"
+        ],
+        "human_listening_review_recorded": false,
+        "human_listening_review_required": true,
+        "quality_claim_allowed": false
+      },
+      "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+      "review_focus": [
+        "Klingt die alte Runtime im Deutschen natürlicher oder zu geschrieben?",
+        "Klingt die neue Runtime seriöser, ohne steif oder künstlich zu werden?",
+        "Bleiben Höflichkeit, Formalität und Verkaufsgesprächs-Pacing passend?",
+        "Wirkt eine Variante wie eine klarere Persönlichkeit statt nur wie bessere Qualität?"
+      ],
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "stage": "relevance-check",
+      "title": "German same customer question with a longer trust and send-info answer",
+      "variants": [
+        {
+          "api_call_made": false,
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "api_key_present": false,
+          "api_key_value_logged": false,
+          "asset_log": {
+            "asset_id": "no-audio-created",
+            "asset_log_id": "RESP-006-generated-audio-asset-log",
+            "consent_rights": "No customer audio, no private audio, no voice cloning.",
+            "input_source_status": "synthetic project-local German test case",
+            "language": "de",
+            "output_path": "",
+            "provider": "elevenlabs",
+            "provider_model": "eleven_flash_v2_5",
+            "provider_voice_env_var": "local_voice_ids:elevenlabs.de",
+            "review_decision": "needs human listening review",
+            "source_text_path": "research\\experiments\\cases\\resp-006-german-runtime-version-ab-listening-check.json",
+            "status": "not created"
+          },
+          "audio_byte_size": 0,
+          "audio_file_created": false,
+          "audio_filename": "RESP-006-SAME-Q-DE-COMPLEX-de-elevenlabs-old_plain_guarded.mp3",
+          "audio_output_path": null,
+          "case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+          "customer_audio_uploaded": false,
+          "endpoint_type": "tts-http-stream",
+          "fallback_reason": "dry-run-mode",
+          "fallback_used": true,
+          "generated_text_sent_to_provider": false,
+          "http_status": null,
+          "label": "Old runtime: plain guarded German response",
+          "language": "de",
+          "live_call_requested": false,
+          "model_id": "eleven_flash_v2_5",
+          "provider_error": null,
+          "provider_error_summary": {
+            "code": null,
+            "message": null,
+            "type": null
+          },
+          "provider_id": "elevenlabs-stream",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs",
+          "provider_rendering_used": false,
+          "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+          "request_id_present": false,
+          "request_preview": {
+            "body": {
+              "language_code": "de",
+              "model_id": "eleven_flash_v2_5",
+              "text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+              "voice_settings": {
+                "similarity_boost": 0.75,
+                "speed": 1.0,
+                "stability": 0.45,
+                "style": 0.0,
+                "use_speaker_boost": true
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json",
+              "xi-api-key": "<redacted>"
+            },
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false"
+          },
+          "response_content_type": null,
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "source_checkpoint": "RESP-001 guarded final_response",
+          "synthetic_prompt_only": true,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "tts_input_chars": 388,
+          "tts_input_source": "final_response",
+          "tts_input_text": "Gute Frage. Ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "variant_kind": "old_plain_guarded",
+          "voice_cloning_used": false,
+          "voice_id_present": true,
+          "voice_id_value_logged": false,
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.0,
+            "stability": 0.45,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        },
+        {
+          "api_call_made": false,
+          "api_key_env_var": "ELEVENLABS_API_KEY",
+          "api_key_present": false,
+          "api_key_value_logged": false,
+          "asset_log": {
+            "asset_id": "no-audio-created",
+            "asset_log_id": "RESP-006-generated-audio-asset-log",
+            "consent_rights": "No customer audio, no private audio, no voice cloning.",
+            "input_source_status": "synthetic project-local German test case",
+            "language": "de",
+            "output_path": "",
+            "provider": "elevenlabs",
+            "provider_model": "eleven_flash_v2_5",
+            "provider_voice_env_var": "local_voice_ids:elevenlabs.de",
+            "review_decision": "needs human listening review",
+            "source_text_path": "research\\experiments\\cases\\resp-006-german-runtime-version-ab-listening-check.json",
+            "status": "not created"
+          },
+          "audio_byte_size": 0,
+          "audio_file_created": false,
+          "audio_filename": "RESP-006-SAME-Q-DE-COMPLEX-de-elevenlabs-new_shaped_runtime.mp3",
+          "audio_output_path": null,
+          "case_id": "RESP-006-SAME-Q-DE-COMPLEX",
+          "customer_audio_uploaded": false,
+          "endpoint_type": "tts-http-stream",
+          "fallback_reason": "dry-run-mode",
+          "fallback_used": true,
+          "generated_text_sent_to_provider": false,
+          "http_status": null,
+          "label": "New runtime: shaped provider-ready German response",
+          "language": "de",
+          "live_call_requested": false,
+          "model_id": "eleven_flash_v2_5",
+          "provider_error": null,
+          "provider_error_summary": {
+            "code": null,
+            "message": null,
+            "type": null
+          },
+          "provider_id": "elevenlabs-stream",
+          "provider_key": "elevenlabs",
+          "provider_name": "ElevenLabs",
+          "provider_rendering_used": true,
+          "question": "Können Sie mir zuerst etwas schicken? Ich kenne Ihr Unternehmen nicht, ich möchte kein Verkaufsgespräch, und ich muss verstehen, was danach konkret passieren würde, bevor ich meinen Chef einbeziehe.",
+          "request_id_present": false,
+          "request_preview": {
+            "body": {
+              "language_code": "de",
+              "model_id": "eleven_flash_v2_5",
+              "text": "Gute Frage. Um, ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. <break time=\"0.185s\" /> Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+              "voice_settings": {
+                "similarity_boost": 0.75,
+                "speed": 1.127,
+                "stability": 0.56,
+                "style": 0.0,
+                "use_speaker_boost": true
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json",
+              "xi-api-key": "<redacted>"
+            },
+            "method": "POST",
+            "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false"
+          },
+          "response_content_type": null,
+          "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+          "source_checkpoint": "RESP-002/VOICE-044 shaped runtime",
+          "synthetic_prompt_only": true,
+          "time_to_first_audio_ms": null,
+          "total_provider_latency_ms": 0,
+          "tts_input_chars": 416,
+          "tts_input_source": "provider_rendered_text",
+          "tts_input_text": "Gute Frage. Um, ich erwarte nicht, dass Sie in diesem Gespräch eine Entscheidung treffen. <break time=\"0.185s\" /> Die praktische Variante wäre: Ich kann Ihnen eine kurze Zusammenfassung schicken, warum wir angerufen haben, was in der Workflow-Prüfung angeschaut würde und was ein Spezialist bestätigt, bevor irgendetwas weitergeht. Wenn es danach nicht relevant ist, können Sie es ignorieren oder einfach Nein sagen.",
+          "variant_kind": "new_shaped_runtime",
+          "voice_cloning_used": false,
+          "voice_id_present": true,
+          "voice_id_value_logged": false,
+          "voice_settings": {
+            "similarity_boost": 0.75,
+            "speed": 1.127,
+            "stability": 0.56,
+            "style": 0.0,
+            "use_speaker_boost": true
+          }
+        }
+      ]
+    }
+  ],
+  "experiment_id": "RESP-006-german-runtime-version-ab-listening-check",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "customer_audio_uploaded": false,
+    "default_mode": "dry-run",
+    "provider_calls_made": false,
+    "quality_claim_allowed_without_human_rating": false,
+    "requires_api_key": false,
+    "voice_cloning_used": false
+  },
+  "summary": {
+    "api_calls_made": 0,
+    "audio_files_created": 0,
+    "case_count": 1,
+    "customer_audio_uploaded": false,
+    "fallback_count": 2,
+    "german_case_count": 1,
+    "human_listening_review_recorded": false,
+    "live_call_requested": false,
+    "maximum_tts_input_chars": 416,
+    "minimum_tts_input_chars": 388,
+    "new_runtime_variant_count": 1,
+    "old_runtime_variant_count": 1,
+    "provider": "elevenlabs",
+    "quality_claim_allowed": false,
+    "raw_secret_values_logged": false,
+    "same_question_for_all_variants": true,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "variant_count": 2,
+    "voice_cloning_used": false
+  },
+  "title": "German old runtime versus new runtime same-question listening check"
+}

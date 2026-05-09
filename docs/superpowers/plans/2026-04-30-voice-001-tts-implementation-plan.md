@@ -20,7 +20,7 @@
   - Documents how VOICE-001 fits around the reusable sales-agent core.
 - Create: `research/experiments/VOICE-001-tts-response-prototype.md`
   - Summarizes the experiment and its result.
-- Generate: `research/experiments/generated/VOICE-001-tts-packet.json`
+- Generate: `research/experiments/generated/VOICE-001/VOICE-001-tts-packet.json`
   - Stores a deterministic dry-run sample packet.
 
 ## Task 1: Add Failing Validator
@@ -133,7 +133,7 @@ Expected: exit code `0`.
 **Files:**
 - Create: `docs/product/VOICE_001_TTS_PROTOTYPE.md`
 - Create: `research/experiments/VOICE-001-tts-response-prototype.md`
-- Generate: `research/experiments/generated/VOICE-001-tts-packet.json`
+- Generate: `research/experiments/generated/VOICE-001/VOICE-001-tts-packet.json`
 
 - [ ] **Step 1: Generate deterministic dry-run packet**
 
@@ -145,7 +145,7 @@ python scripts\generate_voice_response.py `
   --stage relevance-check `
   --transcript "Nur wenn Sie garantieren koennen, dass es stabil ist." `
   --dry-run `
-  --out-json research\experiments\generated\VOICE-001-tts-packet.json
+  --out-json research/experiments/generated/VOICE-001/VOICE-001-tts-packet.json
 ```
 
 Expected: JSON packet is printed and written to the generated artifact path.

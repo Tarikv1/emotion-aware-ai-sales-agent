@@ -1,4 +1,4 @@
-﻿# RAG-002 NotebookLM Import Drop Zone
+# RAG-002 NotebookLM Import Drop Zone
 
 Paste or export NotebookLM JSON outputs here later, one file per topic.
 

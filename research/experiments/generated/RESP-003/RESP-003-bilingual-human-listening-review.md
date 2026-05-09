@@ -6,8 +6,8 @@ Reviewer: Tarik
 
 Artifacts reviewed:
 
-- `research/experiments/generated/RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
-- `research/experiments/generated/RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-00aae825.mp3`
+- `research/experiments/generated/RESP-003/RESP-003-campaign-prod-005-b2c-telecom-de-elevenlabs-efb86453.mp3`
+- `research/experiments/generated/RESP-003/RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-00aae825.mp3`
 
 ## Summary
 

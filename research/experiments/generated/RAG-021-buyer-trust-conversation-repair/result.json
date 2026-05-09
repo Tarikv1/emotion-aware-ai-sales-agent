@@ -1,0 +1,1088 @@
+{
+  "buyer_trust_conversation_repair_id": "RAG-021-buyer-trust-conversation-repair",
+  "inputs": {
+    "case_path": "research/experiments/cases/rag-021-buyer-trust-conversation-repair.json"
+  },
+  "acceptance": {
+    "accepted_by": "project_owner_requested_more_rag_sales_emotion_research",
+    "acceptance_scope": "Paraphrased advisory-only buyer trust and conversation-repair rules from public web sources; no copied scripts, no source excerpts, no private data, and no runtime import in this checkpoint.",
+    "prior_artifacts_mutated": false
+  },
+  "summary": {
+    "source_count": 10,
+    "knowledge_item_count": 16,
+    "covered_deep_dive_topic_count": 8,
+    "lane_counts": {
+      "reasoning_policy": 4,
+      "response_wording": 7,
+      "safety_guardrail": 5
+    },
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "source_excerpt_text_stored": false,
+    "copied_scripts_stored": false,
+    "provider_calls_made": false,
+    "notebooklm_api_used": false,
+    "private_customer_data_used": false,
+    "reads_data_private": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false
+  },
+  "covered_deep_dive_topics": [
+    "b2b_value_mapping",
+    "trust_repair",
+    "autonomy_and_reactance",
+    "cognitive_load_and_clarity",
+    "conversation_repair",
+    "emotion_regulation_support",
+    "action_commitment_design",
+    "ai_transparency_and_handoff"
+  ],
+  "source_registry": [
+    {
+      "source_id": "rag021-source-001",
+      "title": "Bain B2B Elements of Value",
+      "url": "https://www.bain.com/how-we-help/b2b-elements-of-value/",
+      "source_type": "B2B buyer value framework source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "website terms; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-002",
+      "title": "Mayer, Davis, and Schoorman integrative model of organizational trust",
+      "url": "https://www.jstor.org/stable/258792",
+      "source_type": "academic trust model source",
+      "reuse_label": "summarized fact",
+      "license_observed": "publisher page; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-003",
+      "title": "Leader autonomy support in the workplace meta-analysis",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30237648/",
+      "source_type": "academic motivation source",
+      "reuse_label": "summarized fact",
+      "license_observed": "PubMed record; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-004",
+      "title": "Reactance and restoration of freedom in communication",
+      "url": "https://academic.oup.com/hcr/article/33/2/219/4210793",
+      "source_type": "academic communication and reactance source",
+      "reuse_label": "summarized fact",
+      "license_observed": "publisher page; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-005",
+      "title": "Gross emerging field of emotion regulation",
+      "url": "https://journals.sagepub.com/doi/10.1037/1089-2680.2.3.271",
+      "source_type": "academic emotion regulation source",
+      "reuse_label": "summarized fact",
+      "license_observed": "publisher page; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-006",
+      "title": "Schegloff, Jefferson, and Sacks preference for self-correction in conversation repair",
+      "url": "https://www.conversationanalysis.org/schegloff-media-archive/preference-for-self-correction-in-repair-in-conversation-1977/",
+      "source_type": "conversation analysis source",
+      "reuse_label": "summarized fact",
+      "license_observed": "source archive page; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-007",
+      "title": "Cognitive Load Theory review",
+      "url": "https://link.springer.com/article/10.1007/s11251-009-9110-0",
+      "source_type": "academic cognitive load source",
+      "reuse_label": "summarized fact",
+      "license_observed": "publisher page; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-008",
+      "title": "Implementation intentions and goal achievement meta-analysis",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18096108/",
+      "source_type": "academic action planning source",
+      "reuse_label": "summarized fact",
+      "license_observed": "PubMed record; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-009",
+      "title": "Digital.gov Plain Language guide",
+      "url": "https://digital.gov/guides/plain-language",
+      "source_type": "public communication guidance source",
+      "reuse_label": "adapted pattern",
+      "license_observed": "public government guidance; no copied material",
+      "checked_date": "2026-05-08"
+    },
+    {
+      "source_id": "rag021-source-010",
+      "title": "OECD AI Principles",
+      "url": "https://www.oecd.org/en/topics/ai-principles.html",
+      "source_type": "AI governance source",
+      "reuse_label": "summarized fact",
+      "license_observed": "public intergovernmental guidance; no copied material",
+      "checked_date": "2026-05-08"
+    }
+  ],
+  "knowledge_items": [
+    {
+      "knowledge_id": "rag021-value-map-before-pitch",
+      "chunk_id": "rag021-chunk-001",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "b2b_value_mapping",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag021-source-001"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery"
+      ],
+      "principle": "Map the buyer's value dimension before pitching a feature or next step.",
+      "application": "Use when the buyer asks what makes the product worth reviewing or says they already have tools.",
+      "when_not_to_use": "Do not assume the same value argument works for every role or buying committee.",
+      "example_phrases": {
+        "en": "Before I explain the tool, can I check whether the useful angle is time saved, fewer missed follow-ups, or easier reporting?",
+        "de": "Bevor ich das Tool erklaren, darf ich kurz prufen: Geht es eher um Zeitersparnis, weniger verpasste Nachverfolgung oder einfacheres Reporting?"
+      },
+      "compliance_notes": "Use only campaign-supported value claims and avoid unverified ROI numbers.",
+      "evidence_type": "B2B buyer value framework",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-001"
+      ],
+      "source_urls": [
+        "https://www.bain.com/how-we-help/b2b-elements-of-value/"
+      ],
+      "source_titles": [
+        "Bain B2B Elements of Value"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-value-basics-before-emotional-value",
+      "chunk_id": "rag021-chunk-002",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "b2b_value_mapping",
+        "cognitive_load_and_clarity"
+      ],
+      "source_ids": [
+        "rag021-source-001"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection"
+      ],
+      "principle": "Satisfy functional basics before using higher-level emotional or reputational value framing.",
+      "application": "Use when the buyer still needs facts about fit, workflow, risk, or implementation.",
+      "when_not_to_use": "Do not use emotional reassurance to cover missing product facts.",
+      "example_phrases": {
+        "en": "The first question is whether it fits your workflow. If it does, we can then look at whether it reduces team pressure.",
+        "de": "Die erste Frage ist, ob es in Ihren Prozess passt. Danach konnen wir prufen, ob es das Team entlastet."
+      },
+      "compliance_notes": "Emotional value must never replace accurate functional explanation.",
+      "evidence_type": "B2B buyer value framework",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-002"
+      ],
+      "source_urls": [
+        "https://www.bain.com/how-we-help/b2b-elements-of-value/"
+      ],
+      "source_titles": [
+        "Bain B2B Elements of Value"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-trust-diagnose-ability-benevolence-integrity",
+      "chunk_id": "rag021-chunk-003",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "trust_repair",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag021-source-002"
+      ],
+      "sales_stage": [
+        "objection",
+        "closing",
+        "handoff"
+      ],
+      "principle": "Diagnose trust objections as ability, benevolence, or integrity gaps before answering.",
+      "application": "Use when the buyer asks whether the company can deliver, whether the recommendation is in their interest, or whether claims are honest.",
+      "when_not_to_use": "Do not answer every trust concern with testimonials or confidence language.",
+      "example_phrases": {
+        "en": "Is your concern whether it works technically, whether it is actually useful for you, or whether the claim is too broad?",
+        "de": "Geht es darum, ob es technisch funktioniert, ob es fur Sie wirklich sinnvoll ist oder ob die Aussage zu weit geht?"
+      },
+      "compliance_notes": "Trust diagnosis must not infer motive or protected traits.",
+      "evidence_type": "academic trust model",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-003"
+      ],
+      "source_urls": [
+        "https://www.jstor.org/stable/258792"
+      ],
+      "source_titles": [
+        "Mayer, Davis, and Schoorman integrative model of organizational trust"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-trust-repair-admit-limits",
+      "chunk_id": "rag021-chunk-004",
+      "lane": "response_wording",
+      "topic_ids": [
+        "trust_repair",
+        "ai_transparency_and_handoff"
+      ],
+      "source_ids": [
+        "rag021-source-002",
+        "rag021-source-010"
+      ],
+      "sales_stage": [
+        "objection",
+        "handoff"
+      ],
+      "principle": "Repair integrity gaps by admitting limits, naming what is known, and offering a verifiable next step.",
+      "application": "Use when a buyer challenges an AI, performance, implementation, or privacy claim.",
+      "when_not_to_use": "Do not bluff, overstate certainty, or hide limitations to preserve momentum.",
+      "example_phrases": {
+        "en": "I do not want to overclaim that. What I can verify is the workflow fit, and I can route deeper technical questions to a specialist.",
+        "de": "Das mochte ich nicht zu stark behaupten. Prufen kann ich den Prozess-Fit; tiefere technische Fragen gebe ich an eine Fachperson weiter."
+      },
+      "compliance_notes": "Truthful limitation disclosure overrides conversion goals.",
+      "evidence_type": "academic trust model and AI governance source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-004"
+      ],
+      "source_urls": [
+        "https://www.jstor.org/stable/258792",
+        "https://www.oecd.org/en/topics/ai-principles.html"
+      ],
+      "source_titles": [
+        "Mayer, Davis, and Schoorman integrative model of organizational trust",
+        "OECD AI Principles"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-autonomy-supportive-choice-frame",
+      "chunk_id": "rag021-chunk-005",
+      "lane": "response_wording",
+      "topic_ids": [
+        "autonomy_and_reactance",
+        "action_commitment_design"
+      ],
+      "source_ids": [
+        "rag021-source-003"
+      ],
+      "sales_stage": [
+        "objection",
+        "closing"
+      ],
+      "principle": "Use choice-framed next steps that support autonomy, competence, and relevance.",
+      "application": "Use when the buyer is open but uncertain about the least intrusive next step.",
+      "when_not_to_use": "Do not present false choices where both options force the same commitment.",
+      "example_phrases": {
+        "en": "We can leave it here, send a short summary, or do a ten-minute fit check if that would help.",
+        "de": "Wir konnen es dabei belassen, eine kurze Zusammenfassung schicken oder einen zehnminutigen Fit-Check machen, wenn das hilft."
+      },
+      "compliance_notes": "All options must be real and acceptable outcomes.",
+      "evidence_type": "academic motivation source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-005"
+      ],
+      "source_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/30237648/"
+      ],
+      "source_titles": [
+        "Leader autonomy support in the workplace meta-analysis"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-reactance-control-language-limit",
+      "chunk_id": "rag021-chunk-006",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "autonomy_and_reactance",
+        "trust_repair"
+      ],
+      "source_ids": [
+        "rag021-source-004",
+        "rag021-source-003"
+      ],
+      "sales_stage": [
+        "opening",
+        "objection",
+        "closing"
+      ],
+      "principle": "Avoid controlling language that threatens buyer freedom and increases resistance.",
+      "application": "Use before phrasing urgency, recommendation, calendar, or internal-forward requests.",
+      "when_not_to_use": "Do not say the buyer must, has to, would be wrong not to, or obviously needs the product.",
+      "example_phrases": {
+        "en": "You can decide it is not relevant; my goal is just to make the comparison clear.",
+        "de": "Sie konnen entscheiden, dass es nicht relevant ist; mein Ziel ist nur, den Vergleich klar zu machen."
+      },
+      "compliance_notes": "Buyer freedom is part of the safety boundary.",
+      "evidence_type": "academic communication and motivation sources",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-006"
+      ],
+      "source_urls": [
+        "https://academic.oup.com/hcr/article/33/2/219/4210793",
+        "https://pubmed.ncbi.nlm.nih.gov/30237648/"
+      ],
+      "source_titles": [
+        "Reactance and restoration of freedom in communication",
+        "Leader autonomy support in the workplace meta-analysis"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-cognitive-load-one-decision",
+      "chunk_id": "rag021-chunk-007",
+      "lane": "reasoning_policy",
+      "topic_ids": [
+        "cognitive_load_and_clarity",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag021-source-007"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "closing"
+      ],
+      "principle": "Ask the buyer to make one small decision at a time instead of processing the whole product, business case, and next step together.",
+      "application": "Use when the buyer sounds overloaded, asks for information, or raises several concerns at once.",
+      "when_not_to_use": "Do not simplify by hiding material risk or tradeoffs.",
+      "example_phrases": {
+        "en": "Let's separate this: first fit, then effort, then whether a follow-up is useful.",
+        "de": "Lassen Sie es trennen: zuerst Passung, dann Aufwand, dann ob ein Folgetermin sinnvoll ist."
+      },
+      "compliance_notes": "Simplification must preserve important limitations.",
+      "evidence_type": "academic cognitive load source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-007"
+      ],
+      "source_urls": [
+        "https://link.springer.com/article/10.1007/s11251-009-9110-0"
+      ],
+      "source_titles": [
+        "Cognitive Load Theory review"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-plain-language-buyer-summary",
+      "chunk_id": "rag021-chunk-008",
+      "lane": "response_wording",
+      "topic_ids": [
+        "cognitive_load_and_clarity",
+        "conversation_repair"
+      ],
+      "source_ids": [
+        "rag021-source-009"
+      ],
+      "sales_stage": [
+        "opening",
+        "discovery",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Use plain language and a short buyer-centered summary before introducing product terminology.",
+      "application": "Use when the buyer is new to the product category or when a technical explanation would slow the call.",
+      "when_not_to_use": "Do not oversimplify legal, privacy, or technical constraints.",
+      "example_phrases": {
+        "en": "In simple terms, this is about making follow-up easier to track, not replacing your team.",
+        "de": "Einfach gesagt geht es darum, Nachverfolgung leichter sichtbar zu machen, nicht Ihr Team zu ersetzen."
+      },
+      "compliance_notes": "Plain language must remain accurate and non-deceptive.",
+      "evidence_type": "public communication guidance",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-008"
+      ],
+      "source_urls": [
+        "https://digital.gov/guides/plain-language"
+      ],
+      "source_titles": [
+        "Digital.gov Plain Language guide"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-conversation-repair-invite-correction",
+      "chunk_id": "rag021-chunk-009",
+      "lane": "response_wording",
+      "topic_ids": [
+        "conversation_repair",
+        "emotional_understanding_limits"
+      ],
+      "source_ids": [
+        "rag021-source-006"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Invite the buyer to correct the agent's understanding before answering a concern.",
+      "application": "Use after ambiguous objections, interruptions, or possible misunderstandings.",
+      "when_not_to_use": "Do not use correction invitations as a delaying tactic when the buyer has asked for a direct factual answer.",
+      "example_phrases": {
+        "en": "Let me check I understood you: the concern is the extra work, not the product category itself. Is that right?",
+        "de": "Ich prufe kurz, ob ich Sie richtig verstanden habe: Es geht um den Zusatzaufwand, nicht um die Produktkategorie selbst. Stimmt das?"
+      },
+      "compliance_notes": "Correction prompts prevent hidden-state guessing.",
+      "evidence_type": "conversation analysis source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-009"
+      ],
+      "source_urls": [
+        "https://www.conversationanalysis.org/schegloff-media-archive/preference-for-self-correction-in-repair-in-conversation-1977/"
+      ],
+      "source_titles": [
+        "Schegloff, Jefferson, and Sacks preference for self-correction in conversation repair"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-conversation-repair-targeted-clarifier",
+      "chunk_id": "rag021-chunk-010",
+      "lane": "response_wording",
+      "topic_ids": [
+        "conversation_repair",
+        "cognitive_load_and_clarity"
+      ],
+      "source_ids": [
+        "rag021-source-006",
+        "rag021-source-009"
+      ],
+      "sales_stage": [
+        "discovery",
+        "objection"
+      ],
+      "principle": "Use a targeted clarifier when the repair problem is specific, instead of restarting the whole pitch.",
+      "application": "Use when only one part of the buyer's concern is unclear.",
+      "when_not_to_use": "Do not ask broad repetitive discovery questions after the buyer has already given the needed detail.",
+      "example_phrases": {
+        "en": "When you say too much effort, do you mean setup effort or ongoing admin effort?",
+        "de": "Wenn Sie zu viel Aufwand sagen: Meinen Sie Einrichtung oder laufende Administration?"
+      },
+      "compliance_notes": "Clarifiers should reduce burden, not extend the call unnecessarily.",
+      "evidence_type": "conversation analysis and public communication guidance",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-010"
+      ],
+      "source_urls": [
+        "https://www.conversationanalysis.org/schegloff-media-archive/preference-for-self-correction-in-repair-in-conversation-1977/",
+        "https://digital.gov/guides/plain-language"
+      ],
+      "source_titles": [
+        "Schegloff, Jefferson, and Sacks preference for self-correction in conversation repair",
+        "Digital.gov Plain Language guide"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-emotion-regulation-slow-reframe",
+      "chunk_id": "rag021-chunk-011",
+      "lane": "response_wording",
+      "topic_ids": [
+        "emotion_regulation_support",
+        "conversation_repair"
+      ],
+      "source_ids": [
+        "rag021-source-005"
+      ],
+      "sales_stage": [
+        "objection",
+        "handoff"
+      ],
+      "principle": "When a turn becomes tense or confused, slow the interaction and reframe the task into a smaller decision.",
+      "application": "Use when the buyer asks to slow down, repeats a concern, or signals that the answer is too broad.",
+      "when_not_to_use": "Do not tell the buyer how they feel or ask them to regulate emotion.",
+      "example_phrases": {
+        "en": "Let me make this smaller: we do not need a decision today; we only need to see whether the workflow problem is real.",
+        "de": "Ich mache es kleiner: Wir brauchen heute keine Entscheidung; wir prufen nur, ob das Prozessproblem real ist."
+      },
+      "compliance_notes": "Reframing must lower complexity, not disguise a commitment ask.",
+      "evidence_type": "academic emotion regulation source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-011"
+      ],
+      "source_urls": [
+        "https://journals.sagepub.com/doi/10.1037/1089-2680.2.3.271"
+      ],
+      "source_titles": [
+        "Gross emerging field of emotion regulation"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-emotion-regulation-no-diagnosis",
+      "chunk_id": "rag021-chunk-012",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "emotion_regulation_support",
+        "emotional_understanding_limits"
+      ],
+      "source_ids": [
+        "rag021-source-005"
+      ],
+      "sales_stage": [
+        "objection",
+        "handoff"
+      ],
+      "principle": "Support the conversation situation without diagnosing the buyer's emotion.",
+      "application": "Use when the agent would otherwise say the buyer is worried, stressed, defensive, or emotional.",
+      "when_not_to_use": "Do not use clinical, therapeutic, or certainty-heavy emotion labels in sales dialogue.",
+      "example_phrases": {
+        "en": "I may have made that too broad. Let me answer the specific point.",
+        "de": "Ich habe es vielleicht zu breit gemacht. Ich beantworte den konkreten Punkt."
+      },
+      "compliance_notes": "Blocks hidden emotion inference and medicalized language.",
+      "evidence_type": "academic emotion regulation source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-012"
+      ],
+      "source_urls": [
+        "https://journals.sagepub.com/doi/10.1037/1089-2680.2.3.271"
+      ],
+      "source_titles": [
+        "Gross emerging field of emotion regulation"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-implementation-intention-consented-next-step",
+      "chunk_id": "rag021-chunk-013",
+      "lane": "response_wording",
+      "topic_ids": [
+        "action_commitment_design",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag021-source-008"
+      ],
+      "sales_stage": [
+        "closing",
+        "handoff"
+      ],
+      "principle": "After the buyer accepts a next step, make the action specific: who, when, and what will be reviewed.",
+      "application": "Use only after explicit buyer agreement to a summary, internal share, demo, or follow-up.",
+      "when_not_to_use": "Do not turn uncertainty into a commitment plan before the buyer consents.",
+      "example_phrases": {
+        "en": "If you want the summary, I can send it today with two points for your operations lead to check.",
+        "de": "Wenn Sie die Zusammenfassung mochten, schicke ich sie heute mit zwei Punkten, die Ihre Operations-Leitung prufen kann."
+      },
+      "compliance_notes": "Specific planning is allowed only after consent.",
+      "evidence_type": "academic action planning source",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-013"
+      ],
+      "source_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/18096108/"
+      ],
+      "source_titles": [
+        "Implementation intentions and goal achievement meta-analysis"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-implementation-intention-no-commitment-trap",
+      "chunk_id": "rag021-chunk-014",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "action_commitment_design",
+        "autonomy_and_reactance"
+      ],
+      "source_ids": [
+        "rag021-source-008",
+        "rag021-source-004"
+      ],
+      "sales_stage": [
+        "closing",
+        "handoff"
+      ],
+      "principle": "Do not use specific action planning as a commitment trap.",
+      "application": "Use when converting a positive answer into a calendar invite, stakeholder share, or demo plan.",
+      "when_not_to_use": "Do not create public pledges, artificial deadlines, or obligation language from a soft yes.",
+      "example_phrases": {
+        "en": "Only if this is useful, the practical option is a short check next week.",
+        "de": "Nur wenn das hilfreich ist, ware die praktische Option ein kurzer Check nachste Woche."
+      },
+      "compliance_notes": "Action planning must remain reversible and low pressure.",
+      "evidence_type": "academic action planning and reactance sources",
+      "confidence": "medium",
+      "source_chunk_ids": [
+        "rag021-chunk-014"
+      ],
+      "source_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/18096108/",
+        "https://academic.oup.com/hcr/article/33/2/219/4210793"
+      ],
+      "source_titles": [
+        "Implementation intentions and goal achievement meta-analysis",
+        "Reactance and restoration of freedom in communication"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-ai-transparency-human-handoff",
+      "chunk_id": "rag021-chunk-015",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "ai_transparency_and_handoff",
+        "trust_repair"
+      ],
+      "source_ids": [
+        "rag021-source-010",
+        "rag021-source-002"
+      ],
+      "sales_stage": [
+        "opening",
+        "objection",
+        "handoff"
+      ],
+      "principle": "Be transparent about AI-assisted behavior, capability limits, and when a human should answer.",
+      "application": "Use for identity disclosure, technical trust questions, privacy questions, and unsupported capability requests.",
+      "when_not_to_use": "Do not let the agent pretend to be a human specialist or hide uncertainty.",
+      "example_phrases": {
+        "en": "I can explain the fit at a high level, but a human specialist should answer the privacy detail.",
+        "de": "Ich kann die Passung grob erklaren, aber die Datenschutzdetails sollte eine Fachperson beantworten."
+      },
+      "compliance_notes": "Human handoff overrides the sales objective in sensitive or uncertain cases.",
+      "evidence_type": "AI governance and academic trust source",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-015"
+      ],
+      "source_urls": [
+        "https://www.oecd.org/en/topics/ai-principles.html",
+        "https://www.jstor.org/stable/258792"
+      ],
+      "source_titles": [
+        "OECD AI Principles",
+        "Mayer, Davis, and Schoorman integrative model of organizational trust"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    },
+    {
+      "knowledge_id": "rag021-ai-transparency-contestable-answers",
+      "chunk_id": "rag021-chunk-016",
+      "lane": "safety_guardrail",
+      "topic_ids": [
+        "ai_transparency_and_handoff",
+        "buyer_decision_confidence"
+      ],
+      "source_ids": [
+        "rag021-source-010",
+        "rag021-source-009"
+      ],
+      "sales_stage": [
+        "objection",
+        "handoff"
+      ],
+      "principle": "Make AI-supported answers contestable: the buyer can ask for source, limitation, or human review.",
+      "application": "Use when a buyer challenges an answer, asks how the agent knows something, or requests proof.",
+      "when_not_to_use": "Do not bury source limitations in vague assurance language.",
+      "example_phrases": {
+        "en": "I can share the basis for that answer, or we can pause and have a person confirm it.",
+        "de": "Ich kann die Grundlage dieser Antwort nennen, oder wir pausieren und lassen es von einer Person bestatigen."
+      },
+      "compliance_notes": "Contestability and plain explanation reduce deception risk.",
+      "evidence_type": "AI governance and public communication guidance",
+      "confidence": "high",
+      "source_chunk_ids": [
+        "rag021-chunk-016"
+      ],
+      "source_urls": [
+        "https://www.oecd.org/en/topics/ai-principles.html",
+        "https://digital.gov/guides/plain-language"
+      ],
+      "source_titles": [
+        "OECD AI Principles",
+        "Digital.gov Plain Language guide"
+      ],
+      "review_verdict": "manual_public_source_paraphrased",
+      "quote_dependency_resolved": true,
+      "human_acceptance_recorded": true,
+      "voice_or_prosody_advisory_only": false,
+      "hard_limits": {
+        "hidden_emotion_inference_allowed": false,
+        "protected_trait_inference_allowed": false,
+        "manipulation_allowed": false,
+        "pressure_or_urgency_escalation_allowed": false,
+        "protected_text_change_allowed": false,
+        "biometric_emotion_recognition_allowed": false,
+        "buyer_autonomy_override_allowed": false,
+        "unvalidated_emotion_classifier_runtime_use_allowed": false
+      },
+      "runtime_eligible_now": false,
+      "retrieval_eligible_now": false,
+      "manual_review_clearance": {
+        "source_expansion_resolution": "project_owned_public_source_paraphrase_accepted",
+        "source_excerpt_text_copied": false,
+        "copied_script_text_stored": false,
+        "runtime_use_allowed": false
+      }
+    }
+  ],
+  "boundaries": {
+    "runtime_retrieval_enabled": false,
+    "retrieval_eligible_now": false,
+    "chunk_import_enabled": false,
+    "auto_promote_allowed": false,
+    "source_excerpt_text_stored": false,
+    "copied_scripts_stored": false,
+    "provider_calls_allowed": false,
+    "notebooklm_api_allowed": false,
+    "private_customer_data_allowed": false,
+    "reads_data_private": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false,
+    "runtime_registry_gate_required_before_use": true
+  }
+}

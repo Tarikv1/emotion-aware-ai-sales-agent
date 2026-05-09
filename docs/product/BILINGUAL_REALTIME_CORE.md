@@ -33,7 +33,7 @@ RESP-001 guarded response generation must preserve the same response language. I
 
 VOICE-012 speech naturalness follows the same rule. It may add rare mid-utterance fillers, but the filler inventory must match the campaign language:
 
-- German examples: `ähm`, `äh`, `hm`, `also`
+- German examples: `Ã¤hm`, `Ã¤h`, `hm`, `also`
 - English examples: `um`, `uh`, `hm`, `you know`, `like`
 
 Scripted questions, disclosures, compliance statements, hang-up lines, and appointment confirmations stay exact in both languages.
@@ -78,6 +78,6 @@ The validator checks:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/LANG-001-bilingual-realtime-results.json
-research/experiments/generated/LANG-001-bilingual-realtime-report.md
+research/experiments/generated/LANG-001/LANG-001-bilingual-realtime-results.json
+research/experiments/generated/LANG-001/LANG-001-bilingual-realtime-report.md
 ```

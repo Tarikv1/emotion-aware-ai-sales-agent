@@ -188,7 +188,7 @@ Run the RAG-002 NotebookLM extraction automation bridge to create bounded per-to
 python scripts\run_rag_002_notebooklm_extraction_automation.py
 ```
 
-Use `prompts\00-configure-chat-custom-instructions.md` in NotebookLM Configure Chat > Custom before creating reports. Keep NotebookLM response length set to `Longer`.
+Use `research\experiments\generated\RAG-002-notebooklm-extraction-automation-bridge\prompts\00-configure-chat-custom-instructions.md` in NotebookLM Configure Chat > Custom before creating reports. Keep NotebookLM response length set to `Longer`.
 
 For each topic, use `01-create-report-file.md` inside NotebookLM Reports / Create report first. Use `02-chat-json-extraction.md` only if a stricter JSON handoff is needed after the report exists.
 
@@ -504,6 +504,46 @@ Validate RAG-019 public-source extraction, source counts, topic coverage, and no
 python scripts\validate_rag_019_sales_communication_source_expansion.py
 ```
 
+Run RAG-020 sales persuasion and emotion-understanding deep dive after public-source review:
+
+```powershell
+python scripts\run_rag_020_sales_persuasion_emotion_deep_dive.py
+```
+
+Default RAG-020 output folder:
+
+```text
+research\experiments\generated\RAG-020-sales-persuasion-emotion-deep-dive\
+```
+
+Validate RAG-020 source counts, persuasion/emotion topic coverage, and advisory-only/no-runtime-default boundaries:
+
+```powershell
+python scripts\validate_rag_020_sales_persuasion_emotion_deep_dive.py
+```
+
+RAG-020 is not imported into the runtime registry by default. A separate RAG-017 registry rebuild and RAG-018 guarded-retrieval evaluation are required before runtime use.
+
+Run RAG-021 buyer trust and conversation-repair source expansion after public-source review:
+
+```powershell
+python scripts\run_rag_021_buyer_trust_conversation_repair.py
+```
+
+Default RAG-021 output folder:
+
+```text
+research\experiments\generated\RAG-021-buyer-trust-conversation-repair\
+```
+
+Validate RAG-021 source counts, trust/repair topic coverage, and advisory-only/no-runtime-default boundaries:
+
+```powershell
+python scripts\validate_rag_021_buyer_trust_conversation_repair.py
+```
+
+RAG-021 is not imported into the runtime registry by default. A separate RAG-017 registry rebuild and RAG-018 guarded-retrieval evaluation are required before runtime use.
+
 Run RAG-017 runtime knowledge registry after accepted RAG slices through RAG-016B and the RAG-019 sales communication expansion:
 
 ```powershell
@@ -522,7 +562,31 @@ Validate RAG-018 guarded runtime retrieval integration:
 python scripts\validate_rag_018_guarded_runtime_retrieval.py
 ```
 
+Validate the larger RAG-018 scripted-call simulation:
+
+```powershell
+python scripts\validate_rag_018_scripted_call_simulation.py
+```
+
 ## Core Product Contract
+
+Validate the BRAIN-001 project brain architecture boundary:
+
+```powershell
+python scripts\validate_brain_001_project_brain_architecture.py
+```
+
+Build the BRAIN-002 runtime state schema packet:
+
+```powershell
+python scripts\run_brain_002_runtime_state_schema.py
+```
+
+Validate the BRAIN-002 runtime state schema, call-control values, retrieval default-off boundary, voice/provider boundary, and non-sale correctness examples:
+
+```powershell
+python scripts\validate_brain_002_runtime_state_schema.py
+```
 
 Validate the runtime output contract used before speaking or logging agent decisions:
 
@@ -552,8 +616,8 @@ Render a product simulation packet:
 ```powershell
 python scripts\run_product_simulation.py `
   --cases research\experiments\cases\prod-001-qualification-simulation.json `
-  --out research\experiments\generated\PROD-001-evaluation-packet.md `
-  --export-records research\experiments\generated\PROD-001-db-records.json
+  --out research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md `
+  --export-records research/experiments/generated/PROD-001/PROD-001-db-records.json
 ```
 
 Run the deterministic rule baseline:
@@ -561,8 +625,8 @@ Run the deterministic rule baseline:
 ```powershell
 python scripts\run_rule_baseline.py `
   --cases research\experiments\cases\prod-004-sales-difficulty-gauntlet.json `
-  --out research\experiments\generated\PROD-004-rule-baseline-results.json `
-  --report-out research\experiments\generated\PROD-004-rule-baseline-report.md
+  --out research/experiments/generated/PROD-004/PROD-004-rule-baseline-results.json `
+  --report-out research/experiments/generated/PROD-004/PROD-004-rule-baseline-report.md
 ```
 
 Run the realtime latency and call-control simulation:
@@ -570,8 +634,213 @@ Run the realtime latency and call-control simulation:
 ```powershell
 python scripts\run_realtime_turn_simulation.py `
   --cases research\experiments\cases\prod-005-realtime-latency-call-control.json `
-  --out research\experiments\generated\PROD-005-realtime-results.json `
-  --report-out research\experiments\generated\PROD-005-realtime-report.md
+  --out research/experiments/generated/PROD-005/PROD-005-realtime-results.json `
+  --report-out research/experiments/generated/PROD-005/PROD-005-realtime-report.md
+```
+
+Build the PROD-006 full-sale scenario-grounding packet without downloading the call-center dataset:
+
+```powershell
+python scripts\run_prod_006_full_sale_scenario_grounding.py
+```
+
+Validate the PROD-006 full-sale MVP strategy, dataset provenance, pattern-grounding boundary, leakage tests, hard-failure metric, non-sale correctness metric, and no-transcript-copy/no-provider default:
+
+```powershell
+python scripts\validate_prod_006_full_sale_scenario_grounding.py
+```
+
+Optional ignored local ZIP scan for leakage checks after the dataset is downloaded by explicit approval:
+
+```powershell
+python scripts\run_prod_006_full_sale_scenario_grounding.py `
+  --raw-zip-dir data\external\callcenteren\raw
+```
+
+Run the PROD-007 full-call gauntlet comparing the old core against the BRAIN-002/full-sale candidate on the same fixed calls:
+
+```powershell
+python scripts\run_prod_007_full_call_gauntlet.py
+```
+
+Validate the PROD-007 full-call gauntlet, fixed-case parity, safe close rate, hard failure rate, non-sale correctness, call-control correctness, retrieval default-off boundary, and no-provider/no-private-data default:
+
+```powershell
+python scripts\validate_prod_007_full_call_gauntlet.py
+```
+
+Run the PROD-008 generated full-call packet check, where local runtime-style logic creates one BRAIN-002 state packet per turn:
+
+```powershell
+python scripts\run_prod_008_generated_full_call_packets.py
+```
+
+Validate the PROD-008 generated packet contract, state packet completeness, safe close rate, hard failure rate, non-sale correctness, call-control correctness, retrieval default-off boundary, and no-provider/no-private-data default:
+
+```powershell
+python scripts\validate_prod_008_generated_full_call_packets.py
+```
+
+Run the PROD-009 cross-domain generated gauntlet across retail, telecom, B2B software, insurance, medical equipment, home service, membership, and automotive-style calls:
+
+```powershell
+python scripts\run_prod_009_cross_domain_generated_gauntlet.py
+```
+
+Validate the PROD-009 cross-domain generated gauntlet, domain coverage, source-pattern grounding, state packet completeness, safe close rate, hard failure rate, non-sale correctness, call-control correctness, retrieval default-off boundary, and no-provider/no-private-data default:
+
+```powershell
+python scripts\validate_prod_009_cross_domain_generated_gauntlet.py
+```
+
+Run the PROD-010 long-call universal-objection gauntlet with longer multi-turn calls and repeated buyer objections:
+
+```powershell
+python scripts\run_prod_010_long_call_universal_objections.py
+```
+
+Validate the PROD-010 long-call universal-objection gauntlet, objection boundary correctness, long-call state continuity, state packet completeness, safe close rate, hard failure rate, non-sale correctness, call-control correctness, retrieval default-off boundary, and no-provider/no-private-data default:
+
+```powershell
+python scripts\validate_prod_010_long_call_universal_objections.py
+```
+
+Run the PROD-011 dialogue-policy hardening checkpoint over the PROD-010 long-call objection evidence:
+
+```powershell
+python scripts\run_prod_011_dialogue_policy_hardening.py
+```
+
+Validate the PROD-011 dialogue-policy hardening checkpoint, policy action correctness, objection stack preservation, blocked action avoidance, state-reference completeness, safe close rate, hard failure rate, non-sale correctness, call-control correctness, retrieval default-off boundary, and no-provider/no-private-data default:
+
+```powershell
+python scripts\validate_prod_011_dialogue_policy_hardening.py
+```
+
+Run the PROD-012 CallCenterEN scenario evaluation with fixed project-owned scenarios and old-core-vs-RAG-018 comparison:
+
+```powershell
+python scripts\run_prod_012_callcenteren_scenario_evaluation.py
+```
+
+Validate the PROD-012 source boundary, leakage tests, hard failure rate, non-sale correctness, scenario quality, sales/emotional handling score, and retrieval-vs-old-core comparison:
+
+```powershell
+python scripts\validate_prod_012_callcenteren_scenario_evaluation.py
+```
+
+Run the PROD-013 CallCenterEN pattern extraction checkpoint over approved local CallCenterEN ZIP/JSON/JSONL files, emitting abstract pattern labels only:
+
+```powershell
+python scripts\run_prod_013_callcenteren_pattern_extraction.py
+```
+
+Run the full local CallCenterEN extraction while capping high-volume sample records:
+
+```powershell
+python scripts\run_prod_013_callcenteren_pattern_extraction.py --max-conversations 0 --record-limit 5000
+```
+
+Validate the PROD-013 taxonomy coverage, source boundary, no-exact-script leakage guard, pattern-bank shape, timing metrics, and command/doc registration:
+
+```powershell
+python scripts\validate_prod_013_callcenteren_pattern_extraction.py
+```
+
+Run the PROD-014 scenario-bank generator from the PROD-013 abstract pattern bank:
+
+```powershell
+python scripts\run_prod_014_callcenteren_scenario_bank.py
+```
+
+Default PROD-014 output folder:
+
+```text
+research\experiments\generated\PROD-014-callcenteren-scenario-bank\
+```
+
+Validate the PROD-014 scenario packet shape, source-pattern diversity, safe-close boundary, non-sale outcomes, leakage tests, and no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_014_callcenteren_scenario_bank.py
+```
+
+Run the PROD-015 old-runtime vs retrieval-runtime comparison on a stratified PROD-014 slice:
+
+```powershell
+python scripts\run_prod_015_callcenteren_runtime_comparison.py
+```
+
+Run PROD-015 on the full PROD-014 bank:
+
+```powershell
+python scripts\run_prod_015_callcenteren_runtime_comparison.py --limit-scenarios 0
+```
+
+Validate exact Q/A capture, decision traces, hard failure rate, non-sale correctness, safe-close correctness, leakage checks, and no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_015_callcenteren_runtime_comparison.py
+```
+
+Run the PROD-016 diagnosis for the PROD-015 no-gain retrieval result:
+
+```powershell
+python scripts\run_prod_016_callcenteren_retrieval_no_gain_diagnosis.py
+```
+
+Validate composer influence gap, scoring blind spot, classifier mismatch, campaign/domain mismatch, and no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_016_callcenteren_retrieval_no_gain_diagnosis.py
+```
+
+Run the PROD-017 evaluation-only specificity and objection-fit scorer over the fixed PROD-015 rows:
+
+```powershell
+python scripts\run_prod_017_callcenteren_specificity_scoring.py
+```
+
+Validate specificity scoring, objection-fit scoring, generic-answer penalty, fixed-case boundary, and no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_017_callcenteren_specificity_scoring.py
+```
+
+Run the PROD-018 offline composer-hook test over fixed PROD-015 no-gain rows:
+
+```powershell
+python scripts\run_prod_018_callcenteren_composer_hook_test.py
+```
+
+Validate hook coverage, PROD-017 scoring gains, safety gates, fixed-case boundary, and no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_018_callcenteren_composer_hook_test.py
+```
+
+Run the PROD-019 guarded runtime-composer hook candidate behind an explicit opt-in flag:
+
+```powershell
+python scripts\run_prod_019_guarded_runtime_composer_hooks.py
+```
+
+Validate default-off behavior, opt-in runtime hook behavior, PROD-017 scoring gains, safety gates, and no-default-promotion boundary:
+
+```powershell
+python scripts\validate_prod_019_guarded_runtime_composer_hooks.py
+```
+
+Run the PROD-020 naturalized customer-turn evaluation for the PROD-019 opt-in runtime hooks:
+
+```powershell
+python scripts\run_prod_020_naturalized_customer_turn_evaluation.py
+```
+
+Validate naturalized prompts, fixed scorer use, source-pattern reference preservation, safety gates, and no-default-promotion boundary:
+
+```powershell
+python scripts\validate_prod_020_naturalized_customer_turn_evaluation.py
 ```
 
 ## Guarded Response And Voice Safety
@@ -590,8 +859,8 @@ python scripts\generate_guarded_response.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage product-detail-check `
   --transcript "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?" `
-  --out research\experiments\generated\RESP-001-guarded-response-result.json `
-  --report-out research\experiments\generated\RESP-001-guarded-response-report.md
+  --out research/experiments/generated/RESP-001/RESP-001-guarded-response-result.json `
+  --report-out research/experiments/generated/RESP-001/RESP-001-guarded-response-report.md
 ```
 
 Opt in to local guarded retrieval for the same response path:
@@ -609,16 +878,39 @@ python scripts\generate_guarded_response.py `
   --retrieval-acceptable-latency-ms 300
 ```
 
+Opt in to guarded retrieval plus runtime composer hooks for the same response path:
+
+```powershell
+python scripts\generate_guarded_response.py `
+  --campaign campaign-prod-005-b2b-software `
+  --stage relevance-check `
+  --transcript "Customer raises too_expensive and needs a timeline_question before any close." `
+  --retrieval-enabled `
+  --retrieval-registry research\experiments\generated\RAG-017-runtime-knowledge-registry\result.json `
+  --retrieval-max-results 4 `
+  --retrieval-min-score 1 `
+  --retrieval-target-latency-ms 150 `
+  --retrieval-acceptable-latency-ms 300 `
+  --composer-hooks-enabled
+```
+
 Run the controlled RESP-001 policy/core-playbook/live-RAG comparison:
 
 ```powershell
 python scripts\run_resp_001_retrieval_ab_evaluation.py
 ```
 
+Run the RAG-018 scripted-call simulation with scored objection resolution and next-step quality:
+
+```powershell
+python scripts\run_rag_018_scripted_call_simulation.py
+```
+
 Outputs:
 
 ```text
 research\experiments\generated\RESP-001-retrieval-ab-evaluation\
+research\experiments\generated\RAG-018-scripted-call-simulation\
 ```
 
 Generate a runtime voice-delivery packet from the guarded response path:
@@ -628,8 +920,8 @@ python scripts\generate_runtime_voice_delivery.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage relevance-check `
   --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
-  --out research\experiments\generated\RESP-002-runtime-voice-delivery-result.json `
-  --report-out research\experiments\generated\RESP-002-runtime-voice-delivery-report.md
+  --out research\experiments\generated\RESP-002\RESP-002-runtime-voice-delivery-result.json `
+  --report-out research\experiments\generated\RESP-002\RESP-002-runtime-voice-delivery-report.md
 ```
 
 Validate RESP-002 guarded response voice delivery:
@@ -664,8 +956,8 @@ python scripts\generate_runtime_tts_delivery.py `
   --campaign campaign-prod-005-b2c-telecom `
   --stage relevance-check `
   --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." `
-  --out research\experiments\generated\RESP-003-runtime-live-tts-result.json `
-  --report-out research\experiments\generated\RESP-003-runtime-live-tts-report.md
+  --out research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-result.json `
+  --report-out research/experiments/generated/RESP-003/RESP-003-runtime-live-tts-report.md
 ```
 
 Validate RESP-003 runtime live-capable TTS delivery without provider calls:
@@ -686,13 +978,97 @@ Validate RESP-003 bilingual live-capable TTS A/B without provider calls:
 python scripts\validate_resp_003_bilingual_live_tts_ab.py
 ```
 
+Run the separate RESP-004 VOICE-044 polished-baseline listening check in dry-run mode. RESP-003 remains the TTS bridge; RESP-004 owns this new test's evidence:
+
+```powershell
+python scripts\run_resp_004_voice_044_listening_check.py
+```
+
+Default RESP-004 output folder:
+
+```text
+research\experiments\generated\RESP-004-voice-044-listening-check\
+```
+
+Validate RESP-004 dry-run output, forced missing-key fallback, secret redaction, and no-provider/private-audio boundary:
+
+```powershell
+python scripts\validate_resp_004_voice_044_listening_check.py
+```
+
+Run one same-question old-runtime versus new-runtime listening check in dry-run mode:
+
+```powershell
+python scripts\run_resp_005_runtime_version_ab_listening_check.py
+```
+
+Validate RESP-005 same-question coverage, artifact shape, secret redaction, and no-provider/private-audio boundary:
+
+```powershell
+python scripts\validate_resp_005_runtime_version_ab_listening_check.py
+```
+
+Default RESP-005 output folder:
+
+```text
+research\experiments\generated\RESP-005-runtime-version-ab-listening-check\
+```
+
+Recorded RESP-005 human listening decision:
+
+```text
+research\experiments\generated\RESP-005-runtime-version-ab-listening-check\human-listening-decision.md
+```
+
+Run the German same-question old-runtime versus new-runtime listening check in dry-run mode:
+
+```powershell
+python scripts\run_resp_006_german_runtime_version_ab_listening_check.py
+```
+
+Validate RESP-006 German same-question coverage, artifact shape, secret redaction, and no-provider/private-audio boundary:
+
+```powershell
+python scripts\validate_resp_006_german_runtime_version_ab_listening_check.py
+```
+
+Default RESP-006 output folder:
+
+```text
+research\experiments\generated\RESP-006-german-runtime-version-ab-listening-check\
+```
+
+Recorded RESP-006 German listening decision:
+
+```text
+research\experiments\generated\RESP-006-german-runtime-version-ab-listening-check\human-listening-decision.md
+```
+
+Run the RESP-007 German pacing-stability follow-up in dry-run mode:
+
+```powershell
+python scripts\run_resp_007_german_pacing_stability_follow_up.py
+```
+
+Validate RESP-007 same-answer-content preservation, pacing-only delivery changes, secret redaction, and no-provider/private-audio boundary:
+
+```powershell
+python scripts\validate_resp_007_german_pacing_stability_follow_up.py
+```
+
+Default RESP-007 output folder:
+
+```text
+research\experiments\generated\RESP-007-german-pacing-stability-follow-up\
+```
+
 Evaluate provider readiness without API calls or audio upload:
 
 ```powershell
 python scripts\evaluate_voice_provider_readiness.py `
   --candidates research\experiments\cases\voice-007-provider-readiness-candidates.json `
-  --out research\experiments\generated\VOICE-007-provider-readiness.json `
-  --report-out research\experiments\generated\VOICE-007-provider-readiness-report.md
+  --out research/experiments/generated/VOICE-007/VOICE-007-provider-readiness.json `
+  --report-out research/experiments/generated/VOICE-007/VOICE-007-provider-readiness-report.md
 ```
 
 Validate the provider readiness gate:
@@ -1026,7 +1402,7 @@ Import an existing local audio file into the same private raw-audio folder:
 
 ```powershell
 python scripts\run_voice_030b_local_speech_capture.py `
-  --import-file C:\path\to\sample.wav `
+  --import-file "<local-speech-sample.wav>" `
   --language en `
   --label "tarik local speech sample"
 ```
@@ -1245,6 +1621,78 @@ Validate VOICE-040 low-pressure phrase correction, protected-text locks, German 
 python scripts\validate_voice_040_low_pressure_focus.py
 ```
 
+Run the VOICE-041 private pattern profile checkpoint through RESP-002 in dry-run mode:
+
+```powershell
+python scripts\run_voice_041_private_pattern_profile.py
+```
+
+Default VOICE-041 output folder:
+
+```text
+research\experiments\generated\VOICE-041-private-pattern-profile\
+```
+
+Validate VOICE-041 private pattern profile application, protected-text locks, no-runtime private audio read, no-provider, and no-cloning boundary:
+
+```powershell
+python scripts\validate_voice_041_private_pattern_profile.py
+```
+
+Run the VOICE-042 private-pattern live-capable A/B checkpoint in dry-run mode:
+
+```powershell
+python scripts\run_voice_042_private_pattern_live_ab.py
+```
+
+Default VOICE-042 output folder:
+
+```text
+research\experiments\generated\VOICE-042-private-pattern-live-ab\
+```
+
+Validate VOICE-042 same-text A/B isolation, live limit guard, missing-key fallback, redacted provider preview, no-runtime private audio read, no-provider in dry-run, and no-cloning boundary:
+
+```powershell
+python scripts\validate_voice_042_private_pattern_live_ab.py
+```
+
+Run the VOICE-043 baseline shaped runtime acceptance checkpoint in dry-run mode:
+
+```powershell
+python scripts\run_voice_043_baseline_shaped_runtime_acceptance.py
+```
+
+Default VOICE-043 output folder:
+
+```text
+research\experiments\generated\VOICE-043-baseline-shaped-runtime-acceptance\
+```
+
+Validate that baseline shaped runtime remains preferred, VOICE-041 is not promoted, private-pattern settings are off by default, protected text stays exact, and no provider/private-audio boundary is crossed:
+
+```powershell
+python scripts\validate_voice_043_baseline_shaped_runtime_acceptance.py
+```
+
+Run the VOICE-044 baseline delivery polish checkpoint in dry-run mode:
+
+```powershell
+python scripts\run_voice_044_baseline_delivery_polish.py
+```
+
+Default VOICE-044 output folder:
+
+```text
+research\experiments\generated\VOICE-044-baseline-delivery-polish\
+```
+
+Validate narrow English/German baseline polish, VOICE-041 staying off by default, protected-text locks, and no-provider/private-audio boundary:
+
+```powershell
+python scripts\validate_voice_044_baseline_delivery_polish.py
+```
+
 Run the VOICE-030A raw WAV audio reader on synthetic fixtures:
 
 ```powershell
@@ -1309,8 +1757,8 @@ Live LLM product-agent evaluation requires an environment-only API key:
 ```powershell
 python scripts\run_llm_product_agent.py `
   --cases research\experiments\cases\prod-004-sales-difficulty-gauntlet.json `
-  --out research\experiments\generated\PROD-004-llm-agent-results.json `
-  --report-out research\experiments\generated\PROD-004-llm-agent-report.md `
+  --out research/experiments/generated/PROD-004/PROD-004-llm-agent-results.json `
+  --report-out research/experiments/generated/PROD-004/PROD-004-llm-agent-report.md `
   --limit 1
 ```
 
@@ -1364,6 +1812,12 @@ Live VOICE-040 low-pressure focus listening check requires `ELEVENLABS_API_KEY`,
 python scripts\run_voice_040_low_pressure_focus.py --live --provider elevenlabs --limit-cases 1 --timeout-seconds 8
 ```
 
+Live VOICE-042 private-pattern A/B listening check requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, `--limit-cases`, and an English voice ID in `ELEVENLABS_VOICE_ID_EN` or ignored local config:
+
+```powershell
+python scripts\run_voice_042_private_pattern_live_ab.py --provider elevenlabs --live --limit-cases 1 --timeout-seconds 8
+```
+
 Live VOICE-019 ElevenLabs prosody-vs-sales-tuned A/B testing requires `ELEVENLABS_API_KEY`, an explicit `--live` flag, and either language-specific voice IDs or the default voice ID:
 
 ```powershell
@@ -1398,6 +1852,18 @@ python scripts\generate_runtime_tts_delivery.py `
   --provider cartesia `
   --live `
   --timeout-seconds 8
+```
+
+Live RESP-004 VOICE-044 listening check requires the local provider boundary review, an explicit `--live` flag, and provider-specific key/voice ID environment variables. Use this instead of overwriting RESP-003 evidence for the VOICE-044 follow-up test:
+
+```powershell
+python scripts\run_resp_004_voice_044_listening_check.py --provider elevenlabs --live --timeout-seconds 8
+```
+
+Live RESP-007 German pacing-stability listening check requires the local provider boundary review, an explicit `--live` flag, and provider-specific key/German voice ID environment variables:
+
+```powershell
+python scripts\run_resp_007_german_pacing_stability_follow_up.py --provider elevenlabs --live --timeout-seconds 8
 ```
 
 ## Safety Rules

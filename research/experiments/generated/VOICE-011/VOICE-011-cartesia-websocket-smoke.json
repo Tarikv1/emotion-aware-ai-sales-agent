@@ -91,7 +91,7 @@
       "case_title": "German longer objection-handling sample",
       "language": "de",
       "campaign_id": "campaign-prod-005-b2c-telecom",
-      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsÃ¤chliche Leistung von Adresse, Leitung und Tarif abhÃ¤ngt. Was ich anbieten kann: Ein Spezialist prÃ¼ft die verfÃ¼gbaren Optionen unverbindlich und erklÃ¤rt Ihnen klar, was realistisch ist. Wenn es nicht passt, mÃ¼ssen Sie nichts Ã¤ndern.",
       "voice_packet": {
         "voice_run_id": "VOICE-001-cartesia-sonic-3-websocket",
         "voice_milestone": "VOICE-001",
@@ -107,7 +107,7 @@
         "stage": "relevance-check",
         "input_type": "speech-final",
         "silence_count": null,
-        "transcript": "Nur wenn Sie garantieren können, dass die Geschwindigkeit bei mir stabil ist.",
+        "transcript": "Nur wenn Sie garantieren kÃ¶nnen, dass die Geschwindigkeit bei mir stabil ist.",
         "decision": {
           "case_id": "REALTIME-CLI-TURN",
           "campaign_language": "de",
@@ -145,7 +145,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011-C01-de-cartesia-websocket.wav",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011\\VOICE-011-C01-de-cartesia-websocket.wav",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -196,9 +196,9 @@
         "transcript_chars": 346,
         "transcript_chunks": [
           "Ich verstehe den Punkt sehr gut. ",
-          "Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. ",
-          "Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. ",
-          "Wenn es nicht passt, müssen Sie nichts ändern."
+          "Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsÃ¤chliche Leistung von Adresse, Leitung und Tarif abhÃ¤ngt. ",
+          "Was ich anbieten kann: Ein Spezialist prÃ¼ft die verfÃ¼gbaren Optionen unverbindlich und erklÃ¤rt Ihnen klar, was realistisch ist. ",
+          "Wenn es nicht passt, mÃ¼ssen Sie nichts Ã¤ndern."
         ],
         "output_format": {
           "container": "raw",
@@ -211,7 +211,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-011-C01-de-cartesia-websocket.wav",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C01-de-cartesia-websocket.wav",
         "audio_byte_size": 612306,
         "connection_established_ms": 270.537,
         "time_to_first_audio_chunk_ms": 400.619,
@@ -242,7 +242,7 @@
       "case_title": "German longer bridge-and-handoff sample",
       "language": "de",
       "campaign_id": "campaign-prod-005-b2c-energy",
-      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen mÃ¶chte ich nicht schÃ¤tzen, weil sie sauber geprÃ¼ft werden mÃ¼ssen. Ich kann Ihnen aber den nÃ¤chsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zustÃ¤ndiger Fachberater meldet sich mit den passenden Informationen. Der RÃ¼ckruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
       "voice_packet": {
         "voice_run_id": "VOICE-001-cartesia-sonic-3-websocket",
         "voice_milestone": "VOICE-001",
@@ -258,7 +258,7 @@
         "stage": "product-detail-check",
         "input_type": "speech-final",
         "silence_count": null,
-        "transcript": "Welche Konditionen wären das genau und wer ruft mich danach an?",
+        "transcript": "Welche Konditionen wÃ¤ren das genau und wer ruft mich danach an?",
         "decision": {
           "case_id": "REALTIME-CLI-TURN",
           "campaign_language": "de",
@@ -294,7 +294,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011-C02-de-cartesia-websocket.wav",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011\\VOICE-011-C02-de-cartesia-websocket.wav",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -345,9 +345,9 @@
         "transcript_chars": 363,
         "transcript_chunks": [
           "Das ist eine gute Frage. ",
-          "Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. ",
-          "Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. ",
-          "Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe."
+          "Die genauen Konditionen mÃ¶chte ich nicht schÃ¤tzen, weil sie sauber geprÃ¼ft werden mÃ¼ssen. ",
+          "Ich kann Ihnen aber den nÃ¤chsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zustÃ¤ndiger Fachberater meldet sich mit den passenden Informationen. ",
+          "Der RÃ¼ckruf ist unverbindlich, und Sie entscheiden danach in Ruhe."
         ],
         "output_format": {
           "container": "raw",
@@ -360,7 +360,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-011-C02-de-cartesia-websocket.wav",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C02-de-cartesia-websocket.wav",
         "audio_byte_size": 621222,
         "connection_established_ms": 183.662,
         "time_to_first_audio_chunk_ms": 330.179,
@@ -445,7 +445,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011-C03-en-cartesia-websocket.wav",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011\\VOICE-011-C03-en-cartesia-websocket.wav",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -511,7 +511,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-011-C03-en-cartesia-websocket.wav",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C03-en-cartesia-websocket.wav",
         "audio_byte_size": 650944,
         "connection_established_ms": 197.185,
         "time_to_first_audio_chunk_ms": 328.734,
@@ -594,7 +594,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011-C04-en-cartesia-websocket.wav",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-011\\VOICE-011-C04-en-cartesia-websocket.wav",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -660,7 +660,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-011-C04-en-cartesia-websocket.wav",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-011\\VOICE-011-C04-en-cartesia-websocket.wav",
         "audio_byte_size": 671750,
         "connection_established_ms": 155.928,
         "time_to_first_audio_chunk_ms": 286.607,

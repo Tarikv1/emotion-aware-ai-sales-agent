@@ -36,8 +36,8 @@ Windows SAPI was available as a command path, but the environment did not have a
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-008-local-tts-smoke.json
-research/experiments/generated/VOICE-008-local-tts-smoke-report.md
+research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke.json
+research/experiments/generated/VOICE-008/VOICE-008-local-tts-smoke-report.md
 ```
 
 Generated WAV files are not committed because they depend on local machine voice availability.

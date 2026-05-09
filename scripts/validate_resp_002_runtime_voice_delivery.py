@@ -15,6 +15,7 @@ CASES_PATH = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-la
 TMP_DIR = ROOT / ".tmp" / "resp-002-validation"
 RESULT_PATH = TMP_DIR / "RESP-002-runtime-voice-delivery-result.json"
 REPORT_PATH = TMP_DIR / "RESP-002-runtime-voice-delivery-report.md"
+PROFILE_CASES_PATH = TMP_DIR / "prod-005-with-private-pattern-profile.json"
 
 SECRET_PATTERN = re.compile(
     r"(sk_car_[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9_-]{20,}|AIza[0-9A-Za-z_-]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|Authorization:\s*Bearer\s+[A-Za-z0-9]|X-API-Key\s*[:=]\s*[A-Za-z0-9]|xi-api-key\s*[:=]\s*[A-Za-z0-9])"
@@ -42,6 +43,7 @@ def run_resp_002(
     stage: str = "relevance-check",
     provider: str = "elevenlabs",
     campaign: str = "campaign-prod-005-b2c-telecom",
+    cases_path: Path = CASES_PATH,
     extra_args: list[str] | None = None,
 ) -> dict:
     args = [
@@ -54,7 +56,7 @@ def run_resp_002(
         "--transcript",
         transcript,
         "--cases",
-        str(CASES_PATH),
+        str(cases_path),
         "--provider",
         provider,
         "--out",
@@ -75,6 +77,7 @@ def run_resp_001(
     transcript: str,
     stage: str = "relevance-check",
     campaign: str = "campaign-prod-005-b2c-telecom",
+    cases_path: Path = CASES_PATH,
     extra_args: list[str] | None = None,
 ) -> dict:
     args = [
@@ -87,7 +90,7 @@ def run_resp_001(
         "--transcript",
         transcript,
         "--cases",
-        str(CASES_PATH),
+        str(cases_path),
     ]
     if extra_args:
         args.extend(extra_args)
@@ -124,30 +127,40 @@ def validate_common_payload(payload: dict, resp_001_payload: dict) -> None:
     assert_condition(voice_delivery["voice_emotion_smoothing"]["validation"]["passed"] is True, voice_delivery)
     assert_condition(voice_delivery["voice_semantic_emphasis"]["validation"]["passed"] is True, voice_delivery)
     assert_condition(voice_delivery["voice_low_pressure_focus"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_baseline_delivery_polish"]["validation"]["passed"] is True, voice_delivery)
+    assert_condition(voice_delivery["voice_private_pattern_profile"]["validation"]["passed"] is True, voice_delivery)
     assert_condition(voice_delivery["validation"]["voice_pacing_calibration_passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["validation"]["voice_connected_speech_passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["validation"]["voice_listening_calibration_passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["validation"]["voice_emotion_smoothing_passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["validation"]["voice_semantic_emphasis_passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["validation"]["voice_low_pressure_focus_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_baseline_delivery_polish_passed"] is True, voice_delivery["validation"])
+    assert_condition(voice_delivery["validation"]["voice_private_pattern_profile_passed"] is True, voice_delivery["validation"])
     assert_condition(voice_delivery["voice_pacing_calibration"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_connected_speech"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_listening_calibration"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_emotion_smoothing"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_semantic_emphasis"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_low_pressure_focus"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_baseline_delivery_polish"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_private_pattern_profile"]["runtime_boundary"]["provider_calls_made"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_pacing_calibration"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_connected_speech"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_listening_calibration"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_emotion_smoothing"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_semantic_emphasis"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_low_pressure_focus"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_baseline_delivery_polish"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_private_pattern_profile"]["runtime_boundary"]["customer_audio_uploaded"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_pacing_calibration"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_connected_speech"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_listening_calibration"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_emotion_smoothing"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_semantic_emphasis"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(voice_delivery["voice_low_pressure_focus"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_baseline_delivery_polish"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
+    assert_condition(voice_delivery["voice_private_pattern_profile"]["runtime_boundary"]["voice_cloning_used"] is False, voice_delivery)
     assert_condition(
         voice_delivery["provider_rendering"]["protected_segment_provider_tag_count"] == 0,
         voice_delivery["provider_rendering"],
@@ -182,6 +195,17 @@ def validate_freeform_payload(payload: dict) -> None:
     )
 
 
+def validate_baseline_polish_payload(payload: dict, *, required_fragment: str, forbidden_fragment: str) -> None:
+    delivery = payload["voice_delivery"]
+    polish = delivery["voice_baseline_delivery_polish"]
+    assert_condition(polish["enabled"] is True, polish)
+    assert_condition(polish["applied"] is True, polish)
+    assert_condition(polish["adjustment_count"] >= 1, polish)
+    assert_condition(required_fragment in delivery["provider_rendering"]["rendered_text"], delivery["provider_rendering"]["rendered_text"])
+    assert_condition(forbidden_fragment not in delivery["provider_rendering"]["rendered_text"], delivery["provider_rendering"]["rendered_text"])
+    assert_condition(delivery["provider_rendering"]["voice_settings"].get("style") == 0.0, delivery["provider_rendering"])
+
+
 def validate_protected_payload(payload: dict, expected_segment_type: str) -> None:
     delivery = payload["voice_delivery"]
     segment = delivery["segments"][0]
@@ -195,6 +219,7 @@ def validate_protected_payload(payload: dict, expected_segment_type: str) -> Non
     assert_condition(delivery["voice_emotion_smoothing"]["transition_smoothing_applied"] is False, delivery["voice_emotion_smoothing"])
     assert_condition(delivery["voice_semantic_emphasis"]["rewrite_count"] == 0, delivery["voice_semantic_emphasis"])
     assert_condition(delivery["voice_low_pressure_focus"]["rewrite_count"] == 0, delivery["voice_low_pressure_focus"])
+    assert_condition(delivery["voice_baseline_delivery_polish"]["adjustment_count"] == 0, delivery["voice_baseline_delivery_polish"])
     assert_condition(delivery["provider_rendering"]["provider_tag_count"] == 0, delivery["provider_rendering"])
     assert_condition(delivery["provider_rendering"]["rendered_text"] == payload["final_response"], delivery["provider_rendering"])
 
@@ -226,6 +251,60 @@ def assert_no_secret_text(text: str, label: str) -> None:
     match = SECRET_PATTERN.search(text)
     if match is not None:
         raise AssertionError(f"Potential secret-like value found in {label}: {match.group(0)!r}")
+
+
+def write_profile_cases_fixture() -> None:
+    payload = json.loads(CASES_PATH.read_text(encoding="utf-8"))
+    profile = {
+        "enabled": True,
+        "review_status": "accepted",
+        "source_review_milestone": "VOICE-031",
+        "source_kind": "abstract_private_speech_patterns",
+        "rhythm_density_hint": "higher_turn_density_candidate",
+        "expressiveness_variation_hint": "higher_expressiveness_variation_candidate",
+        "presence_level_hint": "lower_presence_candidate",
+    }
+    for campaign in payload["campaigns"]:
+        if campaign["campaign_id"] == "campaign-prod-005-b2b-software":
+            campaign["voice_private_pattern_profile"] = profile
+    PROFILE_CASES_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def validate_private_pattern_profile_integration() -> None:
+    write_profile_cases_fixture()
+    candidate = "I will keep this practical. You are right to ask. It only matters if the next step is useful."
+    profiled_payload = run_resp_002(
+        "That sounds expensive.",
+        campaign="campaign-prod-005-b2b-software",
+        cases_path=PROFILE_CASES_PATH,
+        extra_args=["--candidate-response", candidate],
+    )
+    profiled_resp_001 = run_resp_001(
+        "That sounds expensive.",
+        campaign="campaign-prod-005-b2b-software",
+        cases_path=PROFILE_CASES_PATH,
+        extra_args=["--candidate-response", candidate],
+    )
+    validate_common_payload(profiled_payload, profiled_resp_001)
+    profile = profiled_payload["voice_delivery"]["voice_private_pattern_profile"]
+    settings = profiled_payload["voice_delivery"]["provider_rendering"]["voice_settings"]
+    assert_condition(profile["applied"] is True, profile)
+    assert_condition(profile["rhythm_density_action"] == "metadata_only_no_pacing_change", profile)
+    assert_condition(profile["presence_action"] == "blocked_low_presence_copy", profile)
+    assert_condition(settings["style"] == 0.06, settings)
+    adjustments = {adjustment["setting"]: adjustment for adjustment in profile["setting_adjustments"]}
+    assert_condition(adjustments["stability"]["after"] == settings["stability"], profile)
+    assert_condition(adjustments["stability"]["after"] < adjustments["stability"]["before"], profile)
+
+    protected_payload = run_resp_002(
+        "Please have a real person call me if this is about software.",
+        stage="opening-permission",
+        campaign="campaign-prod-005-b2b-software",
+        cases_path=PROFILE_CASES_PATH,
+    )
+    protected_profile = protected_payload["voice_delivery"]["voice_private_pattern_profile"]
+    assert_condition(protected_profile["applied"] is False, protected_profile)
+    assert_condition(protected_profile["blocked_reason"] == "protected_or_ineligible_segment_present", protected_profile)
 
 
 def main() -> None:
@@ -273,6 +352,34 @@ def main() -> None:
         ["I will", "You are", "It is", "there is"],
     )
 
+    english_baseline_polish_candidate = (
+        "I will keep this practical. You are right to ask. It only matters if the next step is useful."
+    )
+    english_baseline_polish_payload = run_resp_002(
+        "That sounds expensive.",
+        campaign="campaign-prod-005-b2b-software",
+        extra_args=["--candidate-response", english_baseline_polish_candidate],
+    )
+    validate_common_payload(
+        english_baseline_polish_payload,
+        run_resp_001(
+            "That sounds expensive.",
+            campaign="campaign-prod-005-b2b-software",
+            extra_args=["--candidate-response", english_baseline_polish_candidate],
+        ),
+    )
+    validate_baseline_polish_payload(
+        english_baseline_polish_payload,
+        required_fragment="I'll keep this practical. You're right to ask.",
+        forbidden_fragment=", so, you're right to ask",
+    )
+
+    validate_baseline_polish_payload(
+        german_spoken_payload,
+        required_fragment="Wenn's passt",
+        forbidden_fragment="Äh, Wenn's",
+    )
+
     do_not_call_transcript = "Rufen Sie mich bitte nicht mehr an."
     do_not_call_payload = run_resp_002(do_not_call_transcript)
     validate_common_payload(do_not_call_payload, run_resp_001(do_not_call_transcript))
@@ -287,6 +394,8 @@ def main() -> None:
     human_request_payload = run_resp_002(human_request_transcript)
     validate_common_payload(human_request_payload, run_resp_001(human_request_transcript))
     validate_protected_payload(human_request_payload, "human_handoff_exact_script")
+
+    validate_private_pattern_profile_integration()
 
     assert_condition(RESULT_PATH.exists(), "RESP-002 JSON result file was not created.")
     assert_condition(REPORT_PATH.exists(), "RESP-002 Markdown report was not created.")

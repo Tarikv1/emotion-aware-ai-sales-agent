@@ -1,0 +1,203 @@
+{
+  "human_listening_review_required": true,
+  "provider": "elevenlabs",
+  "quality_claim_allowed": false,
+  "results": [
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "voice-041-en-freeform-expressiveness",
+      "decision_snapshot": {
+        "background_modules": [],
+        "call_control": "continue-call",
+        "campaign_language": "en",
+        "detected_emotion": "neutral",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0,
+        "interest_state": "maybe-interested",
+        "next_action": "ask-follow-up",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "unknown-runtime-signal",
+        "selected_strategy": "inquiry"
+      },
+      "final_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "language": "en",
+      "provider_rendering": {
+        "protected_segment_provider_tag_count": 0,
+        "provider_key": "elevenlabs",
+        "provider_tag_count": 0,
+        "rendered_text": "I'll keep this practical, well, you're right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.133,
+          "stability": 0.55,
+          "style": 0.06,
+          "use_speaker_boost": true
+        }
+      },
+      "source_cases": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "title": "English freeform accepted profile",
+      "validation": {
+        "blocked_reason_met": true,
+        "final_response_unchanged": true,
+        "passed": true,
+        "presence_action_met": true,
+        "profile_applied_met": true,
+        "rhythm_density_action_met": true,
+        "runtime_boundary_passed": true,
+        "style_after_met": true
+      },
+      "voice_private_pattern_profile": {
+        "applied": true,
+        "blocked_reason": null,
+        "enabled": true,
+        "presence_action": "blocked_low_presence_copy",
+        "rhythm_density_action": "metadata_only_no_pacing_change",
+        "runtime_boundary": {
+          "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+          "changes_forbidden": [
+            "reading raw private audio at runtime",
+            "uploading private audio",
+            "voice cloning",
+            "changing final_response",
+            "rewriting provider text",
+            "changing accepted pacing speed",
+            "applying to protected or ineligible segments",
+            "copying low vocal presence into the agent"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "raw_audio_read": false,
+          "requires_api_key": false,
+          "transcription_created": false,
+          "voice_cloning_used": false
+        },
+        "setting_adjustments": [
+          {
+            "after": 0.06,
+            "before": 0.0,
+            "reason": "higher_expressiveness_variation_candidate",
+            "setting": "style"
+          },
+          {
+            "after": 0.55,
+            "before": 0.56,
+            "reason": "bounded_variation_without_voice_cloning",
+            "setting": "stability"
+          }
+        ],
+        "validation": {
+          "applied": true,
+          "boundary_flags_changed": false,
+          "customer_audio_uploaded": false,
+          "passed": true,
+          "provider_call_made": false,
+          "rendered_text_unchanged": true,
+          "segment_text_changes": [],
+          "voice_cloning_used": false
+        }
+      }
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "voice-041-protected-human-handoff-lock",
+      "decision_snapshot": {
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "call_control": "transfer-or-escalate",
+        "campaign_language": "en",
+        "detected_emotion": "neutral",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0,
+        "interest_state": "needs-human",
+        "next_action": "escalate",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "human-request",
+        "selected_strategy": "rapport"
+      },
+      "final_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+      "language": "en",
+      "provider_rendering": {
+        "protected_segment_provider_tag_count": 0,
+        "provider_key": "elevenlabs",
+        "provider_tag_count": 0,
+        "rendered_text": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.0,
+          "stability": 0.45,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "source_cases": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "title": "Protected human handoff blocks profile",
+      "validation": {
+        "blocked_reason_met": true,
+        "final_response_unchanged": true,
+        "passed": true,
+        "presence_action_met": true,
+        "profile_applied_met": true,
+        "rhythm_density_action_met": true,
+        "runtime_boundary_passed": true,
+        "style_after_met": true
+      },
+      "voice_private_pattern_profile": {
+        "applied": false,
+        "blocked_reason": "protected_or_ineligible_segment_present",
+        "enabled": true,
+        "presence_action": "blocked_low_presence_copy",
+        "rhythm_density_action": "not_applied",
+        "runtime_boundary": {
+          "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+          "changes_forbidden": [
+            "reading raw private audio at runtime",
+            "uploading private audio",
+            "voice cloning",
+            "changing final_response",
+            "rewriting provider text",
+            "changing accepted pacing speed",
+            "applying to protected or ineligible segments",
+            "copying low vocal presence into the agent"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "raw_audio_read": false,
+          "requires_api_key": false,
+          "transcription_created": false,
+          "voice_cloning_used": false
+        },
+        "setting_adjustments": [],
+        "validation": {
+          "applied": false,
+          "boundary_flags_changed": false,
+          "customer_audio_uploaded": false,
+          "passed": true,
+          "provider_call_made": false,
+          "rendered_text_unchanged": true,
+          "segment_text_changes": [],
+          "voice_cloning_used": false
+        }
+      }
+    }
+  ],
+  "source_cases": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "summary": {
+    "applied_count": 1,
+    "blocked_count": 1,
+    "case_count": 2,
+    "customer_audio_uploaded": false,
+    "generated_audio_created": false,
+    "provider_calls_made": false,
+    "raw_audio_read": false,
+    "transcription_created": false,
+    "validation_passed": true,
+    "voice_cloning_used": false
+  },
+  "title": "Accepted abstract private speech-pattern profile",
+  "voice_private_pattern_profile_runtime_id": "VOICE-041-private-pattern-profile"
+}

@@ -25,8 +25,8 @@ Live model execution: `not-run`
 
 ## Outputs
 
-- `research/experiments/generated/PROD-004-rule-baseline-results.json`
-- `research/experiments/generated/PROD-004-rule-baseline-report.md`
+- `research/experiments/generated/PROD-004/PROD-004-rule-baseline-results.json`
+- `research/experiments/generated/PROD-004/PROD-004-rule-baseline-report.md`
 
 ## Initial Aggregate Results
 

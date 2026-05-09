@@ -25,9 +25,9 @@ The comparison uses the same longer synthetic scripts for both providers.
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-014-provider-listening-comparison.json
-research/experiments/generated/VOICE-014-provider-listening-comparison-report.md
-research/experiments/generated/VOICE-014-provider-listening-comparison.html
+research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison.json
+research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison-report.md
+research/experiments/generated/VOICE-014/VOICE-014-provider-listening-comparison.html
 ```
 
 The HTML page provides local audio controls and a manual scoring table for each pair.

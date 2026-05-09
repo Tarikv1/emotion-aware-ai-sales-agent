@@ -14,7 +14,7 @@ Default mode is dry-run. It makes no provider calls, requires no API key, upload
 ## Source Artifact
 
 ```text
-research/experiments/generated/VOICE-016-provider-prosody-rendering.json
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json
 ```
 
 ## A/B Scope
@@ -170,9 +170,9 @@ Boundary:
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-017-live-ab-audio.json
-research/experiments/generated/VOICE-017-live-ab-audio-report.md
-research/experiments/generated/VOICE-017-human-listening-review.md
+research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio.json
+research/experiments/generated/VOICE-017/VOICE-017-live-ab-audio-report.md
+research/experiments/generated/VOICE-017/VOICE-017-human-listening-review.md
 ```
 
 Live audio files, if generated, are ignored by Git:

@@ -13,8 +13,8 @@ from runtime_voice_delivery import attach_runtime_voice_delivery
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-latency-call-control.json"
-DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "RESP-002-runtime-voice-delivery-result.json"
-DEFAULT_REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "RESP-002-runtime-voice-delivery-report.md"
+DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "RESP-002" / "RESP-002-runtime-voice-delivery-result.json"
+DEFAULT_REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "RESP-002" / "RESP-002-runtime-voice-delivery-report.md"
 
 
 def resolve_project_path(path_text: str | None) -> Path | None:
@@ -49,6 +49,8 @@ def render_report(packet: dict) -> str:
     emotion_smoothing = delivery["voice_emotion_smoothing"]
     semantic_emphasis = delivery["voice_semantic_emphasis"]
     low_pressure_focus = delivery["voice_low_pressure_focus"]
+    baseline_delivery_polish = delivery["voice_baseline_delivery_polish"]
+    private_pattern_profile = delivery["voice_private_pattern_profile"]
     validation = delivery["validation"]
     decision = packet["decision_snapshot"]
     lines = [
@@ -78,6 +80,8 @@ def render_report(packet: dict) -> str:
         f"- Over-emotional cues blocked: `{emotion_smoothing['blocked_overemotional_cue_count']}`",
         f"- Semantic emphasis rewrites: `{semantic_emphasis['rewrite_count']}`",
         f"- Low-pressure focus rewrites: `{low_pressure_focus['rewrite_count']}`",
+        f"- Baseline delivery polish adjustments: `{baseline_delivery_polish['adjustment_count']}`",
+        f"- Private pattern profile applied: `{private_pattern_profile['applied']}`",
         f"- Provider calls made: `{delivery['provider_calls_made']}`",
         f"- Requires API key: `{delivery['requires_api_key']}`",
         f"- Customer audio uploaded: `{delivery['customer_audio_uploaded']}`",
@@ -207,6 +211,25 @@ def render_report(packet: dict) -> str:
             f"- Protected segments: `{low_pressure_focus['protected_segment_count']}`",
             f"- Rewrites: `{low_pressure_focus['rewrite_count']}`",
             f"- Validation passed: `{low_pressure_focus['validation']['passed']}`",
+            "",
+            "## Baseline Delivery Polish",
+            "",
+            f"- Polish ID: `{baseline_delivery_polish['voice_baseline_delivery_polish_id']}`",
+            f"- Enabled: `{baseline_delivery_polish['enabled']}`",
+            f"- Applied: `{baseline_delivery_polish['applied']}`",
+            f"- Adjustments: `{baseline_delivery_polish['adjustment_count']}`",
+            f"- Validation passed: `{baseline_delivery_polish['validation']['passed']}`",
+            "",
+            "## Private Pattern Profile",
+            "",
+            f"- Profile ID: `{private_pattern_profile['voice_private_pattern_profile_id']}`",
+            f"- Enabled: `{private_pattern_profile['enabled']}`",
+            f"- Applied: `{private_pattern_profile['applied']}`",
+            f"- Blocked reason: `{private_pattern_profile['blocked_reason']}`",
+            f"- Rhythm density action: `{private_pattern_profile['rhythm_density_action']}`",
+            f"- Presence action: `{private_pattern_profile['presence_action']}`",
+            f"- Setting adjustments: `{private_pattern_profile['setting_adjustments']}`",
+            f"- Validation passed: `{private_pattern_profile['validation']['passed']}`",
             "",
             "## Provider Rendering",
             "",

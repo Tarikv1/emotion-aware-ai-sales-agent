@@ -1,4 +1,4 @@
-﻿### Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic
+### Strategic Blueprint for AI Sales Agent Voice and Behavioral Logic
 
 #### 1\. Executive Synthesis: The Foundations of Effective AI Communication
 

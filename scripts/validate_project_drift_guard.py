@@ -17,11 +17,22 @@ FIXTURE_ROOT = ROOT / ".tmp" / "project-drift-validation" / f"run-{uuid.uuid4().
 REQUIRED_FIXTURE_FILES = [
     "AGENTS.md",
     "README.md",
+    "docs/PROJECT_NAVIGATION.md",
+    "docs/brain/README.md",
     "docs/product/CONTEXT_READING_POLICY.md",
     "docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md",
     "docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "docs/product/PROJECT_DRIFT_GUARD.md",
+    "docs/product/CHECKPOINT_INDEX.md",
+    "docs/product/FULL_SALE_MVP_STRATEGY.md",
+    "docs/product/PROD_007_FULL_CALL_GAUNTLET.md",
+    "docs/product/PROD_008_GENERATED_FULL_CALL_PACKETS.md",
+    "docs/product/PROD_009_CROSS_DOMAIN_GENERATED_GAUNTLET.md",
+    "docs/product/PROD_010_LONG_CALL_UNIVERSAL_OBJECTIONS.md",
+    "docs/brain/PROD_011_DIALOGUE_POLICY_HARDENING.md",
+    "docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md",
+    "docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md",
     "docs/product/VOICE_024_SPEECH_REALISM_LIVE_AB.md",
     "docs/product/VOICE_025_FILLER_PLACEMENT.md",
     "docs/product/VOICE_026_INTERACTION_PROSODY.md",
@@ -42,6 +53,7 @@ REQUIRED_FIXTURE_FILES = [
     "docs/product/VOICE_038_SEMANTIC_EMPHASIS_DIAGNOSIS.md",
     "docs/product/VOICE_039_RUNTIME_SEMANTIC_EMPHASIS.md",
     "docs/product/VOICE_040_LOW_PRESSURE_FOCUS.md",
+    "docs/product/RESP_004_VOICE_044_LISTENING_CHECK.md",
     "docs/product/RAG_001_NOTEBOOKLM_SOURCE_INTAKE_BRIDGE.md",
     "docs/product/RAG_002_NOTEBOOKLM_EXTRACTION_AUTOMATION_BRIDGE.md",
     "docs/product/RAG_003_REPORT_IMPORT_READINESS.md",
@@ -59,11 +71,28 @@ REQUIRED_FIXTURE_FILES = [
     "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
     "docs/thesis/THESIS_WRITING_GUIDE.md",
     "data/private/.gitignore",
+    "data/external/.gitignore",
     "scripts/check_project_drift.py",
     "scripts/check_thesis_reference_registry.py",
     "scripts/validate_thesis_reference_registry.py",
     "scripts/check_thesis_update_gate.py",
     "scripts/validate_thesis_update_gate.py",
+    "scripts/brain_runtime_state_schema.py",
+    "scripts/run_brain_002_runtime_state_schema.py",
+    "scripts/validate_brain_002_runtime_state_schema.py",
+    "scripts/full_call_gauntlet.py",
+    "scripts/run_prod_007_full_call_gauntlet.py",
+    "scripts/validate_prod_007_full_call_gauntlet.py",
+    "scripts/generated_full_call_packets.py",
+    "scripts/run_prod_008_generated_full_call_packets.py",
+    "scripts/validate_prod_008_generated_full_call_packets.py",
+    "scripts/run_prod_009_cross_domain_generated_gauntlet.py",
+    "scripts/validate_prod_009_cross_domain_generated_gauntlet.py",
+    "scripts/run_prod_010_long_call_universal_objections.py",
+    "scripts/validate_prod_010_long_call_universal_objections.py",
+    "scripts/dialogue_policy_hardening.py",
+    "scripts/run_prod_011_dialogue_policy_hardening.py",
+    "scripts/validate_prod_011_dialogue_policy_hardening.py",
     "scripts/speech_realism.py",
     "scripts/run_voice_023_speech_realism.py",
     "scripts/validate_voice_023_speech_realism.py",
@@ -121,6 +150,8 @@ REQUIRED_FIXTURE_FILES = [
     "scripts/voice_low_pressure_focus.py",
     "scripts/run_voice_040_low_pressure_focus.py",
     "scripts/validate_voice_040_low_pressure_focus.py",
+    "scripts/run_resp_004_voice_044_listening_check.py",
+    "scripts/validate_resp_004_voice_044_listening_check.py",
     "scripts/rag_knowledge_base.py",
     "scripts/rag_notebooklm_automation.py",
     "scripts/rag_report_import_readiness.py",
@@ -165,6 +196,14 @@ REQUIRED_FIXTURE_FILES = [
     "research/experiments/cases/rag-004-source-manifest-normalization.json",
     "research/experiments/cases/rag-005-chunk-normalization.json",
     "research/experiments/cases/rag-006-chunk-review-packet.json",
+    "research/experiments/cases/brain-002-runtime-state-schema.json",
+    "research/experiments/cases/prod-007-full-call-gauntlet.json",
+    "research/experiments/cases/prod-008-generated-full-call-packets.json",
+    "research/experiments/cases/prod-009-cross-domain-generated-gauntlet.json",
+    "research/experiments/cases/prod-010-long-call-universal-objections.json",
+    "research/experiments/cases/prod-011-dialogue-policy-hardening.json",
+    "research/experiments/README.md",
+    "scripts/README.md",
     "data/rag/README.md",
     "scripts/validate_private_data_boundary.py",
     "scripts/check_private_call_learning_pipeline.py",
@@ -220,6 +259,19 @@ def create_dirty_fixture(root: Path) -> None:
     write_text(root / "docs" / "bad-secret.md", f"Do not store keys like {fake_secret}.\n")
     write_text(root / ".gitignore", ".tmp/\n__pycache__/\n")
     write_text(root / "research" / "experiments" / "generated" / "flat-result.json", "{}\n")
+    write_text(root / "research" / "experiments" / "generated" / "VOICE-999" / "stale-result.json", "{}\n")
+    old_brain_path = "docs/" + "product/" + "BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md"
+    old_generated_path = "research/experiments/generated/" + "stale-result.json"
+    write_text(
+        root / "docs" / "stale-paths.md",
+        "\n".join(
+            [
+                f"Old brain path: `{old_brain_path}`.",
+                f"Old generated path: `{old_generated_path}`.",
+                "",
+            ]
+        ),
+    )
     audio_path = root / "research" / "experiments" / "generated" / "leaky-audio.mp3"
     audio_path.write_bytes(b"fixture audio bytes")
 
@@ -258,6 +310,8 @@ def validate_dirty_fixture() -> None:
         "secret_like_value",
         "flat_generated_artifact",
         "generated_audio_not_ignored",
+        "stale_project_path_reference",
+        "stale_generated_artifact_reference",
     ]:
         assert_condition(expected_code in issue_codes, f"Dirty fixture did not report {expected_code}.")
 

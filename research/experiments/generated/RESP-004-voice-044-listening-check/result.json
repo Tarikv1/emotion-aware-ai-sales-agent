@@ -1,0 +1,525 @@
+{
+  "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+  "cases": [
+    {
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "case_id": "resp-004-voice-044-en-fast-filler-cleanup",
+      "final_response": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+      "language": "en",
+      "provider_rendering": {
+        "protected_segment_provider_tag_count": 0,
+        "provider_tag_count": 0,
+        "rendered_text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.114,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "quality_review": {
+        "criteria": [
+          "naturalness",
+          "trust-repair rhythm",
+          "German connector clarity",
+          "English phrase flow",
+          "sales-call pacing",
+          "AI-obviousness",
+          "protected text preservation",
+          "whether VOICE-044 is good enough before returning to RAG-018"
+        ],
+        "human_listening_review_recorded": false,
+        "human_listening_review_required": true,
+        "quality_claim_allowed": false
+      },
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "source_case_id": "voice-044-en-fast-filler-cleanup",
+      "source_cases": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "stage": "relevance-check",
+      "title": "English trust-style filler is converted to a clear sentence boundary",
+      "transcript": "That sounds expensive.",
+      "tts_delivery": {
+        "api_call_made": true,
+        "api_key_env_var": "ELEVENLABS_API_KEY",
+        "api_key_present": true,
+        "api_key_value_logged": false,
+        "asset_log": {
+          "asset_id": "research\\experiments\\generated\\RESP-004-voice-044-listening-check\\audio\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-635ae7b1.mp3",
+          "asset_log_id": "RESP-003-generated-audio-asset-log",
+          "audio_format": "mp3",
+          "campaign_id": "campaign-prod-005-b2b-software",
+          "experiment_id": "RESP-003-runtime-live-tts",
+          "inputs": {
+            "consent_note": "No customer audio or voice cloning used by RESP-003.",
+            "customer_audio_uploaded": false,
+            "person_or_voice_likeness_involved": false,
+            "provider_rendered_text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+            "source_audio_rights": "not applicable",
+            "source_audio_used": false,
+            "source_text": "I will keep this practical. You are right to ask. It only matters if the next step is useful.",
+            "source_text_path": "runtime guarded response packet",
+            "synthetic_prompt": true,
+            "voice_cloning_used": false
+          },
+          "language": "en",
+          "output_path": "research\\experiments\\generated\\RESP-004-voice-044-listening-check\\audio\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-635ae7b1.mp3",
+          "provider": "elevenlabs",
+          "provider_model": "eleven_flash_v2_5",
+          "provider_voice_env_var": "local_voice_ids:elevenlabs.en",
+          "review": {
+            "clarity": null,
+            "compliance_concern": false,
+            "decision": "needs review",
+            "emotional_appropriateness": null,
+            "follow_up": "Listen to generated audio before making quality claims.",
+            "human_listening_review": false,
+            "language_pronunciation": null,
+            "muffling_or_artifacts": null,
+            "naturalness": null,
+            "pacing": null,
+            "sales_usefulness": null,
+            "trustworthiness": null
+          },
+          "run_boundary": {
+            "api_key_location": "environment-only",
+            "command": "scripts/run_resp_004_voice_044_listening_check.py",
+            "cost": "provider API call",
+            "environment_variables_used": [
+              "ELEVENLABS_API_KEY",
+              "local_voice_ids:elevenlabs.en"
+            ],
+            "fallback_used": false,
+            "network_used": true,
+            "provider_error": null,
+            "timeout_seconds": 8.0,
+            "upload_used": false
+          },
+          "status": "needs review"
+        },
+        "audio_byte_size": 76531,
+        "audio_file_created": true,
+        "audio_output_path": "research\\experiments\\generated\\RESP-004-voice-044-listening-check\\audio\\RESP-003-campaign-prod-005-b2b-software-en-elevenlabs-635ae7b1.mp3",
+        "customer_audio_uploaded": false,
+        "endpoint_type": "tts-http-stream",
+        "fallback_reason": null,
+        "fallback_used": false,
+        "generated_text_sent_to_provider": true,
+        "language": "en",
+        "live_call_requested": true,
+        "model_id": "eleven_flash_v2_5",
+        "provider_error_summary": {
+          "code": null,
+          "message": null,
+          "type": null
+        },
+        "provider_id": "elevenlabs-stream",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs",
+        "provider_rendering_used": true,
+        "request_preview": {
+          "body": {
+            "language_code": "en",
+            "model_id": "eleven_flash_v2_5",
+            "text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+            "voice_settings": {
+              "similarity_boost": 0.75,
+              "speed": 1.114,
+              "stability": 0.56,
+              "style": 0.0,
+              "use_speaker_boost": true
+            }
+          },
+          "headers": {
+            "Content-Type": "application/json",
+            "xi-api-key": "<redacted>"
+          },
+          "method": "POST",
+          "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.en>/stream?output_format=mp3_44100_128&enable_logging=false"
+        },
+        "requires_api_key": true,
+        "selected_voice_id_env_var": "local_voice_ids:elevenlabs.en",
+        "synthetic_prompt_only": true,
+        "time_to_first_audio_ms": 989.474,
+        "timeout_seconds": 8.0,
+        "total_provider_latency_ms": 1104.059,
+        "tts_input_source": "provider_rendered_text",
+        "tts_input_text": "I'll keep this practical. You're right to ask. It only matters if the next step is useful.",
+        "validation": {
+          "customer_audio_uploaded": false,
+          "final_response_unchanged": true,
+          "notes": "RESP-003 respected provider boundary and audio asset logging rules.",
+          "passed": true,
+          "provider_calls_made": true,
+          "redacted_request_preview": true,
+          "timeout_within_limit": true,
+          "validator": "RESP-003 runtime live TTS safety check",
+          "voice_cloning_used": false
+        },
+        "voice_cloning_used": false,
+        "voice_id_present": true,
+        "voice_id_value_logged": false,
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.114,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "voice_baseline_delivery_polish": {
+        "adjustment_count": 1,
+        "adjustments": [
+          {
+            "adjustment_id": "en-remove-fast-so-trust-filler",
+            "after": ". You're right to ask",
+            "before": ", so, you're right to ask",
+            "reason": "VOICE-042/VOICE-043 listening path: short mid-sentence filler can blur in trust-style lines.",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_clarification"
+          }
+        ],
+        "applied": true,
+        "enabled": true,
+        "runtime_boundary": {
+          "changes_allowed": "provider-facing baseline TTS polish only for eligible freeform segments",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign, compliance, handoff, hangup, or do-not-call text",
+            "changing provider speed, style, stability, or voice identity settings",
+            "enabling private-pattern provider settings",
+            "adding claims, pressure, or urgency",
+            "reading or uploading private audio"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "voice_cloning_used": false
+        },
+        "validation": {
+          "boundary_flags_changed": false,
+          "markdown_in_rendered_text": false,
+          "passed": true,
+          "protected_segment_text_changes": [],
+          "voice_settings_changed": false
+        }
+      },
+      "voice_milestone": "VOICE-044",
+      "voice_private_pattern_profile": {
+        "applied": false,
+        "blocked_reason": "profile_disabled",
+        "enabled": false,
+        "runtime_boundary": {
+          "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+          "changes_forbidden": [
+            "reading raw private audio at runtime",
+            "uploading private audio",
+            "voice cloning",
+            "changing final_response",
+            "rewriting provider text",
+            "changing accepted pacing speed",
+            "applying to protected or ineligible segments",
+            "copying low vocal presence into the agent"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "raw_audio_read": false,
+          "requires_api_key": false,
+          "transcription_created": false,
+          "voice_cloning_used": false
+        },
+        "validation": {
+          "applied": false,
+          "boundary_flags_changed": false,
+          "customer_audio_uploaded": false,
+          "passed": true,
+          "provider_call_made": false,
+          "rendered_text_unchanged": true,
+          "segment_text_changes": [],
+          "voice_cloning_used": false
+        }
+      }
+    },
+    {
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "case_id": "resp-004-voice-044-de-connector-cleanup",
+      "final_response": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+      "language": "de",
+      "provider_rendering": {
+        "protected_segment_provider_tag_count": 0,
+        "provider_tag_count": 0,
+        "rendered_text": "Ich hab verstanden, also wenn's passt, gibt's einen kurzen naechsten Schritt.",
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.02,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "quality_review": {
+        "criteria": [
+          "naturalness",
+          "trust-repair rhythm",
+          "German connector clarity",
+          "English phrase flow",
+          "sales-call pacing",
+          "AI-obviousness",
+          "protected text preservation",
+          "whether VOICE-044 is good enough before returning to RAG-018"
+        ],
+        "human_listening_review_recorded": false,
+        "human_listening_review_required": true,
+        "quality_claim_allowed": false
+      },
+      "runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+      "runtime_voice_delivery_id": "RESP-002-runtime-voice-delivery",
+      "source_case_id": "voice-044-de-connector-cleanup",
+      "source_cases": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
+      "stage": "relevance-check",
+      "title": "German connector cleanup keeps baseline pacing but removes artificial sentence case",
+      "transcript": "Das klingt zu teuer.",
+      "tts_delivery": {
+        "api_call_made": true,
+        "api_key_env_var": "ELEVENLABS_API_KEY",
+        "api_key_present": true,
+        "api_key_value_logged": false,
+        "asset_log": {
+          "asset_id": "research\\experiments\\generated\\RESP-004-voice-044-listening-check\\audio\\RESP-003-campaign-prod-005-b2c-energy-de-elevenlabs-6561062e.mp3",
+          "asset_log_id": "RESP-003-generated-audio-asset-log",
+          "audio_format": "mp3",
+          "campaign_id": "campaign-prod-005-b2c-energy",
+          "experiment_id": "RESP-003-runtime-live-tts",
+          "inputs": {
+            "consent_note": "No customer audio or voice cloning used by RESP-003.",
+            "customer_audio_uploaded": false,
+            "person_or_voice_likeness_involved": false,
+            "provider_rendered_text": "Ich hab verstanden, also wenn's passt, gibt's einen kurzen naechsten Schritt.",
+            "source_audio_rights": "not applicable",
+            "source_audio_used": false,
+            "source_text": "Ich habe verstanden. Wenn es passt, gibt es einen kurzen naechsten Schritt.",
+            "source_text_path": "runtime guarded response packet",
+            "synthetic_prompt": true,
+            "voice_cloning_used": false
+          },
+          "language": "de",
+          "output_path": "research\\experiments\\generated\\RESP-004-voice-044-listening-check\\audio\\RESP-003-campaign-prod-005-b2c-energy-de-elevenlabs-6561062e.mp3",
+          "provider": "elevenlabs",
+          "provider_model": "eleven_flash_v2_5",
+          "provider_voice_env_var": "local_voice_ids:elevenlabs.de",
+          "review": {
+            "clarity": null,
+            "compliance_concern": false,
+            "decision": "needs review",
+            "emotional_appropriateness": null,
+            "follow_up": "Listen to generated audio before making quality claims.",
+            "human_listening_review": false,
+            "language_pronunciation": null,
+            "muffling_or_artifacts": null,
+            "naturalness": null,
+            "pacing": null,
+            "sales_usefulness": null,
+            "trustworthiness": null
+          },
+          "run_boundary": {
+            "api_key_location": "environment-only",
+            "command": "scripts/run_resp_004_voice_044_listening_check.py",
+            "cost": "provider API call",
+            "environment_variables_used": [
+              "ELEVENLABS_API_KEY",
+              "local_voice_ids:elevenlabs.de"
+            ],
+            "fallback_used": false,
+            "network_used": true,
+            "provider_error": null,
+            "timeout_seconds": 8.0,
+            "upload_used": false
+          },
+          "status": "needs review"
+        },
+        "audio_byte_size": 69844,
+        "audio_file_created": true,
+        "audio_output_path": "research\\experiments\\generated\\RESP-004-voice-044-listening-check\\audio\\RESP-003-campaign-prod-005-b2c-energy-de-elevenlabs-6561062e.mp3",
+        "customer_audio_uploaded": false,
+        "endpoint_type": "tts-http-stream",
+        "fallback_reason": null,
+        "fallback_used": false,
+        "generated_text_sent_to_provider": true,
+        "language": "de",
+        "live_call_requested": true,
+        "model_id": "eleven_flash_v2_5",
+        "provider_error_summary": {
+          "code": null,
+          "message": null,
+          "type": null
+        },
+        "provider_id": "elevenlabs-stream",
+        "provider_key": "elevenlabs",
+        "provider_name": "ElevenLabs",
+        "provider_rendering_used": true,
+        "request_preview": {
+          "body": {
+            "language_code": "de",
+            "model_id": "eleven_flash_v2_5",
+            "text": "Ich hab verstanden, also wenn's passt, gibt's einen kurzen naechsten Schritt.",
+            "voice_settings": {
+              "similarity_boost": 0.75,
+              "speed": 1.02,
+              "stability": 0.56,
+              "style": 0.0,
+              "use_speaker_boost": true
+            }
+          },
+          "headers": {
+            "Content-Type": "application/json",
+            "xi-api-key": "<redacted>"
+          },
+          "method": "POST",
+          "url": "https://api.elevenlabs.io/v1/text-to-speech/<redacted-env:local_voice_ids:elevenlabs.de>/stream?output_format=mp3_44100_128&enable_logging=false"
+        },
+        "requires_api_key": true,
+        "selected_voice_id_env_var": "local_voice_ids:elevenlabs.de",
+        "synthetic_prompt_only": true,
+        "time_to_first_audio_ms": 232.05,
+        "timeout_seconds": 8.0,
+        "total_provider_latency_ms": 333.613,
+        "tts_input_source": "provider_rendered_text",
+        "tts_input_text": "Ich hab verstanden, also wenn's passt, gibt's einen kurzen naechsten Schritt.",
+        "validation": {
+          "customer_audio_uploaded": false,
+          "final_response_unchanged": true,
+          "notes": "RESP-003 respected provider boundary and audio asset logging rules.",
+          "passed": true,
+          "provider_calls_made": true,
+          "redacted_request_preview": true,
+          "timeout_within_limit": true,
+          "validator": "RESP-003 runtime live TTS safety check",
+          "voice_cloning_used": false
+        },
+        "voice_cloning_used": false,
+        "voice_id_present": true,
+        "voice_id_value_logged": false,
+        "voice_settings": {
+          "similarity_boost": 0.75,
+          "speed": 1.02,
+          "stability": 0.56,
+          "style": 0.0,
+          "use_speaker_boost": true
+        }
+      },
+      "voice_baseline_delivery_polish": {
+        "adjustment_count": 1,
+        "adjustments": [
+          {
+            "adjustment_id": "de-lower-also-wenns-connector",
+            "after": "also wenn's",
+            "before": "also Wenn's",
+            "reason": "Avoid artificial sentence-case connector after connected-speech joining.",
+            "segment_id": "resp-002-final-response",
+            "segment_type": "freeform_objection_handling"
+          }
+        ],
+        "applied": true,
+        "enabled": true,
+        "runtime_boundary": {
+          "changes_allowed": "provider-facing baseline TTS polish only for eligible freeform segments",
+          "changes_forbidden": [
+            "changing final_response",
+            "changing protected campaign, compliance, handoff, hangup, or do-not-call text",
+            "changing provider speed, style, stability, or voice identity settings",
+            "enabling private-pattern provider settings",
+            "adding claims, pressure, or urgency",
+            "reading or uploading private audio"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "requires_api_key": false,
+          "voice_cloning_used": false
+        },
+        "validation": {
+          "boundary_flags_changed": false,
+          "markdown_in_rendered_text": false,
+          "passed": true,
+          "protected_segment_text_changes": [],
+          "voice_settings_changed": false
+        }
+      },
+      "voice_milestone": "VOICE-044",
+      "voice_private_pattern_profile": {
+        "applied": false,
+        "blocked_reason": "profile_disabled",
+        "enabled": false,
+        "runtime_boundary": {
+          "changes_allowed": "bounded provider voice settings and segment metadata only for accepted abstract private speech-pattern profiles",
+          "changes_forbidden": [
+            "reading raw private audio at runtime",
+            "uploading private audio",
+            "voice cloning",
+            "changing final_response",
+            "rewriting provider text",
+            "changing accepted pacing speed",
+            "applying to protected or ineligible segments",
+            "copying low vocal presence into the agent"
+          ],
+          "customer_audio_uploaded": false,
+          "generated_audio_created": false,
+          "provider_calls_made": false,
+          "raw_audio_read": false,
+          "requires_api_key": false,
+          "transcription_created": false,
+          "voice_cloning_used": false
+        },
+        "validation": {
+          "applied": false,
+          "boundary_flags_changed": false,
+          "customer_audio_uploaded": false,
+          "passed": true,
+          "provider_call_made": false,
+          "rendered_text_unchanged": true,
+          "segment_text_changes": [],
+          "voice_cloning_used": false
+        }
+      }
+    }
+  ],
+  "checkpoint_title": "RESP-004 VOICE-044 polished-baseline listening check",
+  "experiment_id": "RESP-004-voice-044-listening-check",
+  "focus_case_file": "research\\experiments\\cases\\voice-044-baseline-delivery-polish.json",
+  "provider": "elevenlabs",
+  "runtime_boundary": {
+    "customer_audio_uploaded": false,
+    "default_mode": "dry-run",
+    "provider_calls_made": true,
+    "quality_claim_allowed_without_human_rating": false,
+    "requires_api_key": true,
+    "resp_003_preserved_as_bridge": true,
+    "voice_cloning_used": false
+  },
+  "source_runtime_tts_delivery_id": "RESP-003-runtime-live-tts",
+  "source_voice_milestone": "VOICE-044",
+  "summary": {
+    "api_calls_made": 2,
+    "audio_files_created": 2,
+    "baseline_polish_applied_count": 2,
+    "baseline_polish_validation_passed": true,
+    "case_count": 2,
+    "customer_audio_uploaded": false,
+    "english_case_count": 1,
+    "fallback_count": 0,
+    "german_case_count": 1,
+    "human_listening_review_recorded": false,
+    "live_call_requested": true,
+    "private_pattern_profile_applied_count": 0,
+    "providers": [
+      "elevenlabs"
+    ],
+    "quality_claim_allowed": false,
+    "synthetic_prompts_only": true,
+    "timeout_seconds": 8.0,
+    "voice_cloning_used": false
+  }
+}

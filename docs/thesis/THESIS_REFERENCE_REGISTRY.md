@@ -74,6 +74,17 @@ Use the source categories carefully:
 - Current project status: downloaded and extracted locally.
 - Thesis caution: the task is charity persuasion, not commercial outbound sales. Use it for strategy grounding, not direct product-performance claims.
 
+### CallCenterEN / AIxBlock real-world call-center scripts
+
+- Type: dataset and academic source
+- Hugging Face dataset: https://huggingface.co/datasets/AIxBlock/92k-real-world-call-center-scripts-english
+- Dataset file tree: https://huggingface.co/datasets/AIxBlock/92k-real-world-call-center-scripts-english/tree/main
+- arXiv paper: https://arxiv.org/abs/2507.02958
+- Project use: pattern grounding only for `PROD-006` full-sale scenario-bank design, `PROD-012` CallCenterEN scenario evaluation, `PROD-013` abstract pattern extraction, `PROD-014` scenario-bank generation, `PROD-015` old-runtime versus opt-in retrieval comparison, `PROD-016` retrieval no-gain diagnosis, `PROD-017` specificity/objection-fit scoring, `PROD-018` offline composer-hook candidate testing, `PROD-019` opt-in guarded runtime composer-hook evaluation, and `PROD-020` naturalized customer-turn evaluation, including opening styles, call direction, domain mix, customer intents, objection types, emotion transitions, discovery questions, persuasion tactics, close attempts, support-only patterns, escalation patterns, close resistance, hard failure rate, leakage failure rate, non-sale correctness tests, safe-close correctness tests, retrieval no-gain evidence, composer influence gap analysis, scoring blind-spot analysis, scenario/campaign evaluation-shape diagnosis, safe-specific versus safe-generic answer scoring, guarded composer-hook candidate evaluation, and rubric-token robustness checks.
+- Current project status: no dataset download is required by default. The implementation uses project-owned synthetic scenarios and can scan ignored local ZIP/JSON/JSONL files transiently for leakage checks or abstract pattern extraction after explicit download approval.
+- License and reuse status: observed as `cc-by-nc-4.0` on 2026-05-09. The dataset card and paper frame it as non-commercial research material. Do not use it as commercial runtime training data without separate license clearance.
+- Thesis caution: do not copy transcript sentences, high-similarity paraphrases, or raw transcript bodies into tracked scenarios, prompts, generated reports, runtime memory, or commercial runtime prompts. Scenarios must be project-owned rewrites combined from multiple source patterns.
+
 ## Sales Communication And Compliance Sources
 
 ### RAG-019 public sales communication source expansion
@@ -113,6 +124,46 @@ Use the source categories carefully:
 - Project use: source-backed paraphrased advisory rules for RAG-019 covering cold calling, objections, closing, consultative discovery, persuasion, negotiation, voice delivery, conversation design, call-center behavior, German formal sales communication, real-call review boundaries, and compliance.
 - Current project status: extracted into `research/experiments/cases/rag-019-sales-communication-source-expansion.json` as project-owned paraphrases with source URLs, hard limits, and no runtime eligibility by default.
 - Thesis caution: practitioner sales pages are product-grounding inputs, not peer-reviewed effectiveness evidence. Legal/compliance pages guide system boundaries and are not legal advice. No copied sales scripts, article passages, or call transcripts are stored in the RAG.
+
+### RAG-020 sales persuasion and emotion-understanding deep dive
+
+- Type: public practitioner, academic, government, AI governance, legal/compliance, and product-grounding source pack
+- Sales, persuasion, and negotiation sources:
+  - Gartner Challenger Sales Model overview: https://www.gartner.com/smarterwithgartner/power-challenger-sales-model
+  - Stanford Behavior Design Lab Fogg Behavior Model: https://behaviordesign.stanford.edu/resources/fogg-behavior-model
+  - Michie, van Stralen, and West Behaviour Change Wheel / COM-B: https://implementationscience.biomedcentral.com/articles/10.1186/1748-5908-6-42
+  - SAMHSA TIP 35 motivational interviewing: https://library.samhsa.gov/product/tip-35-enhancing-motivation-change-substance-use-disorder-treatment/pep19-02-01-003
+  - Harvard Program on Negotiation BATNA explainer: https://www.pon.harvard.edu/daily/batna/translate-your-batna-to-the-current-deal/
+  - Oxford Bibliographies Elaboration Likelihood Model overview: https://academic.oup.com/reference/62347/reference-article/554213168
+- Emotion understanding and AI-risk sources:
+  - Barrett et al. Emotional Expressions Reconsidered: https://journals.sagepub.com/doi/10.1177/1529100619832930
+  - Lieberman et al. affect labeling PubMed record: https://pubmed.ncbi.nlm.nih.gov/17576282/
+  - NIST AI Risk Management Framework: https://doi.org/10.6028/NIST.AI.100-1
+  - NIST Generative AI Profile: https://doi.org/10.6028/NIST.AI.600-1
+  - EUR-Lex Regulation (EU) 2024/1689 Artificial Intelligence Act: https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+  - FTC AI deception guidance for chatbots, deepfakes, and voice clones: https://www.ftc.gov/business-guidance/blog/2023/03/chatbots-deepfakes-voice-clones-ai-deception-sale
+- Project use: source-backed paraphrased advisory rules for RAG-020 covering insight-led selling, behavior-change diagnosis, autonomy-supportive persuasion, buyer confidence, BATNA-style comparison, emotion-inference limits, affect-labeling repair, and AI/voice deception boundaries.
+- Current project status: extracted into `research/experiments/cases/rag-020-sales-persuasion-emotion-deep-dive.json` as project-owned paraphrases with source URLs, hard limits, and no runtime eligibility by default.
+- Thesis caution: RAG-020 is a source expansion and design-control checkpoint, not runtime evidence. It must not be treated as proof that sales outcomes improve until a separate registry rebuild, RAG-018 evaluation, and human review are completed.
+
+### RAG-021 buyer trust and conversation-repair source expansion
+
+- Type: public practitioner, academic, government, AI governance, and product-grounding source pack
+- Buyer value, trust, autonomy, and clarity sources:
+  - Bain B2B Elements of Value: https://www.bain.com/how-we-help/b2b-elements-of-value/
+  - Mayer, Davis, and Schoorman organizational trust model: https://www.jstor.org/stable/258792
+  - Leader autonomy support in the workplace meta-analysis: https://pubmed.ncbi.nlm.nih.gov/30237648/
+  - Reactance and restoration of freedom in communication: https://academic.oup.com/hcr/article/33/2/219/4210793
+  - Cognitive Load Theory review: https://link.springer.com/article/10.1007/s11251-009-9110-0
+  - Digital.gov Plain Language guide: https://digital.gov/guides/plain-language
+- Conversation repair, emotion support, action planning, and AI transparency sources:
+  - Gross emerging field of emotion regulation: https://journals.sagepub.com/doi/10.1037/1089-2680.2.3.271
+  - Schegloff, Jefferson, and Sacks conversation-repair archive page: https://www.conversationanalysis.org/schegloff-media-archive/preference-for-self-correction-in-repair-in-conversation-1977/
+  - Implementation intentions and goal achievement meta-analysis: https://pubmed.ncbi.nlm.nih.gov/18096108/
+  - OECD AI Principles: https://www.oecd.org/en/topics/ai-principles.html
+- Project use: source-backed paraphrased advisory rules for RAG-021 covering buyer value mapping, trust repair, autonomy/reactance, cognitive-load reduction, plain-language summaries, conversation repair, emotion-regulation support, consented next-step planning, and AI transparency/human handoff.
+- Current project status: extracted into `research/experiments/cases/rag-021-buyer-trust-conversation-repair.json` as project-owned paraphrases with source URLs, hard limits, and no runtime eligibility by default.
+- Thesis caution: RAG-021 is a source expansion and design-control checkpoint, not runtime evidence. It must not be treated as proof that sales outcomes improve until a separate registry rebuild, RAG-018 evaluation, and human review are completed.
 
 ## Speech Realism Sources
 
@@ -231,8 +282,8 @@ Core references:
 - Kiel Corpus of Spoken German: https://www.isfas.uni-kiel.de/de/linguistik-und-phonetik/smile-if-you-can-see-this/forschung/kiel-corpus/the-kiel-corpus-of-spoken-german-read-and-spontaneous-speech
 - German filler particles, Muhlack et al. (2023): https://www.mdpi.com/2226-471X/8/2/100
 - Filler-particle terminology, Belz (2023): https://www.mdpi.com/2226-471X/8/1/57
-- German `äh`/`ähm` phonetics, Belz (2021): https://doi.org/10.1007/978-3-662-62812-6
-- German `äh`/`ähm` phonetics publisher page, Belz (2021): https://link.springer.com/book/10.1007/978-3-662-62812-6
+- German `Ã¤h`/`Ã¤hm` phonetics, Belz (2021): https://doi.org/10.1007/978-3-662-62812-6
+- German `Ã¤h`/`Ã¤hm` phonetics publisher page, Belz (2021): https://link.springer.com/book/10.1007/978-3-662-62812-6
 - Reduced pronunciation variants, Ernestus and Warner (2011): https://doi.org/10.1016/S0095-4470(11)00055-6
 - Reduced pronunciation variants, MPI record: https://www.mpi.nl/publications/item_1084571
 - Text normalization for speech applications, Zhang et al. (2019): https://doi.org/10.1162/COLI_a_00349
@@ -291,7 +342,7 @@ Project use:
 
 Detailed source index:
 
-- `research/experiments/generated/VOICE-009-tts-provider-research-report.md`
+- `research/experiments/generated/VOICE-009/VOICE-009-tts-provider-research-report.md`
 
 Provider sources used:
 

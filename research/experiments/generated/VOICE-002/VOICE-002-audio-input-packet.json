@@ -12,8 +12,8 @@
   "stage": "relevance-check",
   "input_type": "speech-final",
   "audio_input": {
-    "path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-002-customer-placeholder.wav",
-    "project_relative_path": "research\\experiments\\generated\\VOICE-002-customer-placeholder.wav",
+    "path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-002\\VOICE-002-customer-placeholder.wav",
+    "project_relative_path": "research\\experiments\\generated\\VOICE-002\\VOICE-002-customer-placeholder.wav",
     "format": "wav",
     "byte_size": 5644,
     "sha256": "110be0d4e2bae5a52da7276dee3703f62df7b33794aa2706a89da0b71207a6c0",
@@ -98,7 +98,7 @@
       "requires_api_key": false
     }
   },
-  "listener_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-002-listen.html",
+  "listener_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-002\\VOICE-002-listen.html",
   "trace": {
     "source": "scripts/run_voice_input_turn.py",
     "realtime_source": "scripts/realtime_turn_cli.py",

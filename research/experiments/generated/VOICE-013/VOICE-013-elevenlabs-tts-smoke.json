@@ -98,7 +98,7 @@
       "case_title": "German ElevenLabs longer objection-handling sample",
       "language": "de",
       "campaign_id": "campaign-prod-005-b2c-telecom",
-      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+      "tts_quality_script": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsÃ¤chliche Leistung von Adresse, Leitung und Tarif abhÃ¤ngt. Was ich anbieten kann: Ein Spezialist prÃ¼ft die verfÃ¼gbaren Optionen unverbindlich und erklÃ¤rt Ihnen klar, was realistisch ist. Wenn es nicht passt, mÃ¼ssen Sie nichts Ã¤ndern.",
       "voice_packet": {
         "voice_run_id": "VOICE-001-elevenlabs-stream",
         "voice_milestone": "VOICE-001",
@@ -114,7 +114,7 @@
         "stage": "relevance-check",
         "input_type": "speech-final",
         "silence_count": null,
-        "transcript": "Nur wenn Sie garantieren können, dass die Geschwindigkeit bei mir stabil ist.",
+        "transcript": "Nur wenn Sie garantieren kÃ¶nnen, dass die Geschwindigkeit bei mir stabil ist.",
         "decision": {
           "case_id": "REALTIME-CLI-TURN",
           "campaign_language": "de",
@@ -152,7 +152,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013-C01-de-elevenlabs-stream.mp3",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013\\VOICE-013-C01-de-elevenlabs-stream.mp3",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -188,7 +188,7 @@
             "Content-Type": "application/json"
           },
           "body": {
-            "text": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsächliche Leistung von Adresse, Leitung und Tarif abhängt. Was ich anbieten kann: Ein Spezialist prüft die verfügbaren Optionen unverbindlich und erklärt Ihnen klar, was realistisch ist. Wenn es nicht passt, müssen Sie nichts ändern.",
+            "text": "Ich verstehe den Punkt sehr gut. Eine feste Garantie zur Geschwindigkeit darf ich Ihnen nicht geben, weil die tatsÃ¤chliche Leistung von Adresse, Leitung und Tarif abhÃ¤ngt. Was ich anbieten kann: Ein Spezialist prÃ¼ft die verfÃ¼gbaren Optionen unverbindlich und erklÃ¤rt Ihnen klar, was realistisch ist. Wenn es nicht passt, mÃ¼ssen Sie nichts Ã¤ndern.",
             "model_id": "eleven_flash_v2_5",
             "language_code": "de",
             "voice_settings": {
@@ -211,7 +211,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-013-C01-de-elevenlabs-stream.mp3",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C01-de-elevenlabs-stream.mp3",
         "audio_byte_size": 384985,
         "http_status": 200,
         "response_content_type": "audio/mpeg",
@@ -241,7 +241,7 @@
       "case_title": "German ElevenLabs longer bridge-and-handoff sample",
       "language": "de",
       "campaign_id": "campaign-prod-005-b2c-energy",
-      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+      "tts_quality_script": "Das ist eine gute Frage. Die genauen Konditionen mÃ¶chte ich nicht schÃ¤tzen, weil sie sauber geprÃ¼ft werden mÃ¼ssen. Ich kann Ihnen aber den nÃ¤chsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zustÃ¤ndiger Fachberater meldet sich mit den passenden Informationen. Der RÃ¼ckruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
       "voice_packet": {
         "voice_run_id": "VOICE-001-elevenlabs-stream",
         "voice_milestone": "VOICE-001",
@@ -257,7 +257,7 @@
         "stage": "product-detail-check",
         "input_type": "speech-final",
         "silence_count": null,
-        "transcript": "Welche Konditionen wären das genau und wer ruft mich danach an?",
+        "transcript": "Welche Konditionen wÃ¤ren das genau und wer ruft mich danach an?",
         "decision": {
           "case_id": "REALTIME-CLI-TURN",
           "campaign_language": "de",
@@ -293,7 +293,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013-C02-de-elevenlabs-stream.mp3",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013\\VOICE-013-C02-de-elevenlabs-stream.mp3",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -329,7 +329,7 @@
             "Content-Type": "application/json"
           },
           "body": {
-            "text": "Das ist eine gute Frage. Die genauen Konditionen möchte ich nicht schätzen, weil sie sauber geprüft werden müssen. Ich kann Ihnen aber den nächsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zuständiger Fachberater meldet sich mit den passenden Informationen. Der Rückruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
+            "text": "Das ist eine gute Frage. Die genauen Konditionen mÃ¶chte ich nicht schÃ¤tzen, weil sie sauber geprÃ¼ft werden mÃ¼ssen. Ich kann Ihnen aber den nÃ¤chsten Schritt transparent machen: Wir halten nur fest, was Ihnen wichtig ist, und ein zustÃ¤ndiger Fachberater meldet sich mit den passenden Informationen. Der RÃ¼ckruf ist unverbindlich, und Sie entscheiden danach in Ruhe.",
             "model_id": "eleven_flash_v2_5",
             "language_code": "de",
             "voice_settings": {
@@ -352,7 +352,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-013-C02-de-elevenlabs-stream.mp3",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C02-de-elevenlabs-stream.mp3",
         "audio_byte_size": 397524,
         "http_status": 200,
         "response_content_type": "audio/mpeg",
@@ -436,7 +436,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013-C03-en-elevenlabs-stream.mp3",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013\\VOICE-013-C03-en-elevenlabs-stream.mp3",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -495,7 +495,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-013-C03-en-elevenlabs-stream.mp3",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C03-en-elevenlabs-stream.mp3",
         "audio_byte_size": 347787,
         "http_status": 200,
         "response_content_type": "audio/mpeg",
@@ -577,7 +577,7 @@
           "source_decision_latency_ms": 0,
           "source_decision_latency_bucket": "under-1s"
         },
-        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013-C04-en-elevenlabs-stream.mp3",
+        "audio_output_path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent\\research\\experiments\\generated\\VOICE-013\\VOICE-013-C04-en-elevenlabs-stream.mp3",
         "trace": {
           "source": "scripts/realtime_turn_cli.py",
           "case_file": "research\\experiments\\cases\\prod-005-realtime-latency-call-control.json",
@@ -636,7 +636,7 @@
         "fallback_used": false,
         "fallback_reason": null,
         "audio_file_created": true,
-        "audio_output_path": "research\\experiments\\generated\\VOICE-013-C04-en-elevenlabs-stream.mp3",
+        "audio_output_path": "research\\experiments\\generated\\VOICE-013\\VOICE-013-C04-en-elevenlabs-stream.mp3",
         "audio_byte_size": 354474,
         "http_status": 200,
         "response_content_type": "audio/mpeg",

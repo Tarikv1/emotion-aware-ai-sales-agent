@@ -1,4 +1,4 @@
-﻿# Vinh Giang Communication and Human Voice Behavior RAG Extraction Report
+# Vinh Giang Communication and Human Voice Behavior RAG Extraction Report
 
 Imported from Tarik's NotebookLM output on 2026-05-06.
 

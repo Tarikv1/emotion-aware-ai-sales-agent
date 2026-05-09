@@ -15,7 +15,7 @@ It does not call providers, require keys, upload customer audio, clone voices, o
 The runner reads:
 
 ```text
-research/experiments/generated/VOICE-015-prosody-naturalness.json
+research/experiments/generated/VOICE-015/VOICE-015-prosody-naturalness.json
 ```
 
 For each case, it creates:
@@ -73,8 +73,8 @@ scripts/provider_prosody_rendering.py
 scripts/run_voice_016_provider_prosody_rendering.py
 scripts/validate_voice_016_provider_prosody_rendering.py
 research/experiments/cases/voice-016-provider-prosody-rendering.json
-research/experiments/generated/VOICE-016-provider-prosody-rendering.json
-research/experiments/generated/VOICE-016-provider-prosody-rendering-report.md
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering-report.md
 docs/product/VOICE_016_PROVIDER_PROSODY_RENDERING.md
 ```
 

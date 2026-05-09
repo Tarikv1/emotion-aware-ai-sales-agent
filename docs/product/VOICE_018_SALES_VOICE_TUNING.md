@@ -11,7 +11,7 @@ This checkpoint stays offline and no-key. It does not claim live audio quality. 
 VOICE-018 reads:
 
 ```text
-research/experiments/generated/VOICE-016-provider-prosody-rendering.json
+research/experiments/generated/VOICE-016/VOICE-016-provider-prosody-rendering.json
 ```
 
 It uses all eight VOICE-015/VOICE-016 cases across German and English.
@@ -119,8 +119,8 @@ python scripts\validate_voice_018_sales_voice_tuning.py
 ## Generated Artifacts
 
 - `research/experiments/cases/voice-018-sales-voice-tuning.json`
-- `research/experiments/generated/VOICE-018-sales-voice-tuning.json`
-- `research/experiments/generated/VOICE-018-sales-voice-tuning-report.md`
+- `research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning.json`
+- `research/experiments/generated/VOICE-018/VOICE-018-sales-voice-tuning-report.md`
 
 ## Product Meaning
 

@@ -103,11 +103,11 @@ Possible follow-up check:
 
 ## Simulation Implication
 
-The next product case set should include B2C insurance cases.
+The implemented product case set includes B2C insurance cases.
 
-Suggested file:
+Case file:
 
-`research/experiments/cases/prod-002-mixed-b2b-b2c-insurance.json`
+`research/experiments/cases/prod-002-b2c-insurance.json`
 
 Suggested cases:
 

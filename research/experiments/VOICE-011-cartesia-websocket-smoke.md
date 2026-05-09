@@ -52,8 +52,8 @@ The validator confirms:
 Generated artifacts:
 
 ```text
-research/experiments/generated/VOICE-011-cartesia-websocket-smoke.json
-research/experiments/generated/VOICE-011-cartesia-websocket-smoke-report.md
+research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke.json
+research/experiments/generated/VOICE-011/VOICE-011-cartesia-websocket-smoke-report.md
 ```
 
 Dry-run summary:

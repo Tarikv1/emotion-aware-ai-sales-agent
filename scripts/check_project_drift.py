@@ -18,12 +18,23 @@ REQUIRED_FILES = [
     "README.md",
     "docs/third-party-inspirations.md",
     "docs/product-review-gates.md",
+    "docs/PROJECT_NAVIGATION.md",
+    "docs/brain/README.md",
     "docs/product/COMMANDS.md",
+    "docs/product/CHECKPOINT_INDEX.md",
     "docs/product/CONTEXT_READING_POLICY.md",
     "docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md",
     "docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "docs/product/PROJECT_DRIFT_GUARD.md",
+    "docs/product/FULL_SALE_MVP_STRATEGY.md",
+    "docs/product/PROD_007_FULL_CALL_GAUNTLET.md",
+    "docs/product/PROD_008_GENERATED_FULL_CALL_PACKETS.md",
+    "docs/product/PROD_009_CROSS_DOMAIN_GENERATED_GAUNTLET.md",
+    "docs/product/PROD_010_LONG_CALL_UNIVERSAL_OBJECTIONS.md",
+    "docs/brain/PROD_011_DIALOGUE_POLICY_HARDENING.md",
+    "docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md",
+    "docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md",
     "docs/product/RAG_001_NOTEBOOKLM_SOURCE_INTAKE_BRIDGE.md",
     "docs/product/RAG_002_NOTEBOOKLM_EXTRACTION_AUTOMATION_BRIDGE.md",
     "docs/product/RAG_003_REPORT_IMPORT_READINESS.md",
@@ -50,6 +61,7 @@ REQUIRED_FILES = [
     "docs/product/VOICE_038_SEMANTIC_EMPHASIS_DIAGNOSIS.md",
     "docs/product/VOICE_039_RUNTIME_SEMANTIC_EMPHASIS.md",
     "docs/product/VOICE_040_LOW_PRESSURE_FOCUS.md",
+    "docs/product/RESP_004_VOICE_044_LISTENING_CHECK.md",
     "docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md",
     "docs/data/PRIVATE_CALL_LEARNING_PIPELINE.md",
     "docs/thesis/ROADMAP.md",
@@ -58,11 +70,28 @@ REQUIRED_FILES = [
     "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
     "docs/thesis/THESIS_WRITING_GUIDE.md",
     "data/private/.gitignore",
+    "data/external/.gitignore",
     "scripts/check_project_drift.py",
     "scripts/check_thesis_reference_registry.py",
     "scripts/validate_thesis_reference_registry.py",
     "scripts/check_thesis_update_gate.py",
     "scripts/validate_thesis_update_gate.py",
+    "scripts/brain_runtime_state_schema.py",
+    "scripts/run_brain_002_runtime_state_schema.py",
+    "scripts/validate_brain_002_runtime_state_schema.py",
+    "scripts/full_call_gauntlet.py",
+    "scripts/run_prod_007_full_call_gauntlet.py",
+    "scripts/validate_prod_007_full_call_gauntlet.py",
+    "scripts/generated_full_call_packets.py",
+    "scripts/run_prod_008_generated_full_call_packets.py",
+    "scripts/validate_prod_008_generated_full_call_packets.py",
+    "scripts/run_prod_009_cross_domain_generated_gauntlet.py",
+    "scripts/validate_prod_009_cross_domain_generated_gauntlet.py",
+    "scripts/run_prod_010_long_call_universal_objections.py",
+    "scripts/validate_prod_010_long_call_universal_objections.py",
+    "scripts/dialogue_policy_hardening.py",
+    "scripts/run_prod_011_dialogue_policy_hardening.py",
+    "scripts/validate_prod_011_dialogue_policy_hardening.py",
     "scripts/speech_realism.py",
     "scripts/run_voice_023_speech_realism.py",
     "scripts/validate_voice_023_speech_realism.py",
@@ -120,6 +149,8 @@ REQUIRED_FILES = [
     "scripts/voice_low_pressure_focus.py",
     "scripts/run_voice_040_low_pressure_focus.py",
     "scripts/validate_voice_040_low_pressure_focus.py",
+    "scripts/run_resp_004_voice_044_listening_check.py",
+    "scripts/validate_resp_004_voice_044_listening_check.py",
     "scripts/rag_knowledge_base.py",
     "scripts/rag_notebooklm_automation.py",
     "scripts/rag_report_import_readiness.py",
@@ -165,6 +196,14 @@ REQUIRED_FILES = [
     "research/experiments/cases/rag-004-source-manifest-normalization.json",
     "research/experiments/cases/rag-005-chunk-normalization.json",
     "research/experiments/cases/rag-006-chunk-review-packet.json",
+    "research/experiments/cases/brain-002-runtime-state-schema.json",
+    "research/experiments/cases/prod-007-full-call-gauntlet.json",
+    "research/experiments/cases/prod-008-generated-full-call-packets.json",
+    "research/experiments/cases/prod-009-cross-domain-generated-gauntlet.json",
+    "research/experiments/cases/prod-010-long-call-universal-objections.json",
+    "research/experiments/cases/prod-011-dialogue-policy-hardening.json",
+    "research/experiments/README.md",
+    "scripts/README.md",
     "scripts/validate_private_data_boundary.py",
     "scripts/check_private_call_learning_pipeline.py",
     "scripts/init_private_call_learning_workspace.py",
@@ -226,6 +265,7 @@ SKIP_DIR_PREFIXES = {
     ("data", "private"),
     ("data", "private-restricted"),
     ("data", "processed"),
+    ("data", "external"),
     ("config", "local"),
 }
 
@@ -233,7 +273,24 @@ AUDIO_EXTENSIONS = {".mp3", ".wav"}
 ALLOWED_GENERATED_ROOT_FILES = {"README.md"}
 
 CURATED_GENERATED_AUDIO_FILES = {
-    "research/experiments/generated/VOICE-002-customer-placeholder.wav",
+    "research/experiments/generated/VOICE-002/VOICE-002-customer-placeholder.wav",
+}
+
+OLD_PRODUCT_DOCS = "docs/" + "product/"
+
+STALE_PROJECT_PATH_REPLACEMENTS = {
+    OLD_PRODUCT_DOCS + "BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md": "docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md",
+    OLD_PRODUCT_DOCS + "BRAIN_002_RUNTIME_STATE_SCHEMA.md": "docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md",
+    OLD_PRODUCT_DOCS + "PROD_011_DIALOGUE_POLICY_HARDENING.md": "docs/brain/PROD_011_DIALOGUE_POLICY_HARDENING.md",
+}
+
+DIRECT_GENERATED_ARTIFACT_RE = re.compile(
+    r"research[\\/]+experiments[\\/]+generated[\\/]+(?P<filename>[A-Za-z0-9_.-]+\.(?:html|json|md|mp3|sqlite|wav))"
+)
+
+REFERENCE_GUARD_SOURCE_FILES = {
+    "scripts/check_project_drift.py",
+    "scripts/validate_project_drift_guard.py",
 }
 
 SECRET_PATTERNS = [
@@ -342,6 +399,18 @@ def read_text(path: Path) -> str | None:
         return None
 
 
+def build_generated_artifact_lookup(root: Path) -> dict[str, list[str]]:
+    generated_root = root / "research" / "experiments" / "generated"
+    lookup: dict[str, list[str]] = {}
+    if not generated_root.is_dir():
+        return lookup
+    for path in sorted(generated_root.rglob("*")):
+        if not path.is_file() or path.parent == generated_root:
+            continue
+        lookup.setdefault(path.name, []).append(relative_to_root(root, path))
+    return lookup
+
+
 def detect_missing_required_files(root: Path) -> list[Issue]:
     issues: list[Issue] = []
     for relative_path in REQUIRED_FILES:
@@ -359,6 +428,7 @@ def detect_missing_required_files(root: Path) -> list[Issue]:
 
 def detect_line_issues(root: Path, files: list[Path]) -> list[Issue]:
     issues: list[Issue] = []
+    generated_lookup = build_generated_artifact_lookup(root)
     for path in files:
         text = read_text(path)
         if text is None:
@@ -396,6 +466,41 @@ def detect_line_issues(root: Path, files: list[Path]) -> list[Issue]:
                             path=relative_path,
                             line=line_number,
                             message="Project file depends on material outside Emotion Aware. Adapt it locally or document it as inspiration only.",
+                        )
+                    )
+            if relative_path in REFERENCE_GUARD_SOURCE_FILES:
+                continue
+            normalized_line = line.replace("\\", "/")
+            for stale_path, current_path in STALE_PROJECT_PATH_REPLACEMENTS.items():
+                if stale_path in normalized_line:
+                    issues.append(
+                        Issue(
+                            code="stale_project_path_reference",
+                            severity="fail",
+                            path=relative_path,
+                            line=line_number,
+                            message=f"Reference points at old location {stale_path}; use {current_path}.",
+                        )
+                    )
+            for match in DIRECT_GENERATED_ARTIFACT_RE.finditer(line):
+                old_reference = match.group(0).replace("\\", "/")
+                target = root / old_reference
+                if target.exists():
+                    continue
+                filename = match.group("filename")
+                candidates = generated_lookup.get(filename, [])
+                if candidates:
+                    replacement_hint = candidates[0] if len(candidates) == 1 else "the matching milestone/run subfolder"
+                    issues.append(
+                        Issue(
+                            code="stale_generated_artifact_reference",
+                            severity="fail",
+                            path=relative_path,
+                            line=line_number,
+                            message=(
+                                "Reference points at old generated-root artifact path; "
+                                f"use {replacement_hint}."
+                            ),
                         )
                     )
     return issues

@@ -71,9 +71,9 @@ It should return a VOICE-004 packet containing the ASR adapter metadata and a VO
 
 VOICE-004 should generate:
 
-- `research/experiments/generated/VOICE-004-browser-speech-demo.html`
-- `research/experiments/generated/VOICE-004-browser-speech-demo-metadata.json`
-- `research/experiments/generated/VOICE-004-browser-speech-demo-decision.json`
+- `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo.html`
+- `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-metadata.json`
+- `research/experiments/generated/VOICE-004/VOICE-004-browser-speech-demo-decision.json`
 
 ## Validation
 

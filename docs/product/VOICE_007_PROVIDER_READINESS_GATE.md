@@ -90,8 +90,8 @@ Generate:
 ```powershell
 python scripts\evaluate_voice_provider_readiness.py `
   --candidates research\experiments\cases\voice-007-provider-readiness-candidates.json `
-  --out research\experiments\generated\VOICE-007-provider-readiness.json `
-  --report-out research\experiments\generated\VOICE-007-provider-readiness-report.md
+  --out research/experiments/generated/VOICE-007/VOICE-007-provider-readiness.json `
+  --report-out research/experiments/generated/VOICE-007/VOICE-007-provider-readiness-report.md
 ```
 
 Validate:
@@ -103,8 +103,8 @@ python scripts\validate_voice_007_provider_readiness.py
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-007-provider-readiness.json
-research/experiments/generated/VOICE-007-provider-readiness-report.md
+research/experiments/generated/VOICE-007/VOICE-007-provider-readiness.json
+research/experiments/generated/VOICE-007/VOICE-007-provider-readiness-report.md
 ```
 
 ## Product Boundary

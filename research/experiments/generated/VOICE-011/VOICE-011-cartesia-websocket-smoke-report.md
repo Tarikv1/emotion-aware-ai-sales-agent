@@ -51,7 +51,7 @@ VOICE-011 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Generated text sent to provider: `True`
 - Selected voice env var: `CARTESIA_VOICE_ID_DE`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-011-C01-de-cartesia-websocket.wav`
+- Audio path: `research/experiments/generated/VOICE-011/VOICE-011-C01-de-cartesia-websocket.wav`
 - Audio bytes: `612306`
 - Audio chunks: `37`
 - Timestamp events: `30`
@@ -70,7 +70,7 @@ VOICE-011 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Generated text sent to provider: `True`
 - Selected voice env var: `CARTESIA_VOICE_ID_DE`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-011-C02-de-cartesia-websocket.wav`
+- Audio path: `research/experiments/generated/VOICE-011/VOICE-011-C02-de-cartesia-websocket.wav`
 - Audio bytes: `621222`
 - Audio chunks: `40`
 - Timestamp events: `32`
@@ -89,7 +89,7 @@ VOICE-011 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Generated text sent to provider: `True`
 - Selected voice env var: `CARTESIA_VOICE_ID_EN`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-011-C03-en-cartesia-websocket.wav`
+- Audio path: `research/experiments/generated/VOICE-011/VOICE-011-C03-en-cartesia-websocket.wav`
 - Audio bytes: `650944`
 - Audio chunks: `39`
 - Timestamp events: `36`
@@ -108,7 +108,7 @@ VOICE-011 defaults to dry-run mode. A live Cartesia request requires `--live`, `
 - Generated text sent to provider: `True`
 - Selected voice env var: `CARTESIA_VOICE_ID_EN`
 - Audio file created: `True`
-- Audio path: `research\experiments\generated\VOICE-011-C04-en-cartesia-websocket.wav`
+- Audio path: `research/experiments/generated/VOICE-011/VOICE-011-C04-en-cartesia-websocket.wav`
 - Audio bytes: `671750`
 - Audio chunks: `41`
 - Timestamp events: `33`

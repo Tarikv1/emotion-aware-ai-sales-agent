@@ -44,14 +44,14 @@ Do not generalize this yet to all providers, voices, scripts, languages, or cust
 - Prosody cues: `4`
 - `elevenlabs` `plain`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-017-C01-en-elevenlabs-plain.mp3`
+  audio path: `research/experiments/generated/VOICE-017/VOICE-017-C01-en-elevenlabs-plain.mp3`
   API call made: `True`
   fallback reason: `not needed`
   time to first audio: `1064.49`
   total latency: `1224.288 ms`
 - `elevenlabs` `prosody`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-017-C01-en-elevenlabs-prosody.mp3`
+  audio path: `research/experiments/generated/VOICE-017/VOICE-017-C01-en-elevenlabs-prosody.mp3`
   API call made: `True`
   fallback reason: `not needed`
   time to first audio: `222.273`
@@ -64,14 +64,14 @@ Do not generalize this yet to all providers, voices, scripts, languages, or cust
 - Prosody cues: `5`
 - `elevenlabs` `plain`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-017-C02-de-elevenlabs-plain.mp3`
+  audio path: `research/experiments/generated/VOICE-017/VOICE-017-C02-de-elevenlabs-plain.mp3`
   API call made: `True`
   fallback reason: `not needed`
   time to first audio: `224.958`
   total latency: `424.449 ms`
 - `elevenlabs` `prosody`:
   audio created: `True`
-  audio path: `research\experiments\generated\VOICE-017-C02-de-elevenlabs-prosody.mp3`
+  audio path: `research/experiments/generated/VOICE-017/VOICE-017-C02-de-elevenlabs-prosody.mp3`
   API call made: `True`
   fallback reason: `not needed`
   time to first audio: `250.08`

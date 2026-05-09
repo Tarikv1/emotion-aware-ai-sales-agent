@@ -11,11 +11,13 @@ from speech_imperfections import apply_speech_imperfections
 from speech_interaction import apply_speech_interaction
 from speech_realism import apply_speech_realism
 from spoken_text_normalization import apply_spoken_text_normalization
+from voice_baseline_delivery_polish import apply_voice_baseline_delivery_polish
 from voice_connected_speech import apply_voice_connected_speech
 from voice_emotion_smoothing import apply_voice_emotion_smoothing
 from voice_listening_calibration import apply_emphasis_target_guard, apply_voice_listening_calibration
 from voice_low_pressure_focus import apply_voice_low_pressure_focus
 from voice_pacing_calibration import apply_voice_pacing_calibration
+from voice_private_pattern_profile import apply_voice_private_pattern_profile
 from voice_semantic_emphasis import apply_voice_semantic_emphasis
 
 
@@ -264,6 +266,8 @@ def validate_delivery(
     voice_emotion_smoothing: dict[str, Any],
     voice_semantic_emphasis: dict[str, Any],
     voice_low_pressure_focus: dict[str, Any],
+    voice_baseline_delivery_polish: dict[str, Any],
+    voice_private_pattern_profile: dict[str, Any],
 ) -> dict[str, Any]:
     final_response = packet["final_response"]
     final_response_unchanged = segments[0].get("text") == final_response
@@ -314,6 +318,8 @@ def validate_delivery(
     voice_emotion_smoothing_passed = voice_emotion_smoothing["validation"]["passed"]
     voice_semantic_emphasis_passed = voice_semantic_emphasis["validation"]["passed"]
     voice_low_pressure_focus_passed = voice_low_pressure_focus["validation"]["passed"]
+    voice_baseline_delivery_polish_passed = voice_baseline_delivery_polish["validation"]["passed"]
+    voice_private_pattern_profile_passed = voice_private_pattern_profile["validation"]["passed"]
     passed = (
         final_response_unchanged
         and spoken_text_normalization["validation"]["passed"]
@@ -326,6 +332,8 @@ def validate_delivery(
         and voice_emotion_smoothing_passed
         and voice_semantic_emphasis_passed
         and voice_low_pressure_focus_passed
+        and voice_baseline_delivery_polish_passed
+        and voice_private_pattern_profile_passed
         and prosody["validation"]["passed"]
         and provider_validation["passed"]
         and protected_segment_change_count == 0
@@ -355,6 +363,8 @@ def validate_delivery(
         "voice_emotion_smoothing_passed": voice_emotion_smoothing_passed,
         "voice_semantic_emphasis_passed": voice_semantic_emphasis_passed,
         "voice_low_pressure_focus_passed": voice_low_pressure_focus_passed,
+        "voice_baseline_delivery_polish_passed": voice_baseline_delivery_polish_passed,
+        "voice_private_pattern_profile_passed": voice_private_pattern_profile_passed,
         "prosody_validation_passed": prosody["validation"]["passed"],
         "provider_validation": provider_validation,
         "protected_segment_change_count": protected_segment_change_count,
@@ -370,6 +380,8 @@ def validate_delivery(
         "voice_emotion_transition_smoothed_count": voice_emotion_smoothing["smoothed_transition_count"],
         "voice_semantic_emphasis_rewrite_count": voice_semantic_emphasis["rewrite_count"],
         "voice_low_pressure_focus_rewrite_count": voice_low_pressure_focus["rewrite_count"],
+        "voice_baseline_delivery_polish_adjustment_count": voice_baseline_delivery_polish["adjustment_count"],
+        "voice_private_pattern_profile_applied": voice_private_pattern_profile["applied"],
         "cue_in_protected_segment_count": cue_in_protected_segment_count,
         "notes": (
             "Runtime voice delivery preserved guarded text and kept provider rendering offline."
@@ -476,6 +488,20 @@ def build_runtime_voice_delivery(
         seed=seed_value,
     )
     provider_rendering = voice_low_pressure_focus["focused_provider_rendering"]
+    voice_baseline_delivery_polish = apply_voice_baseline_delivery_polish(
+        campaign,
+        provider_rendering,
+        language=language,
+        seed=seed_value,
+    )
+    provider_rendering = voice_baseline_delivery_polish["polished_provider_rendering"]
+    voice_private_pattern_profile = apply_voice_private_pattern_profile(
+        campaign,
+        provider_rendering,
+        language=language,
+        seed=seed_value,
+    )
+    provider_rendering = voice_private_pattern_profile["profiled_provider_rendering"]
     validation = validate_delivery(
         guarded_packet,
         segments,
@@ -491,6 +517,8 @@ def build_runtime_voice_delivery(
         voice_emotion_smoothing,
         voice_semantic_emphasis,
         voice_low_pressure_focus,
+        voice_baseline_delivery_polish,
+        voice_private_pattern_profile,
     )
 
     return {
@@ -522,11 +550,13 @@ def build_runtime_voice_delivery(
         "voice_emotion_smoothing": voice_emotion_smoothing,
         "voice_semantic_emphasis": voice_semantic_emphasis,
         "voice_low_pressure_focus": voice_low_pressure_focus,
+        "voice_baseline_delivery_polish": voice_baseline_delivery_polish,
+        "voice_private_pattern_profile": voice_private_pattern_profile,
         "provider_rendering": provider_rendering,
         "validation": validation,
         "runtime_boundary": {
             "position": "after RESP-001 guarded response generation and before live TTS",
-            "changes_allowed": "delivery metadata, safe spoken freeform TTS wording, interaction prosody cues, opt-in controlled imperfections, pacing calibration, connected-speech flow, listening-feedback calibration, emotion-transition smoothing, semantic-emphasis wording candidates, low-pressure focus corrections, and provider-specific TTS input only",
+            "changes_allowed": "delivery metadata, safe spoken freeform TTS wording, interaction prosody cues, opt-in controlled imperfections, pacing calibration, connected-speech flow, listening-feedback calibration, emotion-transition smoothing, semantic-emphasis wording candidates, low-pressure focus corrections, VOICE-044 baseline delivery polish, explicitly accepted abstract private-pattern provider settings, and provider-specific TTS input only",
             "changes_forbidden": [
                 "changing final_response",
                 "changing call_control",

@@ -1,4 +1,4 @@
-﻿### Technical Report: Emotion Recognition and Persuasion Systems in Sales AI
+### Technical Report: Emotion Recognition and Persuasion Systems in Sales AI
 
 ##### 1\. Fundamentals of Multi-modal Conversational Emotion Recognition (MCER)
 

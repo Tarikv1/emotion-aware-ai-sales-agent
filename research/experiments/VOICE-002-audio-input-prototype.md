@@ -10,7 +10,7 @@ This experiment validates the audio-input boundary, not production automatic spe
 
 - Campaign: `campaign-prod-005-b2c-telecom`
 - Stage: `relevance-check`
-- Audio: `research/experiments/generated/VOICE-002-customer-placeholder.wav`
+- Audio: `research/experiments/generated/VOICE-002/VOICE-002-customer-placeholder.wav`
 - Audio type: synthetic placeholder WAV
 - Transcript provider: `manual-transcript`
 - Transcript: `Nur wenn Sie garantieren koennen, dass es stabil ist.`
@@ -48,9 +48,9 @@ The audio-input path now passes the campaign profile into the realtime core, so 
 ## Generated Artifacts
 
 ```text
-research/experiments/generated/VOICE-002-customer-placeholder.wav
-research/experiments/generated/VOICE-002-audio-input-packet.json
-research/experiments/generated/VOICE-002-listen.html
+research/experiments/generated/VOICE-002/VOICE-002-customer-placeholder.wav
+research/experiments/generated/VOICE-002/VOICE-002-audio-input-packet.json
+research/experiments/generated/VOICE-002/VOICE-002-listen.html
 ```
 
 ## Safety Result

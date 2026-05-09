@@ -83,7 +83,7 @@ RESP-002 runtime voice delivery validation passed.
 Run:
 
 ```powershell
-python scripts\generate_runtime_voice_delivery.py --campaign campaign-prod-005-b2c-telecom --stage relevance-check --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." --out research\experiments\generated\RESP-002-runtime-voice-delivery-result.json --report-out research\experiments\generated\RESP-002-runtime-voice-delivery-report.md
+python scripts\generate_runtime_voice_delivery.py --campaign campaign-prod-005-b2c-telecom --stage relevance-check --transcript "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt." --out research/experiments/generated/RESP-002/RESP-002-runtime-voice-delivery-result.json --report-out research/experiments/generated/RESP-002/RESP-002-runtime-voice-delivery-report.md
 ```
 
 - [x] **Step 2: Document the checkpoint**

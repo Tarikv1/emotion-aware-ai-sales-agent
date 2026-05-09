@@ -1,4 +1,4 @@
-﻿# VOICE-040 Low-Pressure Focus
+# VOICE-040 Low-Pressure Focus
 
 VOICE-040 converts one risky provider-facing phrase from the VOICE-039 runtime check into a calmer low-pressure wording.
 

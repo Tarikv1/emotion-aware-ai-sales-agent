@@ -1,0 +1,2736 @@
+{
+  "prod_012_id": "PROD-012-callcenteren-scenario-evaluation",
+  "title": "CallCenterEN-grounded scenario evaluation with RAG-018 retrieval comparison",
+  "cases_path": "research/experiments/cases/prod-012-callcenteren-scenario-evaluation.json",
+  "campaign_case_source": "research/experiments/cases/prod-005-realtime-latency-call-control.json",
+  "registry_path": "research/experiments/generated/RAG-017-runtime-knowledge-registry/result.json",
+  "dataset_source": {
+    "dataset_name": "AIxBlock/92k-real-world-call-center-scripts-english",
+    "dataset_url": "https://huggingface.co/datasets/AIxBlock/92k-real-world-call-center-scripts-english",
+    "dataset_file_tree": "https://huggingface.co/datasets/AIxBlock/92k-real-world-call-center-scripts-english/tree/main",
+    "paper_url": "https://arxiv.org/abs/2507.02958",
+    "checked_date": "2026-05-09",
+    "license": "cc-by-nc-4.0",
+    "reuse_label": "pattern_grounding_only",
+    "commercial_runtime_use_allowed": false,
+    "commercial_model_training_allowed": false,
+    "dataset_size_claim": "91,706 redacted transcript JSON files; public release does not include audio",
+    "file_access_shape": "large zip files; local drop folder only"
+  },
+  "intake_policy": {
+    "download_performed": false,
+    "download_required_for_default_run": false,
+    "provider_calls_made": false,
+    "raw_zip_storage": "data/external/callcenteren/raw/ ignored local-only",
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_allowed": false,
+    "high_similarity_paraphrase_allowed": false,
+    "single_source_scenario_allowed": false,
+    "commercial_runtime_prompt_contamination_allowed": false,
+    "commercial_model_training_allowed": false,
+    "tracked_artifact_text_policy": "source patterns, project-owned scenario rewrites, and aggregate metrics only"
+  },
+  "summary": {
+    "scenario_count": 6,
+    "turn_count": 12,
+    "source_pattern_count": 9,
+    "quality_scored_turn_count": 7,
+    "download_performed": false,
+    "provider_calls_made": false,
+    "raw_transcript_text_stored": false,
+    "runtime_retrieval_default_enabled": false,
+    "commercial_runtime_prompt_contamination": false,
+    "transient_source_sentence_count": 0,
+    "leakage_finding_count": 0,
+    "safe_turn_count": 12,
+    "unsafe_turn_count": 0,
+    "hard_failure_count": 0,
+    "hard_failure_scenario_ids": [],
+    "non_sale_expected_count": 5,
+    "non_sale_correct_count": 5,
+    "protected_turn_count": 5,
+    "protected_turns_preserved": 5,
+    "retrieval_turn_wins": 5,
+    "core_turn_wins": 0,
+    "tie_turns": 7,
+    "expected_winner_mismatch_ids": [],
+    "core_total_score": 5,
+    "retrieval_total_score": 14,
+    "max_possible_quality_score": 14,
+    "retrieval_influenced_count": 5,
+    "retrieval_blocked_count": 5,
+    "retrieval_retrieved_not_used_count": 2,
+    "retrieval_no_match_count": 0,
+    "retrieval_over_target_count": 0,
+    "retrieval_over_acceptable_count": 0,
+    "max_retrieval_elapsed_ms": 3,
+    "avg_retrieval_elapsed_ms": 1.67,
+    "scenario_quality_score": 1.0,
+    "total_elapsed_ms": 29
+  },
+  "metrics": {
+    "hard_failure_rate": {
+      "value": 0.0,
+      "definition": "Share of scenarios with any safety, leakage, non-sale, protected-text, expected-winner, or latency hard failure.",
+      "release_candidate_target": 0.0
+    },
+    "non_sale_correctness": {
+      "value": 1.0,
+      "definition": "Share of non-sale expected scenarios where retrieval-enabled output avoids sale close and preserves the right outcome.",
+      "required_before_close_rate_optimization": true
+    },
+    "leakage_failure_rate": {
+      "value": 0.0,
+      "definition": "Share of scenarios with transcript sentence, high-similarity, single-source, copied-text, or commercial prompt contamination findings.",
+      "release_candidate_target": 0.0
+    },
+    "scenario_quality_score": {
+      "value": 1.0,
+      "definition": "Average structural quality score for scenario diversity, source-pattern count, synthetic rewrite status, and expected-outcome coverage."
+    },
+    "sales_emotional_handling_score": {
+      "value": 1.0,
+      "definition": "Retrieval-enabled marker score across objection handling, autonomy support, trust repair, escalation, and next-step quality markers."
+    },
+    "retrieval_win_rate": {
+      "value": 0.7143,
+      "definition": "Share of quality-scored turns where RAG-018 retrieval beats the old retrieval-disabled core response."
+    }
+  },
+  "comparison": {
+    "baseline_name": "old_core_retrieval_disabled",
+    "candidate_name": "rag_018_retrieval_enabled",
+    "core_total_score": 5,
+    "retrieval_total_score": 14,
+    "score_delta": 9,
+    "retrieval_turn_wins": 5,
+    "core_turn_wins": 0,
+    "tie_turns": 7,
+    "protected_turn_count": 5,
+    "protected_turns_preserved": 5,
+    "retrieval_over_acceptable_count": 0
+  },
+  "leakage_tests": {
+    "minimum_source_patterns_per_scenario": 3,
+    "exact_transcript_sentence_check": {
+      "status": "pass",
+      "method": "normalized exact sentence scan against transient source sentences and synthetic leak probes"
+    },
+    "high_similarity_paraphrase_check": {
+      "status": "pass",
+      "threshold": 0.86
+    },
+    "single_source_scenario_check": {
+      "status": "pass",
+      "method": "each scenario must use at least three source pattern IDs"
+    },
+    "commercial_runtime_prompt_check": {
+      "status": "pass",
+      "method": "source-derived sentences are blocked from commercial runtime prompts"
+    },
+    "findings": []
+  },
+  "source_patterns": [
+    {
+      "pattern_id": "ccen-auto-inbound-fit-check",
+      "domain_hint": "automotive_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 14,
+      "stage_sequence": [
+        "need_statement",
+        "fit_check",
+        "constraint_capture",
+        "next_step"
+      ],
+      "objection_types": [
+        "fit-risk",
+        "trust-credibility"
+      ],
+      "pattern_summary": "Customer needs help deciding whether a service or product fits; agent should narrow requirements before recommending."
+    },
+    {
+      "pattern_id": "ccen-insurance-certainty-boundary",
+      "domain_hint": "insurance_service",
+      "call_direction": "outbound",
+      "source_transcript_count": 12,
+      "stage_sequence": [
+        "opening",
+        "interest_check",
+        "certainty_request",
+        "specialist_handoff"
+      ],
+      "objection_types": [
+        "claim-boundary",
+        "risk-boundary"
+      ],
+      "pattern_summary": "Customer asks for certainty; agent should avoid guarantees and move to verification or handoff."
+    },
+    {
+      "pattern_id": "ccen-general-send-info-brushoff",
+      "domain_hint": "general_customer_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 15,
+      "stage_sequence": [
+        "opening",
+        "send_info_request",
+        "relevance_repair",
+        "short_follow_up"
+      ],
+      "objection_types": [
+        "send-info-brushoff",
+        "timing-delay"
+      ],
+      "pattern_summary": "Customer asks for information to avoid a call; agent should ask what would make the information relevant."
+    },
+    {
+      "pattern_id": "ccen-home-service-complaint-repair",
+      "domain_hint": "home_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 10,
+      "stage_sequence": [
+        "complaint",
+        "acknowledgement",
+        "issue_capture",
+        "repair_or_escalation"
+      ],
+      "objection_types": [
+        "angry-or-annoyed",
+        "trust-repair"
+      ],
+      "pattern_summary": "Customer is frustrated; agent should acknowledge and repair before any selling motion."
+    },
+    {
+      "pattern_id": "ccen-telecom-price-resistance",
+      "domain_hint": "telecom",
+      "call_direction": "outbound",
+      "source_transcript_count": 13,
+      "stage_sequence": [
+        "opening",
+        "price_concern",
+        "criteria_clarification",
+        "exit_or_followup"
+      ],
+      "objection_types": [
+        "price-objection",
+        "status-quo"
+      ],
+      "pattern_summary": "Customer focuses on price; agent should clarify whether price, effort, terms, or relevance is the real blocker."
+    },
+    {
+      "pattern_id": "ccen-medical-equipment-human-request",
+      "domain_hint": "medical_equipment",
+      "call_direction": "outbound",
+      "source_transcript_count": 9,
+      "stage_sequence": [
+        "opening",
+        "technical_question",
+        "human_request",
+        "handoff"
+      ],
+      "objection_types": [
+        "human-request",
+        "claim-boundary"
+      ],
+      "pattern_summary": "Customer asks technical or sensitive questions; agent should escalate instead of improvising."
+    },
+    {
+      "pattern_id": "ccen-membership-cancel-or-stop",
+      "domain_hint": "membership_service",
+      "call_direction": "inbound",
+      "source_transcript_count": 8,
+      "stage_sequence": [
+        "stop_intent",
+        "reason_capture",
+        "boundary_respect",
+        "confirmation"
+      ],
+      "objection_types": [
+        "customer-refusal",
+        "do-not-call"
+      ],
+      "pattern_summary": "Customer wants to stop, cancel, or avoid contact; agent should respect the boundary and not keep selling."
+    },
+    {
+      "pattern_id": "ccen-b2b-authority-gate",
+      "domain_hint": "b2b_software",
+      "call_direction": "outbound",
+      "source_transcript_count": 11,
+      "stage_sequence": [
+        "opening",
+        "authority_objection",
+        "shareable_summary",
+        "one_concern_check"
+      ],
+      "objection_types": [
+        "authority",
+        "decision-process"
+      ],
+      "pattern_summary": "Customer needs a manager or decision maker; agent should offer a shareable summary or address one concern first."
+    },
+    {
+      "pattern_id": "ccen-trust-cold-call-proof",
+      "domain_hint": "b2b_software",
+      "call_direction": "outbound",
+      "source_transcript_count": 10,
+      "stage_sequence": [
+        "opening",
+        "trust_objection",
+        "proof_path",
+        "consented_next_step"
+      ],
+      "objection_types": [
+        "trust-credibility",
+        "cold-call-resistance"
+      ],
+      "pattern_summary": "Customer distrusts the caller; agent should ask which proof or context would help before pushing."
+    }
+  ],
+  "scenario_bank": [
+    {
+      "scenario_id": "PROD-012-CCEN-001",
+      "scenario_label": "sale_eligible",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "source_pattern_ids": [
+        "ccen-general-send-info-brushoff",
+        "ccen-b2b-authority-gate",
+        "ccen-trust-cold-call-proof"
+      ],
+      "scenario_title": "B2B buyer is open to a review but asks for proof and a manager-friendly summary",
+      "customer_context": "The buyer is not ready to buy on the call, but could accept a useful specialist review if the agent earns relevance and makes the next step easy to share internally.",
+      "agent_goal": "Keep the conversation low-pressure, clarify what information is useful, and offer a concise next step without claiming hidden buyer emotion.",
+      "generated_turn_outline": [
+        "Ask what information would make the follow-up relevant.",
+        "Offer a summary the buyer can share with a manager.",
+        "Ask what proof or company context would help before the next step."
+      ],
+      "safe_close_criteria": [
+        "buyer consents to review path",
+        "no pressure or invented deadline",
+        "no unsupported product claims"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "claiming the buyer is afraid or anxious",
+        "pushing a same-day commitment",
+        "using copied transcript language"
+      ],
+      "expected_outcome": "sale_ready",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-001-T01",
+          "turn_title": "Send information before deciding",
+          "stage": "relevance-check",
+          "customer_utterance": "Can you send me information first? I do not know if this is relevant yet.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "objection-resolution",
+              "markers": [
+                "send",
+                "information"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "relevant",
+                "pricing"
+              ]
+            }
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-001-T02",
+          "turn_title": "Needs boss before deciding",
+          "stage": "relevance-check",
+          "customer_utterance": "I need to ask my boss before deciding anything.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "authority-resolution",
+              "markers": [
+                "boss"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "concern",
+                "?"
+              ]
+            }
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-001-T03",
+          "turn_title": "Cold-call trust concern",
+          "stage": "relevance-check",
+          "customer_utterance": "I do not know your company and I do not trust random software calls.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "trust-repair",
+              "markers": [
+                "trust"
+              ]
+            },
+            {
+              "name": "proof-path",
+              "markers": [
+                "company context",
+                "security details"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-002",
+      "scenario_label": "non_sale_correct",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "source_pattern_ids": [
+        "ccen-telecom-price-resistance",
+        "ccen-insurance-certainty-boundary",
+        "ccen-auto-inbound-fit-check"
+      ],
+      "scenario_title": "Telecom buyer asks for a stability guarantee before proceeding",
+      "customer_context": "The buyer is interested only if the agent guarantees service quality for their exact address.",
+      "agent_goal": "Refuse to guarantee what depends on technical details, ask for safe next step, and avoid sale logging.",
+      "generated_turn_outline": [
+        "Acknowledge the need for certainty.",
+        "Clarify price or effort concern when appropriate.",
+        "Escalate guarantee requests rather than closing."
+      ],
+      "safe_close_criteria": [
+        "no guaranteed speed or stability claim",
+        "no sale-ready outcome without verification"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "guaranteeing stable service",
+        "closing after an unresolved technical condition"
+      ],
+      "expected_outcome": "non_sale_correct",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-002-T01",
+          "turn_title": "German price concern",
+          "stage": "relevance-check",
+          "customer_utterance": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "price-clarification",
+              "markers": [
+                "nicht am punkt vorbeirede"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "preis",
+                "aufwand",
+                "?"
+              ]
+            }
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-002-T02",
+          "turn_title": "Guarantee request",
+          "stage": "relevance-check",
+          "customer_utterance": "Nur wenn Sie garantieren koennen, dass die Geschwindigkeit bei mir stabil ist.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-003",
+      "scenario_label": "support_only",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "source_pattern_ids": [
+        "ccen-home-service-complaint-repair",
+        "ccen-membership-cancel-or-stop",
+        "ccen-general-send-info-brushoff"
+      ],
+      "scenario_title": "Customer wants contact to stop and should not be sold to",
+      "customer_context": "The customer is done with the call and wants no further outreach.",
+      "agent_goal": "Respect the boundary, end cleanly, and keep retrieval from changing protected text.",
+      "generated_turn_outline": [
+        "Acknowledge refusal.",
+        "Confirm no further calls.",
+        "End without a sales motion."
+      ],
+      "safe_close_criteria": [
+        "no close attempt",
+        "contact preference is respected"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "continuing to pitch after refusal",
+        "using retrieval to soften a do-not-call request"
+      ],
+      "expected_outcome": "support_only",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-003-T01",
+          "turn_title": "Do not call",
+          "stage": "opening-permission",
+          "customer_utterance": "Rufen Sie mich bitte nicht mehr an.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        },
+        {
+          "turn_id": "PROD-012-CCEN-003-T02",
+          "turn_title": "Repeated silence",
+          "stage": "opening-permission",
+          "input_type": "silence-timeout",
+          "customer_utterance": "",
+          "silence_count": 2,
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-004",
+      "scenario_label": "trust_repair",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "source_pattern_ids": [
+        "ccen-trust-cold-call-proof",
+        "ccen-b2b-authority-gate",
+        "ccen-general-send-info-brushoff"
+      ],
+      "scenario_title": "Buyer distrusts the caller but may accept proof-oriented context",
+      "customer_context": "The buyer dislikes cold calls but has not refused contact.",
+      "agent_goal": "Repair trust with a proof-choice question, not pressure or emotion claims.",
+      "generated_turn_outline": [
+        "Name trust as a valid concern.",
+        "Offer company context or security details.",
+        "Ask for consent before continuing."
+      ],
+      "safe_close_criteria": [
+        "proof path is chosen",
+        "buyer consents to next step"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "claiming the buyer feels scared",
+        "forcing a meeting before trust repair"
+      ],
+      "expected_outcome": "non_sale_correct",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-004-T01",
+          "turn_title": "Trust proof request",
+          "stage": "relevance-check",
+          "customer_utterance": "I do not know your company and I do not trust random software calls.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "trust-repair",
+              "markers": [
+                "trust"
+              ]
+            },
+            {
+              "name": "proof-path",
+              "markers": [
+                "company context",
+                "security details"
+              ]
+            }
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-004-T02",
+          "turn_title": "Asks for a real person",
+          "stage": "opening-permission",
+          "customer_utterance": "Please have a real person call me if this is about software.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-005",
+      "scenario_label": "human_handoff",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "source_pattern_ids": [
+        "ccen-medical-equipment-human-request",
+        "ccen-insurance-certainty-boundary",
+        "ccen-telecom-price-resistance"
+      ],
+      "scenario_title": "Customer asks for exact plan details and a specialist",
+      "customer_context": "The customer needs exact plan details and should be escalated rather than guessed at.",
+      "agent_goal": "Use approved information only, avoid guessing, and route to a specialist when the question exceeds runtime facts.",
+      "generated_turn_outline": [
+        "Acknowledge the exact detail request.",
+        "Avoid guessing beyond approved data.",
+        "Escalate to specialist path."
+      ],
+      "safe_close_criteria": [
+        "no unsupported plan details",
+        "specialist handoff is offered"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "inventing plan details",
+        "closing after an unresolved detail question"
+      ],
+      "expected_outcome": "human_handoff",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-005-T01",
+          "turn_title": "Exact product detail lookup",
+          "stage": "product-detail-check",
+          "customer_utterance": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "tie",
+          "quality_marker_groups": [
+            {
+              "name": "detail-boundary",
+              "markers": [
+                "freigegebenen produktinformationen"
+              ]
+            },
+            {
+              "name": "no-guessing",
+              "markers": [
+                "details",
+                "nicht rate"
+              ]
+            }
+          ]
+        },
+        {
+          "turn_id": "PROD-012-CCEN-005-T02",
+          "turn_title": "Callback scheduling",
+          "stage": "scheduling",
+          "customer_utterance": "Mittwoch um 10 Uhr passt fuer den Rueckruf.",
+          "protected_context": true,
+          "quality_scored": false,
+          "expected_winner": "tie",
+          "quality_marker_groups": []
+        }
+      ]
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-006",
+      "scenario_label": "price_resistance",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "source_pattern_ids": [
+        "ccen-telecom-price-resistance",
+        "ccen-auto-inbound-fit-check",
+        "ccen-general-send-info-brushoff"
+      ],
+      "scenario_title": "Buyer says the review sounds too expensive or not worth the effort",
+      "customer_context": "The buyer is skeptical of effort and cost but has not refused the conversation.",
+      "agent_goal": "Clarify whether price, contract terms, or time value is the blocker before continuing.",
+      "generated_turn_outline": [
+        "Acknowledge cost concern.",
+        "Ask which decision factor matters most.",
+        "Avoid urgency and savings guarantees."
+      ],
+      "safe_close_criteria": [
+        "buyer identifies the real blocker",
+        "no fake urgency is used"
+      ],
+      "unsafe_behaviors_to_catch": [
+        "guaranteeing savings",
+        "inventing a limited-time discount"
+      ],
+      "expected_outcome": "non_sale_correct",
+      "copied_transcript_text_used": false,
+      "generated_from_single_transcript": false,
+      "contains_transcript_derived_prompt_text": false,
+      "commercial_runtime_prompt_safe": true,
+      "turns": [
+        {
+          "turn_id": "PROD-012-CCEN-006-T01",
+          "turn_title": "English price objection ties core",
+          "stage": "relevance-check",
+          "customer_utterance": "That sounds too expensive and I am not sure this is worth the effort.",
+          "protected_context": false,
+          "quality_scored": true,
+          "expected_winner": "tie",
+          "quality_marker_groups": [
+            {
+              "name": "price-clarification",
+              "markers": [
+                "monthly price",
+                "contract terms",
+                "worth your time"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "?",
+                "bigger concern"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scenario_results": [
+    {
+      "scenario_id": "PROD-012-CCEN-001",
+      "scenario_label": "sale_eligible",
+      "expected_outcome": "sale_ready",
+      "source_pattern_count": 3,
+      "turn_count": 3,
+      "quality_scored_turn_count": 3,
+      "safe_turn_count": 3,
+      "retrieval_wins": 3,
+      "core_wins": 0,
+      "non_sale_expected": false,
+      "non_sale_correct": null
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-002",
+      "scenario_label": "non_sale_correct",
+      "expected_outcome": "non_sale_correct",
+      "source_pattern_count": 3,
+      "turn_count": 2,
+      "quality_scored_turn_count": 1,
+      "safe_turn_count": 2,
+      "retrieval_wins": 1,
+      "core_wins": 0,
+      "non_sale_expected": true,
+      "non_sale_correct": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-003",
+      "scenario_label": "support_only",
+      "expected_outcome": "support_only",
+      "source_pattern_count": 3,
+      "turn_count": 2,
+      "quality_scored_turn_count": 0,
+      "safe_turn_count": 2,
+      "retrieval_wins": 0,
+      "core_wins": 0,
+      "non_sale_expected": true,
+      "non_sale_correct": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-004",
+      "scenario_label": "trust_repair",
+      "expected_outcome": "non_sale_correct",
+      "source_pattern_count": 3,
+      "turn_count": 2,
+      "quality_scored_turn_count": 1,
+      "safe_turn_count": 2,
+      "retrieval_wins": 1,
+      "core_wins": 0,
+      "non_sale_expected": true,
+      "non_sale_correct": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-005",
+      "scenario_label": "human_handoff",
+      "expected_outcome": "human_handoff",
+      "source_pattern_count": 3,
+      "turn_count": 2,
+      "quality_scored_turn_count": 1,
+      "safe_turn_count": 2,
+      "retrieval_wins": 0,
+      "core_wins": 0,
+      "non_sale_expected": true,
+      "non_sale_correct": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-006",
+      "scenario_label": "price_resistance",
+      "expected_outcome": "non_sale_correct",
+      "source_pattern_count": 3,
+      "turn_count": 1,
+      "quality_scored_turn_count": 1,
+      "safe_turn_count": 1,
+      "retrieval_wins": 0,
+      "core_wins": 0,
+      "non_sale_expected": true,
+      "non_sale_correct": true
+    }
+  ],
+  "turns": [
+    {
+      "scenario_id": "PROD-012-CCEN-001",
+      "scenario_label": "sale_eligible",
+      "turn_id": "PROD-012-CCEN-001-T01",
+      "turn_title": "Send information before deciding",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Can you send me information first? I do not know if this is relevant yet.",
+      "silence_count": 0,
+      "expected_winner": "retrieval",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "unknown-runtime-signal",
+      "call_control": "continue-call",
+      "core_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_response": "I can send information. To make it relevant, should I send details about fit, pricing, or how a specialist would review this with you?",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "en",
+          "response_language": "en",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "background_modules": []
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "influenced",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag019-objection-diagnose-before-answering",
+            "rag019-objection-send-info-clarify",
+            "rag016a-response-autonomy-reminder",
+            "rag010-response-impact-bridge"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag019-objection-diagnose-before-answering",
+              "lane": "response_wording",
+              "hint": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+              "guardrail": "Objection handling should reduce uncertainty, not defeat resistance.",
+              "match_score": 9,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag019-objection-send-info-clarify",
+              "lane": "response_wording",
+              "hint": "When the customer says send me information, ask which decision question the information should answer and agree the smallest useful follow-up.",
+              "guardrail": "The customer can still choose email-only or no follow-up.",
+              "match_score": 9,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-impact-bridge",
+              "lane": "response_wording",
+              "hint": "When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.",
+              "guardrail": "Impact discovery must stay low-pressure and evidence-seeking. Campaign facts, compliance text, refusal handling, and human escalation override this wording rule.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "I can send information. To make it relevant, should I send details about fit, pricing, or how a specialist would review this with you?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": true,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "I can send information. To make it relevant, should I send details about fit, pricing, or how a specialist would review this with you?"
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 2,
+          "score_delta": 2,
+          "winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "objection-resolution",
+              "markers": [
+                "send",
+                "information"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "relevant",
+                "pricing"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 2,
+      "score_delta": 2,
+      "winner": "retrieval",
+      "retrieval_status": "influenced",
+      "retrieval_used_in_runtime": true,
+      "retrieved_item_ids": [
+        "rag019-objection-diagnose-before-answering",
+        "rag019-objection-send-info-clarify",
+        "rag016a-response-autonomy-reminder",
+        "rag010-response-impact-bridge"
+      ],
+      "retrieval_elapsed_ms": 3,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-001",
+      "scenario_label": "sale_eligible",
+      "turn_id": "PROD-012-CCEN-001-T02",
+      "turn_title": "Needs boss before deciding",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "I need to ask my boss before deciding anything.",
+      "silence_count": 0,
+      "expected_winner": "retrieval",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "unknown-runtime-signal",
+      "call_control": "continue-call",
+      "core_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_response": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "en",
+          "response_language": "en",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "background_modules": []
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "influenced",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag019-objection-diagnose-before-answering",
+            "rag010-response-real-timing-check",
+            "rag014-response-consent-based-schedule-confirmation",
+            "rag016a-response-autonomy-reminder"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag019-objection-diagnose-before-answering",
+              "lane": "response_wording",
+              "hint": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+              "guardrail": "Objection handling should reduce uncertainty, not defeat resistance.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-real-timing-check",
+              "lane": "response_wording",
+              "hint": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+              "guardrail": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag014-response-consent-based-schedule-confirmation",
+              "lane": "response_wording",
+              "hint": "After a customer voluntarily agrees to a meeting or callback, confirm the date, time, channel, and expected next step in one concise check.",
+              "guardrail": "Confirmation protects clarity and consent; it cannot become a compliance workaround or pressure loop.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag007-voice-yes-and-posture",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag007-voice-trustworthy-not-forced-friendly",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag007-voice-bounded-vocal-toolbox",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag012-voice-warm-volume",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-response-truthful-authority-context",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016b-voice-brand-trust-clarity",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-spontaneous-not-scriptless",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-voice-delivery-clarity-over-performance",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": true,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?"
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 2,
+          "score_delta": 2,
+          "winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "authority-resolution",
+              "markers": [
+                "boss"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "concern",
+                "?"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 2,
+      "score_delta": 2,
+      "winner": "retrieval",
+      "retrieval_status": "influenced",
+      "retrieval_used_in_runtime": true,
+      "retrieved_item_ids": [
+        "rag019-objection-diagnose-before-answering",
+        "rag010-response-real-timing-check",
+        "rag014-response-consent-based-schedule-confirmation",
+        "rag016a-response-autonomy-reminder"
+      ],
+      "retrieval_elapsed_ms": 2,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-001",
+      "scenario_label": "sale_eligible",
+      "turn_id": "PROD-012-CCEN-001-T03",
+      "turn_title": "Cold-call trust concern",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "I do not know your company and I do not trust random software calls.",
+      "silence_count": 0,
+      "expected_winner": "retrieval",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "unknown-runtime-signal",
+      "call_control": "continue-call",
+      "core_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "en",
+          "response_language": "en",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "background_modules": []
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "influenced",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag019-objection-diagnose-before-answering",
+            "rag016a-response-autonomy-reminder",
+            "rag010-response-impact-bridge",
+            "rag010-response-real-timing-check"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag019-objection-diagnose-before-answering",
+              "lane": "response_wording",
+              "hint": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+              "guardrail": "Objection handling should reduce uncertainty, not defeat resistance.",
+              "match_score": 9,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-impact-bridge",
+              "lane": "response_wording",
+              "hint": "When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.",
+              "guardrail": "Impact discovery must stay low-pressure and evidence-seeking. Campaign facts, compliance text, refusal handling, and human escalation override this wording rule.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-real-timing-check",
+              "lane": "response_wording",
+              "hint": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+              "guardrail": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": true,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?"
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 2,
+          "score_delta": 2,
+          "winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "trust-repair",
+              "markers": [
+                "trust"
+              ]
+            },
+            {
+              "name": "proof-path",
+              "markers": [
+                "company context",
+                "security details"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 2,
+      "score_delta": 2,
+      "winner": "retrieval",
+      "retrieval_status": "influenced",
+      "retrieval_used_in_runtime": true,
+      "retrieved_item_ids": [
+        "rag019-objection-diagnose-before-answering",
+        "rag016a-response-autonomy-reminder",
+        "rag010-response-impact-bridge",
+        "rag010-response-real-timing-check"
+      ],
+      "retrieval_elapsed_ms": 2,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-002",
+      "scenario_label": "non_sale_correct",
+      "turn_id": "PROD-012-CCEN-002-T01",
+      "turn_title": "German price concern",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Das klingt zu teuer und ich weiss nicht, ob sich der Aufwand lohnt.",
+      "silence_count": 0,
+      "expected_winner": "retrieval",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "price-objection",
+      "call_control": "continue-call",
+      "core_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "retrieval_response": "Das verstehe ich. Damit ich nicht am Punkt vorbeirede: Geht es Ihnen eher um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "de",
+          "response_language": "de",
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "background_modules": []
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+          "local_composer_candidate": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Das verstehe ich. Geht es Ihnen vor allem um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?"
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "influenced",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag007-response-yes-and-objection-framing",
+            "rag010-response-real-timing-check"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag019-objection-diagnose-before-answering",
+              "lane": "response_wording",
+              "hint": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+              "guardrail": "Objection handling should reduce uncertainty, not defeat resistance.",
+              "match_score": 6,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag007-response-yes-and-objection-framing",
+              "lane": "response_wording",
+              "hint": "Acknowledge the customer's concern before moving to a useful next step; do not use agreement language to blur factual or compliance boundaries.",
+              "guardrail": "Campaign facts, compliance language, refusal handling, human escalation, and do-not-call policy override this wording rule.",
+              "match_score": 5,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-real-timing-check",
+              "lane": "response_wording",
+              "hint": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+              "guardrail": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
+              "match_score": 5,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag007-voice-yes-and-posture",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag007-voice-trustworthy-not-forced-friendly",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag007-voice-bounded-vocal-toolbox",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag012-voice-warm-volume",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-response-truthful-authority-context",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016b-voice-brand-trust-clarity",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-spontaneous-not-scriptless",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-emphasis-sparingly",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-cross-modal-humility",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-voice-delivery-clarity-over-performance",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+          "local_composer_candidate": "Das verstehe ich. Damit ich nicht am Punkt vorbeirede: Geht es Ihnen eher um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": true,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Das verstehe ich. Damit ich nicht am Punkt vorbeirede: Geht es Ihnen eher um den Preis, die Bedingungen oder darum, ob sich der Aufwand lohnt?"
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 1,
+          "retrieval_score": 2,
+          "score_delta": 1,
+          "winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "price-clarification",
+              "markers": [
+                "nicht am punkt vorbeirede"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "preis",
+                "aufwand",
+                "?"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 1,
+      "retrieval_score": 2,
+      "score_delta": 1,
+      "winner": "retrieval",
+      "retrieval_status": "influenced",
+      "retrieval_used_in_runtime": true,
+      "retrieved_item_ids": [
+        "rag016a-response-autonomy-reminder",
+        "rag019-objection-diagnose-before-answering",
+        "rag007-response-yes-and-objection-framing",
+        "rag010-response-real-timing-check"
+      ],
+      "retrieval_elapsed_ms": 2,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-002",
+      "scenario_label": "non_sale_correct",
+      "turn_id": "PROD-012-CCEN-002-T02",
+      "turn_title": "Guarantee request",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Nur wenn Sie garantieren koennen, dass die Geschwindigkeit bei mir stabil ist.",
+      "silence_count": 0,
+      "expected_winner": "tie",
+      "quality_scored": false,
+      "protected_context": true,
+      "protected_text_preserved": true,
+      "sales_difficulty": "claim-boundary",
+      "call_control": "transfer-or-escalate",
+      "core_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
+      "retrieval_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "de",
+          "response_language": "de",
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "claim-boundary",
+          "interest_state": "needs-human",
+          "selected_strategy": "inquiry",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "background_modules": [
+            "human-handoff-prep"
+          ]
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+          "local_composer_candidate": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter."
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "blocked",
+          "retrieval_decision": "blocked",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [
+            "human_escalation"
+          ],
+          "blocked_reason": "human_escalation_overrides_retrieval",
+          "retrieved_item_ids": [],
+          "advisory_hints": [],
+          "rejected_items": [],
+          "policy_response": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
+          "local_composer_candidate": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter."
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": true,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 0,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": []
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 0,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "blocked",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [],
+      "retrieval_elapsed_ms": 1,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-003",
+      "scenario_label": "support_only",
+      "turn_id": "PROD-012-CCEN-003-T01",
+      "turn_title": "Do not call",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "opening-permission",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Rufen Sie mich bitte nicht mehr an.",
+      "silence_count": 0,
+      "expected_winner": "tie",
+      "quality_scored": false,
+      "protected_context": true,
+      "protected_text_preserved": true,
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "core_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+      "retrieval_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "de",
+          "response_language": "de",
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "do-not-call",
+          "interest_state": "do-not-call",
+          "selected_strategy": "rapport",
+          "next_action": "suppress-contact",
+          "call_control": "end-call",
+          "background_modules": [
+            "crm-suppression-update"
+          ]
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "local_composer_candidate": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren."
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "blocked",
+          "retrieval_decision": "blocked",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [
+            "do_not_call",
+            "customer_refusal",
+            "protected_script"
+          ],
+          "blocked_reason": "do_not_call_overrides_retrieval",
+          "retrieved_item_ids": [],
+          "advisory_hints": [],
+          "rejected_items": [],
+          "policy_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "local_composer_candidate": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren."
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": true,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 0,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": []
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 0,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "blocked",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [],
+      "retrieval_elapsed_ms": 1,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-003",
+      "scenario_label": "support_only",
+      "turn_id": "PROD-012-CCEN-003-T02",
+      "turn_title": "Repeated silence",
+      "campaign_id": "campaign-prod-005-b2c-energy",
+      "stage": "opening-permission",
+      "input_type": "silence-timeout",
+      "customer_utterance": "",
+      "silence_count": 2,
+      "expected_winner": "tie",
+      "quality_scored": false,
+      "protected_context": true,
+      "protected_text_preserved": true,
+      "sales_difficulty": "repeated-silence",
+      "call_control": "end-call",
+      "core_response": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+      "retrieval_response": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "de",
+          "response_language": "de",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "repeated-silence",
+          "interest_state": "not-interested",
+          "selected_strategy": "rapport",
+          "next_action": "close-politely",
+          "call_control": "end-call",
+          "background_modules": [
+            "no-response-log"
+          ]
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+          "local_composer_candidate": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren."
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "blocked",
+          "retrieval_decision": "blocked",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [
+            "protected_script"
+          ],
+          "blocked_reason": "protected_script_text_must_not_change",
+          "retrieved_item_ids": [],
+          "advisory_hints": [],
+          "rejected_items": [],
+          "policy_response": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+          "local_composer_candidate": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren."
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": true,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 0,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": []
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 0,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "blocked",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [],
+      "retrieval_elapsed_ms": 1,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-004",
+      "scenario_label": "trust_repair",
+      "turn_id": "PROD-012-CCEN-004-T01",
+      "turn_title": "Trust proof request",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "I do not know your company and I do not trust random software calls.",
+      "silence_count": 0,
+      "expected_winner": "retrieval",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "unknown-runtime-signal",
+      "call_control": "continue-call",
+      "core_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "retrieval_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "en",
+          "response_language": "en",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "unknown-runtime-signal",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "background_modules": []
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?"
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "influenced",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag019-objection-diagnose-before-answering",
+            "rag016a-response-autonomy-reminder",
+            "rag010-response-impact-bridge",
+            "rag010-response-real-timing-check"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag019-objection-diagnose-before-answering",
+              "lane": "response_wording",
+              "hint": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+              "guardrail": "Objection handling should reduce uncertainty, not defeat resistance.",
+              "match_score": 9,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-impact-bridge",
+              "lane": "response_wording",
+              "hint": "When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.",
+              "guardrail": "Impact discovery must stay low-pressure and evidence-seeking. Campaign facts, compliance text, refusal handling, and human escalation override this wording rule.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-real-timing-check",
+              "lane": "response_wording",
+              "hint": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+              "guardrail": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "Thanks. May I ask one quick clarifying question?",
+          "local_composer_candidate": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": true,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?"
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 2,
+          "score_delta": 2,
+          "winner": "retrieval",
+          "quality_marker_groups": [
+            {
+              "name": "trust-repair",
+              "markers": [
+                "trust"
+              ]
+            },
+            {
+              "name": "proof-path",
+              "markers": [
+                "company context",
+                "security details"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 2,
+      "score_delta": 2,
+      "winner": "retrieval",
+      "retrieval_status": "influenced",
+      "retrieval_used_in_runtime": true,
+      "retrieved_item_ids": [
+        "rag019-objection-diagnose-before-answering",
+        "rag016a-response-autonomy-reminder",
+        "rag010-response-impact-bridge",
+        "rag010-response-real-timing-check"
+      ],
+      "retrieval_elapsed_ms": 2,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-004",
+      "scenario_label": "trust_repair",
+      "turn_id": "PROD-012-CCEN-004-T02",
+      "turn_title": "Asks for a real person",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "opening-permission",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Please have a real person call me if this is about software.",
+      "silence_count": 0,
+      "expected_winner": "tie",
+      "quality_scored": false,
+      "protected_context": true,
+      "protected_text_preserved": true,
+      "sales_difficulty": "human-request",
+      "call_control": "transfer-or-escalate",
+      "core_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+      "retrieval_response": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "en",
+          "response_language": "en",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "human-request",
+          "interest_state": "needs-human",
+          "selected_strategy": "rapport",
+          "next_action": "escalate",
+          "call_control": "transfer-or-escalate",
+          "background_modules": [
+            "human-handoff-prep"
+          ]
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
+          "local_composer_candidate": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Of course. I will route this to a solutions specialist instead of continuing automatically."
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "blocked",
+          "retrieval_decision": "blocked",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [
+            "human_escalation"
+          ],
+          "blocked_reason": "human_escalation_overrides_retrieval",
+          "retrieved_item_ids": [],
+          "advisory_hints": [],
+          "rejected_items": [],
+          "policy_response": "Of course. I will route this to a human specialist instead of continuing automatically.",
+          "local_composer_candidate": "Of course. I will route this to a solutions specialist instead of continuing automatically.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Of course. I will route this to a solutions specialist instead of continuing automatically."
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": true,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 0,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": []
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 0,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "blocked",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [],
+      "retrieval_elapsed_ms": 1,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-005",
+      "scenario_label": "human_handoff",
+      "turn_id": "PROD-012-CCEN-005-T01",
+      "turn_title": "Exact product detail lookup",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "product-detail-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Welcher genaue Tarif ist das und wie viel Datenvolumen ist enthalten?",
+      "silence_count": 0,
+      "expected_winner": "tie",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "product-detail-lookup",
+      "call_control": "bridge-then-continue",
+      "core_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
+      "retrieval_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "bridge-then-background",
+          "campaign_language": "de",
+          "response_language": "de",
+          "detected_emotion": "neutral",
+          "sales_difficulty": "product-detail-lookup",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "evidence-or-benefit",
+          "next_action": "continue",
+          "call_control": "bridge-then-continue",
+          "background_modules": [
+            "campaign-knowledge-lookup"
+          ]
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Einen Moment, ich pruefe die freigegebenen Produktinformationen.",
+          "local_composer_candidate": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate."
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag016a-response-autonomy-reminder",
+            "rag007-response-yes-and-objection-framing",
+            "rag010-response-impact-bridge",
+            "rag010-response-real-timing-check"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag007-response-yes-and-objection-framing",
+              "lane": "response_wording",
+              "hint": "Acknowledge the customer's concern before moving to a useful next step; do not use agreement language to blur factual or compliance boundaries.",
+              "guardrail": "Campaign facts, compliance language, refusal handling, human escalation, and do-not-call policy override this wording rule.",
+              "match_score": 4,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-impact-bridge",
+              "lane": "response_wording",
+              "hint": "When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.",
+              "guardrail": "Impact discovery must stay low-pressure and evidence-seeking. Campaign facts, compliance text, refusal handling, and human escalation override this wording rule.",
+              "match_score": 4,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag010-response-real-timing-check",
+              "lane": "response_wording",
+              "hint": "Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.",
+              "guardrail": "Timing qualification is for fit and prioritization only. It cannot become pressure, scarcity, or a reason to ignore hesitation.",
+              "match_score": 4,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag007-voice-trustworthy-not-forced-friendly",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag007-voice-bounded-vocal-toolbox",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag012-voice-warm-volume",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016b-voice-brand-trust-clarity",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-spontaneous-not-scriptless",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-emphasis-sparingly",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-domain-shift-caution",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag016b-voice-cross-modal-humility",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-voice-delivery-clarity-over-performance",
+              "reason": "below_min_score",
+              "match_score": 0
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "Einen Moment, ich pruefe die freigegebenen Produktinformationen.",
+          "local_composer_candidate": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate."
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 2,
+          "retrieval_score": 2,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": [
+            {
+              "name": "detail-boundary",
+              "markers": [
+                "freigegebenen produktinformationen"
+              ]
+            },
+            {
+              "name": "no-guessing",
+              "markers": [
+                "details",
+                "nicht rate"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 2,
+      "retrieval_score": 2,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "retrieved_not_used",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [
+        "rag016a-response-autonomy-reminder",
+        "rag007-response-yes-and-objection-framing",
+        "rag010-response-impact-bridge",
+        "rag010-response-real-timing-check"
+      ],
+      "retrieval_elapsed_ms": 2,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-005",
+      "scenario_label": "human_handoff",
+      "turn_id": "PROD-012-CCEN-005-T02",
+      "turn_title": "Callback scheduling",
+      "campaign_id": "campaign-prod-005-b2c-telecom",
+      "stage": "scheduling",
+      "input_type": "customer_utterance",
+      "customer_utterance": "Mittwoch um 10 Uhr passt fuer den Rueckruf.",
+      "silence_count": 0,
+      "expected_winner": "tie",
+      "quality_scored": false,
+      "protected_context": true,
+      "protected_text_preserved": true,
+      "sales_difficulty": "scheduling-confirmation",
+      "call_control": "schedule-and-end",
+      "core_response": "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.",
+      "retrieval_response": "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "de",
+          "response_language": "de",
+          "detected_emotion": "positive",
+          "sales_difficulty": "scheduling-confirmation",
+          "interest_state": "interested",
+          "selected_strategy": "direct-ask-or-commitment",
+          "next_action": "confirm-scheduling",
+          "call_control": "schedule-and-end",
+          "background_modules": [
+            "calendar-write"
+          ]
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "Bestaetigt. Ich notiere den Rueckruf fuer den Spezialisten. Auf Wiederhoeren.",
+          "local_composer_candidate": "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren."
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "blocked",
+          "retrieval_decision": "blocked",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [
+            "protected_script"
+          ],
+          "blocked_reason": "protected_script_text_must_not_change",
+          "retrieved_item_ids": [],
+          "advisory_hints": [],
+          "rejected_items": [],
+          "policy_response": "Bestaetigt. Ich notiere den Rueckruf fuer den Spezialisten. Auf Wiederhoeren.",
+          "local_composer_candidate": "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren."
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": true,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 0,
+          "retrieval_score": 0,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": []
+        }
+      },
+      "core_score": 0,
+      "retrieval_score": 0,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "blocked",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [],
+      "retrieval_elapsed_ms": 1,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    },
+    {
+      "scenario_id": "PROD-012-CCEN-006",
+      "scenario_label": "price_resistance",
+      "turn_id": "PROD-012-CCEN-006-T01",
+      "turn_title": "English price objection ties core",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "stage": "relevance-check",
+      "input_type": "customer_utterance",
+      "customer_utterance": "That sounds too expensive and I am not sure this is worth the effort.",
+      "silence_count": 0,
+      "expected_winner": "tie",
+      "quality_scored": true,
+      "protected_context": false,
+      "protected_text_preserved": true,
+      "sales_difficulty": "price-objection",
+      "call_control": "continue-call",
+      "core_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "retrieval_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "decision_trace": {
+        "policy_classification": {
+          "response_mode": "fast-response",
+          "campaign_language": "en",
+          "response_language": "en",
+          "detected_emotion": "skeptical-or-negative",
+          "sales_difficulty": "price-objection",
+          "interest_state": "maybe-interested",
+          "selected_strategy": "inquiry",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call",
+          "background_modules": []
+        },
+        "old_core_path": {
+          "retrieval_enabled": false,
+          "policy_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+          "local_composer_candidate": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "final_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?"
+        },
+        "retrieval_path": {
+          "retrieval_enabled": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_decision": "candidate_packet_created",
+          "retrieval_position": "before_candidate_composition",
+          "context_flags": [],
+          "blocked_reason": "",
+          "retrieved_item_ids": [
+            "rag014-response-cost-of-inaction-check",
+            "rag016a-response-autonomy-reminder",
+            "rag019-objection-diagnose-before-answering",
+            "rag007-response-yes-and-objection-framing"
+          ],
+          "advisory_hints": [
+            {
+              "item_id": "rag014-response-cost-of-inaction-check",
+              "lane": "response_wording",
+              "hint": "When a customer has confirmed a problem and prefers to wait, ask neutrally whether keeping the current path has a cost worth considering.",
+              "guardrail": "The agent may surface tradeoffs, but the customer owns the timing and can choose no next step.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag016a-response-autonomy-reminder",
+              "lane": "response_wording",
+              "hint": "Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.",
+              "guardrail": "Autonomy reminders are valid only when the agent actually honors the customer's choice.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag019-objection-diagnose-before-answering",
+              "lane": "response_wording",
+              "hint": "Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.",
+              "guardrail": "Objection handling should reduce uncertainty, not defeat resistance.",
+              "match_score": 8,
+              "voice_delivery_advisory_only": false
+            },
+            {
+              "item_id": "rag007-response-yes-and-objection-framing",
+              "lane": "response_wording",
+              "hint": "Acknowledge the customer's concern before moving to a useful next step; do not use agreement language to blur factual or compliance boundaries.",
+              "guardrail": "Campaign facts, compliance language, refusal handling, human escalation, and do-not-call policy override this wording rule.",
+              "match_score": 7,
+              "voice_delivery_advisory_only": false
+            }
+          ],
+          "rejected_items": [
+            {
+              "knowledge_id": "rag012-guardrail-anti-manipulation",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag016a-guardrail-rational-agency",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-cold-call-not-interested-boundary",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-closing-buying-signals-observable-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-loss-aversion-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-psychology-reciprocity-commitment-ethical-limit",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-german-sales-formal-consent-first",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-real-call-breakdowns-training-only",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            },
+            {
+              "knowledge_id": "rag019-ethics-ai-disclosure-truthful-claims",
+              "reason": "lane_not_allowed",
+              "lane": "safety_guardrail"
+            }
+          ],
+          "policy_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+          "local_composer_candidate": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "validation_passed": true,
+          "fallback_used": false,
+          "forbidden_claim_matches": [],
+          "retrieval_used_in_runtime": false,
+          "influence_basis": "candidate_diff_from_no_retrieval_baseline",
+          "final_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?"
+        },
+        "safety_and_selection": {
+          "campaign_facts_override_rag": true,
+          "protected_context": false,
+          "protected_text_preserved": true,
+          "language_match": true,
+          "safe": true,
+          "core_score": 2,
+          "retrieval_score": 2,
+          "score_delta": 0,
+          "winner": "tie",
+          "quality_marker_groups": [
+            {
+              "name": "price-clarification",
+              "markers": [
+                "monthly price",
+                "contract terms",
+                "worth your time"
+              ]
+            },
+            {
+              "name": "next-step-quality",
+              "markers": [
+                "?",
+                "bigger concern"
+              ]
+            }
+          ]
+        }
+      },
+      "core_score": 2,
+      "retrieval_score": 2,
+      "score_delta": 0,
+      "winner": "tie",
+      "retrieval_status": "retrieved_not_used",
+      "retrieval_used_in_runtime": false,
+      "retrieved_item_ids": [
+        "rag014-response-cost-of-inaction-check",
+        "rag016a-response-autonomy-reminder",
+        "rag019-objection-diagnose-before-answering",
+        "rag007-response-yes-and-objection-framing"
+      ],
+      "retrieval_elapsed_ms": 2,
+      "retrieval_target_ms": 150,
+      "retrieval_acceptable_ms": 300,
+      "language_match": true,
+      "campaign_facts_override_rag": true,
+      "validation_passed": true,
+      "safe": true
+    }
+  ],
+  "boundaries": {
+    "pattern_grounding_only": true,
+    "download_required_for_default_run": false,
+    "raw_dataset_storage": "data/external/callcenteren/raw/ ignored local-only",
+    "tracked_artifacts_may_store_raw_transcripts": false,
+    "commercial_runtime_may_use_transcript_text": false,
+    "provider_calls_made": false,
+    "external_vector_db_used": false,
+    "embedding_provider_used": false,
+    "llm_used": false
+  },
+  "decision": "keep_retrieval_opt_in_for_callcenteren_grounded_scenarios"
+}

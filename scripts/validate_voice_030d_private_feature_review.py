@@ -30,6 +30,7 @@ def write_feature(
     mean_speech_rms: float,
     pause_ratio: float,
     average_pause_ms: float,
+    include_runtime_candidates: bool = True,
 ) -> None:
     FEATURES_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -45,6 +46,7 @@ def write_feature(
             "average_pause_ms": average_pause_ms,
             "longest_pause_ms": 1200,
             "silence_seconds": duration_seconds * pause_ratio,
+            "speech_seconds": duration_seconds * (1 - pause_ratio),
         },
         "learning_signal_policy": {
             "long_formulation_pauses": "expected_in_owner_samples_not_agent_target",
@@ -61,11 +63,6 @@ def write_feature(
             ],
             "runtime_use_requires_human_review": True,
         },
-        "runtime_learning_candidates": {
-            "speech_burst_count": speech_burst_count,
-            "energy_variation": energy_variation,
-            "mean_speech_rms": mean_speech_rms,
-        },
         "privacy_boundary": {
             "provider_calls_made": False,
             "transcription_created": False,
@@ -74,6 +71,12 @@ def write_feature(
             "public_artifact_created": False,
         },
     }
+    if include_runtime_candidates:
+        payload["runtime_learning_candidates"] = {
+            "speech_burst_count": speech_burst_count,
+            "energy_variation": energy_variation,
+            "mean_speech_rms": mean_speech_rms,
+        }
     (FEATURES_DIR / f"{sample_id}.json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
@@ -103,6 +106,16 @@ def create_private_feature_fixtures() -> None:
         pause_ratio=0.51,
         average_pause_ms=1450,
     )
+    write_feature(
+        "voice-030d-c-features-only",
+        duration_seconds=12.0,
+        speech_burst_count=14,
+        energy_variation=0.35,
+        mean_speech_rms=0.29,
+        pause_ratio=0.37,
+        average_pause_ms=820,
+        include_runtime_candidates=False,
+    )
 
 
 def validate_private_feature_review() -> None:
@@ -122,15 +135,42 @@ def validate_private_feature_review() -> None:
     assert_condition(completed.returncode == 0, completed.stderr or completed.stdout)
     payload = json.loads(completed.stdout)
     assert_condition(payload["voice_milestone"] == "VOICE-030D", "Unexpected milestone.")
-    assert_condition(payload["summary"]["sample_count"] == 2, "Two private feature fixtures should be summarized.")
-    assert_condition(payload["summary"]["language_counts"] == {"en": 2}, "Language counts should be aggregate only.")
+    assert_condition(payload["summary"]["sample_count"] == 3, "All private feature fixtures should be summarized.")
+    assert_condition(payload["summary"]["language_counts"] == {"en": 3}, "Language counts should be aggregate only.")
     assert_condition(payload["summary"]["duration_seconds"]["min"] == 6.0, "Duration min should be context only.")
-    assert_condition(payload["summary"]["duration_seconds"]["max"] == 9.0, "Duration max should be context only.")
+    assert_condition(payload["summary"]["duration_seconds"]["max"] == 12.0, "Duration max should be context only.")
+    sample_quality = payload["sample_quality_summary"]
+    assert_condition(sample_quality["feature_files_read"] == 3, "Sample quality should account for all files read.")
+    assert_condition(
+        sample_quality["usable_for_recurring_pattern_summary"] == 3,
+        "All non-silent fixtures should be usable for recurring patterns.",
+    )
 
     candidates = payload["runtime_candidate_summary"]
-    assert_condition(candidates["speech_burst_count"]["avg"] == 9.5, "Speech burst count average mismatch.")
-    assert_condition(candidates["energy_variation"]["avg"] == 0.25, "Energy variation average mismatch.")
-    assert_condition(candidates["mean_speech_rms"]["avg"] == 0.215, "Mean speech RMS average mismatch.")
+    assert_condition(candidates["speech_burst_count"]["count"] == 3, "Speech burst count should use all feature files.")
+    assert_condition(candidates["speech_burst_count"]["avg"] == 11.0, "Speech burst count average mismatch.")
+    assert_condition(candidates["energy_variation"]["count"] == 3, "Energy variation should use all feature files.")
+    assert_condition(candidates["energy_variation"]["avg"] == 0.283, "Energy variation average mismatch.")
+    assert_condition(candidates["mean_speech_rms"]["count"] == 3, "Mean speech RMS should use all feature files.")
+    assert_condition(candidates["mean_speech_rms"]["avg"] == 0.24, "Mean speech RMS average mismatch.")
+
+    extraction = payload["candidate_extraction_summary"]
+    for key in ["speech_burst_count", "energy_variation", "mean_speech_rms"]:
+        assert_condition(extraction[key]["total_values"] == 3, f"{key} should have all three values.")
+        assert_condition(
+            extraction[key]["from_features_fallback"] == 1,
+            f"{key} should include the features-only fallback fixture.",
+        )
+
+    recurring = payload["recurring_pattern_summary"]
+    assert_condition(
+        recurring["speech_bursts_per_minute"]["count"] == 3,
+        "Normalized speech-burst pattern should use all feature files.",
+    )
+    assert_condition(
+        len(payload["plain_language_patterns"]) >= 3,
+        "VOICE-030D should explain recurring patterns in plain language.",
+    )
 
     diagnostic_only = payload["diagnostic_only_summary"]
     for key in ["pause_ratio", "average_pause_ms", "longest_pause_ms", "silence_seconds"]:

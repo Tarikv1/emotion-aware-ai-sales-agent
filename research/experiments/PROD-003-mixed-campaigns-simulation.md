@@ -57,16 +57,16 @@ The named products in this set are illustrative examples of the broader campaign
 
 Packet generation completed:
 
-- `research/experiments/generated/PROD-003-evaluation-packet.md`
+- `research/experiments/generated/PROD-003/PROD-003-evaluation-packet.md`
 
 Database-shaped export completed:
 
-- `research/experiments/generated/PROD-003-db-records.json`
+- `research/experiments/generated/PROD-003/PROD-003-db-records.json`
 
 SQLite import completed:
 
-- `research/experiments/generated/PROD-003.sqlite`
-- `research/experiments/generated/PROD-003-sqlite-report.md`
+- `research/experiments/generated/PROD-003/PROD-003.sqlite`
+- `research/experiments/generated/PROD-003/PROD-003-sqlite-report.md`
 
 Validation completed:
 

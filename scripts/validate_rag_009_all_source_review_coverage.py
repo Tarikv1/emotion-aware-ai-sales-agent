@@ -30,6 +30,10 @@ EXPECTED_CHUNK_IDS = {
     "rag005-chunk-005",
     "rag005-chunk-006",
 }
+FIXTURE_REPORT_PATH = (
+    "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/"
+    + "fixture.md"
+)
 
 
 def assert_condition(condition: bool, message: Any) -> None:
@@ -70,7 +74,7 @@ def chunk(
         "source_excerpt_present": source_excerpt_present,
         "source_excerpt_text_stored": False,
         "report_name": "Fixture report.md",
-        "report_path": "research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/fixture.md",
+        "report_path": FIXTURE_REPORT_PATH,
         "review_status": "needs_human_review",
         "review_flags": review_flags,
     }
@@ -263,7 +267,7 @@ def source(source_id: str, title: str, topic_ids: list[str]) -> dict[str, Any]:
         "topic_ids": topic_ids,
         "topic_labels": topic_ids,
         "report_names": ["Fixture report.md"],
-        "report_paths": ["research/experiments/generated/RAG-002-notebooklm-extraction-automation-bridge/imports/fixture.md"],
+        "report_paths": [FIXTURE_REPORT_PATH],
         "source_type_guess": "article_or_video",
         "language_guess": "English",
         "source_type": "needs_review",

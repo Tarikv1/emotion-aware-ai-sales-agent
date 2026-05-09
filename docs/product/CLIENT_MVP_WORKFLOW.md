@@ -4,8 +4,9 @@
 
 Define the first concrete product workflow requested by the client.
 
-The first client need is not a full sales-closing agent.
-It is an autonomous calling agent that qualifies interest and schedules a follow-up call with a human sales agent.
+This document now represents the safer appointment-setting subset of the product. The broader current direction is defined in `docs/product/FULL_SALE_MVP_STRATEGY.md`: a constrained full-sale agent that can close campaign-approved next steps while still recognizing non-sale, support, escalation, and do-not-call outcomes.
+
+The first client workflow may still use appointment-setting as the approved close. In that mode, the agent qualifies interest and schedules a follow-up call with a human sales agent instead of completing the sale itself.
 
 This workflow can apply to B2B or B2C sales. The current first case set is B2B-leaning, but the product should also support direct-to-consumer qualification.
 
@@ -25,14 +26,14 @@ lead list
 
 ## Core Job
 
-The agent's first job is:
+In appointment-setting mode, the agent's job is:
 
 - call potential customers
 - ask a few predefined or semi-adaptive questions
 - determine whether the person is interested
 - schedule the next available appointment with a human sales agent, specialist, consultant, or service representative
 
-This is a lead-qualification and appointment-setting agent, not a full autonomous closer.
+This is a lead-qualification and appointment-setting mode inside the larger full-sale product strategy, not the only product endpoint.
 
 ## Minimum Capabilities
 

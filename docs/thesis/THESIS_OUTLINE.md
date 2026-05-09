@@ -381,7 +381,7 @@ Evidence sources:
 - `research/experiments/PROD-001-rule-baseline.md`
 - `research/experiments/PROD-004-rule-baseline.md`
 - `research/experiments/PROD-004-llm-vs-rule-comparison.md`
-- `research/experiments/generated/PROD-001-sqlite-report.md`
+- `research/experiments/generated/PROD-001/PROD-001-sqlite-report.md`
 
 ### 5.3 Voice Experiments
 

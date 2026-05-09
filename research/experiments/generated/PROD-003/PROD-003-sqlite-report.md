@@ -1,7 +1,7 @@
 # PROD-003 SQLite Import Report
 
-- Database: `research/experiments/generated/PROD-003.sqlite`
-- Source records: `research/experiments/generated/PROD-003-db-records.json`
+- Database: `research/experiments/generated/PROD-003/PROD-003.sqlite`
+- Source records: `research/experiments/generated/PROD-003/PROD-003-db-records.json`
 - Data source: synthetic product simulation records
 
 ## Table Counts

@@ -10,17 +10,17 @@ SQLite is the first implementation target because it requires no infrastructure 
 
 - `db/sqlite_schema.sql`: local SQLite schema for the MVP entities
 - `scripts/import_simulation_records.py`: imports database-shaped simulation JSON into SQLite
-- `research/experiments/generated/PROD-001-db-records.json`: synthetic source records
-- `research/experiments/generated/PROD-001.sqlite`: generated local SQLite database
-- `research/experiments/generated/PROD-001-sqlite-report.md`: generated query report
+- `research/experiments/generated/PROD-001/PROD-001-db-records.json`: synthetic source records
+- `research/experiments/generated/PROD-001/PROD-001.sqlite`: generated local SQLite database
+- `research/experiments/generated/PROD-001/PROD-001-sqlite-report.md`: generated query report
 
 ## Import Command
 
 ```text
 python scripts/import_simulation_records.py \
-  --records research/experiments/generated/PROD-001-db-records.json \
-  --db research/experiments/generated/PROD-001.sqlite \
-  --report-out research/experiments/generated/PROD-001-sqlite-report.md \
+  --records research/experiments/generated/PROD-001/PROD-001-db-records.json \
+  --db research/experiments/generated/PROD-001/PROD-001.sqlite \
+  --report-out research/experiments/generated/PROD-001/PROD-001-sqlite-report.md \
   --reset
 ```
 
