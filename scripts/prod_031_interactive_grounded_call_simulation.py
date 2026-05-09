@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import html
 import json
-import time
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -412,7 +411,7 @@ def metric(value: float, definition: str) -> dict[str, Any]:
     return {"value": round(value, 4), "definition": definition}
 
 
-def build_summary(calls: list[dict[str, Any]], elapsed_ms: int) -> dict[str, Any]:
+def build_summary(calls: list[dict[str, Any]]) -> dict[str, Any]:
     all_turns = [turn for call in calls for turn in call["turns"]]
     initial_trust = [call["initial_state"]["trust"] for call in calls]
     final_trust = [call["final_state"]["trust"] for call in calls]
@@ -456,7 +455,6 @@ def build_summary(calls: list[dict[str, Any]], elapsed_ms: int) -> dict[str, Any
         "runtime_retrieval_default_enabled": False,
         "composer_hook_flag_default_enabled": False,
         "production_runtime_promotion_allowed": False,
-        "elapsed_ms": elapsed_ms,
     }
 
 
@@ -482,16 +480,14 @@ def build_payload(
     trace_path: Path = DEFAULT_TRACE,
     html_path: Path = DEFAULT_HTML,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    started = time.perf_counter()
     campaign = build_synthetic_campaign()
     calls = [simulate_call(seed, campaign) for seed in build_call_seeds()]
-    elapsed_ms = int((time.perf_counter() - started) * 1000)
     traces = {
         "checkpoint_id": CHECKPOINT_ID,
         "source_spec_path": rel_path(SOURCE_SPEC),
         "calls": calls,
     }
-    summary = build_summary(calls, elapsed_ms)
+    summary = build_summary(calls)
     payload = {
         "checkpoint_id": CHECKPOINT_ID,
         "title": "PROD-031 interactive grounded call simulation",

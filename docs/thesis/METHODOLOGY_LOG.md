@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-031 interactive grounded call simulation
+
+- Objective: replace weak static customer-turn replay with deterministic reactive customer simulation.
+- Action taken: added the PROD-031 simulator, runner, validator, product doc, generated trace/report artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the project-owned RouteSignal CRM synthetic campaign and deterministic customer seeds. No provider call, LLM call, private data read, dataset download, runtime change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_031_INTERACTIVE_GROUNDED_CALL_SIMULATION.md`, `scripts/prod_031_interactive_grounded_call_simulation.py`, `scripts/run_prod_031_interactive_grounded_call_simulation.py`, `scripts/validate_prod_031_interactive_grounded_call_simulation.py`, `research/experiments/generated/PROD-031-interactive-grounded-call-simulation/result.json`, `research/experiments/generated/PROD-031-interactive-grounded-call-simulation/report.md`, `research/experiments/generated/PROD-031-interactive-grounded-call-simulation/interactive_call_traces.json`, and `research/experiments/generated/PROD-031-interactive-grounded-call-simulation/interactive_call_trace.html`.
+- What was learned: reactive state traces are stronger evidence than static scenario replay because they show whether an agent answer changes customer trust, interest, clarity, friction, objections, and commitment. PROD-031 ran `8` seeds, `26` turns, and `18` reactive customer turns with safe close rate `1.0`, non-sale correctness `1.0`, interactive realism score `1.0`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`.
+- Why it matters for the thesis: the evaluation now measures conversational effect, not only correctness against prewritten turns.
+- Open questions: which findings are simulator-design limits, which are runtime policy issues, and whether the old static route gaps still need direct fixes.
+
 ### 2026-05-09 - PROD-031 interactive simulation design pivot
 
 - Objective: respond to Tarik's review that the current full scenarios are still weak because customer turns are scripted replay rather than reactive conversation.

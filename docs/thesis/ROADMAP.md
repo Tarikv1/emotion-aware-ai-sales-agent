@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-031-interactive-grounded-call-simulation` to replace weak static scenario replay with a deterministic reactive customer simulator where customer state changes after each agent answer.
+- [ ] Current: run `PROD-032-interactive-simulation-review` to inspect the reactive state traces and decide which findings are simulator-design limits, runtime policy issues, product-grounding issues, or still-relevant static route gaps.
 
 Next checkpoints:
 
-- [ ] Next: after the interactive grounded call simulation, review whether failures are simulator-design issues, runtime policy issues, product-grounding issues, or remaining static route-gap issues before fixing the old PROD-030 route gaps.
+- [ ] Next: after PROD-032, choose the first interactive failure fix before static route-gap cleanup or demo polish.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
@@ -58,6 +58,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-031` interactive grounded call simulation, which replaces static scenario replay with deterministic reactive customer simulation. It runs `8` local call seeds and `26` turns where customer trust, interest, clarity, friction, patience, emotion, objection state, and commitment change after each agent answer. It records exact customer turns, exact agent answers, state before, state after, state deltas, reaction reasons, terminal outcomes, and safety flags. Reactive customer turn count is `18`, safe close rate is `1.0`, non-sale correctness is `1.0`, interactive realism score is `1.0`, average trust delta is `1.875`, average interest delta is `1.5`, average clarity delta is `3.0`, average friction delta is `-0.5`, hard failures are `0`, payment collection count is `0`, unsupported claim count is `0`, and leakage findings are `0`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-032-interactive-simulation-review`.
 
 - [x] `PROD-030` grounded demo review, which inspects the completed `PROD-029` grounded full-scenario trace and records accepted/rejected/revise status per grounded answer and route gap. It accepts `120/120` grounded answers for local demo wording review with revised grounded answers `0`, rejected grounded answers `0`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. It keeps `110/120` turns and `13/20` full scenarios demo-ready, while blocking the full demo set because `10` route turns across `7` scenarios still need policy or call-control review. The demo-ready scenario labels are `cancellation_boundary`, `sale_eligible`, `support_handoff`, and `trust_repair`; route-gap labels are `callback_request` and `price_objection`; route-gap types are `unknown-runtime-signal_policy_mismatch`, `autonomy-check_policy_mismatch`, and `scheduling-confirmation_call-control-mismatch`. Runtime campaign-profile promotion, production runtime promotion, retrieval defaults, composer-hook defaults, provider calls, LLM use, private data reads, customer data, server start, and payment collection stayed blocked. After review, Tarik rejected static replay as too weak and approved replacing the next checkpoint with `PROD-031-interactive-grounded-call-simulation` before route-gap fixes.
 
@@ -447,19 +449,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-031-interactive-grounded-call-simulation` using the accepted `PROD-030` finding that static replay is not strong enough evidence.
+Run `PROD-032-interactive-simulation-review` using the completed `PROD-031` reactive customer-state traces.
 
 Purpose:
 
-- build a deterministic local customer simulator where each customer reply reacts to the previous agent answer and updated customer state
-- track trust, interest, clarity, friction, patience, emotion, objection state, and commitment across a full call
+- review exact interactive call traces, terminal outcomes, state deltas, reaction reasons, and safety flags
+- classify findings as simulator-design limits, runtime policy issues, product-grounding issues, or still-relevant static route gaps
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
-- decide whether interactive failures are simulator-design issues, runtime policy issues, product-grounding issues, or route/action issues before any route-gap cleanup, provider, voice, telephony, or client-facing step
+- choose the first fix or demo-review path before any route-gap cleanup, provider, voice, telephony, or client-facing step
 
-Immediate product artifact after `PROD-030`:
+Immediate product artifact after `PROD-031`:
 
-- interactive grounded call simulation packet
-- reactive customer-state trace with exact customer turns, agent answers, state transitions, reaction reasons, terminal outcomes, and safety flags
+- interactive simulation review packet
+- prioritized fix recommendation before static route-gap cleanup or demo polish
 
 Next voice checkpoint:
 

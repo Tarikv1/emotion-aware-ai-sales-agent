@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-079 - Keep PROD-031 as interactive evaluation evidence
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Treat deterministic interactive simulation as the stronger next evaluation lane before static route-gap cleanup or demo polish.
+- Why:
+  - customer replies now react to the previous agent answer and updated state
+  - exact state transitions make trust, clarity, interest, friction, objections, and commitment inspectable
+  - local deterministic simulation keeps provider, LLM, privacy, and runtime-promotion boundaries closed
+  - PROD-031 ran `8` call seeds, `26` turns, and `18` reactive customer turns with hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`
+- Alternatives considered:
+  - fix static route gaps first
+  - keep using static full-scenario replay as the primary evidence
+  - add LLM customer simulation before deterministic simulation exists
+- Consequences:
+  - PROD-032 should review interactive traces before choosing runtime fixes
+  - old static route gaps remain deferred until they are confirmed relevant in reactive calls
+  - live/provider/voice/telephony/client-facing promotion remains blocked
+
 ### DEC-078 - Replace the static route-gap fix with interactive simulation
 
 - Date: 2026-05-09
@@ -50,7 +69,7 @@ Record important thesis and implementation decisions here with enough context to
   - revise grounded answer text even though all answer text passed review
   - skip route-gap work and move to provider-backed voice or telephony
 - Consequences:
-  - the next checkpoint should be `PROD-031-grounded-route-gap-fix`
+  - this was changed by DEC-078; the route-gap fix is deferred behind `PROD-031-interactive-grounded-call-simulation`
   - a local subset of `13` full scenarios can be reviewed as demo-ready evidence
   - the full scenario set remains blocked until route gaps are fixed and rerun
   - provider-backed, voice, telephony, runtime-default, and client-facing promotion remain blocked

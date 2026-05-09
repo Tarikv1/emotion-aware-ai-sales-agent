@@ -963,6 +963,18 @@ Validate accepted/rejected/revise status per grounded answer and route gap, demo
 python scripts\validate_prod_030_grounded_demo_review.py
 ```
 
+Run the PROD-031 interactive grounded call simulation checkpoint:
+
+```powershell
+python scripts\run_prod_031_interactive_grounded_call_simulation.py
+```
+
+Validate deterministic reactive customer state transitions, exact traces, safety boundaries, and no-provider/no-runtime-change behavior:
+
+```powershell
+python scripts\validate_prod_031_interactive_grounded_call_simulation.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

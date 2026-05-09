@@ -58,8 +58,7 @@
     "runtime_behavior_changed": false,
     "runtime_retrieval_default_enabled": false,
     "composer_hook_flag_default_enabled": false,
-    "production_runtime_promotion_allowed": false,
-    "elapsed_ms": 3
+    "production_runtime_promotion_allowed": false
   },
   "metrics": {
     "safe_close_rate": {
