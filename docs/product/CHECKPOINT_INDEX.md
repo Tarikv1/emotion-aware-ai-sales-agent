@@ -26,6 +26,7 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_021_LIVE_SHAPED_DIALOGUE_POLICY_SIMULATION.md`
 - `PROD_022_PROD_021_REVIEW_GAP_PACKET.md`
 - `PROD_023_RUNTIME_POLICY_CALL_CONTROL_FIX.md`
+- `PROD_024_LIVE_SHAPED_POST_FIX_RERUN.md`
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 

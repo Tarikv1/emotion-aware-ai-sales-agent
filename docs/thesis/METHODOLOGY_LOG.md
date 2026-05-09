@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-024 live-shaped post-fix rerun
+
+- Objective: rerun the full live-shaped dialogue-policy path after `PROD-023` to verify the local runtime-policy and call-control fix across all turns, not only the exact gap packet.
+- Action taken: added a PROD-024 post-fix rerun module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, and generated result/report artifacts.
+- Data used: the generated `PROD-023` result and the existing synthetic `PROD-021` live-shaped case file. PROD-024 did not call providers, call an LLM, read private data, download a dataset, enable retrieval by default, or enable composer hooks by default.
+- Output created: `docs/product/PROD_024_LIVE_SHAPED_POST_FIX_RERUN.md`, `scripts/prod_024_live_shaped_post_fix_rerun.py`, `scripts/run_prod_024_live_shaped_post_fix_rerun.py`, `scripts/validate_prod_024_live_shaped_post_fix_rerun.py`, `research/experiments/generated/PROD-024-live-shaped-post-fix-rerun/result.json`, and `research/experiments/generated/PROD-024-live-shaped-post-fix-rerun/report.md`.
+- What was learned: across `7` calls and `19` customer turns, policy action correctness, call-control correctness, protected context preservation, non-sale correctness, safe-close correctness, and state reference completeness are all `1.0`, with `0` hard failures, `0` payment collection findings, and `0` leakage findings. The post-fix gate passes while the legacy PROD-021 hook-gain gate stays false because it measured a different hypothesis.
+- Why it matters for the thesis: the project now has full live-shaped evidence that the local runtime policy can handle the previously failed states without relying on composer-hook gain. This permits bounded demo-readiness planning, not production runtime promotion.
+- Open questions: what the smallest bounded demo should include, which exact traces should be visible, and which provider/live steps remain blocked behind manual review.
+
 ### 2026-05-09 - PROD-023 runtime-policy and call-control fix
 
 - Objective: close the exact `PROD-022` policy-action and call-control misses without changing retrieval defaults, composer-hook defaults, provider behavior, or dataset scope.

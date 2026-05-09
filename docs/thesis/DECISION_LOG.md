@@ -15,6 +15,28 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-071 - Keep PROD-024 as post-fix evidence gate
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Keep PROD-024 as post-fix evidence gate; use it to justify a bounded demo-readiness packet, not production runtime promotion.
+- Why:
+  - PROD-024 reran the full live-shaped path across `7` calls and `19` turns after the PROD-023 fix
+  - policy action correctness, call-control correctness, protected context preservation, non-sale correctness, safe-close correctness, and state reference completeness are all `1.0`
+  - hard failures, payment collection findings, and leakage findings are all `0`
+  - the legacy PROD-021 gate remains false because it was a hook-gain hypothesis, not the correct post-fix policy gate
+  - retrieval and composer hooks remain disabled by default
+- Alternatives considered:
+  - treat the clean post-fix rerun as production runtime promotion
+  - make composer hooks default because the original hook experiment had wording gains
+  - move directly to provider/live demo work
+  - broaden the scenario bank again before defining the bounded demo surface
+- Consequences:
+  - the next checkpoint should be `PROD-025-bounded-demo-readiness-packet`
+  - bounded demo discussion is allowed
+  - production runtime promotion remains blocked
+  - provider and client-facing demo behavior still needs a separate manual review gate
+
 ### DEC-070 - Keep PROD-023 as local runtime-policy fix
 
 - Date: 2026-05-09

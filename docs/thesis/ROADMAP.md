@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-024-live-shaped-post-fix-rerun` after the `PROD-023` local runtime-policy and call-control fix, without broadening dataset work, voice work, retrieval defaults, or composer-hook defaults.
+- [ ] Current: prepare `PROD-025-bounded-demo-readiness-packet` after the clean `PROD-024` live-shaped post-fix rerun, without changing retrieval defaults, composer-hook defaults, provider boundaries, or customer-facing runtime claims.
 
 Next checkpoints:
 
-- [ ] Next: use the `PROD-024` rerun to require policy action correctness, call-control correctness, protected contexts, non-sale correctness, safe-close correctness, and leakage gates to stay clean before any bounded demo discussion.
+- [ ] Next: decide the exact bounded demo scope, inputs, outputs, provider-off default path, and manual review gate before any client-facing or live-provider demo work.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
 - [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
@@ -58,6 +58,7 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `PROD-024` live-shaped post-fix rerun, which reruns the full live-shaped dialogue-policy path after the `PROD-023` runtime-policy and call-control fix. Across `7` calls and `19` customer turns, policy action correctness is `1.0`, call-control correctness is `1.0`, protected context preservation is `1.0`, non-sale correctness is `1.0`, safe-close correctness is `1.0`, state reference completeness is `1.0`, hard failures are `0`, payment collection count is `0`, and leakage findings are `0`. The post-fix gate passed, the legacy `PROD-021` hook-gain gate remains false because it was a different hypothesis, retrieval and composer hooks remain disabled by default, runtime promotion is still not allowed, and the recommended next checkpoint is `PROD-025-bounded-demo-readiness-packet`.
 - [x] `PROD-023` runtime-policy and call-control fix, which closes the exact `PROD-022` gap packet by specializing local runtime input classification, explicit policy-action mapping, and the call-control contract. It fixed `10/10` policy-action misses and `3/3` call-control misses, leaving policy action correctness `1.0`, call-control correctness `1.0`, protected context preservation `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, hard failures `0`, payment collection count `0`, and leakage findings `0`. The new full-sale control is `close-and-log-sale-ready`. Retrieval and composer hooks remain disabled by default, runtime promotion is still not allowed, and the recommended next checkpoint is `PROD-024-live-shaped-post-fix-rerun`.
 - [x] `PROD-022` PROD-021 review gap packet, which reads the completed `PROD-021` result and extracts the exact customer turns, exact agent answers, hook decisions, policy-action misses, and call-control misses that kept the gate closed. It found `10` gap turns: `10` policy action misses, `3` call-control misses, `0` protected-context gaps, `0` hard failures, and `0` leakage findings. The required fix targets are `runtime_policy_router_specialization`, `sale_ready_call_control_detector`, `procurement_review_continuation_guard`, and `keep_composer_hooks_opt_in`. The decision is `keep_prod_021_hooks_opt_in_fix_policy_and_call_control_first`, and the recommended next checkpoint is `PROD-023-runtime-policy-call-control-fix`.
 - [x] `PROD-021` live-shaped dialogue-policy simulation, which tests the `PROD-020` opt-in runtime composer hooks across `7` synthetic live-shaped calls and `19` customer turns against the `PROD-011` hardened dialogue-policy expectations. Opt-in hooks improved wording on `4` turns, opt-in total score was `112` versus retrieval-only score `98`, opt-in won `4` turns, retrieval-only won `0`, and `15` tied. Safety stayed clean: hard failure rate `0.0`, payment collection count `0`, leakage finding count `0`, protected context preservation `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and state reference completeness `1.0`. The gate did not pass because policy action correctness was `0.4737` and call-control correctness was `0.8421`; the decision is `revise_before_runtime_promotion_keep_hooks_opt_in`. Retrieval and composer hooks remain disabled by default.
@@ -437,20 +438,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-024-live-shaped-post-fix-rerun` after the `PROD-023` runtime-policy and call-control fix.
+Prepare `PROD-025-bounded-demo-readiness-packet` after the clean `PROD-024-live-shaped-post-fix-rerun`.
 
 Purpose:
 
-- confirm the post-fix full live-shaped evidence path still has policy action correctness `1.0`
-- confirm call-control correctness, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean
-- keep `close-and-log-sale-ready` available only for campaign-approved verbal next-step commitments without payment collection
-- preserve no-provider, no-private-data, retrieval-default-off, and composer-hook-default-off boundaries
+- define the smallest bounded demo flow that can show the reusable sales core, call-control, safe close, and exact Q/A trace without claiming production readiness
+- keep provider-off, retrieval-default-off, and composer-hook-default-off behavior explicit
+- specify the manual review gate before any live-provider or client-facing demo
+- preserve `close-and-log-sale-ready` as a logged verbal next-step outcome without checkout handling
 
-Immediate product artifact after `PROD-023`:
+Immediate product artifact after `PROD-024`:
 
-- rerun of the live-shaped post-fix evidence path
-- explicit keep/revise/discard decision for composer hooks as opt-in demo candidate
-- no runtime promotion until policy action correctness and call-control correctness close without safety regressions
+- bounded demo readiness packet
+- exact allowed inputs, outputs, traces, and blocked claims
+- no runtime promotion or live provider default until a separate demo readiness gate passes
 
 Next voice checkpoint:
 

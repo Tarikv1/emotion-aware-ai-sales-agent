@@ -879,6 +879,18 @@ Validate the exact PROD-022 gap-turn fixes, policy-action correctness, call-cont
 python scripts\validate_prod_023_runtime_policy_call_control_fix.py
 ```
 
+Run the PROD-024 live-shaped post-fix rerun:
+
+```powershell
+python scripts\run_prod_024_live_shaped_post_fix_rerun.py
+```
+
+Validate the full post-fix live-shaped policy gate, safety gates, legacy PROD-021 gate interpretation, and no-default-promotion boundary:
+
+```powershell
+python scripts\validate_prod_024_live_shaped_post_fix_rerun.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:
