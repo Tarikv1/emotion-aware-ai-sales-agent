@@ -15,6 +15,28 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-070 - Keep PROD-023 as local runtime-policy fix
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Keep PROD-023 as local runtime-policy fix; do not treat it as runtime promotion, retrieval promotion, composer-hook promotion, or provider readiness.
+- Why:
+  - PROD-023 closes the exact `PROD-022` gap packet with `10/10` policy-action misses fixed and `3/3` call-control misses fixed
+  - policy action correctness and call-control correctness are both `1.0` after the local fix
+  - protected context preservation, non-sale correctness, safe-close correctness, hard failures, payment collection count, and leakage findings stayed clean
+  - the new `close-and-log-sale-ready` control is narrow and only logs a campaign-approved verbal next-step commitment
+  - composer hooks remain wording-only and opt-in; they still do not own policy action or call-control correctness
+- Alternatives considered:
+  - promote the runtime immediately after the narrow gap fix
+  - rerun only PROD-022 without changing the runtime policy
+  - enable retrieval or composer hooks by default because the gap packet is clean
+  - move back to voice or dataset expansion before rerunning the full live-shaped evidence path
+- Consequences:
+  - the next checkpoint should be `PROD-024-live-shaped-post-fix-rerun`
+  - retrieval default remains off
+  - composer hooks remain opt-in
+  - no provider, live demo, or customer-facing claim should rely on PROD-023 alone
+
 ### DEC-069 - Keep PROD-021 hooks opt-in after review
 
 - Date: 2026-05-09

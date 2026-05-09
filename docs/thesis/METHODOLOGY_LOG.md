@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-023 runtime-policy and call-control fix
+
+- Objective: close the exact `PROD-022` policy-action and call-control misses without changing retrieval defaults, composer-hook defaults, provider behavior, or dataset scope.
+- Action taken: added a PROD-023 runtime-policy/call-control module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, and generated result/report artifacts.
+- Data used: the generated `PROD-022` gap packet and the existing synthetic `PROD-021` live-shaped case file. PROD-023 did not call providers, call an LLM, read private data, download a dataset, enable retrieval by default, or enable composer hooks by default.
+- Output created: `docs/product/PROD_023_RUNTIME_POLICY_CALL_CONTROL_FIX.md`, `scripts/prod_023_runtime_policy_call_control_fix.py`, `scripts/run_prod_023_runtime_policy_call_control_fix.py`, `scripts/validate_prod_023_runtime_policy_call_control_fix.py`, `research/experiments/generated/PROD-023-runtime-policy-call-control-fix/result.json`, and `research/experiments/generated/PROD-023-runtime-policy-call-control-fix/report.md`.
+- What was learned: the narrow local runtime-policy fix closes `10/10` policy-action misses and `3/3` call-control misses from PROD-022, with policy action correctness `1.0`, call-control correctness `1.0`, protected context preservation `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, hard failures `0`, payment collection count `0`, and leakage findings `0`.
+- Why it matters for the thesis: the project now separates policy/call-control correctness from hook wording quality. Composer hooks can stay opt-in, but the next claim must come from a full post-fix live-shaped rerun rather than from the narrow gap packet alone.
+- Open questions: whether `PROD-024-live-shaped-post-fix-rerun` preserves the same clean metrics across the full evidence path and whether hooks should stay as-is, be revised, be discarded, or become demo-only opt-in.
+
 ### 2026-05-09 - PROD-022 PROD-021 review gap packet
 
 - Objective: convert the failed `PROD-021` live-shaped gate into a compact product-review packet with exact gap turns and narrow implementation targets.

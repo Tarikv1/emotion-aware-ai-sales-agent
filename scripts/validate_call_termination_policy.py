@@ -27,6 +27,7 @@ def main() -> None:
         "transfer-or-escalate",
         "end-call",
         "schedule-and-end",
+        "close-and-log-sale-ready",
     }
     assert set(module.CALL_CONTROL_VALUES) == expected_controls, "Unexpected call-control values"
 
@@ -34,6 +35,7 @@ def main() -> None:
     assert module.call_control_for_next_action("close-politely", "not-interested") == "end-call"
     assert module.call_control_for_next_action("escalate", "needs-human") == "transfer-or-escalate"
     assert module.call_control_for_next_action("confirm-scheduling", "interested") == "schedule-and-end"
+    assert module.call_control_for_next_action("sale-ready-log", "interested") == "close-and-log-sale-ready"
     assert module.call_control_for_next_action("create-follow-up-task", "maybe-interested") == "end-call"
     assert module.call_control_for_next_action("ask-follow-up", "maybe-interested") == "continue-call"
 
@@ -79,6 +81,7 @@ def main() -> None:
     prompt = PROMPT_PATH.read_text(encoding="utf-8")
     assert '"call_control"' in prompt, "Prompt must request call_control"
     assert "end-call" in prompt, "Prompt must define end-call behavior"
+    assert "close-and-log-sale-ready" in prompt, "Prompt must define sale-ready call control"
 
 
 if __name__ == "__main__":

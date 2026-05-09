@@ -119,6 +119,12 @@ def signal_reference(decision: dict) -> str:
         "human-request": "the request for a human specialist",
         "do-not-call": "the do-not-call request",
         "timing-delay": "the timing concern",
+        "autonomy-check": "the timing or pressure concern",
+        "provider-comparison": "the comparison concern",
+        "stakeholder-review": "the stakeholder review concern",
+        "procurement-review": "the procurement review concern",
+        "trust-gap": "the trust or verification concern",
+        "sale-ready-commitment": "the sale-ready next-step agreement",
         "scheduling-confirmation": "the appointment time",
         "voicemail": "the voicemail signal",
         "repeated-silence": "the repeated silence",
@@ -173,6 +179,24 @@ def compose_german_candidate_response(
 
     if difficulty == "timing-delay":
         return "Danke, ich verstehe, dass der Zeitpunkt noch nicht fest ist. Ich dokumentiere einen Rueckruf statt zu draengen."
+
+    if difficulty == "autonomy-check":
+        return "Das verstehe ich. Soll ich einen kurzen Rueckruf spaeter notieren oder zuerst klaeren, was Sie noch wissen muessen?"
+
+    if difficulty == "provider-comparison":
+        return "Das ist fair. Sollen wir zuerst Preis, Bedingungen oder Passung sachlich vergleichen?"
+
+    if difficulty == "stakeholder-review":
+        return "Das verstehe ich. Soll ich eine kurze Zusammenfassung fuer die pruefende Person vorbereiten?"
+
+    if difficulty == "procurement-review":
+        return "Verstanden. Welche schriftliche Information waere fuer die Pruefung am hilfreichsten?"
+
+    if difficulty == "trust-gap":
+        return "Faire Frage. Soll ich zuerst erklaeren, wie Sie das Unternehmen oder den naechsten Schritt verifizieren koennen?"
+
+    if difficulty == "sale-ready-commitment":
+        return "Bestaetigt. Ich markiere das als sale-ready fuer den naechsten Schritt, ohne Zahlung in diesem Anruf."
 
     if difficulty == "scheduling-confirmation":
         return "Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren."
@@ -286,6 +310,24 @@ def compose_candidate_response(
     if difficulty == "timing-delay":
         return "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now."
 
+    if difficulty == "autonomy-check":
+        return "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?"
+
+    if difficulty == "provider-comparison":
+        return "That is fair. Should we compare price, terms, or fit first without pressure?"
+
+    if difficulty == "stakeholder-review":
+        return "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?"
+
+    if difficulty == "procurement-review":
+        return "Understood. What written information would help procurement review this without asking you for anything firm today?"
+
+    if difficulty == "trust-gap":
+        return "Fair question. Should I first give you a verification path before we discuss any next step?"
+
+    if difficulty == "sale-ready-commitment":
+        return "Confirmed. I will mark this as sale-ready for the next step, with no payment handled on this call."
+
     if difficulty == "scheduling-confirmation":
         return "Confirmed. I will record that callback time for the specialist. Goodbye."
 
@@ -389,7 +431,11 @@ def retrieval_context_flags(decision: dict, transcript: str) -> list[str]:
         flags.extend(["do_not_call", "customer_refusal"])
     if difficulty == "human-request" or next_action in {"transfer-or-escalate", "escalate"}:
         flags.append("human_escalation")
-    if difficulty in {"voicemail", "repeated-silence", "scheduling-confirmation"} or call_control in {"hang-up", "end-call"}:
+    if difficulty in {"voicemail", "repeated-silence", "scheduling-confirmation", "sale-ready-commitment"} or call_control in {
+        "hang-up",
+        "end-call",
+        "close-and-log-sale-ready",
+    }:
         flags.append("protected_script")
     return unique_preserving_order(flags)
 

@@ -108,7 +108,7 @@ def _protected_context(decision: dict[str, Any], retrieval: dict[str, Any]) -> b
     flags = set(str(flag) for flag in retrieval.get("context_flags", []))
     if flags.intersection({"do_not_call", "customer_refusal", "human_escalation", "protected_script"}):
         return True
-    if str(decision.get("call_control", "")) in {"end-call", "hang-up", "transfer-or-escalate"}:
+    if str(decision.get("call_control", "")) in {"end-call", "hang-up", "transfer-or-escalate", "close-and-log-sale-ready"}:
         return True
     if str(decision.get("next_action", "")) in {"suppress-contact", "escalate", "transfer-or-escalate"}:
         return True

@@ -67,10 +67,25 @@ def main() -> None:
     assert normalized["call_status"] == "ready-for-scheduling", "interested non-appointment should be ready"
     assert normalized["call_control"] == "continue-call", "ready-for-scheduling should keep the call open"
 
+    normalized = module.normalize_turn_output(
+        {
+            "stage": "close-attempt",
+            "detected_emotion": "positive",
+            "interest_state": "interested",
+            "selected_strategy": "direct-ask-or-commitment",
+            "next_action": "sale-ready-log",
+            "agent_response": "Confirmed. I will mark this as sale-ready for the next step.",
+            "confidence": 0.9,
+            "rationale": "Lead gave verbal next-step agreement.",
+        }
+    )
+    assert normalized["call_control"] == "close-and-log-sale-ready", "sale-ready next action needs explicit call control"
+
     prompt_block = module.strategy_taxonomy_prompt_block()
     assert "Use `rapport`" in prompt_block
     assert "Use `direct-ask-or-commitment`" in prompt_block
     assert "end-call" in module.call_control_prompt_block()
+    assert "close-and-log-sale-ready" in module.call_control_prompt_block()
 
 
 if __name__ == "__main__":

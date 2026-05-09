@@ -867,6 +867,18 @@ Validate exact gap-turn extraction, policy-action miss counts, call-control miss
 python scripts\validate_prod_022_prod_021_review_gap_packet.py
 ```
 
+Run the PROD-023 runtime-policy and call-control fix checkpoint:
+
+```powershell
+python scripts\run_prod_023_runtime_policy_call_control_fix.py
+```
+
+Validate the exact PROD-022 gap-turn fixes, policy-action correctness, call-control correctness, safety gates, and no-default-promotion boundary:
+
+```powershell
+python scripts\validate_prod_023_runtime_policy_call_control_fix.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

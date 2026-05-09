@@ -38,7 +38,7 @@ DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "PROD-021-li
 DEFAULT_RESULT = DEFAULT_OUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUT_DIR / "report.md"
 
-PROTECTED_CONTROLS = {"transfer-or-escalate", "end-call", "hang-up"}
+PROTECTED_CONTROLS = {"transfer-or-escalate", "end-call", "hang-up", "close-and-log-sale-ready"}
 ESCALATION_ACTIONS = {
     "claim-boundary-escalation",
     "privacy-safe-escalation",
@@ -692,7 +692,13 @@ def runtime_policy_action(packet: dict[str, Any], turn: dict[str, Any]) -> str:
     difficulty = str(decision.get("sales_difficulty", ""))
     mapping = {
         "price-objection": "value-clarify",
+        "provider-comparison": "fair-compare",
         "timing-delay": "autonomy-check",
+        "autonomy-check": "autonomy-check",
+        "stakeholder-review": "stakeholder-review",
+        "procurement-review": "procurement-review",
+        "trust-gap": "trust-repair",
+        "sale-ready-commitment": "close-and-log-sale-ready",
         "claim-boundary": "claim-boundary-escalation",
         "human-request": "human-escalation",
         "do-not-call": "end-call",
@@ -926,6 +932,7 @@ def build_summary(case_data: dict[str, Any], rows: list[dict[str, Any]], *, elap
         and rate(safe_close_correct, len(safe_close_rows)) == 1.0
         and opt_in_total > retrieval_total
         and retrieval_wins == 0
+        and policy_correct == total
         and call_control_correct == total
     )
     return {

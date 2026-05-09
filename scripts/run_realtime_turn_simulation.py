@@ -46,6 +46,12 @@ LOCALIZED_RESPONSES = {
         "scheduling-confirmation": "Confirmed. I will record that time for the specialist callback. Goodbye.",
         "timing-delay": "Thanks. I will log a follow-up rather than forcing a fixed appointment now. Goodbye.",
         "price-objection": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+        "provider-comparison": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+        "autonomy-check": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
+        "stakeholder-review": "That makes sense. I can help with a short summary for the person who needs to review it.",
+        "procurement-review": "Understood. I can keep this to written review information and avoid asking for anything firm today.",
+        "trust-gap": "Fair question. I can give you a verification path before we discuss any next step.",
+        "sale-ready-commitment": "Confirmed. I will mark this as sale-ready for the next step, with no payment handled on this call.",
         "unknown-runtime-signal": "Thanks. May I ask one quick clarifying question?",
     },
     "de": {
@@ -58,6 +64,12 @@ LOCALIZED_RESPONSES = {
         "scheduling-confirmation": "Bestaetigt. Ich notiere den Rueckruf fuer den Spezialisten. Auf Wiederhoeren.",
         "timing-delay": "Danke. Ich dokumentiere einen Rueckruf, statt jetzt einen festen Termin zu erzwingen. Auf Wiederhoeren.",
         "price-objection": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
+        "provider-comparison": "Das ist fair. Wir koennen Passung und Bedingungen ohne Druck vergleichen, bevor Sie etwas entscheiden.",
+        "autonomy-check": "Das verstehe ich. Wir koennen das ohne Druck klaeren, bevor es irgendeinen naechsten Schritt gibt.",
+        "stakeholder-review": "Das verstehe ich. Ich kann eine kurze Zusammenfassung fuer die pruefende Person vorbereiten.",
+        "procurement-review": "Verstanden. Ich halte es bei schriftlichen Pruefinformationen und frage heute nach nichts Festem.",
+        "trust-gap": "Faire Frage. Ich kann zuerst einen Weg zur Verifizierung nennen, bevor wir ueber einen naechsten Schritt sprechen.",
+        "sale-ready-commitment": "Bestaetigt. Ich markiere das als sale-ready fuer den naechsten Schritt, ohne Zahlung in diesem Anruf.",
         "unknown-runtime-signal": "Danke. Darf ich kurz eine klaerende Frage stellen?",
     },
 }
@@ -98,6 +110,11 @@ def localized_response(language: str, sales_difficulty: str) -> str:
 def contains_any(text: str, phrases: list[str]) -> bool:
     lowered = text.lower()
     return any(phrase in lowered for phrase in phrases)
+
+
+def stage_is(stage: str | None, *values: str) -> bool:
+    normalized = (stage or "").lower()
+    return normalized in {value.lower() for value in values}
 
 
 def latency_bucket(milliseconds: int) -> str:
@@ -199,6 +216,78 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "agent_response": localized_response(response_language, sales_difficulty),
         }
 
+    if contains_any(transcript, ["ready to agree", "agree to the next step", "sale ready", "sale-ready", "verbal commitment"]):
+        sales_difficulty = "sale-ready-commitment"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "positive",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "interested",
+            "selected_strategy": "direct-ask-or-commitment",
+            "next_action": "sale-ready-log",
+            "agent_response": localized_response(response_language, sales_difficulty),
+        }
+
+    if stage_is(stage, "procurement-review") or contains_any(transcript, ["procurement", "written information", "written info"]):
+        sales_difficulty = "procurement-review"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty),
+        }
+
+    if stage_is(stage, "authority-check") or contains_any(transcript, ["my boss", "boss has to review", "manager has to review", "decision maker"]):
+        sales_difficulty = "stakeholder-review"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty),
+        }
+
+    if contains_any(transcript, ["already use another provider", "another provider", "current provider", "compare this fairly", "compare fairly"]):
+        sales_difficulty = "provider-comparison"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty),
+        }
+
+    if contains_any(transcript, ["time to think", "do not rush", "don't rush", "call back later", "callback later", "short summary and call back"]):
+        sales_difficulty = "autonomy-check"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "inquiry",
+            "next_action": "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty),
+        }
+
+    if contains_any(transcript, ["do not know your company", "don't know your company", "verify this is legitimate", "legitimate", "trust"]):
+        sales_difficulty = "trust-gap"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty),
+        }
+
     if contains_any(transcript, ["vielleicht irgendwann", "vielleicht naechste woche", "naechste woche", "nothing firm", "next week", "cannot commit", "nichts fest"]):
         sales_difficulty = "timing-delay"
         return {
@@ -211,7 +300,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "agent_response": localized_response(response_language, sales_difficulty),
         }
 
-    if contains_any(transcript, ["guenstiger", "zu teuer", "too expensive", "lohnt sich", "aufwand", "worth the effort"]):
+    if contains_any(transcript, ["guenstiger", "zu teuer", "too expensive", "lohnt sich", "aufwand", "worth the effort", "cost sounds high", "cost", "price", "worth my time"]):
         sales_difficulty = "price-objection"
         return {
             "response_language": response_language,
@@ -246,6 +335,8 @@ def background_modules_for(response_mode: str, expected: dict | None, classified
         return ["human-handoff-prep"]
     if classified["next_action"] == "confirm-scheduling":
         return ["calendar-write"]
+    if classified["next_action"] == "sale-ready-log":
+        return ["sale-ready-outcome-log"]
     if classified["next_action"] == "create-follow-up-task":
         return ["follow-up-task-write"]
     if classified["sales_difficulty"] == "repeated-silence":

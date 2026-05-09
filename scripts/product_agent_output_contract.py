@@ -29,6 +29,7 @@ CALL_CONTROL_VALUES = (
     "transfer-or-escalate",
     "end-call",
     "schedule-and-end",
+    "close-and-log-sale-ready",
 )
 
 CALL_CONTROL_DEFINITIONS = {
@@ -37,6 +38,7 @@ CALL_CONTROL_DEFINITIONS = {
     "transfer-or-escalate": "Route to a human or specialist workflow instead of continuing autonomous qualification.",
     "end-call": "Say the appropriate closing sentence, update records, and hang up.",
     "schedule-and-end": "Confirm the appointment or callback, update records, and end the call politely.",
+    "close-and-log-sale-ready": "Confirm a campaign-approved verbal commitment, log the sale-ready outcome, and end or hand off according to the campaign.",
 }
 
 
@@ -63,6 +65,8 @@ def call_control_for_next_action(next_action: str | None, interest_state: str | 
         return "transfer-or-escalate"
     if action == "confirm-scheduling":
         return "schedule-and-end"
+    if action == "sale-ready-log":
+        return "close-and-log-sale-ready"
     if action in {"close-politely", "create-follow-up-task"}:
         return "end-call"
     if action in {"continue", "ask-follow-up", "offer-scheduling"}:
@@ -71,6 +75,8 @@ def call_control_for_next_action(next_action: str | None, interest_state: str | 
         return "transfer-or-escalate"
     if "calendar invite" in action or "appointment" in action:
         return "schedule-and-end"
+    if "sale-ready" in action or "verbal commitment" in action:
+        return "close-and-log-sale-ready"
     if "follow-up task" in action or "suppress future outreach" in action or "end politely" in action:
         return "end-call"
     return "continue-call"
@@ -83,6 +89,8 @@ def call_control_for_final_outcome(outcome: dict) -> str:
         return "transfer-or-escalate"
     if outcome.get("appointment_scheduled"):
         return "schedule-and-end"
+    if outcome.get("call_status") == "sale-ready" or outcome.get("next_action") == "sale-ready-log":
+        return "close-and-log-sale-ready"
     if outcome.get("call_status") == "ready-for-scheduling":
         return "continue-call"
     if outcome.get("call_status") in {"completed", "needs-follow-up"}:
