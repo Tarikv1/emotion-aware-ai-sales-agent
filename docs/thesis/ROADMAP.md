@@ -33,12 +33,12 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: add `PROD-021` live-shaped dialogue-policy simulation for the `PROD-020` opt-in runtime composer hooks. Test multi-turn transcript-shaped behavior against the PROD-011 hardened dialogue policy before any runtime promotion. Preserve call state, call-control decisions, protected contexts, support/non-sale boundaries, no-provider defaults, no-private-data defaults, and retrieval/composer-hook default-off behavior.
+- [ ] Current: create a compact `PROD-021` product-review and gap packet before any runtime-promotion discussion. Focus on the exact live-shaped customer turns, exact agent answers, hook decisions, retrieval status, policy-action misses, and call-control misses that caused the `PROD-021` gate to remain closed.
 
 Next checkpoints:
 
-- [ ] Next: after `PROD-021`, decide whether the `PROD-020` opt-in hooks should be kept, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
-- [ ] Next: if `PROD-021` passes, create a compact product-review packet showing exact customer turns, exact agent answers, hook decisions, retrieval status, and policy/call-control traces before any runtime-promotion discussion.
+- [ ] Next: revise only the narrow runtime-policy and call-control gaps exposed by `PROD-021`; do not broaden dataset work or voice work until this product gate has a clear decision.
+- [ ] Next: after the `PROD-021` gap packet, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
 - [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
 - [ ] Next: treat remaining RAG source-mapping cleanup as thesis/source-registry hygiene, not a blocker for `PROD-021` or runtime-hook evaluation. Resume it only when the work target is RAG registry cleanup or thesis citation hygiene.
@@ -58,6 +58,7 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `PROD-021` live-shaped dialogue-policy simulation, which tests the `PROD-020` opt-in runtime composer hooks across `7` synthetic live-shaped calls and `19` customer turns against the `PROD-011` hardened dialogue-policy expectations. Opt-in hooks improved wording on `4` turns, opt-in total score was `112` versus retrieval-only score `98`, opt-in won `4` turns, retrieval-only won `0`, and `15` tied. Safety stayed clean: hard failure rate `0.0`, payment collection count `0`, leakage finding count `0`, protected context preservation `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and state reference completeness `1.0`. The gate did not pass because policy action correctness was `0.4737` and call-control correctness was `0.8421`; the decision is `revise_before_runtime_promotion_keep_hooks_opt_in`. Retrieval and composer hooks remain disabled by default.
 - [x] `PROD-020` naturalized customer-turn evaluation, which reruns the PROD-019 opt-in runtime composer hooks after rewriting rubric-like customer prompts into natural customer wording while preserving expected outcomes and source-pattern refs as metadata only. Across `180` fixed turns, `120` source turns were rubric-like, `123` questions were changed, naturalized runtime prompts had `0` rubric-token findings, source-pattern refs were preserved for `180/180` rows, and expected outcomes were preserved for `180/180` rows. Hooked total score was `1065` versus baseline score `734`; hooked answers won `107` turns, baseline won `0`, and `73` tied. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, expected outcome correctness `180/180`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`. The decision is `keep_naturalized_runtime_hooks_as_opt_in_candidate_not_default`; retrieval and composer hooks remain disabled by default, and the next step is live-shaped multi-turn dialogue-policy simulation before broader runtime claims.
 - [x] `PROD-019` guarded runtime composer hooks, which moves the PROD-018 composer-hook idea into the actual `generate_guarded_response.py` path behind explicit `--composer-hooks-enabled` opt-in. Across the unchanged `180` fixed PROD-015 turns, default-off answer drift was `0`, proving the existing guarded response path stayed unchanged. With retrieval and composer hooks explicitly enabled, `98` answers received hooks without passing evaluation labels into the composer. Hooked total score was `916` versus current retrieval score `663`; hooked answers won `92` turns, current retrieval won `0`, and `88` tied. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`. The decision is `keep_runtime_composer_hooks_opt_in_candidate_not_default`; retrieval and composer hooks remain disabled by default, and the next step is naturalized customer-turn evaluation before broader runtime claims.
 - [x] `PROD-018` CallCenterEN composer-hook test, which applies a narrow offline hook layer to the unchanged `PROD-015` rows and scores old/current/hooked answers with the `PROD-017` specificity scorer. Across `180` fixed turns, `174` retrieved-not-used answers received hooks and the `3` existing influenced answers were preserved. Hooked total score was `1421` versus current retrieval score `663` and old runtime score `652`; hooked answers won `174` turns versus current retrieval and `177` turns versus old runtime, with old runtime winning `0`. Safety stayed clean: hard failures `0`, leakage findings `0`, payment collection findings `0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and safety gate pass count `180/180`. The decision is `keep_composer_hooks_for_runtime_candidate_not_default`; retrieval remains disabled by default, and the next step is a red-first guarded runtime-composer candidate test.
@@ -434,22 +435,21 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-021`: a local, offline, live-shaped multi-turn dialogue-policy simulation for the `PROD-020` opt-in runtime composer hooks.
+Create the `PROD-021` product-review and gap packet.
 
 Purpose:
 
-- verify that the naturalized single-turn hook gain survives transcript-shaped, stateful conversation flow
-- test against the `PROD-011` hardened dialogue policy before any runtime-promotion discussion
+- review the exact live-shaped customer questions, exact agent answers, retrieval status, hook decisions, policy-action misses, and call-control misses from `PROD-021`
+- separate hook-wording gains from runtime-policy gaps
+- decide the narrowest next runtime-policy fix, without making retrieval or composer hooks default
 - preserve no-provider, no-private-data, retrieval-default-off, and composer-hook-default-off boundaries
-- keep exact customer questions, exact agent answers, retrieval status, hook decisions, and call-control traces visible for review
 
-Immediate product artifact for `PROD-021`:
+Immediate product artifact after `PROD-021`:
 
-- case file or generated fixed simulation set
-- runner, validator, product doc, generated JSON result, and Markdown report
-- per-turn comparison of baseline versus opt-in hook behavior
-- state-continuity, call-control, protected-context, non-sale, safe-close, hard-failure, and leakage metrics
-- thesis log and decision log updates after the run
+- compact review packet with the highest-signal `PROD-021` turn traces
+- explicit keep/revise/discard recommendation for opt-in hooks
+- explicit runtime-policy and call-control gap list
+- no runtime promotion until a follow-up gate closes those gaps
 
 Next voice checkpoint:
 

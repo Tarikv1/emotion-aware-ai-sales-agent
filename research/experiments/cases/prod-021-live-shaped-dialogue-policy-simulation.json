@@ -1,0 +1,591 @@
+{
+  "prod_021_case_id": "PROD-021-live-shaped-dialogue-policy-simulation",
+  "title": "PROD-021 live-shaped dialogue-policy simulation",
+  "source_checkpoints": [
+    "PROD-011-dialogue-policy-hardening",
+    "PROD-020-naturalized-customer-turn-evaluation"
+  ],
+  "source_policy_id": "brain_002_dialogue_policy_hardening_v1",
+  "case_design": {
+    "surface": "synthetic live-shaped customer turns only",
+    "multi_turn": true,
+    "agent_answers_generated_by_runner": true,
+    "scenario_labels_runtime_visible": false,
+    "source_pattern_ids_runtime_visible": false
+  },
+  "boundaries": {
+    "copied_transcript_text_used": false,
+    "generated_from_single_source_transcript": false,
+    "contains_transcript_derived_prompt_text": false,
+    "provider_calls_made": false,
+    "private_data_read": false,
+    "dataset_download_performed": false
+  },
+  "calls": [
+    {
+      "call_id": "PROD-021-C01",
+      "source_prod_011_call_id": "PROD-010-C01",
+      "domain": "b2b_software",
+      "scenario_label": "software_multi_objection_sale",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": true,
+      "expected_final": {
+        "policy_action": "close-and-log-sale-ready",
+        "call_control": "close-and-log-sale-ready",
+        "sale_ready": true,
+        "non_sale_correct": false
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-telecom-price-resistance",
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-product-order-intent"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C01-T01",
+          "source_prod_011_turn_id": "PROD-010-C01-T01",
+          "turn_position": 1,
+          "stage": "relevance-check",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "The cost sounds high, and I need to know whether reviewing this is worth my time.",
+          "intent": "price_concern",
+          "signal": "price_resistance",
+          "objection_type": "price",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "value-clarify",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "non_sale_correct",
+          "expected_agent_response_requirements": [
+            "acknowledge the cost concern without pressure",
+            "ask one focused question about value, timing, or fit",
+            "avoid unsupported savings claims"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C01-T02",
+          "source_prod_011_turn_id": "PROD-010-C01-T03",
+          "turn_position": 2,
+          "stage": "comparison",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "We already use another provider, so compare this fairly without pressure.",
+          "intent": "competitor_compare",
+          "signal": "competitor_comparison",
+          "objection_type": "competitor",
+          "emotional_signal": "analytical",
+          "expected_policy_action": "fair-compare",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "non_sale_correct",
+          "expected_agent_response_requirements": [
+            "avoid unsupported competitor claims",
+            "ask what comparison point matters most",
+            "keep the tone neutral and low pressure"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C01-T03",
+          "source_prod_011_turn_id": "PROD-010-C01-T05",
+          "turn_position": 3,
+          "stage": "timing-openness-check",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "I need time to think; do not rush me into a commitment today.",
+          "intent": "timing_delay",
+          "signal": "timing_delay",
+          "objection_type": "timing",
+          "emotional_signal": "hesitant",
+          "expected_policy_action": "autonomy-check",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "callback_agreed",
+          "expected_agent_response_requirements": [
+            "respect the customer's timing concern",
+            "offer a low-commitment callback or clarification",
+            "avoid forcing a decision"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C01-T04",
+          "source_prod_011_turn_id": "PROD-010-C01-T07",
+          "turn_position": 4,
+          "stage": "commitment-confirmation",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "If this fits our process and there is no payment today, I am ready to agree to the next step.",
+          "intent": "commitment",
+          "signal": "multi_objection_commitment",
+          "objection_type": "resolved",
+          "emotional_signal": "calm_interest",
+          "expected_policy_action": "close-and-log-sale-ready",
+          "expected_call_control": "close-and-log-sale-ready",
+          "expected_outcome": "sale_ready",
+          "expected_agent_response_requirements": [
+            "confirm fit before marking verbal commitment",
+            "make clear this is not payment collection",
+            "record only a sale-ready verbal next step"
+          ],
+          "protected_context": false
+        }
+      ]
+    },
+    {
+      "call_id": "PROD-021-C02",
+      "source_prod_011_call_id": "PROD-010-C02",
+      "domain": "b2b_software",
+      "scenario_label": "software_procurement_authority_delay",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": false,
+      "expected_final": {
+        "policy_action": "procurement-review",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-telecom-price-resistance",
+        "prod006-pattern-insurance-boundary"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C02-T01",
+          "source_prod_011_turn_id": "PROD-010-C02-T03",
+          "turn_position": 1,
+          "stage": "authority-check",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "My boss has to review this before I can decide.",
+          "intent": "authority_gap",
+          "signal": "authority_unclear",
+          "objection_type": "authority",
+          "emotional_signal": "firm",
+          "expected_policy_action": "stakeholder-review",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "non_sale_correct",
+          "expected_agent_response_requirements": [
+            "acknowledge that another decision maker is involved",
+            "offer a shareable summary or one concern to address",
+            "avoid treating the customer as sale-ready"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C02-T02",
+          "source_prod_011_turn_id": "PROD-010-C02-T05",
+          "turn_position": 2,
+          "stage": "procurement-review",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Procurement needs written information and nothing firm from me today.",
+          "intent": "procurement_rule",
+          "signal": "procurement_review",
+          "objection_type": "procurement",
+          "emotional_signal": "neutral",
+          "expected_policy_action": "procurement-review",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "non_sale_correct",
+          "expected_agent_response_requirements": [
+            "respect the procurement process",
+            "offer written information without pressure",
+            "avoid premature close language"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C02-T03",
+          "source_prod_011_turn_id": "PROD-010-C02-T07",
+          "turn_position": 3,
+          "stage": "procurement-review",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Next week might work for review, but I cannot commit to anything firm now.",
+          "intent": "delay_confirmed",
+          "signal": "procurement_delay",
+          "objection_type": "procurement",
+          "emotional_signal": "firm",
+          "expected_policy_action": "procurement-review",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "callback_agreed",
+          "expected_agent_response_requirements": [
+            "treat the next step as a follow-up only",
+            "avoid marking a verbal commitment",
+            "summarize the agreed low-pressure review path"
+          ],
+          "protected_context": false
+        }
+      ]
+    },
+    {
+      "call_id": "PROD-021-C03",
+      "source_prod_011_call_id": "PROD-010-C03",
+      "domain": "insurance_service",
+      "scenario_label": "insurance_claim_privacy_escalation",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": false,
+      "expected_final": {
+        "policy_action": "privacy-safe-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-insurance-boundary",
+        "prod006-pattern-medical-equipment-human-request",
+        "prod006-pattern-home-service-complaint"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C03-T01",
+          "source_prod_011_turn_id": "PROD-010-C03-T03",
+          "turn_position": 1,
+          "stage": "claim-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Can you guarantee this coverage before I share details?",
+          "intent": "claim_certainty",
+          "signal": "claim_boundary",
+          "objection_type": "claim_boundary",
+          "emotional_signal": "anxious",
+          "expected_policy_action": "claim-boundary-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "do not guarantee coverage",
+            "route claim certainty questions to a human specialist",
+            "avoid collecting sensitive details in the sales flow"
+          ],
+          "protected_context": true
+        },
+        {
+          "turn_id": "PROD-021-C03-T02",
+          "source_prod_011_turn_id": "PROD-010-C03-T05",
+          "turn_position": 2,
+          "stage": "privacy-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "I am worried about privacy and want a real person before I answer.",
+          "intent": "privacy_concern",
+          "signal": "privacy_concern",
+          "objection_type": "privacy",
+          "emotional_signal": "guarded",
+          "expected_policy_action": "privacy-safe-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "acknowledge the privacy concern",
+            "route to a human specialist instead of continuing sales",
+            "avoid asking for sensitive details"
+          ],
+          "protected_context": true
+        },
+        {
+          "turn_id": "PROD-021-C03-T03",
+          "source_prod_011_turn_id": "PROD-010-C03-T07",
+          "turn_position": 3,
+          "stage": "privacy-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Please route this to a human specialist before we discuss anything else.",
+          "intent": "needs_review",
+          "signal": "privacy_boundary",
+          "objection_type": "privacy",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "privacy-safe-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "honor the human handoff request",
+            "do not keep selling",
+            "keep the response concise"
+          ],
+          "protected_context": true
+        }
+      ]
+    },
+    {
+      "call_id": "PROD-021-C04",
+      "source_prod_011_call_id": "PROD-010-C04",
+      "domain": "medical_equipment",
+      "scenario_label": "medical_technical_safety_escalation",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": false,
+      "expected_final": {
+        "policy_action": "technical-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-medical-equipment-human-request",
+        "prod006-pattern-insurance-boundary",
+        "prod006-pattern-auto-service-fit-check"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C04-T01",
+          "source_prod_011_turn_id": "PROD-010-C04-T03",
+          "turn_position": 1,
+          "stage": "technical-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "I need a human specialist for the device safety details before I decide.",
+          "intent": "safety_question",
+          "signal": "technical_risk",
+          "objection_type": "technical_risk",
+          "emotional_signal": "concerned",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "route technical safety details to a specialist",
+            "avoid guessing",
+            "do not make unsupported safety claims"
+          ],
+          "protected_context": true
+        },
+        {
+          "turn_id": "PROD-021-C04-T02",
+          "source_prod_011_turn_id": "PROD-010-C04-T07",
+          "turn_position": 2,
+          "stage": "technical-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "A specialist is required here; I do not want an automatic answer.",
+          "intent": "specialist_required",
+          "signal": "technical_escalation",
+          "objection_type": "technical_question",
+          "emotional_signal": "concerned",
+          "expected_policy_action": "technical-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "confirm specialist handoff",
+            "avoid continuing automatically",
+            "keep sales pressure out of the answer"
+          ],
+          "protected_context": true
+        }
+      ]
+    },
+    {
+      "call_id": "PROD-021-C05",
+      "source_prod_011_call_id": "PROD-010-C05",
+      "domain": "membership_service",
+      "scenario_label": "membership_refusal_end_call",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": false,
+      "expected_final": {
+        "policy_action": "end-call",
+        "call_control": "end-call",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-membership-cancellation",
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-home-service-complaint"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C05-T01",
+          "source_prod_011_turn_id": "PROD-010-C05-T01",
+          "turn_position": 1,
+          "stage": "refusal",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "No thank you, I want to cancel and stop the sales call.",
+          "intent": "cancel_intent",
+          "signal": "cancel_intent",
+          "objection_type": "cancellation",
+          "emotional_signal": "firm_negative",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call",
+          "expected_outcome": "end_call",
+          "expected_agent_response_requirements": [
+            "respect the refusal",
+            "stop the sales conversation",
+            "avoid retention pressure"
+          ],
+          "protected_context": true
+        },
+        {
+          "turn_id": "PROD-021-C05-T02",
+          "source_prod_011_turn_id": "PROD-010-C05-T07",
+          "turn_position": 2,
+          "stage": "refusal",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Stop calling me. I am not interested.",
+          "intent": "refusal_confirmed",
+          "signal": "angry_refusal",
+          "objection_type": "anger",
+          "emotional_signal": "angry",
+          "expected_policy_action": "end-call",
+          "expected_call_control": "end-call",
+          "expected_outcome": "end_call",
+          "expected_agent_response_requirements": [
+            "confirm the call will end",
+            "avoid another offer",
+            "keep the response polite and brief"
+          ],
+          "protected_context": true
+        }
+      ]
+    },
+    {
+      "call_id": "PROD-021-C06",
+      "source_prod_011_call_id": "PROD-010-C06",
+      "domain": "home_service",
+      "scenario_label": "home_service_support_handoff",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": false,
+      "expected_final": {
+        "policy_action": "support-first-escalation",
+        "call_control": "transfer-or-escalate",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-home-service-complaint",
+        "prod006-pattern-general-brushoff",
+        "prod006-pattern-membership-cancellation"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C06-T01",
+          "source_prod_011_turn_id": "PROD-010-C06-T01",
+          "turn_position": 1,
+          "stage": "support-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "My service issue is unresolved, and I need a real person, not an upsell.",
+          "intent": "support_request",
+          "signal": "support",
+          "objection_type": "support",
+          "emotional_signal": "frustrated",
+          "expected_policy_action": "support-first-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "prioritize issue resolution",
+            "route to support or a human specialist",
+            "avoid turning the support issue into a sale"
+          ],
+          "protected_context": true
+        },
+        {
+          "turn_id": "PROD-021-C06-T02",
+          "source_prod_011_turn_id": "PROD-010-C06-T07",
+          "turn_position": 2,
+          "stage": "support-boundary",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Please route me to a human support specialist before trying to sell anything else.",
+          "intent": "support_required",
+          "signal": "support_upsell_blocked",
+          "objection_type": "support",
+          "emotional_signal": "frustrated",
+          "expected_policy_action": "support-first-escalation",
+          "expected_call_control": "transfer-or-escalate",
+          "expected_outcome": "human_handoff",
+          "expected_agent_response_requirements": [
+            "confirm support-first routing",
+            "do not continue selling",
+            "avoid unsupported troubleshooting"
+          ],
+          "protected_context": true
+        }
+      ]
+    },
+    {
+      "call_id": "PROD-021-C07",
+      "source_prod_011_call_id": "PROD-010-C06",
+      "domain": "automotive",
+      "scenario_label": "trust_price_callback",
+      "campaign_id": "campaign-prod-005-b2b-software",
+      "eligible_for_close": false,
+      "expected_final": {
+        "policy_action": "autonomy-check",
+        "call_control": "continue-call",
+        "sale_ready": false,
+        "non_sale_correct": true
+      },
+      "source_pattern_ids": [
+        "prod006-pattern-home-service-complaint",
+        "prod006-pattern-telecom-price-resistance",
+        "prod006-pattern-general-brushoff"
+      ],
+      "turns": [
+        {
+          "turn_id": "PROD-021-C07-T01",
+          "source_prod_011_turn_id": "PROD-010-C06-T03",
+          "turn_position": 1,
+          "stage": "trust-repair",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "I do not know your company. How can I verify this is legitimate?",
+          "intent": "trust_gap",
+          "signal": "trust_gap",
+          "objection_type": "trust",
+          "emotional_signal": "skeptical",
+          "expected_policy_action": "trust-repair",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "support_only",
+          "expected_agent_response_requirements": [
+            "repair trust with verification options",
+            "keep the next step low pressure",
+            "avoid vague authority claims"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C07-T02",
+          "source_prod_011_turn_id": "PROD-010-C01-T01",
+          "turn_position": 2,
+          "stage": "price-check",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "The cost sounds high; is this worth my time?",
+          "intent": "price_concern",
+          "signal": "price_resistance",
+          "objection_type": "price",
+          "emotional_signal": "cautious",
+          "expected_policy_action": "value-clarify",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "non_sale_correct",
+          "expected_agent_response_requirements": [
+            "acknowledge the cost concern",
+            "ask whether price, value, or timing is the main issue",
+            "avoid pressure"
+          ],
+          "protected_context": false
+        },
+        {
+          "turn_id": "PROD-021-C07-T03",
+          "source_prod_011_turn_id": "PROD-010-C01-T05",
+          "turn_position": 3,
+          "stage": "callback",
+          "input_type": "speech-final",
+          "silence_count": 0,
+          "customer_transcript": "Send me a short summary and call back later; I need time to think.",
+          "intent": "timing_delay",
+          "signal": "timing_delay",
+          "objection_type": "timing",
+          "emotional_signal": "hesitant",
+          "expected_policy_action": "autonomy-check",
+          "expected_call_control": "continue-call",
+          "expected_outcome": "callback_agreed",
+          "expected_agent_response_requirements": [
+            "respect the request for time",
+            "offer a short summary or callback",
+            "avoid forcing commitment"
+          ],
+          "protected_context": false
+        }
+      ]
+    }
+  ]
+}

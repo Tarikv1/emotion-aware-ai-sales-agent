@@ -19,6 +19,7 @@ npm run cli -- memory refresh --project emotion-aware-ai-sales-agent
 
 - Keep product-required docs, scripts, and workflows inside this repo when they are needed for product operation or customer/developer handoff.
 - Workspace tools from `D:\Codex\shared` and Codex HQ may support development, but they are not product runtime dependencies.
+- After each completed checkpoint, run the relevant validators, commit the checkpoint on `main`, and push to GitHub `main` unless Tarik explicitly pauses or redirects the publish step. Do not leave completed checkpoint evidence only in the local worktree.
 - Preserve the architecture principle:
 
 ```text

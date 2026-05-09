@@ -843,6 +843,18 @@ Validate naturalized prompts, fixed scorer use, source-pattern reference preserv
 python scripts\validate_prod_020_naturalized_customer_turn_evaluation.py
 ```
 
+Run the PROD-021 live-shaped dialogue-policy simulation for the PROD-020 opt-in runtime hooks:
+
+```powershell
+python scripts\run_prod_021_live_shaped_dialogue_policy_simulation.py
+```
+
+Validate live-shaped multi-turn cases, exact customer/agent trace visibility, protected-context preservation, safety gates, and no-default-promotion boundary:
+
+```powershell
+python scripts\validate_prod_021_live_shaped_dialogue_policy_simulation.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

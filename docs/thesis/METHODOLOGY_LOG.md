@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-021 live-shaped dialogue-policy simulation
+
+- Objective: test whether the `PROD-020` opt-in runtime composer-hook gain survives live-shaped, multi-turn dialogue flow against the `PROD-011` hardened dialogue-policy expectations.
+- Action taken: added a PROD-021 simulation module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, fixed live-shaped case file, and generated result/report artifacts.
+- Data used: synthetic live-shaped customer turns built from project-owned checkpoint abstractions, plus the generated `PROD-020` result and `PROD-011` policy case as prior evidence. PROD-021 did not read raw CallCenterEN files, download data, call providers, call an LLM, use embeddings, write vectors, read private data, store raw source text, enable retrieval by default, or enable composer hooks by default.
+- Output created: `docs/product/PROD_021_LIVE_SHAPED_DIALOGUE_POLICY_SIMULATION.md`, `scripts/prod_021_live_shaped_dialogue_policy_simulation.py`, `scripts/run_prod_021_live_shaped_dialogue_policy_simulation.py`, `scripts/validate_prod_021_live_shaped_dialogue_policy_simulation.py`, `research/experiments/cases/prod-021-live-shaped-dialogue-policy-simulation.json`, `research/experiments/generated/PROD-021-live-shaped-dialogue-policy-simulation/result.json`, and `research/experiments/generated/PROD-021-live-shaped-dialogue-policy-simulation/report.md`.
+- What was learned: across `7` calls and `19` customer turns, opt-in hooks improved `4` turns, opt-in total score was `112` versus retrieval-only score `98`, opt-in won `4` turns, retrieval-only won `0`, and `15` tied. Safety stayed clean: protected context preservation `1.0`, state reference completeness `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, hard failure rate `0.0`, payment collection count `0`, and leakage finding count `0`. The gate did not pass because policy action correctness was `0.4737` and call-control correctness was `0.8421`.
+- Why it matters for the thesis: PROD-021 separates hook-wording quality from stateful runtime-policy readiness. The hooks remain useful as an opt-in candidate, but the project cannot claim runtime promotion until policy-action and call-control gaps are closed in live-shaped multi-turn flow.
+- Open questions: which narrow runtime-policy changes close the observed policy-action and call-control misses without weakening protected-context behavior, default-off retrieval, or no-provider/no-private-data boundaries.
+
 ### 2026-05-09 - PROD-020 naturalized customer-turn evaluation
 
 - Objective: test whether the `PROD-019` opt-in runtime composer-hook gain survives when rubric-like generated customer turns are rewritten into natural customer wording.

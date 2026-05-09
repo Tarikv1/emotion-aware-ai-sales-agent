@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-068 - Keep PROD-021 hooks opt-in and revise runtime policy first
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: keep the `PROD-020` runtime composer hooks as an opt-in candidate only; do not promote retrieval or composer hooks by default; revise live-shaped runtime policy and call-control gaps before any bounded demo integration
+- Why:
+  - PROD-021 tested `7` synthetic live-shaped calls and `19` customer turns against the `PROD-011` hardened dialogue-policy expectations
+  - opt-in hooks still improved wording on `4` turns, with opt-in total score `112` versus retrieval-only score `98`
+  - safety stayed clean: hard failure rate `0.0`, payment collection count `0`, leakage finding count `0`, protected context preservation `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, and state reference completeness `1.0`
+  - the gate did not pass because policy action correctness was `0.4737` and call-control correctness was `0.8421`
+  - the remaining issue is stateful runtime-policy coverage, not evidence that hooks should become default
+- Alternatives considered:
+  - promote the hooks because the opt-in score still beat retrieval-only
+  - discard hooks because the live-shaped gate did not pass
+  - move directly to a provider/live-call test despite policy-action and call-control misses
+  - broaden the dataset bank before closing the policy gap
+- Consequences:
+  - retrieval and composer hooks remain explicit opt-in only
+  - the next product artifact should be a compact PROD-021 review/gap packet with exact turn traces
+  - any follow-up implementation should target policy-action and call-control coverage before new voice, provider, or dataset expansion work
+
 ### DEC-067 - Keep PROD-020 naturalized runtime hooks opt-in
 
 - Date: 2026-05-09
