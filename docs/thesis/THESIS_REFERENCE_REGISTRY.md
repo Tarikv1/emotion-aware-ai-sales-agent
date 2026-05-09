@@ -87,6 +87,19 @@ Use the source categories carefully:
 
 ## Sales Communication And Compliance Sources
 
+### PROD-028 synthetic CRM product grounding sources
+
+- Type: product inspiration and public SaaS/CRM packaging source pack
+- Sources:
+  - HubSpot Sales Hub public product/pricing page: https://www.hubspot.com/products/sales
+  - Pipedrive public CRM pricing page: https://www.pipedrive.com/en/pricing
+  - Salesforce Sales Cloud public pricing page: https://www.salesforce.com/sales/pricing/
+  - Zendesk public pricing page: https://www.zendesk.com/pricing/
+- Project use: inspiration only for `PROD-028` synthetic campaign knowledge grounding, including realistic SaaS/CRM patterns such as per-seat tiers, annual billing, trials, onboarding and migration fees, integrations, support/security tiers, cancellation boundaries, specialist quote handling, and add-on/package thinking.
+- Current project status: encoded into `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/synthetic_campaign.json` as fictional project-owned campaign facts for `Northstar Workflow Labs` and `RouteSignal CRM`.
+- Reuse status: no copied real-company wording, plan names, brand identity, customer claims, or sales copy. Reuse label is `inspiration only`.
+- Thesis caution: these are product-grounding references, not evidence that the sales agent improves real-world sales outcomes. Public pages can change, so later thesis writing should re-check dates and avoid citing synthetic prices as real market facts.
+
 ### RAG-019 public sales communication source expansion
 
 - Type: public practitioner, academic, provider documentation, legal/compliance, and product-grounding source pack

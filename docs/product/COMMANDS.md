@@ -927,6 +927,18 @@ Validate the 20-scenario / 120-turn route set, exact customer/agent traces, poli
 python scripts\validate_prod_027_full_scenario_route_evaluation.py
 ```
 
+Run the PROD-028 synthetic campaign knowledge grounding checkpoint:
+
+```powershell
+python scripts\run_prod_028_synthetic_campaign_knowledge_grounding.py
+```
+
+Validate the reality-patterned fictional campaign facts, same-question baseline comparison, direct-answer metrics, source reuse labels, and no-provider/no-runtime-change boundary:
+
+```powershell
+python scripts\validate_prod_028_synthetic_campaign_knowledge_grounding.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

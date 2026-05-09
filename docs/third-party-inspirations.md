@@ -38,6 +38,34 @@ one reusable sales-agent core
 - Follow-up:
   - If this becomes executable, build it as product-local tooling with explicit halting criteria and no autonomous send/publish behavior.
 
+## Public CRM/SaaS pricing pages for PROD-028
+
+- Sources:
+  - https://www.hubspot.com/products/sales
+  - https://www.pipedrive.com/en/pricing
+  - https://www.salesforce.com/sales/pricing/
+  - https://www.zendesk.com/pricing/
+- License observed: public pages; no license to copy product text or brand assets assumed.
+- Checked: 2026-05-09.
+- Reuse label: inspiration only.
+- What we learned/adapted:
+  - B2B sales and customer-operations software commonly uses per-seat tiers, trials, annual billing, onboarding/support packaging, add-ons, integrations, and enterprise security/support boundaries.
+  - Buyer questions about price, implementation, eligibility, integrations, cancellation, security, and support handoff are realistic and should be answered from approved campaign facts.
+- Directly copied material: none. No real product wording, plan name, brand identity, sales claim, customer claim, or pricing table text was copied into the synthetic campaign.
+- Where it affected the Emotion Aware project:
+  - `scripts/prod_028_synthetic_campaign_knowledge_grounding.py`
+  - `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/synthetic_campaign.json`
+  - `docs/product/PROD_028_SYNTHETIC_CAMPAIGN_KNOWLEDGE_GROUNDING.md`
+- Product/runtime boundary:
+  - Development and evaluation source patterning only.
+  - The generated `RouteSignal CRM` campaign is fictional and not a real company offer.
+  - No provider call, browser automation, customer data, live runtime dependency, or payment flow was added.
+- Security/privacy notes:
+  - Public pages only.
+  - No login, scraping bypass, private URLs, customer data, or raw HTML capture required.
+- Follow-up:
+  - Re-check public source pages before final thesis citation or any real market-pricing claim.
+
 ## 1jehuang/jcode
 
 - Source: https://github.com/1jehuang/jcode

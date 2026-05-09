@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-028-full-scenario-demo-review` on the accepted `PROD-027` full-scenario route evaluation before any provider-backed, voice, telephony, or client-facing demo work.
+- [ ] Current: run `PROD-029-grounded-full-scenario-rerun` by applying the accepted `PROD-028` synthetic campaign facts to full-scenario turns, so the agent can prove it answers product questions directly without losing route safety.
 
 Next checkpoints:
 
-- [ ] Next: review the `PROD-027` route gaps and decide whether to revise the default local route policy, add a stronger full-scenario demo layer, or keep the route gaps as product-learning evidence before demo polishing.
+- [ ] Next: review grounded full-scenario results and decide whether to adapt the fact-grounded answer layer into the runtime campaign profile, keep it demo-only, or revise the campaign facts before demo polishing.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
 - [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
@@ -58,6 +58,7 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `PROD-028` synthetic campaign knowledge grounding, which creates a fictional but reality-patterned B2B CRM campaign before demo polishing so the agent has approved product facts for pricing, plans, setup, integrations, eligibility, support/security handoff, cancellation, discounts, and forbidden claims. Public CRM/SaaS pages from HubSpot, Pipedrive, Salesforce, and Zendesk were used as inspiration only for packaging patterns; no real company wording, brand identity, customer claims, or sales copy was copied. Across `12` same-question comparisons, the grounded candidate reached direct answer rate `1.0`, factual correctness rate `1.0`, price correctness rate `1.0`, question overuse rate `0.0`, safe unknown handling rate `1.0`, unsupported claim count `0`, and payment collection count `0`, while the current baseline showed baseline question overuse rate `1.0`. Runtime behavior, retrieval defaults, composer-hook defaults, provider calls, LLM use, private data reads, dataset downloads, server start, and payment collection stayed disabled. The next checkpoint is `PROD-029-grounded-full-scenario-rerun`.
 - [x] `PROD-027` full scenario route evaluation, which responds to the one-line PROD-026 limitation by creating a strong `20`-scenario / `120`-turn route set from the `PROD-014` CallCenterEN abstract scenario bank. It covers sale-eligible, price-objection, callback-request, cancellation-boundary, support-handoff, and trust-repair flows with `6` turns per scenario and `209` source-pattern references. It shows exact customer turns, exact local guarded-runtime answers, expected and observed policy actions, expected and observed call control, route correctness, and safety flags. Safety stayed clean with hard failures `0`, payment collection count `0`, leakage findings `0`, non-sale correctness `1.0`, and safe-close correctness `1.0`. Route behavior still needs review: route correctness is `0.9167`, policy-action correctness is `0.9167`, call-control correctness is `0.975`, and only `13/20` scenarios passed every route turn. The decision is `route_gaps_found_review_before_demo`, so the next checkpoint is `PROD-028-full-scenario-demo-review`, not provider/live demo work.
 - [x] `PROD-026` local demo trace harness, which turns the accepted `PROD-025` bounded demo packet into a local static trace surface. It creates `3` demo trace cards from `3` source trace cards and shows the exact synthetic customer question, exact agent answer, policy action, call control, expected outcome, source checkpoint, and safety flags. The harness marks exact question/answer visibility `true`, decision-process visibility `true`, safety-flags visibility `true`, local trace only `true`, manual review required `true`, and local demo trace harness ready `true`, while provider calls, LLM use, private data reads, dataset downloads, runtime behavior changes, customer data, payment collection, live provider defaults, retrieval defaults, composer-hook defaults, server start, production runtime promotion, and live provider demo remain blocked. The recommended next checkpoint is `PROD-027-manual-demo-trace-review`.
 - [x] `PROD-025` bounded demo readiness packet, which converts the clean `PROD-024` post-fix evidence into a local trace-only demo scope. The packet marks demo readiness gate passed `true`, bounded demo ready `true`, local dry-run only `true`, and manual review required `true`, while production runtime promotion, live provider demo, customer data, payment handling, retrieval defaults, and composer-hook defaults remain blocked. It defines allowed demo modes `local-trace-replay`, `offline-scripted-call-simulation`, and `human-review-packet`; blocked claims such as production-ready autonomous calling and customer-facing live runtime; required review gates; and an exact question/answer trace contract. The recommended next checkpoint is `PROD-026-local-demo-trace-harness`.
@@ -441,19 +442,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-028-full-scenario-demo-review` on the accepted `PROD-027-full-scenario-route-evaluation`.
+Run `PROD-029-grounded-full-scenario-rerun` using the accepted `PROD-028-synthetic-campaign-knowledge-grounding` facts.
 
 Purpose:
 
-- inspect the 20 full scenarios and identify which route misses are real policy gaps versus acceptable local classifier limits
-- confirm the exact customer turns, exact agent answers, expected route, observed route, call control, and safety flags are understandable enough for a demo review
+- rerun a full-scenario slice with approved synthetic campaign knowledge so product, pricing, setup, integration, eligibility, and boundary questions get direct answers
+- confirm the exact customer turns, exact baseline answers, exact grounded answers, expected route, observed route, call control, and safety flags are understandable enough for a demo review
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
-- decide whether to revise local route policy, create a polished full-scenario demo surface, or expand the evaluation set before demo polishing
+- decide whether to adapt the fact-grounded answer layer into the runtime campaign profile, keep it demo-only, or revise the synthetic campaign facts before demo polishing
 
-Immediate product artifact after `PROD-027`:
+Immediate product artifact after `PROD-028`:
 
-- full-scenario demo review packet
-- accepted/rejected/revise status per route gap
+- grounded full-scenario rerun packet
+- accepted/rejected/revise status per grounded answer and route gap
 - next-demo recommendation before any provider-backed, voice, telephony, or client-facing step
 
 Next voice checkpoint:

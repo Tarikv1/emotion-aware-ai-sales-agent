@@ -1,0 +1,193 @@
+{
+  "campaign_id": "campaign-prod-028-routesignal-crm",
+  "client_name": "Northstar Workflow Labs",
+  "product_name": "RouteSignal CRM",
+  "product_category": "software-b2b-crm",
+  "customer_type": "b2b",
+  "country_or_region": "US/EU",
+  "language": "en",
+  "approved_opening": "Hi, I am calling about lead-routing and follow-up workflow gaps. Do you have a minute?",
+  "qualification_questions": [
+    "How many people touch inbound leads before a callback happens?",
+    "Where do leads get stuck today: routing, follow-up, reporting, or handoff?",
+    "If there is fit, would a short specialist review be useful?"
+  ],
+  "allowed_claims": [
+    "RouteSignal CRM centralizes inbound lead intake and callback ownership.",
+    "RouteSignal CRM can route leads by region, source, priority, or account owner.",
+    "RouteSignal CRM supports email, calendar, CRM, Slack, Zapier, and CSV-based workflow handoffs.",
+    "Typical assisted setup is two to four weeks after admin access and import scope are confirmed.",
+    "The first sales call is informational and does not collect payment."
+  ],
+  "forbidden_claims": [
+    "guaranteed revenue increase",
+    "guaranteed cost savings",
+    "guaranteed conversion lift",
+    "replaces every crm",
+    "no risk",
+    "legal advice",
+    "collect payment or card details on this call"
+  ],
+  "required_disclosures": [
+    "Pricing is synthetic for product simulation and must be confirmed by a specialist before a real quote.",
+    "Integration scope, migration effort, and security review require specialist confirmation.",
+    "Payment or card details are not collected on the sales call."
+  ],
+  "discount_terms": [
+    "Annual billing reduces subscription price by 15 percent versus monthly billing.",
+    "Custom discounts require a written specialist quote and cannot be promised by the call agent."
+  ],
+  "deadline_terms": [
+    "No scarcity deadline is used in this campaign.",
+    "The agent may offer a 14-day sandbox trial, not an artificial limited-time deadline."
+  ],
+  "escalation_triggers": [
+    "custom security review",
+    "SSO or audit-log detail",
+    "procurement terms",
+    "legal or compliance question",
+    "migration estimate beyond standard CSV import",
+    "request for guaranteed revenue impact",
+    "human request"
+  ],
+  "scheduling_goal": "non-binding 30-minute workflow review",
+  "human_handoff_role": "solutions specialist",
+  "compliance_notes": "Fictional campaign for local simulation. Facts are reality-patterned from public SaaS/CRM pages, not copied from a real company.",
+  "product_knowledge": {
+    "plans": [
+      {
+        "plan_id": "starter",
+        "name": "Starter",
+        "price_usd_per_user_month_annual": 29,
+        "minimum_users": 3,
+        "best_for": "small teams moving from spreadsheets to a shared pipeline",
+        "included": [
+          "lead inbox",
+          "basic pipeline management",
+          "email templates",
+          "callback tasks",
+          "standard reports",
+          "CSV import"
+        ]
+      },
+      {
+        "plan_id": "growth",
+        "name": "Growth",
+        "price_usd_per_user_month_annual": 59,
+        "minimum_users": 5,
+        "best_for": "teams that need routing automation and manager visibility",
+        "included": [
+          "everything in Starter",
+          "lead routing by region, source, priority, or owner",
+          "Gmail and Outlook calendar sync",
+          "Slack alerts",
+          "Zapier handoffs",
+          "duplicate detection",
+          "team reporting"
+        ]
+      },
+      {
+        "plan_id": "scale",
+        "name": "Scale",
+        "price_usd_per_user_month_annual": 99,
+        "minimum_users": 10,
+        "best_for": "larger teams with security, approval, and workflow-control needs",
+        "included": [
+          "everything in Growth",
+          "SSO",
+          "audit logs",
+          "sandbox",
+          "approval workflows",
+          "custom roles",
+          "priority support"
+        ]
+      }
+    ],
+    "trial": {
+      "length_days": 14,
+      "credit_card_required": false,
+      "notes": "Sandbox trial uses sample data or customer-provided non-sensitive import samples."
+    },
+    "billing": {
+      "monthly_available": true,
+      "annual_available": true,
+      "annual_discount_percent": 15,
+      "taxes_not_included": true
+    },
+    "onboarding": {
+      "assisted_setup_fee_usd": 1500,
+      "data_migration_package_usd": 900,
+      "typical_assisted_setup_weeks": "2-4"
+    },
+    "contract": {
+      "cancellation": "monthly or annual subscription ends at the paid-period boundary",
+      "payment_collection_allowed_on_call": false,
+      "quote_required_before_purchase": true
+    },
+    "eligibility": {
+      "minimum_users": 3,
+      "ideal_user_range": "3-250 sales or customer operations users",
+      "not_for": [
+        "emergency support",
+        "regulated medical advice",
+        "legal advice",
+        "payment processing",
+        "consumer cold-call payment collection"
+      ]
+    },
+    "integrations": [
+      "Salesforce",
+      "HubSpot",
+      "Gmail",
+      "Outlook",
+      "Slack",
+      "Zapier",
+      "CSV import"
+    ]
+  },
+  "source_inspiration": [
+    {
+      "source_id": "prod-028-source-hubspot-sales-product",
+      "name": "HubSpot Sales Hub public product/pricing page",
+      "url": "https://www.hubspot.com/products/sales",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "sales software is commonly sold as tiered per-seat plans with starter, professional, and enterprise-style capability bands.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "prod-028-source-pipedrive-pricing",
+      "name": "Pipedrive public CRM pricing page",
+      "url": "https://www.pipedrive.com/en/pricing",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "CRM pricing commonly uses annual discounts, free trials, add-ons, integrations, onboarding, and tiered automation/security features.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "prod-028-source-salesforce-sales-pricing",
+      "name": "Salesforce Sales Cloud public pricing page",
+      "url": "https://www.salesforce.com/sales/pricing/",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "enterprise CRM packages commonly expose per-user pricing, lead routing, automation, quoting, forecasting, APIs, and support add-ons.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "prod-028-source-zendesk-pricing",
+      "name": "Zendesk public pricing page",
+      "url": "https://www.zendesk.com/pricing/",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "customer operations software commonly tiers routing, reporting, support channels, AI/admin tools, audit logs, sandbox, and privacy add-ons.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    }
+  ],
+  "reuse_boundary": {
+    "reuse_label": "inspiration only",
+    "copied_material": "none",
+    "fictional_product": true,
+    "fictional_company": true,
+    "real_brand_identity_used": false
+  }
+}

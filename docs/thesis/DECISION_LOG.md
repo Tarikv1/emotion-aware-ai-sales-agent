@@ -15,6 +15,26 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-075 - Use a synthetic reality-based product campaign before demo polish
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Use a fictional but reality-patterned B2B CRM campaign as the next product brain before demo polishing, then test whether fact-grounded answers reduce question-only behavior.
+- Why:
+  - PROD-027 showed the agent can stay safe across full scenarios, but many answers were thin because the runtime had no real product facts to answer with
+  - a real company campaign would create copying, licensing, brand, and liability risks before client approval
+  - a fully invented product would be less useful because pricing, billing, setup, support, and security questions would not resemble real SaaS buyer concerns
+  - PROD-028 uses public CRM/SaaS pages as inspiration only and keeps all campaign facts fictional and project-owned
+- Alternatives considered:
+  - use a real product/company directly
+  - keep the current fact-thin B2B software campaign
+  - create a fully arbitrary synthetic product with no reality grounding
+  - jump directly to provider-backed voice or demo polish
+- Consequences:
+  - the next checkpoint should be `PROD-029-grounded-full-scenario-rerun`
+  - product and pricing facts can be evaluated locally before runtime promotion
+  - real-client, provider-backed, telephony, and payment-related work remain blocked
+
 ### DEC-074 - Keep PROD-027 as full-scenario route evaluation
 
 - Date: 2026-05-09

@@ -1,0 +1,1097 @@
+{
+  "checkpoint_id": "PROD-028-synthetic-campaign-knowledge-grounding",
+  "title": "PROD-028 synthetic campaign knowledge grounding",
+  "next_checkpoint_recommended": "PROD-029-grounded-full-scenario-rerun",
+  "runtime_under_test": {
+    "baseline_name": "current_local_guarded_runtime_default_off",
+    "candidate_name": "synthetic_campaign_fact_grounded_candidate",
+    "same_questions_compared": true,
+    "retrieval_enabled": false,
+    "composer_hooks_enabled": false
+  },
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/result.json",
+    "campaign_path": "research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/synthetic_campaign.json",
+    "report_path": "research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/report.md",
+    "trace_html_path": "research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/grounded_answer_trace.html"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_real_company_text": false,
+    "real_company_brand_used_as_campaign": false,
+    "real_customer_data_used": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false
+  },
+  "synthetic_campaign": {
+    "campaign_id": "campaign-prod-028-routesignal-crm",
+    "client_name": "Northstar Workflow Labs",
+    "product_name": "RouteSignal CRM",
+    "product_category": "software-b2b-crm",
+    "customer_type": "b2b",
+    "country_or_region": "US/EU",
+    "language": "en",
+    "approved_opening": "Hi, I am calling about lead-routing and follow-up workflow gaps. Do you have a minute?",
+    "qualification_questions": [
+      "How many people touch inbound leads before a callback happens?",
+      "Where do leads get stuck today: routing, follow-up, reporting, or handoff?",
+      "If there is fit, would a short specialist review be useful?"
+    ],
+    "allowed_claims": [
+      "RouteSignal CRM centralizes inbound lead intake and callback ownership.",
+      "RouteSignal CRM can route leads by region, source, priority, or account owner.",
+      "RouteSignal CRM supports email, calendar, CRM, Slack, Zapier, and CSV-based workflow handoffs.",
+      "Typical assisted setup is two to four weeks after admin access and import scope are confirmed.",
+      "The first sales call is informational and does not collect payment."
+    ],
+    "forbidden_claims": [
+      "guaranteed revenue increase",
+      "guaranteed cost savings",
+      "guaranteed conversion lift",
+      "replaces every crm",
+      "no risk",
+      "legal advice",
+      "collect payment or card details on this call"
+    ],
+    "required_disclosures": [
+      "Pricing is synthetic for product simulation and must be confirmed by a specialist before a real quote.",
+      "Integration scope, migration effort, and security review require specialist confirmation.",
+      "Payment or card details are not collected on the sales call."
+    ],
+    "discount_terms": [
+      "Annual billing reduces subscription price by 15 percent versus monthly billing.",
+      "Custom discounts require a written specialist quote and cannot be promised by the call agent."
+    ],
+    "deadline_terms": [
+      "No scarcity deadline is used in this campaign.",
+      "The agent may offer a 14-day sandbox trial, not an artificial limited-time deadline."
+    ],
+    "escalation_triggers": [
+      "custom security review",
+      "SSO or audit-log detail",
+      "procurement terms",
+      "legal or compliance question",
+      "migration estimate beyond standard CSV import",
+      "request for guaranteed revenue impact",
+      "human request"
+    ],
+    "scheduling_goal": "non-binding 30-minute workflow review",
+    "human_handoff_role": "solutions specialist",
+    "compliance_notes": "Fictional campaign for local simulation. Facts are reality-patterned from public SaaS/CRM pages, not copied from a real company.",
+    "product_knowledge": {
+      "plans": [
+        {
+          "plan_id": "starter",
+          "name": "Starter",
+          "price_usd_per_user_month_annual": 29,
+          "minimum_users": 3,
+          "best_for": "small teams moving from spreadsheets to a shared pipeline",
+          "included": [
+            "lead inbox",
+            "basic pipeline management",
+            "email templates",
+            "callback tasks",
+            "standard reports",
+            "CSV import"
+          ]
+        },
+        {
+          "plan_id": "growth",
+          "name": "Growth",
+          "price_usd_per_user_month_annual": 59,
+          "minimum_users": 5,
+          "best_for": "teams that need routing automation and manager visibility",
+          "included": [
+            "everything in Starter",
+            "lead routing by region, source, priority, or owner",
+            "Gmail and Outlook calendar sync",
+            "Slack alerts",
+            "Zapier handoffs",
+            "duplicate detection",
+            "team reporting"
+          ]
+        },
+        {
+          "plan_id": "scale",
+          "name": "Scale",
+          "price_usd_per_user_month_annual": 99,
+          "minimum_users": 10,
+          "best_for": "larger teams with security, approval, and workflow-control needs",
+          "included": [
+            "everything in Growth",
+            "SSO",
+            "audit logs",
+            "sandbox",
+            "approval workflows",
+            "custom roles",
+            "priority support"
+          ]
+        }
+      ],
+      "trial": {
+        "length_days": 14,
+        "credit_card_required": false,
+        "notes": "Sandbox trial uses sample data or customer-provided non-sensitive import samples."
+      },
+      "billing": {
+        "monthly_available": true,
+        "annual_available": true,
+        "annual_discount_percent": 15,
+        "taxes_not_included": true
+      },
+      "onboarding": {
+        "assisted_setup_fee_usd": 1500,
+        "data_migration_package_usd": 900,
+        "typical_assisted_setup_weeks": "2-4"
+      },
+      "contract": {
+        "cancellation": "monthly or annual subscription ends at the paid-period boundary",
+        "payment_collection_allowed_on_call": false,
+        "quote_required_before_purchase": true
+      },
+      "eligibility": {
+        "minimum_users": 3,
+        "ideal_user_range": "3-250 sales or customer operations users",
+        "not_for": [
+          "emergency support",
+          "regulated medical advice",
+          "legal advice",
+          "payment processing",
+          "consumer cold-call payment collection"
+        ]
+      },
+      "integrations": [
+        "Salesforce",
+        "HubSpot",
+        "Gmail",
+        "Outlook",
+        "Slack",
+        "Zapier",
+        "CSV import"
+      ]
+    },
+    "source_inspiration": [
+      {
+        "source_id": "prod-028-source-hubspot-sales-product",
+        "name": "HubSpot Sales Hub public product/pricing page",
+        "url": "https://www.hubspot.com/products/sales",
+        "checked_date": "2026-05-09",
+        "observed_pattern": "sales software is commonly sold as tiered per-seat plans with starter, professional, and enterprise-style capability bands.",
+        "reuse_label": "inspiration only",
+        "directly_copied_material": "none"
+      },
+      {
+        "source_id": "prod-028-source-pipedrive-pricing",
+        "name": "Pipedrive public CRM pricing page",
+        "url": "https://www.pipedrive.com/en/pricing",
+        "checked_date": "2026-05-09",
+        "observed_pattern": "CRM pricing commonly uses annual discounts, free trials, add-ons, integrations, onboarding, and tiered automation/security features.",
+        "reuse_label": "inspiration only",
+        "directly_copied_material": "none"
+      },
+      {
+        "source_id": "prod-028-source-salesforce-sales-pricing",
+        "name": "Salesforce Sales Cloud public pricing page",
+        "url": "https://www.salesforce.com/sales/pricing/",
+        "checked_date": "2026-05-09",
+        "observed_pattern": "enterprise CRM packages commonly expose per-user pricing, lead routing, automation, quoting, forecasting, APIs, and support add-ons.",
+        "reuse_label": "inspiration only",
+        "directly_copied_material": "none"
+      },
+      {
+        "source_id": "prod-028-source-zendesk-pricing",
+        "name": "Zendesk public pricing page",
+        "url": "https://www.zendesk.com/pricing/",
+        "checked_date": "2026-05-09",
+        "observed_pattern": "customer operations software commonly tiers routing, reporting, support channels, AI/admin tools, audit logs, sandbox, and privacy add-ons.",
+        "reuse_label": "inspiration only",
+        "directly_copied_material": "none"
+      }
+    ],
+    "reuse_boundary": {
+      "reuse_label": "inspiration only",
+      "copied_material": "none",
+      "fictional_product": true,
+      "fictional_company": true,
+      "real_brand_identity_used": false
+    }
+  },
+  "source_inspiration": [
+    {
+      "source_id": "prod-028-source-hubspot-sales-product",
+      "name": "HubSpot Sales Hub public product/pricing page",
+      "url": "https://www.hubspot.com/products/sales",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "sales software is commonly sold as tiered per-seat plans with starter, professional, and enterprise-style capability bands.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "prod-028-source-pipedrive-pricing",
+      "name": "Pipedrive public CRM pricing page",
+      "url": "https://www.pipedrive.com/en/pricing",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "CRM pricing commonly uses annual discounts, free trials, add-ons, integrations, onboarding, and tiered automation/security features.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "prod-028-source-salesforce-sales-pricing",
+      "name": "Salesforce Sales Cloud public pricing page",
+      "url": "https://www.salesforce.com/sales/pricing/",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "enterprise CRM packages commonly expose per-user pricing, lead routing, automation, quoting, forecasting, APIs, and support add-ons.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    },
+    {
+      "source_id": "prod-028-source-zendesk-pricing",
+      "name": "Zendesk public pricing page",
+      "url": "https://www.zendesk.com/pricing/",
+      "checked_date": "2026-05-09",
+      "observed_pattern": "customer operations software commonly tiers routing, reporting, support channels, AI/admin tools, audit logs, sandbox, and privacy add-ons.",
+      "reuse_label": "inspiration only",
+      "directly_copied_material": "none"
+    }
+  ],
+  "summary": {
+    "reality_based_source_patterning": true,
+    "reality_based_source_count": 4,
+    "fictional_product": true,
+    "synthetic_campaign_facts_visible": true,
+    "same_questions_compared": true,
+    "question_count": 12,
+    "direct_answer_count": 12,
+    "direct_answer_rate": 1.0,
+    "factual_correct_count": 12,
+    "factual_correctness_rate": 1.0,
+    "price_case_count": 4,
+    "price_correct_count": 4,
+    "price_correctness_rate": 1.0,
+    "unsupported_claim_count": 0,
+    "payment_collection_count": 0,
+    "question_overuse_count": 0,
+    "question_overuse_rate": 0.0,
+    "baseline_question_overuse_count": 12,
+    "baseline_question_overuse_rate": 1.0,
+    "answer_then_ask_balance_count": 12,
+    "answer_then_ask_balance_rate": 1.0,
+    "safe_unknown_case_count": 2,
+    "safe_unknown_handling_rate": 1.0,
+    "grounded_answer_better_than_baseline": true,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "next_checkpoint_recommended": "PROD-029-grounded-full-scenario-rerun",
+    "elapsed_ms": 1
+  },
+  "metrics": {
+    "direct_answer_rate": {
+      "value": 1.0,
+      "definition": "Share of grounded answers that answer the buyer question directly with campaign facts."
+    },
+    "factual_correctness_rate": {
+      "value": 1.0,
+      "definition": "Share of grounded answers that include all expected synthetic campaign fact markers."
+    },
+    "price_correctness_rate": {
+      "value": 1.0,
+      "definition": "Share of price-related answers with the expected synthetic price or fee facts."
+    },
+    "question_overuse_rate": {
+      "value": 0.0,
+      "definition": "Share of grounded answers that ask too many questions or fail to answer before asking."
+    },
+    "unsupported_claim_rate": {
+      "value": 0.0,
+      "definition": "Share of grounded answers with unsupported or forbidden claim markers."
+    },
+    "answer_then_ask_balance_rate": {
+      "value": 1.0,
+      "definition": "Share of grounded answers with a direct answer and no more than one follow-up question."
+    },
+    "safe_unknown_handling_rate": {
+      "value": 1.0,
+      "definition": "Share of boundary or specialist-detail cases handled without inventing unsupported details."
+    },
+    "baseline_question_overuse_rate": {
+      "value": 1.0,
+      "definition": "Share of default baseline answers that ask or defer instead of supplying the expected product fact."
+    }
+  },
+  "evaluation_cases": [
+    {
+      "case_id": "PROD-028-Q01",
+      "stage": "product-detail-check",
+      "customer_question": "How much would this cost for 12 users if we used the realistic plan?",
+      "baseline_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "grounded_answer": "For 12 users, Growth is the realistic fit at $59 per user per month on annual billing, so subscription cost is $708 per month before taxes or add-ons. Assisted setup is a one-time $1,500 package.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "plan_growth_price",
+        "growth_minimum_users",
+        "onboarding_fee"
+      ],
+      "fact_refs_used": [
+        "plan_growth_price",
+        "growth_minimum_users",
+        "onboarding_fee"
+      ],
+      "expected_answer_markers": [
+        "Growth",
+        "$59",
+        "12 users",
+        "$708",
+        "$1,500"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": true,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q02",
+      "stage": "product-detail-check",
+      "customer_question": "What do we actually get in Growth that Starter does not have?",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "Starter covers the shared lead inbox, pipeline, templates, callback tasks, reports, and CSV import. Growth adds lead routing, Gmail and Outlook sync, Slack alerts, Zapier handoffs, duplicate detection, and team reporting.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "starter_included",
+        "growth_included"
+      ],
+      "fact_refs_used": [
+        "starter_included",
+        "growth_included"
+      ],
+      "expected_answer_markers": [
+        "lead routing",
+        "Gmail",
+        "Outlook",
+        "Slack",
+        "team reporting"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q03",
+      "stage": "procurement-review",
+      "customer_question": "Are we locked into a contract, or can we cancel if it does not work?",
+      "baseline_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+      "grounded_answer": "You can choose monthly or annual billing. Annual billing is 15% lower, and cancellation takes effect at the paid period boundary; there is no payment handled on this call.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "procurement-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "procurement-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "monthly_available",
+        "annual_available",
+        "cancellation_period_boundary",
+        "no_payment_call"
+      ],
+      "fact_refs_used": [
+        "monthly_available",
+        "annual_available",
+        "cancellation_period_boundary",
+        "no_payment_call"
+      ],
+      "expected_answer_markers": [
+        "monthly",
+        "annual",
+        "15%",
+        "paid period",
+        "no payment"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q04",
+      "stage": "product-detail-check",
+      "customer_question": "How long would setup take if we already have a spreadsheet of leads?",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "With a spreadsheet-ready team, assisted setup is typically two to four weeks after admin access and import scope are confirmed. Standard CSV import is included; deeper migration is the $900 package.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "typical_setup_weeks",
+        "csv_import",
+        "migration_package"
+      ],
+      "fact_refs_used": [
+        "typical_setup_weeks",
+        "csv_import",
+        "migration_package"
+      ],
+      "expected_answer_markers": [
+        "two to four weeks",
+        "CSV import",
+        "$900"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": true,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q05",
+      "stage": "product-detail-check",
+      "customer_question": "Does it connect with the tools our team already uses?",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "Yes. The synthetic campaign facts list Salesforce, HubSpot, Gmail, Outlook, Slack, Zapier, and CSV import as supported handoff paths, with final scope confirmed by a specialist.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "integrations_supported"
+      ],
+      "fact_refs_used": [
+        "integrations_supported"
+      ],
+      "expected_answer_markers": [
+        "Salesforce",
+        "HubSpot",
+        "Gmail",
+        "Outlook",
+        "Slack",
+        "Zapier"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q06",
+      "stage": "product-detail-check",
+      "customer_question": "Who can see the lead data? We need role control and audit logs.",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "Role control and audit logs sit in the Scale plan, along with SSO, sandbox, approval workflows, custom roles, and priority support. A solutions specialist should confirm the exact security review.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "scale_security",
+        "specialist_review"
+      ],
+      "fact_refs_used": [
+        "scale_security",
+        "specialist_review"
+      ],
+      "expected_answer_markers": [
+        "Scale",
+        "SSO",
+        "audit logs",
+        "custom roles",
+        "specialist"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q07",
+      "stage": "price-discussion",
+      "customer_question": "Can you discount it if we pay yearly?",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "The standard yearly option is annual billing with a 15% subscription reduction. Anything beyond that needs a written specialist quote, so I would not promise a custom discount on this call.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "annual_discount",
+        "custom_discount_quote"
+      ],
+      "fact_refs_used": [
+        "annual_discount",
+        "custom_discount_quote"
+      ],
+      "expected_answer_markers": [
+        "15%",
+        "annual billing",
+        "specialist quote"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": true,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q08",
+      "stage": "eligibility-check",
+      "customer_question": "We only have six sales people. Are we too small for this?",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "Six sales people is not too small. Starter begins at 3 users, and Growth begins at 5 users, so we would choose between those based on routing needs.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "eligibility_minimum",
+        "starter_minimum",
+        "growth_minimum"
+      ],
+      "fact_refs_used": [
+        "eligibility_minimum",
+        "starter_minimum",
+        "growth_minimum"
+      ],
+      "expected_answer_markers": [
+        "six",
+        "not too small",
+        "Starter",
+        "Growth"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q09",
+      "stage": "product-detail-check",
+      "customer_question": "If we need SSO and a sandbox, is that included or is it a special request?",
+      "baseline_answer": "Good question. I want to check the approved product information before answering, so I do not guess on plan details.",
+      "grounded_answer": "SSO and sandbox are Scale-plan capabilities, not Starter or Growth defaults. Because those details affect security review, I would route the exact setup to a solutions specialist.",
+      "decision_snapshot": {
+        "response_mode": "bridge-then-background",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "first_response_latency_budget_ms": 600,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "bridge-then-background",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "first_response_latency_budget_ms": 600,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "scale_security",
+        "specialist_review"
+      ],
+      "fact_refs_used": [
+        "scale_security",
+        "specialist_review"
+      ],
+      "expected_answer_markers": [
+        "Scale",
+        "SSO",
+        "sandbox",
+        "specialist"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 0,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": true
+    },
+    {
+      "case_id": "PROD-028-Q10",
+      "stage": "provider-comparison",
+      "customer_question": "We already use spreadsheets and Pipedrive. Why would we even look at this?",
+      "baseline_answer": "Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?",
+      "grounded_answer": "I would not replace a setup that already works. This is worth reviewing only if routing, callback ownership, or reporting are the gaps; CSV import and CRM handoffs help evaluate that without starting from zero.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "no_badmouthing",
+        "routing_fit",
+        "csv_import"
+      ],
+      "fact_refs_used": [
+        "no_badmouthing",
+        "routing_fit",
+        "csv_import"
+      ],
+      "expected_answer_markers": [
+        "not replace",
+        "routing",
+        "CSV import",
+        "worth reviewing"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q11",
+      "stage": "price-discussion",
+      "customer_question": "That sounds too expensive for us right now.",
+      "baseline_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "grounded_answer": "That may be a reason to start smaller. Starter is $29 per user per month on annual billing, and the 14-day sandbox trial has no card requirement.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "starter_price",
+        "trial",
+        "no_pressure"
+      ],
+      "fact_refs_used": [
+        "starter_price",
+        "trial",
+        "no_pressure"
+      ],
+      "expected_answer_markers": [
+        "Starter",
+        "$29",
+        "14-day",
+        "no card"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": true,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": false
+    },
+    {
+      "case_id": "PROD-028-Q12",
+      "stage": "claim-boundary",
+      "customer_question": "Can you promise it will increase revenue by 30 percent?",
+      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
+      "grounded_answer": "I cannot promise a revenue lift. What I can say is RouteSignal CRM can centralize lead intake and route leads by region, source, priority, or owner.",
+      "decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "baseline_decision_snapshot": {
+        "response_mode": "fast-response",
+        "campaign_language": "en",
+        "response_language": "en",
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "background_modules": [],
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_ms": 0
+      },
+      "expected_fact_refs": [
+        "forbidden_revenue_guarantee",
+        "allowed_product_capability"
+      ],
+      "fact_refs_used": [
+        "forbidden_revenue_guarantee",
+        "allowed_product_capability"
+      ],
+      "expected_answer_markers": [
+        "cannot promise",
+        "centralize lead intake",
+        "route leads"
+      ],
+      "direct_answer": true,
+      "factual_correct": true,
+      "price_correct": null,
+      "unsupported_claim": false,
+      "unsupported_claim_matches": [],
+      "payment_collection_detected": false,
+      "question_count": 0,
+      "baseline_question_count": 1,
+      "question_overuse": false,
+      "baseline_question_overuse": true,
+      "answer_then_ask_balanced": true,
+      "safe_unknown_handled": true,
+      "requires_safe_unknown_handling": true
+    }
+  ]
+}

@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-028 synthetic campaign knowledge grounding
+
+- Objective: add a realistic but fictional product brain before demo polishing so the agent can answer buyer questions with approved product facts instead of only asking more questions.
+- Action taken: added a PROD-028 synthetic campaign module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, thesis reference-registry coverage, and generated result/report/campaign/static-HTML artifacts.
+- Data used: public CRM/SaaS pricing and product pages from HubSpot, Pipedrive, Salesforce, and Zendesk as inspiration only for packaging patterns. PROD-028 did not copy real company wording, use a real brand as the campaign, call providers, call an LLM, read private data, download a dataset, start a server, enable retrieval by default, enable composer hooks by default, collect payment, or change runtime behavior.
+- Output created: `docs/product/PROD_028_SYNTHETIC_CAMPAIGN_KNOWLEDGE_GROUNDING.md`, `scripts/prod_028_synthetic_campaign_knowledge_grounding.py`, `scripts/run_prod_028_synthetic_campaign_knowledge_grounding.py`, `scripts/validate_prod_028_synthetic_campaign_knowledge_grounding.py`, `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/result.json`, `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/synthetic_campaign.json`, `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/report.md`, and `research/experiments/generated/PROD-028-synthetic-campaign-knowledge-grounding/grounded_answer_trace.html`.
+- What was learned: product facts materially reduce the question-only behavior. Across `12` same-question comparisons, the grounded candidate reached direct answer rate `1.0`, factual correctness rate `1.0`, price correctness rate `1.0`, question overuse rate `0.0`, safe unknown handling rate `1.0`, unsupported claim count `0`, and payment collection count `0`; the current baseline had baseline question overuse rate `1.0`.
+- Why it matters for the thesis: this isolates an important product-learning variable: the agent was over-asking partly because it had no approved product facts. A campaign knowledge layer can improve answer usefulness without relying on live retrieval, provider calls, or unsafe claims.
+- Open questions: whether the same grounded answer quality survives multi-turn full-scenario evaluation and whether the grounded answer layer should become a campaign-profile runtime component or remain a demo/evaluation candidate.
+
 ### 2026-05-09 - PROD-027 full scenario route evaluation
 
 - Objective: replace one-line trace review with a stronger multi-turn route evaluation that shows whether the local guarded runtime stays on the right sales path across full scenarios.

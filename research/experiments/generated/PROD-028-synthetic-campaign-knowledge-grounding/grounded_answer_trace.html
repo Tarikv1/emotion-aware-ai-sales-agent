@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-028 Synthetic Campaign Knowledge Grounding</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #172026; background: #f7f8fa; }
+    header, .case-card { background: #ffffff; border: 1px solid #d9dee5; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    h1, h2, h3 { margin-top: 0; }
+    .metric { display: inline-block; margin: 0 12px 8px 0; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    section { border: 1px solid #e2e6eb; border-radius: 6px; padding: 12px; background: #fbfcfd; }
+    .flag, .decision { color: #46515c; font-size: 0.9rem; }
+    .decision { overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-028 Synthetic Campaign Knowledge Grounding</h1>
+    <p>Reality-based source patterning: <code>true</code></p>
+    <p>Fictional product: <code>true</code></p>
+    <p>Same questions compared: <code>true</code></p>
+    <p>Provider calls made: <code>false</code></p>
+    <p>Runtime behavior changed: <code>false</code></p>
+    <p>Next checkpoint: <code>PROD-029-grounded-full-scenario-rerun</code></p>
+    <pre>
+Reality-based source patterning: `true`
+Fictional product: `true`
+Same questions compared: `true`
+Provider calls made: `false`
+Runtime behavior changed: `false`
+PROD-029-grounded-full-scenario-rerun
+    </pre>
+    <div>
+      <span class="metric">Direct answer rate: 1.0</span>
+      <span class="metric">Factual correctness rate: 1.0</span>
+      <span class="metric">Question overuse rate: 0.0</span>
+    </div>
+  </header>
+  
+<article class="case-card">
+  <h2>PROD-028-Q01</h2>
+  <p><strong>Customer question:</strong> How much would this cost for 12 users if we used the realistic plan?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>For 12 users, Growth is the realistic fit at $59 per user per month on annual billing, so subscription cost is $708 per month before taxes or add-ons. Assisted setup is a one-time $1,500 package.</p>
+      <p class="flag">Fact refs: plan_growth_price, growth_minimum_users, onboarding_fee</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;skeptical-or-negative&quot;, &quot;sales_difficulty&quot;: &quot;price-objection&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q02</h2>
+  <p><strong>Customer question:</strong> What do we actually get in Growth that Starter does not have?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>Starter covers the shared lead inbox, pipeline, templates, callback tasks, reports, and CSV import. Growth adds lead routing, Gmail and Outlook sync, Slack alerts, Zapier handoffs, duplicate detection, and team reporting.</p>
+      <p class="flag">Fact refs: starter_included, growth_included</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q03</h2>
+  <p><strong>Customer question:</strong> Are we locked into a contract, or can we cancel if it does not work?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Understood. What written information would help procurement review this without asking you for anything firm today?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>You can choose monthly or annual billing. Annual billing is 15% lower, and cancellation takes effect at the paid period boundary; there is no payment handled on this call.</p>
+      <p class="flag">Fact refs: monthly_available, annual_available, cancellation_period_boundary, no_payment_call</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;procurement-review&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q04</h2>
+  <p><strong>Customer question:</strong> How long would setup take if we already have a spreadsheet of leads?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>With a spreadsheet-ready team, assisted setup is typically two to four weeks after admin access and import scope are confirmed. Standard CSV import is included; deeper migration is the $900 package.</p>
+      <p class="flag">Fact refs: typical_setup_weeks, csv_import, migration_package</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q05</h2>
+  <p><strong>Customer question:</strong> Does it connect with the tools our team already uses?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>Yes. The synthetic campaign facts list Salesforce, HubSpot, Gmail, Outlook, Slack, Zapier, and CSV import as supported handoff paths, with final scope confirmed by a specialist.</p>
+      <p class="flag">Fact refs: integrations_supported</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q06</h2>
+  <p><strong>Customer question:</strong> Who can see the lead data? We need role control and audit logs.</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>Role control and audit logs sit in the Scale plan, along with SSO, sandbox, approval workflows, custom roles, and priority support. A solutions specialist should confirm the exact security review.</p>
+      <p class="flag">Fact refs: scale_security, specialist_review</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q07</h2>
+  <p><strong>Customer question:</strong> Can you discount it if we pay yearly?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>The standard yearly option is annual billing with a 15% subscription reduction. Anything beyond that needs a written specialist quote, so I would not promise a custom discount on this call.</p>
+      <p class="flag">Fact refs: annual_discount, custom_discount_quote</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q08</h2>
+  <p><strong>Customer question:</strong> We only have six sales people. Are we too small for this?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>Six sales people is not too small. Starter begins at 3 users, and Growth begins at 5 users, so we would choose between those based on routing needs.</p>
+      <p class="flag">Fact refs: eligibility_minimum, starter_minimum, growth_minimum</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q09</h2>
+  <p><strong>Customer question:</strong> If we need SSO and a sandbox, is that included or is it a special request?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Good question. I want to check the approved product information before answering, so I do not guess on plan details.</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>SSO and sandbox are Scale-plan capabilities, not Starter or Growth defaults. Because those details affect security review, I would route the exact setup to a solutions specialist.</p>
+      <p class="flag">Fact refs: scale_security, specialist_review</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;bridge-then-background&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;product-detail-lookup&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;evidence-or-benefit&quot;, &quot;next_action&quot;: &quot;continue&quot;, &quot;call_control&quot;: &quot;bridge-then-continue&quot;, &quot;background_modules&quot;: [&quot;campaign-knowledge-lookup&quot;], &quot;first_response_latency_budget_ms&quot;: 600, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q10</h2>
+  <p><strong>Customer question:</strong> We already use spreadsheets and Pipedrive. Why would we even look at this?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Fair question. I can keep this call short: would it help if I first explain the concrete reason for reaching out?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>I would not replace a setup that already works. This is worth reviewing only if routing, callback ownership, or reporting are the gaps; CSV import and CRM handoffs help evaluate that without starting from zero.</p>
+      <p class="flag">Fact refs: no_badmouthing, routing_fit, csv_import</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q11</h2>
+  <p><strong>Customer question:</strong> That sounds too expensive for us right now.</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>That may be a reason to start smaller. Starter is $29 per user per month on annual billing, and the 14-day sandbox trial has no card requirement.</p>
+      <p class="flag">Fact refs: starter_price, trial, no_pressure</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;skeptical-or-negative&quot;, &quot;sales_difficulty&quot;: &quot;price-objection&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+<article class="case-card">
+  <h2>PROD-028-Q12</h2>
+  <p><strong>Customer question:</strong> Can you promise it will increase revenue by 30 percent?</p>
+  <div class="grid">
+    <section>
+      <h3>Baseline</h3>
+      <p>Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?</p>
+      <p class="flag">Question overuse: true</p>
+    </section>
+    <section>
+      <h3>Grounded answer</h3>
+      <p>I cannot promise a revenue lift. What I can say is RouteSignal CRM can centralize lead intake and route leads by region, source, priority, or owner.</p>
+      <p class="flag">Fact refs: forbidden_revenue_guarantee, allowed_product_capability</p>
+    </section>
+  </div>
+  <p class="decision">Decision process: {&quot;response_mode&quot;: &quot;fast-response&quot;, &quot;campaign_language&quot;: &quot;en&quot;, &quot;response_language&quot;: &quot;en&quot;, &quot;detected_emotion&quot;: &quot;neutral&quot;, &quot;sales_difficulty&quot;: &quot;unknown-runtime-signal&quot;, &quot;interest_state&quot;: &quot;maybe-interested&quot;, &quot;selected_strategy&quot;: &quot;inquiry&quot;, &quot;next_action&quot;: &quot;ask-follow-up&quot;, &quot;call_control&quot;: &quot;continue-call&quot;, &quot;background_modules&quot;: [], &quot;first_response_latency_budget_ms&quot;: 700, &quot;first_response_latency_ms&quot;: 0}</p>
+</article>
+</body>
+</html>
