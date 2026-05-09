@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-027 full scenario route evaluation
+
+- Objective: replace one-line trace review with a stronger multi-turn route evaluation that shows whether the local guarded runtime stays on the right sales path across full scenarios.
+- Action taken: added a PROD-027 full-scenario module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, and generated result/report/scenario-set/static-HTML artifacts.
+- Data used: the generated `PROD-014` CallCenterEN abstract scenario bank only. PROD-027 did not copy source transcript text, reconstruct source calls, call providers, call an LLM, read private data, download a dataset, start a server, enable retrieval by default, enable composer hooks by default, collect payment, or change runtime behavior.
+- Output created: `docs/product/PROD_027_FULL_SCENARIO_ROUTE_EVALUATION.md`, `scripts/prod_027_full_scenario_route_evaluation.py`, `scripts/run_prod_027_full_scenario_route_evaluation.py`, `scripts/validate_prod_027_full_scenario_route_evaluation.py`, `research/experiments/generated/PROD-027-full-scenario-route-evaluation/result.json`, `research/experiments/generated/PROD-027-full-scenario-route-evaluation/report.md`, `research/experiments/generated/PROD-027-full-scenario-route-evaluation/full_scenario_set.json`, and `research/experiments/generated/PROD-027-full-scenario-route-evaluation/full_scenario_route_trace.html`.
+- What was learned: the local runtime is safe on this stronger route set, with hard failures `0`, payment collection count `0`, leakage findings `0`, non-sale correctness `1.0`, and safe-close correctness `1.0`. It still has route gaps: route correctness `0.9167`, policy-action correctness `0.9167`, call-control correctness `0.975`, and `13/20` scenarios fully route-passed.
+- Why it matters for the thesis: this gives stronger evidence than isolated answer checks because it evaluates multi-turn sales-route behavior, exposes exact decision traces, and preserves source-safety boundaries.
+- Open questions: which route misses should become local policy fixes, which are acceptable classifier limits, and whether a polished demo should use this route set or a smaller reviewed subset.
+
 ### 2026-05-09 - PROD-026 local demo trace harness
 
 - Objective: convert the accepted `PROD-025` bounded demo readiness packet into a local, inspectable demo trace surface without promoting runtime behavior or enabling live/provider/customer-data paths.

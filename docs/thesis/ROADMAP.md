@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-027-manual-demo-trace-review` on the accepted `PROD-026` local demo trace harness before any provider-backed, voice, telephony, or client-facing demo work.
+- [ ] Current: run `PROD-028-full-scenario-demo-review` on the accepted `PROD-027` full-scenario route evaluation before any provider-backed, voice, telephony, or client-facing demo work.
 
 Next checkpoints:
 
-- [ ] Next: after manual demo trace review, decide whether to keep the static trace harness as the first product demo surface, revise the selected trace cards, or add a separate offline scripted-call simulation.
+- [ ] Next: review the `PROD-027` route gaps and decide whether to revise the default local route policy, add a stronger full-scenario demo layer, or keep the route gaps as product-learning evidence before demo polishing.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
 - [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
@@ -58,6 +58,7 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `PROD-027` full scenario route evaluation, which responds to the one-line PROD-026 limitation by creating a strong `20`-scenario / `120`-turn route set from the `PROD-014` CallCenterEN abstract scenario bank. It covers sale-eligible, price-objection, callback-request, cancellation-boundary, support-handoff, and trust-repair flows with `6` turns per scenario and `209` source-pattern references. It shows exact customer turns, exact local guarded-runtime answers, expected and observed policy actions, expected and observed call control, route correctness, and safety flags. Safety stayed clean with hard failures `0`, payment collection count `0`, leakage findings `0`, non-sale correctness `1.0`, and safe-close correctness `1.0`. Route behavior still needs review: route correctness is `0.9167`, policy-action correctness is `0.9167`, call-control correctness is `0.975`, and only `13/20` scenarios passed every route turn. The decision is `route_gaps_found_review_before_demo`, so the next checkpoint is `PROD-028-full-scenario-demo-review`, not provider/live demo work.
 - [x] `PROD-026` local demo trace harness, which turns the accepted `PROD-025` bounded demo packet into a local static trace surface. It creates `3` demo trace cards from `3` source trace cards and shows the exact synthetic customer question, exact agent answer, policy action, call control, expected outcome, source checkpoint, and safety flags. The harness marks exact question/answer visibility `true`, decision-process visibility `true`, safety-flags visibility `true`, local trace only `true`, manual review required `true`, and local demo trace harness ready `true`, while provider calls, LLM use, private data reads, dataset downloads, runtime behavior changes, customer data, payment collection, live provider defaults, retrieval defaults, composer-hook defaults, server start, production runtime promotion, and live provider demo remain blocked. The recommended next checkpoint is `PROD-027-manual-demo-trace-review`.
 - [x] `PROD-025` bounded demo readiness packet, which converts the clean `PROD-024` post-fix evidence into a local trace-only demo scope. The packet marks demo readiness gate passed `true`, bounded demo ready `true`, local dry-run only `true`, and manual review required `true`, while production runtime promotion, live provider demo, customer data, payment handling, retrieval defaults, and composer-hook defaults remain blocked. It defines allowed demo modes `local-trace-replay`, `offline-scripted-call-simulation`, and `human-review-packet`; blocked claims such as production-ready autonomous calling and customer-facing live runtime; required review gates; and an exact question/answer trace contract. The recommended next checkpoint is `PROD-026-local-demo-trace-harness`.
 - [x] `PROD-024` live-shaped post-fix rerun, which reruns the full live-shaped dialogue-policy path after the `PROD-023` runtime-policy and call-control fix. Across `7` calls and `19` customer turns, policy action correctness is `1.0`, call-control correctness is `1.0`, protected context preservation is `1.0`, non-sale correctness is `1.0`, safe-close correctness is `1.0`, state reference completeness is `1.0`, hard failures are `0`, payment collection count is `0`, and leakage findings are `0`. The post-fix gate passed, the legacy `PROD-021` hook-gain gate remains false because it was a different hypothesis, retrieval and composer hooks remain disabled by default, runtime promotion is still not allowed, and the recommended next checkpoint is `PROD-025-bounded-demo-readiness-packet`.
@@ -440,19 +441,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-027-manual-demo-trace-review` on the accepted `PROD-026-local-demo-trace-harness`.
+Run `PROD-028-full-scenario-demo-review` on the accepted `PROD-027-full-scenario-route-evaluation`.
 
 Purpose:
 
-- review whether the three visible trace cards are understandable, convincing, and accurate enough for a bounded local demo
-- confirm the exact question, exact answer, policy action, call control, safety flags, and source checkpoint are easy to inspect
+- inspect the 20 full scenarios and identify which route misses are real policy gaps versus acceptable local classifier limits
+- confirm the exact customer turns, exact agent answers, expected route, observed route, call control, and safety flags are understandable enough for a demo review
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
-- decide whether to keep the trace cards as-is, revise the card selection, or add a separate offline scripted-call simulation
+- decide whether to revise local route policy, create a polished full-scenario demo surface, or expand the evaluation set before demo polishing
 
-Immediate product artifact after `PROD-026`:
+Immediate product artifact after `PROD-027`:
 
-- manual trace review packet
-- accepted/rejected/revise status per trace card
+- full-scenario demo review packet
+- accepted/rejected/revise status per route gap
 - next-demo recommendation before any provider-backed, voice, telephony, or client-facing step
 
 Next voice checkpoint:

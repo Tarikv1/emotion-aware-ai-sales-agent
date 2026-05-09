@@ -15,6 +15,26 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-074 - Keep PROD-027 as full-scenario route evaluation
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Keep PROD-027 as full-scenario route evaluation; use it to review route behavior before demo polishing, not to claim production readiness.
+- Why:
+  - the one-line PROD-026 trace cards were useful for visibility but too thin to judge real sales flow
+  - PROD-027 expands the CallCenterEN-derived abstract scenario bank into `20` full scenarios and `120` evaluated customer turns
+  - safety stayed clean with `0` hard failures, `0` payment collection findings, and `0` leakage findings
+  - route correctness is not perfect: `110/120` turns were route-correct and only `13/20` scenarios passed every route turn
+- Alternatives considered:
+  - keep reviewing only one-line trace cards
+  - jump directly to provider-backed voice/demo work
+  - reconstruct source calls from CallCenterEN transcript text
+  - hide route misses and show only polished answers
+- Consequences:
+  - the next checkpoint should be `PROD-028-full-scenario-demo-review`
+  - route misses should be reviewed before changing local policy or creating a polished demo surface
+  - provider-backed, voice, telephony, and client-facing demo work remain blocked
+
 ### DEC-073 - Keep PROD-026 as local trace harness
 
 - Date: 2026-05-09

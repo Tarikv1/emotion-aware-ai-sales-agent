@@ -915,6 +915,18 @@ Validate exact question/answer visibility, decision-process visibility, static t
 python scripts\validate_prod_026_local_demo_trace_harness.py
 ```
 
+Run the PROD-027 full scenario route evaluation:
+
+```powershell
+python scripts\run_prod_027_full_scenario_route_evaluation.py
+```
+
+Validate the 20-scenario / 120-turn route set, exact customer/agent traces, policy-action and call-control scoring, and source-safe local-only boundaries:
+
+```powershell
+python scripts\validate_prod_027_full_scenario_route_evaluation.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:
