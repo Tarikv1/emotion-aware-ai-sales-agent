@@ -1,0 +1,103 @@
+{
+  "checkpoint_id": "PROD-031-interactive-grounded-call-simulation",
+  "title": "PROD-031 interactive grounded call simulation",
+  "source_spec_path": "docs/superpowers/specs/2026-05-09-interactive-grounded-call-simulation-design.md",
+  "next_checkpoint_recommended": "PROD-032-interactive-simulation-review",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-031-interactive-grounded-call-simulation/result.json",
+    "report_path": "research/experiments/generated/PROD-031-interactive-grounded-call-simulation/report.md",
+    "trace_path": "research/experiments/generated/PROD-031-interactive-grounded-call-simulation/interactive_call_traces.json",
+    "html_path": "research/experiments/generated/PROD-031-interactive-grounded-call-simulation/interactive_call_trace.html"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_used": false,
+    "commercial_runtime_prompt_text_from_transcripts_allowed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "deterministic_simulator": true,
+    "call_seed_count": 8,
+    "call_count": 8,
+    "total_turn_count": 26,
+    "reactive_customer_turn_count": 18,
+    "reactive_state_transition_count": 26,
+    "exact_customer_agent_state_trace_visible": true,
+    "agent_answer_depends_on_customer_state": true,
+    "customer_reply_depends_on_prior_agent_answer": true,
+    "safe_close_count": 8,
+    "sale_ready_outcome_count": 4,
+    "callback_outcome_count": 2,
+    "non_sale_correct_count": 8,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "unsupported_claim_count": 0,
+    "leakage_finding_count": 0,
+    "question_overuse_count": 0,
+    "premature_close_count": 3,
+    "average_trust_delta": 1.875,
+    "average_interest_delta": 1.5,
+    "average_clarity_delta": 3.0,
+    "average_friction_delta": -0.5,
+    "safe_close_rate": 1.0,
+    "non_sale_correctness": 1.0,
+    "interactive_realism_score": 1.0,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "production_runtime_promotion_allowed": false,
+    "elapsed_ms": 3
+  },
+  "metrics": {
+    "safe_close_rate": {
+      "value": 1.0,
+      "definition": "Share of calls ending in an allowed safe terminal outcome."
+    },
+    "non_sale_correctness": {
+      "value": 1.0,
+      "definition": "Share of calls whose terminal outcome respects the seed's non-sale boundary expectation."
+    },
+    "average_trust_delta": {
+      "value": 1.875,
+      "definition": "Average final trust minus initial trust across calls."
+    },
+    "average_interest_delta": {
+      "value": 1.5,
+      "definition": "Average final interest minus initial interest across calls."
+    },
+    "average_clarity_delta": {
+      "value": 3.0,
+      "definition": "Average final clarity minus initial clarity across calls."
+    },
+    "average_friction_delta": {
+      "value": -0.5,
+      "definition": "Average final friction minus initial friction across calls."
+    },
+    "interactive_realism_score": {
+      "value": 1.0,
+      "definition": "Share of turns with explicit customer reaction reasons from state changes."
+    },
+    "hard_failure_rate": {
+      "value": 0.0,
+      "definition": "Share of turns with hard safety failures."
+    },
+    "question_overuse_rate": {
+      "value": 0.0,
+      "definition": "Share of turns where the agent asked more than one question."
+    }
+  },
+  "decision": "interactive_simulation_ready_for_review_not_runtime_promotion"
+}

@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-031 Interactive Grounded Call Simulation</title>
+  <style>
+body { font-family: Arial, sans-serif; color: #1f2933; margin: 0; background: #f7f8fa; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px; }
+h1, h2, h3 { color: #111827; }
+.summary, .call { background: #fff; border: 1px solid #d8dee8; border-radius: 8px; padding: 18px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.metric, .turn { background: #eef2f7; padding: 10px; border-radius: 6px; }
+.text { white-space: pre-wrap; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>PROD-031 Interactive Grounded Call Simulation</h1>
+  <p>customer state -> customer turn -> agent answer -> customer state changes -> reactive customer turn</p>
+  <section class="summary">
+    <h2>Summary</h2>
+    <div class="grid">
+      <div class="metric">Deterministic simulator: `true`</div>
+      <div class="metric">Call seed count: `8`</div>
+      <div class="metric">Reactive customer turn count: `18`</div>
+      <div class="metric">Customer reply depends on prior agent answer: `true`</div>
+      <div class="metric">Provider calls made: `false`</div>
+      <div class="metric">Runtime behavior changed: `false`</div>
+      <div class="metric">Next checkpoint: `PROD-032-interactive-simulation-review`</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-price-sensitive - price-sensitive operations manager</h2>
+    <p>Terminal outcome: `sale-ready`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 2, &quot;clarity&quot;: 1, &quot;friction&quot;: 3, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;skeptical&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">We may need lead routing, but I am worried this will become expensive fast.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. Billing stays outside this call, so the useful next step is checking whether the smaller plan fits your routing needs.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 3, &quot;clarity&quot;: 2, &quot;friction&quot;: 4, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;skeptical&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent kept billing outside the call; close language came before enough trust or clarity</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 2</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 3, &quot;clarity&quot;: 2, &quot;friction&quot;: 4, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;skeptical&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I follow. Give me the one detail that matters most before I decide whether this is worth a next step.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. Billing stays outside this call, so the useful next step is checking whether the smaller plan fits your routing needs.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 4, &quot;clarity&quot;: 3, &quot;friction&quot;: 5, &quot;patience&quot;: 2, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent kept billing outside the call; close language came before enough trust or clarity</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 3</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 4, &quot;clarity&quot;: 3, &quot;friction&quot;: 5, &quot;patience&quot;: 2, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">Okay, the price is clearer. What would I tell my manager if I wanted to review it?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 4, &quot;patience&quot;: 2, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 4</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 4, &quot;patience&quot;: 2, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">That is enough for a review. Set up a specialist callback rather than trying to close this now.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 3, &quot;patience&quot;: 2, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-confused-product-fit - confused small-business owner</h2>
+    <p>Terminal outcome: `sale-ready`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 2, &quot;clarity&quot;: 0, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;confused&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;confusion&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I do not really understand what this product does. Is this just another CRM?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">RouteSignal CRM is not a full CRM replacement. It focuses on lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 2, &quot;clarity&quot;: 2, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;confused&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;confusion&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent gave concrete integration details</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 2</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 2, &quot;clarity&quot;: 2, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;confused&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;confusion&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I follow. Give me the one detail that matters most before I decide whether this is worth a next step.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">RouteSignal CRM is not a full CRM replacement. It focuses on lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 2, &quot;clarity&quot;: 4, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;confusion&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent gave concrete integration details</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 3</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 2, &quot;clarity&quot;: 4, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">That makes more sense. What does it cost for a small team?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. Billing stays outside this call, so the useful next step is checking whether the smaller plan fits your routing needs.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 3, &quot;clarity&quot;: 5, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent kept billing outside the call; close language came before enough trust or clarity</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 4</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 3, &quot;clarity&quot;: 5, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">Okay, the price is clearer. What would I tell my manager if I wanted to review it?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 4, &quot;clarity&quot;: 5, &quot;friction&quot;: 2, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-skeptical-trust-gap - skeptical founder</h2>
+    <p>Terminal outcome: `callback-agreed`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 1, &quot;clarity&quot;: 1, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;skeptical&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;trust&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I am cautious with sales calls. I need proof this is not just vague software talk.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">Fair concern. I cannot promise a revenue lift; the approved facts are that RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner. A solutions specialist can confirm details in writing.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 2, &quot;clarity&quot;: 2, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;skeptical&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;trust&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent offered specialist confirmation</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 2</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 2, &quot;clarity&quot;: 2, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;skeptical&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;trust&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I follow. Give me the one detail that matters most before I decide whether this is worth a next step.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">Fair concern. I cannot promise a revenue lift; the approved facts are that RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner. A solutions specialist can confirm details in writing.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 3, &quot;clarity&quot;: 3, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;trust&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent offered specialist confirmation</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 3</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 3, &quot;trust&quot;: 3, &quot;clarity&quot;: 3, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;written-info&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">Send me the concrete details in writing, especially what it can and cannot promise.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">RouteSignal CRM helps teams centralize lead intake, route leads, and track callback ownership. We can keep this to fit, price, or setup facts before any next step.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 3, &quot;clarity&quot;: 4, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;written-info&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 4</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 3, &quot;clarity&quot;: 4, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;written-info&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">Fine, a specialist can send that and walk me through it later.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">RouteSignal CRM helps teams centralize lead intake, route leads, and track callback ownership. We can keep this to fit, price, or setup facts before any next step.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 3, &quot;clarity&quot;: 5, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;written-info&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-busy-callback - busy sales lead</h2>
+    <p>Terminal outcome: `callback-agreed`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 2, &quot;clarity&quot;: 1, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I cannot talk right now. If this is useful, make it quick or schedule another time.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">I will keep it brief. RouteSignal CRM helps route leads and own callbacks; if that is relevant, we can schedule a non-binding specialist callback.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 4, &quot;clarity&quot;: 2, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent offered specialist confirmation; agent respected limited time</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 2</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 4, &quot;clarity&quot;: 2, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">You are still pushing a bit. Can we slow this down or stop?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">I will keep it brief. RouteSignal CRM helps route leads and own callbacks; if that is relevant, we can schedule a non-binding specialist callback.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 5, &quot;clarity&quot;: 3, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent offered specialist confirmation; agent respected limited time</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 3</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 5, &quot;clarity&quot;: 3, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">You are still pushing a bit. Can we slow this down or stop?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">I will keep it brief. RouteSignal CRM helps route leads and own callbacks; if that is relevant, we can schedule a non-binding specialist callback.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 5, &quot;clarity&quot;: 4, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent offered specialist confirmation; agent respected limited time</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 4</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 5, &quot;clarity&quot;: 4, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">You are still pushing a bit. Can we slow this down or stop?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">I will keep it brief. RouteSignal CRM helps route leads and own callbacks; if that is relevant, we can schedule a non-binding specialist callback.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 4, &quot;patience&quot;: 1, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;time&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent offered specialist confirmation; agent respected limited time</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-existing-provider - team lead with an existing CRM</h2>
+    <p>Terminal outcome: `sale-ready`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 2, &quot;trust&quot;: 3, &quot;clarity&quot;: 1, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;neutral&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;provider&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">We already have a CRM. Why would we add RouteSignal on top of it?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">I would not replace a CRM that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are gaps; it can hand off to your CRM, CSV, Slack, and Zapier.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 3, &quot;clarity&quot;: 3, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;provider&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent explained the product; agent gave concrete integration details</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 2</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 3, &quot;clarity&quot;: 3, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;calm&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">If it can sit alongside our CRM, what would the Growth plan cost?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">On the synthetic pricing, Starter is $29 per user per month annually and Growth is $59. Billing stays outside this call, so the useful next step is checking whether the smaller plan fits your routing needs.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 4, &quot;clarity&quot;: 4, &quot;friction&quot;: 1, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;price&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent kept billing outside the call</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 3</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 4, &quot;clarity&quot;: 4, &quot;friction&quot;: 1, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">Okay, the price is clearer. What would I tell my manager if I wanted to review it?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 4</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">That is enough for a review. Set up a specialist callback rather than trying to close this now.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-stakeholder-review - manager who needs approval</h2>
+    <p>Terminal outcome: `sale-ready`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 4, &quot;trust&quot;: 3, &quot;clarity&quot;: 2, &quot;friction&quot;: 2, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;curious&quot;, &quot;commitment&quot;: &quot;considering&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I would need to show this to my manager. What exactly would I tell them?</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 4, &quot;clarity&quot;: 4, &quot;friction&quot;: 1, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 2</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 4, &quot;clarity&quot;: 4, &quot;friction&quot;: 1, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">That is enough for a review. Set up a specialist callback rather than trying to close this now.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 3</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">That is enough for a review. Set up a specialist callback rather than trying to close this now.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+    <div class="turn">
+      <h3>Turn 4</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;callback&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">That is enough for a review. Set up a specialist callback rather than trying to close this now.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 5, &quot;trust&quot;: 5, &quot;clarity&quot;: 5, &quot;friction&quot;: 0, &quot;patience&quot;: 4, &quot;emotion&quot;: &quot;interested&quot;, &quot;commitment&quot;: &quot;sale-ready&quot;, &quot;active_objection&quot;: &quot;authority&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent answered price concern; agent offered specialist confirmation; agent gave manager-ready setup detail</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-support-boundary - support-seeking user</h2>
+    <p>Terminal outcome: `human-handoff`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 0, &quot;trust&quot;: 2, &quot;clarity&quot;: 2, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;support&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">I am actually trying to get help with an account issue, not buy something.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">That sounds like a support issue, not a sales conversation. I will route this to a solutions specialist so you can get account help.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 0, &quot;trust&quot;: 3, &quot;clarity&quot;: 2, &quot;friction&quot;: 3, &quot;patience&quot;: 3, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;support&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent offered specialist confirmation</div>
+    </div>
+  </section>
+  <section class="call">
+    <h2>interactive-do-not-call - protected stop-request customer</h2>
+    <p>Terminal outcome: `do-not-call`</p>
+    <div class="turn">
+      <h3>Turn 1</h3>
+      <p><strong>State before</strong></p>
+      <div class="text">{&quot;interest&quot;: 0, &quot;trust&quot;: 1, &quot;clarity&quot;: 3, &quot;friction&quot;: 5, &quot;patience&quot;: 0, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;do-not-call&quot;}</div>
+      <p><strong>Customer</strong></p>
+      <div class="text">Please stop calling me. Take me off the list.</div>
+      <p><strong>Agent</strong></p>
+      <div class="text">Understood. I will mark this as do not call and end the sales conversation now.</div>
+      <p><strong>State after</strong></p>
+      <div class="text">{&quot;interest&quot;: 0, &quot;trust&quot;: 1, &quot;clarity&quot;: 3, &quot;friction&quot;: 5, &quot;patience&quot;: 0, &quot;emotion&quot;: &quot;annoyed&quot;, &quot;commitment&quot;: &quot;none&quot;, &quot;active_objection&quot;: &quot;do-not-call&quot;}</div>
+      <p><strong>Reaction reason</strong></p>
+      <div class="text">agent honored stop request</div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
