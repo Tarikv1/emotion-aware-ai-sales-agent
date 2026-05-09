@@ -939,6 +939,18 @@ Validate the reality-patterned fictional campaign facts, same-question baseline 
 python scripts\validate_prod_028_synthetic_campaign_knowledge_grounding.py
 ```
 
+Run the PROD-029 grounded full-scenario rerun:
+
+```powershell
+python scripts\run_prod_029_grounded_full_scenario_rerun.py
+```
+
+Validate the unchanged PROD-027 scenario set, old-vs-grounded answer comparison, campaign fact use, direct-answer metrics, and no-provider/no-runtime-change boundary:
+
+```powershell
+python scripts\validate_prod_029_grounded_full_scenario_rerun.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

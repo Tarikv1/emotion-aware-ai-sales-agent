@@ -33,7 +33,7 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-029-grounded-full-scenario-rerun` by applying the accepted `PROD-028` synthetic campaign facts to full-scenario turns, so the agent can prove it answers product questions directly without losing route safety.
+- [ ] Current: run `PROD-030-grounded-demo-review` by inspecting the grounded full-scenario trace, accepting or revising grounded answer behavior, and deciding whether the fact-grounded answer layer should become a runtime campaign-profile candidate or remain demo-only.
 
 Next checkpoints:
 
@@ -57,6 +57,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-029` grounded full-scenario rerun, which reruns the exact `PROD-027` `20`-scenario / `120`-turn route set with the accepted `PROD-028` synthetic campaign facts and compares old PROD-027 answers against grounded campaign answers without overwriting either checkpoint. The rerun keeps the same customer turns, expected policy actions, expected call controls, and source-pattern references, while adding exact grounded answers and product fact markers. It reached direct answer rate `1.0`, knowledge-applicable fact rate `1.0`, grounded question overuse rate `0.0`, PROD-027 question overuse rate `0.7833`, grounded answer win rate `0.6583`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. Route behavior remains the same as PROD-027: route correctness `0.9167`, policy-action correctness `0.9167`, call-control correctness `0.975`, and `13/20` scenarios fully route-passed. Provider calls, LLM use, runtime behavior changes, retrieval defaults, composer-hook defaults, production runtime promotion, customer data, and payment collection stayed blocked. The next checkpoint is `PROD-030-grounded-demo-review`.
 
 - [x] `PROD-028` synthetic campaign knowledge grounding, which creates a fictional but reality-patterned B2B CRM campaign before demo polishing so the agent has approved product facts for pricing, plans, setup, integrations, eligibility, support/security handoff, cancellation, discounts, and forbidden claims. Public CRM/SaaS pages from HubSpot, Pipedrive, Salesforce, and Zendesk were used as inspiration only for packaging patterns; no real company wording, brand identity, customer claims, or sales copy was copied. Across `12` same-question comparisons, the grounded candidate reached direct answer rate `1.0`, factual correctness rate `1.0`, price correctness rate `1.0`, question overuse rate `0.0`, safe unknown handling rate `1.0`, unsupported claim count `0`, and payment collection count `0`, while the current baseline showed baseline question overuse rate `1.0`. Runtime behavior, retrieval defaults, composer-hook defaults, provider calls, LLM use, private data reads, dataset downloads, server start, and payment collection stayed disabled. The next checkpoint is `PROD-029-grounded-full-scenario-rerun`.
 - [x] `PROD-027` full scenario route evaluation, which responds to the one-line PROD-026 limitation by creating a strong `20`-scenario / `120`-turn route set from the `PROD-014` CallCenterEN abstract scenario bank. It covers sale-eligible, price-objection, callback-request, cancellation-boundary, support-handoff, and trust-repair flows with `6` turns per scenario and `209` source-pattern references. It shows exact customer turns, exact local guarded-runtime answers, expected and observed policy actions, expected and observed call control, route correctness, and safety flags. Safety stayed clean with hard failures `0`, payment collection count `0`, leakage findings `0`, non-sale correctness `1.0`, and safe-close correctness `1.0`. Route behavior still needs review: route correctness is `0.9167`, policy-action correctness is `0.9167`, call-control correctness is `0.975`, and only `13/20` scenarios passed every route turn. The decision is `route_gaps_found_review_before_demo`, so the next checkpoint is `PROD-028-full-scenario-demo-review`, not provider/live demo work.
@@ -442,18 +444,17 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-029-grounded-full-scenario-rerun` using the accepted `PROD-028-synthetic-campaign-knowledge-grounding` facts.
+Run `PROD-030-grounded-demo-review` using the accepted `PROD-029-grounded-full-scenario-rerun` trace.
 
 Purpose:
 
-- rerun a full-scenario slice with approved synthetic campaign knowledge so product, pricing, setup, integration, eligibility, and boundary questions get direct answers
-- confirm the exact customer turns, exact baseline answers, exact grounded answers, expected route, observed route, call control, and safety flags are understandable enough for a demo review
+- inspect the exact customer turns, exact baseline answers, exact grounded answers, expected route, observed route, call control, product fact markers, and safety flags
+- decide which grounded answers are accepted as demo-ready and which route gaps need separate policy work
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
 - decide whether to adapt the fact-grounded answer layer into the runtime campaign profile, keep it demo-only, or revise the synthetic campaign facts before demo polishing
 
-Immediate product artifact after `PROD-028`:
+Immediate product artifact after `PROD-029`:
 
-- grounded full-scenario rerun packet
 - accepted/rejected/revise status per grounded answer and route gap
 - next-demo recommendation before any provider-backed, voice, telephony, or client-facing step
 

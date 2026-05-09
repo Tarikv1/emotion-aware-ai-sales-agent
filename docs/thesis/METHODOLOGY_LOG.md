@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-029 grounded full-scenario rerun
+
+- Objective: rerun the exact PROD-027 full-scenario evaluation with the accepted PROD-028 synthetic campaign facts so the project can compare the old question-heavy answers against fact-grounded campaign answers.
+- Action taken: added a PROD-029 grounded full-scenario module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, thesis logs, and generated result/report/scenario/static-HTML artifacts.
+- Data used: the unchanged `PROD-027` full scenario set and the fictional `PROD-028` RouteSignal CRM campaign facts. PROD-029 did not copy source transcript text, call providers, call an LLM, read private data, download a dataset, start a server, enable retrieval by default, enable composer hooks by default, collect payment, or change runtime behavior.
+- Output created: `docs/product/PROD_029_GROUNDED_FULL_SCENARIO_RERUN.md`, `scripts/prod_029_grounded_full_scenario_rerun.py`, `scripts/run_prod_029_grounded_full_scenario_rerun.py`, `scripts/validate_prod_029_grounded_full_scenario_rerun.py`, `research/experiments/generated/PROD-029-grounded-full-scenario-rerun/result.json`, `research/experiments/generated/PROD-029-grounded-full-scenario-rerun/report.md`, `research/experiments/generated/PROD-029-grounded-full-scenario-rerun/grounded_full_scenario_set.json`, and `research/experiments/generated/PROD-029-grounded-full-scenario-rerun/grounded_full_scenario_trace.html`.
+- What was learned: grounding improves answer usefulness on the same scenario set without creating new safety findings. Direct answer rate is `1.0`, knowledge-applicable fact rate is `1.0`, grounded question overuse rate is `0.0`, PROD-027 question overuse rate is `0.7833`, grounded answer win rate is `0.6583`, hard failures are `0`, payment collection count is `0`, unsupported claim count is `0`, and leakage findings are `0`.
+- Why it matters for the thesis: this separates the route-policy problem from the product-knowledge problem. Approved campaign facts can reduce over-questioning and improve buyer-facing usefulness, while the remaining route gaps still need their own review before runtime promotion.
+- Open questions: which grounded answers should be accepted for demo review, whether the fact-grounded answer layer belongs in a runtime campaign profile, and which unchanged PROD-027 route gaps should become PROD-030 or later policy work.
+
 ### 2026-05-09 - PROD-028 synthetic campaign knowledge grounding
 
 - Objective: add a realistic but fictional product brain before demo polishing so the agent can answer buyer questions with approved product facts instead of only asking more questions.

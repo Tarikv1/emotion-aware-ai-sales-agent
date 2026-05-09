@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-076 - Keep PROD-029 as a grounded rerun of PROD-027
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Compare old PROD-027 exact answers against PROD-028 grounded campaign answers on the same `20` scenarios and `120` turns, while preserving PROD-027 as the route baseline and keeping route gaps as a separate issue.
+- Why:
+  - PROD-028 proved that synthetic campaign facts reduce question-only behavior on isolated product questions
+  - the next useful test is whether the same fact layer improves full-scenario answers without changing the scenario set or hiding route weaknesses
+  - using the exact PROD-027 set keeps the comparison fair and prevents accidental benchmark drift
+  - the project still needs to separate answer usefulness from route-policy correctness before runtime promotion
+- Alternatives considered:
+  - overwrite PROD-027 with grounded answers
+  - create a new unrelated scenario set before comparing
+  - promote the grounded answers directly into runtime defaults
+  - ignore the route gaps because answer quality improved
+- Consequences:
+  - the next checkpoint should be `PROD-030-grounded-demo-review`
+  - grounded answers can be accepted, revised, or rejected for demo review with exact evidence
+  - unchanged route gaps remain visible and should be handled as policy work, not hidden by better product wording
+  - provider-backed, voice, telephony, runtime-default, and client-facing promotion remain blocked
+
 ### DEC-075 - Use a synthetic reality-based product campaign before demo polish
 
 - Date: 2026-05-09
