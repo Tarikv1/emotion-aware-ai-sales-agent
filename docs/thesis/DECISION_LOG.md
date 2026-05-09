@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-078 - Replace the static route-gap fix with interactive simulation
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Replace the planned `PROD-031-grounded-route-gap-fix` with `PROD-031-interactive-grounded-call-simulation`.
+- Why:
+  - the PROD-027 to PROD-030 scenario lane is multi-turn, but still scripted replay rather than a reactive conversation
+  - a sales agent should be tested on how its answer changes customer trust, clarity, interest, objections, patience, and commitment
+  - fixing static route gaps first risks optimizing for a weak benchmark instead of realistic conversational behavior
+  - Tarik explicitly approved moving PROD-031 to an interactive simulator before route-gap cleanup
+- Alternatives considered:
+  - continue with the static route-gap fix
+  - treat the `13/20` demo-ready static scenarios as enough for demo realism
+  - jump to LLM-based customer simulation immediately
+- Consequences:
+  - PROD-031 should be a deterministic local simulator with customer state transitions after each agent answer
+  - the static `10` PROD-030 route gaps are deferred until reactive simulation clarifies whether they still matter
+  - provider calls, LLM simulation, voice, telephony, runtime promotion, retrieval defaults, composer-hook defaults, customer data, and payment handling remain blocked
+
 ### DEC-077 - Keep PROD-030 as a demo review gate
 
 - Date: 2026-05-09

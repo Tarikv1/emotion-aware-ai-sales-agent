@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-031 interactive simulation design pivot
+
+- Objective: respond to Tarik's review that the current full scenarios are still weak because customer turns are scripted replay rather than reactive conversation.
+- Action taken: wrote the `PROD-031-interactive-grounded-call-simulation` design spec and updated the roadmap/decision log to replace the planned static route-gap fix with a deterministic interactive customer simulator.
+- Data used: the completed PROD-027 through PROD-030 evidence and Tarik's product review feedback. No provider call, LLM call, private data read, dataset download, runtime change, retrieval default change, composer-hook default change, server start, customer data, or payment handling was used.
+- Output created: `docs/superpowers/specs/2026-05-09-interactive-grounded-call-simulation-design.md`.
+- What was learned: static multi-turn replay is useful as regression evidence, but it is not strong enough to evaluate sales ability because customer trust, clarity, interest, friction, objections, and commitment do not react to the agent.
+- Why it matters for the thesis: the next evaluation layer must measure stateful conversational effect, not only answer correctness on prewritten turns.
+- Open questions: which simulator failure modes will represent real runtime defects versus simulator-design limits, and whether route-gap fixes still matter after reactive evaluation.
+
 ### 2026-05-09 - PROD-030 grounded demo review
 
 - Objective: inspect the PROD-029 grounded full-scenario trace and decide which grounded answers are demo-ready, which route gaps need revision, and whether runtime campaign-profile promotion is still blocked.
