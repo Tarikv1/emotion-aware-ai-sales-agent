@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-069 - Keep PROD-021 hooks opt-in after review
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: keep the `PROD-020`/`PROD-021` composer hooks as opt-in only after the PROD-022 review packet; fix runtime policy routing and call-control before any bounded demo or default-runtime discussion
+- Why:
+  - PROD-022 extracted the exact `PROD-021` gap turns instead of treating the failed gate as a generic failure
+  - all `10` gap turns were policy action misses, and `3` were also call-control misses
+  - the gap packet found `0` protected-context gaps, `0` hard failures, and `0` leakage findings
+  - the four hook-gain turns remain useful wording evidence, but hooks do not own policy action or call-control correctness
+  - the narrow fix targets are `runtime_policy_router_specialization`, `sale_ready_call_control_detector`, and `procurement_review_continuation_guard`
+- Alternatives considered:
+  - discard hooks because the PROD-021 gate stayed closed
+  - promote hooks because four turns improved
+  - broaden scenario generation before fixing the exact runtime-policy gaps
+  - move to live or provider testing before policy and call-control are correct
+- Consequences:
+  - the next checkpoint should be `PROD-023-runtime-policy-call-control-fix`
+  - retrieval and composer hooks remain disabled by default
+  - runtime promotion stays blocked until a rerun closes policy-action and call-control gaps without safety regressions
+
 ### DEC-068 - Keep PROD-021 hooks opt-in and revise runtime policy first
 
 - Date: 2026-05-09

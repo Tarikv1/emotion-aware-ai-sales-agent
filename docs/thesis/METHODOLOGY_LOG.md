@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-022 PROD-021 review gap packet
+
+- Objective: convert the failed `PROD-021` live-shaped gate into a compact product-review packet with exact gap turns and narrow implementation targets.
+- Action taken: added a PROD-022 gap-packet module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, and generated result/report artifacts.
+- Data used: the generated `PROD-021` result artifact only. PROD-022 did not call providers, call an LLM, read private data, download a dataset, change runtime behavior, enable retrieval by default, or enable composer hooks by default.
+- Output created: `docs/product/PROD_022_PROD_021_REVIEW_GAP_PACKET.md`, `scripts/prod_022_prod_021_review_gap_packet.py`, `scripts/run_prod_022_prod_021_review_gap_packet.py`, `scripts/validate_prod_022_prod_021_review_gap_packet.py`, `research/experiments/generated/PROD-022-prod-021-review-gap-packet/result.json`, and `research/experiments/generated/PROD-022-prod-021-review-gap-packet/report.md`.
+- What was learned: PROD-022 found `10` gap turns in PROD-021: `10` policy action misses and `3` call-control misses, with `0` protected-context gaps, `0` hard failures, and `0` leakage findings. The fix targets are runtime policy router specialization, sale-ready call-control detection, procurement-review continuation guarding, and keeping composer hooks opt-in.
+- Why it matters for the thesis: the project now has a precise bridge from evaluation failure to implementation scope. The evidence says hook wording improved some turns, but policy routing and call-control must be corrected before runtime promotion.
+- Open questions: whether a narrow `PROD-023` runtime-policy/call-control patch can close the exact gaps without weakening protected contexts, non-sale correctness, safe-close correctness, or default-off retrieval boundaries.
+
 ### 2026-05-09 - PROD-021 live-shaped dialogue-policy simulation
 
 - Objective: test whether the `PROD-020` opt-in runtime composer-hook gain survives live-shaped, multi-turn dialogue flow against the `PROD-011` hardened dialogue-policy expectations.
