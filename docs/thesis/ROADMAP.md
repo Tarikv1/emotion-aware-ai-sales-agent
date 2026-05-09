@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: prepare `PROD-025-bounded-demo-readiness-packet` after the clean `PROD-024` live-shaped post-fix rerun, without changing retrieval defaults, composer-hook defaults, provider boundaries, or customer-facing runtime claims.
+- [ ] Current: build `PROD-026-local-demo-trace-harness` from the accepted `PROD-025` bounded demo readiness packet, keeping it local trace-only with provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked.
 
 Next checkpoints:
 
-- [ ] Next: decide the exact bounded demo scope, inputs, outputs, provider-off default path, and manual review gate before any client-facing or live-provider demo work.
+- [ ] Next: after the local demo trace harness exists, run manual trace review before any provider-backed, voice, telephony, or client-facing demo work.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
 - [ ] Next: define a bounded voice-personality profile selector from RESP-005 plus RESP-006 decisions, keeping accepted styles available without making either production-default for all campaigns.
@@ -58,6 +58,7 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
+- [x] `PROD-025` bounded demo readiness packet, which converts the clean `PROD-024` post-fix evidence into a local trace-only demo scope. The packet marks demo readiness gate passed `true`, bounded demo ready `true`, local dry-run only `true`, and manual review required `true`, while production runtime promotion, live provider demo, customer data, payment handling, retrieval defaults, and composer-hook defaults remain blocked. It defines allowed demo modes `local-trace-replay`, `offline-scripted-call-simulation`, and `human-review-packet`; blocked claims such as production-ready autonomous calling and customer-facing live runtime; required review gates; and an exact question/answer trace contract. The recommended next checkpoint is `PROD-026-local-demo-trace-harness`.
 - [x] `PROD-024` live-shaped post-fix rerun, which reruns the full live-shaped dialogue-policy path after the `PROD-023` runtime-policy and call-control fix. Across `7` calls and `19` customer turns, policy action correctness is `1.0`, call-control correctness is `1.0`, protected context preservation is `1.0`, non-sale correctness is `1.0`, safe-close correctness is `1.0`, state reference completeness is `1.0`, hard failures are `0`, payment collection count is `0`, and leakage findings are `0`. The post-fix gate passed, the legacy `PROD-021` hook-gain gate remains false because it was a different hypothesis, retrieval and composer hooks remain disabled by default, runtime promotion is still not allowed, and the recommended next checkpoint is `PROD-025-bounded-demo-readiness-packet`.
 - [x] `PROD-023` runtime-policy and call-control fix, which closes the exact `PROD-022` gap packet by specializing local runtime input classification, explicit policy-action mapping, and the call-control contract. It fixed `10/10` policy-action misses and `3/3` call-control misses, leaving policy action correctness `1.0`, call-control correctness `1.0`, protected context preservation `1.0`, non-sale correctness `1.0`, safe-close correctness `1.0`, hard failures `0`, payment collection count `0`, and leakage findings `0`. The new full-sale control is `close-and-log-sale-ready`. Retrieval and composer hooks remain disabled by default, runtime promotion is still not allowed, and the recommended next checkpoint is `PROD-024-live-shaped-post-fix-rerun`.
 - [x] `PROD-022` PROD-021 review gap packet, which reads the completed `PROD-021` result and extracts the exact customer turns, exact agent answers, hook decisions, policy-action misses, and call-control misses that kept the gate closed. It found `10` gap turns: `10` policy action misses, `3` call-control misses, `0` protected-context gaps, `0` hard failures, and `0` leakage findings. The required fix targets are `runtime_policy_router_specialization`, `sale_ready_call_control_detector`, `procurement_review_continuation_guard`, and `keep_composer_hooks_opt_in`. The decision is `keep_prod_021_hooks_opt_in_fix_policy_and_call_control_first`, and the recommended next checkpoint is `PROD-023-runtime-policy-call-control-fix`.
@@ -438,20 +439,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Prepare `PROD-025-bounded-demo-readiness-packet` after the clean `PROD-024-live-shaped-post-fix-rerun`.
+Build `PROD-026-local-demo-trace-harness` from the accepted `PROD-025-bounded-demo-readiness-packet`.
 
 Purpose:
 
-- define the smallest bounded demo flow that can show the reusable sales core, call-control, safe close, and exact Q/A trace without claiming production readiness
-- keep provider-off, retrieval-default-off, and composer-hook-default-off behavior explicit
-- specify the manual review gate before any live-provider or client-facing demo
-- preserve `close-and-log-sale-ready` as a logged verbal next-step outcome without checkout handling
+- create a local trace-only harness that shows exact synthetic question, exact agent answer, policy action, call control, safety flags, and source checkpoint
+- keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
+- make the decision process visible without turning the harness into a production runtime claim
+- require manual trace review before any live/provider/client-facing demo step
 
-Immediate product artifact after `PROD-024`:
+Immediate product artifact after `PROD-025`:
 
-- bounded demo readiness packet
-- exact allowed inputs, outputs, traces, and blocked claims
-- no runtime promotion or live provider default until a separate demo readiness gate passes
+- local demo trace harness
+- static/generated trace packet from the selected PROD-025 trace cards
+- validator that blocks provider calls, customer data, payment handling, and production-readiness claims
 
 Next voice checkpoint:
 

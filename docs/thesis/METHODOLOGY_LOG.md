@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-09 - PROD-025 bounded demo readiness packet
+
+- Objective: convert the clean `PROD-024` post-fix evidence into a bounded local-demo scope without promoting the runtime or enabling live/provider/customer-data paths.
+- Action taken: added a PROD-025 readiness-packet module, runner, validator, product doc, command-map coverage, checkpoint index entry, setup coverage, drift-guard fixture coverage, and generated result/report artifacts.
+- Data used: the generated `PROD-024` post-fix result only. PROD-025 did not call providers, call an LLM, read private data, download a dataset, enable retrieval by default, enable composer hooks by default, or change runtime behavior.
+- Output created: `docs/product/PROD_025_BOUNDED_DEMO_READINESS_PACKET.md`, `scripts/prod_025_bounded_demo_readiness_packet.py`, `scripts/run_prod_025_bounded_demo_readiness_packet.py`, `scripts/validate_prod_025_bounded_demo_readiness_packet.py`, `research/experiments/generated/PROD-025-bounded-demo-readiness-packet/result.json`, and `research/experiments/generated/PROD-025-bounded-demo-readiness-packet/report.md`.
+- What was learned: the project is ready for a bounded local trace-only demo harness. The allowed modes are local trace replay, offline scripted-call simulation, and human review packet. Production runtime promotion, live provider demo, customer data, payment handling, retrieval defaults, and composer-hook defaults remain blocked.
+- Why it matters for the thesis: the work now has a concrete product-demo boundary that can show exact question/answer behavior and decision traces without overstating readiness or weakening privacy/provider boundaries.
+- Open questions: whether the local trace harness should be a CLI packet first, a small static HTML report, or both.
+
 ### 2026-05-09 - PROD-024 live-shaped post-fix rerun
 
 - Objective: rerun the full live-shaped dialogue-policy path after `PROD-023` to verify the local runtime-policy and call-control fix across all turns, not only the exact gap packet.

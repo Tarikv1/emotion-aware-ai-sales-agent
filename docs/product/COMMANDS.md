@@ -891,6 +891,18 @@ Validate the full post-fix live-shaped policy gate, safety gates, legacy PROD-02
 python scripts\validate_prod_024_live_shaped_post_fix_rerun.py
 ```
 
+Run the PROD-025 bounded demo readiness packet:
+
+```powershell
+python scripts\run_prod_025_bounded_demo_readiness_packet.py
+```
+
+Validate the bounded demo scope, blocked claims, trace contract, review gates, and no-live-provider/no-customer-data boundary:
+
+```powershell
+python scripts\validate_prod_025_bounded_demo_readiness_packet.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

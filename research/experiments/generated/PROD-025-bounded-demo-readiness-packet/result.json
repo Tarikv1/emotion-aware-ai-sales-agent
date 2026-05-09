@@ -1,0 +1,194 @@
+{
+  "checkpoint_id": "PROD-025-bounded-demo-readiness-packet",
+  "title": "PROD-025 bounded demo readiness packet",
+  "source_checkpoint_id": "PROD-024-live-shaped-post-fix-rerun",
+  "source_prod_024_result_path": "research/experiments/generated/PROD-024-live-shaped-post-fix-rerun/result.json",
+  "purpose": "Convert the clean PROD-024 post-fix evidence into a bounded local-demo readiness packet without enabling live or customer-facing behavior.",
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "customer_facing_claim_allowed": false
+  },
+  "source_prod_024_summary": {
+    "call_count": 7,
+    "customer_turn_count": 19,
+    "policy_action_correct_count": 19,
+    "policy_action_correctness": 1.0,
+    "call_control_correct_count": 19,
+    "call_control_correctness": 1.0,
+    "protected_context_preservation": 1.0,
+    "non_sale_correctness": 1.0,
+    "safe_close_correctness": 1.0,
+    "state_reference_completeness": 1.0,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "leakage_finding_count": 0,
+    "retrieval_only_total_score": 110,
+    "opt_in_total_score": 110,
+    "opt_in_wins_vs_retrieval_only": 0,
+    "retrieval_only_wins_vs_opt_in": 0,
+    "ties_vs_retrieval_only": 19,
+    "opt_in_hooked_answer_count": 0,
+    "post_fix_gate_passed": true,
+    "legacy_prod_021_gate_passed": false,
+    "runtime_promotion_allowed": false,
+    "bounded_demo_discussion_allowed": true,
+    "next_checkpoint_recommended": "PROD-025-bounded-demo-readiness-packet"
+  },
+  "readiness_summary": {
+    "source_call_count": 7,
+    "source_turn_count": 19,
+    "policy_action_correctness": 1.0,
+    "call_control_correctness": 1.0,
+    "protected_context_preservation": 1.0,
+    "non_sale_correctness": 1.0,
+    "safe_close_correctness": 1.0,
+    "state_reference_completeness": 1.0,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "leakage_finding_count": 0,
+    "demo_readiness_gate_passed": true,
+    "bounded_demo_ready": true,
+    "local_dry_run_only": true,
+    "manual_review_required": true,
+    "production_runtime_promotion_allowed": false,
+    "live_provider_demo_allowed": false,
+    "next_checkpoint_recommended": "PROD-026-local-demo-trace-harness"
+  },
+  "allowed_demo_modes": [
+    {
+      "mode_id": "local-trace-replay",
+      "description": "Replay selected synthetic post-fix turns with question, answer, policy action, call control, and safety flags visible.",
+      "default_provider_calls": false,
+      "customer_data_allowed": false,
+      "allowed_before_manual_review": true
+    },
+    {
+      "mode_id": "offline-scripted-call-simulation",
+      "description": "Run deterministic synthetic calls through the local runtime path and show structured decisions.",
+      "default_provider_calls": false,
+      "customer_data_allowed": false,
+      "allowed_before_manual_review": true
+    },
+    {
+      "mode_id": "human-review-packet",
+      "description": "Export a compact review packet for Tarik to inspect before any live/provider demo step.",
+      "default_provider_calls": false,
+      "customer_data_allowed": false,
+      "allowed_before_manual_review": true
+    }
+  ],
+  "blocked_claims": [
+    "production-ready autonomous calling",
+    "customer-facing live runtime",
+    "retrieval default enabled",
+    "composer hooks default enabled",
+    "payment collection or checkout",
+    "human replacement",
+    "provider/live voice readiness"
+  ],
+  "required_review_gates": [
+    {
+      "gate_id": "product-demo-scope-review",
+      "owner": "Tarik",
+      "required_before": "Any demo beyond local trace replay."
+    },
+    {
+      "gate_id": "privacy-boundary-review",
+      "owner": "Tarik",
+      "required_before": "Any use of non-synthetic lead, customer, call, or audio material."
+    },
+    {
+      "gate_id": "provider-run-boundary-review",
+      "owner": "Tarik",
+      "required_before": "Any live TTS, LLM, ASR, telephony, or external provider call."
+    },
+    {
+      "gate_id": "manual-trace-review",
+      "owner": "Tarik",
+      "required_before": "Treating the demo trace as acceptable product evidence."
+    },
+    {
+      "gate_id": "human-approval-before-live",
+      "owner": "Tarik",
+      "required_before": "Any client-facing, live-call, or provider-backed demonstration."
+    }
+  ],
+  "demo_trace_contract": {
+    "exact_question_and_answer_visible": true,
+    "show_decision_process": true,
+    "raw_private_data_allowed": false,
+    "required_fields": [
+      "scenario_label",
+      "customer_question",
+      "agent_answer",
+      "policy_action",
+      "call_control",
+      "safety_flags",
+      "source_checkpoint"
+    ],
+    "decision_process_fields": [
+      "policy_action",
+      "call_control",
+      "expected_outcome",
+      "protected_context",
+      "source_checkpoint"
+    ]
+  },
+  "demo_trace_cards": [
+    {
+      "turn_id": "PROD-021-C01-T01",
+      "scenario_label": "software_multi_objection_sale",
+      "customer_question": "The cost sounds high, and I need to know whether reviewing this is worth my time.",
+      "agent_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "policy_action": "value-clarify",
+      "call_control": "continue-call",
+      "expected_outcome": "non_sale_correct",
+      "safety_flags": {
+        "contains_payment_collection": false,
+        "hard_failure": false,
+        "protected_context_preserved": true
+      },
+      "source_checkpoint": "PROD-024-live-shaped-post-fix-rerun"
+    },
+    {
+      "turn_id": "PROD-021-C02-T01",
+      "scenario_label": "software_procurement_authority_delay",
+      "customer_question": "My boss has to review this before I can decide.",
+      "agent_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+      "policy_action": "stakeholder-review",
+      "call_control": "continue-call",
+      "expected_outcome": "non_sale_correct",
+      "safety_flags": {
+        "contains_payment_collection": false,
+        "hard_failure": false,
+        "protected_context_preserved": true
+      },
+      "source_checkpoint": "PROD-024-live-shaped-post-fix-rerun"
+    },
+    {
+      "turn_id": "PROD-021-C07-T01",
+      "scenario_label": "trust_price_callback",
+      "customer_question": "I do not know your company. How can I verify this is legitimate?",
+      "agent_answer": "Fair question. Should I first give you a verification path before we discuss any next step?",
+      "policy_action": "trust-repair",
+      "call_control": "continue-call",
+      "expected_outcome": "support_only",
+      "safety_flags": {
+        "contains_payment_collection": false,
+        "hard_failure": false,
+        "protected_context_preserved": true
+      },
+      "source_checkpoint": "PROD-024-live-shaped-post-fix-rerun"
+    }
+  ],
+  "decision": "bounded_demo_ready_local_trace_only"
+}

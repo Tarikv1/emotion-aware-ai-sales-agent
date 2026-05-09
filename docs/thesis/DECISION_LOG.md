@@ -15,6 +15,26 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-072 - Keep PROD-025 as bounded demo readiness packet
+
+- Date: 2026-05-09
+- Status: accepted
+- Decision: Keep PROD-025 as bounded demo readiness packet; it authorizes local trace-only demo harness work, not production runtime promotion or live-provider demo work.
+- Why:
+  - PROD-024 passed the full post-fix live-shaped gate across `7` calls and `19` turns
+  - PROD-025 preserves provider-off, customer-data-off, payment-off, retrieval-default-off, and composer-hook-default-off boundaries
+  - the packet defines allowed local demo modes, blocked product claims, exact trace visibility, and required manual review gates
+  - production-ready autonomous calling and customer-facing live runtime remain blocked claims
+- Alternatives considered:
+  - build a live provider demo immediately
+  - treat the clean post-fix rerun as production readiness
+  - move back to dataset expansion before making a local demo surface
+  - hide the decision process and show only final answers
+- Consequences:
+  - the next checkpoint should be `PROD-026-local-demo-trace-harness`
+  - the harness must show exact question, answer, policy action, call control, safety flags, and source checkpoint
+  - manual trace review remains required before provider-backed, voice, telephony, or client-facing demos
+
 ### DEC-071 - Keep PROD-024 as post-fix evidence gate
 
 - Date: 2026-05-09
