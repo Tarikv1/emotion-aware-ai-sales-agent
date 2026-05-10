@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: build `PROD-040-customer-realism-demo-surface-rerun` to replay the hardened customer responses in the actual local demo surface and compare old versus improved conversation quality.
+- [ ] Current: review `PROD-041-conditional-simulation-review` to decide whether the CallCenterEN-conditioned customer conversations are realistic enough to unblock voice playback, scenario branching, more seeds, or public demo polish.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-040, decide whether customer realism is good enough to unblock voice playback, scenario branching, more call seeds, or another simulator realism pass.
+- [ ] Next: after PROD-041, decide whether customer realism is good enough to unblock voice playback, scenario branching, more call seeds, or another simulator realism pass.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until the customer-response realism gate passes.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
@@ -60,7 +60,9 @@ Next checkpoints:
 
 Recently completed checkpoints:
 
-- [x] `PROD-039` customer realism simulator hardening, which keeps the same `8` fixed calls and `14` turns while changing only customer-simulator phrasing. It changes `14` customer responses and `8` customer openings, while keeping agent answer changed count `0`, decision snapshot changed count `0`, terminal outcome changed count `0`, and safety flag changed count `0`. Baseline unrealistic phrase hits drop from `11` to hardened unrealistic phrase hits `0`, naturalness feature count is `29`, customer realism gate passed is `true`, same cases rerun is `true`, one editable surface is `customer_simulator_response_phrasing`, voice playback unblocked is `false`, and public demo polish unblocked is `false`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-040-customer-realism-demo-surface-rerun`.
+- [x] `PROD-040` CallCenterEN conditional customer simulation, which replaces the planned same-text demo-surface rerun with a stronger conditional simulator. It runs `8` cold-call conversations and `19` customer turns where every customer response is conditioned on the immediately preceding agent answer. Conditional customer turn count is `19`, agent-conditioned customer reply count is `19`, unique customer response count is `19`, repeated customer response count is `0`, CallCenterEN pattern source count is `59`, scenario bank source count is `8`, abstract pattern only is `true`, exact transcript text used is `false`, all calls start with cold opening is `true`, all calls end by customer decision is `true`, fixed turn limit used is `false`, loop guard triggered is `false`, accepted deals are `4`, rejected deals are `4`, hard failures are `0`, payment collection count is `0`, and leakage findings are `0`. Provider calls, LLM use, private data reads, dataset downloads, raw transcript storage, copied transcript text, transcript-derived commercial runtime prompts, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-041-conditional-simulation-review`.
+
+- [x] `PROD-039` customer realism simulator hardening, which keeps the same `8` fixed calls and `14` turns while changing only customer-simulator phrasing. It changes `14` customer responses and `8` customer openings, while keeping agent answer changed count `0`, decision snapshot changed count `0`, terminal outcome changed count `0`, and safety flag changed count `0`. Baseline unrealistic phrase hits drop from `11` to hardened unrealistic phrase hits `0`, naturalness feature count is `29`, customer realism gate passed is `true`, same cases rerun is `true`, one editable surface is `customer_simulator_response_phrasing`, voice playback unblocked is `false`, and public demo polish unblocked is `false`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint became `PROD-040-callcenteren-conditional-customer-simulation` after Tarik requested customer replies that react to each agent answer and use CallCenterEN grounding.
 
 - [x] `PROD-038` local demo surface review, which accepts the local trace surface structure but rejects the current conversation content. Demo surface UI accepted is `true`, customer response realism accepted is `false`, conversation quality gate passed is `false`, reviewed calls are `8`, reviewed turns are `14`, customer response issue count is `5`, voice playback unblocked is `false`, scenario branching unblocked is `false`, more call seeds unblocked is `false`, and public demo polish unblocked is `false`. The issue categories are over-cooperative acceptance, evaluator-like wording, too-clean state transition, low-friction follow-up, and artificial boundary language. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-039-customer-realism-simulator-hardening`.
 
@@ -466,18 +468,18 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Build `PROD-040-customer-realism-demo-surface-rerun` using the completed `PROD-039` hardened traces.
+Review `PROD-041-conditional-simulation-review` using the completed `PROD-040` conditional traces.
 
 Purpose:
 
-- rebuild the local interactive trace demo surface with the hardened customer responses
-- compare old versus improved customer responses inside the same inspection workflow
+- inspect whether each customer response changes according to the immediately preceding agent answer
+- verify the CallCenterEN abstract pattern basis is visible without copying transcript text
 - decide whether the conversation now feels realistic enough to unblock voice playback or whether another simulator pass is needed
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
 
-Immediate product artifact after `PROD-039`:
+Immediate product artifact after `PROD-040`:
 
-- customer-realism demo surface rerun
+- conditional-simulation review packet
 - review packet deciding whether voice playback, scenario branching, more seeds, or another realism pass should come next
 
 Next voice checkpoint:

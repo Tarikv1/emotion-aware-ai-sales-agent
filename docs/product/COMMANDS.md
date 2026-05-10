@@ -1071,6 +1071,18 @@ Validate the PROD-039 same-case customer phrasing improvement, unchanged agent a
 python scripts\validate_prod_039_customer_realism_simulator_hardening.py
 ```
 
+Run the PROD-040 CallCenterEN conditional customer simulation checkpoint:
+
+```powershell
+python scripts\run_prod_040_callcenteren_conditional_customer_simulation.py
+```
+
+Validate the PROD-040 agent-conditioned customer replies, unique customer responses, abstract CallCenterEN pattern grounding, leakage boundary, customer-decision endings, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

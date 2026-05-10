@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-088 - Keep PROD-040 as the CallCenterEN-conditioned customer simulator
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Replace the simple hardened-trace surface rerun with a conditional customer simulator where every customer response is driven by the immediately preceding agent answer and grounded in abstract CallCenterEN pattern IDs.
+- Why:
+  - Tarik's review found that better one-line customer phrasing was not enough; the customer must react to what the agent actually says
+  - CallCenterEN should inform interaction patterns without copying real transcript text into generated scenarios or runtime prompts
+  - the demo needs full conversations that end by customer acceptance or rejection, not isolated question-answer snippets
+- Alternatives considered:
+  - only rebuild the PROD-037 surface with PROD-039 hardened lines
+  - add more fixed one-line scenarios
+  - use raw transcript wording directly as customer replies
+- Consequences:
+  - PROD-040 uses PROD-013/PROD-014 abstract CallCenterEN pattern banks and keeps raw transcript text out of artifacts
+  - every turn records agent answer signals, customer response condition, state delta, and pattern basis
+  - the next checkpoint is `PROD-041-conditional-simulation-review`
+  - voice playback, public demo polish, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-087 - Keep PROD-039 as the customer-realism hardening checkpoint
 
 - Date: 2026-05-10
