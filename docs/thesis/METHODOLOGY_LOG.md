@@ -16,6 +16,13 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041A spoken-reason and review-surface repair
+
+- Objective: fix the two PROD-041A review findings without expanding or redesigning the checkpoint.
+- Action taken: added per-frame `spoken_reason` text for spoken relevance lines, stopped using internal `realistic_agent_goal` text in agent speech, restored per-call terminal scoring and failure-taxonomy rendering in the review HTML, and strengthened validator coverage for both issues.
+- Data used: existing offline PROD-041A concrete frames and generated traces only. No provider call, LLM call, private data read, dataset download, or runtime behavior change was used.
+- Why it matters for the thesis: the checkpoint now better separates internal evaluation goals from spoken dialogue while preserving review evidence for terminal outcomes, safe-close accounting, and failure taxonomy.
+
 ### 2026-05-10 - PROD-041A concrete scenario frame mining and dialogue naturalness repair
 
 - Objective: repair PROD-041A dialogue realism without adding scenarios by introducing a concrete frame-mining layer between abstract pattern sources and generated traces.

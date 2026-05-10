@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from collections import Counter, defaultdict
@@ -130,6 +131,33 @@ BANNED_PHRASES = [
     "The practical blocker for me is still internal priority",
     "Because you kept it brief on",
     "If we continue, I want the step to stay limited to",
+]
+IMPERATIVE_GOAL_VERBS = {
+    "answer",
+    "ask",
+    "route",
+    "send",
+    "check",
+    "explain",
+    "stop",
+    "confirm",
+}
+BROKEN_RELEVANCE_PATTERN = re.compile(
+    r"\bThis only matters if\s+("
+    + "|".join(sorted(IMPERATIVE_GOAL_VERBS))
+    + r")\b",
+    re.IGNORECASE,
+)
+REVIEW_SURFACE_REQUIRED_CALL_FIELDS = [
+    "scenario_frame_id",
+    "terminal_outcome",
+    "counts_toward_safe_close_rate",
+    "counts_toward_non_sale_correctness",
+    "hard_failure_count",
+    "failure_flags",
+    "failure_taxonomy_hits",
+    "valid_terminal_outcomes",
+    "dialogue_realism",
 ]
 REALISM_COMPONENTS = {
     "natural_customer_language",
@@ -310,11 +338,13 @@ def validate_payload(
             "customer_initial_attitude",
             "first_customer_objection",
             "realistic_agent_goal",
+            "spoken_reason",
             "realistic_next_step",
             "safety_boundaries",
             "spoken_language_guidance",
         ]:
             assert_condition(frame.get(key), f"frame missing {key}: {frame.get('scenario_frame_id')}")
+        assert_condition(not BROKEN_RELEVANCE_PATTERN.search(frame["spoken_reason"]), frame["spoken_reason"])
         quality = frame.get("scenario_frame_quality", {})
         assert_condition(quality.get("score", 0) >= 6, quality)
         assert_condition(quality.get("max_score") == 7, quality)
@@ -388,6 +418,11 @@ def validate_payload(
         assert_condition(spoken_joined.count(concern_text) <= 1, concern_text)
         for phrase in BANNED_PHRASES:
             assert_condition(phrase.lower() not in spoken_joined, phrase)
+        broken_relevance = BROKEN_RELEVANCE_PATTERN.search(spoken_joined)
+        assert_condition(
+            not broken_relevance,
+            f"broken relevance phrase: {broken_relevance.group(0) if broken_relevance else ''}",
+        )
 
         for turn in call["turns"]:
             assert_condition(turn["customer_context"], turn)
@@ -422,6 +457,22 @@ def validate_docs() -> None:
             assert_condition(marker in lowered, f"{path.relative_to(ROOT)} missing marker: {marker}")
         for blocked in BLOCKED_OUTPUT_TEXT:
             assert_condition(blocked.lower() not in lowered, f"{path.relative_to(ROOT)} contains blocked text: {blocked}")
+
+    surface_html = SURFACE_PATH.read_text(encoding="utf-8")
+    for field in REVIEW_SURFACE_REQUIRED_CALL_FIELDS:
+        assert_condition(field in surface_html, f"review HTML does not render/reference per-call field: {field}")
+        assert_condition(
+            all(field in call for call in read_json(SURFACE_DATA_PATH)["calls"]),
+            f"review data missing per-call field: {field}",
+        )
+    for visible_label in [
+        "Terminal scoring",
+        "Failure taxonomy",
+        "hard_failure_count",
+        "counts_toward_safe_close_rate",
+        "counts_toward_non_sale_correctness",
+    ]:
+        assert_condition(visible_label in surface_html, f"review HTML missing visible field label: {visible_label}")
 
 
 def main() -> None:

@@ -699,6 +699,49 @@ FRAME_DETAILS = {
     },
 }
 
+SPOKEN_REASONS = {
+    "price_sensitive": "This only matters if missed callbacks are actually creating work for your team.",
+    "manager_review": "This only matters if leadership is already seeing callback ownership as a real problem.",
+    "existing_provider": "This only matters if your current provider still leaves overflow follow-ups unclear.",
+    "confused_fit": "This only matters if the two queues are causing real callbacks to fall through.",
+    "skeptical_proof": "This only matters if delayed dispute callbacks are something you can measure.",
+    "busy_now": "This only matters if incomplete handoff notes are slowing down inbound requests.",
+    "send_info": "This only matters if district-level callback ownership is still unclear after the email.",
+    "contract_fear": "This only matters if verbal handoffs are causing guest complaint callbacks to get missed.",
+    "payment_fear": "This only matters if repair callbacks are stalling because the first-call notes are incomplete.",
+    "security_review": "This only matters if incomplete ownership logs are already causing audit friction.",
+    "bad_experience": "This only matters if the last rollout left store callback queues unmanaged.",
+    "needs_approval": "This only matters if delayed lead callbacks are already costing the team time.",
+    "hidden_objection": "This only matters if unassigned escalations are a real priority for your department.",
+    "competitor_comparison": "This only matters if campaign callback requests are still getting dropped between teams.",
+    "not_interested": "This only matters if there is a callback ownership issue worth revisiting later.",
+    "hostile_rejection": "This only matters if you want the conversation reopened later, and I hear that you do not.",
+    "callback_request": "This only matters if tenant request callbacks are slipping through those inboxes.",
+    "support_boundary": "This only matters because the unresolved ticket belongs with support, not sales.",
+    "technical_integration": "This only matters if integration follow-up is getting lost between technical and operations teams.",
+    "setup_timeline": "This only matters if rollout ownership is delaying patient callbacks.",
+    "multi_location_routing": "This only matters if locations are dropping escalations because ownership is not explicit.",
+    "low_fit": "This only matters if that single-dispatcher process starts breaking down.",
+    "sale_ready": "This only matters if unassigned follow-ups are already causing repeat complaints.",
+    "discovery_needed": "This only matters if the callback delays happen often enough to understand the cause.",
+    "insurance_price_fear": "This only matters if claim follow-ups are being missed between contacts.",
+    "spouse_input": "This only matters if reminder callbacks fail when one household contact is unavailable.",
+    "scam_card_fear": "This only matters if fraud alerts are blocking legitimate reminder follow-ups.",
+    "consumer_not_interested": "This only matters if a reminder or follow-up problem comes up later.",
+    "consumer_callback": "This only matters if daytime missed calls are causing appointment follow-up problems.",
+    "coverage_confusion": "This only matters if benefit-related callbacks need a qualified specialist to confirm details.",
+    "already_covered": "This only matters if your current coverage stops handling reminders cleanly.",
+    "consumer_bad_experience": "This only matters if the last service request still left you chasing callbacks.",
+    "written_info": "This only matters if written contact preferences would make program reminders more reliable.",
+    "consumer_hostile": "This only matters if you choose to reopen the conversation later.",
+    "cancellation_boundary": "This only matters because cancellation follow-up belongs in the support path.",
+    "appointment_interest": "This only matters if missed reminder ownership is causing appointment follow-up gaps.",
+    "sensitive_healthcare": "This only matters if scheduling callbacks need the clinic team to own the next step.",
+    "home_service_comparison": "This only matters if quote-stage ownership changes are causing repair follow-ups to stall.",
+    "reminder_plan": "This only matters if shift rotations are causing reminder callbacks to drop.",
+    "no_pressure_consumer": "This only matters if the follow-up can stay optional and pressure-free.",
+}
+
 
 def rel_path(path: Path) -> str:
     return str(path.relative_to(ROOT)).replace("\\", "/")
@@ -876,6 +919,7 @@ def build_frames(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict
             "first_customer_objection": details["first_customer_objection"],
             "hidden_objection": details["hidden_objection"],
             "realistic_agent_goal": details["realistic_agent_goal"],
+            "spoken_reason": SPOKEN_REASONS[label],
             "realistic_next_step": details["realistic_next_step"],
             "valid_terminal_outcomes": valid_terminal_outcomes(target),
             "safety_boundaries": safety_boundaries(label, market_scope, domain),
@@ -974,7 +1018,6 @@ def emotion_acknowledgement(emotion: str) -> str:
 
 def strategy_sentence(strategy: str, frame: dict[str, Any]) -> str:
     trigger = frame["practical_trigger"].lower()
-    goal = frame["realistic_agent_goal"]
     mapping = {
         "permission_first": "If this is not relevant, we can stop now.",
         "problem_framing": f"The only reason this might be worth a follow-up is that {trigger}",
@@ -989,7 +1032,7 @@ def strategy_sentence(strategy: str, frame: dict[str, Any]) -> str:
     if strategy == "consultative_discovery" and "?" not in mapping[strategy]:
         return mapping[strategy] + "?"
     if strategy == "problem_framing":
-        return mapping[strategy] + f" This only matters if {goal.lower()}."
+        return mapping[strategy] + f" {frame['spoken_reason']}"
     return mapping[strategy]
 
 
@@ -1383,6 +1426,7 @@ def build_call(frame: dict[str, Any], profile: dict[str, Any], index: int) -> di
         "first_customer_objection": frame["first_customer_objection"],
         "hidden_objection": frame["hidden_objection"],
         "realistic_agent_goal": frame["realistic_agent_goal"],
+        "spoken_reason": frame["spoken_reason"],
         "realistic_next_step": frame["realistic_next_step"],
         "spoken_language_guidance": frame["spoken_language_guidance"],
         "scenario_frame_quality": frame["scenario_frame_quality"],
@@ -1898,14 +1942,32 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
           <p><strong>Context:</strong> ${{esc(call.real_world_context)}}</p>
           <p><strong>Practical trigger:</strong> ${{esc(call.practical_trigger)}}</p>
           <p><strong>First objection:</strong> ${{esc(call.first_customer_objection)}} | <strong>Hidden objection:</strong> ${{esc(call.hidden_objection)}}</p>
-          <p><strong>Agent goal:</strong> ${{esc(call.realistic_agent_goal)}} | <strong>Next step:</strong> ${{esc(call.realistic_next_step)}}</p>
+          <p><strong>Agent goal:</strong> ${{esc(call.realistic_agent_goal)}} | <strong>Spoken reason:</strong> ${{esc(call.spoken_reason)}} | <strong>Next step:</strong> ${{esc(call.realistic_next_step)}}</p>
           <p><strong>Frame quality:</strong> <code>${{call.scenario_frame_quality.score}}/${{call.scenario_frame_quality.max_score}}</code></p>
           <p><strong>Strategy:</strong> required <code>${{esc(call.required_strategy)}}</code>, detected <code>${{esc(call.detected_strategies_used.join(', '))}}</code>, match <code>${{call.scenario_strategy_match}}</code></p>
           <p><strong>Dialogue realism:</strong> <code>${{call.dialogue_realism.score}}/${{call.dialogue_realism.max_score}}</code>, non-smooth <code>${{call.dialogue_realism.non_smooth}}</code>, recovery <code>${{call.dialogue_realism.recovery_present}}</code></p>
+          <details open><summary>Terminal scoring</summary><pre>${{esc(JSON.stringify({{
+            terminal_outcome: call.terminal_outcome,
+            valid_terminal_outcomes: call.valid_terminal_outcomes,
+            terminal_outcome_valid: call.terminal_outcome_valid,
+            counts_toward_safe_close_rate: call.counts_toward_safe_close_rate,
+            counts_toward_non_sale_correctness: call.counts_toward_non_sale_correctness,
+            hard_failure_count: call.hard_failure_count,
+            failure_flags: call.failure_flags
+          }}, null, 2))}}</pre></details>
+          <details><summary>Scenario-level scores</summary><pre>${{esc(JSON.stringify({{
+            required_strategy: call.required_strategy,
+            detected_strategies_used: call.detected_strategies_used,
+            scenario_strategy_match: call.scenario_strategy_match,
+            emotion_handled: call.emotion_handled,
+            dialogue_realism: call.dialogue_realism,
+            hard_failure_count: call.hard_failure_count
+          }}, null, 2))}}</pre></details>
           <details open><summary>Opening</summary><p>${{esc(call.opening.selected_opening)}}</p><ul>${{call.opening.unused_opening_variants.map(v => `<li>${{esc(v)}}</li>`).join('')}}</ul></details>
           <details open><summary>Turns</summary>${{call.turns.map(t => `<div class="turn"><p><strong>Customer:</strong> ${{esc(t.customer_context)}}</p><p><strong>Agent:</strong> ${{esc(t.agent_answer)}}</p><p><strong>Customer reaction:</strong> ${{esc(t.customer_response)}}</p></div>`).join('')}}</details>
           <details><summary>Spoken Language Guidance</summary><pre>${{esc(JSON.stringify(call.spoken_language_guidance, null, 2))}}</pre></details>
           <details><summary>Dialogue realism details</summary><pre>${{esc(JSON.stringify(call.dialogue_realism, null, 2))}}</pre></details>
+          <details><summary>Failure taxonomy</summary><pre>${{esc(JSON.stringify(call.failure_taxonomy_hits, null, 2))}}</pre></details>
         </article>
       `).join('');
     }}

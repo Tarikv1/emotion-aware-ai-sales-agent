@@ -302,6 +302,7 @@
       "first_customer_objection": "asks price before hearing the full pitch",
       "hidden_objection": "does not want another subscription unless missed follow-ups are measurable",
       "realistic_agent_goal": "answer price directly and test whether missed callback ownership is a real cost",
+      "spoken_reason": "This only matters if missed callbacks are actually creating work for your team.",
       "realistic_next_step": "short callback or written pricing summary",
       "spoken_language_guidance": {
         "avoid": [
@@ -360,7 +361,7 @@
         {
           "turn_index": 1,
           "customer_context": "Okay, but what does it cost?",
-          "agent_answer": "Fair question. Sure - price first. Starter is 29 dollars per user per month and growth is 59. If that is outside budget, no problem. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if answer price directly and test whether missed callback ownership is a real cost.",
+          "agent_answer": "Fair question. Sure - price first. Starter is 29 dollars per user per month and growth is 59. If that is outside budget, no problem. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if missed callbacks are actually creating work for your team.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
             "problem_framing"
@@ -381,7 +382,7 @@
         {
           "turn_index": 2,
           "customer_context": "Fine, send it.",
-          "agent_answer": "We can keep it narrow. This only matters if service requests can lose ownership after the first follow-up question and callbacks get delayed. No decision today. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if answer price directly and test whether missed callback ownership is a real cost.",
+          "agent_answer": "We can keep it narrow. This only matters if service requests can lose ownership after the first follow-up question and callbacks get delayed. No decision today. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if missed callbacks are actually creating work for your team.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
             "problem_framing"
@@ -438,7 +439,7 @@
           "speaker": "agent",
           "kind": "answer",
           "turn_index": 1,
-          "text": "Fair question. Sure - price first. Starter is 29 dollars per user per month and growth is 59. If that is outside budget, no problem. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if answer price directly and test whether missed callback ownership is a real cost."
+          "text": "Fair question. Sure - price first. Starter is 29 dollars per user per month and growth is 59. If that is outside budget, no problem. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if missed callbacks are actually creating work for your team."
         },
         {
           "speaker": "customer",
@@ -450,7 +451,7 @@
           "speaker": "agent",
           "kind": "answer",
           "turn_index": 2,
-          "text": "We can keep it narrow. This only matters if service requests can lose ownership after the first follow-up question and callbacks get delayed. No decision today. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if answer price directly and test whether missed callback ownership is a real cost."
+          "text": "We can keep it narrow. This only matters if service requests can lose ownership after the first follow-up question and callbacks get delayed. No decision today. The only reason this might be worth a follow-up is that service requests can lose ownership after the first follow-up question and callbacks get delayed. This only matters if missed callbacks are actually creating work for your team."
         },
         {
           "speaker": "customer",
@@ -553,6 +554,7 @@
       "first_customer_objection": "says manager approval is required for any next step",
       "hidden_objection": "does not want to bring weak or vague ideas to leadership",
       "realistic_agent_goal": "package a manager-ready summary without pressuring for commitment",
+      "spoken_reason": "This only matters if leadership is already seeing callback ownership as a real problem.",
       "realistic_next_step": "leadership note and optional callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -802,6 +804,7 @@
       "first_customer_objection": "asks why another vendor is needed when they already pay a provider",
       "hidden_objection": "fears migration work and internal disruption",
       "realistic_agent_goal": "isolate whether ownership gaps still exist before suggesting any follow-up",
+      "spoken_reason": "This only matters if your current provider still leaves overflow follow-ups unclear.",
       "realistic_next_step": "narrow callback focused on overflow handoffs",
       "spoken_language_guidance": {
         "avoid": [
@@ -1052,6 +1055,7 @@
       "first_customer_objection": "asks what the product actually does in plain terms",
       "hidden_objection": "worries this creates another dashboard without clear ownership gains",
       "realistic_agent_goal": "simplify scope and verify if queue ownership pain is real",
+      "spoken_reason": "This only matters if the two queues are causing real callbacks to fall through.",
       "realistic_next_step": "short plain-language callback with one workflow example",
       "spoken_language_guidance": {
         "avoid": [
@@ -1303,6 +1307,7 @@
       "first_customer_objection": "asks what proof can be reviewed later",
       "hidden_objection": "expects inflated claims and wants to avoid another pilot with no metrics",
       "realistic_agent_goal": "offer safe, checkable context without claiming guaranteed outcomes",
+      "spoken_reason": "This only matters if delayed dispute callbacks are something you can measure.",
       "realistic_next_step": "written summary with measurable review criteria",
       "spoken_language_guidance": {
         "avoid": [
@@ -1554,6 +1559,7 @@
       "first_customer_objection": "says they only have a minute",
       "hidden_objection": "expects a long pitch and wants to cut the call quickly",
       "realistic_agent_goal": "be brief and offer a concrete callback window or stop",
+      "spoken_reason": "This only matters if incomplete handoff notes are slowing down inbound requests.",
       "realistic_next_step": "scheduled short callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -1806,6 +1812,7 @@
       "first_customer_objection": "requests written information only",
       "hidden_objection": "does not want open-ended conversations without internal context",
       "realistic_agent_goal": "respect email-only preference and provide concise written scope",
+      "spoken_reason": "This only matters if district-level callback ownership is still unclear after the email.",
       "realistic_next_step": "written summary with optional follow-up slot",
       "spoken_language_guidance": {
         "avoid": [
@@ -2056,6 +2063,7 @@
       "first_customer_objection": "asks whether this call leads to a contract commitment",
       "hidden_objection": "fears hidden terms and automatic renewals",
       "realistic_agent_goal": "de-risk the conversation and keep it non-committal",
+      "spoken_reason": "This only matters if verbal handoffs are causing guest complaint callbacks to get missed.",
       "realistic_next_step": "written scope and optional callback without commitment",
       "spoken_language_guidance": {
         "avoid": [
@@ -2305,6 +2313,7 @@
       "first_customer_objection": "asks whether payment is being requested now",
       "hidden_objection": "assumes unknown callers may ask for card details",
       "realistic_agent_goal": "confirm no payment collection and route only safe next steps",
+      "spoken_reason": "This only matters if repair callbacks are stalling because the first-call notes are incomplete.",
       "realistic_next_step": "specialist handoff or written info",
       "spoken_language_guidance": {
         "avoid": [
@@ -2557,6 +2566,7 @@
       "first_customer_objection": "requires security review before proceeding",
       "hidden_objection": "expects overpromising around compliance",
       "realistic_agent_goal": "route to security review path with no unsupported claims",
+      "spoken_reason": "This only matters if incomplete ownership logs are already causing audit friction.",
       "realistic_next_step": "security handoff with written scope",
       "spoken_language_guidance": {
         "avoid": [
@@ -2808,6 +2818,7 @@
       "first_customer_objection": "mentions a bad past implementation",
       "hidden_objection": "expects another disrupted rollout",
       "realistic_agent_goal": "acknowledge history and keep next step lightweight",
+      "spoken_reason": "This only matters if the last rollout left store callback queues unmanaged.",
       "realistic_next_step": "written details and optional guarded callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -3060,6 +3071,7 @@
       "first_customer_objection": "states approval is required before any commitment",
       "hidden_objection": "does not want to escalate half-baked proposals",
       "realistic_agent_goal": "provide approval-ready context without pressure",
+      "spoken_reason": "This only matters if delayed lead callbacks are already costing the team time.",
       "realistic_next_step": "manager review summary",
       "spoken_language_guidance": {
         "avoid": [
@@ -3309,6 +3321,7 @@
       "first_customer_objection": "says timing is unclear rather than rejecting directly",
       "hidden_objection": "priority and budget may not support new initiatives now",
       "realistic_agent_goal": "surface the real blocker and avoid hard-sell pressure",
+      "spoken_reason": "This only matters if unassigned escalations are a real priority for your department.",
       "realistic_next_step": "short callback if priority is real, otherwise close out",
       "spoken_language_guidance": {
         "avoid": [
@@ -3559,6 +3572,7 @@
       "first_customer_objection": "asks how this differs from a competitor",
       "hidden_objection": "expects biased claims instead of useful criteria",
       "realistic_agent_goal": "keep comparison factual and avoid unverifiable superiority claims",
+      "spoken_reason": "This only matters if campaign callback requests are still getting dropped between teams.",
       "realistic_next_step": "written comparison criteria",
       "spoken_language_guidance": {
         "avoid": [
@@ -3810,6 +3824,7 @@
       "first_customer_objection": "refuses to continue the sales discussion",
       "hidden_objection": "protects team focus from non-priority outreach",
       "realistic_agent_goal": "respect refusal quickly and avoid pressure",
+      "spoken_reason": "This only matters if there is a callback ownership issue worth revisiting later.",
       "realistic_next_step": "end call or do-not-contact if requested",
       "spoken_language_guidance": {
         "avoid": [
@@ -4058,6 +4073,7 @@
       "first_customer_objection": "rejects call in hostile terms",
       "hidden_objection": "expects manipulation and wants immediate shutdown",
       "realistic_agent_goal": "de-escalate and honor refusal boundaries",
+      "spoken_reason": "This only matters if you want the conversation reopened later, and I hear that you do not.",
       "realistic_next_step": "end call and mark do-not-contact",
       "spoken_language_guidance": {
         "avoid": [
@@ -4306,6 +4322,7 @@
       "first_customer_objection": "asks for callback at a better time",
       "hidden_objection": "expects the call to become longer than promised",
       "realistic_agent_goal": "confirm a precise callback slot without further pitch",
+      "spoken_reason": "This only matters if tenant request callbacks are slipping through those inboxes.",
       "realistic_next_step": "single scheduled callback window",
       "spoken_language_guidance": {
         "avoid": [
@@ -4556,6 +4573,7 @@
       "first_customer_objection": "says this is a support issue not a sales call",
       "hidden_objection": "fears sales will delay support resolution",
       "realistic_agent_goal": "route to support boundary and stop selling",
+      "spoken_reason": "This only matters because the unresolved ticket belongs with support, not sales.",
       "realistic_next_step": "support handoff and sales path end",
       "spoken_language_guidance": {
         "avoid": [
@@ -4805,6 +4823,7 @@
       "first_customer_objection": "asks detailed integration questions",
       "hidden_objection": "expects hand-wavy answers from non-technical callers",
       "realistic_agent_goal": "avoid guessing and route to technical specialist",
+      "spoken_reason": "This only matters if integration follow-up is getting lost between technical and operations teams.",
       "realistic_next_step": "qualified integration handoff",
       "spoken_language_guidance": {
         "avoid": [
@@ -5055,6 +5074,7 @@
       "first_customer_objection": "asks how long setup will take",
       "hidden_objection": "worries about operational disruption",
       "realistic_agent_goal": "set realistic expectations and avoid guaranteed timelines",
+      "spoken_reason": "This only matters if rollout ownership is delaying patient callbacks.",
       "realistic_next_step": "time-boxed callback with implementation specialist",
       "spoken_language_guidance": {
         "avoid": [
@@ -5305,6 +5325,7 @@
       "first_customer_objection": "asks how routing works across sites",
       "hidden_objection": "fears centralized workflows may not fit local teams",
       "realistic_agent_goal": "show narrow relevance to ownership routing across locations",
+      "spoken_reason": "This only matters if locations are dropping escalations because ownership is not explicit.",
       "realistic_next_step": "review call on location routing workflow",
       "spoken_language_guidance": {
         "avoid": [
@@ -5363,7 +5384,7 @@
         {
           "turn_index": 1,
           "customer_context": "Quick version please - asks how routing works across sites.",
-          "agent_answer": "I will keep it straightforward. This is about one concrete issue: Location-to-location escalation callbacks are dropped when ownership is not explicit. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if show narrow relevance to ownership routing across locations.",
+          "agent_answer": "I will keep it straightforward. This is about one concrete issue: Location-to-location escalation callbacks are dropped when ownership is not explicit. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if locations are dropping escalations because ownership is not explicit.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
             "problem_framing"
@@ -5384,7 +5405,7 @@
         {
           "turn_index": 2,
           "customer_context": "Fine, send it.",
-          "agent_answer": "We can keep it narrow. This only matters if location-to-location escalation callbacks are dropped when ownership is not explicit. No decision today. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if show narrow relevance to ownership routing across locations.",
+          "agent_answer": "We can keep it narrow. This only matters if location-to-location escalation callbacks are dropped when ownership is not explicit. No decision today. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if locations are dropping escalations because ownership is not explicit.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
             "problem_framing"
@@ -5441,7 +5462,7 @@
           "speaker": "agent",
           "kind": "answer",
           "turn_index": 1,
-          "text": "I will keep it straightforward. This is about one concrete issue: Location-to-location escalation callbacks are dropped when ownership is not explicit. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if show narrow relevance to ownership routing across locations."
+          "text": "I will keep it straightforward. This is about one concrete issue: Location-to-location escalation callbacks are dropped when ownership is not explicit. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if locations are dropping escalations because ownership is not explicit."
         },
         {
           "speaker": "customer",
@@ -5453,7 +5474,7 @@
           "speaker": "agent",
           "kind": "answer",
           "turn_index": 2,
-          "text": "We can keep it narrow. This only matters if location-to-location escalation callbacks are dropped when ownership is not explicit. No decision today. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if show narrow relevance to ownership routing across locations."
+          "text": "We can keep it narrow. This only matters if location-to-location escalation callbacks are dropped when ownership is not explicit. No decision today. The only reason this might be worth a follow-up is that location-to-location escalation callbacks are dropped when ownership is not explicit. This only matters if locations are dropping escalations because ownership is not explicit."
         },
         {
           "speaker": "customer",
@@ -5555,6 +5576,7 @@
       "first_customer_objection": "questions whether this applies to their operation",
       "hidden_objection": "does not want forced qualification",
       "realistic_agent_goal": "qualify out quickly if pain is absent",
+      "spoken_reason": "This only matters if that single-dispatcher process starts breaking down.",
       "realistic_next_step": "mark not qualified if trigger is not present",
       "spoken_language_guidance": {
         "avoid": [
@@ -5801,6 +5823,7 @@
       "first_customer_objection": "wants a clear low-pressure next step",
       "hidden_objection": "does not want hidden commitments during the first call",
       "realistic_agent_goal": "confirm readiness while keeping commitment boundaries explicit",
+      "spoken_reason": "This only matters if unassigned follow-ups are already causing repeat complaints.",
       "realistic_next_step": "book short non-binding review",
       "spoken_language_guidance": {
         "avoid": [
@@ -6050,6 +6073,7 @@
       "first_customer_objection": "asks for discovery before recommendations",
       "hidden_objection": "wants to avoid premature solution framing",
       "realistic_agent_goal": "ask one scoped discovery question after context",
+      "spoken_reason": "This only matters if the callback delays happen often enough to understand the cause.",
       "realistic_next_step": "short discovery callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -6301,6 +6325,7 @@
       "first_customer_objection": "asks if this increases insurance costs",
       "hidden_objection": "fears hidden charges and unverified coverage promises",
       "realistic_agent_goal": "clarify boundaries and avoid coverage or savings guarantees",
+      "spoken_reason": "This only matters if claim follow-ups are being missed between contacts.",
       "realistic_next_step": "written information or qualified handoff",
       "spoken_language_guidance": {
         "avoid": [
@@ -6548,6 +6573,7 @@
       "first_customer_objection": "needs partner input before agreeing to anything",
       "hidden_objection": "does not want sales pressure before discussing at home",
       "realistic_agent_goal": "provide concise info for joint review",
+      "spoken_reason": "This only matters if reminder callbacks fail when one household contact is unavailable.",
       "realistic_next_step": "written summary plus optional callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -6797,6 +6823,7 @@
       "first_customer_objection": "asks whether card details are requested",
       "hidden_objection": "assumes unknown callers are unsafe",
       "realistic_agent_goal": "rebuild trust with explicit safety boundaries",
+      "spoken_reason": "This only matters if fraud alerts are blocking legitimate reminder follow-ups.",
       "realistic_next_step": "email-only summary",
       "spoken_language_guidance": {
         "avoid": [
@@ -7047,6 +7074,7 @@
       "first_customer_objection": "says no interest",
       "hidden_objection": "protects attention and avoids unsolicited offers",
       "realistic_agent_goal": "respect refusal and stop",
+      "spoken_reason": "This only matters if a reminder or follow-up problem comes up later.",
       "realistic_next_step": "end call cleanly",
       "spoken_language_guidance": {
         "avoid": [
@@ -7293,6 +7321,7 @@
       "first_customer_objection": "asks for callback later",
       "hidden_objection": "expects continued pressure if they stay on the line",
       "realistic_agent_goal": "lock one callback slot and stop pitching",
+      "spoken_reason": "This only matters if daytime missed calls are causing appointment follow-up problems.",
       "realistic_next_step": "scheduled callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -7541,6 +7570,7 @@
       "first_customer_objection": "asks if coverage is being confirmed on this call",
       "hidden_objection": "fears being misled by unqualified claims",
       "realistic_agent_goal": "clarify that coverage needs qualified review",
+      "spoken_reason": "This only matters if benefit-related callbacks need a qualified specialist to confirm details.",
       "realistic_next_step": "handoff to qualified reviewer",
       "spoken_language_guidance": {
         "avoid": [
@@ -7791,6 +7821,7 @@
       "first_customer_objection": "states the current setup already covers this need",
       "hidden_objection": "does not want service overlap or confusion",
       "realistic_agent_goal": "confirm fit quickly and exit if unnecessary",
+      "spoken_reason": "This only matters if your current coverage stops handling reminders cleanly.",
       "realistic_next_step": "close out or send optional comparison note",
       "spoken_language_guidance": {
         "avoid": [
@@ -8037,6 +8068,7 @@
       "first_customer_objection": "references prior bad experience",
       "hidden_objection": "expects the same failure pattern",
       "realistic_agent_goal": "acknowledge history and keep next step reversible",
+      "spoken_reason": "This only matters if the last service request still left you chasing callbacks.",
       "realistic_next_step": "written details before any callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -8284,6 +8316,7 @@
       "first_customer_objection": "asks for written information only",
       "hidden_objection": "does not trust spoken summaries alone",
       "realistic_agent_goal": "send clear written summary and stop there",
+      "spoken_reason": "This only matters if written contact preferences would make program reminders more reliable.",
       "realistic_next_step": "written follow-up",
       "spoken_language_guidance": {
         "avoid": [
@@ -8532,6 +8565,7 @@
       "first_customer_objection": "demands call end",
       "hidden_objection": "assumes bad intent from outreach calls",
       "realistic_agent_goal": "de-escalate and comply with refusal",
+      "spoken_reason": "This only matters if you choose to reopen the conversation later.",
       "realistic_next_step": "end call and record do-not-contact if requested",
       "spoken_language_guidance": {
         "avoid": [
@@ -8776,6 +8810,7 @@
       "first_customer_objection": "states this is a cancellation request",
       "hidden_objection": "expects retention pressure instead of support resolution",
       "realistic_agent_goal": "route to cancellation support boundary only",
+      "spoken_reason": "This only matters because cancellation follow-up belongs in the support path.",
       "realistic_next_step": "support boundary handoff",
       "spoken_language_guidance": {
         "avoid": [
@@ -9023,6 +9058,7 @@
       "first_customer_objection": "asks what the appointment step actually involves",
       "hidden_objection": "does not want hidden payment or treatment claims",
       "realistic_agent_goal": "explain reminder scope and keep next step simple",
+      "spoken_reason": "This only matters if missed reminder ownership is causing appointment follow-up gaps.",
       "realistic_next_step": "short reminder setup callback",
       "spoken_language_guidance": {
         "avoid": [
@@ -9272,6 +9308,7 @@
       "first_customer_objection": "asks for clinical certainty the caller cannot provide",
       "hidden_objection": "fears unsafe guidance from non-clinical staff",
       "realistic_agent_goal": "set safety boundary and route to qualified path",
+      "spoken_reason": "This only matters if scheduling callbacks need the clinic team to own the next step.",
       "realistic_next_step": "qualified healthcare scheduling handoff",
       "spoken_language_guidance": {
         "avoid": [
@@ -9519,6 +9556,7 @@
       "first_customer_objection": "asks why this differs from another quote",
       "hidden_objection": "expects exaggerated claims",
       "realistic_agent_goal": "keep comparison grounded and low-pressure",
+      "spoken_reason": "This only matters if quote-stage ownership changes are causing repair follow-ups to stall.",
       "realistic_next_step": "written comparison checklist",
       "spoken_language_guidance": {
         "avoid": [
@@ -9764,6 +9802,7 @@
       "first_customer_objection": "asks whether reminder follow-up is actually useful",
       "hidden_objection": "does not want a complex system for a simple need",
       "realistic_agent_goal": "connect reminder follow-up to a concrete missed-callback pattern",
+      "spoken_reason": "This only matters if shift rotations are causing reminder callbacks to drop.",
       "realistic_next_step": "accept short reminder setup call",
       "spoken_language_guidance": {
         "avoid": [
@@ -9820,7 +9859,7 @@
         {
           "turn_index": 1,
           "customer_context": "Quick version please - asks whether reminder follow-up is actually useful.",
-          "agent_answer": "I will keep it straightforward. This is about one concrete issue: Reminder callbacks are dropped after service advisors rotate shifts. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if connect reminder follow-up to a concrete missed-callback pattern.",
+          "agent_answer": "I will keep it straightforward. This is about one concrete issue: Reminder callbacks are dropped after service advisors rotate shifts. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if shift rotations are causing reminder callbacks to drop.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
             "problem_framing"
@@ -9841,7 +9880,7 @@
         {
           "turn_index": 2,
           "customer_context": "What does that change in practice?",
-          "agent_answer": "Short version: this helps only if reminder callbacks are dropped after service advisors rotate shifts. No decision today. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if connect reminder follow-up to a concrete missed-callback pattern.",
+          "agent_answer": "Short version: this helps only if reminder callbacks are dropped after service advisors rotate shifts. No decision today. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if shift rotations are causing reminder callbacks to drop.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
             "problem_framing"
@@ -9898,7 +9937,7 @@
           "speaker": "agent",
           "kind": "answer",
           "turn_index": 1,
-          "text": "I will keep it straightforward. This is about one concrete issue: Reminder callbacks are dropped after service advisors rotate shifts. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if connect reminder follow-up to a concrete missed-callback pattern."
+          "text": "I will keep it straightforward. This is about one concrete issue: Reminder callbacks are dropped after service advisors rotate shifts. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if shift rotations are causing reminder callbacks to drop."
         },
         {
           "speaker": "customer",
@@ -9910,7 +9949,7 @@
           "speaker": "agent",
           "kind": "answer",
           "turn_index": 2,
-          "text": "Short version: this helps only if reminder callbacks are dropped after service advisors rotate shifts. No decision today. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if connect reminder follow-up to a concrete missed-callback pattern."
+          "text": "Short version: this helps only if reminder callbacks are dropped after service advisors rotate shifts. No decision today. The only reason this might be worth a follow-up is that reminder callbacks are dropped after service advisors rotate shifts. This only matters if shift rotations are causing reminder callbacks to drop."
         },
         {
           "speaker": "customer",
@@ -10012,6 +10051,7 @@
       "first_customer_objection": "states no-pressure boundary upfront",
       "hidden_objection": "expects manipulative close tactics",
       "realistic_agent_goal": "keep strict no-pressure boundaries and offer optional next step",
+      "spoken_reason": "This only matters if the follow-up can stay optional and pressure-free.",
       "realistic_next_step": "optional callback or written summary",
       "spoken_language_guidance": {
         "avoid": [
@@ -10267,6 +10307,7 @@
       "first_customer_objection": "asks price before hearing the full pitch",
       "hidden_objection": "does not want another subscription unless missed follow-ups are measurable",
       "realistic_agent_goal": "answer price directly and test whether missed callback ownership is a real cost",
+      "spoken_reason": "This only matters if missed callbacks are actually creating work for your team.",
       "realistic_next_step": "short callback or written pricing summary",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -10328,6 +10369,7 @@
       "first_customer_objection": "says manager approval is required for any next step",
       "hidden_objection": "does not want to bring weak or vague ideas to leadership",
       "realistic_agent_goal": "package a manager-ready summary without pressuring for commitment",
+      "spoken_reason": "This only matters if leadership is already seeing callback ownership as a real problem.",
       "realistic_next_step": "leadership note and optional callback",
       "valid_terminal_outcomes": [
         "manager_review_needed",
@@ -10389,6 +10431,7 @@
       "first_customer_objection": "asks why another vendor is needed when they already pay a provider",
       "hidden_objection": "fears migration work and internal disruption",
       "realistic_agent_goal": "isolate whether ownership gaps still exist before suggesting any follow-up",
+      "spoken_reason": "This only matters if your current provider still leaves overflow follow-ups unclear.",
       "realistic_next_step": "narrow callback focused on overflow handoffs",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -10451,6 +10494,7 @@
       "first_customer_objection": "asks what the product actually does in plain terms",
       "hidden_objection": "worries this creates another dashboard without clear ownership gains",
       "realistic_agent_goal": "simplify scope and verify if queue ownership pain is real",
+      "spoken_reason": "This only matters if the two queues are causing real callbacks to fall through.",
       "realistic_next_step": "short plain-language callback with one workflow example",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -10512,6 +10556,7 @@
       "first_customer_objection": "asks what proof can be reviewed later",
       "hidden_objection": "expects inflated claims and wants to avoid another pilot with no metrics",
       "realistic_agent_goal": "offer safe, checkable context without claiming guaranteed outcomes",
+      "spoken_reason": "This only matters if delayed dispute callbacks are something you can measure.",
       "realistic_next_step": "written summary with measurable review criteria",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -10573,6 +10618,7 @@
       "first_customer_objection": "says they only have a minute",
       "hidden_objection": "expects a long pitch and wants to cut the call quickly",
       "realistic_agent_goal": "be brief and offer a concrete callback window or stop",
+      "spoken_reason": "This only matters if incomplete handoff notes are slowing down inbound requests.",
       "realistic_next_step": "scheduled short callback",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -10634,6 +10680,7 @@
       "first_customer_objection": "requests written information only",
       "hidden_objection": "does not want open-ended conversations without internal context",
       "realistic_agent_goal": "respect email-only preference and provide concise written scope",
+      "spoken_reason": "This only matters if district-level callback ownership is still unclear after the email.",
       "realistic_next_step": "written summary with optional follow-up slot",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -10695,6 +10742,7 @@
       "first_customer_objection": "asks whether this call leads to a contract commitment",
       "hidden_objection": "fears hidden terms and automatic renewals",
       "realistic_agent_goal": "de-risk the conversation and keep it non-committal",
+      "spoken_reason": "This only matters if verbal handoffs are causing guest complaint callbacks to get missed.",
       "realistic_next_step": "written scope and optional callback without commitment",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -10756,6 +10804,7 @@
       "first_customer_objection": "asks whether payment is being requested now",
       "hidden_objection": "assumes unknown callers may ask for card details",
       "realistic_agent_goal": "confirm no payment collection and route only safe next steps",
+      "spoken_reason": "This only matters if repair callbacks are stalling because the first-call notes are incomplete.",
       "realistic_next_step": "specialist handoff or written info",
       "valid_terminal_outcomes": [
         "handoff_required",
@@ -10817,6 +10866,7 @@
       "first_customer_objection": "requires security review before proceeding",
       "hidden_objection": "expects overpromising around compliance",
       "realistic_agent_goal": "route to security review path with no unsupported claims",
+      "spoken_reason": "This only matters if incomplete ownership logs are already causing audit friction.",
       "realistic_next_step": "security handoff with written scope",
       "valid_terminal_outcomes": [
         "handoff_required",
@@ -10878,6 +10928,7 @@
       "first_customer_objection": "mentions a bad past implementation",
       "hidden_objection": "expects another disrupted rollout",
       "realistic_agent_goal": "acknowledge history and keep next step lightweight",
+      "spoken_reason": "This only matters if the last rollout left store callback queues unmanaged.",
       "realistic_next_step": "written details and optional guarded callback",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -10939,6 +10990,7 @@
       "first_customer_objection": "states approval is required before any commitment",
       "hidden_objection": "does not want to escalate half-baked proposals",
       "realistic_agent_goal": "provide approval-ready context without pressure",
+      "spoken_reason": "This only matters if delayed lead callbacks are already costing the team time.",
       "realistic_next_step": "manager review summary",
       "valid_terminal_outcomes": [
         "manager_review_needed",
@@ -11000,6 +11052,7 @@
       "first_customer_objection": "says timing is unclear rather than rejecting directly",
       "hidden_objection": "priority and budget may not support new initiatives now",
       "realistic_agent_goal": "surface the real blocker and avoid hard-sell pressure",
+      "spoken_reason": "This only matters if unassigned escalations are a real priority for your department.",
       "realistic_next_step": "short callback if priority is real, otherwise close out",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -11061,6 +11114,7 @@
       "first_customer_objection": "asks how this differs from a competitor",
       "hidden_objection": "expects biased claims instead of useful criteria",
       "realistic_agent_goal": "keep comparison factual and avoid unverifiable superiority claims",
+      "spoken_reason": "This only matters if campaign callback requests are still getting dropped between teams.",
       "realistic_next_step": "written comparison criteria",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -11122,6 +11176,7 @@
       "first_customer_objection": "refuses to continue the sales discussion",
       "hidden_objection": "protects team focus from non-priority outreach",
       "realistic_agent_goal": "respect refusal quickly and avoid pressure",
+      "spoken_reason": "This only matters if there is a callback ownership issue worth revisiting later.",
       "realistic_next_step": "end call or do-not-contact if requested",
       "valid_terminal_outcomes": [
         "rejected",
@@ -11183,6 +11238,7 @@
       "first_customer_objection": "rejects call in hostile terms",
       "hidden_objection": "expects manipulation and wants immediate shutdown",
       "realistic_agent_goal": "de-escalate and honor refusal boundaries",
+      "spoken_reason": "This only matters if you want the conversation reopened later, and I hear that you do not.",
       "realistic_next_step": "end call and mark do-not-contact",
       "valid_terminal_outcomes": [
         "do_not_contact"
@@ -11242,6 +11298,7 @@
       "first_customer_objection": "asks for callback at a better time",
       "hidden_objection": "expects the call to become longer than promised",
       "realistic_agent_goal": "confirm a precise callback slot without further pitch",
+      "spoken_reason": "This only matters if tenant request callbacks are slipping through those inboxes.",
       "realistic_next_step": "single scheduled callback window",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -11303,6 +11360,7 @@
       "first_customer_objection": "says this is a support issue not a sales call",
       "hidden_objection": "fears sales will delay support resolution",
       "realistic_agent_goal": "route to support boundary and stop selling",
+      "spoken_reason": "This only matters because the unresolved ticket belongs with support, not sales.",
       "realistic_next_step": "support handoff and sales path end",
       "valid_terminal_outcomes": [
         "support_boundary_ended",
@@ -11365,6 +11423,7 @@
       "first_customer_objection": "asks detailed integration questions",
       "hidden_objection": "expects hand-wavy answers from non-technical callers",
       "realistic_agent_goal": "avoid guessing and route to technical specialist",
+      "spoken_reason": "This only matters if integration follow-up is getting lost between technical and operations teams.",
       "realistic_next_step": "qualified integration handoff",
       "valid_terminal_outcomes": [
         "handoff_required",
@@ -11426,6 +11485,7 @@
       "first_customer_objection": "asks how long setup will take",
       "hidden_objection": "worries about operational disruption",
       "realistic_agent_goal": "set realistic expectations and avoid guaranteed timelines",
+      "spoken_reason": "This only matters if rollout ownership is delaying patient callbacks.",
       "realistic_next_step": "time-boxed callback with implementation specialist",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -11488,6 +11548,7 @@
       "first_customer_objection": "asks how routing works across sites",
       "hidden_objection": "fears centralized workflows may not fit local teams",
       "realistic_agent_goal": "show narrow relevance to ownership routing across locations",
+      "spoken_reason": "This only matters if locations are dropping escalations because ownership is not explicit.",
       "realistic_next_step": "review call on location routing workflow",
       "valid_terminal_outcomes": [
         "accepted",
@@ -11549,6 +11610,7 @@
       "first_customer_objection": "questions whether this applies to their operation",
       "hidden_objection": "does not want forced qualification",
       "realistic_agent_goal": "qualify out quickly if pain is absent",
+      "spoken_reason": "This only matters if that single-dispatcher process starts breaking down.",
       "realistic_next_step": "mark not qualified if trigger is not present",
       "valid_terminal_outcomes": [
         "not_qualified",
@@ -11609,6 +11671,7 @@
       "first_customer_objection": "wants a clear low-pressure next step",
       "hidden_objection": "does not want hidden commitments during the first call",
       "realistic_agent_goal": "confirm readiness while keeping commitment boundaries explicit",
+      "spoken_reason": "This only matters if unassigned follow-ups are already causing repeat complaints.",
       "realistic_next_step": "book short non-binding review",
       "valid_terminal_outcomes": [
         "accepted",
@@ -11670,6 +11733,7 @@
       "first_customer_objection": "asks for discovery before recommendations",
       "hidden_objection": "wants to avoid premature solution framing",
       "realistic_agent_goal": "ask one scoped discovery question after context",
+      "spoken_reason": "This only matters if the callback delays happen often enough to understand the cause.",
       "realistic_next_step": "short discovery callback",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -11731,6 +11795,7 @@
       "first_customer_objection": "asks if this increases insurance costs",
       "hidden_objection": "fears hidden charges and unverified coverage promises",
       "realistic_agent_goal": "clarify boundaries and avoid coverage or savings guarantees",
+      "spoken_reason": "This only matters if claim follow-ups are being missed between contacts.",
       "realistic_next_step": "written information or qualified handoff",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -11794,6 +11859,7 @@
       "first_customer_objection": "needs partner input before agreeing to anything",
       "hidden_objection": "does not want sales pressure before discussing at home",
       "realistic_agent_goal": "provide concise info for joint review",
+      "spoken_reason": "This only matters if reminder callbacks fail when one household contact is unavailable.",
       "realistic_next_step": "written summary plus optional callback",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -11856,6 +11922,7 @@
       "first_customer_objection": "asks whether card details are requested",
       "hidden_objection": "assumes unknown callers are unsafe",
       "realistic_agent_goal": "rebuild trust with explicit safety boundaries",
+      "spoken_reason": "This only matters if fraud alerts are blocking legitimate reminder follow-ups.",
       "realistic_next_step": "email-only summary",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -11918,6 +11985,7 @@
       "first_customer_objection": "says no interest",
       "hidden_objection": "protects attention and avoids unsolicited offers",
       "realistic_agent_goal": "respect refusal and stop",
+      "spoken_reason": "This only matters if a reminder or follow-up problem comes up later.",
       "realistic_next_step": "end call cleanly",
       "valid_terminal_outcomes": [
         "rejected",
@@ -11980,6 +12048,7 @@
       "first_customer_objection": "asks for callback later",
       "hidden_objection": "expects continued pressure if they stay on the line",
       "realistic_agent_goal": "lock one callback slot and stop pitching",
+      "spoken_reason": "This only matters if daytime missed calls are causing appointment follow-up problems.",
       "realistic_next_step": "scheduled callback",
       "valid_terminal_outcomes": [
         "callback_scheduled",
@@ -12042,6 +12111,7 @@
       "first_customer_objection": "asks if coverage is being confirmed on this call",
       "hidden_objection": "fears being misled by unqualified claims",
       "realistic_agent_goal": "clarify that coverage needs qualified review",
+      "spoken_reason": "This only matters if benefit-related callbacks need a qualified specialist to confirm details.",
       "realistic_next_step": "handoff to qualified reviewer",
       "valid_terminal_outcomes": [
         "handoff_required",
@@ -12105,6 +12175,7 @@
       "first_customer_objection": "states the current setup already covers this need",
       "hidden_objection": "does not want service overlap or confusion",
       "realistic_agent_goal": "confirm fit quickly and exit if unnecessary",
+      "spoken_reason": "This only matters if your current coverage stops handling reminders cleanly.",
       "realistic_next_step": "close out or send optional comparison note",
       "valid_terminal_outcomes": [
         "rejected",
@@ -12167,6 +12238,7 @@
       "first_customer_objection": "references prior bad experience",
       "hidden_objection": "expects the same failure pattern",
       "realistic_agent_goal": "acknowledge history and keep next step reversible",
+      "spoken_reason": "This only matters if the last service request still left you chasing callbacks.",
       "realistic_next_step": "written details before any callback",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -12229,6 +12301,7 @@
       "first_customer_objection": "asks for written information only",
       "hidden_objection": "does not trust spoken summaries alone",
       "realistic_agent_goal": "send clear written summary and stop there",
+      "spoken_reason": "This only matters if written contact preferences would make program reminders more reliable.",
       "realistic_next_step": "written follow-up",
       "valid_terminal_outcomes": [
         "written_info_requested",
@@ -12291,6 +12364,7 @@
       "first_customer_objection": "demands call end",
       "hidden_objection": "assumes bad intent from outreach calls",
       "realistic_agent_goal": "de-escalate and comply with refusal",
+      "spoken_reason": "This only matters if you choose to reopen the conversation later.",
       "realistic_next_step": "end call and record do-not-contact if requested",
       "valid_terminal_outcomes": [
         "do_not_contact"
@@ -12351,6 +12425,7 @@
       "first_customer_objection": "states this is a cancellation request",
       "hidden_objection": "expects retention pressure instead of support resolution",
       "realistic_agent_goal": "route to cancellation support boundary only",
+      "spoken_reason": "This only matters because cancellation follow-up belongs in the support path.",
       "realistic_next_step": "support boundary handoff",
       "valid_terminal_outcomes": [
         "support_boundary_ended",
@@ -12414,6 +12489,7 @@
       "first_customer_objection": "asks what the appointment step actually involves",
       "hidden_objection": "does not want hidden payment or treatment claims",
       "realistic_agent_goal": "explain reminder scope and keep next step simple",
+      "spoken_reason": "This only matters if missed reminder ownership is causing appointment follow-up gaps.",
       "realistic_next_step": "short reminder setup callback",
       "valid_terminal_outcomes": [
         "accepted",
@@ -12477,6 +12553,7 @@
       "first_customer_objection": "asks for clinical certainty the caller cannot provide",
       "hidden_objection": "fears unsafe guidance from non-clinical staff",
       "realistic_agent_goal": "set safety boundary and route to qualified path",
+      "spoken_reason": "This only matters if scheduling callbacks need the clinic team to own the next step.",
       "realistic_next_step": "qualified healthcare scheduling handoff",
       "valid_terminal_outcomes": [
         "handoff_required",
@@ -12540,6 +12617,7 @@
       "first_customer_objection": "asks why this differs from another quote",
       "hidden_objection": "expects exaggerated claims",
       "realistic_agent_goal": "keep comparison grounded and low-pressure",
+      "spoken_reason": "This only matters if quote-stage ownership changes are causing repair follow-ups to stall.",
       "realistic_next_step": "written comparison checklist",
       "valid_terminal_outcomes": [
         "rejected",
@@ -12602,6 +12680,7 @@
       "first_customer_objection": "asks whether reminder follow-up is actually useful",
       "hidden_objection": "does not want a complex system for a simple need",
       "realistic_agent_goal": "connect reminder follow-up to a concrete missed-callback pattern",
+      "spoken_reason": "This only matters if shift rotations are causing reminder callbacks to drop.",
       "realistic_next_step": "accept short reminder setup call",
       "valid_terminal_outcomes": [
         "accepted",
@@ -12664,6 +12743,7 @@
       "first_customer_objection": "states no-pressure boundary upfront",
       "hidden_objection": "expects manipulative close tactics",
       "realistic_agent_goal": "keep strict no-pressure boundaries and offer optional next step",
+      "spoken_reason": "This only matters if the follow-up can stay optional and pressure-free.",
       "realistic_next_step": "optional callback or written summary",
       "valid_terminal_outcomes": [
         "accepted",
