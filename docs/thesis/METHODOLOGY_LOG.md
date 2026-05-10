@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-037 local interactive trace demo surface
+
+- Objective: turn the accepted PROD-036 readiness packet into a local browser-openable trace replay surface for inspection.
+- Action taken: added the PROD-037 surface module, runner, validator, product doc, generated result/report/surface-data/static-HTML artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated PROD-036 readiness packet only. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_037_LOCAL_INTERACTIVE_TRACE_DEMO_SURFACE.md`, `scripts/prod_037_local_interactive_trace_demo_surface.py`, `scripts/run_prod_037_local_interactive_trace_demo_surface.py`, `scripts/validate_prod_037_local_interactive_trace_demo_surface.py`, `research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/result.json`, `research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/report.md`, `research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/local_interactive_trace_demo_surface.html`, and `research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/local_interactive_trace_demo_surface_data.json`.
+- What was learned: the first practical demo artifact can stay simple and evidence-driven. PROD-037 reports surface ready `true`, visible calls `8`, visible turns `14`, selectable calls `8`, selectable turns `14`, static HTML ready `true`, keyboard accessible controls `true`, exact customer text visible `true`, exact agent answer visible `true`, decision process visible `true`, state transition visible `true`, terminal outcome visible `true`, safety flags visible `true`, cold opening visible `true`, and local synthetic trace replay `true`.
+- Why it matters for the thesis: the project now has an auditable bridge from metrics to inspectable conversation behavior, so claims about answer quality and decision logic can be reviewed turn by turn.
+- Open questions: whether the surface is ergonomic enough before adding voice playback, scenario branching, or more seeds.
+
 ### 2026-05-10 - PROD-036 interactive demo readiness review
 
 - Objective: decide whether the aligned PROD-035 traces are ready to become a local interactive trace demo surface.

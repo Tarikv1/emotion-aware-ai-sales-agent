@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: build `PROD-037-local-interactive-trace-demo-surface` so Tarik can inspect replayable local calls with exact customer text, exact agent answers, aligned decision process, state transitions, safety flags, and terminal outcomes.
+- [ ] Current: review `PROD-038-local-demo-surface-review` to decide whether the local trace demo surface is useful enough before adding voice playback, scenario branching, more call seeds, or public demo polish.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-037, review the local demo surface for usability and decide whether to add voice playback, scenario branching, or more call seeds.
+- [ ] Next: after PROD-038, choose the next demo expansion: voice playback, scenario branching, more call seeds, or customer-facing polish.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
@@ -58,6 +58,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-037` local interactive trace demo surface, which turns the accepted `PROD-036` readiness packet into a static browser-openable trace replay surface. It exposes `8` visible and selectable calls with `14` visible and selectable turns, cold openings, exact customer text, exact agent answers, customer follow-up responses, decision snapshots, state transitions, safety flags, and terminal outcomes. Surface ready is `true`, static HTML ready is `true`, keyboard accessible controls are `true`, exact customer text visible is `true`, exact agent answer visible is `true`, decision process visible is `true`, state transition visible is `true`, terminal outcome visible is `true`, safety flags visible is `true`, cold opening visible is `true`, replay controls visible is `true`, and local synthetic trace replay is `true`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-038-local-demo-surface-review`.
 
 - [x] `PROD-036` interactive demo readiness review, which reviews the aligned `PROD-035` traces as the go/no-go gate for a local interactive trace demo surface. It reviewed `8` calls and `14` turns, produced `8` demo cards, and marked local interactive demo ready `true`, demo-ready calls `8`, and demo blocker count `0`. Exact customer text visible, exact agent answer visible, decision process visible, state transition visible, terminal outcome visible, safety flags visible, and cold opening visible are all `true`. Decision snapshot mismatches are `0`, unknown-objection decisions are `0`, hard failures are `0`, payment collection count is `0`, unsupported claim count is `0`, and leakage findings are `0`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-037-local-interactive-trace-demo-surface`.
 
@@ -459,19 +461,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Build `PROD-037-local-interactive-trace-demo-surface` using the completed `PROD-036` readiness packet.
+Review `PROD-038-local-demo-surface-review` using the completed `PROD-037` local interactive trace demo surface.
 
 Purpose:
 
-- create a local, static or serverless demo surface for the eight aligned synthetic calls
-- let Tarik click through cold opening, customer turns, agent answers, state changes, decision snapshots, safety flags, and terminal outcomes
+- verify whether the local static demo surface is useful for inspecting the eight aligned synthetic calls
+- check whether Tarik can quickly inspect cold opening, customer turns, agent answers, state changes, decision snapshots, safety flags, and terminal outcomes
 - keep the demo clearly labeled as local synthetic trace replay, not a live customer runtime
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
 
-Immediate product artifact after `PROD-036`:
+Immediate product artifact after `PROD-037`:
 
-- local interactive trace demo surface
-- validator that checks exact question/answer visibility and no provider/runtime promotion
+- local demo surface review packet
+- decision on whether voice playback, scenario branching, more call seeds, or public demo polish should come next
 
 Next voice checkpoint:
 

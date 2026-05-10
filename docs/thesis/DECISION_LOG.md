@@ -15,6 +15,24 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-085 - Keep PROD-037 as a local synthetic trace replay surface
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Build the first local demo as a static synthetic trace replay surface, not as a live customer runtime or provider-backed demo.
+- Why:
+  - PROD-037 exposes `8` selectable calls and `14` selectable turns from the accepted PROD-036 readiness packet
+  - cold openings, exact customer text, exact agent answers, customer follow-up responses, decision snapshots, state transitions, safety flags, and terminal outcomes are visible in one browser-openable artifact
+  - static HTML is enough for Tarik's immediate inspection workflow and avoids unnecessary server, provider, or runtime-promotion risk
+- Alternatives considered:
+  - start a local web server for the demo
+  - add voice playback before reviewing the text trace surface
+  - build a customer-facing demo from the same evidence
+- Consequences:
+  - the next checkpoint is `PROD-038-local-demo-surface-review`
+  - voice playback, scenario branching, more call seeds, and public demo polish remain later decisions
+  - provider calls, live runtime defaults, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-084 - Keep PROD-036 as the local interactive demo readiness gate
 
 - Date: 2026-05-10

@@ -1035,6 +1035,18 @@ Validate the PROD-036 exact trace visibility, demo-ready call count, go/no-go de
 python scripts\validate_prod_036_interactive_demo_readiness_review.py
 ```
 
+Run the PROD-037 local interactive trace demo surface checkpoint:
+
+```powershell
+python scripts\run_prod_037_local_interactive_trace_demo_surface.py
+```
+
+Validate the PROD-037 static trace demo surface, exact question/answer visibility, selectable call and turn counts, keyboard-accessible controls, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_037_local_interactive_trace_demo_surface.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

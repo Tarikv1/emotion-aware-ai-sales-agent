@@ -1,0 +1,65 @@
+{
+  "checkpoint_id": "PROD-037-local-interactive-trace-demo-surface",
+  "title": "PROD-037 local interactive trace demo surface",
+  "source_checkpoint_id": "PROD-036-interactive-demo-readiness-review",
+  "next_checkpoint_recommended": "PROD-038-local-demo-surface-review",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/result.json",
+    "report_path": "research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/report.md",
+    "surface_path": "research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/local_interactive_trace_demo_surface.html",
+    "surface_data_path": "research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/local_interactive_trace_demo_surface_data.json"
+  },
+  "source_inputs": {
+    "source_packet_path": "research/experiments/generated/PROD-036-interactive-demo-readiness-review/interactive_demo_readiness_packet.json"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_used": false,
+    "commercial_runtime_prompt_text_from_transcripts_allowed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_decision_trace_default_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "source_prod_036_overwritten": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "source_demo_card_count": 8,
+    "surface_call_count": 8,
+    "surface_turn_count": 14,
+    "visible_call_count": 8,
+    "visible_turn_count": 14,
+    "selectable_call_count": 8,
+    "selectable_turn_count": 14,
+    "surface_ready": true,
+    "static_html_ready": true,
+    "keyboard_accessible_controls": true,
+    "exact_customer_text_visible": true,
+    "exact_agent_answer_visible": true,
+    "decision_process_visible": true,
+    "state_transition_visible": true,
+    "terminal_outcome_visible": true,
+    "safety_flags_visible": true,
+    "cold_opening_visible": true,
+    "replay_controls_visible": true,
+    "local_synthetic_label_visible": true,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "server_started": false,
+    "runtime_behavior_changed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "decision": {
+    "demo_surface": "built-local-static-trace-replay",
+    "demo_scope": "local synthetic trace replay",
+    "next_step": "PROD-038-local-demo-surface-review"
+  }
+}

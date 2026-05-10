@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROD-037 Local Interactive Trace Demo Surface</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #15171a;
+      --muted: #626b76;
+      --line: #d9dee5;
+      --panel: #f7f8fa;
+      --accent: #0b5fff;
+      --accent-soft: #e8f0ff;
+      --ok: #0a7a42;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; color: var(--ink); background: #ffffff; line-height: 1.45; }
+    header { padding: 24px; border-bottom: 1px solid var(--line); background: #ffffff; position: sticky; top: 0; z-index: 10; }
+    main { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; min-height: calc(100vh - 120px); }
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .eyebrow { margin: 0 0 6px; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0; }
+    h1 { margin: 0; font-size: clamp(28px, 5vw, 48px); line-height: 1; letter-spacing: 0; }
+    .summary { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .metric { border: 1px solid var(--line); background: var(--panel); padding: 6px 8px; border-radius: 4px; font-size: 13px; }
+    .sidebar { padding: 16px; border-right: 1px solid var(--line); background: var(--panel); }
+    .call-list, .turn-list, .replay-controls { display: grid; gap: 8px; }
+    .call-button, .turn-button, .replay-controls button {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--ink);
+      padding: 10px;
+      border-radius: 4px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .call-button[aria-pressed="true"], .turn-button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+    .call-button span { display: block; font-weight: 700; }
+    .call-button small { display: block; color: var(--muted); margin-top: 2px; }
+    .content { padding: 20px; display: grid; gap: 16px; align-content: start; }
+    .panel { border: 1px solid var(--line); border-radius: 6px; padding: 14px; background: #ffffff; }
+    .panel h2, .panel h3, .panel h4 { margin: 0 0 10px; letter-spacing: 0; }
+    .muted { color: var(--muted); }
+    .dialogue { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .bubble { border: 1px solid var(--line); border-radius: 6px; padding: 12px; min-height: 112px; background: #ffffff; }
+    .bubble strong { display: block; margin-bottom: 6px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0; }
+    .agent { border-color: #b9ccff; background: #f5f8ff; }
+    .customer { border-color: #d7d9dc; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { width: 42%; background: var(--panel); }
+    code { background: var(--panel); padding: 1px 4px; border-radius: 3px; }
+    .status-ok { color: var(--ok); font-weight: 700; }
+    @media (max-width: 820px) {
+      header { position: static; }
+      main { grid-template-columns: 1fr; }
+      .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
+      .dialogue, .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-checkpoint="PROD-037-local-interactive-trace-demo-surface">
+  <!--
+  PROD-037 local interactive trace demo surface
+  surface ready: `true`
+  visible calls: `8`
+  visible turns: `14`
+  selectable calls: `8`
+  selectable turns: `14`
+  static html ready: `true`
+  keyboard accessible controls: `true`
+  local synthetic trace replay
+  PROD-038-local-demo-surface-review
+  -->
+  <header>
+    <p class="eyebrow">Local synthetic trace replay</p>
+    <h1>PROD-037 Local Interactive Trace Demo Surface</h1>
+    <div class="summary" aria-label="Demo metrics">
+      <span class="metric">Surface ready: <code>true</code></span>
+      <span class="metric">Visible calls: <code>8</code></span>
+      <span class="metric">Visible turns: <code>14</code></span>
+      <span class="metric">Selectable calls: <code>8</code></span>
+      <span class="metric">Selectable turns: <code>14</code></span>
+      <span class="metric">No provider calls</span>
+      <span class="metric">No production runtime promotion</span>
+    </div>
+  </header>
+  <main>
+    <aside class="sidebar" aria-label="Replay navigation">
+      <h2>Calls</h2>
+      <div id="call-list" class="call-list" role="list"><button type="button" class="call-button" data-call-index="0" aria-pressed="true"><span>cold-price-sensitive</span><small>accepted-deal</small></button><button type="button" class="call-button" data-call-index="1" aria-pressed="false"><span>cold-confused-product-fit</span><small>accepted-deal</small></button><button type="button" class="call-button" data-call-index="2" aria-pressed="false"><span>cold-skeptical-trust-gap</span><small>rejected-deal</small></button><button type="button" class="call-button" data-call-index="3" aria-pressed="false"><span>cold-busy-rejection</span><small>rejected-deal</small></button><button type="button" class="call-button" data-call-index="4" aria-pressed="false"><span>cold-existing-provider</span><small>accepted-deal</small></button><button type="button" class="call-button" data-call-index="5" aria-pressed="false"><span>cold-stakeholder-review</span><small>accepted-deal</small></button><button type="button" class="call-button" data-call-index="6" aria-pressed="false"><span>cold-support-boundary</span><small>rejected-deal</small></button><button type="button" class="call-button" data-call-index="7" aria-pressed="false"><span>cold-do-not-call</span><small>rejected-deal</small></button></div>
+      <h2>Turns</h2>
+      <div id="turn-list" class="turn-list" role="list"><button type="button" class="turn-button" data-turn-index="0" aria-pressed="true">Turn 1</button><button type="button" class="turn-button" data-turn-index="1" aria-pressed="false">Turn 2</button></div>
+      <h2>Replay</h2>
+      <div id="replay-controls" class="replay-controls">
+        <button type="button" id="prev-turn">Previous Turn</button>
+        <button type="button" id="next-turn">Next Turn</button>
+      </div>
+    </aside>
+    <section class="content" aria-live="polite">
+      <section id="opening-panel" class="panel">
+        <h2 id="call-title">cold-price-sensitive</h2>
+        <p id="call-persona" class="muted">price-sensitive operations manager</p>
+        <div class="dialogue">
+          <div class="bubble agent"><strong>Agent cold opening</strong><p id="agent-opening">Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?</p></div>
+          <div class="bubble customer"><strong>Customer first response</strong><p id="customer-opening">Maybe, but make it quick. If this is another platform, what is it going to cost?</p></div>
+        </div>
+      </section>
+      <section class="panel">
+        <h2 id="turn-title">Turn 1</h2>
+        <div class="dialogue">
+          <div id="customer-context" class="bubble customer"><strong>Customer context</strong><p>Maybe, but make it quick. If this is another platform, what is it going to cost?</p></div>
+          <div id="agent-answer" class="bubble agent"><strong>Agent answer</strong><p>The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.</p></div>
+          <div id="customer-response" class="bubble customer"><strong>Customer response</strong><p>That answers the cost. What would I tell my manager if I wanted to accept a review?</p></div>
+          <div class="bubble"><strong>Reaction reason</strong><p id="reaction-reason">customer moved from price concern to stakeholder review</p></div>
+        </div>
+      </section>
+      <section class="grid">
+        <section id="decision-snapshot" class="panel"><div><h4>Decision Snapshot</h4><table><tr><th>Sales Difficulty</th><td>price-objection</td></tr><tr><th>Interest State</th><td>maybe-interested</td></tr><tr><th>Selected Strategy</th><td>evidence-or-benefit</td></tr><tr><th>Next Action</th><td>continue</td></tr><tr><th>Call Control</th><td>continue-call</td></tr><tr><th>Decision Trace Alignment</th><td>{&#x27;enabled&#x27;: True, &#x27;changed&#x27;: True, &#x27;reason&#x27;: &#x27;direct answer spoken, so trace uses direct-answer-compatible next_action&#x27;}</td></tr></table></div></section>
+        <section id="state-transition" class="panel">
+          <div><h4>State Before</h4><table><tr><th>Interest</th><td>3</td></tr><tr><th>Trust</th><td>2</td></tr><tr><th>Clarity</th><td>1</td></tr><tr><th>Friction</th><td>3</td></tr><tr><th>Patience</th><td>3</td></tr><tr><th>Emotion</th><td>skeptical</td></tr><tr><th>Active Objection</th><td>price</td></tr></table></div>
+          <div><h4>State Delta</h4><table><tr><th>Interest</th><td>0</td></tr><tr><th>Trust</th><td>1</td></tr><tr><th>Clarity</th><td>2</td></tr><tr><th>Friction</th><td>-1</td></tr><tr><th>Patience</th><td>0</td></tr></table></div>
+          <div><h4>State After</h4><table><tr><th>Interest</th><td>3</td></tr><tr><th>Trust</th><td>3</td></tr><tr><th>Clarity</th><td>3</td></tr><tr><th>Friction</th><td>2</td></tr><tr><th>Patience</th><td>3</td></tr><tr><th>Emotion</th><td>skeptical</td></tr><tr><th>Active Objection</th><td>authority</td></tr></table></div>
+        </section>
+        <section id="safety-flags" class="panel"><div><h4>Safety Flags</h4><table><tr><th>Payment Collection</th><td>False</td></tr><tr><th>Unsupported Claim</th><td>False</td></tr><tr><th>Validation Failed</th><td>False</td></tr><tr><th>Language Mismatch</th><td>False</td></tr><tr><th>Forbidden Response Text</th><td>False</td></tr><tr><th>Hard Failure</th><td>False</td></tr></table></div></section>
+      </section>
+      <section id="terminal-outcome" class="panel">
+        <h2>Terminal Outcome</h2>
+        <p><span class="status-ok">Accepted Deal</span></p>
+        <p id="terminal-reason">customer accepted the non-binding sales outcome</p>
+      </section>
+    </section>
+  </main>
+  <script id="trace-data" type="application/json">{"checkpoint_id": "PROD-037-local-interactive-trace-demo-surface", "source_checkpoint_id": "PROD-036-interactive-demo-readiness-review", "surface_title": "PROD-037 Local Interactive Trace Demo Surface", "surface_scope": "Local synthetic trace replay", "calls": [{"seed_id": "cold-price-sensitive", "persona": "price-sensitive operations manager", "demo_ready": true, "terminal_outcome": "accepted-deal", "terminal_decision_source": "customer", "terminal_reason": "customer accepted the non-binding sales outcome", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "Maybe, but make it quick. If this is another platform, what is it going to cost?", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "Maybe, but make it quick. If this is another platform, what is it going to cost?", "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.", "customer_response": "That answers the cost. What would I tell my manager if I wanted to accept a review?", "decision_snapshot": {"sales_difficulty": "price-objection", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 3, "trust": 2, "clarity": 1, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "price"}, "state_after": {"interest": 3, "trust": 3, "clarity": 3, "friction": 2, "patience": 3, "emotion": "skeptical", "active_objection": "authority"}, "state_delta": {"interest": 0, "trust": 1, "clarity": 2, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer moved from price concern to stakeholder review"}, {"turn_index": 2, "customer_context": "That answers the cost. What would I tell my manager if I wanted to accept a review?", "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.", "customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.", "decision_snapshot": {"sales_difficulty": "stakeholder-review", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 3, "trust": 3, "clarity": 3, "friction": 2, "patience": 3, "emotion": "skeptical", "active_objection": "authority"}, "state_after": {"interest": 4, "trust": 4, "clarity": 5, "friction": 1, "patience": 3, "emotion": "skeptical", "active_objection": "authority"}, "state_delta": {"interest": 1, "trust": 1, "clarity": 2, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer accepted the non-binding sales outcome"}]}, {"seed_id": "cold-confused-product-fit", "persona": "confused small-business owner", "demo_ready": true, "terminal_outcome": "accepted-deal", "terminal_decision_source": "customer", "terminal_reason": "customer accepted the non-binding sales outcome", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "I do not know RouteSignal. What is this actually about?", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "I do not know RouteSignal. What is this actually about?", "agent_answer": "RouteSignal CRM is not a full CRM replacement. It focuses on lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.", "customer_response": "That makes sense now. What would it cost for a small team?", "decision_snapshot": {"sales_difficulty": "product-fit-question", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 2, "trust": 2, "clarity": 0, "friction": 2, "patience": 4, "emotion": "confused", "active_objection": "confusion"}, "state_after": {"interest": 3, "trust": 2, "clarity": 3, "friction": 2, "patience": 4, "emotion": "confused", "active_objection": "price"}, "state_delta": {"interest": 1, "trust": 0, "clarity": 3, "friction": 0, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer moved from confusion to price evaluation"}, {"turn_index": 2, "customer_context": "That makes sense now. What would it cost for a small team?", "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.", "customer_response": "That answers the cost. What would I tell my manager if I wanted to accept a review?", "decision_snapshot": {"sales_difficulty": "price-objection", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 3, "trust": 2, "clarity": 3, "friction": 2, "patience": 4, "emotion": "confused", "active_objection": "price"}, "state_after": {"interest": 3, "trust": 3, "clarity": 5, "friction": 1, "patience": 4, "emotion": "confused", "active_objection": "authority"}, "state_delta": {"interest": 0, "trust": 1, "clarity": 2, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer moved from price concern to stakeholder review"}, {"turn_index": 3, "customer_context": "That answers the cost. What would I tell my manager if I wanted to accept a review?", "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.", "customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.", "decision_snapshot": {"sales_difficulty": "stakeholder-review", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 3, "trust": 3, "clarity": 5, "friction": 1, "patience": 4, "emotion": "confused", "active_objection": "authority"}, "state_after": {"interest": 4, "trust": 4, "clarity": 5, "friction": 0, "patience": 4, "emotion": "confused", "active_objection": "authority"}, "state_delta": {"interest": 1, "trust": 1, "clarity": 0, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer accepted the non-binding sales outcome"}]}, {"seed_id": "cold-skeptical-trust-gap", "persona": "skeptical founder", "demo_ready": true, "terminal_outcome": "rejected-deal", "terminal_decision_source": "customer", "terminal_reason": "customer rejected pending written information", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "Sales call? I am skeptical. I do not want vague software promises.", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "Sales call? I am skeptical. I do not want vague software promises.", "agent_answer": "Fair concern. I cannot promise a revenue lift; the approved facts are that RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.", "customer_response": "I still do not accept it today. Send proof in writing before any decision.", "decision_snapshot": {"sales_difficulty": "trust-gap", "interest_state": "maybe-interested", "selected_strategy": "rapport", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 2, "trust": 1, "clarity": 1, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "trust"}, "state_after": {"interest": 2, "trust": 2, "clarity": 2, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "written-info"}, "state_delta": {"interest": 0, "trust": 1, "clarity": 1, "friction": 0, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer stayed cautious and requested written proof"}, {"turn_index": 2, "customer_context": "I still do not accept it today. Send proof in writing before any decision.", "agent_answer": "That is reasonable. Written details should come before any buying decision, so I will not treat this as accepted today.", "customer_response": "That is fair, but I am rejecting the deal until I see the written details.", "decision_snapshot": {"sales_difficulty": "trust-gap", "interest_state": "maybe-interested", "selected_strategy": "rapport", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 2, "trust": 2, "clarity": 2, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "written-info"}, "state_after": {"interest": 3, "trust": 2, "clarity": 2, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "written-info"}, "state_delta": {"interest": 1, "trust": 0, "clarity": 0, "friction": 0, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer rejected pending written information"}]}, {"seed_id": "cold-busy-rejection", "persona": "busy sales lead", "demo_ready": true, "terminal_outcome": "rejected-deal", "terminal_decision_source": "customer", "terminal_reason": "customer rejected because timing was not acceptable", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "No, this is not a good time. I am busy.", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "No, this is not a good time. I am busy.", "agent_answer": "No problem. I will not push while you are busy; we can stop this sales conversation here.", "customer_response": "Thanks for not pushing. I am rejecting the deal for now.", "decision_snapshot": {"sales_difficulty": "timing-delay", "interest_state": "not-interested", "selected_strategy": "rapport", "next_action": "close-politely", "call_control": "end-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 1, "trust": 2, "clarity": 1, "friction": 4, "patience": 1, "emotion": "annoyed", "active_objection": "time"}, "state_after": {"interest": 1, "trust": 3, "clarity": 1, "friction": 3, "patience": 1, "emotion": "annoyed", "active_objection": "time"}, "state_delta": {"interest": 0, "trust": 1, "clarity": 0, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer rejected because timing was not acceptable"}]}, {"seed_id": "cold-existing-provider", "persona": "team lead with an existing CRM", "demo_ready": true, "terminal_outcome": "accepted-deal", "terminal_decision_source": "customer", "terminal_reason": "customer accepted the non-binding sales outcome", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "We already have a CRM, so I doubt this is relevant.", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "We already have a CRM, so I doubt this is relevant.", "agent_answer": "I would not replace a CRM that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are gaps.", "customer_response": "If it can sit alongside our CRM, what would the Growth plan cost?", "decision_snapshot": {"sales_difficulty": "provider-comparison", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 2, "trust": 3, "clarity": 1, "friction": 2, "patience": 4, "emotion": "neutral", "active_objection": "provider"}, "state_after": {"interest": 4, "trust": 3, "clarity": 3, "friction": 2, "patience": 4, "emotion": "neutral", "active_objection": "price"}, "state_delta": {"interest": 2, "trust": 0, "clarity": 2, "friction": 0, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer moved from provider objection to price evaluation"}, {"turn_index": 2, "customer_context": "If it can sit alongside our CRM, what would the Growth plan cost?", "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.", "customer_response": "That answers the cost. What would I tell my manager if I wanted to accept a review?", "decision_snapshot": {"sales_difficulty": "provider-comparison", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 4, "trust": 3, "clarity": 3, "friction": 2, "patience": 4, "emotion": "neutral", "active_objection": "price"}, "state_after": {"interest": 4, "trust": 4, "clarity": 5, "friction": 1, "patience": 4, "emotion": "neutral", "active_objection": "authority"}, "state_delta": {"interest": 0, "trust": 1, "clarity": 2, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer moved from price concern to stakeholder review"}, {"turn_index": 3, "customer_context": "That answers the cost. What would I tell my manager if I wanted to accept a review?", "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.", "customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.", "decision_snapshot": {"sales_difficulty": "stakeholder-review", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 4, "trust": 4, "clarity": 5, "friction": 1, "patience": 4, "emotion": "neutral", "active_objection": "authority"}, "state_after": {"interest": 5, "trust": 5, "clarity": 5, "friction": 0, "patience": 4, "emotion": "neutral", "active_objection": "authority"}, "state_delta": {"interest": 1, "trust": 1, "clarity": 0, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer accepted the non-binding sales outcome"}]}, {"seed_id": "cold-stakeholder-review", "persona": "manager who needs approval", "demo_ready": true, "terminal_outcome": "accepted-deal", "terminal_decision_source": "customer", "terminal_reason": "customer accepted the non-binding sales outcome", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "I can listen if you give me the manager version, not a long pitch.", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "I can listen if you give me the manager version, not a long pitch.", "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.", "customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.", "decision_snapshot": {"sales_difficulty": "stakeholder-review", "interest_state": "maybe-interested", "selected_strategy": "evidence-or-benefit", "next_action": "continue", "call_control": "continue-call", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 4, "trust": 3, "clarity": 2, "friction": 2, "patience": 4, "emotion": "curious", "active_objection": "authority"}, "state_after": {"interest": 5, "trust": 4, "clarity": 4, "friction": 1, "patience": 4, "emotion": "curious", "active_objection": "authority"}, "state_delta": {"interest": 1, "trust": 1, "clarity": 2, "friction": -1, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer accepted the non-binding sales outcome"}]}, {"seed_id": "cold-support-boundary", "persona": "support-seeking user", "demo_ready": true, "terminal_outcome": "rejected-deal", "terminal_decision_source": "customer", "terminal_reason": "customer needed support rather than sales", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "I am not trying to buy. I need help with an account issue.", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "I am not trying to buy. I need help with an account issue.", "agent_answer": "That is support, not a sales conversation. I will route you to a solutions specialist for account help.", "customer_response": "Okay, route me to support. I am rejecting the sales offer.", "decision_snapshot": {"sales_difficulty": "human-request", "interest_state": "needs-human", "selected_strategy": "rapport", "next_action": "escalate", "call_control": "transfer-or-escalate", "decision_trace_alignment": {"enabled": true, "changed": true, "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"}}, "state_before": {"interest": 0, "trust": 2, "clarity": 2, "friction": 3, "patience": 3, "emotion": "annoyed", "active_objection": "support"}, "state_after": {"interest": 0, "trust": 3, "clarity": 2, "friction": 3, "patience": 3, "emotion": "annoyed", "active_objection": "support"}, "state_delta": {"interest": 0, "trust": 1, "clarity": 0, "friction": 0, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer needed support rather than sales"}]}, {"seed_id": "cold-do-not-call", "persona": "protected stop-request customer", "demo_ready": true, "terminal_outcome": "rejected-deal", "terminal_decision_source": "customer", "terminal_reason": "customer rejected and requested no more sales contact", "opening": {"agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?", "customer_opening_response": "No. Stop calling me and take me off the list.", "opening_checks": {"greeting": true, "identity_disclosure": true, "company_disclosure": true, "reason_for_call": true, "permission_to_continue": true}}, "turns": [{"turn_index": 1, "customer_context": "No. Stop calling me and take me off the list.", "agent_answer": "Understood. I will mark this as do not call and end the sales conversation now.", "customer_response": "Correct. I am rejecting the offer and I do not want more sales contact.", "decision_snapshot": {"sales_difficulty": "do-not-call", "interest_state": "do-not-call", "selected_strategy": "rapport", "next_action": "suppress-contact", "call_control": "end-call", "decision_trace_alignment": {"enabled": true, "changed": false, "reason": "decision snapshot already matched response shape"}}, "state_before": {"interest": 0, "trust": 1, "clarity": 3, "friction": 5, "patience": 0, "emotion": "annoyed", "active_objection": "do-not-call"}, "state_after": {"interest": 0, "trust": 1, "clarity": 3, "friction": 5, "patience": 0, "emotion": "annoyed", "active_objection": "do-not-call"}, "state_delta": {"interest": 0, "trust": 0, "clarity": 0, "friction": 0, "patience": 0}, "safety_flags": {"payment_collection": false, "unsupported_claim": false, "validation_failed": false, "language_mismatch": false, "forbidden_response_text": false, "hard_failure": false}, "customer_reaction_reason": "customer rejected and requested no more sales contact"}]}], "review_contract": {"exact_customer_text_visible": true, "exact_agent_answer_visible": true, "decision_process_visible": true, "state_transition_visible": true, "terminal_outcome_visible": true, "safety_flags_visible": true, "cold_opening_visible": true, "replay_controls_visible": true, "local_synthetic_label_visible": true}}</script>
+  <script>
+    const data = JSON.parse(document.getElementById('trace-data').textContent);
+    let activeCall = 0;
+    let activeTurn = 0;
+
+    function titleCase(value) {
+      return String(value).replaceAll('-', ' ').replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function table(title, values) {
+      const entries = Object.entries(values || {});
+      if (!entries.length) return `<div><h4>${title}</h4><p class="muted">No values.</p></div>`;
+      return `<div><h4>${title}</h4><table>${entries.map(([key, value]) => `<tr><th>${titleCase(key)}</th><td>${String(value)}</td></tr>`).join('')}</table></div>`;
+    }
+
+    function setPressed(selector, index) {
+      document.querySelectorAll(selector).forEach((button, buttonIndex) => {
+        button.setAttribute('aria-pressed', String(buttonIndex === index));
+      });
+    }
+
+    function renderTurnButtons(call) {
+      const list = document.getElementById('turn-list');
+      list.innerHTML = call.turns.map((turn, index) => `<button type="button" class="turn-button" data-turn-index="${index}" aria-pressed="${index === activeTurn}">Turn ${turn.turn_index}</button>`).join('');
+      list.querySelectorAll('.turn-button').forEach(button => {
+        button.addEventListener('click', () => {
+          activeTurn = Number(button.dataset.turnIndex);
+          render();
+        });
+      });
+    }
+
+    function render() {
+      const call = data.calls[activeCall];
+      const turn = call.turns[activeTurn];
+      document.getElementById('call-title').textContent = call.seed_id;
+      document.getElementById('call-persona').textContent = call.persona;
+      document.getElementById('agent-opening').textContent = call.opening.agent_opening;
+      document.getElementById('customer-opening').textContent = call.opening.customer_opening_response;
+      document.getElementById('turn-title').textContent = `Turn ${turn.turn_index}`;
+      document.querySelector('#customer-context p').textContent = turn.customer_context;
+      document.querySelector('#agent-answer p').textContent = turn.agent_answer;
+      document.querySelector('#customer-response p').textContent = turn.customer_response;
+      document.getElementById('reaction-reason').textContent = turn.customer_reaction_reason;
+      document.getElementById('decision-snapshot').innerHTML = table('Decision Snapshot', turn.decision_snapshot);
+      document.getElementById('state-transition').innerHTML = table('State Before', turn.state_before) + table('State Delta', turn.state_delta) + table('State After', turn.state_after);
+      document.getElementById('safety-flags').innerHTML = table('Safety Flags', turn.safety_flags);
+      document.querySelector('#terminal-outcome .status-ok').textContent = titleCase(call.terminal_outcome);
+      document.getElementById('terminal-reason').textContent = call.terminal_reason;
+      setPressed('.call-button', activeCall);
+      setPressed('.turn-button', activeTurn);
+    }
+
+    document.querySelectorAll('.call-button').forEach(button => {
+      button.addEventListener('click', () => {
+        activeCall = Number(button.dataset.callIndex);
+        activeTurn = 0;
+        renderTurnButtons(data.calls[activeCall]);
+        render();
+      });
+    });
+    renderTurnButtons(data.calls[0]);
+    document.getElementById('prev-turn').addEventListener('click', () => {
+      activeTurn = Math.max(0, activeTurn - 1);
+      render();
+    });
+    document.getElementById('next-turn').addEventListener('click', () => {
+      activeTurn = Math.min(data.calls[activeCall].turns.length - 1, activeTurn + 1);
+      render();
+    });
+  </script>
+</body>
+</html>
