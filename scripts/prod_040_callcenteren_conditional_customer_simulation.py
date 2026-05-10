@@ -578,6 +578,8 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
         terminal_outcome = "rejected-deal"
         terminal_reason = "internal loop guard stopped non-terminal simulation"
 
+    conversation_sequence = build_conversation_sequence(opening, turns)
+
     return {
         "seed_id": profile["seed_id"],
         "persona": profile["persona"],
@@ -588,6 +590,7 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
         "starts_with_agent_opening": True,
         "loop_guard_triggered": loop_guard_triggered,
         "opening": opening,
+        "conversation_sequence": conversation_sequence,
         "source_recipe": {
             "source_pattern_bank": SCENARIO_SOURCE_CHECKPOINT_ID,
             "scenario_id": profile["callcenteren_scenario"]["scenario_id"],
@@ -603,6 +606,42 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
         "turn_count": len(turns),
         "turns": turns,
     }
+
+
+def build_conversation_sequence(opening: dict[str, Any], turns: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    sequence = [
+        {
+            "speaker": "agent",
+            "kind": "opening_line",
+            "turn_index": 0,
+            "text": opening["agent_opening"],
+        },
+        {
+            "speaker": "customer",
+            "kind": "opening_response",
+            "turn_index": 0,
+            "text": opening["customer_opening_response"],
+        },
+    ]
+    for turn in turns:
+        sequence.append(
+            {
+                "speaker": "agent",
+                "kind": "agent_answer",
+                "turn_index": turn["turn_index"],
+                "text": turn["agent_answer"],
+            }
+        )
+        sequence.append(
+            {
+                "speaker": "customer",
+                "kind": "customer_response",
+                "turn_index": turn["turn_index"],
+                "text": turn["customer_response"],
+                "condition": turn["customer_response_condition"],
+            }
+        )
+    return sequence
 
 
 def all_turns(calls: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -640,6 +679,17 @@ def build_summary(calls: list[dict[str, Any]], pattern_bank: dict[str, Any]) -> 
         "contains_transcript_derived_prompt_text": False,
         "leakage_finding_count": 0,
         "all_calls_start_with_cold_opening": all(call["starts_with_agent_opening"] for call in calls),
+        "agent_opening_line_visible_count": sum(
+            1
+            for call in calls
+            if call.get("conversation_sequence", [{}])[0].get("kind") == "opening_line"
+            and call.get("conversation_sequence", [{}])[0].get("speaker") == "agent"
+        ),
+        "conversation_sequence_starts_with_agent_count": sum(
+            1
+            for call in calls
+            if call.get("conversation_sequence", [{}])[0].get("text") == call.get("opening", {}).get("agent_opening")
+        ),
         "all_calls_end_by_customer_decision": all(call["terminal_decision_source"] == "customer" for call in calls),
         "fixed_turn_limit_used": False,
         "loop_guard_triggered": any(call["loop_guard_triggered"] for call in calls),
@@ -754,6 +804,8 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         f"- Abstract pattern only: `{str(summary['abstract_pattern_only']).lower()}`",
         f"- Exact transcript text used: `{str(summary['exact_transcript_text_used']).lower()}`",
         f"- All calls start with cold opening: `{str(summary['all_calls_start_with_cold_opening']).lower()}`",
+        f"- Agent opening line visible count: `{summary['agent_opening_line_visible_count']}`",
+        f"- Conversation sequence starts with agent count: `{summary['conversation_sequence_starts_with_agent_count']}`",
         f"- All calls end by customer decision: `{str(summary['all_calls_end_by_customer_decision']).lower()}`",
         f"- Fixed turn limit used: `{str(summary['fixed_turn_limit_used']).lower()}`",
         f"- Loop guard triggered: `{str(summary['loop_guard_triggered']).lower()}`",
@@ -881,6 +933,8 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   fixed turn limit used: `false`
   loop guard triggered: `false`
   leakage findings: `0`
+  agent opening line visible count: `{summary['agent_opening_line_visible_count']}`
+  conversation sequence starts with agent count: `{summary['conversation_sequence_starts_with_agent_count']}`
   {html.escape(payload['next_checkpoint_recommended'])}
   -->
   <header>
@@ -891,6 +945,8 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       <span class="metric">Agent-conditioned customer reply count: <code>{summary['agent_conditioned_customer_reply_count']}</code></span>
       <span class="metric">Unique customer response count: <code>{summary['unique_customer_response_count']}</code></span>
       <span class="metric">Repeated customer response count: <code>{summary['repeated_customer_response_count']}</code></span>
+      <span class="metric">Agent opening line visible count: <code>{summary['agent_opening_line_visible_count']}</code></span>
+      <span class="metric">Conversation starts with agent: <code>{summary['conversation_sequence_starts_with_agent_count']}</code></span>
       <span class="metric">CallCenterEN pattern source count: <code>{summary['callcenteren_pattern_source_count']}</code></span>
       <span class="metric">Leakage findings: <code>{summary['leakage_finding_count']}</code></span>
     </div>
@@ -932,6 +988,10 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
         <section class="panel" id="decision-snapshot"></section>
         <section class="panel" id="safety-flags"></section>
       </section>
+      <section class="panel">
+        <h2>Full Conversation Sequence</h2>
+        <div id="conversation-sequence"></div>
+      </section>
     </section>
   </main>
   <script id="trace-data" type="application/json">{data_json}</script>
@@ -972,6 +1032,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       document.getElementById('state-transition').innerHTML = table('State Before', turn.state_before) + table('State Delta', turn.state_delta) + table('State After', turn.state_after);
       document.getElementById('decision-snapshot').innerHTML = table('Decision Snapshot', turn.decision_snapshot);
       document.getElementById('safety-flags').innerHTML = table('Safety Flags', turn.safety_flags);
+      document.getElementById('conversation-sequence').innerHTML = call.conversation_sequence.map(item => `<div class="bubble ${{item.speaker === 'agent' ? 'agent' : 'customer'}}"><strong>${{titleCase(item.speaker)}} - ${{titleCase(item.kind)}}</strong><p>${{item.text}}</p>${{item.condition ? `<p class="muted">${{item.condition}}</p>` : ''}}</div>`).join('');
       setPressed('.call-button', activeCall);
       setPressed('.turn-button', activeTurn);
     }}

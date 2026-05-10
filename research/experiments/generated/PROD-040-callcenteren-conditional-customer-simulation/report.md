@@ -19,6 +19,8 @@ It does not copy transcript text. It uses the leakage-checked PROD-014 scenario 
 - Abstract pattern only: `true`
 - Exact transcript text used: `false`
 - All calls start with cold opening: `true`
+- Agent opening line visible count: `8`
+- Conversation sequence starts with agent count: `8`
 - All calls end by customer decision: `true`
 - Fixed turn limit used: `false`
 - Loop guard triggered: `false`

@@ -25,6 +25,8 @@ python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
 - Agent-conditioned customer reply count: `19`
 - Unique customer response count: `19`
 - Repeated customer response count: `0`
+- Agent opening line visible count: `8`
+- Conversation sequence starts with agent count: `8`
 - CallCenterEN pattern source count: `59`
 - Scenario bank source count: `8`
 - Abstract pattern only: `true`

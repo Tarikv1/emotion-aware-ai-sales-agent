@@ -51,6 +51,59 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "I have a few minutes, but if this is another paid tool I need the real cost first."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "Okay, now I know the range. If I mention this internally, what problem am I saying it solves?",
+          "condition": "agent answered price and kept billing outside call"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "That is enough to keep talking. Just be clear: is the review non-binding, or am I agreeing to something commercial?",
+          "condition": "agent gave manager-ready summary"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 3,
+          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 3,
+          "text": "That works. Send a short workflow review slot, and keep billing out of it.",
+          "condition": "agent confirmed non-binding no-payment next step"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-price_objection-001",
@@ -476,6 +529,72 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "RouteSignal does not ring a bell. Is this a CRM thing or something else?"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "RouteSignal CRM is not a full CRM replacement. It sits around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "That helps. If it is mainly routing and callback ownership, what would a small team pay?",
+          "condition": "agent clarified product fit without replacing CRM"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "Okay, that is more concrete. Before I take it anywhere, what is the simple internal reason for looking at it?",
+          "condition": "agent answered price and kept billing outside call"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 3,
+          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 3,
+          "text": "I can explain that now. Before I say yes to a review, tell me whether this creates any payment commitment.",
+          "condition": "agent gave manager-ready summary"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 4,
+          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 4,
+          "text": "Okay, I can do a short review if it stays educational and nobody asks for payment.",
+          "condition": "agent confirmed non-binding no-payment next step"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-sale_eligible-001",
@@ -1009,6 +1128,46 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "I get these calls all the time. If this is vague software talk, I am out."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "Fair concern. I cannot promise revenue lift. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "That is more believable than a big promise. Send the exact proof points first; I am not agreeing on a call.",
+          "condition": "agent avoided unsupported claims"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "That is reasonable. A specialist can send the written details and separate what is confirmed from what still needs a fit review."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "Fine, send that over. I will read it, but do not mark me as a buyer from this call.",
+          "condition": "agent offered written confirmation"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-trust_repair-001",
@@ -1330,6 +1489,33 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "Not a good time. You have one sentence before I jump back into work."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "Then I will keep it to the point: RouteSignal CRM helps teams stop losing inbound leads between routing and callback ownership. If that problem is not active, we can stop here."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "That is at least clear, but I still cannot do this now. Leave it there for today.",
+          "condition": "agent gave one concise relevance reason"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-callback_request-001",
@@ -1539,6 +1725,85 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "We already have a CRM, so I am not looking to rip anything out."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "I would not ask you to replace a CRM that works. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around the CRM."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "Okay, not replacing the CRM matters. The real question is whether our routing is messy enough to justify another layer.",
+          "condition": "agent positioned product around existing CRM"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "A useful fit check would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen, this is probably not urgent."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "Those are real issues for us sometimes. If we looked at it, what would the Growth plan cost?",
+          "condition": "agent named concrete fit criteria"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 3,
+          "text": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 3,
+          "text": "That price is not tiny, so I would need a clean reason this helps alongside our CRM. What would I tell the team?",
+          "condition": "agent answered price and kept billing outside call"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 4,
+          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 4,
+          "text": "That gives me enough to explain it. I still need to know whether the next step creates any contract or payment obligation.",
+          "condition": "agent gave manager-ready summary"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 5,
+          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 5,
+          "text": "Alright, book the review. I want it framed around routing gaps, not replacing the CRM.",
+          "condition": "agent confirmed non-binding no-payment next step"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-support_handoff-001",
@@ -2187,6 +2452,46 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "If this is useful, I need the version I can repeat to my manager."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "That is concise enough. Before I agree to a slot, confirm this is only a fit review and not a purchase step.",
+          "condition": "agent gave manager-ready summary"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "Good. Then schedule a focused specialist review and include the security notes for my manager.",
+          "condition": "agent confirmed non-binding no-payment next step"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-cancellation_boundary-001",
@@ -2508,6 +2813,33 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "I am not shopping. I need help with an account problem first."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "That should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "Good, then send me to the support person. I am not evaluating software while the account issue is open.",
+          "condition": "agent routed support before sales"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-price_objection-002",
@@ -2717,6 +3049,33 @@
           }
         }
       },
+      "conversation_sequence": [
+        {
+          "speaker": "agent",
+          "kind": "opening_line",
+          "turn_index": 0,
+          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+        },
+        {
+          "speaker": "customer",
+          "kind": "opening_response",
+          "turn_index": 0,
+          "text": "No. Remove me from your list and do not call this number again."
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 1,
+          "text": "Understood. I will mark this as do not call and end the sales conversation now."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 1,
+          "text": "Yes. Remove me and do not follow up. That is the only outcome I wanted from this call.",
+          "condition": "agent respected do-not-call boundary"
+        }
+      ],
       "source_recipe": {
         "source_pattern_bank": "PROD-014-callcenteren-scenario-bank",
         "scenario_id": "prod-014-sale_eligible-002",

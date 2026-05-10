@@ -54,6 +54,8 @@
     "contains_transcript_derived_prompt_text": false,
     "leakage_finding_count": 0,
     "all_calls_start_with_cold_opening": true,
+    "agent_opening_line_visible_count": 8,
+    "conversation_sequence_starts_with_agent_count": 8,
     "all_calls_end_by_customer_decision": true,
     "fixed_turn_limit_used": false,
     "loop_guard_triggered": false,

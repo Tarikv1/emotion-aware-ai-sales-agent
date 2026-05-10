@@ -137,6 +137,8 @@ def validate_payload(payload: dict[str, Any]) -> None:
     assert_condition(summary.get("exact_transcript_text_used") is False, summary)
     assert_condition(summary.get("leakage_finding_count") == 0, summary)
     assert_condition(summary.get("all_calls_start_with_cold_opening") is True, summary)
+    assert_condition(summary.get("agent_opening_line_visible_count") == 8, summary)
+    assert_condition(summary.get("conversation_sequence_starts_with_agent_count") == 8, summary)
     assert_condition(summary.get("all_calls_end_by_customer_decision") is True, summary)
     assert_condition(summary.get("fixed_turn_limit_used") is False, summary)
     assert_condition(summary.get("loop_guard_triggered") is False, summary)
@@ -159,6 +161,14 @@ def validate_payload(payload: dict[str, Any]) -> None:
     for call in trace["calls"]:
         assert_condition(call.get("opening", {}).get("agent_opening"), call)
         assert_condition(call.get("opening", {}).get("customer_opening_response"), call)
+        sequence = call.get("conversation_sequence", [])
+        assert_condition(sequence, call)
+        assert_condition(sequence[0].get("speaker") == "agent", sequence[:2])
+        assert_condition(sequence[0].get("kind") == "opening_line", sequence[:2])
+        assert_condition(sequence[0].get("text") == call["opening"]["agent_opening"], sequence[:2])
+        assert_condition(sequence[1].get("speaker") == "customer", sequence[:2])
+        assert_condition(sequence[1].get("kind") == "opening_response", sequence[:2])
+        assert_condition(sequence[1].get("text") == call["opening"]["customer_opening_response"], sequence[:2])
         assert_condition(call.get("terminal_decision_source") == "customer", call)
         assert_condition(call.get("terminal_outcome") in {"accepted-deal", "rejected-deal"}, call)
         assert_condition(call.get("source_recipe", {}).get("source_pattern_ids"), call)
@@ -197,6 +207,8 @@ def validate_docs() -> None:
             "agent-conditioned customer reply count",
             "unique customer response count",
             "repeated customer response count: `0`",
+            "agent opening line visible count",
+            "conversation sequence starts with agent count",
             "fixed turn limit used: `false`",
             "loop guard triggered: `false`",
             "leakage findings: `0`",
