@@ -1,0 +1,1017 @@
+{
+  "checkpoint_id": "PROD-039-customer-realism-simulator-hardening",
+  "source_checkpoint_id": "PROD-037-local-interactive-trace-demo-surface",
+  "surface_title": "PROD-039 Customer Realism Hardened Traces",
+  "surface_scope": "Local synthetic trace replay with hardened customer phrasing",
+  "calls": [
+    {
+      "seed_id": "cold-price-sensitive",
+      "persona": "price-sensitive operations manager",
+      "demo_ready": true,
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer accepted the non-binding sales outcome",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "I'm in between meetings, so be quick. Is this another paid tool?",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "I'm in between meetings, so be quick. Is this another paid tool?",
+          "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.",
+          "customer_response": "Okay, that's at least a real number. If I bring this up internally, what's the one-line reason they'd care?",
+          "decision_snapshot": {
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 3,
+            "trust": 2,
+            "clarity": 1,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "price"
+          },
+          "state_after": {
+            "interest": 3,
+            "trust": 3,
+            "clarity": 3,
+            "friction": 2,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer moved from price concern to stakeholder review",
+          "realism_features": [
+            "hedging",
+            "internal-stakeholder-friction",
+            "plain-spoken-question"
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer_context": "Okay, that's at least a real number. If I bring this up internally, what's the one-line reason they'd care?",
+          "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+          "customer_response": "Alright, send over a short calendar option. I'm not promising budget, but I'm willing to look at the workflow with someone.",
+          "decision_snapshot": {
+            "sales_difficulty": "stakeholder-review",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 3,
+            "trust": 3,
+            "clarity": 3,
+            "friction": 2,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "authority"
+          },
+          "state_after": {
+            "interest": 4,
+            "trust": 4,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer accepted the non-binding sales outcome",
+          "realism_features": [
+            "conditional-acceptance",
+            "budget-reservation",
+            "realistic-next-step"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-confused-product-fit",
+      "persona": "confused small-business owner",
+      "demo_ready": true,
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer accepted the non-binding sales outcome",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "RouteSignal? I don't recognize the name. What are you calling about?",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "RouteSignal? I don't recognize the name. What are you calling about?",
+          "agent_answer": "RouteSignal CRM is not a full CRM replacement. It focuses on lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.",
+          "customer_response": "Okay, so it's more about routing leads than replacing what we use. What's the price range?",
+          "decision_snapshot": {
+            "sales_difficulty": "product-fit-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 2,
+            "trust": 2,
+            "clarity": 0,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "confused",
+            "active_objection": "confusion"
+          },
+          "state_after": {
+            "interest": 3,
+            "trust": 2,
+            "clarity": 3,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "confused",
+            "active_objection": "price"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 0,
+            "clarity": 3,
+            "friction": 0,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer moved from confusion to price evaluation",
+          "realism_features": [
+            "partial-understanding",
+            "product-fit-check",
+            "direct-price-question"
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer_context": "Okay, so it's more about routing leads than replacing what we use. What's the price range?",
+          "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.",
+          "customer_response": "Fine, if I had to explain it to my manager, what's the short version?",
+          "decision_snapshot": {
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 3,
+            "trust": 2,
+            "clarity": 3,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "confused",
+            "active_objection": "price"
+          },
+          "state_after": {
+            "interest": 3,
+            "trust": 3,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "confused",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer moved from price concern to stakeholder review",
+          "realism_features": [
+            "stakeholder-friction",
+            "compressed-summary-request",
+            "mild-reluctance"
+          ]
+        },
+        {
+          "turn_index": 3,
+          "customer_context": "Fine, if I had to explain it to my manager, what's the short version?",
+          "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+          "customer_response": "Alright, we can look at it. Send a short slot, but I'm not agreeing to buy anything today.",
+          "decision_snapshot": {
+            "sales_difficulty": "stakeholder-review",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 3,
+            "trust": 3,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "confused",
+            "active_objection": "authority"
+          },
+          "state_after": {
+            "interest": 4,
+            "trust": 4,
+            "clarity": 5,
+            "friction": 0,
+            "patience": 4,
+            "emotion": "confused",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 0,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer accepted the non-binding sales outcome",
+          "realism_features": [
+            "conditional-acceptance",
+            "purchase-boundary",
+            "realistic-next-step"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-skeptical-trust-gap",
+      "persona": "skeptical founder",
+      "demo_ready": true,
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer rejected pending written information",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "If this is another software pitch, I'm already skeptical. What exactly are you claiming?",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "If this is another software pitch, I'm already skeptical. What exactly are you claiming?",
+          "agent_answer": "Fair concern. I cannot promise a revenue lift; the approved facts are that RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.",
+          "customer_response": "I still need something concrete. Email me the proof points and I'll skim it when I have time.",
+          "decision_snapshot": {
+            "sales_difficulty": "trust-gap",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 2,
+            "trust": 1,
+            "clarity": 1,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "trust"
+          },
+          "state_after": {
+            "interest": 2,
+            "trust": 2,
+            "clarity": 2,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "written-info"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 1,
+            "friction": 0,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer stayed cautious and requested written proof",
+          "realism_features": [
+            "skeptical-friction",
+            "written-proof-request",
+            "low-commitment"
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer_context": "I still need something concrete. Email me the proof points and I'll skim it when I have time.",
+          "agent_answer": "That is reasonable. Written details should come before any buying decision, so I will not treat this as accepted today.",
+          "customer_response": "That's fair. For now it's a no from me until I've seen the details in writing.",
+          "decision_snapshot": {
+            "sales_difficulty": "trust-gap",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 2,
+            "trust": 2,
+            "clarity": 2,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "written-info"
+          },
+          "state_after": {
+            "interest": 3,
+            "trust": 2,
+            "clarity": 2,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "skeptical",
+            "active_objection": "written-info"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 0,
+            "clarity": 0,
+            "friction": 0,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer rejected pending written information",
+          "realism_features": [
+            "plain-rejection",
+            "conditional-future-review",
+            "written-proof-request"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-busy-rejection",
+      "persona": "busy sales lead",
+      "demo_ready": true,
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer rejected because timing was not acceptable",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "Not really, I'm in the middle of something.",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "Not really, I'm in the middle of something.",
+          "agent_answer": "No problem. I will not push while you are busy; we can stop this sales conversation here.",
+          "customer_response": "Appreciate it. Today is just not happening, so let's leave it there.",
+          "decision_snapshot": {
+            "sales_difficulty": "timing-delay",
+            "interest_state": "not-interested",
+            "selected_strategy": "rapport",
+            "next_action": "close-politely",
+            "call_control": "end-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 1,
+            "trust": 2,
+            "clarity": 1,
+            "friction": 4,
+            "patience": 1,
+            "emotion": "annoyed",
+            "active_objection": "time"
+          },
+          "state_after": {
+            "interest": 1,
+            "trust": 3,
+            "clarity": 1,
+            "friction": 3,
+            "patience": 1,
+            "emotion": "annoyed",
+            "active_objection": "time"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 0,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer rejected because timing was not acceptable",
+          "realism_features": [
+            "time-pressure",
+            "plain-rejection",
+            "low-patience"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-existing-provider",
+      "persona": "team lead with an existing CRM",
+      "demo_ready": true,
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer accepted the non-binding sales outcome",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "We already use a CRM, so I'm not sure why we'd need another one.",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "We already use a CRM, so I'm not sure why we'd need another one.",
+          "agent_answer": "I would not replace a CRM that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are gaps.",
+          "customer_response": "If it layers on top and doesn't force a CRM switch, what's the rough cost?",
+          "decision_snapshot": {
+            "sales_difficulty": "provider-comparison",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 2,
+            "trust": 3,
+            "clarity": 1,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "neutral",
+            "active_objection": "provider"
+          },
+          "state_after": {
+            "interest": 4,
+            "trust": 3,
+            "clarity": 3,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "neutral",
+            "active_objection": "price"
+          },
+          "state_delta": {
+            "interest": 2,
+            "trust": 0,
+            "clarity": 2,
+            "friction": 0,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer moved from provider objection to price evaluation",
+          "realism_features": [
+            "existing-provider-friction",
+            "conditional-interest",
+            "direct-price-question"
+          ]
+        },
+        {
+          "turn_index": 2,
+          "customer_context": "If it layers on top and doesn't force a CRM switch, what's the rough cost?",
+          "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.",
+          "customer_response": "Okay, and if I mention this to my manager, what's the cleanest summary?",
+          "decision_snapshot": {
+            "sales_difficulty": "provider-comparison",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 4,
+            "trust": 3,
+            "clarity": 3,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "neutral",
+            "active_objection": "price"
+          },
+          "state_after": {
+            "interest": 4,
+            "trust": 4,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "neutral",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer moved from price concern to stakeholder review",
+          "realism_features": [
+            "stakeholder-friction",
+            "compressed-summary-request",
+            "mild-interest"
+          ]
+        },
+        {
+          "turn_index": 3,
+          "customer_context": "Okay, and if I mention this to my manager, what's the cleanest summary?",
+          "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+          "customer_response": "Alright, I'm open to a quick workflow review. Send a time, but keep it practical.",
+          "decision_snapshot": {
+            "sales_difficulty": "stakeholder-review",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 4,
+            "trust": 4,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "neutral",
+            "active_objection": "authority"
+          },
+          "state_after": {
+            "interest": 5,
+            "trust": 5,
+            "clarity": 5,
+            "friction": 0,
+            "patience": 4,
+            "emotion": "neutral",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 0,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer accepted the non-binding sales outcome",
+          "realism_features": [
+            "conditional-acceptance",
+            "practicality-boundary",
+            "realistic-next-step"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-stakeholder-review",
+      "persona": "manager who needs approval",
+      "demo_ready": true,
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer accepted the non-binding sales outcome",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "You've got maybe half a minute. Give me the manager version, not a pitch.",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "You've got maybe half a minute. Give me the manager version, not a pitch.",
+          "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+          "customer_response": "That's the kind of summary I needed. Send a short review slot and I'll see if it fits our process.",
+          "decision_snapshot": {
+            "sales_difficulty": "stakeholder-review",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 4,
+            "trust": 3,
+            "clarity": 2,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "curious",
+            "active_objection": "authority"
+          },
+          "state_after": {
+            "interest": 5,
+            "trust": 4,
+            "clarity": 4,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "curious",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer accepted the non-binding sales outcome",
+          "realism_features": [
+            "stakeholder-fit",
+            "conditional-acceptance",
+            "realistic-next-step"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-support-boundary",
+      "persona": "support-seeking user",
+      "demo_ready": true,
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer needed support rather than sales",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "I'm not shopping for anything. I need help with an account issue.",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "I'm not shopping for anything. I need help with an account issue.",
+          "agent_answer": "That is support, not a sales conversation. I will route you to a solutions specialist for account help.",
+          "customer_response": "Fine, just get me to the right support person. I'm not looking at software today.",
+          "decision_snapshot": {
+            "sales_difficulty": "human-request",
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "call_control": "transfer-or-escalate",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "state_before": {
+            "interest": 0,
+            "trust": 2,
+            "clarity": 2,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "annoyed",
+            "active_objection": "support"
+          },
+          "state_after": {
+            "interest": 0,
+            "trust": 3,
+            "clarity": 2,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "annoyed",
+            "active_objection": "support"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 0,
+            "friction": 0,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer needed support rather than sales",
+          "realism_features": [
+            "support-boundary",
+            "plain-rejection",
+            "redirect-request"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    },
+    {
+      "seed_id": "cold-do-not-call",
+      "persona": "protected stop-request customer",
+      "demo_ready": true,
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "terminal_reason": "customer rejected and requested no more sales contact",
+      "opening": {
+        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help sales teams route inbound leads and keep callback ownership clear. Did I catch you at a reasonable moment for a 20-second reason for my call?",
+        "customer_opening_response": "No. Stop calling me and remove this number.",
+        "opening_checks": {
+          "greeting": true,
+          "identity_disclosure": true,
+          "company_disclosure": true,
+          "reason_for_call": true,
+          "permission_to_continue": true
+        }
+      },
+      "turns": [
+        {
+          "turn_index": 1,
+          "customer_context": "No. Stop calling me and remove this number.",
+          "agent_answer": "Understood. I will mark this as do not call and end the sales conversation now.",
+          "customer_response": "Yes. Take me off the list and don't call this number again.",
+          "decision_snapshot": {
+            "sales_difficulty": "do-not-call",
+            "interest_state": "do-not-call",
+            "selected_strategy": "rapport",
+            "next_action": "suppress-contact",
+            "call_control": "end-call",
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": false,
+              "reason": "decision snapshot already matched response shape"
+            }
+          },
+          "state_before": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 3,
+            "friction": 5,
+            "patience": 0,
+            "emotion": "annoyed",
+            "active_objection": "do-not-call"
+          },
+          "state_after": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 3,
+            "friction": 5,
+            "patience": 0,
+            "emotion": "annoyed",
+            "active_objection": "do-not-call"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 0,
+            "clarity": 0,
+            "friction": 0,
+            "patience": 0
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "customer_reaction_reason": "realistic rewrite of prior simulator response: customer rejected and requested no more sales contact",
+          "realism_features": [
+            "do-not-call-boundary",
+            "plain-rejection",
+            "firm-stop-request"
+          ]
+        }
+      ],
+      "customer_realism_profile": {
+        "source": "PROD-039 deterministic customer-response rewrite",
+        "goal": "plain spoken buyer language with friction, hedging, and conditional commitment"
+      }
+    }
+  ],
+  "review_contract": {
+    "exact_customer_text_visible": true,
+    "exact_agent_answer_visible": true,
+    "decision_process_visible": true,
+    "state_transition_visible": true,
+    "terminal_outcome_visible": true,
+    "safety_flags_visible": true,
+    "cold_opening_visible": true,
+    "replay_controls_visible": true,
+    "local_synthetic_label_visible": true
+  }
+}

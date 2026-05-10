@@ -1059,6 +1059,18 @@ Validate the PROD-038 customer-response realism rejection gate, blocked demo exp
 python scripts\validate_prod_038_local_demo_surface_review.py
 ```
 
+Run the PROD-039 customer realism simulator hardening checkpoint:
+
+```powershell
+python scripts\run_prod_039_customer_realism_simulator_hardening.py
+```
+
+Validate the PROD-039 same-case customer phrasing improvement, unchanged agent answers, unchanged decision snapshots, unchanged terminal outcomes, unchanged safety flags, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_039_customer_realism_simulator_hardening.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

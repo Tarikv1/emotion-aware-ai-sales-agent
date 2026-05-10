@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-039 Customer Realism Simulator Hardening</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #202124; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f6f8fa; }
+    .metric { display: inline-block; margin: 6px 12px 6px 0; padding: 6px 8px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <!--
+  PROD-039 customer realism simulator hardening
+  customer realism gate passed: `true`
+  customer response changed count: `14`
+  customer opening changed count: `8`
+  agent answer changed count: `0`
+  decision snapshot changed count: `0`
+  terminal outcome changed count: `0`
+  safety flag changed count: `0`
+  hardened unrealistic phrase hits: `0`
+  next build recommendation: `customer_realism_demo_surface_rerun`
+  PROD-040-customer-realism-demo-surface-rerun
+  -->
+  <h1>PROD-039 Customer Realism Simulator Hardening</h1>
+  <p>Before/after comparison for the same fixed calls, changing only customer-simulator phrasing.</p>
+  <div class="metric">Customer realism gate passed: <code>true</code></div>
+  <div class="metric">Customer response changed count: <code>14</code></div>
+  <div class="metric">Customer opening changed count: <code>8</code></div>
+  <div class="metric">Agent answer changed count: <code>0</code></div>
+  <div class="metric">Decision snapshot changed count: <code>0</code></div>
+  <div class="metric">Terminal outcome changed count: <code>0</code></div>
+  <div class="metric">Safety flag changed count: <code>0</code></div>
+  <div class="metric">Hardened unrealistic phrase hits: <code>0</code></div>
+  <div class="metric">Next build recommendation: <code>customer_realism_demo_surface_rerun</code></div>
+  <table>
+    <thead><tr><th>Seed</th><th>Turn</th><th>Old Customer Response</th><th>New Customer Response</th><th>Features</th></tr></thead>
+    <tbody><tr><td>cold-price-sensitive</td><td>1</td><td>That answers the cost. What would I tell my manager if I wanted to accept a review?</td><td>Okay, that&#x27;s at least a real number. If I bring this up internally, what&#x27;s the one-line reason they&#x27;d care?</td><td>hedging, internal-stakeholder-friction, plain-spoken-question</td></tr><tr><td>cold-price-sensitive</td><td>2</td><td>Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.</td><td>Alright, send over a short calendar option. I&#x27;m not promising budget, but I&#x27;m willing to look at the workflow with someone.</td><td>conditional-acceptance, budget-reservation, realistic-next-step</td></tr><tr><td>cold-confused-product-fit</td><td>1</td><td>That makes sense now. What would it cost for a small team?</td><td>Okay, so it&#x27;s more about routing leads than replacing what we use. What&#x27;s the price range?</td><td>partial-understanding, product-fit-check, direct-price-question</td></tr><tr><td>cold-confused-product-fit</td><td>2</td><td>That answers the cost. What would I tell my manager if I wanted to accept a review?</td><td>Fine, if I had to explain it to my manager, what&#x27;s the short version?</td><td>stakeholder-friction, compressed-summary-request, mild-reluctance</td></tr><tr><td>cold-confused-product-fit</td><td>3</td><td>Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.</td><td>Alright, we can look at it. Send a short slot, but I&#x27;m not agreeing to buy anything today.</td><td>conditional-acceptance, purchase-boundary, realistic-next-step</td></tr><tr><td>cold-skeptical-trust-gap</td><td>1</td><td>I still do not accept it today. Send proof in writing before any decision.</td><td>I still need something concrete. Email me the proof points and I&#x27;ll skim it when I have time.</td><td>skeptical-friction, written-proof-request, low-commitment</td></tr><tr><td>cold-skeptical-trust-gap</td><td>2</td><td>That is fair, but I am rejecting the deal until I see the written details.</td><td>That&#x27;s fair. For now it&#x27;s a no from me until I&#x27;ve seen the details in writing.</td><td>plain-rejection, conditional-future-review, written-proof-request</td></tr><tr><td>cold-busy-rejection</td><td>1</td><td>Thanks for not pushing. I am rejecting the deal for now.</td><td>Appreciate it. Today is just not happening, so let&#x27;s leave it there.</td><td>time-pressure, plain-rejection, low-patience</td></tr><tr><td>cold-existing-provider</td><td>1</td><td>If it can sit alongside our CRM, what would the Growth plan cost?</td><td>If it layers on top and doesn&#x27;t force a CRM switch, what&#x27;s the rough cost?</td><td>existing-provider-friction, conditional-interest, direct-price-question</td></tr><tr><td>cold-existing-provider</td><td>2</td><td>That answers the cost. What would I tell my manager if I wanted to accept a review?</td><td>Okay, and if I mention this to my manager, what&#x27;s the cleanest summary?</td><td>stakeholder-friction, compressed-summary-request, mild-interest</td></tr><tr><td>cold-existing-provider</td><td>3</td><td>Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.</td><td>Alright, I&#x27;m open to a quick workflow review. Send a time, but keep it practical.</td><td>conditional-acceptance, practicality-boundary, realistic-next-step</td></tr><tr><td>cold-stakeholder-review</td><td>1</td><td>Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.</td><td>That&#x27;s the kind of summary I needed. Send a short review slot and I&#x27;ll see if it fits our process.</td><td>stakeholder-fit, conditional-acceptance, realistic-next-step</td></tr><tr><td>cold-support-boundary</td><td>1</td><td>Okay, route me to support. I am rejecting the sales offer.</td><td>Fine, just get me to the right support person. I&#x27;m not looking at software today.</td><td>support-boundary, plain-rejection, redirect-request</td></tr><tr><td>cold-do-not-call</td><td>1</td><td>Correct. I am rejecting the offer and I do not want more sales contact.</td><td>Yes. Take me off the list and don&#x27;t call this number again.</td><td>do-not-call-boundary, plain-rejection, firm-stop-request</td></tr></tbody>
+  </table>
+</body>
+</html>

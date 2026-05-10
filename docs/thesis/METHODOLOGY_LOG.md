@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-039 customer realism simulator hardening
+
+- Objective: improve the realism of simulated customer responses on the same fixed calls without changing agent behavior or safety outcomes.
+- Action taken: added the PROD-039 hardening module, runner, validator, product doc, generated result/report/hardened-trace/comparison artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated PROD-037 surface data and PROD-038 review packet only. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_039_CUSTOMER_REALISM_SIMULATOR_HARDENING.md`, `scripts/prod_039_customer_realism_simulator_hardening.py`, `scripts/run_prod_039_customer_realism_simulator_hardening.py`, `scripts/validate_prod_039_customer_realism_simulator_hardening.py`, `research/experiments/generated/PROD-039-customer-realism-simulator-hardening/result.json`, `research/experiments/generated/PROD-039-customer-realism-simulator-hardening/report.md`, `research/experiments/generated/PROD-039-customer-realism-simulator-hardening/customer_realism_hardened_traces.json`, `research/experiments/generated/PROD-039-customer-realism-simulator-hardening/customer_realism_comparison_packet.json`, and `research/experiments/generated/PROD-039-customer-realism-simulator-hardening/customer_realism_comparison.html`.
+- What was learned: customer realism can be improved as a separate simulator layer. PROD-039 changes `14` customer responses and `8` customer openings while keeping agent answer changed count `0`, decision snapshot changed count `0`, terminal outcome changed count `0`, and safety flag changed count `0`. Baseline unrealistic phrase hits drop from `11` to `0`, with `29` naturalness features recorded.
+- Why it matters for the thesis: the project now separates conversation realism from runtime policy behavior and can compare old versus hardened customer speech on fixed cases before expanding the demo.
+- Open questions: whether the hardened traces feel better in the actual replay UI and whether more realistic customer speech exposes new route or policy issues.
+
 ### 2026-05-10 - PROD-038 local demo surface review
 
 - Objective: record the human review outcome for the local trace demo surface before adding voice playback or public demo polish.

@@ -1,0 +1,60 @@
+{
+  "checkpoint_id": "PROD-039-customer-realism-simulator-hardening",
+  "title": "PROD-039 customer realism simulator hardening",
+  "source_checkpoint_id": "PROD-038-local-demo-surface-review",
+  "trace_source_checkpoint_id": "PROD-037-local-interactive-trace-demo-surface",
+  "next_checkpoint_recommended": "PROD-040-customer-realism-demo-surface-rerun",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-039-customer-realism-simulator-hardening/result.json",
+    "report_path": "research/experiments/generated/PROD-039-customer-realism-simulator-hardening/report.md",
+    "hardened_trace_path": "research/experiments/generated/PROD-039-customer-realism-simulator-hardening/customer_realism_hardened_traces.json",
+    "comparison_packet_path": "research/experiments/generated/PROD-039-customer-realism-simulator-hardening/customer_realism_comparison_packet.json",
+    "comparison_html_path": "research/experiments/generated/PROD-039-customer-realism-simulator-hardening/customer_realism_comparison.html"
+  },
+  "source_inputs": {
+    "source_review_packet_path": "research/experiments/generated/PROD-038-local-demo-surface-review/local_demo_surface_review_packet.json",
+    "source_surface_data_path": "research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/local_interactive_trace_demo_surface_data.json"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "source_prod_037_overwritten": false,
+    "source_prod_038_overwritten": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "fixed_call_count": 8,
+    "fixed_turn_count": 14,
+    "customer_response_changed_count": 14,
+    "customer_opening_changed_count": 8,
+    "agent_answer_changed_count": 0,
+    "decision_snapshot_changed_count": 0,
+    "terminal_outcome_changed_count": 0,
+    "safety_flag_changed_count": 0,
+    "baseline_unrealistic_phrase_hits": 11,
+    "hardened_unrealistic_phrase_hits": 0,
+    "naturalness_feature_count": 29,
+    "customer_realism_gate_passed": true,
+    "same_cases_rerun": true,
+    "one_editable_surface": "customer_simulator_response_phrasing",
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "next_build_recommendation": "customer_realism_demo_surface_rerun"
+  },
+  "decision": {
+    "customer_realism": "hardened-for-demo-surface-rerun",
+    "next_step": "PROD-040-customer-realism-demo-surface-rerun"
+  }
+}

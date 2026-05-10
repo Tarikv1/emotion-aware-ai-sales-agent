@@ -15,6 +15,24 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-087 - Keep PROD-039 as the customer-realism hardening checkpoint
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Improve the simulated customer phrasing on the same fixed calls while preserving agent answers, decision snapshots, safety flags, and terminal outcomes.
+- Why:
+  - PROD-038 rejected the conversation content because customers sounded artificial and over-cooperative
+  - changing only customer phrasing creates a clean experiment: same cases, one editable surface, clear before/after comparison
+  - preserving agent answers and decision traces prevents the project from hiding runtime behavior changes inside a simulator realism fix
+- Alternatives considered:
+  - add more call seeds before fixing realism
+  - add voice playback to the weak customer lines
+  - rewrite the agent answers together with the customer simulator
+- Consequences:
+  - the next checkpoint is `PROD-040-customer-realism-demo-surface-rerun`
+  - voice playback and public demo polish remain blocked until the hardened traces are reviewed in the actual demo surface
+  - provider calls, live runtime defaults, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-086 - Keep PROD-038 as the customer-realism rejection gate
 
 - Date: 2026-05-10

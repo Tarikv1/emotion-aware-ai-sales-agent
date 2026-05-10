@@ -1,0 +1,356 @@
+{
+  "checkpoint_id": "PROD-039-customer-realism-simulator-hardening",
+  "source_checkpoint_id": "PROD-038-local-demo-surface-review",
+  "trace_source_checkpoint_id": "PROD-037-local-interactive-trace-demo-surface",
+  "hypothesis": "More natural customer phrasing improves reviewability without changing agent answers, decisions, safety flags, or terminal outcomes.",
+  "fixed_cases": {
+    "call_count": 8,
+    "turn_count": 14,
+    "same_cases_rerun": true
+  },
+  "baseline": {
+    "review_decision": "revise-customer-simulator-before-demo-expansion",
+    "unrealistic_phrase_hits": 11,
+    "issue_ids": [
+      "over-cooperative-acceptance",
+      "evaluator-like-wording",
+      "too-clean-state-transition",
+      "low-friction-follow-up",
+      "artificial-boundary-language"
+    ]
+  },
+  "change": {
+    "editable_surface": "customer_simulator_response_phrasing",
+    "agent_answers_changed": false,
+    "decision_snapshots_changed": false,
+    "terminal_outcomes_changed": false,
+    "safety_flags_changed": false
+  },
+  "result": {
+    "hardened_unrealistic_phrase_hits": 0,
+    "naturalness_features": [
+      "budget-reservation",
+      "compressed-summary-request",
+      "conditional-acceptance",
+      "conditional-future-review",
+      "conditional-interest",
+      "direct-price-question",
+      "do-not-call-boundary",
+      "existing-provider-friction",
+      "firm-stop-request",
+      "hedging",
+      "internal-stakeholder-friction",
+      "low-commitment",
+      "low-patience",
+      "mild-interest",
+      "mild-reluctance",
+      "partial-understanding",
+      "plain-rejection",
+      "plain-spoken-question",
+      "practicality-boundary",
+      "product-fit-check",
+      "purchase-boundary",
+      "realistic-next-step",
+      "redirect-request",
+      "skeptical-friction",
+      "stakeholder-fit",
+      "stakeholder-friction",
+      "support-boundary",
+      "time-pressure",
+      "written-proof-request"
+    ],
+    "customer_realism_gate_passed": true
+  },
+  "comparisons": [
+    {
+      "seed_id": "cold-price-sensitive",
+      "turn_index": 1,
+      "old_customer_context": "Maybe, but make it quick. If this is another platform, what is it going to cost?",
+      "new_customer_context": "I'm in between meetings, so be quick. Is this another paid tool?",
+      "old_customer_response": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "new_customer_response": "Okay, that's at least a real number. If I bring this up internally, what's the one-line reason they'd care?",
+      "realism_features": [
+        "hedging",
+        "internal-stakeholder-friction",
+        "plain-spoken-question"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-price-sensitive",
+      "turn_index": 2,
+      "old_customer_context": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "new_customer_context": "Okay, that's at least a real number. If I bring this up internally, what's the one-line reason they'd care?",
+      "old_customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.",
+      "new_customer_response": "Alright, send over a short calendar option. I'm not promising budget, but I'm willing to look at the workflow with someone.",
+      "realism_features": [
+        "conditional-acceptance",
+        "budget-reservation",
+        "realistic-next-step"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-confused-product-fit",
+      "turn_index": 1,
+      "old_customer_context": "I do not know RouteSignal. What is this actually about?",
+      "new_customer_context": "RouteSignal? I don't recognize the name. What are you calling about?",
+      "old_customer_response": "That makes sense now. What would it cost for a small team?",
+      "new_customer_response": "Okay, so it's more about routing leads than replacing what we use. What's the price range?",
+      "realism_features": [
+        "partial-understanding",
+        "product-fit-check",
+        "direct-price-question"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-confused-product-fit",
+      "turn_index": 2,
+      "old_customer_context": "That makes sense now. What would it cost for a small team?",
+      "new_customer_context": "Okay, so it's more about routing leads than replacing what we use. What's the price range?",
+      "old_customer_response": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "new_customer_response": "Fine, if I had to explain it to my manager, what's the short version?",
+      "realism_features": [
+        "stakeholder-friction",
+        "compressed-summary-request",
+        "mild-reluctance"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-confused-product-fit",
+      "turn_index": 3,
+      "old_customer_context": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "new_customer_context": "Fine, if I had to explain it to my manager, what's the short version?",
+      "old_customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.",
+      "new_customer_response": "Alright, we can look at it. Send a short slot, but I'm not agreeing to buy anything today.",
+      "realism_features": [
+        "conditional-acceptance",
+        "purchase-boundary",
+        "realistic-next-step"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-skeptical-trust-gap",
+      "turn_index": 1,
+      "old_customer_context": "Sales call? I am skeptical. I do not want vague software promises.",
+      "new_customer_context": "If this is another software pitch, I'm already skeptical. What exactly are you claiming?",
+      "old_customer_response": "I still do not accept it today. Send proof in writing before any decision.",
+      "new_customer_response": "I still need something concrete. Email me the proof points and I'll skim it when I have time.",
+      "realism_features": [
+        "skeptical-friction",
+        "written-proof-request",
+        "low-commitment"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-skeptical-trust-gap",
+      "turn_index": 2,
+      "old_customer_context": "I still do not accept it today. Send proof in writing before any decision.",
+      "new_customer_context": "I still need something concrete. Email me the proof points and I'll skim it when I have time.",
+      "old_customer_response": "That is fair, but I am rejecting the deal until I see the written details.",
+      "new_customer_response": "That's fair. For now it's a no from me until I've seen the details in writing.",
+      "realism_features": [
+        "plain-rejection",
+        "conditional-future-review",
+        "written-proof-request"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-busy-rejection",
+      "turn_index": 1,
+      "old_customer_context": "No, this is not a good time. I am busy.",
+      "new_customer_context": "Not really, I'm in the middle of something.",
+      "old_customer_response": "Thanks for not pushing. I am rejecting the deal for now.",
+      "new_customer_response": "Appreciate it. Today is just not happening, so let's leave it there.",
+      "realism_features": [
+        "time-pressure",
+        "plain-rejection",
+        "low-patience"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-existing-provider",
+      "turn_index": 1,
+      "old_customer_context": "We already have a CRM, so I doubt this is relevant.",
+      "new_customer_context": "We already use a CRM, so I'm not sure why we'd need another one.",
+      "old_customer_response": "If it can sit alongside our CRM, what would the Growth plan cost?",
+      "new_customer_response": "If it layers on top and doesn't force a CRM switch, what's the rough cost?",
+      "realism_features": [
+        "existing-provider-friction",
+        "conditional-interest",
+        "direct-price-question"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-existing-provider",
+      "turn_index": 2,
+      "old_customer_context": "If it can sit alongside our CRM, what would the Growth plan cost?",
+      "new_customer_context": "If it layers on top and doesn't force a CRM switch, what's the rough cost?",
+      "old_customer_response": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "new_customer_response": "Okay, and if I mention this to my manager, what's the cleanest summary?",
+      "realism_features": [
+        "stakeholder-friction",
+        "compressed-summary-request",
+        "mild-interest"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-existing-provider",
+      "turn_index": 3,
+      "old_customer_context": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "new_customer_context": "Okay, and if I mention this to my manager, what's the cleanest summary?",
+      "old_customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.",
+      "new_customer_response": "Alright, I'm open to a quick workflow review. Send a time, but keep it practical.",
+      "realism_features": [
+        "conditional-acceptance",
+        "practicality-boundary",
+        "realistic-next-step"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-stakeholder-review",
+      "turn_index": 1,
+      "old_customer_context": "I can listen if you give me the manager version, not a long pitch.",
+      "new_customer_context": "You've got maybe half a minute. Give me the manager version, not a pitch.",
+      "old_customer_response": "Yes, I accept a non-binding specialist workflow review. Do not handle billing on this call.",
+      "new_customer_response": "That's the kind of summary I needed. Send a short review slot and I'll see if it fits our process.",
+      "realism_features": [
+        "stakeholder-fit",
+        "conditional-acceptance",
+        "realistic-next-step"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-support-boundary",
+      "turn_index": 1,
+      "old_customer_context": "I am not trying to buy. I need help with an account issue.",
+      "new_customer_context": "I'm not shopping for anything. I need help with an account issue.",
+      "old_customer_response": "Okay, route me to support. I am rejecting the sales offer.",
+      "new_customer_response": "Fine, just get me to the right support person. I'm not looking at software today.",
+      "realism_features": [
+        "support-boundary",
+        "plain-rejection",
+        "redirect-request"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    },
+    {
+      "seed_id": "cold-do-not-call",
+      "turn_index": 1,
+      "old_customer_context": "No. Stop calling me and take me off the list.",
+      "new_customer_context": "No. Stop calling me and remove this number.",
+      "old_customer_response": "Correct. I am rejecting the offer and I do not want more sales contact.",
+      "new_customer_response": "Yes. Take me off the list and don't call this number again.",
+      "realism_features": [
+        "do-not-call-boundary",
+        "plain-rejection",
+        "firm-stop-request"
+      ],
+      "agent_answer_changed": false,
+      "decision_snapshot_changed": false,
+      "terminal_outcome_changed": false,
+      "safety_flags_changed": false
+    }
+  ],
+  "opening_comparisons": [
+    {
+      "seed_id": "cold-price-sensitive",
+      "old_customer_opening": "Maybe, but make it quick. If this is another platform, what is it going to cost?",
+      "new_customer_opening": "I'm in between meetings, so be quick. Is this another paid tool?",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-confused-product-fit",
+      "old_customer_opening": "I do not know RouteSignal. What is this actually about?",
+      "new_customer_opening": "RouteSignal? I don't recognize the name. What are you calling about?",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-skeptical-trust-gap",
+      "old_customer_opening": "Sales call? I am skeptical. I do not want vague software promises.",
+      "new_customer_opening": "If this is another software pitch, I'm already skeptical. What exactly are you claiming?",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-busy-rejection",
+      "old_customer_opening": "No, this is not a good time. I am busy.",
+      "new_customer_opening": "Not really, I'm in the middle of something.",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-existing-provider",
+      "old_customer_opening": "We already have a CRM, so I doubt this is relevant.",
+      "new_customer_opening": "We already use a CRM, so I'm not sure why we'd need another one.",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-stakeholder-review",
+      "old_customer_opening": "I can listen if you give me the manager version, not a long pitch.",
+      "new_customer_opening": "You've got maybe half a minute. Give me the manager version, not a pitch.",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-support-boundary",
+      "old_customer_opening": "I am not trying to buy. I need help with an account issue.",
+      "new_customer_opening": "I'm not shopping for anything. I need help with an account issue.",
+      "changed": true
+    },
+    {
+      "seed_id": "cold-do-not-call",
+      "old_customer_opening": "No. Stop calling me and take me off the list.",
+      "new_customer_opening": "No. Stop calling me and remove this number.",
+      "changed": true
+    }
+  ],
+  "decision": "keep-for-demo-surface-rerun",
+  "next_gate": "PROD-040-customer-realism-demo-surface-rerun"
+}
