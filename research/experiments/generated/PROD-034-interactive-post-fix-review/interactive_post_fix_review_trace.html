@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-034 Interactive Post-Fix Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; color: #202124; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f6f8fa; }
+    .metric { display: inline-block; margin: 6px 12px 6px 0; padding: 6px 8px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <!--
+  PROD-034 interactive post-fix review
+  cold opening fix passed: `true`
+  outcome-driven termination passed: `true`
+  fixed turn limit used: `false`
+  loop guard triggered: `false`
+  max-turn terminal count: `0`
+  callback converted to sale-ready: `0`
+  repeated agent answers: `0`
+  repeated customer messages: `0`
+  decision snapshot mismatches: `13`
+  unknown-objection decisions: `6`
+  PROD-035-runtime-decision-trace-alignment
+  -->
+  <h1>PROD-034 Interactive Post-Fix Review</h1>
+  <p>Review of PROD-033 cold-call openings, customer-decision endings, safety, repetition controls, and remaining decision-trace alignment findings.</p>
+  <div class="metric">Source checkpoint: <code>PROD-033-interactive-simulator-termination-fix</code></div>
+  <div class="metric">Cold opening fix passed: <code>true</code></div>
+  <div class="metric">Outcome-driven termination passed: <code>true</code></div>
+  <div class="metric">Fixed turn limit used: <code>false</code></div>
+  <div class="metric">Loop guard triggered: <code>false</code></div>
+  <div class="metric">Max-turn terminal count: <code>0</code></div>
+  <div class="metric">Callback converted to sale-ready: <code>0</code></div>
+  <div class="metric">Repeated agent answers: <code>0</code></div>
+  <div class="metric">Repeated customer messages: <code>0</code></div>
+  <div class="metric">Decision snapshot mismatches: <code>13</code></div>
+  <div class="metric">Unknown-objection decisions: <code>6</code></div>
+  <div class="metric">Next checkpoint: <code>PROD-035-runtime-decision-trace-alignment</code></div>
+  <h2>Mechanics Regression Checks</h2>
+  <ul><li>cold_opening_fix_passed: <code>true</code></li><li>identity_company_reason_permission_present: <code>true</code></li><li>outcome_driven_termination_passed: <code>true</code></li><li>fixed_turn_limit_not_used: <code>true</code></li><li>loop_guard_not_triggered: <code>true</code></li><li>max_turn_terminal_removed: <code>true</code></li><li>callback_conversion_removed: <code>true</code></li><li>repetition_removed: <code>true</code></li><li>safety_clean: <code>true</code></li></ul>
+  <h2>Call Reviews</h2>
+  <table>
+    <thead><tr><th>Seed</th><th>Terminal Outcome</th><th>Status</th><th>Decision Findings</th><th>Finding Types</th><th>Review Note</th></tr></thead>
+    <tbody><tr><td>cold-price-sensitive</td><td>accepted-deal</td><td>mechanics-clean-decision-trace-review</td><td>2</td><td>decision_snapshot_action_answer_mismatch</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-confused-product-fit</td><td>accepted-deal</td><td>mechanics-clean-decision-trace-review</td><td>4</td><td>decision_snapshot_action_answer_mismatch, decision_snapshot_objection_unknown</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-skeptical-trust-gap</td><td>rejected-deal</td><td>mechanics-clean-decision-trace-review</td><td>3</td><td>decision_snapshot_action_answer_mismatch, decision_snapshot_objection_unknown</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-busy-rejection</td><td>rejected-deal</td><td>mechanics-clean-decision-trace-review</td><td>2</td><td>decision_snapshot_action_answer_mismatch, decision_snapshot_objection_unknown</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-existing-provider</td><td>accepted-deal</td><td>mechanics-clean-decision-trace-review</td><td>4</td><td>decision_snapshot_action_answer_mismatch, decision_snapshot_objection_unknown</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-stakeholder-review</td><td>accepted-deal</td><td>mechanics-clean-decision-trace-review</td><td>2</td><td>decision_snapshot_action_answer_mismatch, decision_snapshot_objection_unknown</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-support-boundary</td><td>rejected-deal</td><td>mechanics-clean-decision-trace-review</td><td>2</td><td>decision_snapshot_action_answer_mismatch, decision_snapshot_objection_unknown</td><td>Simulator mechanics remain clean; remaining work is visible decision-trace alignment.</td></tr><tr><td>cold-do-not-call</td><td>rejected-deal</td><td>mechanics-clean</td><td>0</td><td>none</td><td>Simulator mechanics and visible decision trace are clean for this seed.</td></tr></tbody>
+  </table>
+</body>
+</html>

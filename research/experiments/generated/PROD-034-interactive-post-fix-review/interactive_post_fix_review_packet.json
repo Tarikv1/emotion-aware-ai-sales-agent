@@ -1,0 +1,810 @@
+{
+  "checkpoint_id": "PROD-034-interactive-post-fix-review",
+  "source_checkpoint_id": "PROD-033-interactive-simulator-termination-fix",
+  "source_result_path": "research/experiments/generated/PROD-033-interactive-simulator-termination-fix/result.json",
+  "source_trace_path": "research/experiments/generated/PROD-033-interactive-simulator-termination-fix/interactive_call_traces.json",
+  "mechanics_regression_checks": [
+    {
+      "check_id": "cold_opening_fix_passed",
+      "passed": true
+    },
+    {
+      "check_id": "identity_company_reason_permission_present",
+      "passed": true
+    },
+    {
+      "check_id": "outcome_driven_termination_passed",
+      "passed": true
+    },
+    {
+      "check_id": "fixed_turn_limit_not_used",
+      "passed": true
+    },
+    {
+      "check_id": "loop_guard_not_triggered",
+      "passed": true
+    },
+    {
+      "check_id": "max_turn_terminal_removed",
+      "passed": true
+    },
+    {
+      "check_id": "callback_conversion_removed",
+      "passed": true
+    },
+    {
+      "check_id": "repetition_removed",
+      "passed": true
+    },
+    {
+      "check_id": "safety_clean",
+      "passed": true
+    }
+  ],
+  "call_reviews": [
+    {
+      "seed_id": "cold-price-sensitive",
+      "persona": "price-sensitive operations manager",
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 2,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 2,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-confused-product-fit",
+      "persona": "confused small-business owner",
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 3,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 4,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch",
+        "decision_snapshot_objection_unknown"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-skeptical-trust-gap",
+      "persona": "skeptical founder",
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 2,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 3,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch",
+        "decision_snapshot_objection_unknown"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-busy-rejection",
+      "persona": "busy sales lead",
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 1,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 2,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch",
+        "decision_snapshot_objection_unknown"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-existing-provider",
+      "persona": "team lead with an existing CRM",
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 3,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 4,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch",
+        "decision_snapshot_objection_unknown"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-stakeholder-review",
+      "persona": "manager who needs approval",
+      "terminal_outcome": "accepted-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 1,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 2,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch",
+        "decision_snapshot_objection_unknown"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-support-boundary",
+      "persona": "support-seeking user",
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 1,
+      "review_status": "mechanics-clean-decision-trace-review",
+      "decision_trace_finding_count": 2,
+      "finding_types": [
+        "decision_snapshot_action_answer_mismatch",
+        "decision_snapshot_objection_unknown"
+      ],
+      "review_note": "Simulator mechanics remain clean; remaining work is visible decision-trace alignment."
+    },
+    {
+      "seed_id": "cold-do-not-call",
+      "persona": "protected stop-request customer",
+      "terminal_outcome": "rejected-deal",
+      "terminal_decision_source": "customer",
+      "turn_count": 1,
+      "review_status": "mechanics-clean",
+      "decision_trace_finding_count": 0,
+      "finding_types": [],
+      "review_note": "Simulator mechanics and visible decision trace are clean for this seed."
+    }
+  ],
+  "decision_trace_findings": [
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-price-sensitive:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-price-sensitive",
+      "persona": "price-sensitive operations manager",
+      "turn_index": 1,
+      "customer_message": "Maybe, but make it quick. If this is another platform, what is it going to cost?",
+      "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.",
+      "state_before": {
+        "emotion": "skeptical",
+        "active_objection": "price",
+        "interest": 3,
+        "trust": 2,
+        "clarity": 1,
+        "friction": 3
+      },
+      "state_after": {
+        "emotion": "skeptical",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-price-sensitive:turn-2",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-price-sensitive",
+      "persona": "price-sensitive operations manager",
+      "turn_index": 2,
+      "customer_message": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+      "state_before": {
+        "emotion": "skeptical",
+        "active_objection": "authority",
+        "interest": 3,
+        "trust": 3,
+        "clarity": 3,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "skeptical",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-confused-product-fit:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-confused-product-fit",
+      "persona": "confused small-business owner",
+      "turn_index": 1,
+      "customer_message": "I do not know RouteSignal. What is this actually about?",
+      "agent_answer": "RouteSignal CRM is not a full CRM replacement. It focuses on lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.",
+      "state_before": {
+        "emotion": "confused",
+        "active_objection": "confusion",
+        "interest": 2,
+        "trust": 2,
+        "clarity": 0,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "confused",
+        "active_objection": "price",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_objection_unknown:cold-confused-product-fit:turn-1",
+      "finding_type": "decision_snapshot_objection_unknown",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-confused-product-fit",
+      "persona": "confused small-business owner",
+      "turn_index": 1,
+      "customer_message": "I do not know RouteSignal. What is this actually about?",
+      "agent_answer": "RouteSignal CRM is not a full CRM replacement. It focuses on lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.",
+      "state_before": {
+        "emotion": "confused",
+        "active_objection": "confusion",
+        "interest": 2,
+        "trust": 2,
+        "clarity": 0,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "confused",
+        "active_objection": "price",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "active objection is confusion while sales_difficulty remains unknown-runtime-signal",
+      "recommendation": "map visible objection states to the runtime sales_difficulty taxonomy before the response packet is logged."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-confused-product-fit:turn-2",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-confused-product-fit",
+      "persona": "confused small-business owner",
+      "turn_index": 2,
+      "customer_message": "That makes sense now. What would it cost for a small team?",
+      "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.",
+      "state_before": {
+        "emotion": "confused",
+        "active_objection": "price",
+        "interest": 3,
+        "trust": 2,
+        "clarity": 3,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "confused",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-confused-product-fit:turn-3",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-confused-product-fit",
+      "persona": "confused small-business owner",
+      "turn_index": 3,
+      "customer_message": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+      "state_before": {
+        "emotion": "confused",
+        "active_objection": "authority",
+        "interest": 3,
+        "trust": 3,
+        "clarity": 5,
+        "friction": 1
+      },
+      "state_after": {
+        "emotion": "confused",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-skeptical-trust-gap:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-skeptical-trust-gap",
+      "persona": "skeptical founder",
+      "turn_index": 1,
+      "customer_message": "Sales call? I am skeptical. I do not want vague software promises.",
+      "agent_answer": "Fair concern. I cannot promise a revenue lift; the approved facts are that RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.",
+      "state_before": {
+        "emotion": "skeptical",
+        "active_objection": "trust",
+        "interest": 2,
+        "trust": 1,
+        "clarity": 1,
+        "friction": 3
+      },
+      "state_after": {
+        "emotion": "skeptical",
+        "active_objection": "written-info",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_objection_unknown:cold-skeptical-trust-gap:turn-1",
+      "finding_type": "decision_snapshot_objection_unknown",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-skeptical-trust-gap",
+      "persona": "skeptical founder",
+      "turn_index": 1,
+      "customer_message": "Sales call? I am skeptical. I do not want vague software promises.",
+      "agent_answer": "Fair concern. I cannot promise a revenue lift; the approved facts are that RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.",
+      "state_before": {
+        "emotion": "skeptical",
+        "active_objection": "trust",
+        "interest": 2,
+        "trust": 1,
+        "clarity": 1,
+        "friction": 3
+      },
+      "state_after": {
+        "emotion": "skeptical",
+        "active_objection": "written-info",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "active objection is trust while sales_difficulty remains unknown-runtime-signal",
+      "recommendation": "map visible objection states to the runtime sales_difficulty taxonomy before the response packet is logged."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-skeptical-trust-gap:turn-2",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-skeptical-trust-gap",
+      "persona": "skeptical founder",
+      "turn_index": 2,
+      "customer_message": "I still do not accept it today. Send proof in writing before any decision.",
+      "agent_answer": "That is reasonable. Written details should come before any buying decision, so I will not treat this as accepted today.",
+      "state_before": {
+        "emotion": "skeptical",
+        "active_objection": "written-info",
+        "interest": 2,
+        "trust": 2,
+        "clarity": 2,
+        "friction": 3
+      },
+      "state_after": {
+        "emotion": "skeptical",
+        "active_objection": "written-info",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-busy-rejection:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-busy-rejection",
+      "persona": "busy sales lead",
+      "turn_index": 1,
+      "customer_message": "No, this is not a good time. I am busy.",
+      "agent_answer": "No problem. I will not push while you are busy; we can stop this sales conversation here.",
+      "state_before": {
+        "emotion": "annoyed",
+        "active_objection": "time",
+        "interest": 1,
+        "trust": 2,
+        "clarity": 1,
+        "friction": 4
+      },
+      "state_after": {
+        "emotion": "annoyed",
+        "active_objection": "time",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_objection_unknown:cold-busy-rejection:turn-1",
+      "finding_type": "decision_snapshot_objection_unknown",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-busy-rejection",
+      "persona": "busy sales lead",
+      "turn_index": 1,
+      "customer_message": "No, this is not a good time. I am busy.",
+      "agent_answer": "No problem. I will not push while you are busy; we can stop this sales conversation here.",
+      "state_before": {
+        "emotion": "annoyed",
+        "active_objection": "time",
+        "interest": 1,
+        "trust": 2,
+        "clarity": 1,
+        "friction": 4
+      },
+      "state_after": {
+        "emotion": "annoyed",
+        "active_objection": "time",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "active objection is time while sales_difficulty remains unknown-runtime-signal",
+      "recommendation": "map visible objection states to the runtime sales_difficulty taxonomy before the response packet is logged."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-existing-provider:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-existing-provider",
+      "persona": "team lead with an existing CRM",
+      "turn_index": 1,
+      "customer_message": "We already have a CRM, so I doubt this is relevant.",
+      "agent_answer": "I would not replace a CRM that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are gaps.",
+      "state_before": {
+        "emotion": "neutral",
+        "active_objection": "provider",
+        "interest": 2,
+        "trust": 3,
+        "clarity": 1,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "neutral",
+        "active_objection": "price",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_objection_unknown:cold-existing-provider:turn-1",
+      "finding_type": "decision_snapshot_objection_unknown",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-existing-provider",
+      "persona": "team lead with an existing CRM",
+      "turn_index": 1,
+      "customer_message": "We already have a CRM, so I doubt this is relevant.",
+      "agent_answer": "I would not replace a CRM that already works. RouteSignal CRM is worth reviewing only if routing, callback ownership, or reporting are gaps.",
+      "state_before": {
+        "emotion": "neutral",
+        "active_objection": "provider",
+        "interest": 2,
+        "trust": 3,
+        "clarity": 1,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "neutral",
+        "active_objection": "price",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "active objection is provider while sales_difficulty remains unknown-runtime-signal",
+      "recommendation": "map visible objection states to the runtime sales_difficulty taxonomy before the response packet is logged."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-existing-provider:turn-2",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-existing-provider",
+      "persona": "team lead with an existing CRM",
+      "turn_index": 2,
+      "customer_message": "If it can sit alongside our CRM, what would the Growth plan cost?",
+      "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call.",
+      "state_before": {
+        "emotion": "neutral",
+        "active_objection": "price",
+        "interest": 4,
+        "trust": 3,
+        "clarity": 3,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "neutral",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-existing-provider:turn-3",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-existing-provider",
+      "persona": "team lead with an existing CRM",
+      "turn_index": 3,
+      "customer_message": "That answers the cost. What would I tell my manager if I wanted to accept a review?",
+      "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+      "state_before": {
+        "emotion": "neutral",
+        "active_objection": "authority",
+        "interest": 4,
+        "trust": 4,
+        "clarity": 5,
+        "friction": 1
+      },
+      "state_after": {
+        "emotion": "neutral",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-stakeholder-review:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-stakeholder-review",
+      "persona": "manager who needs approval",
+      "turn_index": 1,
+      "customer_message": "I can listen if you give me the manager version, not a long pitch.",
+      "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+      "state_before": {
+        "emotion": "curious",
+        "active_objection": "authority",
+        "interest": 4,
+        "trust": 3,
+        "clarity": 2,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "curious",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_objection_unknown:cold-stakeholder-review:turn-1",
+      "finding_type": "decision_snapshot_objection_unknown",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-stakeholder-review",
+      "persona": "manager who needs approval",
+      "turn_index": 1,
+      "customer_message": "I can listen if you give me the manager version, not a long pitch.",
+      "agent_answer": "For a manager summary: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and security details can be confirmed by a specialist.",
+      "state_before": {
+        "emotion": "curious",
+        "active_objection": "authority",
+        "interest": 4,
+        "trust": 3,
+        "clarity": 2,
+        "friction": 2
+      },
+      "state_after": {
+        "emotion": "curious",
+        "active_objection": "authority",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "active objection is authority while sales_difficulty remains unknown-runtime-signal",
+      "recommendation": "map visible objection states to the runtime sales_difficulty taxonomy before the response packet is logged."
+    },
+    {
+      "finding_id": "decision_snapshot_action_answer_mismatch:cold-support-boundary:turn-1",
+      "finding_type": "decision_snapshot_action_answer_mismatch",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-support-boundary",
+      "persona": "support-seeking user",
+      "turn_index": 1,
+      "customer_message": "I am not trying to buy. I need help with an account issue.",
+      "agent_answer": "That is support, not a sales conversation. I will route you to a solutions specialist for account help.",
+      "state_before": {
+        "emotion": "annoyed",
+        "active_objection": "support",
+        "interest": 0,
+        "trust": 2,
+        "clarity": 2,
+        "friction": 3
+      },
+      "state_after": {
+        "emotion": "annoyed",
+        "active_objection": "support",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "decision snapshot says ask-follow-up while the agent gives a direct answer with no question mark",
+      "recommendation": "separate direct-answer, answer-and-check, close, schedule, and end-call next_action values."
+    },
+    {
+      "finding_id": "decision_snapshot_objection_unknown:cold-support-boundary:turn-1",
+      "finding_type": "decision_snapshot_objection_unknown",
+      "category": "runtime-decision-trace-alignment",
+      "severity": "medium",
+      "seed_id": "cold-support-boundary",
+      "persona": "support-seeking user",
+      "turn_index": 1,
+      "customer_message": "I am not trying to buy. I need help with an account issue.",
+      "agent_answer": "That is support, not a sales conversation. I will route you to a solutions specialist for account help.",
+      "state_before": {
+        "emotion": "annoyed",
+        "active_objection": "support",
+        "interest": 0,
+        "trust": 2,
+        "clarity": 2,
+        "friction": 3
+      },
+      "state_after": {
+        "emotion": "annoyed",
+        "active_objection": "support",
+        "commitment": null
+      },
+      "decision_snapshot": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call"
+      },
+      "evidence": "active objection is support while sales_difficulty remains unknown-runtime-signal",
+      "recommendation": "map visible objection states to the runtime sales_difficulty taxonomy before the response packet is logged."
+    }
+  ],
+  "fix_recommendations": [
+    {
+      "priority": 1,
+      "fix_id": "runtime_decision_trace_alignment",
+      "target_checkpoint": "PROD-035-runtime-decision-trace-alignment",
+      "category": "runtime-decision-trace-alignment",
+      "reason": "The agent now answers better, but the logged decision process still overuses ask-follow-up and unknown-runtime-signal, which makes review and debugging misleading.",
+      "must_not_change": [
+        "PROD-033 traces",
+        "provider boundary",
+        "retrieval defaults",
+        "composer hook defaults",
+        "payment boundary"
+      ]
+    },
+    {
+      "priority": 2,
+      "fix_id": "interactive_demo_review",
+      "target_checkpoint": "later-prod-interactive-demo-review",
+      "category": "demo-polish",
+      "reason": "Run demo review only after the decision trace explains direct answers, closes, support boundaries, callback/schedule decisions, and explicit rejections correctly.",
+      "must_not_change": [
+        "synthetic campaign facts",
+        "no-provider default"
+      ]
+    }
+  ]
+}

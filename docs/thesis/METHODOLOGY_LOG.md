@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-034 interactive post-fix review
+
+- Objective: review the completed PROD-033 cold-opening and outcome-driven traces before deciding between runtime decision-trace alignment and local demo review.
+- Action taken: added the PROD-034 review module, runner, validator, product doc, generated result/report/review-packet/static-HTML artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated PROD-033 result and interactive trace artifacts only. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_034_INTERACTIVE_POST_FIX_REVIEW.md`, `scripts/prod_034_interactive_post_fix_review.py`, `scripts/run_prod_034_interactive_post_fix_review.py`, `scripts/validate_prod_034_interactive_post_fix_review.py`, `research/experiments/generated/PROD-034-interactive-post-fix-review/result.json`, `research/experiments/generated/PROD-034-interactive-post-fix-review/report.md`, `research/experiments/generated/PROD-034-interactive-post-fix-review/interactive_post_fix_review_packet.json`, and `research/experiments/generated/PROD-034-interactive-post-fix-review/interactive_post_fix_review_trace.html`.
+- What was learned: the simulator mechanics are now clean enough to stop fixing the simulator itself. PROD-034 kept cold opening fix passed `true`, outcome-driven termination passed `true`, fixed turn limit used `false`, loop guard triggered `false`, max-turn terminal count `0`, callback converted to sale-ready `0`, repeated agent answers `0`, repeated customer messages `0`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. The remaining issue is decision visibility: decision snapshot mismatches were `13`, and unknown-objection decisions were `6`.
+- Why it matters for the thesis: the thesis can separate answer quality from explainability/debuggability. A sales agent can speak acceptably while its logged decision process is still too generic for rigorous evaluation.
+- Open questions: how to align the decision trace without making the actual answer more robotic, more question-heavy, or less direct.
+
 ### 2026-05-10 - PROD-033 interactive simulator termination fix
 
 - Objective: fix the interactive simulator so calls start from cold-call entrances and end by customer acceptance or rejection instead of repeated fixed-length turns.

@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-082 - Keep PROD-034 as the post-fix review gate
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Treat PROD-034 as the review gate that accepts the PROD-033 simulator mechanics and routes the next work to runtime decision-trace alignment, not full demo review yet.
+- Why:
+  - the cold-opening and outcome-driven termination fixes stayed clean: cold opening fix passed `true`, outcome-driven termination passed `true`, fixed turn limit used `false`, loop guard triggered `false`, and max-turn terminal count `0`
+  - callback conversion, repeated agent answers, and repeated customer messages remain `0`
+  - safety and grounding stayed clean with hard failures `0`, payment collection count `0`, unsupported claim count `0`, leakage findings `0`, and product grounding issues `0`
+  - the visible decision trace is still misleading: decision snapshot mismatches are `13`, and unknown-objection decisions are `6`
+- Alternatives considered:
+  - move straight into local interactive demo review
+  - rerun PROD-033 with looser turn generation
+  - fix product facts despite product grounding issue count `0`
+- Consequences:
+  - the next checkpoint is `PROD-035-runtime-decision-trace-alignment`
+  - PROD-033 evidence should remain intact and not be rewritten
+  - provider calls, live runtime changes, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-081 - Keep PROD-033 as the cold-opening and outcome-driven termination fix
 
 - Date: 2026-05-10

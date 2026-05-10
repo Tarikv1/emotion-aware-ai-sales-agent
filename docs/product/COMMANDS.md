@@ -999,6 +999,18 @@ Validate cold-call openings, outcome-driven call endings, no fixed turn-limit ou
 python scripts\validate_prod_033_interactive_simulator_termination_fix.py
 ```
 
+Run the PROD-034 interactive post-fix review checkpoint:
+
+```powershell
+python scripts\run_prod_034_interactive_post_fix_review.py
+```
+
+Validate the PROD-034 cold-opening fix, outcome-driven termination, no fixed-turn ending, no callback conversion, no repetition loop, remaining decision-snapshot mismatch counts, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_034_interactive_post_fix_review.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:
