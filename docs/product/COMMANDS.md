@@ -1107,6 +1107,18 @@ Validate the PROD-041 human review packet, locked PROD-041A source boundary, man
 python scripts\validate_prod_041_conditional_simulation_review.py
 ```
 
+Run the PROD-042 CallCenterEN turn-level sales pattern playbook checkpoint:
+
+```powershell
+python scripts\run_prod_042_callcenteren_turn_pattern_playbook.py
+```
+
+Validate the PROD-042 raw-zip parsing gates, turn-level pattern artifacts, coverage-gap reporting, leakage/commercial-safety boundary, no-scenario-generation boundary, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_042_callcenteren_turn_pattern_playbook.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

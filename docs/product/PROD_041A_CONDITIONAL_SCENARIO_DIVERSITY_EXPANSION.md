@@ -2,6 +2,8 @@
 
 PROD-041A now tests interactive conditional customer simulation, not fixed scripted dialogue.
 
+Further synthetic scenario expansion is paused. `PROD-042-callcenteren-turn-pattern-playbook` supersedes additional PROD-041A growth as the next turn-level sales intelligence layer, while PROD-041A remains locked for historical checkpoint evidence.
+
 Generation flow is now:
 
 `PROD-014 abstract scenario bank + PROD-013 abstract pattern IDs -> scenario_recipes.json -> customer_reaction_policy_bank.json -> interactive_scenario_profiles.json -> current local sales-agent turn harness -> customer simulator -> interaction_traces.json -> review surface`

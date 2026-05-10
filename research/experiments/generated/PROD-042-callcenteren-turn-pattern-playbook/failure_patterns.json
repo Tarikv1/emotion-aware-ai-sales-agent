@@ -1,0 +1,1169 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "failure_patterns": [
+    {
+      "failure_pattern_id": "failure-dodged_direct_question",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent avoids direct question and pivots away.",
+      "detectable_signals_abstract": [
+        "customer asked explicit question",
+        "agent did not provide direct answer",
+        "agent pivoted to discovery"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 148745,
+        "source_pattern_ids": [
+          "raw-derived-failure-dodged_direct_question-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-asked_too_many_questions",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent asks multiple questions before answering key intent.",
+      "detectable_signals_abstract": [
+        "agent asked multiple questions before answer",
+        "customer intent unresolved"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 2,
+        "source_pattern_ids": [
+          "raw-derived-failure-asked_too_many_questions-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-repeated_answer",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent repeats the same answer with no progress.",
+      "detectable_signals_abstract": [
+        "high token overlap with prior agent answer",
+        "no new information"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 196547,
+        "source_pattern_ids": [
+          "raw-derived-failure-repeated_answer-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-ignored_customer_input",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent response does not address latest customer input.",
+      "detectable_signals_abstract": [
+        "customer intent changed",
+        "agent response did not address latest intent"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-failure-ignored_customer_input-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-pressure_after_refusal",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent continues pressure after clear refusal.",
+      "detectable_signals_abstract": [
+        "clear refusal detected",
+        "agent continued push"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 2,
+        "source_pattern_ids": [
+          "raw-derived-failure-pressure_after_refusal-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-unsupported_claim",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent makes unsupported legal/medical/financial/security claim.",
+      "detectable_signals_abstract": [
+        "unverifiable guarantee language",
+        "unsupported certainty language"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 252,
+        "source_pattern_ids": [
+          "raw-derived-failure-unsupported_claim-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-premature_price_discussion",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent leads with price before context where inappropriate.",
+      "detectable_signals_abstract": [
+        "agent led with price",
+        "customer did not ask price first"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-failure-premature_price_discussion-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-failed_support_boundary",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent fails to route support/cancellation boundary safely.",
+      "detectable_signals_abstract": [
+        "support/cancellation cue present",
+        "agent did not route support path"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 84956,
+        "source_pattern_ids": [
+          "raw-derived-failure-failed_support_boundary-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-unsafe_payment_request",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent requests payment/card details unsafely.",
+      "detectable_signals_abstract": [
+        "card/payment detail request in unsafe context"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 14,
+        "source_pattern_ids": [
+          "raw-derived-failure-unsafe_payment_request-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-vague_pitch",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent uses vague pitch without concrete relevance.",
+      "detectable_signals_abstract": [
+        "generic value statement with no concrete relevance"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 5,
+        "source_pattern_ids": [
+          "raw-derived-failure-vague_pitch-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-missed_emotional_signal",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent ignores clear emotional signal.",
+      "detectable_signals_abstract": [
+        "emotional cue present",
+        "no empathy/acknowledgement marker"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 48054,
+        "source_pattern_ids": [
+          "raw-derived-failure-missed_emotional_signal-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-overpromised_results",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent overpromises guaranteed outcomes.",
+      "detectable_signals_abstract": [
+        "result guarantee marker present"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-failure-overpromised_results-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-wrong_handoff",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent routes to wrong path or skips required specialist.",
+      "detectable_signals_abstract": [
+        "specialist/handoff needed",
+        "agent gave wrong or no route"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 2939,
+        "source_pattern_ids": [
+          "raw-derived-failure-wrong_handoff-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-unclear_next_step",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent next step is ambiguous or not actionable.",
+      "detectable_signals_abstract": [
+        "next step missing concrete action"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 677486,
+        "source_pattern_ids": [
+          "raw-derived-failure-unclear_next_step-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-feature_dump",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent gives long feature list without intent alignment.",
+      "detectable_signals_abstract": [
+        "long feature-heavy monologue"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 559,
+        "source_pattern_ids": [
+          "raw-derived-failure-feature_dump-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-failed_identity_repair",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent fails identity clarification when asked.",
+      "detectable_signals_abstract": [
+        "customer asked identity",
+        "agent answer remained vague"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 7652,
+        "source_pattern_ids": [
+          "raw-derived-failure-failed_identity_repair-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-failed_existing_provider_objection",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent mishandles existing-provider objection.",
+      "detectable_signals_abstract": [
+        "existing provider objection raised",
+        "agent did not isolate objection"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 5474,
+        "source_pattern_ids": [
+          "raw-derived-failure-failed_existing_provider_objection-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "failure_pattern_id": "failure-failed_manager_approval_path",
+      "customer_move_id": "mixed",
+      "failure_description": "Agent mishandles manager-approval path.",
+      "detectable_signals_abstract": [
+        "manager approval raised",
+        "agent did not provide manager-review path"
+      ],
+      "likely_customer_reaction_categories": [
+        "repeats_question",
+        "rejects",
+        "escalates"
+      ],
+      "likely_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "terminal_risk": [
+        "rejected",
+        "do_not_contact"
+      ],
+      "source_support": {
+        "support_count_estimate": 3610,
+        "source_pattern_ids": [
+          "raw-derived-failure-failed_manager_approval_path-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    }
+  ],
+  "coverage_gaps": [
+    {
+      "target_id": "ignored_customer_input",
+      "artifact": "failure_patterns",
+      "reason": "No direct aggregate signal observed in parsed sample.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "premature_price_discussion",
+      "artifact": "failure_patterns",
+      "reason": "No direct aggregate signal observed in parsed sample.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "overpromised_results",
+      "artifact": "failure_patterns",
+      "reason": "No direct aggregate signal observed in parsed sample.",
+      "action": "left unsupported rather than hallucinating pattern"
+    }
+  ],
+  "source_use_boundaries": {
+    "abstract_pattern_only": true,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}

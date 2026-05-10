@@ -33,11 +33,12 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-041-conditional-simulation-review` on the repaired `PROD-041A-conditional-scenario-diversity-expansion` traces that now come from interactive conditional customer simulation, not fixed scripted dialogue.
+- [ ] Current: run `PROD-042-callcenteren-turn-pattern-playbook` to extract leakage-safe turn-level customer-move, tactic, reaction, transition, failure/recovery, playbook, and deterministic evaluation patterns from raw CallCenterEN zip aggregates and existing abstract checkpoints.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-041 review, decide whether targeted customer-turn rewrites are required before voice playback or demo use.
+- [ ] Next: run `PROD-043-sales-playbook-runtime-adapter` to apply/evaluate PROD-042 playbook rules against offline real-agent outputs without enabling retrieval by default or modifying runtime behavior.
+- [ ] Next: after PROD-043 offline adapter evidence, decide whether targeted runtime adaptation is justified before voice playback or demo use.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.

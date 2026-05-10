@@ -1,0 +1,40 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "raw_source_dir": "data/external/callcenteren/raw",
+  "zip_file_count": 11,
+  "parsed_zip_file_count": 11,
+  "unsupported_zip_file_count": 0,
+  "parsed_inner_file_count": 16003,
+  "parsed_file_type_counts": {
+    "csv": 0,
+    "json": 16003,
+    "jsonl": 0,
+    "txt": 0,
+    "tsv": 0
+  },
+  "estimated_record_count": 95953,
+  "detected_columns_or_keys": [
+    "audio_duration",
+    "confidence",
+    "redacted_pii_policies",
+    "text",
+    "words"
+  ],
+  "parse_failures": [],
+  "raw_text_stored_in_outputs": false,
+  "abstract_pattern_only": true,
+  "coverage_gaps": [],
+  "extraction_summary": {
+    "records_analyzed": 16000,
+    "segments_analyzed": 1797614,
+    "customer_segments": 860415,
+    "agent_segments": 937199,
+    "existing_pattern_refs_used": 20799
+  },
+  "parse_elapsed_seconds": 256.644,
+  "uses_exact_transcript_text": false,
+  "uses_source_transcript_sequence": false,
+  "uses_dataset_specific_phrasing": false,
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}

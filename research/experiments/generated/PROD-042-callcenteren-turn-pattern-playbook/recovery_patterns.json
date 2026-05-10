@@ -1,0 +1,1122 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "recovery_patterns": [
+    {
+      "recovery_pattern_id": "recovery-dodged_direct_question-001",
+      "failure_pattern_id": "failure-dodged_direct_question",
+      "recovery_tactic_ids": [
+        "acknowledge_emotion",
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "uses_unsupported_target_tactic": false,
+      "unsupported_recovery_tactic_ids": [],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 148745,
+        "source_pattern_ids": [
+          "raw-derived-recovery-dodged_direct_question-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-asked_too_many_questions-001",
+      "failure_pattern_id": "failure-asked_too_many_questions",
+      "recovery_tactic_ids": [
+        "answer_directly",
+        "time_respectful",
+        "single_discovery_question"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "time_respectful"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 2,
+        "source_pattern_ids": [
+          "raw-derived-recovery-asked_too_many_questions-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-repeated_answer-001",
+      "failure_pattern_id": "failure-repeated_answer",
+      "recovery_tactic_ids": [
+        "acknowledge_emotion",
+        "one_concrete_relevance_point",
+        "low_pressure_boundary"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "one_concrete_relevance_point"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 196547,
+        "source_pattern_ids": [
+          "raw-derived-recovery-repeated_answer-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-ignored_customer_input-001",
+      "failure_pattern_id": "failure-ignored_customer_input",
+      "recovery_tactic_ids": [
+        "objection_isolation",
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "uses_unsupported_target_tactic": false,
+      "unsupported_recovery_tactic_ids": [],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-recovery-ignored_customer_input-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-pressure_after_refusal-001",
+      "failure_pattern_id": "failure-pressure_after_refusal",
+      "recovery_tactic_ids": [
+        "stop_after_refusal",
+        "low_pressure_boundary"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "stop_after_refusal"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 2,
+        "source_pattern_ids": [
+          "raw-derived-recovery-pressure_after_refusal-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-unsupported_claim-001",
+      "failure_pattern_id": "failure-unsupported_claim",
+      "recovery_tactic_ids": [
+        "trust_repair",
+        "proof_without_unsupported_claim",
+        "written_info_offer"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "proof_without_unsupported_claim",
+        "trust_repair"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 252,
+        "source_pattern_ids": [
+          "raw-derived-recovery-unsupported_claim-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-premature_price_discussion-001",
+      "failure_pattern_id": "failure-premature_price_discussion",
+      "recovery_tactic_ids": [
+        "permission_first",
+        "reason_first",
+        "single_discovery_question"
+      ],
+      "uses_unsupported_target_tactic": false,
+      "unsupported_recovery_tactic_ids": [],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-recovery-premature_price_discussion-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-failed_support_boundary-001",
+      "failure_pattern_id": "failure-failed_support_boundary",
+      "recovery_tactic_ids": [
+        "support_boundary_route",
+        "handoff_to_specialist",
+        "acknowledge_emotion"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "support_boundary_route"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 84956,
+        "source_pattern_ids": [
+          "raw-derived-recovery-failed_support_boundary-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-unsafe_payment_request-001",
+      "failure_pattern_id": "failure-unsafe_payment_request",
+      "recovery_tactic_ids": [
+        "payment_safety_boundary",
+        "trust_repair",
+        "stop_after_refusal"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "payment_safety_boundary",
+        "stop_after_refusal",
+        "trust_repair"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 14,
+        "source_pattern_ids": [
+          "raw-derived-recovery-unsafe_payment_request-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-vague_pitch-001",
+      "failure_pattern_id": "failure-vague_pitch",
+      "recovery_tactic_ids": [
+        "simple_explanation",
+        "one_concrete_relevance_point"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "one_concrete_relevance_point"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 5,
+        "source_pattern_ids": [
+          "raw-derived-recovery-vague_pitch-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          }
+        ]
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-missed_emotional_signal-001",
+      "failure_pattern_id": "failure-missed_emotional_signal",
+      "recovery_tactic_ids": [
+        "acknowledge_emotion",
+        "trust_repair"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "trust_repair"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 48054,
+        "source_pattern_ids": [
+          "raw-derived-recovery-missed_emotional_signal-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-overpromised_results-001",
+      "failure_pattern_id": "failure-overpromised_results",
+      "recovery_tactic_ids": [
+        "risk_reversal",
+        "proof_without_unsupported_claim"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "proof_without_unsupported_claim"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-recovery-overpromised_results-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-wrong_handoff-001",
+      "failure_pattern_id": "failure-wrong_handoff",
+      "recovery_tactic_ids": [
+        "handoff_to_specialist",
+        "manager_review_offer"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "manager_review_offer"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 2939,
+        "source_pattern_ids": [
+          "raw-derived-recovery-wrong_handoff-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-unclear_next_step-001",
+      "failure_pattern_id": "failure-unclear_next_step",
+      "recovery_tactic_ids": [
+        "low_pressure_boundary",
+        "written_info_offer",
+        "callback_offer"
+      ],
+      "uses_unsupported_target_tactic": false,
+      "unsupported_recovery_tactic_ids": [],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 677486,
+        "source_pattern_ids": [
+          "raw-derived-recovery-unclear_next_step-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-feature_dump-001",
+      "failure_pattern_id": "failure-feature_dump",
+      "recovery_tactic_ids": [
+        "time_respectful",
+        "single_discovery_question",
+        "one_concrete_relevance_point"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "one_concrete_relevance_point",
+        "time_respectful"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 559,
+        "source_pattern_ids": [
+          "raw-derived-recovery-feature_dump-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-failed_identity_repair-001",
+      "failure_pattern_id": "failure-failed_identity_repair",
+      "recovery_tactic_ids": [
+        "answer_directly",
+        "reason_first"
+      ],
+      "uses_unsupported_target_tactic": false,
+      "unsupported_recovery_tactic_ids": [],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 7652,
+        "source_pattern_ids": [
+          "raw-derived-recovery-failed_identity_repair-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-failed_existing_provider_objection-001",
+      "failure_pattern_id": "failure-failed_existing_provider_objection",
+      "recovery_tactic_ids": [
+        "objection_isolation",
+        "one_concrete_relevance_point"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "one_concrete_relevance_point"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 5474,
+        "source_pattern_ids": [
+          "raw-derived-recovery-failed_existing_provider_objection-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "recovery_pattern_id": "recovery-failed_manager_approval_path-001",
+      "failure_pattern_id": "failure-failed_manager_approval_path",
+      "recovery_tactic_ids": [
+        "manager_review_offer",
+        "written_info_offer"
+      ],
+      "uses_unsupported_target_tactic": true,
+      "unsupported_recovery_tactic_ids": [
+        "manager_review_offer"
+      ],
+      "recovery_sequence_abstract": [
+        "acknowledge the miss",
+        "repair the direct response",
+        "offer low-pressure next step or stop"
+      ],
+      "likely_effect": [
+        "partial_trust_repair",
+        "clarity_gain"
+      ],
+      "source_support": {
+        "support_count_estimate": 3610,
+        "source_pattern_ids": [
+          "raw-derived-recovery-failed_manager_approval_path-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    }
+  ],
+  "coverage_gaps": [],
+  "source_use_boundaries": {
+    "abstract_pattern_only": true,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}

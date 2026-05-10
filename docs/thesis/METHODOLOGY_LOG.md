@@ -16,6 +16,26 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-042 narrow quality fix pass
+
+- Objective: correct output-quality defects in PROD-042 without redesigning the checkpoint or changing runtime behavior.
+- Action taken: repaired invalid recovery tactic IDs, made playbook rules move-specific, added move-specific deterministic evaluation checks, enforced safe next-best-action behavior after rejection/boundary reactions, added explicit unsupported-target tactic flags/metrics, and added support-count method/limitations metadata across artifacts and review HTML.
+- Data used: existing parsed raw CallCenterEN aggregate outputs and abstract checkpoint cross-check artifacts only. No provider call, LLM call, private data read, dataset download, transcript copying, retrieval enablement, or runtime-agent modification.
+- Output created: regenerated PROD-042 artifacts in `research/experiments/generated/PROD-042-callcenteren-turn-pattern-playbook/` and updated PROD-042 generator/validator scripts plus product doc note.
+- What was learned: narrow validator gates are needed to prevent structurally valid but tactically weak playbook recommendations, especially around rejection/boundary handling and recovery integrity.
+- Why it matters for the thesis: this keeps the turn-level playbook commercially safer and more actionable for a future offline adapter while preserving strict no-runtime-promotion boundaries.
+- Open questions: whether low-support target tactics should stay in taxonomy for planning only, or be hidden by default in future review surfaces.
+
+### 2026-05-10 - PROD-042 turn-level sales pattern playbook extraction
+
+- Objective: create a new checkpoint that extracts reusable turn-level sales intelligence from CallCenterEN raw zip aggregates instead of generating more synthetic scenario conversations.
+- Action taken: added deterministic raw zip parsing, aggregate turn-signal extraction, source-index cross-checking against PROD-013/PROD-014, pattern artifact generation (moves/tactics/quality/reaction/state/next-action/failure/recovery/playbook/evaluation), static HTML review surface, and validator gates for leakage/commercial-safety/no-scenario-generation boundaries.
+- Data used: primary raw source `data/external/callcenteren/raw` plus existing abstract checkpoints `PROD-013` and `PROD-014` for cross-check/fallback enrichment only. No provider call, LLM call, private data read, dataset download, transcript copying, source-sequence copying, runtime behavior change, retrieval enablement, or runtime-agent modification was used.
+- Output created: `docs/product/PROD_042_CALLCENTEREN_TURN_PATTERN_PLAYBOOK.md`, `scripts/prod_042_callcenteren_turn_pattern_playbook.py`, `scripts/run_prod_042_callcenteren_turn_pattern_playbook.py`, `scripts/validate_prod_042_callcenteren_turn_pattern_playbook.py`, and generated artifacts under `research/experiments/generated/PROD-042-callcenteren-turn-pattern-playbook/`.
+- What was learned: turn-level pattern extraction is a stronger foundation for next-step offline runtime adapters than producing additional synthetic dialogue scripts; coverage gaps can be reported explicitly without hallucinating unsupported categories.
+- Why it matters for the thesis: this preserves commercial-safety boundaries while still producing actionable customer-move/tactic/reaction intelligence for deterministic evaluation and future adapter work.
+- Open questions: whether PROD-043 should first consume playbook rules as an offline evaluator overlay, a bounded offline response-shaping adapter, or both in sequence.
+
 ### 2026-05-10 - PROD-041A agent reactivity validation repair
 
 - Objective: fix the PROD-041A failure where customer responses changed but agent answers could repeat or ignore the latest customer turn.

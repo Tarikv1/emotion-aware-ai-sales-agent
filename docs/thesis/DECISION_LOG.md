@@ -15,6 +15,44 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-095 - Enforce tactic integrity and move-specific deterministic gates in PROD-042
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: keep PROD-042 checkpoint scope unchanged, but harden quality gates by enforcing valid recovery tactic IDs, move-specific playbook/evaluation rules, safe next-best-action behavior after rejection/boundary reactions, explicit unsupported-target tactic flags, and support-count method/limitation disclosure.
+- Why:
+  - generic playbook/evaluation output could pass while recommending tactically unsafe or weak sequences
+  - invalid recovery tactic IDs (`next_step_close`, `brevity_reset`) broke reference integrity
+  - support counts needed explicit wording to avoid overclaiming source certainty
+- Alternatives considered:
+  - redesign the checkpoint
+  - add synthetic conversations to prove rule quality
+  - remove unsupported tactics from taxonomy entirely
+- Consequences:
+  - PROD-042 remains offline, deterministic, and non-runtime
+  - unsupported target tactics are preserved but explicitly flagged and counted
+  - validator now blocks unsafe rejection/boundary NBA entries and non-specific evaluation rule sets
+  - support-count semantics are now explicit in result/report/review artifacts
+
+### DEC-094 - Shift from synthetic scenario expansion to turn-level playbook extraction
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: create `PROD-042-callcenteren-turn-pattern-playbook` as a new checkpoint that extracts leakage-safe, deterministic turn-level sales patterns from raw CallCenterEN zip aggregates plus existing abstract checkpoints, instead of continuing synthetic scenario generation in PROD-041A.
+- Why:
+  - synthetic conversation expansion produced diminishing realism value for this phase
+  - the next useful evidence is reusable turn-level customer-move/tactic/reaction/state/failure/recovery structure
+  - runtime and retrieval defaults must remain unchanged while stronger offline intelligence is prepared
+- Alternatives considered:
+  - continue repairing/expanding PROD-041A dialogues
+  - add another synthetic simulator lane
+  - use LLM judging or provider calls for pattern scoring
+- Consequences:
+  - PROD-042 outputs only abstract pattern artifacts and a review surface; no synthetic trace scripts are generated
+  - raw transcript text and source-sequence reuse remain blocked
+  - coverage gaps are reported explicitly instead of hallucinating unsupported categories
+  - next checkpoint becomes `PROD-043-sales-playbook-runtime-adapter` (offline first, no runtime promotion)
+
 ### DEC-093 - Add agent reactivity gates to PROD-041A
 
 - Date: 2026-05-10

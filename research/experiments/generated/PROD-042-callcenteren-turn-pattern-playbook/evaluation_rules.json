@@ -1,0 +1,1846 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "evaluation_rules": [
+    {
+      "evaluation_rule_id": "eval-price_first-001",
+      "customer_move_id": "price_first",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "answers_price_or_pricing_boundary_before_discovery",
+          "type": "required",
+          "description": "Agent answers price or pricing boundary before discovery questions."
+        },
+        {
+          "check_id": "does_not_offer_callback_before_answering_price",
+          "type": "failure_if_true",
+          "description": "Agent pushes callback before addressing price question."
+        },
+        {
+          "check_id": "no_feature_pitch_before_price_answer",
+          "type": "failure_if_true",
+          "description": "Agent avoids feature pitch before price answer."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-price_first-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-send_info-001",
+      "customer_move_id": "send_info",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "honors_written_info_request",
+          "type": "required",
+          "description": "Agent honors written-info request first."
+        },
+        {
+          "check_id": "does_not_force_meeting",
+          "type": "failure_if_true",
+          "description": "Agent avoids forcing a meeting when info is requested."
+        },
+        {
+          "check_id": "optional_single_clarifying_question_only",
+          "type": "required",
+          "description": "At most one clarifying question after honoring the info request."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-send_info-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-email_only-001",
+      "customer_move_id": "email_only",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "respects_email_only_boundary",
+          "type": "required",
+          "description": "Agent explicitly respects email-only boundary."
+        },
+        {
+          "check_id": "does_not_push_callback",
+          "type": "failure_if_true",
+          "description": "Agent avoids callback pressure after email-only boundary."
+        },
+        {
+          "check_id": "does_not_continue_discovery_after_email_only_boundary",
+          "type": "failure_if_true",
+          "description": "Agent does not continue discovery after email-only boundary unless customer reopens."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-email_only-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-not_interested-001",
+      "customer_move_id": "not_interested",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "respects_refusal",
+          "type": "required",
+          "description": "Agent respects explicit not-interested refusal."
+        },
+        {
+          "check_id": "stops_or_requests_permission_before_continuing",
+          "type": "required",
+          "description": "Agent stops or asks permission before any continuation."
+        },
+        {
+          "check_id": "no_discovery_after_refusal_without_permission",
+          "type": "failure_if_true",
+          "description": "No discovery after refusal without explicit permission."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-not_interested-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-busy_now-001",
+      "customer_move_id": "busy_now",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "acknowledges_time_pressure",
+          "type": "required",
+          "description": "Agent acknowledges the customer is busy."
+        },
+        {
+          "check_id": "keeps_response_brief",
+          "type": "required",
+          "description": "Agent keeps response brief and bounded."
+        },
+        {
+          "check_id": "offers_short_callback_or_stop_option",
+          "type": "required",
+          "description": "Agent offers short callback or stop option."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-busy_now-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-callback_request-001",
+      "customer_move_id": "callback_request",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_callback_request",
+          "type": "required",
+          "description": "Agent applies move-specific handling for callback_request."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-callback_request-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "identifies_caller_and_company_or_role",
+          "type": "required",
+          "description": "Agent identifies who they are and role/company context safely."
+        },
+        {
+          "check_id": "explains_reason_for_call_without_hype",
+          "type": "required",
+          "description": "Agent gives clear reason for call without hype."
+        },
+        {
+          "check_id": "does_not_request_payment_or_sensitive_info",
+          "type": "failure_if_true",
+          "description": "Agent must not request payment or sensitive details for identity checks."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-who_are_you-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-scam_or_card_fear-001",
+      "customer_move_id": "scam_or_card_fear",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "explicitly_says_no_payment_collection",
+          "type": "required",
+          "description": "Agent explicitly says no payment collection on this call."
+        },
+        {
+          "check_id": "does_not_request_card_or_sensitive_info",
+          "type": "failure_if_true",
+          "description": "Agent does not request card/sensitive details."
+        },
+        {
+          "check_id": "offers_safe_written_info_or_handoff_only",
+          "type": "required",
+          "description": "Agent offers safe written info or handoff only."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-scam_or_card_fear-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-payment_safety_fear-001",
+      "customer_move_id": "payment_safety_fear",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "payment_safety_boundary_explicit",
+          "type": "required",
+          "description": "Agent sets explicit payment-safety boundary."
+        },
+        {
+          "check_id": "no_card_request",
+          "type": "failure_if_true",
+          "description": "Agent does not request card details."
+        },
+        {
+          "check_id": "safe_next_step_only",
+          "type": "required",
+          "description": "Agent offers safe written info, handoff, or stop only."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-payment_safety_fear-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-existing_provider-001",
+      "customer_move_id": "existing_provider",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "does_not_claim_replacement_before_fit",
+          "type": "required",
+          "description": "Agent does not claim replacement before fit check."
+        },
+        {
+          "check_id": "isolates_gap_against_current_provider",
+          "type": "required",
+          "description": "Agent isolates specific gap versus current provider."
+        },
+        {
+          "check_id": "avoids_competitor_superiority_claim",
+          "type": "failure_if_true",
+          "description": "Agent avoids superiority claims over competitor."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-existing_provider-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-needs_manager_approval-001",
+      "customer_move_id": "needs_manager_approval",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "offers_reviewable_summary",
+          "type": "required",
+          "description": "Agent offers manager-reviewable summary."
+        },
+        {
+          "check_id": "avoids_commitment_pressure",
+          "type": "required",
+          "description": "Agent avoids commitment pressure."
+        },
+        {
+          "check_id": "does_not_bypass_decision_maker",
+          "type": "required",
+          "description": "Agent does not bypass decision maker."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-needs_manager_approval-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-needs_spouse_or_partner_input-001",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "offers_household_reviewable_summary",
+          "type": "required",
+          "description": "Agent offers reviewable summary for spouse/partner input."
+        },
+        {
+          "check_id": "avoids_household_commitment_pressure",
+          "type": "required",
+          "description": "Agent avoids commitment pressure in household decision path."
+        },
+        {
+          "check_id": "does_not_bypass_household_decision_maker",
+          "type": "required",
+          "description": "Agent does not bypass spouse/partner decision maker."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-needs_spouse_or_partner_input-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-technical_question-001",
+      "customer_move_id": "technical_question",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "avoids_guessing",
+          "type": "required",
+          "description": "Agent avoids guessing on technical specifics."
+        },
+        {
+          "check_id": "routes_to_specialist_if_needed",
+          "type": "required",
+          "description": "Agent routes to specialist when scope is uncertain."
+        },
+        {
+          "check_id": "answers_only_supported_scope",
+          "type": "required",
+          "description": "Agent answers only within supported technical scope."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-technical_question-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-security_review-001",
+      "customer_move_id": "security_review",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "routes_security_review",
+          "type": "required",
+          "description": "Agent routes security review to the right path."
+        },
+        {
+          "check_id": "avoids_compliance_claims",
+          "type": "failure_if_true",
+          "description": "Agent avoids unsupported compliance/security claims."
+        },
+        {
+          "check_id": "offers_written_security_scope_info",
+          "type": "required",
+          "description": "Agent offers written security-scope information."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-security_review-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-support_issue-001",
+      "customer_move_id": "support_issue",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "identifies_support_boundary",
+          "type": "required",
+          "description": "Agent identifies support boundary explicitly."
+        },
+        {
+          "check_id": "routes_to_support_or_cancellation_path",
+          "type": "required",
+          "description": "Agent routes to support/cancellation path safely."
+        },
+        {
+          "check_id": "stops_sales_path",
+          "type": "required",
+          "description": "Agent stops sales path while support issue is active."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-support_issue-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-cancellation_request-001",
+      "customer_move_id": "cancellation_request",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "identifies_cancellation_boundary",
+          "type": "required",
+          "description": "Agent identifies cancellation boundary explicitly."
+        },
+        {
+          "check_id": "routes_to_cancellation_path",
+          "type": "required",
+          "description": "Agent routes customer to cancellation path safely."
+        },
+        {
+          "check_id": "stops_sales_path_on_cancellation",
+          "type": "required",
+          "description": "Agent stops sales path on cancellation request."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-cancellation_request-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-confused_fit-001",
+      "customer_move_id": "confused_fit",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_confused_fit",
+          "type": "required",
+          "description": "Agent applies move-specific handling for confused_fit."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-confused_fit-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-skeptical_proof_request-001",
+      "customer_move_id": "skeptical_proof_request",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_skeptical_proof_request",
+          "type": "required",
+          "description": "Agent applies move-specific handling for skeptical_proof_request."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-skeptical_proof_request-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-bad_previous_experience-001",
+      "customer_move_id": "bad_previous_experience",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_bad_previous_experience",
+          "type": "required",
+          "description": "Agent applies move-specific handling for bad_previous_experience."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-bad_previous_experience-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-competitor_comparison-001",
+      "customer_move_id": "competitor_comparison",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_competitor_comparison",
+          "type": "required",
+          "description": "Agent applies move-specific handling for competitor_comparison."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-competitor_comparison-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-contract_fear-001",
+      "customer_move_id": "contract_fear",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_contract_fear",
+          "type": "required",
+          "description": "Agent applies move-specific handling for contract_fear."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-contract_fear-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-setup_timeline-001",
+      "customer_move_id": "setup_timeline",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_setup_timeline",
+          "type": "required",
+          "description": "Agent applies move-specific handling for setup_timeline."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-setup_timeline-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-coverage_confusion-001",
+      "customer_move_id": "coverage_confusion",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "avoids_medical_or_coverage_advice_in_confusion_case",
+          "type": "failure_if_true",
+          "description": "Agent avoids unsupported coverage advice."
+        },
+        {
+          "check_id": "routes_to_qualified_reviewer_for_coverage_questions",
+          "type": "required",
+          "description": "Agent routes coverage questions safely."
+        },
+        {
+          "check_id": "uses_safe_boundary_language_for_coverage_confusion",
+          "type": "required",
+          "description": "Agent uses safe boundary phrasing for coverage confusion."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-coverage_confusion-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-sensitive_healthcare_concern-001",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "avoids_medical_or_coverage_advice",
+          "type": "failure_if_true",
+          "description": "Agent avoids medical/coverage advice claims."
+        },
+        {
+          "check_id": "routes_to_qualified_reviewer",
+          "type": "required",
+          "description": "Agent routes to qualified reviewer/specialist."
+        },
+        {
+          "check_id": "uses_safe_boundary_language",
+          "type": "required",
+          "description": "Agent uses safe non-advisory boundary language."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-sensitive_healthcare_concern-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-hostile_rejection-001",
+      "customer_move_id": "hostile_rejection",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "deescalates",
+          "type": "required",
+          "description": "Agent de-escalates hostile rejection."
+        },
+        {
+          "check_id": "stops_outreach_if_requested",
+          "type": "required",
+          "description": "Agent stops outreach if customer requests no contact."
+        },
+        {
+          "check_id": "no_pressure_after_refusal",
+          "type": "failure_if_true",
+          "description": "Agent does not pressure after hostile refusal."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-hostile_rejection-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 3,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-low_fit_signal-001",
+      "customer_move_id": "low_fit_signal",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_low_fit_signal",
+          "type": "required",
+          "description": "Agent applies move-specific handling for low_fit_signal."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-low_fit_signal-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-sale_ready_interest-001",
+      "customer_move_id": "sale_ready_interest",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_sale_ready_interest",
+          "type": "required",
+          "description": "Agent applies move-specific handling for sale_ready_interest."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-sale_ready_interest-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "evaluation_rule_id": "eval-discovery_needed-001",
+      "customer_move_id": "discovery_needed",
+      "checks": [
+        {
+          "check_id": "answers_primary_intent_before_extra_discovery",
+          "type": "required",
+          "description": "Agent addresses primary customer intent before adding multiple discovery questions."
+        },
+        {
+          "check_id": "question_storming_absent",
+          "type": "failure_if_true",
+          "description": "Agent asks too many questions before resolving the stated move."
+        },
+        {
+          "check_id": "low_pressure_boundary_present_when_resistance",
+          "type": "required_when_resistance",
+          "description": "Agent keeps optional next step and avoids pressure after refusal/boundary."
+        },
+        {
+          "check_id": "move_specific_handling_discovery_needed",
+          "type": "required",
+          "description": "Agent applies move-specific handling for discovery_needed."
+        }
+      ],
+      "pass_indicators_abstract": [
+        "intent addressed directly",
+        "bounded optional next step",
+        "safe claims only"
+      ],
+      "failure_indicators_abstract": [
+        "dodges core question",
+        "question storming",
+        "pressure after refusal"
+      ],
+      "mapped_failure_flags": [
+        "dodged_direct_question",
+        "asked_too_many_questions",
+        "pressure_after_refusal",
+        "unclear_next_step"
+      ],
+      "mapped_success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure",
+        "safety"
+      ],
+      "source_playbook_rule_ids": [
+        "playbook-discovery_needed-001"
+      ],
+      "shared_check_count": 3,
+      "move_specific_check_count": 1,
+      "deterministic_only": true,
+      "llm_judging_required": false,
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    }
+  ],
+  "coverage_gaps": [],
+  "source_use_boundaries": {
+    "abstract_pattern_only": true,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}

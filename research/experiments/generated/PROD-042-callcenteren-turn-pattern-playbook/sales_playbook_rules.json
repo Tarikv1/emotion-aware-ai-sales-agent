@@ -1,0 +1,1656 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "sales_playbook_rules": [
+    {
+      "playbook_rule_id": "playbook-price_first-001",
+      "priority": 109,
+      "when_customer_move_ids": [
+        "price_first"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "answer_directly",
+        "low_pressure_boundary",
+        "one_concrete_relevance_point",
+        "written_info_offer",
+        "callback_offer"
+      ],
+      "avoid_tactic_ids": [
+        "dodge_question",
+        "question_storming",
+        "feature_pitch_before_answer",
+        "feature_dump",
+        "callback_offer_before_price_answer"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats price, answer price or pricing boundary before any discovery and keep pressure low"
+      ],
+      "source_pattern_ids": [
+        "reaction-price_first-acknowledge_emotion",
+        "reaction-price_first-answer_directly",
+        "reaction-price_first-callback_offer",
+        "reaction-price_first-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-price_first-acknowledge_emotion-accepts_low_pressure_next_step-001",
+        "nba-price_first-acknowledge_emotion-asks_for_details-001",
+        "nba-price_first-acknowledge_emotion-asks_for_written_info-001",
+        "nba-price_first-acknowledge_emotion-rejects-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling price_first customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-send_info-001",
+      "priority": 108,
+      "when_customer_move_ids": [
+        "send_info"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "written_info_offer",
+        "low_pressure_boundary",
+        "single_discovery_question"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "question_storming",
+        "callback_offer"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "honor written-info request first; do not force meeting pressure"
+      ],
+      "source_pattern_ids": [
+        "reaction-send_info-acknowledge_emotion",
+        "reaction-send_info-answer_directly",
+        "reaction-send_info-callback_offer",
+        "reaction-send_info-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-send_info-acknowledge_emotion-accepts_low_pressure_next_step-001",
+        "nba-send_info-acknowledge_emotion-asks_for_details-001",
+        "nba-send_info-acknowledge_emotion-rejects-001",
+        "nba-send_info-acknowledge_emotion-repeats_question-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling send_info customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-email_only-001",
+      "priority": 107,
+      "when_customer_move_ids": [
+        "email_only"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "written_info_offer",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "pressure_after_refusal",
+        "callback_offer",
+        "single_discovery_question"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "respect email-only boundary and stop extra discovery unless customer reopens discussion"
+      ],
+      "source_pattern_ids": [
+        "reaction-email_only-acknowledge_emotion",
+        "reaction-email_only-permission_first",
+        "reaction-email_only-reason_first",
+        "reaction-email_only-simple_explanation"
+      ],
+      "source_transition_ids": [
+        "nba-email_only-acknowledge_emotion-asks_for_details-001",
+        "nba-email_only-permission_first-asks_for_details-001",
+        "nba-email_only-simple_explanation-asks_for_details-001",
+        "nba-email_only-simple_explanation-asks_for_written_info-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling email_only customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-not_interested-001",
+      "priority": 106,
+      "when_customer_move_ids": [
+        "not_interested"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "low_pressure_boundary",
+        "stop_after_refusal"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "question_storming",
+        "single_discovery_question",
+        "callback_offer"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "stop or request permission before continuing; no discovery after refusal without permission"
+      ],
+      "source_pattern_ids": [
+        "reaction-not_interested-acknowledge_emotion",
+        "reaction-not_interested-answer_directly",
+        "reaction-not_interested-callback_offer",
+        "reaction-not_interested-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-not_interested-acknowledge_emotion-asks_for_details-001",
+        "nba-not_interested-acknowledge_emotion-softens-001",
+        "nba-not_interested-answer_directly-asks_for_details-001",
+        "nba-not_interested-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling not_interested customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-busy_now-001",
+      "priority": 105,
+      "when_customer_move_ids": [
+        "busy_now"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "time_respectful",
+        "callback_offer",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "feature_dump",
+        "question_storming",
+        "hard_close"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "acknowledge time pressure and keep response brief"
+      ],
+      "source_pattern_ids": [
+        "reaction-busy_now-acknowledge_emotion",
+        "reaction-busy_now-answer_directly",
+        "reaction-busy_now-callback_offer",
+        "reaction-busy_now-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-busy_now-acknowledge_emotion-asks_for_details-001",
+        "nba-busy_now-acknowledge_emotion-softens-001",
+        "nba-busy_now-answer_directly-asks_for_details-001",
+        "nba-busy_now-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling busy_now customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-callback_request-001",
+      "priority": 104,
+      "when_customer_move_ids": [
+        "callback_request"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "callback_offer",
+        "time_respectful",
+        "low_pressure_boundary",
+        "single_discovery_question",
+        "acknowledge_emotion"
+      ],
+      "avoid_tactic_ids": [
+        "unclear_next_step",
+        "pressure_after_refusal"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-callback_request-acknowledge_emotion",
+        "reaction-callback_request-answer_directly",
+        "reaction-callback_request-callback_offer",
+        "reaction-callback_request-permission_first"
+      ],
+      "source_transition_ids": [
+        "nba-callback_request-acknowledge_emotion-asks_for_details-001",
+        "nba-callback_request-acknowledge_emotion-softens-001",
+        "nba-callback_request-answer_directly-asks_for_details-001",
+        "nba-callback_request-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling callback_request customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-who_are_you-001",
+      "priority": 103,
+      "when_customer_move_ids": [
+        "who_are_you"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "answer_directly",
+        "reason_first",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "vague_pitch",
+        "question_storming"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "identify caller and reason clearly before further discovery"
+      ],
+      "source_pattern_ids": [
+        "reaction-who_are_you-acknowledge_emotion",
+        "reaction-who_are_you-answer_directly",
+        "reaction-who_are_you-callback_offer",
+        "reaction-who_are_you-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-who_are_you-acknowledge_emotion-asks_for_details-001",
+        "nba-who_are_you-acknowledge_emotion-softens-001",
+        "nba-who_are_you-answer_directly-asks_for_details-001",
+        "nba-who_are_you-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling who_are_you customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-scam_or_card_fear-001",
+      "priority": 102,
+      "when_customer_move_ids": [
+        "scam_or_card_fear"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "payment_safety_boundary",
+        "trust_repair",
+        "low_pressure_boundary",
+        "written_info_offer"
+      ],
+      "avoid_tactic_ids": [
+        "unsafe_payment_request",
+        "pressure_after_refusal",
+        "hard_close"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "state no payment collection explicitly and keep next step optional"
+      ],
+      "source_pattern_ids": [
+        "reaction-scam_or_card_fear-acknowledge_emotion",
+        "reaction-scam_or_card_fear-answer_directly",
+        "reaction-scam_or_card_fear-callback_offer",
+        "reaction-scam_or_card_fear-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-scam_or_card_fear-acknowledge_emotion-asks_for_details-001",
+        "nba-scam_or_card_fear-acknowledge_emotion-requests_callback-001",
+        "nba-scam_or_card_fear-acknowledge_emotion-softens-001",
+        "nba-scam_or_card_fear-answer_directly-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling scam_or_card_fear customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-payment_safety_fear-001",
+      "priority": 101,
+      "when_customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "payment_safety_boundary",
+        "written_info_offer",
+        "low_pressure_boundary",
+        "stop_after_refusal"
+      ],
+      "avoid_tactic_ids": [
+        "unsafe_payment_request",
+        "hard_close",
+        "pressure_after_refusal"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "never request card details; offer safe written info or stop"
+      ],
+      "source_pattern_ids": [
+        "reaction-payment_safety_fear-acknowledge_emotion",
+        "reaction-payment_safety_fear-answer_directly",
+        "reaction-payment_safety_fear-callback_offer",
+        "reaction-payment_safety_fear-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-payment_safety_fear-acknowledge_emotion-asks_for_details-001",
+        "nba-payment_safety_fear-acknowledge_emotion-repeats_question-001",
+        "nba-payment_safety_fear-acknowledge_emotion-softens-001",
+        "nba-payment_safety_fear-answer_directly-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling payment_safety_fear customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-existing_provider-001",
+      "priority": 100,
+      "when_customer_move_ids": [
+        "existing_provider"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "objection_isolation",
+        "one_concrete_relevance_point",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "feature_dump",
+        "hard_close",
+        "unsupported_claim"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "isolate the gap without claiming provider replacement superiority"
+      ],
+      "source_pattern_ids": [
+        "reaction-existing_provider-acknowledge_emotion",
+        "reaction-existing_provider-answer_directly",
+        "reaction-existing_provider-callback_offer",
+        "reaction-existing_provider-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-existing_provider-acknowledge_emotion-asks_for_details-001",
+        "nba-existing_provider-acknowledge_emotion-softens-001",
+        "nba-existing_provider-answer_directly-asks_for_details-001",
+        "nba-existing_provider-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling existing_provider customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-needs_manager_approval-001",
+      "priority": 99,
+      "when_customer_move_ids": [
+        "needs_manager_approval"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "manager_review_offer",
+        "written_info_offer",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "pressure_after_refusal",
+        "single_discovery_question"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "provide reviewable summary and avoid commitment pressure"
+      ],
+      "source_pattern_ids": [
+        "reaction-needs_manager_approval-acknowledge_emotion",
+        "reaction-needs_manager_approval-answer_directly",
+        "reaction-needs_manager_approval-callback_offer",
+        "reaction-needs_manager_approval-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-needs_manager_approval-acknowledge_emotion-asks_for_details-001",
+        "nba-needs_manager_approval-acknowledge_emotion-softens-001",
+        "nba-needs_manager_approval-answer_directly-asks_for_details-001",
+        "nba-needs_manager_approval-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling needs_manager_approval customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-needs_spouse_or_partner_input-001",
+      "priority": 98,
+      "when_customer_move_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "written_info_offer",
+        "low_pressure_boundary",
+        "callback_offer"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "pressure_after_refusal",
+        "single_discovery_question"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "support shared decision path without bypass pressure"
+      ],
+      "source_pattern_ids": [
+        "reaction-needs_spouse_or_partner_input-acknowledge_emotion",
+        "reaction-needs_spouse_or_partner_input-callback_offer",
+        "reaction-needs_spouse_or_partner_input-permission_first",
+        "reaction-needs_spouse_or_partner_input-simple_explanation"
+      ],
+      "source_transition_ids": [
+        "nba-needs_spouse_or_partner_input-acknowledge_emotion-asks_for_details-001",
+        "nba-needs_spouse_or_partner_input-acknowledge_emotion-requests_callback-001",
+        "nba-needs_spouse_or_partner_input-acknowledge_emotion-softens-001",
+        "nba-needs_spouse_or_partner_input-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling needs_spouse_or_partner_input customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-technical_question-001",
+      "priority": 97,
+      "when_customer_move_ids": [
+        "technical_question"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "answer_directly",
+        "handoff_to_specialist",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "unsupported_claim",
+        "vague_pitch",
+        "guessing"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "avoid guessing; route technical depth to specialist"
+      ],
+      "source_pattern_ids": [
+        "reaction-technical_question-acknowledge_emotion",
+        "reaction-technical_question-answer_directly",
+        "reaction-technical_question-callback_offer",
+        "reaction-technical_question-low_pressure_boundary"
+      ],
+      "source_transition_ids": [
+        "nba-technical_question-acknowledge_emotion-asks_for_details-001",
+        "nba-technical_question-acknowledge_emotion-softens-001",
+        "nba-technical_question-answer_directly-asks_for_details-001",
+        "nba-technical_question-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling technical_question customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-security_review-001",
+      "priority": 96,
+      "when_customer_move_ids": [
+        "security_review"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "handoff_to_specialist",
+        "written_info_offer",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "unsupported_claim",
+        "hard_close",
+        "overpromised_results",
+        "guessing"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "route security review and avoid unsupported compliance claims"
+      ],
+      "source_pattern_ids": [
+        "reaction-security_review-acknowledge_emotion",
+        "reaction-security_review-callback_offer",
+        "reaction-security_review-handoff_to_specialist",
+        "reaction-security_review-low_pressure_boundary"
+      ],
+      "source_transition_ids": [
+        "nba-security_review-acknowledge_emotion-asks_for_details-001",
+        "nba-security_review-acknowledge_emotion-asks_for_handoff-001",
+        "nba-security_review-acknowledge_emotion-softens-001",
+        "nba-security_review-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling security_review customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-support_issue-001",
+      "priority": 95,
+      "when_customer_move_ids": [
+        "support_issue"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "support_boundary_route",
+        "handoff_to_specialist",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "feature_dump",
+        "callback_offer",
+        "single_discovery_question"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "route support path before any sales continuation"
+      ],
+      "source_pattern_ids": [
+        "reaction-support_issue-acknowledge_emotion",
+        "reaction-support_issue-answer_directly",
+        "reaction-support_issue-callback_offer",
+        "reaction-support_issue-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-support_issue-acknowledge_emotion-asks_for_details-001",
+        "nba-support_issue-acknowledge_emotion-softens-001",
+        "nba-support_issue-answer_directly-asks_for_details-001",
+        "nba-support_issue-answer_directly-softens-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling support_issue customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-cancellation_request-001",
+      "priority": 94,
+      "when_customer_move_ids": [
+        "cancellation_request"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "support_boundary_route",
+        "handoff_to_specialist",
+        "low_pressure_boundary",
+        "stop_after_refusal"
+      ],
+      "avoid_tactic_ids": [
+        "pressure_after_refusal",
+        "hard_close",
+        "feature_dump",
+        "single_discovery_question",
+        "retention_pressure"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "route cancellation path and stop sales pressure"
+      ],
+      "source_pattern_ids": [
+        "reaction-cancellation_request-acknowledge_emotion",
+        "reaction-cancellation_request-answer_directly",
+        "reaction-cancellation_request-callback_offer",
+        "reaction-cancellation_request-permission_first"
+      ],
+      "source_transition_ids": [
+        "nba-cancellation_request-acknowledge_emotion-asks_for_details-001",
+        "nba-cancellation_request-acknowledge_emotion-softens-001",
+        "nba-cancellation_request-answer_directly-softens-001",
+        "nba-cancellation_request-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling cancellation_request customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-confused_fit-001",
+      "priority": 93,
+      "when_customer_move_ids": [
+        "confused_fit"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "simple_explanation",
+        "one_concrete_relevance_point",
+        "single_discovery_question",
+        "low_pressure_boundary",
+        "acknowledge_emotion"
+      ],
+      "avoid_tactic_ids": [
+        "vague_pitch",
+        "feature_dump"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-confused_fit-acknowledge_emotion",
+        "reaction-confused_fit-answer_directly",
+        "reaction-confused_fit-callback_offer",
+        "reaction-confused_fit-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-confused_fit-acknowledge_emotion-asks_for_details-001",
+        "nba-confused_fit-acknowledge_emotion-softens-001",
+        "nba-confused_fit-answer_directly-asks_for_details-001",
+        "nba-confused_fit-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling confused_fit customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-skeptical_proof_request-001",
+      "priority": 92,
+      "when_customer_move_ids": [
+        "skeptical_proof_request"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "safe_social_proof",
+        "proof_without_unsupported_claim",
+        "written_info_offer",
+        "low_pressure_boundary",
+        "single_discovery_question"
+      ],
+      "avoid_tactic_ids": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-skeptical_proof_request-acknowledge_emotion",
+        "reaction-skeptical_proof_request-callback_offer",
+        "reaction-skeptical_proof_request-permission_first",
+        "reaction-skeptical_proof_request-simple_explanation"
+      ],
+      "source_transition_ids": [
+        "nba-skeptical_proof_request-acknowledge_emotion-asks_for_details-001",
+        "nba-skeptical_proof_request-callback_offer-asks_for_details-001",
+        "nba-skeptical_proof_request-permission_first-asks_for_details-001",
+        "nba-skeptical_proof_request-simple_explanation-accepts_low_pressure_next_step-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling skeptical_proof_request customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-bad_previous_experience-001",
+      "priority": 91,
+      "when_customer_move_ids": [
+        "bad_previous_experience"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "trust_repair",
+        "acknowledge_emotion",
+        "low_pressure_boundary",
+        "single_discovery_question",
+        "permission_first"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "unsupported_claim"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-bad_previous_experience-acknowledge_emotion",
+        "reaction-bad_previous_experience-answer_directly",
+        "reaction-bad_previous_experience-callback_offer",
+        "reaction-bad_previous_experience-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-bad_previous_experience-acknowledge_emotion-asks_for_details-001",
+        "nba-bad_previous_experience-acknowledge_emotion-asks_for_written_info-001",
+        "nba-bad_previous_experience-acknowledge_emotion-softens-001",
+        "nba-bad_previous_experience-answer_directly-softens-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling bad_previous_experience customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-competitor_comparison-001",
+      "priority": 90,
+      "when_customer_move_ids": [
+        "competitor_comparison"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "one_concrete_relevance_point",
+        "objection_isolation",
+        "written_info_offer",
+        "low_pressure_boundary",
+        "single_discovery_question"
+      ],
+      "avoid_tactic_ids": [
+        "unsupported_claim",
+        "feature_dump"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-competitor_comparison-acknowledge_emotion",
+        "reaction-competitor_comparison-answer_directly",
+        "reaction-competitor_comparison-callback_offer",
+        "reaction-competitor_comparison-low_pressure_boundary"
+      ],
+      "source_transition_ids": [
+        "nba-competitor_comparison-acknowledge_emotion-asks_for_details-001",
+        "nba-competitor_comparison-acknowledge_emotion-softens-001",
+        "nba-competitor_comparison-answer_directly-asks_for_details-001",
+        "nba-competitor_comparison-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling competitor_comparison customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-contract_fear-001",
+      "priority": 89,
+      "when_customer_move_ids": [
+        "contract_fear"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "risk_reversal",
+        "low_pressure_boundary",
+        "written_info_offer",
+        "single_discovery_question",
+        "acknowledge_emotion"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "pressure_after_refusal"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-contract_fear-acknowledge_emotion",
+        "reaction-contract_fear-answer_directly",
+        "reaction-contract_fear-callback_offer",
+        "reaction-contract_fear-low_pressure_boundary"
+      ],
+      "source_transition_ids": [
+        "nba-contract_fear-acknowledge_emotion-asks_for_details-001",
+        "nba-contract_fear-acknowledge_emotion-softens-001",
+        "nba-contract_fear-answer_directly-asks_for_details-001",
+        "nba-contract_fear-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling contract_fear customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-setup_timeline-001",
+      "priority": 88,
+      "when_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "simple_explanation",
+        "one_concrete_relevance_point",
+        "callback_offer",
+        "low_pressure_boundary",
+        "single_discovery_question"
+      ],
+      "avoid_tactic_ids": [
+        "vague_pitch",
+        "unsupported_claim"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-setup_timeline-acknowledge_emotion",
+        "reaction-setup_timeline-answer_directly",
+        "reaction-setup_timeline-callback_offer",
+        "reaction-setup_timeline-permission_first"
+      ],
+      "source_transition_ids": [
+        "nba-setup_timeline-acknowledge_emotion-asks_for_details-001",
+        "nba-setup_timeline-acknowledge_emotion-softens-001",
+        "nba-setup_timeline-answer_directly-asks_for_details-001",
+        "nba-setup_timeline-answer_directly-softens-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling setup_timeline customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-coverage_confusion-001",
+      "priority": 87,
+      "when_customer_move_ids": [
+        "coverage_confusion"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "simple_explanation",
+        "proof_without_unsupported_claim",
+        "written_info_offer",
+        "low_pressure_boundary",
+        "single_discovery_question"
+      ],
+      "avoid_tactic_ids": [
+        "unsupported_claim",
+        "hard_close"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-coverage_confusion-acknowledge_emotion",
+        "reaction-coverage_confusion-answer_directly",
+        "reaction-coverage_confusion-callback_offer",
+        "reaction-coverage_confusion-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-coverage_confusion-acknowledge_emotion-asks_for_details-001",
+        "nba-coverage_confusion-acknowledge_emotion-requests_callback-001",
+        "nba-coverage_confusion-acknowledge_emotion-softens-001",
+        "nba-coverage_confusion-answer_directly-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling coverage_confusion customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-sensitive_healthcare_concern-001",
+      "priority": 86,
+      "when_customer_move_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "acknowledge_emotion",
+        "low_pressure_boundary",
+        "risk_reversal",
+        "handoff_to_specialist"
+      ],
+      "avoid_tactic_ids": [
+        "unsupported_claim",
+        "overpromised_results",
+        "medical_advice",
+        "coverage_promises"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "do not provide medical or coverage advice; use safe boundary and specialist handoff"
+      ],
+      "source_pattern_ids": [
+        "reaction-sensitive_healthcare_concern-acknowledge_emotion",
+        "reaction-sensitive_healthcare_concern-answer_directly",
+        "reaction-sensitive_healthcare_concern-callback_offer",
+        "reaction-sensitive_healthcare_concern-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-sensitive_healthcare_concern-acknowledge_emotion-asks_for_details-001",
+        "nba-sensitive_healthcare_concern-acknowledge_emotion-softens-001",
+        "nba-sensitive_healthcare_concern-answer_directly-asks_for_details-001",
+        "nba-sensitive_healthcare_concern-callback_offer-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling sensitive_healthcare_concern customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-hostile_rejection-001",
+      "priority": 85,
+      "when_customer_move_ids": [
+        "hostile_rejection"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "acknowledge_emotion",
+        "low_pressure_boundary",
+        "stop_after_refusal"
+      ],
+      "avoid_tactic_ids": [
+        "pressure_after_refusal",
+        "hard_close",
+        "single_discovery_question",
+        "callback_offer",
+        "question_storming"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "de-escalate and stop outreach when requested"
+      ],
+      "source_pattern_ids": [
+        "reaction-hostile_rejection-acknowledge_emotion",
+        "reaction-hostile_rejection-reason_first",
+        "reaction-hostile_rejection-simple_explanation",
+        "reaction-hostile_rejection-single_discovery_question"
+      ],
+      "source_transition_ids": [
+        "nba-hostile_rejection-acknowledge_emotion-asks_for_details-001",
+        "nba-hostile_rejection-acknowledge_emotion-softens-001",
+        "nba-hostile_rejection-answer_directly-asks_for_details-001",
+        "nba-hostile_rejection-simple_explanation-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling hostile_rejection customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-low_fit_signal-001",
+      "priority": 84,
+      "when_customer_move_ids": [
+        "low_fit_signal"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "qualify_out",
+        "low_pressure_boundary",
+        "single_discovery_question"
+      ],
+      "avoid_tactic_ids": [
+        "hard_close",
+        "feature_dump"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-low_fit_signal-simple_explanation",
+        "reaction-low_fit_signal-single_discovery_question"
+      ],
+      "source_transition_ids": [
+        "nba-low_fit_signal-simple_explanation-asks_for_details-001",
+        "nba-low_fit_signal-simple_explanation-softens-001",
+        "nba-low_fit_signal-single_discovery_question-asks_for_details-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling low_fit_signal customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-sale_ready_interest-001",
+      "priority": 83,
+      "when_customer_move_ids": [
+        "sale_ready_interest"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "callback_offer",
+        "written_info_offer",
+        "low_pressure_boundary",
+        "single_discovery_question",
+        "acknowledge_emotion"
+      ],
+      "avoid_tactic_ids": [
+        "unclear_next_step",
+        "feature_dump"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-sale_ready_interest-acknowledge_emotion",
+        "reaction-sale_ready_interest-answer_directly",
+        "reaction-sale_ready_interest-callback_offer",
+        "reaction-sale_ready_interest-handoff_to_specialist"
+      ],
+      "source_transition_ids": [
+        "nba-sale_ready_interest-acknowledge_emotion-asks_for_details-001",
+        "nba-sale_ready_interest-acknowledge_emotion-asks_for_handoff-001",
+        "nba-sale_ready_interest-acknowledge_emotion-escalates-001",
+        "nba-sale_ready_interest-acknowledge_emotion-softens-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling sale_ready_interest customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "playbook_rule_id": "playbook-discovery_needed-001",
+      "priority": 82,
+      "when_customer_move_ids": [
+        "discovery_needed"
+      ],
+      "when_context": [
+        "early_call",
+        "customer_patience_low_or_unknown"
+      ],
+      "recommended_tactic_sequence": [
+        "single_discovery_question",
+        "one_concrete_relevance_point",
+        "simple_explanation",
+        "low_pressure_boundary"
+      ],
+      "avoid_tactic_ids": [
+        "question_storming",
+        "hard_close"
+      ],
+      "max_agent_questions": 1,
+      "required_safety_boundaries": [
+        "no payment collection",
+        "no unsupported claims",
+        "no pressure after refusal"
+      ],
+      "expected_good_outcomes": [
+        "clarity_gain",
+        "continuation",
+        "written_info",
+        "callback"
+      ],
+      "failure_escalation": [
+        "if customer repeats the same question, answer directly and reduce questioning"
+      ],
+      "source_pattern_ids": [
+        "reaction-discovery_needed-acknowledge_emotion",
+        "reaction-discovery_needed-callback_offer",
+        "reaction-discovery_needed-simple_explanation",
+        "reaction-discovery_needed-single_discovery_question"
+      ],
+      "source_transition_ids": [
+        "nba-discovery_needed-acknowledge_emotion-asks_for_details-001",
+        "nba-discovery_needed-permission_first-asks_for_details-001",
+        "nba-discovery_needed-simple_explanation-asks_for_details-001",
+        "nba-discovery_needed-simple_explanation-softens-001"
+      ],
+      "rag_chunk": {
+        "enabled_for_future_use": true,
+        "runtime_enabled_now": false,
+        "chunk_title": "Handling discovery_needed customer moves",
+        "chunk_summary": "Abstract rule only. No transcript text."
+      },
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    }
+  ],
+  "coverage_gaps": [],
+  "source_use_boundaries": {
+    "abstract_pattern_only": true,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}

@@ -1,0 +1,1482 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "agent_response_tactics": [
+    {
+      "agent_tactic_id": "answer_directly",
+      "name": "Answer direct question first",
+      "description": "Agent answers the explicit customer question before additional discovery.",
+      "best_used_for_customer_moves": [
+        "price_first",
+        "who_are_you"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 0,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 366,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-answer_directly-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "acknowledge_emotion",
+      "name": "Acknowledge emotion",
+      "description": "Agent validates customer emotion signal.",
+      "best_used_for_customer_moves": [
+        "support_issue",
+        "cancellation_request",
+        "bad_previous_experience",
+        "sensitive_healthcare_concern"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 10452,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-acknowledge_emotion-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "permission_first",
+      "name": "Permission-first open",
+      "description": "Agent asks permission or timing before pitch.",
+      "best_used_for_customer_moves": [],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 6555,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-permission_first-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "reason_first",
+      "name": "Reason-first open",
+      "description": "Agent states reason for call clearly.",
+      "best_used_for_customer_moves": [
+        "who_are_you"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 369,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-reason_first-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "time_respectful",
+      "name": "Time respectful",
+      "description": "Agent keeps turn brief and respects timing boundary.",
+      "best_used_for_customer_moves": [
+        "busy_now",
+        "callback_request"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-time_respectful-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "low_pressure_boundary",
+      "name": "Low-pressure boundary",
+      "description": "Agent removes pressure and keeps optional next step.",
+      "best_used_for_customer_moves": [
+        "price_first",
+        "send_info",
+        "email_only",
+        "not_interested",
+        "busy_now",
+        "callback_request",
+        "scam_or_card_fear",
+        "needs_manager_approval"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 248,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-low_pressure_boundary-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "one_concrete_relevance_point",
+      "name": "One relevance point",
+      "description": "Agent gives one concrete reason this might matter.",
+      "best_used_for_customer_moves": [
+        "price_first",
+        "existing_provider",
+        "confused_fit",
+        "competitor_comparison",
+        "setup_timeline",
+        "discovery_needed"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-one_concrete_relevance_point-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "simple_explanation",
+      "name": "Simple explanation",
+      "description": "Agent explains in plain language without jargon.",
+      "best_used_for_customer_moves": [
+        "technical_question",
+        "confused_fit",
+        "setup_timeline",
+        "coverage_confusion",
+        "discovery_needed"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 758460,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-simple_explanation-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "objection_isolation",
+      "name": "Objection isolation",
+      "description": "Agent isolates and addresses one main objection.",
+      "best_used_for_customer_moves": [
+        "existing_provider",
+        "competitor_comparison"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 4,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-objection_isolation-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "trust_repair",
+      "name": "Trust repair",
+      "description": "Agent acknowledges distrust and clarifies boundaries.",
+      "best_used_for_customer_moves": [
+        "who_are_you",
+        "scam_or_card_fear",
+        "existing_provider",
+        "bad_previous_experience"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-trust_repair-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "risk_reversal",
+      "name": "Risk reversal",
+      "description": "Agent reduces perceived risk without guaranteeing outcomes.",
+      "best_used_for_customer_moves": [
+        "contract_fear"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 53,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-risk_reversal-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "medium",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "safe_social_proof",
+      "name": "Safe social proof",
+      "description": "Agent references credibility without unverifiable claims.",
+      "best_used_for_customer_moves": [
+        "skeptical_proof_request"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-safe_social_proof-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "written_info_offer",
+      "name": "Written info offer",
+      "description": "Agent offers concise written follow-up.",
+      "best_used_for_customer_moves": [
+        "send_info",
+        "email_only",
+        "payment_safety_fear",
+        "needs_manager_approval",
+        "needs_spouse_or_partner_input",
+        "skeptical_proof_request",
+        "competitor_comparison",
+        "contract_fear"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 9615,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-written_info_offer-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "callback_offer",
+      "name": "Callback offer",
+      "description": "Agent offers callback window with customer control.",
+      "best_used_for_customer_moves": [
+        "busy_now",
+        "callback_request",
+        "needs_spouse_or_partner_input",
+        "setup_timeline",
+        "sale_ready_interest"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 2045,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-callback_offer-001",
+          "opening-agent_led_outbound-045",
+          "opening-agent_led_outbound-066",
+          "opening-agent_led_outbound-078",
+          "opening-agent_led_outbound-100",
+          "opening-agent_led_outbound-135",
+          "opening-agent_led_outbound-150",
+          "opening-agent_led_outbound-151"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "manager_review_offer",
+      "name": "Manager review offer",
+      "description": "Agent offers manager-ready summary or review packet.",
+      "best_used_for_customer_moves": [
+        "needs_manager_approval",
+        "security_review"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-manager_review_offer-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "handoff_to_specialist",
+      "name": "Handoff to specialist",
+      "description": "Agent routes to the correct specialist safely.",
+      "best_used_for_customer_moves": [
+        "technical_question",
+        "security_review",
+        "support_issue",
+        "sensitive_healthcare_concern"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 622,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-handoff_to_specialist-001",
+          "objection-too_expensive-040",
+          "objection-needs_to_think-041",
+          "objection-needs_to_think-056",
+          "objection-not_interested-369",
+          "objection-too_expensive-552",
+          "objection-too_expensive-661",
+          "objection-hidden_objection-820"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "support_boundary_route",
+      "name": "Support boundary route",
+      "description": "Agent routes support/cancellation issue before sales.",
+      "best_used_for_customer_moves": [
+        "support_issue",
+        "cancellation_request",
+        "sensitive_healthcare_concern"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-support_boundary_route-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "qualify_out",
+      "name": "Qualify out",
+      "description": "Agent qualifies out when fit is low.",
+      "best_used_for_customer_moves": [
+        "low_fit_signal"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-qualify_out-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "single_discovery_question",
+      "name": "Single discovery question",
+      "description": "Agent asks one focused discovery question.",
+      "best_used_for_customer_moves": [
+        "send_info",
+        "confused_fit",
+        "low_fit_signal",
+        "discovery_needed"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 148519,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-single_discovery_question-001"
+        ],
+        "source_file_refs": [
+          {
+            "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+            "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+          },
+          {
+            "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+            "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+          },
+          {
+            "source_file": "auto_insurance_customer_service_inbound.zip",
+            "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+          },
+          {
+            "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+            "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+          },
+          {
+            "source_file": "automotive_inbound.zip",
+            "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+          },
+          {
+            "source_file": "customer_service_general_inbound.zip",
+            "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+          },
+          {
+            "source_file": "home_ervice_inbound&telecom _outbound.zip",
+            "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+          },
+          {
+            "source_file": "home_service_inbound.zip",
+            "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+          },
+          {
+            "source_file": "insurance_outbound.zip",
+            "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+          },
+          {
+            "source_file": "medical_equipment_outbound.zip",
+            "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+          }
+        ]
+      },
+      "unsupported_target": false,
+      "confidence": "high",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "proof_without_unsupported_claim",
+      "name": "Proof without unsupported claim",
+      "description": "Agent gives bounded proof context safely.",
+      "best_used_for_customer_moves": [
+        "technical_question",
+        "security_review",
+        "skeptical_proof_request",
+        "coverage_confusion"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-proof_without_unsupported_claim-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "payment_safety_boundary",
+      "name": "Payment safety boundary",
+      "description": "Agent explicitly avoids payment collection on call.",
+      "best_used_for_customer_moves": [
+        "scam_or_card_fear",
+        "payment_safety_fear"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-payment_safety_boundary-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    },
+    {
+      "agent_tactic_id": "stop_after_refusal",
+      "name": "Stop after refusal",
+      "description": "Agent respects refusal and closes cleanly.",
+      "best_used_for_customer_moves": [
+        "email_only",
+        "not_interested",
+        "payment_safety_fear",
+        "cancellation_request",
+        "hostile_rejection"
+      ],
+      "not_recommended_for": [
+        "hostile_rejection_after_do_not_contact"
+      ],
+      "response_structure_abstract": [
+        "acknowledge customer move",
+        "provide one clear response",
+        "keep boundaries explicit",
+        "offer optional next step"
+      ],
+      "max_questions_before_answer": 1,
+      "safety_boundaries": [
+        "no unsupported claims",
+        "no payment collection",
+        "no pressure after refusal"
+      ],
+      "common_failure_if_missing": [
+        "customer repeats question",
+        "customer loses trust"
+      ],
+      "source_support": {
+        "support_count_estimate": 0,
+        "source_pattern_ids": [
+          "raw-derived-agent-tactic-stop_after_refusal-001"
+        ],
+        "source_file_refs": [],
+        "support_note": "weak_support"
+      },
+      "unsupported_target": true,
+      "confidence": "low",
+      "abstract_pattern_only": true,
+      "uses_exact_transcript_text": false,
+      "uses_source_transcript_sequence": false,
+      "uses_dataset_specific_phrasing": false
+    }
+  ],
+  "coverage_gaps": [
+    {
+      "target_id": "time_respectful",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "one_concrete_relevance_point",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "trust_repair",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "safe_social_proof",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "manager_review_offer",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "support_boundary_route",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "qualify_out",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "proof_without_unsupported_claim",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "payment_safety_boundary",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    },
+    {
+      "target_id": "stop_after_refusal",
+      "artifact": "agent_response_tactics",
+      "reason": "Insufficient source support found in parsed raw zip files.",
+      "action": "left unsupported rather than hallucinating pattern"
+    }
+  ],
+  "source_use_boundaries": {
+    "abstract_pattern_only": true,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}

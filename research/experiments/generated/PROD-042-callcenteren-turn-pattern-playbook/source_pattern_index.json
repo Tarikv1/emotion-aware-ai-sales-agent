@@ -1,0 +1,3210 @@
+{
+  "checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "source_checkpoints": [
+    "PROD-013-callcenteren-pattern-extraction",
+    "PROD-014-callcenteren-scenario-bank"
+  ],
+  "raw_source_dir": "data/external/callcenteren/raw",
+  "source_files": [
+    "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+    "(reupload)PII_redacted_auto_insurance_script.zip",
+    "auto_insurance_customer_service_inbound.zip",
+    "automotive_and_healthcare_insurance_inbound.zip",
+    "automotive_inbound.zip",
+    "customer_service_general_inbound.zip",
+    "home_ervice_inbound&telecom _outbound.zip",
+    "home_service_inbound.zip",
+    "insurance_outbound.zip",
+    "medical_equipment_outbound.zip",
+    "medicare_inbound.zip"
+  ],
+  "source_file_hashes": [
+    {
+      "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+      "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+    },
+    {
+      "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+      "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+    },
+    {
+      "source_file": "auto_insurance_customer_service_inbound.zip",
+      "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+    },
+    {
+      "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+      "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+    },
+    {
+      "source_file": "automotive_inbound.zip",
+      "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+    },
+    {
+      "source_file": "customer_service_general_inbound.zip",
+      "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+    },
+    {
+      "source_file": "home_ervice_inbound&telecom _outbound.zip",
+      "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+    },
+    {
+      "source_file": "home_service_inbound.zip",
+      "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+    },
+    {
+      "source_file": "insurance_outbound.zip",
+      "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+    },
+    {
+      "source_file": "medical_equipment_outbound.zip",
+      "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+    },
+    {
+      "source_file": "medicare_inbound.zip",
+      "source_hash": "sha256:50d8da9f556c48951cca27360771cd0564004fd7eed4e8f640236173b8b295ea"
+    }
+  ],
+  "source_pattern_count": 69,
+  "raw_derived_pattern_count": 69,
+  "existing_abstract_pattern_count": 20799,
+  "pattern_categories": {
+    "customer_move": 28,
+    "agent_tactic": 12,
+    "customer_reaction": 14,
+    "outcome": 14,
+    "failure": 15,
+    "recovery": 18,
+    "safety": 3,
+    "emotion": 8
+  },
+  "indexed_patterns": [
+    {
+      "source_pattern_id": "raw-derived-customer_move-send_info-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "send_info",
+      "support_count_estimate": 18536,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-price_first-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "price_first",
+      "support_count_estimate": 14952,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-coverage_confusion-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "coverage_confusion",
+      "support_count_estimate": 9922,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-sale_ready_interest-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "sale_ready_interest",
+      "support_count_estimate": 7479,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-support_issue-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "support_issue",
+      "support_count_estimate": 6234,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-scam_or_card_fear-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "scam_or_card_fear",
+      "support_count_estimate": 5410,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-sensitive_healthcare_concern-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "sensitive_healthcare_concern",
+      "support_count_estimate": 3713,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-payment_safety_fear-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "payment_safety_fear",
+      "support_count_estimate": 2928,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-competitor_comparison-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "competitor_comparison",
+      "support_count_estimate": 2566,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-setup_timeline-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "setup_timeline",
+      "support_count_estimate": 2332,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-security_review-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "security_review",
+      "support_count_estimate": 1596,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-busy_now-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "busy_now",
+      "support_count_estimate": 1534,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-confused_fit-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "confused_fit",
+      "support_count_estimate": 1440,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-callback_request-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "callback_request",
+      "support_count_estimate": 1149,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-existing_provider-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "existing_provider",
+      "support_count_estimate": 809,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-who_are_you-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "who_are_you",
+      "support_count_estimate": 755,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-contract_fear-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "contract_fear",
+      "support_count_estimate": 635,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-bad_previous_experience-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "bad_previous_experience",
+      "support_count_estimate": 484,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-cancellation_request-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "cancellation_request",
+      "support_count_estimate": 440,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-needs_manager_approval-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "needs_manager_approval",
+      "support_count_estimate": 428,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-not_interested-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "not_interested",
+      "support_count_estimate": 388,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-technical_question-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "technical_question",
+      "support_count_estimate": 301,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-needs_spouse_or_partner_input-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "needs_spouse_or_partner_input",
+      "support_count_estimate": 255,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-skeptical_proof_request-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "skeptical_proof_request",
+      "support_count_estimate": 111,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-email_only-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "email_only",
+      "support_count_estimate": 97,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-hostile_rejection-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "hostile_rejection",
+      "support_count_estimate": 60,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-discovery_needed-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "discovery_needed",
+      "support_count_estimate": 17,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_move-low_fit_signal-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_move",
+      "normalized_label": "low_fit_signal",
+      "support_count_estimate": 1,
+      "source_file_refs": [
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-simple_explanation-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "simple_explanation",
+      "support_count_estimate": 758460,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-single_discovery_question-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "single_discovery_question",
+      "support_count_estimate": 148519,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-acknowledge_emotion-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "acknowledge_emotion",
+      "support_count_estimate": 10452,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-written_info_offer-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "written_info_offer",
+      "support_count_estimate": 9615,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-permission_first-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "permission_first",
+      "support_count_estimate": 6555,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-callback_offer-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "callback_offer",
+      "support_count_estimate": 2045,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-handoff_to_specialist-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "handoff_to_specialist",
+      "support_count_estimate": 622,
+      "source_file_refs": [
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-reason_first-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "reason_first",
+      "support_count_estimate": 369,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-answer_directly-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "answer_directly",
+      "support_count_estimate": 366,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-low_pressure_boundary-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "low_pressure_boundary",
+      "support_count_estimate": 248,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-risk_reversal-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "risk_reversal",
+      "support_count_estimate": 53,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-agent_tactic-objection_isolation-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "agent_tactic",
+      "normalized_label": "objection_isolation",
+      "support_count_estimate": 4,
+      "source_file_refs": [
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-softens-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "softens",
+      "support_count_estimate": 563522,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-asks_for_details-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "asks_for_details",
+      "support_count_estimate": 122494,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-asks_for_written_info-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "asks_for_written_info",
+      "support_count_estimate": 875,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-asks_for_handoff-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "asks_for_handoff",
+      "support_count_estimate": 574,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-requests_callback-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "requests_callback",
+      "support_count_estimate": 353,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-rejects-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "rejects",
+      "support_count_estimate": 298,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-accepts_low_pressure_next_step-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "accepts_low_pressure_next_step",
+      "support_count_estimate": 276,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-repeats_question-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "repeats_question",
+      "support_count_estimate": 228,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-escalates-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "escalates",
+      "support_count_estimate": 43,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-gets_confused-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "gets_confused",
+      "support_count_estimate": 19,
+      "source_file_refs": [
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-sets_boundary-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "sets_boundary",
+      "support_count_estimate": 9,
+      "source_file_refs": [
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-asks_identity_again-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "asks_identity_again",
+      "support_count_estimate": 2,
+      "source_file_refs": [
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-challenges_claim-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "challenges_claim",
+      "support_count_estimate": 1,
+      "source_file_refs": [
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-customer_reaction-asks_for_manager_review-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "customer_reaction",
+      "normalized_label": "asks_for_manager_review",
+      "support_count_estimate": 1,
+      "source_file_refs": [
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-unclear_next_step-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "unclear_next_step",
+      "support_count_estimate": 677486,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-repeated_answer-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "repeated_answer",
+      "support_count_estimate": 196547,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-dodged_direct_question-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "dodged_direct_question",
+      "support_count_estimate": 148745,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-failed_support_boundary-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "failed_support_boundary",
+      "support_count_estimate": 84956,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-missed_emotional_signal-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "missed_emotional_signal",
+      "support_count_estimate": 48054,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-failed_identity_repair-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "failed_identity_repair",
+      "support_count_estimate": 7652,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-failed_existing_provider_objection-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "failed_existing_provider_objection",
+      "support_count_estimate": 5474,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-failed_manager_approval_path-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "failed_manager_approval_path",
+      "support_count_estimate": 3610,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-wrong_handoff-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "wrong_handoff",
+      "support_count_estimate": 2939,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-feature_dump-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "feature_dump",
+      "support_count_estimate": 559,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-unsupported_claim-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "unsupported_claim",
+      "support_count_estimate": 252,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        },
+        {
+          "source_file": "insurance_outbound.zip",
+          "source_hash": "sha256:7315446229b8706136cc1f6934192710b391b908fb7ab2a3ebb44806f22641e0"
+        },
+        {
+          "source_file": "medical_equipment_outbound.zip",
+          "source_hash": "sha256:0d5126014fb3a03d467df86b5d3a4b835f840339e4f1800c2ed53f9025aea00a"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-unsafe_payment_request-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "unsafe_payment_request",
+      "support_count_estimate": 14,
+      "source_file_refs": [
+        {
+          "source_file": "(re-uploaded)PII_Redacted_Transcripts_aixblock-automotive-stereo-inbound-104h.zip",
+          "source_hash": "sha256:a766d587b20bb26f1abf8c2294fbdf94469ad66166a126ecbe1773b09404d2cf"
+        },
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        },
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        },
+        {
+          "source_file": "home_service_inbound.zip",
+          "source_hash": "sha256:e5ab0954890d413f0fbaf9468b8106a083a0e27ce412e9cceea468adb35e008b"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-vague_pitch-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "vague_pitch",
+      "support_count_estimate": 5,
+      "source_file_refs": [
+        {
+          "source_file": "automotive_and_healthcare_insurance_inbound.zip",
+          "source_hash": "sha256:be202055cc7bc639b1590ea872991e2cce8240fb5b73d8f99a1de3dcfa991e3d"
+        },
+        {
+          "source_file": "automotive_inbound.zip",
+          "source_hash": "sha256:290906d6b82fe4e343e89f3e0a6a1d4f83ce4fe7d0cad2c57522eb80aa08a387"
+        },
+        {
+          "source_file": "customer_service_general_inbound.zip",
+          "source_hash": "sha256:43c1eae23ecd1db5afdcee54bcd7d38b15511faaf2775ae89006c48b183edb01"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-asked_too_many_questions-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "asked_too_many_questions",
+      "support_count_estimate": 2,
+      "source_file_refs": [
+        {
+          "source_file": "(reupload)PII_redacted_auto_insurance_script.zip",
+          "source_hash": "sha256:a81c948c30d829e861298ae60c66860723da69d90afb2ab14f0ebd1e9cd3d887"
+        },
+        {
+          "source_file": "auto_insurance_customer_service_inbound.zip",
+          "source_hash": "sha256:d4892a2018db71290aba190fe4ee47c273b19ae18b185964ba2efc9b41f7e040"
+        }
+      ],
+      "abstract_pattern_only": true
+    },
+    {
+      "source_pattern_id": "raw-derived-failure-pressure_after_refusal-001",
+      "source_type": "raw_aggregate",
+      "abstract_category": "failure",
+      "normalized_label": "pressure_after_refusal",
+      "support_count_estimate": 2,
+      "source_file_refs": [
+        {
+          "source_file": "home_ervice_inbound&telecom _outbound.zip",
+          "source_hash": "sha256:e93803a9973464f07303efb321d7c340356aea51bb64a1d3aace14f47b268d1e"
+        }
+      ],
+      "abstract_pattern_only": true
+    }
+  ],
+  "source_reliability": {
+    "raw_zip_parse_successful": true,
+    "existing_prod_013_available": true,
+    "existing_prod_014_available": true,
+    "existing_artifacts_used_for_cross_check": true,
+    "preferred_source_when_conflict": "raw_aggregate_patterns"
+  },
+  "source_use_boundaries": {
+    "abstract_pattern_only": true,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false,
+    "provider_calls_made": false,
+    "llm_used": false
+  },
+  "coverage_gaps": [],
+  "support_count_method": "heuristic aggregate signal count from parsed raw CallCenterEN files and abstract cross-check artifacts",
+  "support_count_limitations": "Not a verified labeled success count; counts may reflect broad lexical/category matches."
+}
