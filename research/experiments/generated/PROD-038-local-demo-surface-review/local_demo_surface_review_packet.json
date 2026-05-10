@@ -1,0 +1,65 @@
+{
+  "checkpoint_id": "PROD-038-local-demo-surface-review",
+  "source_checkpoint_id": "PROD-037-local-interactive-trace-demo-surface",
+  "review_decision": "revise-customer-simulator-before-demo-expansion",
+  "review_basis": "Human review of the PROD-037 local trace surface found the customer responses too artificial for a convincing sales-agent demo.",
+  "customer_response_issues": [
+    {
+      "issue_id": "over-cooperative-acceptance",
+      "severity": "blocker",
+      "finding": "Some customers accept too cleanly after one or two answers, which makes the sale path feel scripted instead of earned.",
+      "required_change": "Acceptance should usually be conditional, partial, delayed, or require a realistic next step unless the persona is strongly warm."
+    },
+    {
+      "issue_id": "evaluator-like-wording",
+      "severity": "blocker",
+      "finding": "Customer lines describe benchmark states such as accepting a non-binding review or rejecting the deal in language no buyer would normally use.",
+      "required_change": "Customer dialogue should use plain spoken buyer phrasing and keep evaluation labels in metadata only."
+    },
+    {
+      "issue_id": "too-clean-state-transition",
+      "severity": "blocker",
+      "finding": "Replies move neatly from one objection category to the next instead of mixing confusion, skepticism, interruptions, and partial understanding.",
+      "required_change": "The simulator needs messier transitions with hedging, side concerns, repeated friction, and incomplete acceptance."
+    },
+    {
+      "issue_id": "low-friction-follow-up",
+      "severity": "major",
+      "finding": "Follow-up questions are too helpful and sales-ready, so customers sound like cooperative test fixtures.",
+      "required_change": "Follow-ups should include reluctance, vague language, time pressure, incomplete information, and occasional misunderstanding."
+    },
+    {
+      "issue_id": "artificial-boundary-language",
+      "severity": "major",
+      "finding": "Customers mention safety boundaries such as billing handling in unnatural ways.",
+      "required_change": "Safety boundaries should remain in flags and expected outcomes; buyer speech should sound natural while still avoiding payment collection."
+    }
+  ],
+  "accepted_scope": {
+    "static_surface_structure": true,
+    "call_selection": true,
+    "turn_selection": true,
+    "decision_trace_visibility": true,
+    "state_transition_visibility": true,
+    "safety_visibility": true
+  },
+  "blocked_scope": {
+    "voice_playback": true,
+    "scenario_branching": true,
+    "more_call_seeds": true,
+    "public_demo_polish": true,
+    "production_runtime_promotion": true
+  },
+  "next_customer_realism_requirements": [
+    "customer dialogue must not use evaluation labels",
+    "acceptance must be less immediate and more conditional",
+    "rejections must sound like real buyer pushback, not status declarations",
+    "follow-up questions must include realistic vagueness, friction, and incomplete understanding",
+    "safety boundaries stay in metadata instead of buyer wording",
+    "the same fixed calls must be rerun before claiming improvement"
+  ],
+  "source_counts": {
+    "reviewed_call_count": 8,
+    "reviewed_turn_count": 14
+  }
+}

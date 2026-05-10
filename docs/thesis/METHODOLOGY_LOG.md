@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-038 local demo surface review
+
+- Objective: record the human review outcome for the local trace demo surface before adding voice playback or public demo polish.
+- Action taken: added the PROD-038 review module, runner, validator, product doc, generated result/report/review-packet artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated PROD-037 surface data and Tarik's review that the customer responses are weak and unrealistic. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_038_LOCAL_DEMO_SURFACE_REVIEW.md`, `scripts/prod_038_local_demo_surface_review.py`, `scripts/run_prod_038_local_demo_surface_review.py`, `scripts/validate_prod_038_local_demo_surface_review.py`, `research/experiments/generated/PROD-038-local-demo-surface-review/result.json`, `research/experiments/generated/PROD-038-local-demo-surface-review/report.md`, and `research/experiments/generated/PROD-038-local-demo-surface-review/local_demo_surface_review_packet.json`.
+- What was learned: the demo surface works as an inspection tool, but the conversation content is not ready. PROD-038 accepts demo surface UI `true`, rejects customer response realism `false`, sets conversation quality gate passed `false`, records `5` customer-response issue categories, and blocks voice playback, scenario branching, more seeds, and public demo polish.
+- Why it matters for the thesis: it prevents the project from mistaking interface readiness for conversational realism. The next evidence needs to prove better customer simulation on the same cases before expanding the demo.
+- Open questions: which customer-realism constraints improve naturalness without hiding rejection, compliance, or safe-close boundaries.
+
 ### 2026-05-10 - PROD-037 local interactive trace demo surface
 
 - Objective: turn the accepted PROD-036 readiness packet into a local browser-openable trace replay surface for inspection.

@@ -15,6 +15,24 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-086 - Keep PROD-038 as the customer-realism rejection gate
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Accept the local trace surface structure but reject the current conversation content because the customer responses are too artificial for a credible sales-agent demo.
+- Why:
+  - Tarik's review found that no realistic customer would talk like the current examples
+  - the root issue is in the deterministic customer simulator, where responses are templated state transitions rather than natural buyer speech
+  - moving to voice playback or public demo polish would amplify the weakness instead of fixing it
+- Alternatives considered:
+  - polish the UI first
+  - add voice playback to make the same weak responses sound better
+  - add more seeds before improving response realism
+- Consequences:
+  - the next checkpoint is `PROD-039-customer-realism-simulator-hardening`
+  - voice playback, scenario branching, more seeds, and public demo polish stay blocked
+  - provider calls, live runtime defaults, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-085 - Keep PROD-037 as a local synthetic trace replay surface
 
 - Date: 2026-05-10

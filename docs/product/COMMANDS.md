@@ -1047,6 +1047,18 @@ Validate the PROD-037 static trace demo surface, exact question/answer visibilit
 python scripts\validate_prod_037_local_interactive_trace_demo_surface.py
 ```
 
+Run the PROD-038 local demo surface review checkpoint:
+
+```powershell
+python scripts\run_prod_038_local_demo_surface_review.py
+```
+
+Validate the PROD-038 customer-response realism rejection gate, blocked demo expansion, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_038_local_demo_surface_review.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

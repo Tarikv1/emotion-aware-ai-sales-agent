@@ -1,0 +1,48 @@
+{
+  "checkpoint_id": "PROD-038-local-demo-surface-review",
+  "title": "PROD-038 local demo surface review",
+  "source_checkpoint_id": "PROD-037-local-interactive-trace-demo-surface",
+  "next_checkpoint_recommended": "PROD-039-customer-realism-simulator-hardening",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-038-local-demo-surface-review/result.json",
+    "report_path": "research/experiments/generated/PROD-038-local-demo-surface-review/report.md",
+    "review_packet_path": "research/experiments/generated/PROD-038-local-demo-surface-review/local_demo_surface_review_packet.json"
+  },
+  "source_inputs": {
+    "source_surface_data_path": "research/experiments/generated/PROD-037-local-interactive-trace-demo-surface/local_interactive_trace_demo_surface_data.json"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "reviewed_call_count": 8,
+    "reviewed_turn_count": 14,
+    "demo_surface_ui_accepted": true,
+    "customer_response_realism_accepted": false,
+    "conversation_quality_gate_passed": false,
+    "customer_response_issue_count": 5,
+    "voice_playback_unblocked": false,
+    "scenario_branching_unblocked": false,
+    "more_call_seeds_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "next_build_recommendation": "customer_realism_simulator_hardening"
+  },
+  "decision": {
+    "surface_review": "ui-useful-content-not-accepted",
+    "next_step": "PROD-039-customer-realism-simulator-hardening"
+  }
+}

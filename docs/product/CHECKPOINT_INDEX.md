@@ -40,6 +40,7 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_035_RUNTIME_DECISION_TRACE_ALIGNMENT.md`
 - `PROD_036_INTERACTIVE_DEMO_READINESS_REVIEW.md`
 - `PROD_037_LOCAL_INTERACTIVE_TRACE_DEMO_SURFACE.md`
+- `PROD_038_LOCAL_DEMO_SURFACE_REVIEW.md`
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 

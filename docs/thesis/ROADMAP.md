@@ -33,11 +33,12 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: review `PROD-038-local-demo-surface-review` to decide whether the local trace demo surface is useful enough before adding voice playback, scenario branching, more call seeds, or public demo polish.
+- [ ] Current: build `PROD-039-customer-realism-simulator-hardening` to make customer responses sound like real hesitant, busy, skeptical, confused, or rejecting buyers before any demo expansion.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-038, choose the next demo expansion: voice playback, scenario branching, more call seeds, or customer-facing polish.
+- [ ] Next: rerun the local interactive trace demo surface after customer-realism hardening and compare old versus improved customer responses on the same fixed calls.
+- [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until the customer-response realism gate passes.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
@@ -58,6 +59,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-038` local demo surface review, which accepts the local trace surface structure but rejects the current conversation content. Demo surface UI accepted is `true`, customer response realism accepted is `false`, conversation quality gate passed is `false`, reviewed calls are `8`, reviewed turns are `14`, customer response issue count is `5`, voice playback unblocked is `false`, scenario branching unblocked is `false`, more call seeds unblocked is `false`, and public demo polish unblocked is `false`. The issue categories are over-cooperative acceptance, evaluator-like wording, too-clean state transition, low-friction follow-up, and artificial boundary language. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-039-customer-realism-simulator-hardening`.
 
 - [x] `PROD-037` local interactive trace demo surface, which turns the accepted `PROD-036` readiness packet into a static browser-openable trace replay surface. It exposes `8` visible and selectable calls with `14` visible and selectable turns, cold openings, exact customer text, exact agent answers, customer follow-up responses, decision snapshots, state transitions, safety flags, and terminal outcomes. Surface ready is `true`, static HTML ready is `true`, keyboard accessible controls are `true`, exact customer text visible is `true`, exact agent answer visible is `true`, decision process visible is `true`, state transition visible is `true`, terminal outcome visible is `true`, safety flags visible is `true`, cold opening visible is `true`, replay controls visible is `true`, and local synthetic trace replay is `true`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-038-local-demo-surface-review`.
 
@@ -461,19 +464,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Review `PROD-038-local-demo-surface-review` using the completed `PROD-037` local interactive trace demo surface.
+Build `PROD-039-customer-realism-simulator-hardening` using the completed `PROD-038` review packet.
 
 Purpose:
 
-- verify whether the local static demo surface is useful for inspecting the eight aligned synthetic calls
-- check whether Tarik can quickly inspect cold opening, customer turns, agent answers, state changes, decision snapshots, safety flags, and terminal outcomes
-- keep the demo clearly labeled as local synthetic trace replay, not a live customer runtime
+- keep the same eight fixed calls but replace artificial customer-response phrasing with more realistic buyer speech
+- preserve the exact safety boundaries, terminal outcomes, and no-payment/no-provider/no-runtime-promotion gates
+- compare old versus improved customer responses before claiming a realism improvement
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
 
-Immediate product artifact after `PROD-037`:
+Immediate product artifact after `PROD-038`:
 
-- local demo surface review packet
-- decision on whether voice playback, scenario branching, more call seeds, or public demo polish should come next
+- customer-realism simulator hardening packet
+- rerun or comparison surface showing old versus improved customer responses on the same calls
 
 Next voice checkpoint:
 
