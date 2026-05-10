@@ -60,9 +60,9 @@
     "hard_failure_count": 0,
     "strategy_match_rate": 1.0,
     "emotion_handling_rate": 1.0,
-    "dialogue_realism_average_score": 5.0,
+    "dialogue_realism_average_score": 4.45,
     "dialogue_realism_max_score": 5,
-    "dialogue_realism_pass_count": 40,
+    "dialogue_realism_pass_count": 18,
     "non_smooth_trace_count": 14,
     "non_smooth_trace_rate": 0.35,
     "customer_variety_tag_counts": {
@@ -317,7 +317,7 @@
           "detected_strategies": [
             "problem_framing"
           ],
-          "customer_response": "I am not ready to agree on the price and whether it is worth a second conversation. Explain the internal priority piece in normal words.",
+          "customer_response": "I am not there yet on the price and whether it is worth a second conversation. I need to know why this should matter now, not sales wording.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's problem_framing handling of price_sensitive.",
           "question_count": 0,
@@ -331,7 +331,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on the price and whether it is worth a second conversation. Explain the internal priority piece in normal words.",
+          "customer_context": "I am not there yet on the price and whether it is worth a second conversation. I need to know why this should matter now, not sales wording.",
           "agent_answer": "From here, I would keep the conversation tied to the price and whether it is worth a second conversation. The business reason to keep talking is whether field-service software follow-up gets unclear, like who owns callbacks after the first question, not whether you should buy something today.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
@@ -357,7 +357,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on the price and whether it is worth a second conversation, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about the price and whether it is worth a second conversation. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's problem_framing handling of price_sensitive.",
           "question_count": 0,
@@ -391,7 +391,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on the price and whether it is worth a second conversation. Explain the internal priority piece in normal words."
+          "text": "I am not there yet on the price and whether it is worth a second conversation. I need to know why this should matter now, not sales wording."
         },
         {
           "speaker": "agent",
@@ -415,7 +415,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on the price and whether it is worth a second conversation, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about the price and whether it is worth a second conversation. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -553,7 +553,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "If we continue, I want the step to stay limited to what your manager would need for a quick review.",
+          "customer_response": "Fine, keep it to that one point about what your manager would need for a quick review.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of manager_review.",
           "question_count": 0,
@@ -567,13 +567,13 @@
         },
         {
           "turn_index": 3,
-          "customer_context": "If we continue, I want the step to stay limited to what your manager would need for a quick review.",
+          "customer_context": "Fine, keep it to that one point about what your manager would need for a quick review.",
           "agent_answer": "The clean next step would be to send a short note your manager can review about what your manager would need for a quick review. I will keep that boundary visible and avoid turning this into a hard sell. If that is not acceptable, I will stop without pressure.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I need my manager to review what your manager would need for a quick review before anything else. Send the short internal summary and stop there.",
+          "customer_response": "I need to ask my manager about what your manager would need for a quick review. Send the short version and stop there.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of manager_review.",
           "question_count": 0,
@@ -619,7 +619,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "If we continue, I want the step to stay limited to what your manager would need for a quick review."
+          "text": "Fine, keep it to that one point about what your manager would need for a quick review."
         },
         {
           "speaker": "agent",
@@ -631,7 +631,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "I need my manager to review what your manager would need for a quick review before anything else. Send the short internal summary and stop there."
+          "text": "I need to ask my manager about what your manager would need for a quick review. Send the short version and stop there."
         }
       ],
       "terminal_outcome": "manager_review_needed",
@@ -788,7 +788,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on whether this adds anything when you already have a provider, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about whether this adds anything when you already have a provider. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's objection_isolation handling of existing_provider.",
           "question_count": 0,
@@ -846,7 +846,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on whether this adds anything when you already have a provider, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about whether this adds anything when you already have a provider. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -1004,7 +1004,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on how this would fit into your current workflow, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about how this would fit into your current workflow. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's simple_explanation handling of confused_fit.",
           "question_count": 0,
@@ -1062,7 +1062,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on how this would fit into your current workflow, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about how this would fit into your current workflow. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -1220,7 +1220,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on what proof you can check later in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on what proof you can check later before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's social_proof_safe handling of skeptical_proof.",
           "question_count": 0,
@@ -1278,7 +1278,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on what proof you can check later in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on what proof you can check later before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -1436,7 +1436,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on whether this is worth a callback, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about whether this is worth a callback. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of busy_now.",
           "question_count": 0,
@@ -1494,7 +1494,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on whether this is worth a callback, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about whether this is worth a callback. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -1556,12 +1556,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [
           "short_reply"
@@ -1612,7 +1612,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I am not ready to agree on what needs to be sent in writing. Explain the internal priority piece in normal words.",
+          "customer_response": "Email only.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of send_info.",
           "question_count": 0,
@@ -1626,13 +1626,13 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on what needs to be sent in writing. Explain the internal priority piece in normal words.",
+          "customer_context": "Email only.",
           "agent_answer": "From here, I would keep the conversation tied to what needs to be sent in writing. The clean next step would be to send a short written summary about what needs to be sent in writing.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "If we continue, I want the step to stay limited to what needs to be sent in writing.",
+          "customer_response": "Fine, keep it to that one point about what needs to be sent in writing.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of send_info.",
           "question_count": 0,
@@ -1646,13 +1646,13 @@
         },
         {
           "turn_index": 3,
-          "customer_context": "If we continue, I want the step to stay limited to what needs to be sent in writing.",
+          "customer_context": "Fine, keep it to that one point about what needs to be sent in writing.",
           "agent_answer": "The clean next step would be to send a short written summary about what needs to be sent in writing. I will keep that boundary visible and avoid turning this into a hard sell. If that is not acceptable, I will stop without pressure.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on what needs to be sent in writing in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on what needs to be sent in writing before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of send_info.",
           "question_count": 0,
@@ -1686,7 +1686,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on what needs to be sent in writing. Explain the internal priority piece in normal words."
+          "text": "Email only."
         },
         {
           "speaker": "agent",
@@ -1698,7 +1698,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "If we continue, I want the step to stay limited to what needs to be sent in writing."
+          "text": "Fine, keep it to that one point about what needs to be sent in writing."
         },
         {
           "speaker": "agent",
@@ -1710,7 +1710,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on what needs to be sent in writing in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on what needs to be sent in writing before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -1827,7 +1827,7 @@
           "detected_strategies": [
             "risk_reversal"
           ],
-          "customer_response": "I hear you on whether this creates a contract commitment. The practical blocker for me is still internal priority.",
+          "customer_response": "Maybe. For whether this creates a contract commitment, I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's risk_reversal handling of contract_fear.",
           "question_count": 0,
@@ -1841,7 +1841,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I hear you on whether this creates a contract commitment. The practical blocker for me is still internal priority.",
+          "customer_context": "Maybe. For whether this creates a contract commitment, I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to whether this creates a contract commitment. The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of whether this creates a contract commitment.",
           "detected_strategy": "risk_reversal",
           "detected_strategies": [
@@ -1867,7 +1867,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on whether this creates a contract commitment in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on whether this creates a contract commitment before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's risk_reversal handling of contract_fear.",
           "question_count": 0,
@@ -1901,7 +1901,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I hear you on whether this creates a contract commitment. The practical blocker for me is still internal priority."
+          "text": "Maybe. For whether this creates a contract commitment, I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -1925,7 +1925,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on whether this creates a contract commitment in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on whether this creates a contract commitment before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -1987,12 +1987,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -2042,7 +2042,7 @@
             "risk_reversal",
             "trust_repair"
           ],
-          "customer_response": "That answers some of it. For whether any payment is being requested, the part I am still unsure about is payment boundary.",
+          "customer_response": "Who exactly are you?",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of payment_fear.",
           "question_count": 0,
@@ -2056,7 +2056,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For whether any payment is being requested, the part I am still unsure about is payment boundary.",
+          "customer_context": "Who exactly are you?",
           "agent_answer": "From here, I would keep the conversation tied to whether any payment is being requested. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
@@ -2116,7 +2116,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For whether any payment is being requested, the part I am still unsure about is payment boundary."
+          "text": "Who exactly are you?"
         },
         {
           "speaker": "agent",
@@ -2259,7 +2259,7 @@
           "detected_strategies": [
             "social_proof_safe"
           ],
-          "customer_response": "That helps a little. I still need to know how internal priority changes the next step for whether security needs to review it first.",
+          "customer_response": "That helps a little, but I still do not see how it changes the next step for whether security needs to review it first.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's social_proof_safe handling of security_review.",
           "question_count": 0,
@@ -2273,7 +2273,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That helps a little. I still need to know how internal priority changes the next step for whether security needs to review it first.",
+          "customer_context": "That helps a little, but I still do not see how it changes the next step for whether security needs to review it first.",
           "agent_answer": "From here, I would keep the conversation tied to whether security needs to review it first. The safe proof point is general: teams review this kind of workflow when follow-up gaps keep repeating, without assuming your results.",
           "detected_strategy": "social_proof_safe",
           "detected_strategies": [
@@ -2333,7 +2333,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That helps a little. I still need to know how internal priority changes the next step for whether security needs to review it first."
+          "text": "That helps a little, but I still do not see how it changes the next step for whether security needs to review it first."
         },
         {
           "speaker": "agent",
@@ -2419,12 +2419,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -2473,7 +2473,7 @@
           "detected_strategies": [
             "trust_repair"
           ],
-          "customer_response": "That answers some of it. For why this would not repeat the last bad experience, the part I am still unsure about is internal priority.",
+          "customer_response": "That answers some of why this would not repeat the last bad experience. I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of bad_experience.",
           "question_count": 0,
@@ -2487,13 +2487,13 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For why this would not repeat the last bad experience, the part I am still unsure about is internal priority.",
+          "customer_context": "That answers some of why this would not repeat the last bad experience. I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to why this would not repeat the last bad experience. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
             "trust_repair"
           ],
-          "customer_response": "If we continue, I want the step to stay limited to why this would not repeat the last bad experience.",
+          "customer_response": "Fine, keep it to that one point about why this would not repeat the last bad experience.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of bad_experience.",
           "question_count": 0,
@@ -2507,13 +2507,13 @@
         },
         {
           "turn_index": 3,
-          "customer_context": "If we continue, I want the step to stay limited to why this would not repeat the last bad experience.",
+          "customer_context": "Fine, keep it to that one point about why this would not repeat the last bad experience.",
           "agent_answer": "The clean next step would be to send a short written summary about why this would not repeat the last bad experience. I will keep that boundary visible and avoid turning this into a hard sell. If that is not acceptable, I will stop without pressure.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on why this would not repeat the last bad experience in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on why this would not repeat the last bad experience before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of bad_experience.",
           "question_count": 0,
@@ -2547,7 +2547,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For why this would not repeat the last bad experience, the part I am still unsure about is internal priority."
+          "text": "That answers some of why this would not repeat the last bad experience. I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -2559,7 +2559,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "If we continue, I want the step to stay limited to why this would not repeat the last bad experience."
+          "text": "Fine, keep it to that one point about why this would not repeat the last bad experience."
         },
         {
           "speaker": "agent",
@@ -2571,7 +2571,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on why this would not repeat the last bad experience in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on why this would not repeat the last bad experience before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -2633,12 +2633,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -2687,7 +2687,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I follow the main point on who needs to approve the next step, but stakeholder review is still the part I would need resolved.",
+          "customer_response": "I need to ask my manager.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of needs_approval.",
           "question_count": 0,
@@ -2701,13 +2701,13 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on who needs to approve the next step, but stakeholder review is still the part I would need resolved.",
+          "customer_context": "I need to ask my manager.",
           "agent_answer": "From here, I would keep the conversation tied to who needs to approve the next step. The clean next step would be to send a short note your manager can review about who needs to approve the next step.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "If we continue, I want the step to stay limited to who needs to approve the next step.",
+          "customer_response": "Fine, keep it to that one point about who needs to approve the next step.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of needs_approval.",
           "question_count": 0,
@@ -2721,13 +2721,13 @@
         },
         {
           "turn_index": 3,
-          "customer_context": "If we continue, I want the step to stay limited to who needs to approve the next step.",
+          "customer_context": "Fine, keep it to that one point about who needs to approve the next step.",
           "agent_answer": "The clean next step would be to send a short note your manager can review about who needs to approve the next step. I will keep that boundary visible and avoid turning this into a hard sell. If that is not acceptable, I will stop without pressure.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I need my manager to review who needs to approve the next step before anything else. Send the short internal summary and stop there.",
+          "customer_response": "I need to ask my manager about who needs to approve the next step. Send the short version and stop there.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of needs_approval.",
           "question_count": 0,
@@ -2761,7 +2761,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on who needs to approve the next step, but stakeholder review is still the part I would need resolved."
+          "text": "I need to ask my manager."
         },
         {
           "speaker": "agent",
@@ -2773,7 +2773,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "If we continue, I want the step to stay limited to who needs to approve the next step."
+          "text": "Fine, keep it to that one point about who needs to approve the next step."
         },
         {
           "speaker": "agent",
@@ -2785,7 +2785,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "I need my manager to review who needs to approve the next step before anything else. Send the short internal summary and stop there."
+          "text": "I need to ask my manager about who needs to approve the next step. Send the short version and stop there."
         }
       ],
       "terminal_outcome": "manager_review_needed",
@@ -2900,7 +2900,7 @@
           "detected_strategies": [
             "objection_isolation"
           ],
-          "customer_response": "I am not ready to agree on whether there is enough priority and budget to continue. Explain the internal priority piece in normal words.",
+          "customer_response": "I am not there yet on whether there is enough priority and budget to continue. I need to know why this should matter now, not sales wording.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's objection_isolation handling of hidden_objection.",
           "question_count": 0,
@@ -2914,7 +2914,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on whether there is enough priority and budget to continue. Explain the internal priority piece in normal words.",
+          "customer_context": "I am not there yet on whether there is enough priority and budget to continue. I need to know why this should matter now, not sales wording.",
           "agent_answer": "From here, I would keep the conversation tied to whether there is enough priority and budget to continue. The main issue sounds like the concern you just raised; I will answer that directly before asking anything else.",
           "detected_strategy": "objection_isolation",
           "detected_strategies": [
@@ -2940,7 +2940,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on whether there is enough priority and budget to continue, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about whether there is enough priority and budget to continue. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's objection_isolation handling of hidden_objection.",
           "question_count": 0,
@@ -2974,7 +2974,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on whether there is enough priority and budget to continue. Explain the internal priority piece in normal words."
+          "text": "I am not there yet on whether there is enough priority and budget to continue. I need to know why this should matter now, not sales wording."
         },
         {
           "speaker": "agent",
@@ -2998,7 +2998,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on whether there is enough priority and budget to continue, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about whether there is enough priority and budget to continue. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -3060,12 +3060,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -3114,7 +3114,7 @@
           "detected_strategies": [
             "social_proof_safe"
           ],
-          "customer_response": "I am not ready to agree on how this differs from the option you are already comparing. Explain the internal priority piece in normal words.",
+          "customer_response": "I am not there yet on how this differs from the option you are already comparing. I need to know why this should matter now, not sales wording.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's social_proof_safe handling of competitor_comparison.",
           "question_count": 0,
@@ -3128,7 +3128,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on how this differs from the option you are already comparing. Explain the internal priority piece in normal words.",
+          "customer_context": "I am not there yet on how this differs from the option you are already comparing. I need to know why this should matter now, not sales wording.",
           "agent_answer": "From here, I would keep the conversation tied to how this differs from the option you are already comparing. The safe proof point is general: teams review this kind of workflow when follow-up gaps keep repeating, without assuming your results.",
           "detected_strategy": "social_proof_safe",
           "detected_strategies": [
@@ -3154,7 +3154,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on how this differs from the option you are already comparing in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on how this differs from the option you are already comparing before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's social_proof_safe handling of competitor_comparison.",
           "question_count": 0,
@@ -3188,7 +3188,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on how this differs from the option you are already comparing. Explain the internal priority piece in normal words."
+          "text": "I am not there yet on how this differs from the option you are already comparing. I need to know why this should matter now, not sales wording."
         },
         {
           "speaker": "agent",
@@ -3212,7 +3212,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on how this differs from the option you are already comparing in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on how this differs from the option you are already comparing before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -3274,12 +3274,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -3328,7 +3328,7 @@
           "detected_strategies": [
             "permission_first"
           ],
-          "customer_response": "That answers some of it. For whether there is any reason to keep talking, the part I am still unsure about is internal priority.",
+          "customer_response": "That answers some of whether there is any reason to keep talking. I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of not_interested.",
           "question_count": 0,
@@ -3342,13 +3342,13 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For whether there is any reason to keep talking, the part I am still unsure about is internal priority.",
+          "customer_context": "That answers some of whether there is any reason to keep talking. I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to whether there is any reason to keep talking. Your control comes first: if now is bad, we can stop or set one callback to cover whether there is any reason to keep talking.",
           "detected_strategy": "permission_first",
           "detected_strategies": [
             "permission_first"
           ],
-          "customer_response": "If we continue, I want the step to stay limited to whether there is any reason to keep talking.",
+          "customer_response": "Fine, keep it to that one point about whether there is any reason to keep talking.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of not_interested.",
           "question_count": 0,
@@ -3362,13 +3362,13 @@
         },
         {
           "turn_index": 3,
-          "customer_context": "If we continue, I want the step to stay limited to whether there is any reason to keep talking.",
+          "customer_context": "Fine, keep it to that one point about whether there is any reason to keep talking.",
           "agent_answer": "The clean next step would be to close the loop without pressure on whether there is any reason to keep talking. I will keep that boundary visible and avoid turning this into a hard sell. If that is not acceptable, I will stop without pressure.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I understand the answer on whether there is any reason to keep talking, but I am rejecting the offer for now.",
+          "customer_response": "No, not today. I understand the answer on whether there is any reason to keep talking, but I am rejecting it for now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of not_interested.",
           "question_count": 0,
@@ -3402,7 +3402,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For whether there is any reason to keep talking, the part I am still unsure about is internal priority."
+          "text": "That answers some of whether there is any reason to keep talking. I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -3414,7 +3414,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "If we continue, I want the step to stay limited to whether there is any reason to keep talking."
+          "text": "Fine, keep it to that one point about whether there is any reason to keep talking."
         },
         {
           "speaker": "agent",
@@ -3426,7 +3426,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "I understand the answer on whether there is any reason to keep talking, but I am rejecting the offer for now."
+          "text": "No, not today. I understand the answer on whether there is any reason to keep talking, but I am rejecting it for now."
         }
       ],
       "terminal_outcome": "rejected",
@@ -3723,7 +3723,7 @@
           "detected_strategies": [
             "permission_first"
           ],
-          "customer_response": "I follow the main point on the right time to continue, but internal priority is still the part I would need resolved.",
+          "customer_response": "I follow the main point on the right time to continue, but I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of callback_request.",
           "question_count": 0,
@@ -3737,7 +3737,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on the right time to continue, but internal priority is still the part I would need resolved.",
+          "customer_context": "I follow the main point on the right time to continue, but I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to the right time to continue. Your control comes first: if now is bad, we can stop or set one callback to cover the right time to continue.",
           "detected_strategy": "permission_first",
           "detected_strategies": [
@@ -3763,7 +3763,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on the right time to continue, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about the right time to continue. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of callback_request.",
           "question_count": 0,
@@ -3797,7 +3797,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on the right time to continue, but internal priority is still the part I would need resolved."
+          "text": "I follow the main point on the right time to continue, but I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -3821,7 +3821,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on the right time to continue, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about the right time to continue. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -3883,12 +3883,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -3937,7 +3937,7 @@
           "detected_strategies": [
             "trust_repair"
           ],
-          "customer_response": "That helps a little. I still need to know how service boundary changes the next step for the support issue that should not be treated as a sales lead.",
+          "customer_response": "That helps a little, but I still do not see how it changes the next step for the support issue that should not be treated as a sales lead.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of support_boundary.",
           "question_count": 0,
@@ -3951,7 +3951,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That helps a little. I still need to know how service boundary changes the next step for the support issue that should not be treated as a sales lead.",
+          "customer_context": "That helps a little, but I still do not see how it changes the next step for the support issue that should not be treated as a sales lead.",
           "agent_answer": "From here, I would keep the conversation tied to the support issue that should not be treated as a sales lead. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
@@ -4011,7 +4011,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That helps a little. I still need to know how service boundary changes the next step for the support issue that should not be treated as a sales lead."
+          "text": "That helps a little, but I still do not see how it changes the next step for the support issue that should not be treated as a sales lead."
         },
         {
           "speaker": "agent",
@@ -4097,12 +4097,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -4151,7 +4151,7 @@
           "detected_strategies": [
             "consultative_discovery"
           ],
-          "customer_response": "I hear you on whether the integration question needs a specialist. The practical blocker for me is still internal priority.",
+          "customer_response": "Maybe. For whether the integration question needs a specialist, I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's consultative_discovery handling of technical_integration.",
           "question_count": 1,
@@ -4165,7 +4165,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I hear you on whether the integration question needs a specialist. The practical blocker for me is still internal priority.",
+          "customer_context": "Maybe. For whether the integration question needs a specialist, I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to whether the integration question needs a specialist. One useful question after context: is this happening often enough to justify a short review?",
           "detected_strategy": "consultative_discovery",
           "detected_strategies": [
@@ -4225,7 +4225,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I hear you on whether the integration question needs a specialist. The practical blocker for me is still internal priority."
+          "text": "Maybe. For whether the integration question needs a specialist, I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -4311,12 +4311,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -4365,7 +4365,7 @@
           "detected_strategies": [
             "simple_explanation"
           ],
-          "customer_response": "I follow the main point on how long setup would realistically take, but internal priority is still the part I would need resolved.",
+          "customer_response": "I follow the main point on how long setup would realistically take, but I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's simple_explanation handling of setup_timeline.",
           "question_count": 0,
@@ -4379,13 +4379,13 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on how long setup would realistically take, but internal priority is still the part I would need resolved.",
+          "customer_context": "I follow the main point on how long setup would realistically take, but I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to how long setup would realistically take. In plain language, this checks whether the healthcare operations follow-up path is clear enough for the issue you raised.",
           "detected_strategy": "simple_explanation",
           "detected_strategies": [
             "simple_explanation"
           ],
-          "customer_response": "If we continue, I want the step to stay limited to how long setup would realistically take.",
+          "customer_response": "Fine, keep it to that one point about how long setup would realistically take.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's simple_explanation handling of setup_timeline.",
           "question_count": 0,
@@ -4399,13 +4399,13 @@
         },
         {
           "turn_index": 3,
-          "customer_context": "If we continue, I want the step to stay limited to how long setup would realistically take.",
+          "customer_context": "Fine, keep it to that one point about how long setup would realistically take.",
           "agent_answer": "The clean next step would be to schedule one callback window to discuss how long setup would realistically take. I will keep that boundary visible and avoid turning this into a hard sell. If that is not acceptable, I will stop without pressure.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on how long setup would realistically take, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about how long setup would realistically take. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's simple_explanation handling of setup_timeline.",
           "question_count": 0,
@@ -4439,7 +4439,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on how long setup would realistically take, but internal priority is still the part I would need resolved."
+          "text": "I follow the main point on how long setup would realistically take, but I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -4451,7 +4451,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "If we continue, I want the step to stay limited to how long setup would realistically take."
+          "text": "Fine, keep it to that one point about how long setup would realistically take."
         },
         {
           "speaker": "agent",
@@ -4463,7 +4463,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on how long setup would realistically take, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about how long setup would realistically take. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -4525,12 +4525,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -4579,7 +4579,7 @@
           "detected_strategies": [
             "problem_framing"
           ],
-          "customer_response": "I hear you on how follow-up would work across locations. The practical blocker for me is still internal priority.",
+          "customer_response": "Maybe. For how follow-up would work across locations, I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's problem_framing handling of multi_location_routing.",
           "question_count": 0,
@@ -4593,7 +4593,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I hear you on how follow-up would work across locations. The practical blocker for me is still internal priority.",
+          "customer_context": "Maybe. For how follow-up would work across locations, I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to how follow-up would work across locations. The business reason to keep talking is whether retail chain follow-up gets unclear, like who owns callbacks after the first question, not whether you should buy something today.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
@@ -4653,7 +4653,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I hear you on how follow-up would work across locations. The practical blocker for me is still internal priority."
+          "text": "Maybe. For how follow-up would work across locations, I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -4739,12 +4739,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -4794,7 +4794,7 @@
             "problem_framing",
             "consultative_discovery"
           ],
-          "customer_response": "I hear you on whether this is actually a fit. The practical blocker for me is still internal priority.",
+          "customer_response": "Maybe. For whether this is actually a fit, I still need to know why this should matter now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's consultative_discovery handling of low_fit.",
           "question_count": 1,
@@ -4808,7 +4808,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I hear you on whether this is actually a fit. The practical blocker for me is still internal priority.",
+          "customer_context": "Maybe. For whether this is actually a fit, I still need to know why this should matter now.",
           "agent_answer": "From here, I would keep the conversation tied to whether this is actually a fit. One useful question after context: is this happening often enough to justify a short review?",
           "detected_strategy": "consultative_discovery",
           "detected_strategies": [
@@ -4868,7 +4868,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I hear you on whether this is actually a fit. The practical blocker for me is still internal priority."
+          "text": "Maybe. For whether this is actually a fit, I still need to know why this should matter now."
         },
         {
           "speaker": "agent",
@@ -4953,12 +4953,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -5007,7 +5007,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I am not ready to agree on the clean next step after interest is clear. Explain the internal priority piece in normal words.",
+          "customer_response": "I am not there yet on the clean next step after interest is clear. I need to know why this should matter now, not sales wording.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of sale_ready.",
           "question_count": 0,
@@ -5021,7 +5021,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on the clean next step after interest is clear. Explain the internal priority piece in normal words.",
+          "customer_context": "I am not there yet on the clean next step after interest is clear. I need to know why this should matter now, not sales wording.",
           "agent_answer": "From here, I would keep the conversation tied to the clean next step after interest is clear. The clean next step would be to book a non-binding review focused on the clean next step after interest is clear.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
@@ -5081,7 +5081,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on the clean next step after interest is clear. Explain the internal priority piece in normal words."
+          "text": "I am not there yet on the clean next step after interest is clear. I need to know why this should matter now, not sales wording."
         },
         {
           "speaker": "agent",
@@ -5166,12 +5166,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -5220,7 +5220,7 @@
           "detected_strategies": [
             "consultative_discovery"
           ],
-          "customer_response": "That answers some of it. For what needs to be understood before recommending anything, the part I am still unsure about is internal priority.",
+          "customer_response": "What are you actually selling?",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's consultative_discovery handling of discovery_needed.",
           "question_count": 1,
@@ -5234,7 +5234,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For what needs to be understood before recommending anything, the part I am still unsure about is internal priority.",
+          "customer_context": "What are you actually selling?",
           "agent_answer": "From here, I would keep the conversation tied to what needs to be understood before recommending anything. One useful question after context: is this happening often enough to justify a short review?",
           "detected_strategy": "consultative_discovery",
           "detected_strategies": [
@@ -5260,7 +5260,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on what needs to be understood before recommending anything, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about what needs to be understood before recommending anything. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's consultative_discovery handling of discovery_needed.",
           "question_count": 0,
@@ -5294,7 +5294,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For what needs to be understood before recommending anything, the part I am still unsure about is internal priority."
+          "text": "What are you actually selling?"
         },
         {
           "speaker": "agent",
@@ -5318,7 +5318,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on what needs to be understood before recommending anything, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about what needs to be understood before recommending anything. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -5432,7 +5432,7 @@
           "detected_strategies": [
             "risk_reversal"
           ],
-          "customer_response": "I am not ready to agree on the cost concern around insurance help. Explain the personal relevance piece in normal words.",
+          "customer_response": "I am not there yet on the cost concern around insurance help. I need to know why this matters to me, not sales wording.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's risk_reversal handling of insurance_price_fear.",
           "question_count": 0,
@@ -5446,7 +5446,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on the cost concern around insurance help. Explain the personal relevance piece in normal words.",
+          "customer_context": "I am not there yet on the cost concern around insurance help. I need to know why this matters to me, not sales wording.",
           "agent_answer": "From here, I would keep the conversation tied to the cost concern around insurance help. The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of the cost concern around insurance help.",
           "detected_strategy": "risk_reversal",
           "detected_strategies": [
@@ -5472,7 +5472,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on the cost concern around insurance help in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on the cost concern around insurance help before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's risk_reversal handling of insurance_price_fear.",
           "question_count": 0,
@@ -5506,7 +5506,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on the cost concern around insurance help. Explain the personal relevance piece in normal words."
+          "text": "I am not there yet on the cost concern around insurance help. I need to know why this matters to me, not sales wording."
         },
         {
           "speaker": "agent",
@@ -5530,7 +5530,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on the cost concern around insurance help in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on the cost concern around insurance help before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -5592,12 +5592,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -5644,7 +5644,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I follow the main point on whether another person needs to weigh in, but stakeholder review is still the part I would need resolved.",
+          "customer_response": "I follow the main point on whether another person needs to weigh in, but I still need to know who else has to weigh in.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of spouse_input.",
           "question_count": 0,
@@ -5658,7 +5658,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on whether another person needs to weigh in, but stakeholder review is still the part I would need resolved.",
+          "customer_context": "I follow the main point on whether another person needs to weigh in, but I still need to know who else has to weigh in.",
           "agent_answer": "From here, I would keep the conversation tied to whether another person needs to weigh in. The clean next step would be to schedule one callback window to discuss whether another person needs to weigh in.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
@@ -5684,7 +5684,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on whether another person needs to weigh in, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about whether another person needs to weigh in. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of spouse_input.",
           "question_count": 0,
@@ -5718,7 +5718,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on whether another person needs to weigh in, but stakeholder review is still the part I would need resolved."
+          "text": "I follow the main point on whether another person needs to weigh in, but I still need to know who else has to weigh in."
         },
         {
           "speaker": "agent",
@@ -5742,7 +5742,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on whether another person needs to weigh in, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about whether another person needs to weigh in. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -5803,12 +5803,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -5856,7 +5856,7 @@
             "risk_reversal",
             "trust_repair"
           ],
-          "customer_response": "I follow the main point on whether this is safe and does not involve card details, but payment boundary is still the part I would need resolved.",
+          "customer_response": "I follow the main point on whether this is safe and does not involve card details, but I still need to know whether payment is really off the table.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of scam_card_fear.",
           "question_count": 0,
@@ -5870,7 +5870,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on whether this is safe and does not involve card details, but payment boundary is still the part I would need resolved.",
+          "customer_context": "I follow the main point on whether this is safe and does not involve card details, but I still need to know whether payment is really off the table.",
           "agent_answer": "From here, I would keep the conversation tied to whether this is safe and does not involve card details. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
@@ -5896,7 +5896,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on whether this is safe and does not involve card details in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on whether this is safe and does not involve card details before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of scam_card_fear.",
           "question_count": 0,
@@ -5930,7 +5930,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on whether this is safe and does not involve card details, but payment boundary is still the part I would need resolved."
+          "text": "I follow the main point on whether this is safe and does not involve card details, but I still need to know whether payment is really off the table."
         },
         {
           "speaker": "agent",
@@ -5954,7 +5954,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on whether this is safe and does not involve card details in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on whether this is safe and does not involve card details before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -6071,7 +6071,7 @@
           "detected_strategies": [
             "permission_first"
           ],
-          "customer_response": "I follow the main point on your lack of interest, but personal relevance is still the part I would need resolved.",
+          "customer_response": "I follow the main point on your lack of interest, but I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of consumer_not_interested.",
           "question_count": 0,
@@ -6085,7 +6085,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on your lack of interest, but personal relevance is still the part I would need resolved.",
+          "customer_context": "I follow the main point on your lack of interest, but I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to your lack of interest. Your control comes first: if now is bad, we can stop or set one callback to cover your lack of interest.",
           "detected_strategy": "permission_first",
           "detected_strategies": [
@@ -6111,7 +6111,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I understand the answer on your lack of interest, but I am rejecting the offer for now.",
+          "customer_response": "No, not today. I understand the answer on your lack of interest, but I am rejecting it for now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of consumer_not_interested.",
           "question_count": 0,
@@ -6145,7 +6145,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on your lack of interest, but personal relevance is still the part I would need resolved."
+          "text": "I follow the main point on your lack of interest, but I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -6169,7 +6169,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "I understand the answer on your lack of interest, but I am rejecting the offer for now."
+          "text": "No, not today. I understand the answer on your lack of interest, but I am rejecting it for now."
         }
       ],
       "terminal_outcome": "rejected",
@@ -6285,7 +6285,7 @@
           "detected_strategies": [
             "permission_first"
           ],
-          "customer_response": "I follow the main point on the right callback time, but personal relevance is still the part I would need resolved.",
+          "customer_response": "I follow the main point on the right callback time, but I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of consumer_callback.",
           "question_count": 0,
@@ -6299,7 +6299,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I follow the main point on the right callback time, but personal relevance is still the part I would need resolved.",
+          "customer_context": "I follow the main point on the right callback time, but I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to the right callback time. Your control comes first: if now is bad, we can stop or set one callback to cover the right callback time.",
           "detected_strategy": "permission_first",
           "detected_strategies": [
@@ -6325,7 +6325,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Because you kept it brief on the right callback time, schedule one callback and do not keep selling now.",
+          "customer_response": "Fine, schedule one callback about the right callback time. Do not keep selling right now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's permission_first handling of consumer_callback.",
           "question_count": 0,
@@ -6359,7 +6359,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I follow the main point on the right callback time, but personal relevance is still the part I would need resolved."
+          "text": "I follow the main point on the right callback time, but I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -6383,7 +6383,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Because you kept it brief on the right callback time, schedule one callback and do not keep selling now."
+          "text": "Fine, schedule one callback about the right callback time. Do not keep selling right now."
         }
       ],
       "terminal_outcome": "callback_scheduled",
@@ -6445,12 +6445,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -6711,7 +6711,7 @@
           "detected_strategies": [
             "objection_isolation"
           ],
-          "customer_response": "That answers some of it. For whether you already have what you need, the part I am still unsure about is personal relevance.",
+          "customer_response": "That answers some of whether you already have what you need. I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's objection_isolation handling of already_covered.",
           "question_count": 0,
@@ -6725,13 +6725,13 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For whether you already have what you need, the part I am still unsure about is personal relevance.",
+          "customer_context": "That answers some of whether you already have what you need. I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to whether you already have what you need. The main issue sounds like the concern you just raised; I will answer that directly before asking anything else.",
           "detected_strategy": "objection_isolation",
           "detected_strategies": [
             "objection_isolation"
           ],
-          "customer_response": "I understand the answer on whether you already have what you need, but I am rejecting the offer for now.",
+          "customer_response": "No, not today. I understand the answer on whether you already have what you need, but I am rejecting it for now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's objection_isolation handling of already_covered.",
           "question_count": 0,
@@ -6765,7 +6765,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For whether you already have what you need, the part I am still unsure about is personal relevance."
+          "text": "That answers some of whether you already have what you need. I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -6777,7 +6777,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 2,
-          "text": "I understand the answer on whether you already have what you need, but I am rejecting the offer for now."
+          "text": "No, not today. I understand the answer on whether you already have what you need, but I am rejecting it for now."
         }
       ],
       "terminal_outcome": "rejected",
@@ -6838,12 +6838,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -6890,7 +6890,7 @@
           "detected_strategies": [
             "trust_repair"
           ],
-          "customer_response": "That answers some of it. For your previous bad service experience, the part I am still unsure about is personal relevance.",
+          "customer_response": "That answers some of your previous bad service experience. I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of consumer_bad_experience.",
           "question_count": 0,
@@ -6904,7 +6904,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For your previous bad service experience, the part I am still unsure about is personal relevance.",
+          "customer_context": "That answers some of your previous bad service experience. I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to your previous bad service experience. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
@@ -6930,7 +6930,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on your previous bad service experience in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on your previous bad service experience before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of consumer_bad_experience.",
           "question_count": 0,
@@ -6964,7 +6964,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For your previous bad service experience, the part I am still unsure about is personal relevance."
+          "text": "That answers some of your previous bad service experience. I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -6988,7 +6988,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on your previous bad service experience in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on your previous bad service experience before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -7050,12 +7050,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -7102,7 +7102,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I hear you on what you want in writing. The practical blocker for me is still personal relevance.",
+          "customer_response": "Maybe. For what you want in writing, I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of written_info.",
           "question_count": 0,
@@ -7116,7 +7116,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I hear you on what you want in writing. The practical blocker for me is still personal relevance.",
+          "customer_context": "Maybe. For what you want in writing, I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to what you want in writing. The clean next step would be to send a short written summary about what you want in writing.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
@@ -7142,7 +7142,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "Send the details on what you want in writing in writing first. I am not deciding on this call.",
+          "customer_response": "Fine, send it. I want the details on what you want in writing before I decide.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of written_info.",
           "question_count": 0,
@@ -7176,7 +7176,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I hear you on what you want in writing. The practical blocker for me is still personal relevance."
+          "text": "Maybe. For what you want in writing, I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -7200,7 +7200,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "Send the details on what you want in writing in writing first. I am not deciding on this call."
+          "text": "Fine, send it. I want the details on what you want in writing before I decide."
         }
       ],
       "terminal_outcome": "written_info_requested",
@@ -7525,7 +7525,7 @@
           "detected_strategies": [
             "trust_repair"
           ],
-          "customer_response": "That answers some of it. For the cancellation or support issue, the part I am still unsure about is service boundary.",
+          "customer_response": "That answers some of the cancellation or support issue. I still need to know whether this belongs with support instead.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of cancellation_boundary.",
           "question_count": 0,
@@ -7539,7 +7539,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For the cancellation or support issue, the part I am still unsure about is service boundary.",
+          "customer_context": "That answers some of the cancellation or support issue. I still need to know whether this belongs with support instead.",
           "agent_answer": "From here, I would keep the conversation tied to the cancellation or support issue. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
@@ -7599,7 +7599,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For the cancellation or support issue, the part I am still unsure about is service boundary."
+          "text": "That answers some of the cancellation or support issue. I still need to know whether this belongs with support instead."
         },
         {
           "speaker": "agent",
@@ -7685,12 +7685,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -7737,7 +7737,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "That answers some of it. For whether an appointment reminder would help, the part I am still unsure about is personal relevance.",
+          "customer_response": "That answers some of whether an appointment reminder would help. I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's next_step_close handling of appointment_interest.",
           "question_count": 0,
@@ -7751,7 +7751,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For whether an appointment reminder would help, the part I am still unsure about is personal relevance.",
+          "customer_context": "That answers some of whether an appointment reminder would help. I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to whether an appointment reminder would help. The clean next step would be to book a non-binding review focused on whether an appointment reminder would help.",
           "detected_strategy": "next_step_close",
           "detected_strategies": [
@@ -7811,7 +7811,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For whether an appointment reminder would help, the part I am still unsure about is personal relevance."
+          "text": "That answers some of whether an appointment reminder would help. I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -7896,12 +7896,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -7948,7 +7948,7 @@
           "detected_strategies": [
             "risk_reversal"
           ],
-          "customer_response": "That answers some of it. For the healthcare scheduling concern that needs care, the part I am still unsure about is personal relevance.",
+          "customer_response": "That answers some of the healthcare scheduling concern that needs care. I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's risk_reversal handling of sensitive_healthcare.",
           "question_count": 0,
@@ -7962,7 +7962,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For the healthcare scheduling concern that needs care, the part I am still unsure about is personal relevance.",
+          "customer_context": "That answers some of the healthcare scheduling concern that needs care. I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to the healthcare scheduling concern that needs care. The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of the healthcare scheduling concern that needs care.",
           "detected_strategy": "risk_reversal",
           "detected_strategies": [
@@ -8022,7 +8022,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For the healthcare scheduling concern that needs care, the part I am still unsure about is personal relevance."
+          "text": "That answers some of the healthcare scheduling concern that needs care. I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -8108,12 +8108,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -8200,7 +8200,7 @@
           "detected_strategies": [
             "next_step_close"
           ],
-          "customer_response": "I understand the answer on how this compares with another home service option, but I am rejecting the offer for now.",
+          "customer_response": "No, not today. I understand the answer on how this compares with another home service option, but I am rejecting it for now.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's social_proof_safe handling of home_service_comparison.",
           "question_count": 0,
@@ -8258,7 +8258,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 3,
-          "text": "I understand the answer on how this compares with another home service option, but I am rejecting the offer for now."
+          "text": "No, not today. I understand the answer on how this compares with another home service option, but I am rejecting it for now."
         }
       ],
       "terminal_outcome": "rejected",
@@ -8374,7 +8374,7 @@
           "detected_strategies": [
             "problem_framing"
           ],
-          "customer_response": "That answers some of it. For whether reminders would solve the actual problem, the part I am still unsure about is personal relevance.",
+          "customer_response": "That answers some of whether reminders would solve the actual problem. I still need to know why this matters to me.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's problem_framing handling of reminder_plan.",
           "question_count": 0,
@@ -8388,7 +8388,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "That answers some of it. For whether reminders would solve the actual problem, the part I am still unsure about is personal relevance.",
+          "customer_context": "That answers some of whether reminders would solve the actual problem. I still need to know why this matters to me.",
           "agent_answer": "From here, I would keep the conversation tied to whether reminders would solve the actual problem. The business reason to keep talking is whether automotive service follow-up gets unclear, like who owns callbacks after the first question, not whether you should buy something today.",
           "detected_strategy": "problem_framing",
           "detected_strategies": [
@@ -8448,7 +8448,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "That answers some of it. For whether reminders would solve the actual problem, the part I am still unsure about is personal relevance."
+          "text": "That answers some of whether reminders would solve the actual problem. I still need to know why this matters to me."
         },
         {
           "speaker": "agent",
@@ -8534,12 +8534,12 @@
         "local_static_only": true
       },
       "dialogue_realism": {
-        "natural_customer_language": true,
+        "natural_customer_language": false,
         "low_template_repetition": true,
         "opening_grammar_ok": true,
         "objection_progression_realistic": true,
         "terminal_outcome_earned": true,
-        "score": 5,
+        "score": 4,
         "max_score": 5,
         "variety_tags": [],
         "non_smooth": false,
@@ -8586,7 +8586,7 @@
           "detected_strategies": [
             "trust_repair"
           ],
-          "customer_response": "I am not ready to agree on whether you can continue without pressure. Explain the personal relevance piece in normal words.",
+          "customer_response": "That still sounds vague.",
           "reacts_to_previous_agent_answer": true,
           "customer_reaction_reason": "Customer reacts to the agent's trust_repair handling of no_pressure_consumer.",
           "question_count": 0,
@@ -8600,7 +8600,7 @@
         },
         {
           "turn_index": 2,
-          "customer_context": "I am not ready to agree on whether you can continue without pressure. Explain the personal relevance piece in normal words.",
+          "customer_context": "That still sounds vague.",
           "agent_answer": "From here, I would keep the conversation tied to whether you can continue without pressure. I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed.",
           "detected_strategy": "trust_repair",
           "detected_strategies": [
@@ -8660,7 +8660,7 @@
           "speaker": "customer",
           "kind": "reaction",
           "turn_index": 1,
-          "text": "I am not ready to agree on whether you can continue without pressure. Explain the personal relevance piece in normal words."
+          "text": "That still sounds vague."
         },
         {
           "speaker": "agent",

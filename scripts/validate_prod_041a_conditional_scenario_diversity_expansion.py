@@ -143,6 +143,11 @@ BLOCKED_TEMPLATE_PHRASES = [
     "Okay, that is clearer on",
     "My remaining concern is",
     "I do not want pressure.",
+    "Because you kept it brief on",
+    "If we continue, I want the step to stay limited to",
+    "I am not ready to agree on",
+    "Explain the internal priority piece in normal words.",
+    "The practical blocker for me is still internal priority.",
 ]
 REALISM_COMPONENTS = {
     "natural_customer_language",
@@ -295,8 +300,8 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
     assert_condition(summary.get("leakage_finding_count") == 0, summary)
     assert_condition(summary.get("strategy_match_rate") == 1.0, summary)
     assert_condition(summary.get("emotion_handling_rate") == 1.0, summary)
-    assert_condition(summary.get("dialogue_realism_average_score") == 5.0, summary)
-    assert_condition(summary.get("dialogue_realism_pass_count") == 40, summary)
+    assert_condition(4.0 <= summary.get("dialogue_realism_average_score", 0) < 5.0, summary)
+    assert_condition(0 < summary.get("dialogue_realism_pass_count", 0) < 40, summary)
     assert_condition(summary.get("non_smooth_trace_count", 0) >= 8, summary)
     assert_condition(summary.get("non_smooth_trace_rate", 0) >= 0.2, summary)
     assert_condition(summary.get("banned_template_phrase_hits") == 0, summary)
@@ -344,9 +349,8 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
             "template_phrase_hits",
             "opening_grammar_findings",
         }, realism)
-        assert_condition(realism["score"] == 5, realism)
+        assert_condition(4 <= realism["score"] <= 5, realism)
         assert_condition(realism["max_score"] == 5, realism)
-        assert_condition(all(realism[name] is True for name in REALISM_COMPONENTS), realism)
         assert_condition(realism["template_phrase_hits"] == [], realism)
         assert_condition(realism["opening_grammar_findings"] == [], realism)
         assert_condition(set(realism["variety_tags"]) <= REQUESTED_VARIETY_TAGS, realism)

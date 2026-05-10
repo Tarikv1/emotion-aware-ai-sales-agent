@@ -129,6 +129,11 @@ BLOCKED_TEMPLATE_PHRASES = [
     "Okay, that is clearer on",
     "My remaining concern is",
     "I do not want pressure.",
+    "Because you kept it brief on",
+    "If we continue, I want the step to stay limited to",
+    "I am not ready to agree on",
+    "Explain the internal priority piece in normal words.",
+    "The practical blocker for me is still internal priority.",
 ]
 REALISM_COMPONENTS = [
     "natural_customer_language",
@@ -177,6 +182,15 @@ TURN_VARIETY_BY_LABEL = {
     "home_service_comparison": {1: ["skeptical_pushback"]},
     "coverage_confusion": {1: ["confused_follow_up"]},
     "busy_now": {1: ["short_reply"]},
+}
+IMPERFECT_CUSTOMER_RESPONSES = {
+    "Fine, send it.",
+    "Email only.",
+    "No, not today.",
+    "Who exactly are you?",
+    "I need to ask my manager.",
+    "That still sounds vague.",
+    "What are you actually selling?",
 }
 
 CONCERN_TEXT = {
@@ -501,11 +515,11 @@ def terminal_customer_response(profile: dict[str, Any]) -> str:
     if terminal == "accepted":
         return f"That is clear enough on {concern}. I accept a no-pressure next step, with no payment handled here."
     if terminal == "callback_scheduled":
-        return f"Because you kept it brief on {concern}, schedule one callback and do not keep selling now."
+        return f"Fine, schedule one callback about {concern}. Do not keep selling right now."
     if terminal == "written_info_requested":
-        return f"Send the details on {concern} in writing first. I am not deciding on this call."
+        return f"Fine, send it. I want the details on {concern} before I decide."
     if terminal == "manager_review_needed":
-        return f"I need my manager to review {concern} before anything else. Send the short internal summary and stop there."
+        return f"I need to ask my manager about {concern}. Send the short version and stop there."
     if terminal == "handoff_required":
         return f"This needs the right specialist for {concern}. Handoff is fine, but do not make claims you cannot verify."
     if terminal == "support_boundary_ended":
@@ -515,7 +529,7 @@ def terminal_customer_response(profile: dict[str, Any]) -> str:
     if terminal == "do_not_contact":
         return f"No. Do not contact me again about {concern}."
     if terminal == "rejected":
-        return f"I understand the answer on {concern}, but I am rejecting the offer for now."
+        return f"No, not today. I understand the answer on {concern}, but I am rejecting it for now."
     raise ValueError(terminal)
 
 
@@ -747,27 +761,32 @@ def recovery_phrase(profile: dict[str, Any], next_turn_index: int) -> str:
 def customer_reaction_text(profile: dict[str, Any], turn_index: int) -> str:
     label = profile["scenario_label"]
     concern = CONCERN_TEXT[label]
-    secondary = profile["secondary_objection"]
+    secondary = customer_secondary_clause(profile["secondary_objection"])
     if turn_index == 1:
         specific = {
             "manager_review": "Maybe. Keep going.",
             "existing_provider": "Wait - before you continue, are you saying this replaces our provider or just checks the handoff around it?",
             "confused_fit": "I am lost. Is this about scheduling, routing, reminders, or something else?",
             "skeptical_proof": "That still sounds like a pitch. What can I actually check after this call?",
+            "send_info": "Email only.",
+            "payment_fear": "Who exactly are you?",
+            "needs_approval": "I need to ask my manager.",
             "hostile_rejection": "No.",
             "consumer_hostile": "No.",
             "home_service_comparison": "That does not tell me why this is different from the other quote.",
             "coverage_confusion": "So are you saying I am covered, or are you not allowed to say that?",
             "busy_now": "Fine, but keep it under a minute.",
+            "discovery_needed": "What are you actually selling?",
+            "no_pressure_consumer": "That still sounds vague.",
         }
         if label in specific:
             return specific[label]
         patterns = [
-            f"I follow the main point on {concern}, but {secondary} is still the part I would need resolved.",
-            f"That answers some of it. For {concern}, the part I am still unsure about is {secondary}.",
-            f"I am not ready to agree on {concern}. Explain the {secondary} piece in normal words.",
-            f"That helps a little. I still need to know how {secondary} changes the next step for {concern}.",
-            f"I hear you on {concern}. The practical blocker for me is still {secondary}.",
+            f"I follow the main point on {concern}, but I still need {secondary}.",
+            f"That answers some of {concern}. I still need {secondary}.",
+            f"I am not there yet on {concern}. I need {secondary}, not sales wording.",
+            f"That helps a little, but I still do not see how it changes the next step for {concern}.",
+            f"Maybe. For {concern}, I still need {secondary}.",
         ]
         return patterns[(len(label) + len(profile["domain"])) % len(patterns)]
     specific_second = {
@@ -784,12 +803,23 @@ def customer_reaction_text(profile: dict[str, Any], turn_index: int) -> str:
         return specific_second[label]
     patterns = [
         f"So the next step is only about {concern}, not a decision today?",
-        f"If we continue, I want the step to stay limited to {concern}.",
+        f"Fine, keep it to that one point about {concern}.",
         f"What happens next if I only want a light review of {concern}?",
         f"I can consider one narrow step if it stays tied to {concern}.",
         f"Before I agree, confirm the next step will not go beyond {concern}.",
     ]
     return patterns[(len(label) + turn_index) % len(patterns)]
+
+
+def customer_secondary_clause(secondary: str) -> str:
+    clauses = {
+        "internal priority": "to know why this should matter now",
+        "stakeholder review": "to know who else has to weigh in",
+        "service boundary": "to know whether this belongs with support instead",
+        "personal relevance": "to know why this matters to me",
+        "payment boundary": "to know whether payment is really off the table",
+    }
+    return clauses.get(secondary, f"to understand {secondary}")
 
 
 def customer_utterances(call: dict[str, Any]) -> list[str]:
@@ -817,6 +847,10 @@ def dialogue_realism_score(call: dict[str, Any], profile: dict[str, Any]) -> dic
     grammar_findings = duplicated_word_findings(opening_texts)
     tags = all_variety_tags(profile)
     non_smooth = any(tag in NON_SMOOTH_VARIETY_TAGS for tag in tags)
+    has_imperfect_customer_text = any(
+        text.strip() in IMPERFECT_CUSTOMER_RESPONSES or len(text.replace(".", "").replace(",", "").split()) <= 4
+        for text in customer_texts
+    )
     agent_joined = " ".join(turn["agent_answer"].lower() for turn in call["turns"])
     recovery_present = not non_smooth or any(
         marker in agent_joined
@@ -832,7 +866,11 @@ def dialogue_realism_score(call: dict[str, Any], profile: dict[str, Any]) -> dic
         ]
     )
     components = {
-        "natural_customer_language": not template_hits and all("scenario" not in text.lower() for text in customer_texts),
+        "natural_customer_language": (
+            not template_hits
+            and all("scenario" not in text.lower() for text in customer_texts)
+            and (non_smooth or has_imperfect_customer_text)
+        ),
         "low_template_repetition": not template_hits and len(customer_texts) == len(set(customer_texts)),
         "opening_grammar_ok": not grammar_findings,
         "objection_progression_realistic": recovery_present and len(customer_texts) >= 3 and customer_texts[-1] != customer_texts[0],

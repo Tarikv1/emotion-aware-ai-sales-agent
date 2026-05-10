@@ -71,9 +71,9 @@
     "hard_failure_count": 0,
     "strategy_match_rate": 1.0,
     "emotion_handling_rate": 1.0,
-    "dialogue_realism_average_score": 5.0,
+    "dialogue_realism_average_score": 4.45,
     "dialogue_realism_max_score": 5,
-    "dialogue_realism_pass_count": 40,
+    "dialogue_realism_pass_count": 18,
     "non_smooth_trace_count": 14,
     "non_smooth_trace_rate": 0.35,
     "customer_variety_tag_counts": {
@@ -135,7 +135,7 @@
     "hard_failure_rate": 0.0,
     "strategy_match_rate": 1.0,
     "emotion_handling_rate": 1.0,
-    "dialogue_realism_average_score": 5.0,
+    "dialogue_realism_average_score": 4.45,
     "non_smooth_trace_rate": 0.35
   },
   "validation_targets": {

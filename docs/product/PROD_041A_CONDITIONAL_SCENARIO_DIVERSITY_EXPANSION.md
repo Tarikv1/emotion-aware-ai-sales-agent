@@ -29,7 +29,7 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Terminal outcomes: at least `6` terminal outcome types appear, including support boundary, not qualified, handoff, callback, written information, and rejection.
 - Strategy detection: deterministic rules only; no LLM judging.
 - Emotion handling: deterministic rules only.
-- Dialogue realism: each trace records `natural_customer_language`, `low_template_repetition`, `opening_grammar_ok`, `objection_progression_realistic`, and `terminal_outcome_earned`.
+- Dialogue realism: each trace records `natural_customer_language`, `low_template_repetition`, `opening_grammar_ok`, `objection_progression_realistic`, and `terminal_outcome_earned`; the scorer is stricter and not every trace is expected to receive `5/5`.
 - Non smooth trace rate: at least `0.2`, with customer interruptions, skeptical pushback, one-word refusals, confused follow-ups, early price asks, identity checks, email-only requests, and refusal-before-finish cases represented.
 - Opening grammar issue count: `0`
 - Banned template phrase hits: `0`
@@ -46,7 +46,8 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Hard failure rate: `0.0`
 - Strategy match rate: `1.0`
 - Emotion handling rate: `1.0`
-- Dialogue realism average score: `5.0`
+- Dialogue realism average score: `4.45`
+- Dialogue realism pass count: `18`
 - Non smooth trace rate: `0.35`
 - Banned template phrase hits: `0`
 - Opening grammar issue count: `0`

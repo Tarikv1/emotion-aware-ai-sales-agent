@@ -19,8 +19,8 @@ PROD-041A expands the offline conditional simulator before the PROD-041 human re
 - Hard Failure Rate: `0.0`
 - Strategy Match Rate: `1.0`
 - Emotion Handling Rate: `1.0`
-- Dialogue Realism Average Score: `5.0`
-- Dialogue Realism Pass Count: `40`
+- Dialogue Realism Average Score: `4.45`
+- Dialogue Realism Pass Count: `18`
 - Non Smooth Trace Count: `14`
 - Non Smooth Trace Rate: `0.35`
 - Banned Template Phrase Hits: `0`
@@ -58,38 +58,38 @@ The next checkpoint remains `PROD-041-conditional-simulation-review` for human r
 | `existing_provider` | B2B | healthcare operations | calm | `5/5` | `true` | `true` | `true` | `callback_scheduled` | `0` |
 | `confused_fit` | B2B | manufacturing | confused | `5/5` | `true` | `true` | `true` | `callback_scheduled` | `0` |
 | `skeptical_proof` | B2B | financial services | skeptical | `5/5` | `true` | `true` | `true` | `written_info_requested` | `0` |
-| `busy_now` | B2B | SaaS operations | rushed | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
+| `busy_now` | B2B | SaaS operations | rushed | `4/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
 | `send_info` | B2B | education services | calm | `5/5` | `true` | `true` | `true` | `written_info_requested` | `0` |
-| `contract_fear` | B2B | hospitality | anxious | `5/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
+| `contract_fear` | B2B | hospitality | anxious | `4/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
 | `payment_fear` | B2B | automotive services | distrustful | `5/5` | `true` | `true` | `true` | `handoff_required` | `0` |
-| `security_review` | B2B | cybersecurity | skeptical | `5/5` | `false` | `true` | `true` | `handoff_required` | `0` |
-| `bad_experience` | B2B | retail chain | irritated | `5/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
+| `security_review` | B2B | cybersecurity | skeptical | `4/5` | `false` | `true` | `true` | `handoff_required` | `0` |
+| `bad_experience` | B2B | retail chain | irritated | `4/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
 | `needs_approval` | B2B | real estate | calm | `5/5` | `false` | `true` | `true` | `manager_review_needed` | `0` |
-| `hidden_objection` | B2B | professional services | curious | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
-| `competitor_comparison` | B2B | marketing agency | skeptical | `5/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
+| `hidden_objection` | B2B | professional services | curious | `4/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
+| `competitor_comparison` | B2B | marketing agency | skeptical | `4/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
 | `not_interested` | B2B | wholesale distribution | calm | `5/5` | `true` | `true` | `true` | `rejected` | `0` |
 | `hostile_rejection` | B2B | telecom reseller | irritated | `5/5` | `true` | `true` | `true` | `do_not_contact` | `0` |
-| `callback_request` | B2B | property management | rushed | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
-| `support_boundary` | B2B | B2B software | irritated | `5/5` | `false` | `true` | `true` | `support_boundary_ended` | `0` |
-| `technical_integration` | B2B | manufacturing | curious | `5/5` | `false` | `true` | `true` | `handoff_required` | `0` |
-| `setup_timeline` | B2B | healthcare operations | anxious | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
-| `multi_location_routing` | B2B | retail chain | calm | `5/5` | `false` | `true` | `true` | `accepted` | `0` |
-| `low_fit` | B2B | construction | confused | `5/5` | `false` | `true` | `true` | `not_qualified` | `0` |
-| `sale_ready` | B2B | field-service software | curious | `5/5` | `false` | `true` | `true` | `accepted` | `0` |
+| `callback_request` | B2B | property management | rushed | `4/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
+| `support_boundary` | B2B | B2B software | irritated | `4/5` | `false` | `true` | `true` | `support_boundary_ended` | `0` |
+| `technical_integration` | B2B | manufacturing | curious | `4/5` | `false` | `true` | `true` | `handoff_required` | `0` |
+| `setup_timeline` | B2B | healthcare operations | anxious | `4/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
+| `multi_location_routing` | B2B | retail chain | calm | `4/5` | `false` | `true` | `true` | `accepted` | `0` |
+| `low_fit` | B2B | construction | confused | `4/5` | `false` | `true` | `true` | `not_qualified` | `0` |
+| `sale_ready` | B2B | field-service software | curious | `4/5` | `false` | `true` | `true` | `accepted` | `0` |
 | `discovery_needed` | B2B | SaaS operations | calm | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
-| `insurance_price_fear` | B2C | insurance service | anxious | `5/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
-| `spouse_input` | B2C | home services | calm | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
+| `insurance_price_fear` | B2C | insurance service | anxious | `4/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
+| `spouse_input` | B2C | home services | calm | `4/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
 | `scam_card_fear` | B2C | consumer telecom | distrustful | `5/5` | `true` | `true` | `true` | `written_info_requested` | `0` |
 | `consumer_not_interested` | B2C | retail membership | calm | `5/5` | `true` | `true` | `true` | `rejected` | `0` |
-| `consumer_callback` | B2C | automotive service | rushed | `5/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
+| `consumer_callback` | B2C | automotive service | rushed | `4/5` | `false` | `true` | `true` | `callback_scheduled` | `0` |
 | `coverage_confusion` | B2C | insurance service | confused | `5/5` | `true` | `true` | `true` | `handoff_required` | `0` |
-| `already_covered` | B2C | consumer telecom | calm | `5/5` | `false` | `true` | `true` | `rejected` | `0` |
-| `consumer_bad_experience` | B2C | home services | irritated | `5/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
+| `already_covered` | B2C | consumer telecom | calm | `4/5` | `false` | `true` | `true` | `rejected` | `0` |
+| `consumer_bad_experience` | B2C | home services | irritated | `4/5` | `false` | `true` | `true` | `written_info_requested` | `0` |
 | `written_info` | B2C | consumer wellness | skeptical | `5/5` | `true` | `true` | `true` | `written_info_requested` | `0` |
 | `consumer_hostile` | B2C | retail membership | irritated | `5/5` | `true` | `true` | `true` | `do_not_contact` | `0` |
-| `cancellation_boundary` | B2C | subscription service | irritated | `5/5` | `false` | `true` | `true` | `support_boundary_ended` | `0` |
-| `appointment_interest` | B2C | healthcare scheduling | curious | `5/5` | `false` | `true` | `true` | `accepted` | `0` |
-| `sensitive_healthcare` | B2C | healthcare scheduling | anxious | `5/5` | `false` | `true` | `true` | `handoff_required` | `0` |
+| `cancellation_boundary` | B2C | subscription service | irritated | `4/5` | `false` | `true` | `true` | `support_boundary_ended` | `0` |
+| `appointment_interest` | B2C | healthcare scheduling | curious | `4/5` | `false` | `true` | `true` | `accepted` | `0` |
+| `sensitive_healthcare` | B2C | healthcare scheduling | anxious | `4/5` | `false` | `true` | `true` | `handoff_required` | `0` |
 | `home_service_comparison` | B2C | home services | skeptical | `5/5` | `true` | `true` | `true` | `rejected` | `0` |
-| `reminder_plan` | B2C | automotive service | calm | `5/5` | `false` | `true` | `true` | `accepted` | `0` |
+| `reminder_plan` | B2C | automotive service | calm | `4/5` | `false` | `true` | `true` | `accepted` | `0` |
 | `no_pressure_consumer` | B2C | consumer wellness | distrustful | `5/5` | `false` | `true` | `true` | `accepted` | `0` |
