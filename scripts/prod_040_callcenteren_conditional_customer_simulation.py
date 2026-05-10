@@ -230,33 +230,64 @@ def build_profiles(scenario_bank: dict[str, Any]) -> list[dict[str, Any]]:
     return profiles
 
 
-def answer_for_state(state: dict[str, Any], campaign: dict[str, Any]) -> str:
+def answer_customization(profile: dict[str, Any], state: dict[str, Any]) -> dict[str, str]:
+    scenario = profile["callcenteren_scenario"]
+    return {
+        "seed_id": profile["seed_id"],
+        "persona": profile["persona"],
+        "domain": str(scenario.get("domain", "unknown")),
+        "scenario_label": str(scenario.get("scenario_label", "unknown")),
+        "safe_agent_tactic": str(scenario.get("safe_agent_tactic", "unknown")),
+        "active_objection": str(state.get("active_objection", "unknown")),
+        "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels",
+    }
+
+
+def answer_for_state(state: dict[str, Any], campaign: dict[str, Any], profile: dict[str, Any]) -> tuple[str, dict[str, str]]:
     product_name = campaign["product_name"]
     specialist = campaign.get("human_handoff_role", "solutions specialist")
     objection = state["active_objection"]
+    customization = answer_customization(profile, state)
+    seed = profile["seed_id"]
     if objection == "do-not-call":
-        return "Understood. I will mark this as do not call and end the sales conversation now."
+        return "Understood. I will mark this number as do not call and end the sales conversation now.", customization
     if objection == "support":
-        return f"That should be handled as support before sales. I will route you to a {specialist} for account help instead of pitching."
+        return f"That account issue should be handled as support before sales. I will route you to a {specialist} for account help instead of pitching RouteSignal.", customization
     if objection == "time":
-        return f"Then I will keep it to the point: {product_name} helps teams stop losing inbound leads between routing and callback ownership. If that problem is not active, we can stop here."
+        return f"Then I will keep it to the point for a busy sales lead: {product_name} helps stop inbound leads getting lost between routing and callback ownership. If that problem is not active today, we can stop here.", customization
     if objection == "price":
-        return "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+        if seed == "conditional-confused-fit":
+            return "For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.", customization
+        if seed == "conditional-existing-provider":
+            return "If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.", customization
+        return "For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.", customization
     if objection == "confusion":
-        return f"{product_name} is not a full CRM replacement. It sits around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import."
+        return f"{product_name} is not a full CRM replacement. For your case, think of it as a layer around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.", customization
     if objection == "trust":
-        return f"Fair concern. I cannot promise revenue lift. The verifiable claim is narrower: {product_name} centralizes lead intake and routes leads by region, source, priority, or owner."
+        return f"Fair concern. I cannot promise revenue lift or pretend this is proven for your company. The verifiable claim is narrower: {product_name} centralizes lead intake and routes leads by region, source, priority, or owner.", customization
     if objection == "written-info":
-        return "That is reasonable. A specialist can send the written details and separate what is confirmed from what still needs a fit review."
+        return "That is reasonable for a skeptical review. A specialist can send written details and separate confirmed product facts from what still needs a fit review for your team.", customization
     if objection == "provider":
-        return f"I would not ask you to replace a CRM that works. {product_name} is only worth a look if routing, callback ownership, or reporting are still messy around the CRM."
+        return f"I would not ask a team with an existing CRM to rip it out. {product_name} is only worth a look if routing, callback ownership, or reporting are still messy around that CRM.", customization
     if objection == "authority":
-        return "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+        if seed == "conditional-confused-fit":
+            return "For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing.", customization
+        if seed == "conditional-existing-provider":
+            return "For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks.", customization
+        if seed == "conditional-manager-review":
+            return "For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist.", customization
+        return "For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review.", customization
     if objection == "final-review":
-        return "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+        if seed == "conditional-confused-fit":
+            return "For you, the next step would be an educational workflow review with a specialist to confirm fit. No payment, contract, or purchase decision should happen on this call.", customization
+        if seed == "conditional-existing-provider":
+            return "For your CRM situation, the review would only compare routing gaps and handoff fit with a specialist. No payment, contract, or replacement decision should happen on this call.", customization
+        if seed == "conditional-manager-review":
+            return "For a manager-led review, this would only schedule a specialist conversation around fit, security notes, and workflow impact. No payment, contract, or purchase decision happens here.", customization
+        return "For the price-sensitive case, this would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.", customization
     if objection == "fit-check":
-        return "A useful fit check would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen, this is probably not urgent."
-    return f"{product_name} helps teams centralize lead intake, route leads, and track callback ownership without collecting payment on this call."
+        return "A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent.", customization
+    return f"{product_name} helps this type of team centralize lead intake, route leads, and track callback ownership without collecting payment on this call.", customization
 
 
 def agent_answer_signals(answer: str) -> dict[str, bool]:
@@ -269,7 +300,7 @@ def agent_answer_signals(answer: str) -> dict[str, bool]:
         "respects_time": "keep it to the point" in lowered or "we can stop here" in lowered,
         "respects_support_boundary": "support before sales" in lowered or "account help instead of pitching" in lowered,
         "respects_do_not_call": "do not call" in lowered and "end the sales conversation" in lowered,
-        "answers_provider_overlap": "replace a crm" in lowered or "around the crm" in lowered,
+        "answers_provider_overlap": "replace a crm" in lowered or "around the crm" in lowered or "rip it out" in lowered or "existing crm" in lowered,
         "manager_summary": "manager version" in lowered or "setup is typically" in lowered,
         "asks_multiple_questions": count_questions(answer) > 1,
         "premature_close_language": "sale-ready" in lowered or "accepted" in lowered or "buy" in lowered,
@@ -538,7 +569,7 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
 
     for turn_index in range(1, 9):
         before = deepcopy(state)
-        answer = answer_for_state(before, campaign)
+        answer, answer_metadata = answer_for_state(before, campaign, profile)
         packet = guarded_answer(answer, customer_text, campaign)
         final_answer = str(packet["final_response"])
         flags = safety_flags(packet)
@@ -551,6 +582,7 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
                 "turn_index": turn_index,
                 "customer_context": customer_text,
                 "agent_answer": final_answer,
+                "agent_answer_customization": answer_metadata,
                 "customer_response": customer_response,
                 "agent_answer_signals": agent_answer_signals(final_answer),
                 "customer_response_condition": condition,
@@ -651,6 +683,7 @@ def all_turns(calls: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def build_summary(calls: list[dict[str, Any]], pattern_bank: dict[str, Any]) -> dict[str, Any]:
     turns = all_turns(calls)
     customer_responses = [turn["customer_response"] for turn in turns]
+    agent_answers = [turn["agent_answer"] for turn in turns]
     unique_pattern_ids = {
         pattern_id
         for call in calls
@@ -669,6 +702,9 @@ def build_summary(calls: list[dict[str, Any]], pattern_bank: dict[str, Any]) -> 
         "agent_conditioned_customer_reply_count": sum(1 for turn in turns if turn["agent_answer_signals"] and turn["customer_response_condition"]),
         "unique_customer_response_count": len(set(customer_responses)),
         "repeated_customer_response_count": len(customer_responses) - len(set(customer_responses)),
+        "unique_agent_answer_count": len(set(agent_answers)),
+        "repeated_agent_answer_count": len(agent_answers) - len(set(agent_answers)),
+        "profile_customized_agent_answer_count": sum(1 for turn in turns if turn.get("agent_answer_customization")),
         "callcenteren_pattern_source_count": len(unique_pattern_ids),
         "scenario_bank_source_count": len({call["source_recipe"]["scenario_id"] for call in calls}),
         "pattern_bank_conversation_count": pattern_bank.get("summary", {}).get("conversation_count", 0),
@@ -799,6 +835,9 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         f"- Agent-conditioned customer reply count: `{summary['agent_conditioned_customer_reply_count']}`",
         f"- Unique customer response count: `{summary['unique_customer_response_count']}`",
         f"- Repeated customer response count: `{summary['repeated_customer_response_count']}`",
+        f"- Unique agent answer count: `{summary['unique_agent_answer_count']}`",
+        f"- Repeated agent answer count: `{summary['repeated_agent_answer_count']}`",
+        f"- Profile customized agent answer count: `{summary['profile_customized_agent_answer_count']}`",
         f"- CallCenterEN pattern source count: `{summary['callcenteren_pattern_source_count']}`",
         f"- Scenario bank source count: `{summary['scenario_bank_source_count']}`",
         f"- Abstract pattern only: `{str(summary['abstract_pattern_only']).lower()}`",
@@ -930,6 +969,9 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   agent-conditioned customer reply count: `{summary['agent_conditioned_customer_reply_count']}`
   unique customer response count: `{summary['unique_customer_response_count']}`
   repeated customer response count: `0`
+  unique agent answer count: `{summary['unique_agent_answer_count']}`
+  repeated agent answer count: `0`
+  profile customized agent answer count: `{summary['profile_customized_agent_answer_count']}`
   fixed turn limit used: `false`
   loop guard triggered: `false`
   leakage findings: `0`
@@ -945,6 +987,9 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       <span class="metric">Agent-conditioned customer reply count: <code>{summary['agent_conditioned_customer_reply_count']}</code></span>
       <span class="metric">Unique customer response count: <code>{summary['unique_customer_response_count']}</code></span>
       <span class="metric">Repeated customer response count: <code>{summary['repeated_customer_response_count']}</code></span>
+      <span class="metric">Unique agent answer count: <code>{summary['unique_agent_answer_count']}</code></span>
+      <span class="metric">Repeated agent answer count: <code>{summary['repeated_agent_answer_count']}</code></span>
+      <span class="metric">Profile customized agent answer count: <code>{summary['profile_customized_agent_answer_count']}</code></span>
       <span class="metric">Agent opening line visible count: <code>{summary['agent_opening_line_visible_count']}</code></span>
       <span class="metric">Conversation starts with agent: <code>{summary['conversation_sequence_starts_with_agent_count']}</code></span>
       <span class="metric">CallCenterEN pattern source count: <code>{summary['callcenteren_pattern_source_count']}</code></span>
@@ -981,6 +1026,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       <section class="grid">
         <section class="panel"><h3>Why Customer Changed</h3><p id="response-condition"></p><p class="muted" id="reaction-reason"></p></section>
         <section class="panel" id="agent-signals"></section>
+        <section class="panel" id="agent-customization"></section>
         <section class="panel" id="pattern-basis"></section>
       </section>
       <section class="grid">
@@ -1028,6 +1074,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       document.getElementById('response-condition').textContent = turn.customer_response_condition;
       document.getElementById('reaction-reason').textContent = turn.customer_reaction_reason;
       document.getElementById('agent-signals').innerHTML = table('Agent Answer Signals', turn.agent_answer_signals);
+      document.getElementById('agent-customization').innerHTML = table('Agent Answer Customization', turn.agent_answer_customization);
       document.getElementById('pattern-basis').innerHTML = table('CallCenterEN Pattern Basis', turn.callcenteren_pattern_basis);
       document.getElementById('state-transition').innerHTML = table('State Before', turn.state_before) + table('State Delta', turn.state_delta) + table('State After', turn.state_after);
       document.getElementById('decision-snapshot').innerHTML = table('Decision Snapshot', turn.decision_snapshot);

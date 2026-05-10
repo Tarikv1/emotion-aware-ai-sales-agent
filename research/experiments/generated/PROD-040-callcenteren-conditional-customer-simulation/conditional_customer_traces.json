@@ -69,7 +69,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+          "text": "For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review."
         },
         {
           "speaker": "customer",
@@ -82,7 +82,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+          "text": "For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review."
         },
         {
           "speaker": "customer",
@@ -95,7 +95,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 3,
-          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+          "text": "For the price-sensitive case, this would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
         },
         {
           "speaker": "customer",
@@ -159,7 +159,16 @@
         {
           "turn_index": 1,
           "customer_context": "I have a few minutes, but if this is another paid tool I need the real cost first.",
-          "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing.",
+          "agent_answer": "For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-price-sensitive",
+            "persona": "price-sensitive operations manager",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "price",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Okay, now I know the range. If I mention this internally, what problem am I saying it solves?",
           "agent_answer_signals": {
             "answers_price": true,
@@ -267,18 +276,27 @@
         {
           "turn_index": 2,
           "customer_context": "Okay, now I know the range. If I mention this internally, what problem am I saying it solves?",
-          "agent_answer": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.",
+          "agent_answer": "For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-price-sensitive",
+            "persona": "price-sensitive operations manager",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "authority",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That is enough to keep talking. Just be clear: is the review non-binding, or am I agreeing to something commercial?",
           "agent_answer_signals": {
             "answers_price": true,
-            "answers_product_fit": false,
+            "answers_product_fit": true,
             "answers_trust": false,
-            "offers_written_confirmation": true,
+            "offers_written_confirmation": false,
             "respects_time": false,
             "respects_support_boundary": false,
             "respects_do_not_call": false,
             "answers_provider_overlap": false,
-            "manager_summary": true,
+            "manager_summary": false,
             "asks_multiple_questions": false,
             "premature_close_language": false
           },
@@ -345,7 +363,7 @@
             "campaign_language": "en",
             "response_language": "en",
             "detected_emotion": "neutral",
-            "sales_difficulty": "stakeholder-review",
+            "sales_difficulty": "general-product-question",
             "interest_state": "maybe-interested",
             "selected_strategy": "evidence-or-benefit",
             "next_action": "continue",
@@ -375,7 +393,16 @@
         {
           "turn_index": 3,
           "customer_context": "That is enough to keep talking. Just be clear: is the review non-binding, or am I agreeing to something commercial?",
-          "agent_answer": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.",
+          "agent_answer": "For the price-sensitive case, this would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-price-sensitive",
+            "persona": "price-sensitive operations manager",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "final-review",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That works. Send a short workflow review slot, and keep billing out of it.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -547,7 +574,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "RouteSignal CRM is not a full CRM replacement. It sits around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import."
+          "text": "RouteSignal CRM is not a full CRM replacement. For your case, think of it as a layer around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import."
         },
         {
           "speaker": "customer",
@@ -560,7 +587,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+          "text": "For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review."
         },
         {
           "speaker": "customer",
@@ -573,7 +600,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 3,
-          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+          "text": "For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing."
         },
         {
           "speaker": "customer",
@@ -586,7 +613,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 4,
-          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+          "text": "For you, the next step would be an educational workflow review with a specialist to confirm fit. No payment, contract, or purchase decision should happen on this call."
         },
         {
           "speaker": "customer",
@@ -650,7 +677,16 @@
         {
           "turn_index": 1,
           "customer_context": "RouteSignal does not ring a bell. Is this a CRM thing or something else?",
-          "agent_answer": "RouteSignal CRM is not a full CRM replacement. It sits around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.",
+          "agent_answer": "RouteSignal CRM is not a full CRM replacement. For your case, think of it as a layer around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-confused-fit",
+            "persona": "confused owner trying to understand product fit",
+            "domain": "auto_insurance",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "confusion",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That helps. If it is mainly routing and callback ownership, what would a small team pay?",
           "agent_answer_signals": {
             "answers_price": false,
@@ -758,7 +794,16 @@
         {
           "turn_index": 2,
           "customer_context": "That helps. If it is mainly routing and callback ownership, what would a small team pay?",
-          "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing.",
+          "agent_answer": "For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-confused-fit",
+            "persona": "confused owner trying to understand product fit",
+            "domain": "auto_insurance",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "price",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Okay, that is more concrete. Before I take it anywhere, what is the simple internal reason for looking at it?",
           "agent_answer_signals": {
             "answers_price": true,
@@ -866,7 +911,16 @@
         {
           "turn_index": 3,
           "customer_context": "Okay, that is more concrete. Before I take it anywhere, what is the simple internal reason for looking at it?",
-          "agent_answer": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.",
+          "agent_answer": "For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-confused-fit",
+            "persona": "confused owner trying to understand product fit",
+            "domain": "auto_insurance",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "authority",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "I can explain that now. Before I say yes to a review, tell me whether this creates any payment commitment.",
           "agent_answer_signals": {
             "answers_price": true,
@@ -974,7 +1028,16 @@
         {
           "turn_index": 4,
           "customer_context": "I can explain that now. Before I say yes to a review, tell me whether this creates any payment commitment.",
-          "agent_answer": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.",
+          "agent_answer": "For you, the next step would be an educational workflow review with a specialist to confirm fit. No payment, contract, or purchase decision should happen on this call.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-confused-fit",
+            "persona": "confused owner trying to understand product fit",
+            "domain": "auto_insurance",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "final-review",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Okay, I can do a short review if it stays educational and nobody asks for payment.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -1146,7 +1209,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "Fair concern. I cannot promise revenue lift. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner."
+          "text": "Fair concern. I cannot promise revenue lift or pretend this is proven for your company. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner."
         },
         {
           "speaker": "customer",
@@ -1159,7 +1222,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "That is reasonable. A specialist can send the written details and separate what is confirmed from what still needs a fit review."
+          "text": "That is reasonable for a skeptical review. A specialist can send written details and separate confirmed product facts from what still needs a fit review for your team."
         },
         {
           "speaker": "customer",
@@ -1225,7 +1288,16 @@
         {
           "turn_index": 1,
           "customer_context": "I get these calls all the time. If this is vague software talk, I am out.",
-          "agent_answer": "Fair concern. I cannot promise revenue lift. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.",
+          "agent_answer": "Fair concern. I cannot promise revenue lift or pretend this is proven for your company. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-skeptical-proof",
+            "persona": "skeptical founder who wants proof before engaging",
+            "domain": "auto_insurance",
+            "scenario_label": "trust_repair",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "trust",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That is more believable than a big promise. Send the exact proof points first; I am not agreeing on a call.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -1334,7 +1406,16 @@
         {
           "turn_index": 2,
           "customer_context": "That is more believable than a big promise. Send the exact proof points first; I am not agreeing on a call.",
-          "agent_answer": "That is reasonable. A specialist can send the written details and separate what is confirmed from what still needs a fit review.",
+          "agent_answer": "That is reasonable for a skeptical review. A specialist can send written details and separate confirmed product facts from what still needs a fit review for your team.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-skeptical-proof",
+            "persona": "skeptical founder who wants proof before engaging",
+            "domain": "auto_insurance",
+            "scenario_label": "trust_repair",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "written-info",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Fine, send that over. I will read it, but do not mark me as a buyer from this call.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -1413,9 +1494,9 @@
             "campaign_language": "en",
             "response_language": "en",
             "detected_emotion": "neutral",
-            "sales_difficulty": "general-product-question",
+            "sales_difficulty": "trust-gap",
             "interest_state": "maybe-interested",
-            "selected_strategy": "evidence-or-benefit",
+            "selected_strategy": "rapport",
             "next_action": "continue",
             "call_control": "continue-call",
             "background_modules": [],
@@ -1507,7 +1588,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "Then I will keep it to the point: RouteSignal CRM helps teams stop losing inbound leads between routing and callback ownership. If that problem is not active, we can stop here."
+          "text": "Then I will keep it to the point for a busy sales lead: RouteSignal CRM helps stop inbound leads getting lost between routing and callback ownership. If that problem is not active today, we can stop here."
         },
         {
           "speaker": "customer",
@@ -1571,7 +1652,16 @@
         {
           "turn_index": 1,
           "customer_context": "Not a good time. You have one sentence before I jump back into work.",
-          "agent_answer": "Then I will keep it to the point: RouteSignal CRM helps teams stop losing inbound leads between routing and callback ownership. If that problem is not active, we can stop here.",
+          "agent_answer": "Then I will keep it to the point for a busy sales lead: RouteSignal CRM helps stop inbound leads getting lost between routing and callback ownership. If that problem is not active today, we can stop here.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-busy-now",
+            "persona": "busy sales lead with low patience",
+            "domain": "auto_insurance",
+            "scenario_label": "callback_request",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "time",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That is at least clear, but I still cannot do this now. Leave it there for today.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -1743,7 +1833,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "I would not ask you to replace a CRM that works. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around the CRM."
+          "text": "I would not ask a team with an existing CRM to rip it out. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around that CRM."
         },
         {
           "speaker": "customer",
@@ -1756,7 +1846,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "A useful fit check would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen, this is probably not urgent."
+          "text": "A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent."
         },
         {
           "speaker": "customer",
@@ -1769,7 +1859,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 3,
-          "text": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing."
+          "text": "If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today."
         },
         {
           "speaker": "customer",
@@ -1782,7 +1872,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 4,
-          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+          "text": "For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks."
         },
         {
           "speaker": "customer",
@@ -1795,7 +1885,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 5,
-          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+          "text": "For your CRM situation, the review would only compare routing gaps and handoff fit with a specialist. No payment, contract, or replacement decision should happen on this call."
         },
         {
           "speaker": "customer",
@@ -1861,7 +1951,16 @@
         {
           "turn_index": 1,
           "customer_context": "We already have a CRM, so I am not looking to rip anything out.",
-          "agent_answer": "I would not ask you to replace a CRM that works. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around the CRM.",
+          "agent_answer": "I would not ask a team with an existing CRM to rip it out. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around that CRM.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-existing-provider",
+            "persona": "team lead already using a CRM",
+            "domain": "auto_insurance",
+            "scenario_label": "support_handoff",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "provider",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Okay, not replacing the CRM matters. The real question is whether our routing is messy enough to justify another layer.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -1970,7 +2069,16 @@
         {
           "turn_index": 2,
           "customer_context": "Okay, not replacing the CRM matters. The real question is whether our routing is messy enough to justify another layer.",
-          "agent_answer": "A useful fit check would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen, this is probably not urgent.",
+          "agent_answer": "A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-existing-provider",
+            "persona": "team lead already using a CRM",
+            "domain": "auto_insurance",
+            "scenario_label": "support_handoff",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "fit-check",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Those are real issues for us sometimes. If we looked at it, what would the Growth plan cost?",
           "agent_answer_signals": {
             "answers_price": false,
@@ -2079,7 +2187,16 @@
         {
           "turn_index": 3,
           "customer_context": "Those are real issues for us sometimes. If we looked at it, what would the Growth plan cost?",
-          "agent_answer": "The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing.",
+          "agent_answer": "If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-existing-provider",
+            "persona": "team lead already using a CRM",
+            "domain": "auto_insurance",
+            "scenario_label": "support_handoff",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "price",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That price is not tiny, so I would need a clean reason this helps alongside our CRM. What would I tell the team?",
           "agent_answer_signals": {
             "answers_price": true,
@@ -2089,7 +2206,7 @@
             "respects_time": false,
             "respects_support_boundary": false,
             "respects_do_not_call": false,
-            "answers_provider_overlap": false,
+            "answers_provider_overlap": true,
             "manager_summary": false,
             "asks_multiple_questions": false,
             "premature_close_language": false
@@ -2158,7 +2275,7 @@
             "campaign_language": "en",
             "response_language": "en",
             "detected_emotion": "skeptical-or-negative",
-            "sales_difficulty": "price-objection",
+            "sales_difficulty": "general-product-question",
             "interest_state": "maybe-interested",
             "selected_strategy": "evidence-or-benefit",
             "next_action": "continue",
@@ -2188,13 +2305,22 @@
         {
           "turn_index": 4,
           "customer_context": "That price is not tiny, so I would need a clean reason this helps alongside our CRM. What would I tell the team?",
-          "agent_answer": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.",
+          "agent_answer": "For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-existing-provider",
+            "persona": "team lead already using a CRM",
+            "domain": "auto_insurance",
+            "scenario_label": "support_handoff",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "authority",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That gives me enough to explain it. I still need to know whether the next step creates any contract or payment obligation.",
           "agent_answer_signals": {
             "answers_price": true,
             "answers_product_fit": false,
             "answers_trust": false,
-            "offers_written_confirmation": true,
+            "offers_written_confirmation": false,
             "respects_time": false,
             "respects_support_boundary": false,
             "respects_do_not_call": false,
@@ -2297,7 +2423,16 @@
         {
           "turn_index": 5,
           "customer_context": "That gives me enough to explain it. I still need to know whether the next step creates any contract or payment obligation.",
-          "agent_answer": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.",
+          "agent_answer": "For your CRM situation, the review would only compare routing gaps and handoff fit with a specialist. No payment, contract, or replacement decision should happen on this call.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-existing-provider",
+            "persona": "team lead already using a CRM",
+            "domain": "auto_insurance",
+            "scenario_label": "support_handoff",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "final-review",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Alright, book the review. I want it framed around routing gaps, not replacing the CRM.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -2470,7 +2605,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+          "text": "For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist."
         },
         {
           "speaker": "customer",
@@ -2483,7 +2618,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call."
+          "text": "For a manager-led review, this would only schedule a specialist conversation around fit, security notes, and workflow impact. No payment, contract, or purchase decision happens here."
         },
         {
           "speaker": "customer",
@@ -2549,7 +2684,16 @@
         {
           "turn_index": 1,
           "customer_context": "If this is useful, I need the version I can repeat to my manager.",
-          "agent_answer": "For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.",
+          "agent_answer": "For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-manager-review",
+            "persona": "manager who needs a concise internal case",
+            "domain": "auto_insurance",
+            "scenario_label": "cancellation_boundary",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "authority",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "That is concise enough. Before I agree to a slot, confirm this is only a fit review and not a purchase step.",
           "agent_answer_signals": {
             "answers_price": true,
@@ -2658,7 +2802,16 @@
         {
           "turn_index": 2,
           "customer_context": "That is concise enough. Before I agree to a slot, confirm this is only a fit review and not a purchase step.",
-          "agent_answer": "This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.",
+          "agent_answer": "For a manager-led review, this would only schedule a specialist conversation around fit, security notes, and workflow impact. No payment, contract, or purchase decision happens here.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-manager-review",
+            "persona": "manager who needs a concise internal case",
+            "domain": "auto_insurance",
+            "scenario_label": "cancellation_boundary",
+            "safe_agent_tactic": "pain_point_discovery",
+            "active_objection": "final-review",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Good. Then schedule a focused specialist review and include the security notes for my manager.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -2831,7 +2984,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "That should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching."
+          "text": "That account issue should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching RouteSignal."
         },
         {
           "speaker": "customer",
@@ -2895,7 +3048,16 @@
         {
           "turn_index": 1,
           "customer_context": "I am not shopping. I need help with an account problem first.",
-          "agent_answer": "That should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching.",
+          "agent_answer": "That account issue should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching RouteSignal.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-support-boundary",
+            "persona": "support-seeking user who should not be sold",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "support",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Good, then send me to the support person. I am not evaluating software while the account issue is open.",
           "agent_answer_signals": {
             "answers_price": false,
@@ -3067,7 +3229,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "Understood. I will mark this as do not call and end the sales conversation now."
+          "text": "Understood. I will mark this number as do not call and end the sales conversation now."
         },
         {
           "speaker": "customer",
@@ -3131,7 +3293,16 @@
         {
           "turn_index": 1,
           "customer_context": "No. Remove me from your list and do not call this number again.",
-          "agent_answer": "Understood. I will mark this as do not call and end the sales conversation now.",
+          "agent_answer": "Understood. I will mark this number as do not call and end the sales conversation now.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-do-not-call",
+            "persona": "protected stop-request customer",
+            "domain": "automotive",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "do-not-call",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
           "customer_response": "Yes. Remove me and do not follow up. That is the only outcome I wanted from this call.",
           "agent_answer_signals": {
             "answers_price": false,

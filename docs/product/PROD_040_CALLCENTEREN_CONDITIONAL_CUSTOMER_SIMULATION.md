@@ -25,6 +25,9 @@ python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
 - Agent-conditioned customer reply count: `19`
 - Unique customer response count: `19`
 - Repeated customer response count: `0`
+- Unique agent answer count: `19`
+- Repeated agent answer count: `0`
+- Profile customized agent answer count: `19`
 - Agent opening line visible count: `8`
 - Conversation sequence starts with agent count: `8`
 - CallCenterEN pattern source count: `59`
@@ -48,6 +51,7 @@ Open the local HTML surface and inspect whether the customer responses now feel 
 The important panels are:
 
 - `Agent Answer Signals`
+- `Agent Answer Customization`
 - `Why Customer Changed`
 - `CallCenterEN Pattern Basis`
 - `State Before / Delta / After`

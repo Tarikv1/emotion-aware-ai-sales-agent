@@ -131,6 +131,9 @@ def validate_payload(payload: dict[str, Any]) -> None:
     assert_condition(summary.get("agent_conditioned_customer_reply_count") == summary.get("total_turn_count"), summary)
     assert_condition(summary.get("unique_customer_response_count") == summary.get("total_turn_count"), summary)
     assert_condition(summary.get("repeated_customer_response_count") == 0, summary)
+    assert_condition(summary.get("unique_agent_answer_count") == summary.get("total_turn_count"), summary)
+    assert_condition(summary.get("repeated_agent_answer_count") == 0, summary)
+    assert_condition(summary.get("profile_customized_agent_answer_count") == summary.get("total_turn_count"), summary)
     assert_condition(summary.get("callcenteren_pattern_source_count", 0) >= 20, summary)
     assert_condition(summary.get("scenario_bank_source_count") == 8, summary)
     assert_condition(summary.get("abstract_pattern_only") is True, summary)
@@ -176,6 +179,7 @@ def validate_payload(payload: dict[str, Any]) -> None:
         for turn in call.get("turns", []):
             assert_condition(turn.get("customer_context"), turn)
             assert_condition(turn.get("agent_answer"), turn)
+            assert_condition(turn.get("agent_answer_customization"), turn)
             assert_condition(turn.get("customer_response"), turn)
             assert_condition(turn.get("agent_answer_signals"), turn)
             assert_condition(turn.get("customer_response_condition"), turn)
@@ -207,6 +211,9 @@ def validate_docs() -> None:
             "agent-conditioned customer reply count",
             "unique customer response count",
             "repeated customer response count: `0`",
+            "unique agent answer count",
+            "repeated agent answer count: `0`",
+            "profile customized agent answer count",
             "agent opening line visible count",
             "conversation sequence starts with agent count",
             "fixed turn limit used: `false`",

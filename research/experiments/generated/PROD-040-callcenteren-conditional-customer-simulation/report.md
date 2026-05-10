@@ -14,6 +14,9 @@ It does not copy transcript text. It uses the leakage-checked PROD-014 scenario 
 - Agent-conditioned customer reply count: `19`
 - Unique customer response count: `19`
 - Repeated customer response count: `0`
+- Unique agent answer count: `19`
+- Repeated agent answer count: `0`
+- Profile customized agent answer count: `19`
 - CallCenterEN pattern source count: `59`
 - Scenario bank source count: `8`
 - Abstract pattern only: `true`
@@ -67,7 +70,7 @@ I have a few minutes, but if this is another paid tool I need the real cost firs
 Agent answer:
 
 ```text
-The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing.
+For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.
 ```
 
 Customer response:
@@ -91,7 +94,7 @@ Okay, now I know the range. If I mention this internally, what problem am I sayi
 Agent answer:
 
 ```text
-For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.
+For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review.
 ```
 
 Customer response:
@@ -115,7 +118,7 @@ That is enough to keep talking. Just be clear: is the review non-binding, or am 
 Agent answer:
 
 ```text
-This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.
+For the price-sensitive case, this would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.
 ```
 
 Customer response:
@@ -143,7 +146,7 @@ RouteSignal does not ring a bell. Is this a CRM thing or something else?
 Agent answer:
 
 ```text
-RouteSignal CRM is not a full CRM replacement. It sits around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.
+RouteSignal CRM is not a full CRM replacement. For your case, think of it as a layer around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.
 ```
 
 Customer response:
@@ -167,7 +170,7 @@ That helps. If it is mainly routing and callback ownership, what would a small t
 Agent answer:
 
 ```text
-The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing.
+For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.
 ```
 
 Customer response:
@@ -191,7 +194,7 @@ Okay, that is more concrete. Before I take it anywhere, what is the simple inter
 Agent answer:
 
 ```text
-For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.
+For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing.
 ```
 
 Customer response:
@@ -215,7 +218,7 @@ I can explain that now. Before I say yes to a review, tell me whether this creat
 Agent answer:
 
 ```text
-This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.
+For you, the next step would be an educational workflow review with a specialist to confirm fit. No payment, contract, or purchase decision should happen on this call.
 ```
 
 Customer response:
@@ -243,7 +246,7 @@ I get these calls all the time. If this is vague software talk, I am out.
 Agent answer:
 
 ```text
-Fair concern. I cannot promise revenue lift. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.
+Fair concern. I cannot promise revenue lift or pretend this is proven for your company. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.
 ```
 
 Customer response:
@@ -267,7 +270,7 @@ That is more believable than a big promise. Send the exact proof points first; I
 Agent answer:
 
 ```text
-That is reasonable. A specialist can send the written details and separate what is confirmed from what still needs a fit review.
+That is reasonable for a skeptical review. A specialist can send written details and separate confirmed product facts from what still needs a fit review for your team.
 ```
 
 Customer response:
@@ -295,7 +298,7 @@ Not a good time. You have one sentence before I jump back into work.
 Agent answer:
 
 ```text
-Then I will keep it to the point: RouteSignal CRM helps teams stop losing inbound leads between routing and callback ownership. If that problem is not active, we can stop here.
+Then I will keep it to the point for a busy sales lead: RouteSignal CRM helps stop inbound leads getting lost between routing and callback ownership. If that problem is not active today, we can stop here.
 ```
 
 Customer response:
@@ -323,7 +326,7 @@ We already have a CRM, so I am not looking to rip anything out.
 Agent answer:
 
 ```text
-I would not ask you to replace a CRM that works. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around the CRM.
+I would not ask a team with an existing CRM to rip it out. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around that CRM.
 ```
 
 Customer response:
@@ -347,7 +350,7 @@ Okay, not replacing the CRM matters. The real question is whether our routing is
 Agent answer:
 
 ```text
-A useful fit check would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen, this is probably not urgent.
+A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent.
 ```
 
 Customer response:
@@ -371,7 +374,7 @@ Those are real issues for us sometimes. If we looked at it, what would the Growt
 Agent answer:
 
 ```text
-The synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the only question here is whether the workflow is worth reviewing.
+If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.
 ```
 
 Customer response:
@@ -395,7 +398,7 @@ That price is not tiny, so I would need a clean reason this helps alongside our 
 Agent answer:
 
 ```text
-For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.
+For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks.
 ```
 
 Customer response:
@@ -419,7 +422,7 @@ That gives me enough to explain it. I still need to know whether the next step c
 Agent answer:
 
 ```text
-This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.
+For your CRM situation, the review would only compare routing gaps and handoff fit with a specialist. No payment, contract, or replacement decision should happen on this call.
 ```
 
 Customer response:
@@ -447,7 +450,7 @@ If this is useful, I need the version I can repeat to my manager.
 Agent answer:
 
 ```text
-For the manager version: Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, setup is typically two to four weeks, and a specialist can confirm security details in writing.
+For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist.
 ```
 
 Customer response:
@@ -471,7 +474,7 @@ That is concise enough. Before I agree to a slot, confirm this is only a fit rev
 Agent answer:
 
 ```text
-This would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.
+For a manager-led review, this would only schedule a specialist conversation around fit, security notes, and workflow impact. No payment, contract, or purchase decision happens here.
 ```
 
 Customer response:
@@ -499,7 +502,7 @@ I am not shopping. I need help with an account problem first.
 Agent answer:
 
 ```text
-That should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching.
+That account issue should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching RouteSignal.
 ```
 
 Customer response:
@@ -527,7 +530,7 @@ No. Remove me from your list and do not call this number again.
 Agent answer:
 
 ```text
-Understood. I will mark this as do not call and end the sales conversation now.
+Understood. I will mark this number as do not call and end the sales conversation now.
 ```
 
 Customer response:
