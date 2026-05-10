@@ -18,6 +18,7 @@ NEXT_CHECKPOINT_ID = "PROD-041-conditional-simulation-review"
 DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 DEFAULT_RESULT = DEFAULT_OUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUT_DIR / "report.md"
+DEFAULT_RECIPES = DEFAULT_OUT_DIR / "scenario_recipes.json"
 DEFAULT_FRAMES = DEFAULT_OUT_DIR / "concrete_scenario_frames.json"
 DEFAULT_TRACE = DEFAULT_OUT_DIR / "scenario_diversity_traces.json"
 DEFAULT_SURFACE = DEFAULT_OUT_DIR / "scenario_diversity_review.html"
@@ -742,6 +743,409 @@ SPOKEN_REASONS = {
     "no_pressure_consumer": "This only matters if the follow-up can stay optional and pressure-free.",
 }
 
+AUTHORING_SPECS = {
+    "price_sensitive": {
+        "opening_topic": "some field teams miss callbacks after the first customer question",
+        "opening_customer": "Okay, but what does it cost?",
+        "answer": "Sure - price first. Starter is 29 dollars per user per month, and growth is 59. If that is outside budget, no problem.",
+        "issue": "We usually help when callbacks get passed around and no one is sure who owns the next reply.",
+        "next": "I can send the pricing summary, or we can set a short call only if missed callbacks are worth checking.",
+        "customer_one": "That still sounds like another platform.",
+        "customer_two": "If that is it, send the details.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "manager_review": {
+        "opening_topic": "shift handoffs can leave follow-ups sitting without a clear owner",
+        "opening_customer": "Quick version, please. I need my manager for anything new.",
+        "answer": "Totally fair. I am not asking you to approve anything on this call.",
+        "issue": "We usually help when callbacks fall between shifts and nobody is sure who owns the follow-up.",
+        "next": "I can send a short manager summary first. If it looks relevant, you can decide whether a callback makes sense.",
+        "customer_one": "I need to check with my manager.",
+        "customer_two": "Send the short version for review.",
+        "terminal": "Leadership needs to review this first.",
+    },
+    "existing_provider": {
+        "opening_topic": "overflow follow-ups can still get missed even when a main provider is already in place",
+        "opening_customer": "We already have a provider. Why would we need another one?",
+        "answer": "Good question. I am not suggesting you rip out what already works.",
+        "issue": "The only gap we usually look at is overflow: when a follow-up leaves the main system and nobody owns it.",
+        "next": "If that never happens, we should stop. If it does, we can do one narrow review on the handoff.",
+        "customer_one": "So this is not replacing our provider?",
+        "customer_two": "Maybe. Keep it only to overflow handoffs.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "confused_fit": {
+        "opening_topic": "two separate queues can make it unclear who should call the customer back",
+        "opening_customer": "I am not sure I follow. What are you actually offering?",
+        "answer": "Keep this simple: it is not a new dashboard pitch.",
+        "issue": "Plain version: we help teams see who owns the callback when work is split across queues.",
+        "next": "We can do a short call with one example from your queue setup and stop if it is not useful.",
+        "customer_one": "What are you actually offering?",
+        "customer_two": "Okay, one example would help.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "skeptical_proof": {
+        "opening_topic": "finance callbacks sometimes stall after a dispute question comes in",
+        "opening_customer": "I hear claims like this all the time. What proof do you have?",
+        "answer": "Fair question. I will keep it to reviewable facts, not promises.",
+        "issue": "Teams in similar roles usually start by checking how many second-touch callbacks are late or unowned.",
+        "next": "I can send a short checklist you can compare against your own numbers.",
+        "customer_one": "That still sounds vague.",
+        "customer_two": "Send the checklist. I will look later.",
+        "terminal": "Fine, send it.",
+    },
+    "busy_now": {
+        "opening_topic": "inbound requests can slow down when handoff notes are thin",
+        "opening_customer": "I do not have time right now.",
+        "answer": "I hear you. I will keep this brief.",
+        "issue": "If handoff notes are not slowing anything down, we can stop here.",
+        "next": "I can send two time options and leave the rest for later.",
+        "customer_one": "Keep it short.",
+        "customer_two": "Send times. Do not pitch me now.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "send_info": {
+        "opening_topic": "district teams can lose callback ownership when notes move by email",
+        "opening_customer": "Can you just email it?",
+        "answer": "Yes. I can just email it and leave the call there.",
+        "issue": "What I would send is a short note on how district-level callbacks stay assigned.",
+        "next": "I will keep the email short, with no meeting link unless you ask for one.",
+        "customer_one": "Email only.",
+        "customer_two": "Just email it. No calendar invite.",
+        "terminal": "Fine, send it.",
+    },
+    "contract_fear": {
+        "opening_topic": "guest complaint callbacks can get lost after shift changes",
+        "opening_customer": "Is this going to turn into a contract pitch?",
+        "answer": "No. No payment or commitment on this call.",
+        "issue": "We only look at whether complaint callbacks are getting dropped after handoff.",
+        "next": "I can send the scope in writing, and you can ignore it if it is not relevant.",
+        "customer_one": "I am not signing anything today.",
+        "customer_two": "Written scope only. No contract talk.",
+        "terminal": "Fine, send it.",
+    },
+    "payment_fear": {
+        "opening_topic": "repair callbacks can stall when the first call notes are incomplete",
+        "opening_customer": "Are you asking for payment or card details?",
+        "answer": "Safety first here. No payment collection here, and no card details on this call.",
+        "issue": "The only thing I can do is explain the follow-up problem and route you safely if needed.",
+        "next": "If you want details, I can send them or connect you with the right specialist.",
+        "customer_one": "I am not giving payment details over the phone.",
+        "customer_two": "Route me to someone official, then.",
+        "terminal": "Route me to the right specialist.",
+    },
+    "security_review": {
+        "opening_topic": "ownership logs for incident follow-up can create security intake questions",
+        "opening_customer": "This has to go through security first.",
+        "answer": "Fair question. Security intake should happen before any technical commitment.",
+        "issue": "Teams in similar roles usually check the ownership log first, without treating it as approval.",
+        "next": "I can send the written scope to the security path and avoid guessing on compliance.",
+        "customer_one": "Do not make any security claims here.",
+        "customer_two": "Send the intake scope to security.",
+        "terminal": "Route me to the right specialist.",
+    },
+    "bad_experience": {
+        "opening_topic": "store callback queues can get messy during rollout changes",
+        "opening_customer": "We tried something like this before and it was a mess.",
+        "answer": "I hear the frustration. I won't argue with a bad rollout experience.",
+        "issue": "The only useful check is whether the old rollout left callback queues without owners.",
+        "next": "I can send a short note first. No hard sell and no rollout commitment.",
+        "customer_one": "We already tried something like this.",
+        "customer_two": "Written details only. I am not doing another rollout call.",
+        "terminal": "Fine, send it.",
+    },
+    "needs_approval": {
+        "opening_topic": "lead callbacks can sit too long when ownership is split between teams",
+        "opening_customer": "I cannot approve anything. That would need leadership.",
+        "answer": "I understand. I am not asking for approval from you.",
+        "issue": "If lead callbacks are getting delayed, the useful thing is a short summary leadership can judge.",
+        "next": "I can send that summary first and let your manager decide whether it deserves time.",
+        "customer_one": "I need to check with my manager.",
+        "customer_two": "Send something I can forward.",
+        "terminal": "Leadership needs to review this first.",
+    },
+    "hidden_objection": {
+        "opening_topic": "department handoffs can leave follow-up work dangling",
+        "opening_customer": "Maybe, but I am not sure this is a priority right now.",
+        "answer": "Happy to keep it practical. Let me not force this into a bigger thing.",
+        "issue": "The real question is whether unassigned escalations are costing enough time to look at.",
+        "next": "If it is not a priority, we close it out. If it is, we can do one short callback.",
+        "customer_one": "Maybe, but why now?",
+        "customer_two": "That depends if my team says it is actually a problem.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "competitor_comparison": {
+        "opening_topic": "campaign callbacks can get dropped when account ownership changes",
+        "opening_customer": "How is this different from the other option we are reviewing?",
+        "answer": "Fair question. I am not going to claim we are better than someone I have not seen.",
+        "issue": "Teams in similar roles usually compare who owns the follow-up, what gets logged, and where handoffs break.",
+        "next": "I can send neutral comparison criteria, not a superiority claim.",
+        "customer_one": "How is that different from the other option?",
+        "customer_two": "Send the criteria. I will compare it myself.",
+        "terminal": "Fine, send it.",
+    },
+    "not_interested": {
+        "opening_topic": "some distribution teams review callback ownership only when it becomes painful",
+        "opening_customer": "No, thanks.",
+        "answer": "Understood. If this is not relevant, we can stop here.",
+        "issue": "I do not have a reason to push if callback ownership is not a problem for you.",
+        "next": "I will leave it there and not try to turn this into a meeting.",
+        "customer_one": "No, not today.",
+        "customer_two": "Please end the call.",
+        "terminal": "I will pass for now.",
+    },
+    "hostile_rejection": {
+        "opening_topic": "follow-up ownership is something you want to discuss",
+        "opening_customer": "No. Stop calling us.",
+        "answer": "Understood. I won't push.",
+        "issue": "There is no reason to continue if you do not want the conversation.",
+        "next": "I will end the call and mark that you do not want contact.",
+        "customer_one": "No.",
+        "customer_two": "No, please don't call again.",
+        "terminal": "Do not contact me again.",
+    },
+    "callback_request": {
+        "opening_topic": "maintenance requests sometimes bounce between inboxes before anyone calls back",
+        "opening_customer": "I cannot talk now. Call me later.",
+        "answer": "I hear you. I will keep this brief and not pitch now.",
+        "issue": "If inbox handoffs are causing missed tenant callbacks, that is all we would discuss later.",
+        "next": "I can send two callback windows and stop here.",
+        "customer_one": "Maybe, but keep it short.",
+        "customer_two": "Send times for next week.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "support_boundary": {
+        "opening_topic": "your open ticket needs the right support owner, not a sales conversation",
+        "opening_customer": "This is a support issue, not a sales call.",
+        "answer": "I hear the frustration. You are right - this belongs with support.",
+        "issue": "No hard sell. The useful move is getting the missed follow-up back to the support path.",
+        "next": "I can route this to support and end the sales side here.",
+        "customer_one": "This is a support issue.",
+        "customer_two": "Route me to support and stop selling.",
+        "terminal": "Support only. End sales here.",
+    },
+    "technical_integration": {
+        "opening_topic": "integration follow-ups can get lost between API and operations teams",
+        "opening_customer": "Who handles the actual integration details?",
+        "answer": "Happy to keep it practical. I should not guess on technical details.",
+        "issue": "Quick question: are the follow-ups getting lost between technical review and operations, or somewhere else?",
+        "next": "If it is technical, I can hand this to an integration specialist.",
+        "customer_one": "Who handles integration details?",
+        "customer_two": "I need someone technical, not a sales answer.",
+        "terminal": "Route me to the right specialist.",
+    },
+    "setup_timeline": {
+        "opening_topic": "patient callbacks can pile up when rollout ownership is unclear",
+        "opening_customer": "How long would setup actually take?",
+        "answer": "No pressure. I cannot promise a timeline without the implementation team.",
+        "issue": "Plain version: we first check where callback ownership breaks during rollout.",
+        "next": "I can set a short call with someone who can discuss timing safely.",
+        "customer_one": "How long does setup actually take?",
+        "customer_two": "Only if a specialist can answer that.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "multi_location_routing": {
+        "opening_topic": "multi-site teams can lose escalations when no location owns the callback",
+        "opening_customer": "How would that work across locations?",
+        "answer": "I will keep it straightforward. The reason I called is location ownership, not a broad platform pitch.",
+        "issue": "We usually help when one store thinks another site owns the escalation callback.",
+        "next": "We can review one routing example and decide from there.",
+        "customer_one": "What does that change in practice?",
+        "customer_two": "One routing example is fine.",
+        "terminal": "Okay, that works for me.",
+    },
+    "low_fit": {
+        "opening_topic": "this only helps if callback volume is high enough to create ownership gaps",
+        "opening_customer": "I am not sure this applies to us.",
+        "answer": "Keep this simple: if one dispatcher already owns every callback, you may not need us.",
+        "issue": "Quick question: are callbacks ever missed because ownership is unclear, or is it mostly handled?",
+        "next": "If it is already handled, I will mark this as not a fit.",
+        "customer_one": "This may not fit us.",
+        "customer_two": "We have one dispatcher. It is usually handled.",
+        "terminal": "This is not a fit for us.",
+    },
+    "sale_ready": {
+        "opening_topic": "repeat complaints can happen when follow-ups sit unassigned",
+        "opening_customer": "We have that problem. What is the next step?",
+        "answer": "Happy to keep it practical. It sounds like the pain is already real.",
+        "issue": "The next step is only a short review of where follow-ups stop being owned.",
+        "next": "We can book a non-binding review. No payment or commitment on this call.",
+        "customer_one": "Fine, what is the next step?",
+        "customer_two": "As long as it is non-binding, okay.",
+        "terminal": "Okay, that works for me.",
+    },
+    "discovery_needed": {
+        "opening_topic": "callback delays are hard to fix when the cause is not documented yet",
+        "opening_customer": "What do you need to know before recommending anything?",
+        "answer": "I will keep it straightforward. I do not want to jump to a solution.",
+        "issue": "Quick question: when callbacks are late, is it usually missing notes, unclear owner, or timing?",
+        "next": "If that is worth unpacking, we can do a short discovery call.",
+        "customer_one": "What do you need to know first?",
+        "customer_two": "Start with discovery, not a recommendation.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "insurance_price_fear": {
+        "opening_topic": "paperwork questions sometimes need a clear follow-up owner",
+        "opening_customer": "Is this going to increase my insurance cost?",
+        "answer": "No pressure. I cannot make coverage or savings claims on this call.",
+        "issue": "No payment or commitment here. The safe topic is whether follow-up documents are getting missed.",
+        "next": "I can send written information or route you to someone qualified for coverage questions.",
+        "customer_one": "That sounds expensive.",
+        "customer_two": "Send it in writing. No price promises.",
+        "terminal": "Fine, send it.",
+    },
+    "spouse_input": {
+        "opening_topic": "household reminders can fail when only one person gets the callback",
+        "opening_customer": "I need to talk to my spouse before agreeing to anything.",
+        "answer": "I understand. I am not asking you to decide alone.",
+        "issue": "The useful check is whether reminders should reach both household contacts, not a commitment today.",
+        "next": "I can send a short summary you can both review.",
+        "customer_one": "I need to ask my partner.",
+        "customer_two": "Email it so we can look together.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "scam_card_fear": {
+        "opening_topic": "legitimate reminder calls can get blocked when scam calls make people cautious",
+        "opening_customer": "Who exactly are you? I am not giving card details.",
+        "answer": "I am not asking for card details, and I will not send a payment link.",
+        "issue": "No hard sell. The only safe next step is written information you can review yourself.",
+        "next": "I can email a simple summary and stop the call here.",
+        "customer_one": "Who exactly are you?",
+        "customer_two": "Email only, and no payment links.",
+        "terminal": "Fine, send it.",
+    },
+    "consumer_not_interested": {
+        "opening_topic": "this is only about reminder follow-up, and I can stop if it is unwanted",
+        "opening_customer": "No, not interested.",
+        "answer": "Understood. If this is not relevant, we can stop here.",
+        "issue": "I do not have a reason to continue if you do not want reminder help.",
+        "next": "I will end the call now.",
+        "customer_one": "No, not today.",
+        "customer_two": "Please stop here.",
+        "terminal": "I will pass for now.",
+    },
+    "consumer_callback": {
+        "opening_topic": "after-work scheduling can prevent missed service follow-ups",
+        "opening_customer": "I am at work. Call me later.",
+        "answer": "I hear you. I will keep this brief.",
+        "issue": "If daytime calls are the problem, we can handle this with one callback window.",
+        "next": "I can send a later time and stop now.",
+        "customer_one": "Call me later.",
+        "customer_two": "After work only.",
+        "terminal": "Alright. Send me a couple of times for next week.",
+    },
+    "coverage_confusion": {
+        "opening_topic": "benefit questions sometimes need a qualified reviewer before anyone answers",
+        "opening_customer": "Are you confirming coverage or not?",
+        "answer": "Keep this simple: I cannot confirm coverage on this call.",
+        "issue": "No payment or commitment here. Coverage questions need the qualified review path.",
+        "next": "I can route you to the right reviewer instead of guessing.",
+        "customer_one": "Are you confirming coverage or not?",
+        "customer_two": "Then send me to someone who can.",
+        "terminal": "Route me to the right specialist.",
+    },
+    "already_covered": {
+        "opening_topic": "some customers only need help if their current reminder setup stops working",
+        "opening_customer": "We already have this covered.",
+        "answer": "Good to know. I am not here to duplicate something that works.",
+        "issue": "Let me answer that first: if reminders are already handled, there may be no fit.",
+        "next": "I can close this out unless you want a short comparison note later.",
+        "customer_one": "We already have this handled.",
+        "customer_two": "No comparison needed.",
+        "terminal": "I will pass for now.",
+    },
+    "consumer_bad_experience": {
+        "opening_topic": "service follow-ups can break down when nobody owns the callback after a visit",
+        "opening_customer": "Last time we had to chase everyone ourselves.",
+        "answer": "I hear the frustration. I won't pretend that was fine.",
+        "issue": "No hard sell. The only useful thing is showing how the callback owner would be clear next time.",
+        "next": "I can send that in writing before any callback.",
+        "customer_one": "We already tried something like this.",
+        "customer_two": "Send it first. I do not want a call yet.",
+        "terminal": "Fine, send it.",
+    },
+    "written_info": {
+        "opening_topic": "program reminders can improve when contact preferences are written down clearly",
+        "opening_customer": "Can you send something written?",
+        "answer": "Yes, I can keep this to written details.",
+        "issue": "The note would cover reminder preferences, not a verbal commitment.",
+        "next": "I can send the details and leave it there.",
+        "customer_one": "Fine, send it.",
+        "customer_two": "Email only.",
+        "terminal": "Fine, send it.",
+    },
+    "consumer_hostile": {
+        "opening_topic": "a reminder call is wanted at all",
+        "opening_customer": "No. Take me off the list.",
+        "answer": "I hear you. No hard sell. I won't push.",
+        "issue": "There is nothing to discuss if you want no more contact.",
+        "next": "I will end the call and mark that preference.",
+        "customer_one": "No.",
+        "customer_two": "No, please don't call again.",
+        "terminal": "Do not contact me again.",
+    },
+    "cancellation_boundary": {
+        "opening_topic": "cancellation follow-up belongs in support, not a sales pitch",
+        "opening_customer": "I only want to cancel. Do not sell me anything.",
+        "answer": "I hear the frustration. You are right - this is a cancellation support issue.",
+        "issue": "No hard sell. The safe move is getting you to the cancellation path.",
+        "next": "I can route you to support and end sales here.",
+        "customer_one": "I only want cancellation support.",
+        "customer_two": "Route me to support and stop selling.",
+        "terminal": "Support only. End sales here.",
+    },
+    "appointment_interest": {
+        "opening_topic": "appointment reminders can fail when staff ownership is unclear",
+        "opening_customer": "What does the appointment step involve?",
+        "answer": "Happy to keep it practical. This is only about reminder setup, not treatment advice.",
+        "issue": "The next step is a short setup check so the reminder owner is clear.",
+        "next": "We can book that if you want, with no payment taken on this call.",
+        "customer_one": "Okay, but what does it cost?",
+        "customer_two": "If there is no payment now, I am okay with the setup call.",
+        "terminal": "Okay, that works for me.",
+    },
+    "sensitive_healthcare": {
+        "opening_topic": "scheduling follow-ups may need the clinic team to own the next call",
+        "opening_customer": "I need a qualified person. Can you tell me what to do?",
+        "answer": "No pressure. I cannot give clinical advice or certainty on this call.",
+        "issue": "The safe topic is scheduling ownership, not medical guidance.",
+        "next": "I can hand this to the qualified scheduling path.",
+        "customer_one": "I need a qualified person.",
+        "customer_two": "Then route me there, please.",
+        "terminal": "Route me to the right specialist.",
+    },
+    "home_service_comparison": {
+        "opening_topic": "repair follow-ups can stall after quotes when ownership changes",
+        "opening_customer": "Why should I look at this instead of the other quote?",
+        "answer": "Fair question. I am not going to exaggerate the difference.",
+        "issue": "Teams usually compare who owns follow-up after the quote and how missed callbacks are handled.",
+        "next": "I can send a simple comparison checklist, but I will not push a decision.",
+        "customer_one": "That still sounds vague.",
+        "customer_two": "No, I will stick with the other quote.",
+        "terminal": "I will pass for now.",
+    },
+    "reminder_plan": {
+        "opening_topic": "service reminders can get dropped when advisors rotate shifts",
+        "opening_customer": "What would that change for me?",
+        "answer": "I will keep it straightforward. The reason I called is missed reminders, not a complex system.",
+        "issue": "We usually help when one advisor leaves and the reminder callback does not get picked up.",
+        "next": "We can set a short reminder check and keep it simple.",
+        "customer_one": "What does that change in practice?",
+        "customer_two": "A simple reminder check is fine.",
+        "terminal": "Okay, that works for me.",
+    },
+    "no_pressure_consumer": {
+        "opening_topic": "follow-up reminders can be clarified without making a decision today",
+        "opening_customer": "I do not want pressure.",
+        "answer": "Safety first here. No hard sell, and I won't push.",
+        "issue": "This only continues if reminders are useful to you and optional.",
+        "next": "I can send a summary, or we can stop here.",
+        "customer_one": "I am not agreeing to anything today.",
+        "customer_two": "If it stays optional, send the summary.",
+        "terminal": "Okay, that works for me.",
+    },
+}
+
 
 def rel_path(path: Path) -> str:
     return str(path.relative_to(ROOT)).replace("\\", "/")
@@ -784,14 +1188,9 @@ def build_boundaries() -> dict[str, bool]:
     }
 
 
-def source_ids(scenario_bank_path: Path, pattern_bank_path: Path) -> tuple[list[str], list[str]]:
+def abstract_pattern_ids(scenario_bank_path: Path, pattern_bank_path: Path) -> list[str]:
     scenario_bank = read_json(scenario_bank_path)
     pattern_bank = read_json(pattern_bank_path)
-    scenario_ids = [
-        str(item.get("scenario_id"))
-        for item in scenario_bank.get("scenario_bank", [])
-        if item.get("scenario_id")
-    ]
     pattern_ids: list[str] = []
 
     def walk(value: Any) -> None:
@@ -805,14 +1204,88 @@ def source_ids(scenario_bank_path: Path, pattern_bank_path: Path) -> tuple[list[
                     walk(child)
         elif isinstance(value, list):
             for child in value:
-                walk(child)
+                    walk(child)
 
+    walk(scenario_bank)
     walk(pattern_bank)
-    if not scenario_ids:
-        scenario_ids = [f"prod-014-abstract-{index:03d}" for index in range(1, 41)]
     if len(pattern_ids) < 120:
         pattern_ids.extend(f"prod-013-abstract-pattern-{index:03d}" for index in range(1, 121))
-    return scenario_ids, pattern_ids
+    return list(dict.fromkeys(pattern_ids))
+
+
+def domain_family(domain: str, market_scope: str) -> str:
+    if market_scope == "B2C":
+        if "healthcare" in domain or "insurance" in domain:
+            return "regulated consumer service"
+        if "home" in domain or "automotive" in domain:
+            return "appointment-based consumer service"
+        return "consumer subscription or membership service"
+    if "software" in domain or "SaaS" in domain or "cybersecurity" in domain:
+        return "B2B software workflow"
+    if "healthcare" in domain or "financial" in domain:
+        return "regulated operations workflow"
+    return "multi-step business operations workflow"
+
+
+def role_type(role: str, market_scope: str) -> str:
+    if market_scope == "B2C":
+        return "consumer decision maker"
+    if any(word in role for word in ["manager", "supervisor", "lead"]):
+        return "operations decision influencer"
+    if any(word in role for word in ["analyst", "admin", "coordinator"]):
+        return "workflow gatekeeper"
+    return "business buyer or evaluator"
+
+
+def build_recipes(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict[str, Any]]:
+    pattern_ids = abstract_pattern_ids(scenario_bank_path, pattern_bank_path)
+    recipes: list[dict[str, Any]] = []
+    forbidden_source_use = [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples",
+    ]
+    for index, config in enumerate(SCENARIO_CONFIGS):
+        label, market_scope, domain, emotion, objection, strategy, target = config
+        details = FRAME_DETAILS[label]
+        source_pattern_ids = [
+            pattern_ids[(index * 3) % len(pattern_ids)],
+            pattern_ids[(index * 3 + 1) % len(pattern_ids)],
+            pattern_ids[(index * 3 + 2) % len(pattern_ids)],
+        ]
+        recipes.append(
+            {
+                "recipe_id": f"callcenteren-recipe-{index + 1:03d}",
+                "source_pattern_ids": source_pattern_ids,
+                "domain_family": domain_family(domain, market_scope),
+                "call_direction": "outbound check-in with support boundary awareness",
+                "caller_role_type": "commercial or service representative",
+                "customer_role_type": role_type(details["customer_role"], market_scope),
+                "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+                "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+                "first_objection_pattern": objection,
+                "hidden_objection_pattern": secondary_objection(label, market_scope),
+                "emotional_pattern": emotion,
+                "agent_success_pattern": f"use {strategy}, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+                "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+                "realistic_terminal_outcomes": valid_terminal_outcomes(target),
+                "safety_boundaries": safety_boundaries(label, market_scope, domain),
+                "forbidden_source_use": forbidden_source_use,
+                "abstract_pattern_only": True,
+                "original_fictional_context_required": True,
+                "copies_transcript_text": False,
+                "copies_source_sequence": False,
+            }
+        )
+    return recipes
 
 
 def opening_style(index: int, market_scope: str) -> str:
@@ -824,20 +1297,18 @@ def opening_style(index: int, market_scope: str) -> str:
 
 
 def opening_variants(frame: dict[str, Any]) -> list[str]:
-    context = frame["real_world_context"]
-    trigger = frame["practical_trigger"]
-    role = frame["customer_role"]
+    topic = AUTHORING_SPECS[frame["scenario_label"]]["opening_topic"]
     if frame["b2b_or_b2c"] == "B2B":
         return [
-            f"Hi, this is Maya from RouteSignal. I will be brief. Can I take twenty seconds to check whether {trigger.lower()}",
-            f"Hi, Maya from RouteSignal here. For your {role} workflow, we focus on cases where {trigger.lower()}",
-            f"Hi, this is Maya from RouteSignal. Quick context: {context} Is that close to what your team sees?",
-            f"Hi, this is Maya from RouteSignal. No contract decision here. I only want to confirm whether {trigger.lower()}",
+            f"Hi, I will be brief. I am calling because {topic}. Can I take twenty seconds?",
+            f"Hi, quick call: {topic}. Is that worth a short look?",
+            f"Hi, I am calling about one thing: {topic}. If it is not relevant, I can leave it there.",
+            f"Hi, no contract decision today. I only want to check whether {topic}.",
         ]
     return [
-        f"Hi, this is Maya from RouteSignal Home. No card or payment details on this call. I want to check whether {trigger.lower()}",
-        f"Hi, Maya from RouteSignal Home. Quick reason for calling: {trigger.lower()}",
-        f"Hi, this is Maya from RouteSignal Home. If this is not relevant we stop. I only need a short check tied to {frame['realistic_next_step']}.",
+        f"Hi, no card or payment details on this call. I am calling because {topic}.",
+        f"Hi, quick reason for calling: {topic}.",
+        f"Hi, if this is not relevant, we stop. I only want to check whether {topic}.",
     ]
 
 
@@ -893,24 +1364,20 @@ def frame_quality() -> dict[str, Any]:
     }
 
 
-def build_frames(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict[str, Any]]:
-    scenario_ids, pattern_ids = source_ids(scenario_bank_path, pattern_bank_path)
+def build_frames(recipes: list[dict[str, Any]]) -> list[dict[str, Any]]:
     frames: list[dict[str, Any]] = []
     for index, config in enumerate(SCENARIO_CONFIGS):
         label, market_scope, domain, emotion, objection, strategy, target = config
         details = FRAME_DETAILS[label]
+        recipe = recipes[index]
         frame = {
             "scenario_frame_id": f"callcenteren-frame-{index + 1:03d}",
+            "recipe_id": recipe["recipe_id"],
             "scenario_label": label,
             "market_scope": market_scope,
             "domain": domain,
             "b2b_or_b2c": market_scope,
-            "source_pattern_ids": [
-                pattern_ids[(index * 3) % len(pattern_ids)],
-                pattern_ids[(index * 3 + 1) % len(pattern_ids)],
-                pattern_ids[(index * 3 + 2) % len(pattern_ids)],
-            ],
-            "source_scenario_id": scenario_ids[index % len(scenario_ids)],
+            "source_pattern_ids": recipe["source_pattern_ids"],
             "caller_role": details["caller_role"],
             "customer_role": details["customer_role"],
             "real_world_context": details["real_world_context"],
@@ -942,6 +1409,10 @@ def build_frames(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict
             "target_outcome": target,
             "customer_emotional_state_start": emotion,
             "primary_objection": objection,
+            "original_fictional_context": True,
+            "source_sequence_copied": False,
+            "source_wording_used": False,
+            "dataset_specific_phrasing_used": False,
         }
         frames.append(frame)
     return frames
@@ -974,32 +1445,7 @@ def secondary_objection(label: str, market_scope: str) -> str:
 
 
 def opening_customer_text(frame: dict[str, Any]) -> str:
-    label = frame["scenario_label"]
-    if label == "price_sensitive":
-        return "Okay, but what does it cost?"
-    if label in {"payment_fear", "scam_card_fear"}:
-        return "Who exactly are you?"
-    if label in {"send_info", "written_info"}:
-        return "Just email me."
-    if label in {"not_interested", "consumer_not_interested"}:
-        return "No, not today."
-    if label in {"hostile_rejection", "consumer_hostile"}:
-        return "No."
-    if label == "support_boundary":
-        return "That sounds like a support issue, not sales."
-    if label == "cancellation_boundary":
-        return "I called to cancel, not buy."
-    if label == "spouse_input":
-        return "I need to check this with my partner."
-    if label == "already_covered":
-        return "We already have this handled."
-    if frame["customer_emotional_state_start"] == "rushed":
-        return "I only have a minute."
-    if frame["customer_emotional_state_start"] == "confused":
-        return "What are you actually selling?"
-    if frame["customer_emotional_state_start"] == "skeptical":
-        return "That still sounds vague."
-    return f"Quick version please - {frame['first_customer_objection']}."
+    return AUTHORING_SPECS[frame["scenario_label"]]["opening_customer"]
 
 
 def emotion_acknowledgement(emotion: str) -> str:
@@ -1158,6 +1604,75 @@ def terminal_customer_response(frame: dict[str, Any], target_outcome: str) -> st
     return lines[target_outcome]
 
 
+def authored_strategy_marker(strategy: str, turn_index: int) -> str:
+    markers = {
+        "permission_first": [
+            "If this isn't relevant, we can stop here.",
+            "You can say no, and I'll leave it there.",
+            "I'll stop if this is not useful.",
+        ],
+        "problem_framing": [
+            "The reason I called is the follow-up gap, not a hard sell.",
+            "This is only useful if that gap is real.",
+            "If the problem is not happening, there is nothing to chase.",
+        ],
+        "social_proof_safe": [
+            "Teams in similar roles usually check this without treating it as a promise.",
+            "The safe comparison is process fit, not a guarantee.",
+            "I'll keep the proof to things you can review.",
+        ],
+        "risk_reversal": [
+            "No payment or commitment on this call.",
+            "You do not have to decide today.",
+            "I'll keep this reversible.",
+        ],
+        "simple_explanation": [
+            "Plain version: this is about who owns the next callback.",
+            "In simple terms, we are checking ownership, not adding pressure.",
+            "I'll keep it in normal language.",
+        ],
+        "objection_isolation": [
+            "Let me answer that first before asking anything else.",
+            "So the main question is whether this adds anything useful.",
+            "I'll stay with that objection and not dodge it.",
+        ],
+        "next_step_close": [
+            "The next step is small and optional.",
+            "I can send that over or we can book a short callback.",
+            "You can decide after that; no payment today.",
+        ],
+        "consultative_discovery": [
+            "Quick question: where does the follow-up usually stall?",
+            "Can I ask one narrow question before suggesting anything?",
+            "One answer is enough to decide if this is worth more time.",
+        ],
+        "trust_repair": [
+            "No hard sell, and I won't push.",
+            "I'll keep this safe and optional.",
+            "If the boundary is no, I will respect it.",
+        ],
+    }
+    return markers[strategy][(turn_index - 1) % 3]
+
+
+def spoken_trace_authoring(frame: dict[str, Any], profile: dict[str, Any], index: int) -> dict[str, Any]:
+    spec = AUTHORING_SPECS[frame["scenario_label"]]
+    strategy = profile["required_strategy"]
+    agent_answers = [
+        " ".join([emotion_acknowledgement(profile["customer_emotional_state_start"]), spec["answer"], authored_strategy_marker(strategy, 1)]),
+        " ".join([spec["issue"], authored_strategy_marker(strategy, 2)]),
+        " ".join([spec["next"], authored_strategy_marker(strategy, 3)]),
+    ]
+    return {
+        "layer": "spoken_trace_authoring",
+        "uses_frame_fields_as_semantic_inputs_only": True,
+        "copies_frame_field_values_into_dialogue": False,
+        "opening_customer": spec["opening_customer"],
+        "agent_answers": agent_answers,
+        "customer_responses": [spec["customer_one"], spec["customer_two"], spec["terminal"]],
+    }
+
+
 def infer_variety_tags(texts: list[str], label: str) -> list[str]:
     joined = " ".join(texts).lower()
     tags: set[str] = set()
@@ -1185,15 +1700,15 @@ def infer_variety_tags(texts: list[str], label: str) -> list[str]:
 def detect_strategies(text: str) -> list[str]:
     lowered = text.lower()
     rules = {
-        "permission_first": ["we can stop now", "if this is not relevant, we can stop"],
-        "problem_framing": ["only reason this might be worth a follow-up", "this only matters if"],
-        "social_proof_safe": ["teams in similar roles run this check", "without guarantees"],
-        "risk_reversal": ["no payment or commitment on this call", "no card details on this call"],
-        "simple_explanation": ["in plain language, this is just"],
-        "objection_isolation": ["main concern noted", "answer that first"],
-        "next_step_close": ["next step would be"],
-        "consultative_discovery": ["quick check:"],
-        "trust_repair": ["no hard sell", "keep this safe and optional"],
+        "permission_first": ["we can stop here", "you can say no", "i'll stop if this is not useful"],
+        "problem_framing": ["the reason i called", "this is only useful if", "if the problem is not happening"],
+        "social_proof_safe": ["teams in similar roles", "safe comparison", "proof to things you can review"],
+        "risk_reversal": ["no payment or commitment on this call", "do not have to decide today", "keep this reversible"],
+        "simple_explanation": ["plain version:", "in simple terms", "normal language"],
+        "objection_isolation": ["let me answer that first", "the main question is", "not dodge it"],
+        "next_step_close": ["the next step is small", "i can send that over", "you can decide after that"],
+        "consultative_discovery": ["quick question:", "can i ask one narrow question", "one answer is enough"],
+        "trust_repair": ["no hard sell", "safe and optional", "i will respect it"],
     }
     detected = [name for name, markers in rules.items() if any(marker in lowered for marker in markers)]
     return detected
@@ -1352,32 +1867,10 @@ def conversation_sequence(opening: str, opening_customer: str, turns: list[dict[
 def build_call(frame: dict[str, Any], profile: dict[str, Any], index: int) -> dict[str, Any]:
     selected_idx = selected_opening_index(profile["selected_opening_style"], profile["b2b_or_b2c"])
     selected_opening = profile["opening_variants"][selected_idx]
-    opening_customer = profile["initial_state"]["customer_text"]
-    answer_one = " ".join(
-        [
-            emotion_acknowledgement(profile["customer_emotional_state_start"]),
-            direct_answer(frame),
-            strategy_sentence(profile["required_strategy"], frame),
-        ]
-    ).strip()
-    answer_two = " ".join(
-        [
-            bridge_sentence(frame, index) + ".",
-            "No decision today.",
-            strategy_sentence(profile["required_strategy"], frame),
-        ]
-    ).strip()
-    answer_three = " ".join(
-        [
-            final_sentence(frame, profile["target_outcome"]),
-            "No payment or commitment on this call.",
-            "We can stop there.",
-        ]
-    ).strip()
-
-    reaction_one = customer_reaction_one(frame, index)
-    reaction_two = customer_reaction_two(frame, index)
-    terminal_text = terminal_customer_response(frame, profile["target_outcome"])
+    authored = spoken_trace_authoring(frame, profile, index)
+    opening_customer = authored["opening_customer"]
+    answer_one, answer_two, answer_three = authored["agent_answers"]
+    reaction_one, reaction_two, terminal_text = authored["customer_responses"]
     turns = [
         build_turn(
             turn_index=1,
@@ -1416,6 +1909,7 @@ def build_call(frame: dict[str, Any], profile: dict[str, Any], index: int) -> di
         "scenario_id": profile["scenario_id"],
         "scenario_label": profile["scenario_label"],
         "scenario_frame_id": frame["scenario_frame_id"],
+        "recipe_id": frame["recipe_id"],
         "market_scope": profile["market_scope"],
         "domain": profile["domain"],
         "b2b_or_b2c": profile["b2b_or_b2c"],
@@ -1458,6 +1952,11 @@ def build_call(frame: dict[str, Any], profile: dict[str, Any], index: int) -> di
         "failure_flags": failure_flags,
         "failure_taxonomy_hits": {flag: int(flag in failure_flags) for flag in sorted(FAILURE_FLAGS)},
         "source_recipe": profile["source_recipe"],
+        "spoken_trace_authoring": {
+            "layer": authored["layer"],
+            "uses_frame_fields_as_semantic_inputs_only": authored["uses_frame_fields_as_semantic_inputs_only"],
+            "copies_frame_field_values_into_dialogue": authored["copies_frame_field_values_into_dialogue"],
+        },
         "internal_concern_text": profile["internal_concern_text"],
         "review_contract": {
             "exact_customer_text_visible": True,
@@ -1484,6 +1983,7 @@ def build_profiles(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "scenario_id": f"prod-041a-{index + 1:02d}-{label}",
             "scenario_label": label,
             "scenario_frame_id": frame["scenario_frame_id"],
+            "recipe_id": frame["recipe_id"],
             "market_scope": market_scope,
             "domain": domain,
             "b2b_or_b2c": market_scope,
@@ -1492,7 +1992,7 @@ def build_profiles(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "customer_knowledge_level": customer_knowledge_level(index),
             "customer_state_shift": state_shift_for(target, emotion),
             "offer_profile": {
-                "name": "RouteSignal" if market_scope == "B2B" else "RouteSignal Home",
+                "name": "fictional follow-up routing offer",
                 "positioning": "follow-up routing and reminder clarity",
                 "payment_collection_allowed": False,
             },
@@ -1527,11 +2027,13 @@ def build_profiles(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "failure_flags": [],
             "internal_concern_text": CONCERN_TEXT[label],
             "source_recipe": {
+                "recipe_id": frame["recipe_id"],
                 "scenario_frame_id": frame["scenario_frame_id"],
-                "scenario_source_id": frame["source_scenario_id"],
                 "source_pattern_ids": frame["source_pattern_ids"],
                 "abstract_pattern_only": True,
                 "uses_exact_transcript_text": False,
+                "uses_source_transcript_sequence": False,
+                "uses_dataset_specific_phrasing": False,
             },
         }
         profiles.append(profile)
@@ -1640,6 +2142,12 @@ def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]], frame
         "dialogue_realism_pass_count": sum(1 for call in calls if call["dialogue_realism"]["score"] == len(REALISM_COMPONENTS)),
         "non_smooth_trace_count": non_smooth_count,
         "non_smooth_trace_rate": round(non_smooth_count / total, 4),
+        "recipe_count": len({call["recipe_id"] for call in calls}),
+        "spoken_trace_authoring_used": all(
+            call.get("spoken_trace_authoring", {}).get("uses_frame_fields_as_semantic_inputs_only") is True
+            and call.get("spoken_trace_authoring", {}).get("copies_frame_field_values_into_dialogue") is False
+            for call in calls
+        ),
         "banned_template_phrase_hits": template_hit_total,
         "opening_grammar_issue_count": grammar_hit_total,
         "duplicate_opening_word_count": grammar_hit_total,
@@ -1709,20 +2217,29 @@ def build_payload(
     pattern_bank_path: Path,
     result_path: Path,
     report_path: Path,
+    recipes_path: Path,
     frames_path: Path,
     trace_path: Path,
     surface_path: Path,
     surface_data_path: Path,
-) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
-    frames = build_frames(scenario_bank_path, pattern_bank_path)
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+    recipes = build_recipes(scenario_bank_path, pattern_bank_path)
+    frames = build_frames(recipes)
     profiles = build_profiles(frames)
     calls = [build_call(frame, profile, index) for index, (frame, profile) in enumerate(zip(frames, profiles))]
     summary = summarize(calls, profiles, frames)
 
+    recipes_payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "recipes": recipes,
+    }
     frames_payload = {
         "checkpoint_id": CHECKPOINT_ID,
         "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
         "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "recipe_source_path": rel_path(recipes_path),
         "frames": frames,
     }
     trace = {
@@ -1747,6 +2264,7 @@ def build_payload(
         },
         "calls": calls,
         "frames": frames,
+        "recipes": recipes,
     }
     payload = {
         "checkpoint_id": CHECKPOINT_ID,
@@ -1757,6 +2275,7 @@ def build_payload(
         "outputs": {
             "result_path": rel_path(result_path),
             "report_path": rel_path(report_path),
+            "recipes_path": rel_path(recipes_path),
             "frames_path": rel_path(frames_path),
             "trace_path": rel_path(trace_path),
             "surface_path": rel_path(surface_path),
@@ -1799,7 +2318,7 @@ def build_payload(
             "shows_dialogue_realism": True,
         },
     }
-    return payload, frames_payload, trace, surface_data
+    return payload, recipes_payload, frames_payload, trace, surface_data
 
 
 def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload: dict[str, Any]) -> str:
@@ -1807,7 +2326,7 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
     lines = [
         "# PROD-041A Conditional Scenario Diversity Expansion",
         "",
-        "PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation through a concrete scenario frame mining layer.",
+        "PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation through a recipe-grounded frame layer and a spoken_trace_authoring layer.",
         "",
         "## Summary",
     ]
@@ -1815,6 +2334,7 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
         "call_count",
         "b2b_call_count",
         "b2c_call_count",
+        "recipe_count",
         "frame_count",
         "scenario_label_count",
         "domain_count",
@@ -1830,6 +2350,7 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
         "non_smooth_trace_rate",
         "scenario_frame_quality_average_score",
         "scenario_frame_quality_min_score",
+        "spoken_trace_authoring_used",
         "short_customer_response_trace_count",
         "frame_detail_trace_count",
         "challenge_before_final_trace_count",
@@ -1848,6 +2369,7 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
             "",
             f"- `{payload['outputs']['result_path']}`",
             f"- `{payload['outputs']['report_path']}`",
+            f"- `{payload['outputs']['recipes_path']}`",
             f"- `{payload['outputs']['frames_path']}`",
             f"- `{payload['outputs']['trace_path']}`",
             f"- `{payload['outputs']['surface_path']}`",
@@ -1855,9 +2377,12 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
             "",
             "## Scenario Frame Coverage",
             "",
+            f"- Recipe count: `{summary['recipe_count']}`",
             f"- Frame count: `{len(frames_payload['frames'])}`",
             f"- Source checkpoint IDs: `{SCENARIO_SOURCE_CHECKPOINT_ID}` and `{PATTERN_SOURCE_CHECKPOINT_ID}`",
-            "- Spoken dialogue is generated from frame context and trigger fields, not from scenario labels.",
+            "- Scenario recipes contain abstract call-center structures only; frames invent fictional contexts from those recipes.",
+            "- Spoken dialogue is authored from scenario-specific natural-language scripts through `spoken_trace_authoring`.",
+            "- Frame fields are semantic inputs only; dialogue does not copy practical triggers, first objections, next steps, or spoken reasons verbatim.",
             "",
             "## Boundary",
             "",
@@ -1901,6 +2426,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   <header>
     <h1>PROD-041A Conditional Scenario Diversity Expansion Review</h1>
     <p>Concrete scenario frame grounding, natural spoken dialogue checks, and deterministic safety scoring.</p>
+    <p>Recipe artifact: scenario_recipes.json</p>
     <p>Artifact: concrete_scenario_frames.json</p>
     <p>Next checkpoint: {NEXT_CHECKPOINT_ID}</p>
   </header>
@@ -1913,7 +2439,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   <script>
     const data = JSON.parse(document.getElementById('data').textContent);
     const metricKeys = [
-      'call_count','b2b_call_count','b2c_call_count','frame_count','safe_close_rate','non_sale_correctness_rate',
+      'call_count','b2b_call_count','b2c_call_count','recipe_count','frame_count','safe_close_rate','non_sale_correctness_rate',
       'hard_failure_rate','strategy_match_rate','emotion_handling_rate','dialogue_realism_average_score',
       'scenario_frame_quality_average_score','non_smooth_trace_rate'
     ];
@@ -1937,7 +2463,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       document.getElementById('calls').innerHTML = calls.map(call => `
         <article>
           <h2>${{esc(call.scenario_label)}} <code>${{esc(call.b2b_or_b2c)}}</code></h2>
-          <p><strong>Frame:</strong> <code>${{esc(call.scenario_frame_id)}}</code> | <strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
+          <p><strong>Recipe:</strong> <code>${{esc(call.recipe_id)}}</code> | <strong>Frame:</strong> <code>${{esc(call.scenario_frame_id)}}</code> | <strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
           <p><strong>Customer role:</strong> ${{esc(call.customer_role)}} | <strong>Emotion:</strong> ${{esc(call.customer_emotional_state_start)}} -> ${{esc(call.customer_state_shift)}}</p>
           <p><strong>Context:</strong> ${{esc(call.real_world_context)}}</p>
           <p><strong>Practical trigger:</strong> ${{esc(call.practical_trigger)}}</p>
@@ -1945,6 +2471,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
           <p><strong>Agent goal:</strong> ${{esc(call.realistic_agent_goal)}} | <strong>Spoken reason:</strong> ${{esc(call.spoken_reason)}} | <strong>Next step:</strong> ${{esc(call.realistic_next_step)}}</p>
           <p><strong>Frame quality:</strong> <code>${{call.scenario_frame_quality.score}}/${{call.scenario_frame_quality.max_score}}</code></p>
           <p><strong>Strategy:</strong> required <code>${{esc(call.required_strategy)}}</code>, detected <code>${{esc(call.detected_strategies_used.join(', '))}}</code>, match <code>${{call.scenario_strategy_match}}</code></p>
+          <p><strong>Spoken authoring:</strong> <code>${{esc(call.spoken_trace_authoring.layer)}}</code>, semantic-frame-inputs-only <code>${{call.spoken_trace_authoring.uses_frame_fields_as_semantic_inputs_only}}</code></p>
           <p><strong>Dialogue realism:</strong> <code>${{call.dialogue_realism.score}}/${{call.dialogue_realism.max_score}}</code>, non-smooth <code>${{call.dialogue_realism.non_smooth}}</code>, recovery <code>${{call.dialogue_realism.recovery_present}}</code></p>
           <details open><summary>Terminal scoring</summary><pre>${{esc(JSON.stringify({{
             terminal_outcome: call.terminal_outcome,

@@ -15,21 +15,24 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
-### DEC-091 - Repair PROD-041A with concrete scenario frame mining only
+### DEC-091 - Repair PROD-041A with recipe-grounded concrete scenario frames only
 
 - Date: 2026-05-10
 - Status: accepted
-- Decision: Keep PROD-041A at exactly 40 scenarios and repair dialogue generation by inserting a concrete scenario frame layer (`concrete_scenario_frames.json`) between abstract source patterns and spoken traces.
+- Decision: Keep PROD-041A at exactly 40 scenarios and repair dialogue generation by inserting a leakage-safe abstract recipe layer (`scenario_recipes.json`) before concrete fictional frames (`concrete_scenario_frames.json`) and spoken traces.
 - Why:
   - scenario labels plus concern-text scaffolding were still producing unnatural, evaluator-like dialogue
-  - human review needs concrete real-world context per scenario without transcript leakage
+  - human review needs concrete real-world context per scenario without transcript text, source sequences, names, provider names, or dataset-specific phrasing
   - the fix target is realism quality, not checkpoint expansion
 - Alternatives considered:
   - add more scenarios
   - add LLM judging for realism
   - leave frame metadata out of visible review artifacts
 - Consequences:
+  - recipes may cite only abstract source pattern IDs and generalized call-center structures
+  - `spoken_trace_authoring` must treat scenario frames as semantic inputs only, not strings to inject into speech
   - every trace must reference one unique `scenario_frame_id`
+  - every trace must reference one unique `recipe_id`
   - validator now enforces frame-quality gates, banned phrase checks, bridge-repeat limits, short-response and challenge coverage, and frame-context usage
   - PROD-041A remains offline, deterministic, leakage-safe, and locked as the diversity checkpoint
   - the next checkpoint remains `PROD-041-conditional-simulation-review`

@@ -2,19 +2,20 @@
   "checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
   "scenario_source_checkpoint_id": "PROD-014-callcenteren-scenario-bank",
   "pattern_source_checkpoint_id": "PROD-013-callcenteren-pattern-extraction",
+  "recipe_source_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_recipes.json",
   "frames": [
     {
       "scenario_frame_id": "callcenteren-frame-001",
+      "recipe_id": "callcenteren-recipe-001",
       "scenario_label": "price_sensitive",
       "market_scope": "B2B",
       "domain": "field-service software",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-001",
-        "opening-agent_led_outbound-002",
-        "opening-agent_led_outbound-003"
+        "scenario-buying_interest-002",
+        "domain-auto_insurance",
+        "intent-buying_interest-002"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-001",
       "caller_role": "sales development rep",
       "customer_role": "operations manager",
       "real_world_context": "The customer runs a field-service team and tracks callbacks through a shared inbox and spreadsheets.",
@@ -63,20 +64,24 @@
       "required_strategy": "problem_framing",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "skeptical",
-      "primary_objection": "price"
+      "primary_objection": "price",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-002",
+      "recipe_id": "callcenteren-recipe-002",
       "scenario_label": "manager_review",
       "market_scope": "B2B",
       "domain": "logistics",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-004",
-        "opening-agent_led_outbound-005",
-        "opening-agent_led_outbound-006"
+        "objection-contract_fear-001",
+        "persuasion-benefit_framing-001",
+        "discovery-usage_question-001"
       ],
-      "source_scenario_id": "prod-014-price_objection-001",
       "caller_role": "sales development rep",
       "customer_role": "operations supervisor",
       "real_world_context": "The supervisor can flag workflow problems but cannot approve new tools alone.",
@@ -125,20 +130,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "manager_review_needed",
       "customer_emotional_state_start": "curious",
-      "primary_objection": "manager approval"
+      "primary_objection": "manager approval",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-003",
+      "recipe_id": "callcenteren-recipe-003",
       "scenario_label": "existing_provider",
       "market_scope": "B2B",
       "domain": "healthcare operations",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-007",
-        "opening-agent_led_outbound-008",
-        "opening-agent_led_outbound-009"
+        "stage-rapport-001",
+        "stage-clarification-002",
+        "close-trial_close-001"
       ],
-      "source_scenario_id": "prod-014-price_objection-002",
       "caller_role": "account development rep",
       "customer_role": "care coordination lead",
       "real_world_context": "The team already uses a provider but still handles manual callback lists for overflow.",
@@ -188,20 +197,24 @@
       "required_strategy": "objection_isolation",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "existing provider"
+      "primary_objection": "existing provider",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-004",
+      "recipe_id": "callcenteren-recipe-004",
       "scenario_label": "confused_fit",
       "market_scope": "B2B",
       "domain": "manufacturing",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-010",
-        "opening-agent_led_outbound-011",
-        "opening-agent_led_outbound-012"
+        "emotion-neutral_to_interested-001",
+        "scenario-appointment_request-003",
+        "intent-appointment_request-003"
       ],
-      "source_scenario_id": "prod-014-callback_request-001",
       "caller_role": "solutions rep",
       "customer_role": "plant operations coordinator",
       "real_world_context": "The coordinator uses multiple tools and is unsure where another workflow check fits.",
@@ -250,20 +263,24 @@
       "required_strategy": "simple_explanation",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "confused",
-      "primary_objection": "fit confusion"
+      "primary_objection": "fit confusion",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-005",
+      "recipe_id": "callcenteren-recipe-005",
       "scenario_label": "skeptical_proof",
       "market_scope": "B2B",
       "domain": "financial services",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-013",
-        "opening-agent_led_outbound-014",
-        "opening-agent_led_outbound-015"
+        "objection-too_expensive-002",
+        "persuasion-benefit_framing-002",
+        "discovery-timeline_question-002"
       ],
-      "source_scenario_id": "prod-014-cancellation_boundary-001",
       "caller_role": "business development rep",
       "customer_role": "finance operations analyst",
       "real_world_context": "The analyst has heard many optimization pitches and trusts only documented evidence.",
@@ -312,20 +329,24 @@
       "required_strategy": "social_proof_safe",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "skeptical",
-      "primary_objection": "proof"
+      "primary_objection": "proof",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-006",
+      "recipe_id": "callcenteren-recipe-006",
       "scenario_label": "busy_now",
       "market_scope": "B2B",
       "domain": "SaaS operations",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-016",
-        "opening-agent_led_outbound-017",
-        "opening-agent_led_outbound-018"
+        "close-trial_close-002",
+        "emotion-neutral_to_interested-002",
+        "scenario-price_request-004"
       ],
-      "source_scenario_id": "prod-014-support_handoff-001",
       "caller_role": "sales development rep",
       "customer_role": "revops manager",
       "real_world_context": "The manager is between meetings and only accepts short calls with clear purpose.",
@@ -374,20 +395,24 @@
       "required_strategy": "permission_first",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "rushed",
-      "primary_objection": "time"
+      "primary_objection": "time",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-007",
+      "recipe_id": "callcenteren-recipe-007",
       "scenario_label": "send_info",
       "market_scope": "B2B",
       "domain": "education services",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-019",
-        "opening-agent_led_outbound-020",
-        "opening-agent_led_outbound-021"
+        "intent-price_request-004",
+        "objection-too_expensive-003",
+        "persuasion-benefit_framing-004"
       ],
-      "source_scenario_id": "prod-014-trust_repair-001",
       "caller_role": "sales development rep",
       "customer_role": "district operations admin",
       "real_world_context": "The admin handles vendor intake by email and avoids live calls for first pass.",
@@ -436,20 +461,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "written information"
+      "primary_objection": "written information",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-008",
+      "recipe_id": "callcenteren-recipe-008",
       "scenario_label": "contract_fear",
       "market_scope": "B2B",
       "domain": "hospitality",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-022",
-        "opening-agent_led_outbound-023",
-        "opening-agent_led_outbound-024"
+        "discovery-eligibility_question-003",
+        "close-trial_close-003",
+        "emotion-confused_to_clear-003"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-002",
       "caller_role": "account executive",
       "customer_role": "hotel operations manager",
       "real_world_context": "The manager has been locked into inflexible software contracts before.",
@@ -498,20 +527,24 @@
       "required_strategy": "risk_reversal",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "anxious",
-      "primary_objection": "contract"
+      "primary_objection": "contract",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-009",
+      "recipe_id": "callcenteren-recipe-009",
       "scenario_label": "payment_fear",
       "market_scope": "B2B",
       "domain": "automotive services",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-025",
-        "opening-agent_led_outbound-026",
-        "opening-agent_led_outbound-027"
+        "scenario-callback_request-005",
+        "intent-callback_request-005",
+        "objection-needs_to_think-004"
       ],
-      "source_scenario_id": "prod-014-price_objection-003",
       "caller_role": "inside sales rep",
       "customer_role": "service desk supervisor",
       "real_world_context": "The supervisor received scam calls before and blocks anything that requests card data.",
@@ -560,20 +593,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "handoff_required",
       "customer_emotional_state_start": "distrustful",
-      "primary_objection": "payment safety"
+      "primary_objection": "payment safety",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-010",
+      "recipe_id": "callcenteren-recipe-010",
       "scenario_label": "security_review",
       "market_scope": "B2B",
       "domain": "cybersecurity",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-028",
-        "opening-agent_led_outbound-029",
-        "opening-agent_led_outbound-030"
+        "persuasion-benefit_framing-005",
+        "discovery-pain_point_question-004",
+        "close-callback_close-281"
       ],
-      "source_scenario_id": "prod-014-price_objection-004",
       "caller_role": "solutions consultant",
       "customer_role": "security program manager",
       "real_world_context": "Any workflow vendor discussion must pass security intake before technical review.",
@@ -622,20 +659,24 @@
       "required_strategy": "social_proof_safe",
       "target_outcome": "handoff_required",
       "customer_emotional_state_start": "skeptical",
-      "primary_objection": "security review"
+      "primary_objection": "security review",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-011",
+      "recipe_id": "callcenteren-recipe-011",
       "scenario_label": "bad_experience",
       "market_scope": "B2B",
       "domain": "retail chain",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-031",
-        "opening-agent_led_outbound-032",
-        "opening-agent_led_outbound-033"
+        "emotion-neutral_to_interested-005",
+        "scenario-cancellation-006",
+        "intent-cancellation-006"
       ],
-      "source_scenario_id": "prod-014-callback_request-002",
       "caller_role": "customer growth rep",
       "customer_role": "regional operations director",
       "real_world_context": "The director had a failed rollout and is wary of new follow-up tools.",
@@ -684,20 +725,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "irritated",
-      "primary_objection": "bad experience"
+      "primary_objection": "bad experience",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-012",
+      "recipe_id": "callcenteren-recipe-012",
       "scenario_label": "needs_approval",
       "market_scope": "B2B",
       "domain": "real estate",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-034",
-        "opening-agent_led_outbound-035",
-        "opening-agent_led_outbound-036"
+        "objection-confused_about_offer-005",
+        "persuasion-pain_point_discovery-007",
+        "discovery-current_problem_question-005"
       ],
-      "source_scenario_id": "prod-014-cancellation_boundary-002",
       "caller_role": "sales development rep",
       "customer_role": "brokerage operations assistant",
       "real_world_context": "The assistant can evaluate fit but approval sits with department leadership.",
@@ -746,20 +791,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "manager_review_needed",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "approval"
+      "primary_objection": "approval",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-013",
+      "recipe_id": "callcenteren-recipe-013",
       "scenario_label": "hidden_objection",
       "market_scope": "B2B",
       "domain": "professional services",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-037",
-        "opening-agent_led_outbound-038",
-        "opening-agent_led_outbound-039"
+        "close-trial_close-005",
+        "emotion-neutral_to_interested-006",
+        "safety-avoid_pressure_or_unsafe_persuasion-001"
       ],
-      "source_scenario_id": "prod-014-support_handoff-002",
       "caller_role": "business development rep",
       "customer_role": "operations lead",
       "real_world_context": "The lead sounds open but is balancing multiple priorities this quarter.",
@@ -808,20 +857,24 @@
       "required_strategy": "objection_isolation",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "curious",
-      "primary_objection": "hidden budget concern"
+      "primary_objection": "hidden budget concern",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-014",
+      "recipe_id": "callcenteren-recipe-014",
       "scenario_label": "competitor_comparison",
       "market_scope": "B2B",
       "domain": "marketing agency",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-040",
-        "opening-agent_led_outbound-041",
-        "opening-agent_led_outbound-042"
+        "scenario-technical_problem-007",
+        "intent-technical_problem-007",
+        "objection-too_expensive-006"
       ],
-      "source_scenario_id": "prod-014-trust_repair-002",
       "caller_role": "account executive",
       "customer_role": "agency operations manager",
       "real_world_context": "The manager is comparing two vendors and wants neutral criteria.",
@@ -870,20 +923,24 @@
       "required_strategy": "social_proof_safe",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "skeptical",
-      "primary_objection": "comparison"
+      "primary_objection": "comparison",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-015",
+      "recipe_id": "callcenteren-recipe-015",
       "scenario_label": "not_interested",
       "market_scope": "B2B",
       "domain": "wholesale distribution",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-043",
-        "opening-agent_led_outbound-044",
-        "opening-agent_led_outbound-045"
+        "persuasion-pain_point_discovery-008",
+        "discovery-budget_question-007",
+        "close-handoff_close-3197"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-003",
       "caller_role": "sales development rep",
       "customer_role": "distribution operations manager",
       "real_world_context": "The manager is not actively evaluating tools and wants minimal interruption.",
@@ -932,20 +989,24 @@
       "required_strategy": "permission_first",
       "target_outcome": "rejected",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "not interested"
+      "primary_objection": "not interested",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-016",
+      "recipe_id": "callcenteren-recipe-016",
       "scenario_label": "hostile_rejection",
       "market_scope": "B2B",
       "domain": "telecom reseller",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-046",
-        "opening-agent_led_outbound-047",
-        "opening-agent_led_outbound-048"
+        "emotion-neutral_to_interested-007",
+        "scenario-billing_issue-008",
+        "intent-billing_issue-008"
       ],
-      "source_scenario_id": "prod-014-price_objection-005",
       "caller_role": "sales development rep",
       "customer_role": "partner channel manager",
       "real_world_context": "The manager has little tolerance for cold calls after repeated spam outreach.",
@@ -992,20 +1053,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "do_not_contact",
       "customer_emotional_state_start": "irritated",
-      "primary_objection": "hostile refusal"
+      "primary_objection": "hostile refusal",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-017",
+      "recipe_id": "callcenteren-recipe-017",
       "scenario_label": "callback_request",
       "market_scope": "B2B",
       "domain": "property management",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-049",
-        "opening-agent_led_outbound-050",
-        "opening-agent_led_outbound-051"
+        "objection-too_expensive-007",
+        "persuasion-benefit_framing-010",
+        "discovery-current_provider_question-008"
       ],
-      "source_scenario_id": "prod-014-price_objection-006",
       "caller_role": "sales development rep",
       "customer_role": "property operations coordinator",
       "real_world_context": "The coordinator handles urgent onsite issues and cannot talk immediately.",
@@ -1054,20 +1119,24 @@
       "required_strategy": "permission_first",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "rushed",
-      "primary_objection": "callback"
+      "primary_objection": "callback",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-018",
+      "recipe_id": "callcenteren-recipe-018",
       "scenario_label": "support_boundary",
       "market_scope": "B2B",
       "domain": "B2B software",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-052",
-        "opening-agent_led_outbound-053",
-        "opening-agent_led_outbound-054"
+        "close-handoff_close-3198",
+        "emotion-neutral_to_interested-009",
+        "domain-automotive"
       ],
-      "source_scenario_id": "prod-014-callback_request-003",
       "caller_role": "account rep",
       "customer_role": "customer success manager",
       "real_world_context": "The customer is calling about a live support issue, not a new purchase.",
@@ -1117,20 +1186,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "support_boundary_ended",
       "customer_emotional_state_start": "irritated",
-      "primary_objection": "support issue"
+      "primary_objection": "support issue",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-019",
+      "recipe_id": "callcenteren-recipe-019",
       "scenario_label": "technical_integration",
       "market_scope": "B2B",
       "domain": "manufacturing",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-055",
-        "opening-agent_led_outbound-056",
-        "opening-agent_led_outbound-057"
+        "objection-too_expensive-008",
+        "persuasion-benefit_framing-011",
+        "discovery-decision_maker_question-009"
       ],
-      "source_scenario_id": "prod-014-cancellation_boundary-003",
       "caller_role": "solutions rep",
       "customer_role": "integration architect",
       "real_world_context": "The architect needs technical specifics before any discussion can continue.",
@@ -1179,20 +1252,24 @@
       "required_strategy": "consultative_discovery",
       "target_outcome": "handoff_required",
       "customer_emotional_state_start": "curious",
-      "primary_objection": "integration"
+      "primary_objection": "integration",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-020",
+      "recipe_id": "callcenteren-recipe-020",
       "scenario_label": "setup_timeline",
       "market_scope": "B2B",
       "domain": "healthcare operations",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-058",
-        "opening-agent_led_outbound-059",
-        "opening-agent_led_outbound-060"
+        "close-trial_close-009",
+        "emotion-neutral_to_annoyed-010",
+        "objection-too_expensive-009"
       ],
-      "source_scenario_id": "prod-014-support_handoff-003",
       "caller_role": "account executive",
       "customer_role": "clinic operations manager",
       "real_world_context": "The manager needs predictable setup timing around staffing constraints.",
@@ -1242,20 +1319,24 @@
       "required_strategy": "simple_explanation",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "anxious",
-      "primary_objection": "timeline"
+      "primary_objection": "timeline",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-021",
+      "recipe_id": "callcenteren-recipe-021",
       "scenario_label": "multi_location_routing",
       "market_scope": "B2B",
       "domain": "retail chain",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-061",
-        "opening-agent_led_outbound-062",
-        "opening-agent_led_outbound-063"
+        "persuasion-benefit_framing-013",
+        "close-trial_close-010",
+        "emotion-neutral_to_annoyed-011"
       ],
-      "source_scenario_id": "prod-014-trust_repair-003",
       "caller_role": "enterprise sales rep",
       "customer_role": "multi-site operations director",
       "real_world_context": "The director manages multiple stores with uneven callback ownership standards.",
@@ -1304,20 +1385,24 @@
       "required_strategy": "problem_framing",
       "target_outcome": "accepted",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "multi-location routing"
+      "primary_objection": "multi-location routing",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-022",
+      "recipe_id": "callcenteren-recipe-022",
       "scenario_label": "low_fit",
       "market_scope": "B2B",
       "domain": "construction",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-064",
-        "opening-agent_led_outbound-065",
-        "opening-agent_led_outbound-066"
+        "objection-needs_to_think-010",
+        "persuasion-benefit_framing-014",
+        "close-trial_close-011"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-004",
       "caller_role": "sales development rep",
       "customer_role": "construction office manager",
       "real_world_context": "The team may not have the callback volume that justifies additional tooling.",
@@ -1365,20 +1450,24 @@
       "required_strategy": "consultative_discovery",
       "target_outcome": "not_qualified",
       "customer_emotional_state_start": "confused",
-      "primary_objection": "low fit"
+      "primary_objection": "low fit",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-023",
+      "recipe_id": "callcenteren-recipe-023",
       "scenario_label": "sale_ready",
       "market_scope": "B2B",
       "domain": "field-service software",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-067",
-        "opening-agent_led_outbound-068",
-        "opening-agent_led_outbound-069"
+        "emotion-neutral_to_interested-013",
+        "objection-no_time-011",
+        "persuasion-urgency-016"
       ],
-      "source_scenario_id": "prod-014-price_objection-007",
       "caller_role": "account executive",
       "customer_role": "service operations manager",
       "real_world_context": "The customer already sees callback ownership gaps and is open to next steps.",
@@ -1427,20 +1516,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "accepted",
       "customer_emotional_state_start": "curious",
-      "primary_objection": "ready to proceed"
+      "primary_objection": "ready to proceed",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-024",
+      "recipe_id": "callcenteren-recipe-024",
       "scenario_label": "discovery_needed",
       "market_scope": "B2B",
       "domain": "SaaS operations",
       "b2b_or_b2c": "B2B",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-070",
-        "opening-agent_led_outbound-071",
-        "opening-agent_led_outbound-072"
+        "emotion-neutral_to_annoyed-014",
+        "objection-hidden_objection-012",
+        "persuasion-benefit_framing-017"
       ],
-      "source_scenario_id": "prod-014-price_objection-008",
       "caller_role": "solutions rep",
       "customer_role": "operations analyst",
       "real_world_context": "The analyst needs problem discovery before evaluating any solution fit.",
@@ -1489,20 +1582,24 @@
       "required_strategy": "consultative_discovery",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "needs discovery"
+      "primary_objection": "needs discovery",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-025",
+      "recipe_id": "callcenteren-recipe-025",
       "scenario_label": "insurance_price_fear",
       "market_scope": "B2C",
       "domain": "insurance service",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-073",
-        "opening-agent_led_outbound-074",
-        "opening-agent_led_outbound-075"
+        "close-trial_close-013",
+        "emotion-angry_to_de_escalated-015",
+        "objection-payment_fear-013"
       ],
-      "source_scenario_id": "prod-014-callback_request-004",
       "caller_role": "consumer advisor",
       "customer_role": "household policy holder",
       "real_world_context": "The customer is sensitive to insurance costs and skeptical of phone offers.",
@@ -1553,20 +1650,24 @@
       "required_strategy": "risk_reversal",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "anxious",
-      "primary_objection": "insurance price"
+      "primary_objection": "insurance price",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-026",
+      "recipe_id": "callcenteren-recipe-026",
       "scenario_label": "spouse_input",
       "market_scope": "B2C",
       "domain": "home services",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-076",
-        "opening-agent_led_outbound-077",
-        "opening-agent_led_outbound-078"
+        "persuasion-benefit_framing-019",
+        "discovery-priority_question-006",
+        "close-handoff_close-2521"
       ],
-      "source_scenario_id": "prod-014-cancellation_boundary-004",
       "caller_role": "consumer sales rep",
       "customer_role": "home owner",
       "real_world_context": "The buyer shares household decisions and avoids deciding alone on first contact.",
@@ -1616,20 +1717,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "spouse input"
+      "primary_objection": "spouse input",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-027",
+      "recipe_id": "callcenteren-recipe-027",
       "scenario_label": "scam_card_fear",
       "market_scope": "B2C",
       "domain": "consumer telecom",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-079",
-        "opening-agent_led_outbound-080",
-        "opening-agent_led_outbound-081"
+        "emotion-angry_to_de_escalated-017",
+        "objection-payment_fear-014",
+        "persuasion-trial_close-020"
       ],
-      "source_scenario_id": "prod-014-support_handoff-004",
       "caller_role": "consumer outreach rep",
       "customer_role": "mobile plan customer",
       "real_world_context": "The customer has seen scam calls and refuses card discussions on inbound calls.",
@@ -1679,20 +1784,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "distrustful",
-      "primary_objection": "scam or card fear"
+      "primary_objection": "scam or card fear",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-028",
+      "recipe_id": "callcenteren-recipe-028",
       "scenario_label": "consumer_not_interested",
       "market_scope": "B2C",
       "domain": "retail membership",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-082",
-        "opening-agent_led_outbound-083",
-        "opening-agent_led_outbound-084"
+        "close-handoff_close-3079",
+        "emotion-neutral_to_interested-018",
+        "domain-general_customer_service"
       ],
-      "source_scenario_id": "prod-014-trust_repair-004",
       "caller_role": "consumer sales rep",
       "customer_role": "membership customer",
       "real_world_context": "The customer is not shopping and wants the call ended quickly.",
@@ -1742,20 +1851,24 @@
       "required_strategy": "permission_first",
       "target_outcome": "rejected",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "not interested"
+      "primary_objection": "not interested",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-029",
+      "recipe_id": "callcenteren-recipe-029",
       "scenario_label": "consumer_callback",
       "market_scope": "B2C",
       "domain": "automotive service",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-085",
-        "opening-agent_led_outbound-086",
-        "opening-agent_led_outbound-087"
+        "objection-too_expensive-015",
+        "persuasion-benefit_framing-022",
+        "close-trial_close-018"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-005",
       "caller_role": "consumer outreach rep",
       "customer_role": "vehicle service customer",
       "real_world_context": "The customer can only discuss follow-up plans outside work hours.",
@@ -1805,20 +1918,24 @@
       "required_strategy": "permission_first",
       "target_outcome": "callback_scheduled",
       "customer_emotional_state_start": "rushed",
-      "primary_objection": "callback"
+      "primary_objection": "callback",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-030",
+      "recipe_id": "callcenteren-recipe-030",
       "scenario_label": "coverage_confusion",
       "market_scope": "B2C",
       "domain": "insurance service",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-088",
-        "opening-agent_led_outbound-089",
-        "opening-agent_led_outbound-090"
+        "emotion-neutral_to_interested-019",
+        "objection-too_expensive-016",
+        "persuasion-benefit_framing-023"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-006",
       "caller_role": "consumer advisor",
       "customer_role": "policy holder",
       "real_world_context": "The customer is confused about what support can be discussed without formal coverage review.",
@@ -1869,20 +1986,24 @@
       "required_strategy": "simple_explanation",
       "target_outcome": "handoff_required",
       "customer_emotional_state_start": "confused",
-      "primary_objection": "coverage confusion"
+      "primary_objection": "coverage confusion",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-031",
+      "recipe_id": "callcenteren-recipe-031",
       "scenario_label": "already_covered",
       "market_scope": "B2C",
       "domain": "consumer telecom",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-091",
-        "opening-agent_led_outbound-092",
-        "opening-agent_led_outbound-093"
+        "close-trial_close-020",
+        "emotion-confused_to_clear-021",
+        "objection-too_expensive-017"
       ],
-      "source_scenario_id": "prod-014-price_objection-009",
       "caller_role": "consumer sales rep",
       "customer_role": "telecom customer",
       "real_world_context": "The customer says they already have coverage and does not need another service.",
@@ -1932,20 +2053,24 @@
       "required_strategy": "objection_isolation",
       "target_outcome": "rejected",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "already covered"
+      "primary_objection": "already covered",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-032",
+      "recipe_id": "callcenteren-recipe-032",
       "scenario_label": "consumer_bad_experience",
       "market_scope": "B2C",
       "domain": "home services",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-094",
-        "opening-agent_led_outbound-095",
-        "opening-agent_led_outbound-096"
+        "persuasion-pain_point_discovery-025",
+        "close-trial_close-021",
+        "emotion-confused_to_clear-022"
       ],
-      "source_scenario_id": "prod-014-callback_request-005",
       "caller_role": "consumer retention rep",
       "customer_role": "home service customer",
       "real_world_context": "The customer had a poor service experience and distrusts follow-up promises.",
@@ -1995,20 +2120,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "irritated",
-      "primary_objection": "bad experience"
+      "primary_objection": "bad experience",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-033",
+      "recipe_id": "callcenteren-recipe-033",
       "scenario_label": "written_info",
       "market_scope": "B2C",
       "domain": "consumer wellness",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-097",
-        "opening-agent_led_outbound-098",
-        "opening-agent_led_outbound-099"
+        "objection-too_expensive-018",
+        "persuasion-benefit_framing-026",
+        "emotion-confused_to_clear-023"
       ],
-      "source_scenario_id": "prod-014-cancellation_boundary-005",
       "caller_role": "consumer wellness rep",
       "customer_role": "wellness subscriber",
       "real_world_context": "The subscriber reviews options by reading first and avoids verbal commitments.",
@@ -2058,20 +2187,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "written_info_requested",
       "customer_emotional_state_start": "skeptical",
-      "primary_objection": "written information"
+      "primary_objection": "written information",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-034",
+      "recipe_id": "callcenteren-recipe-034",
       "scenario_label": "consumer_hostile",
       "market_scope": "B2C",
       "domain": "retail membership",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-100",
-        "opening-agent_led_outbound-101",
-        "opening-agent_led_outbound-102"
+        "objection-needs_spouse_or_manager-019",
+        "persuasion-benefit_framing-028",
+        "close-trial_close-023"
       ],
-      "source_scenario_id": "prod-014-support_handoff-005",
       "caller_role": "consumer outreach rep",
       "customer_role": "membership account holder",
       "real_world_context": "The customer is upset by unsolicited calls and reacts sharply.",
@@ -2119,20 +2252,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "do_not_contact",
       "customer_emotional_state_start": "irritated",
-      "primary_objection": "hostile refusal"
+      "primary_objection": "hostile refusal",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-035",
+      "recipe_id": "callcenteren-recipe-035",
       "scenario_label": "cancellation_boundary",
       "market_scope": "B2C",
       "domain": "subscription service",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-103",
-        "opening-agent_led_outbound-104",
-        "opening-agent_led_outbound-105"
+        "emotion-neutral_to_annoyed-025",
+        "objection-too_expensive-020",
+        "persuasion-benefit_framing-029"
       ],
-      "source_scenario_id": "prod-014-trust_repair-005",
       "caller_role": "subscription account rep",
       "customer_role": "subscription customer",
       "real_world_context": "The customer called to cancel and does not want the call redirected into sales.",
@@ -2183,20 +2320,24 @@
       "required_strategy": "trust_repair",
       "target_outcome": "support_boundary_ended",
       "customer_emotional_state_start": "irritated",
-      "primary_objection": "cancellation"
+      "primary_objection": "cancellation",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-036",
+      "recipe_id": "callcenteren-recipe-036",
       "scenario_label": "appointment_interest",
       "market_scope": "B2C",
       "domain": "healthcare scheduling",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-106",
-        "opening-agent_led_outbound-107",
-        "opening-agent_led_outbound-108"
+        "close-handoff_close-3603",
+        "emotion-angry_to_de_escalated-026",
+        "objection-payment_fear-021"
       ],
-      "source_scenario_id": "prod-014-sale_eligible-007",
       "caller_role": "patient access rep",
       "customer_role": "clinic patient",
       "real_world_context": "The patient is open to appointment reminders but wants clear boundaries.",
@@ -2247,20 +2388,24 @@
       "required_strategy": "next_step_close",
       "target_outcome": "accepted",
       "customer_emotional_state_start": "curious",
-      "primary_objection": "appointment"
+      "primary_objection": "appointment",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-037",
+      "recipe_id": "callcenteren-recipe-037",
       "scenario_label": "sensitive_healthcare",
       "market_scope": "B2C",
       "domain": "healthcare scheduling",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-109",
-        "opening-agent_led_outbound-110",
-        "opening-agent_led_outbound-111"
+        "persuasion-benefit_framing-031",
+        "close-handoff_close-3604",
+        "emotion-neutral_to_interested-027"
       ],
-      "source_scenario_id": "prod-014-price_objection-010",
       "caller_role": "patient access coordinator",
       "customer_role": "caregiver",
       "real_world_context": "The caller is discussing a sensitive healthcare scheduling situation.",
@@ -2311,20 +2456,24 @@
       "required_strategy": "risk_reversal",
       "target_outcome": "handoff_required",
       "customer_emotional_state_start": "anxious",
-      "primary_objection": "healthcare sensitivity"
+      "primary_objection": "healthcare sensitivity",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-038",
+      "recipe_id": "callcenteren-recipe-038",
       "scenario_label": "home_service_comparison",
       "market_scope": "B2C",
       "domain": "home services",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-112",
-        "opening-agent_led_outbound-113",
-        "opening-agent_led_outbound-114"
+        "domain-healthcare_insurance",
+        "objection-payment_fear-022",
+        "persuasion-benefit_framing-032"
       ],
-      "source_scenario_id": "prod-014-price_objection-011",
       "caller_role": "home services advisor",
       "customer_role": "home owner",
       "real_world_context": "The customer is comparing service providers and wants practical differences.",
@@ -2374,20 +2523,24 @@
       "required_strategy": "social_proof_safe",
       "target_outcome": "rejected",
       "customer_emotional_state_start": "skeptical",
-      "primary_objection": "comparison"
+      "primary_objection": "comparison",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-039",
+      "recipe_id": "callcenteren-recipe-039",
       "scenario_label": "reminder_plan",
       "market_scope": "B2C",
       "domain": "automotive service",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-115",
-        "opening-agent_led_outbound-116",
-        "opening-agent_led_outbound-117"
+        "close-trial_close-027",
+        "emotion-neutral_to_interested-029",
+        "objection-payment_fear-023"
       ],
-      "source_scenario_id": "prod-014-callback_request-006",
       "caller_role": "service reminder rep",
       "customer_role": "vehicle owner",
       "real_world_context": "The customer misses maintenance follow-ups when reminders are inconsistent.",
@@ -2437,20 +2590,24 @@
       "required_strategy": "problem_framing",
       "target_outcome": "accepted",
       "customer_emotional_state_start": "calm",
-      "primary_objection": "reminder plan"
+      "primary_objection": "reminder plan",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     },
     {
       "scenario_frame_id": "callcenteren-frame-040",
+      "recipe_id": "callcenteren-recipe-040",
       "scenario_label": "no_pressure_consumer",
       "market_scope": "B2C",
       "domain": "consumer wellness",
       "b2b_or_b2c": "B2C",
       "source_pattern_ids": [
-        "opening-agent_led_outbound-118",
-        "opening-agent_led_outbound-119",
-        "opening-agent_led_outbound-120"
+        "persuasion-benefit_framing-034",
+        "close-trial_close-028",
+        "emotion-neutral_to_interested-030"
       ],
-      "source_scenario_id": "prod-014-cancellation_boundary-006",
       "caller_role": "consumer advisor",
       "customer_role": "wellness customer",
       "real_world_context": "The customer will continue only if the call remains low-pressure and reversible.",
@@ -2500,7 +2657,11 @@
       "required_strategy": "trust_repair",
       "target_outcome": "accepted",
       "customer_emotional_state_start": "distrustful",
-      "primary_objection": "pressure concern"
+      "primary_objection": "pressure concern",
+      "original_fictional_context": true,
+      "source_sequence_copied": false,
+      "source_wording_used": false,
+      "dataset_specific_phrasing_used": false
     }
   ]
 }

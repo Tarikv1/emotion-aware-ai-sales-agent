@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041A leakage-safe scenario recipe layer
+
+- Objective: repair PROD-041A grounding so concrete frames and dialogue are produced from abstract reusable scenario recipes, not direct scenario labels or any individual CallCenterEN-like source situation.
+- Action taken: added `scenario_recipes.json`, wired frames and traces to reference `recipe_id`, removed provider-brand names from visible openings, added `spoken_trace_authoring` so frames are semantic inputs rather than speech strings, and strengthened the validator to require abstract pattern IDs, fictional context flags, no source sequence copying, no dataset-specific phrasing, no frame-field restatement, and no source wording in spoken dialogue.
+- Data used: existing PROD-014/PROD-013 abstract pattern artifacts only. No provider call, LLM call, private data read, dataset download, transcript copying, source-sequence copying, or runtime behavior change was used.
+- Output created: regenerated `scenario_recipes.json`, `concrete_scenario_frames.json`, `scenario_diversity_traces.json`, `scenario_diversity_review.html`, `scenario_diversity_review_data.json`, `result.json`, and `report.md` under `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/`.
+- What was learned: PROD-041A can keep the same `40` labels and metrics while making the source boundary explicit: abstract recipe -> original fictional frame -> authored spoken trace. Direct frame-field interpolation produced metadata-like dialogue; authored scripts are now the only visible speech source.
+- Why it matters for the thesis: it preserves commercial-safety evidence by preventing close paraphrases, transcript text, names, provider names, unique source event sequences, or source dialogue from entering review-ready artifacts.
+- Open questions: whether the next human review should accept the recipe-grounded traces for offline evidence or request targeted rewrites before voice/demo use.
+
 ### 2026-05-10 - PROD-041A spoken-reason and review-surface repair
 
 - Objective: fix the two PROD-041A review findings without expanding or redesigning the checkpoint.

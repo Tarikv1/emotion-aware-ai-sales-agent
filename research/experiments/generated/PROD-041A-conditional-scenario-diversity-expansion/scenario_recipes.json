@@ -1,0 +1,1866 @@
+{
+  "checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
+  "scenario_source_checkpoint_id": "PROD-014-callcenteren-scenario-bank",
+  "pattern_source_checkpoint_id": "PROD-013-callcenteren-pattern-extraction",
+  "recipes": [
+    {
+      "recipe_id": "callcenteren-recipe-001",
+      "source_pattern_ids": [
+        "scenario-buying_interest-002",
+        "domain-auto_insurance",
+        "intent-buying_interest-002"
+      ],
+      "domain_family": "B2B software workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "price",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "skeptical",
+      "agent_success_pattern": "use problem_framing, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-002",
+      "source_pattern_ids": [
+        "objection-contract_fear-001",
+        "persuasion-benefit_framing-001",
+        "discovery-usage_question-001"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "manager approval",
+      "hidden_objection_pattern": "stakeholder review",
+      "emotional_pattern": "curious",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "manager_review_needed",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-003",
+      "source_pattern_ids": [
+        "stage-rapport-001",
+        "stage-clarification-002",
+        "close-trial_close-001"
+      ],
+      "domain_family": "regulated operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "existing provider",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use objection_isolation, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no unsupported medical or coverage advice"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-004",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-001",
+        "scenario-appointment_request-003",
+        "intent-appointment_request-003"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "workflow gatekeeper",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "fit confusion",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "confused",
+      "agent_success_pattern": "use simple_explanation, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-005",
+      "source_pattern_ids": [
+        "objection-too_expensive-002",
+        "persuasion-benefit_framing-002",
+        "discovery-timeline_question-002"
+      ],
+      "domain_family": "regulated operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "workflow gatekeeper",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "proof",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "skeptical",
+      "agent_success_pattern": "use social_proof_safe, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-006",
+      "source_pattern_ids": [
+        "close-trial_close-002",
+        "emotion-neutral_to_interested-002",
+        "scenario-price_request-004"
+      ],
+      "domain_family": "B2B software workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "time",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "rushed",
+      "agent_success_pattern": "use permission_first, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-007",
+      "source_pattern_ids": [
+        "intent-price_request-004",
+        "objection-too_expensive-003",
+        "persuasion-benefit_framing-004"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "workflow gatekeeper",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "written information",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-008",
+      "source_pattern_ids": [
+        "discovery-eligibility_question-003",
+        "close-trial_close-003",
+        "emotion-confused_to_clear-003"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "contract",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "anxious",
+      "agent_success_pattern": "use risk_reversal, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-009",
+      "source_pattern_ids": [
+        "scenario-callback_request-005",
+        "intent-callback_request-005",
+        "objection-needs_to_think-004"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "payment safety",
+      "hidden_objection_pattern": "payment boundary",
+      "emotional_pattern": "distrustful",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-010",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-005",
+        "discovery-pain_point_question-004",
+        "close-callback_close-281"
+      ],
+      "domain_family": "B2B software workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "security review",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "skeptical",
+      "agent_success_pattern": "use social_proof_safe, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-011",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-005",
+        "scenario-cancellation-006",
+        "intent-cancellation-006"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "business buyer or evaluator",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "bad experience",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "irritated",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-012",
+      "source_pattern_ids": [
+        "objection-confused_about_offer-005",
+        "persuasion-pain_point_discovery-007",
+        "discovery-current_problem_question-005"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "business buyer or evaluator",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "approval",
+      "hidden_objection_pattern": "stakeholder review",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "manager_review_needed",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-013",
+      "source_pattern_ids": [
+        "close-trial_close-005",
+        "emotion-neutral_to_interested-006",
+        "safety-avoid_pressure_or_unsafe_persuasion-001"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "hidden budget concern",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "curious",
+      "agent_success_pattern": "use objection_isolation, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-014",
+      "source_pattern_ids": [
+        "scenario-technical_problem-007",
+        "intent-technical_problem-007",
+        "objection-too_expensive-006"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "comparison",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "skeptical",
+      "agent_success_pattern": "use social_proof_safe, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-015",
+      "source_pattern_ids": [
+        "persuasion-pain_point_discovery-008",
+        "discovery-budget_question-007",
+        "close-handoff_close-3197"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "not interested",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use permission_first, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-016",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-007",
+        "scenario-billing_issue-008",
+        "intent-billing_issue-008"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "hostile refusal",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "irritated",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "do_not_contact"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-017",
+      "source_pattern_ids": [
+        "objection-too_expensive-007",
+        "persuasion-benefit_framing-010",
+        "discovery-current_provider_question-008"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "workflow gatekeeper",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "callback",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "rushed",
+      "agent_success_pattern": "use permission_first, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-018",
+      "source_pattern_ids": [
+        "close-handoff_close-3198",
+        "emotion-neutral_to_interested-009",
+        "domain-automotive"
+      ],
+      "domain_family": "B2B software workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "support issue",
+      "hidden_objection_pattern": "service boundary",
+      "emotional_pattern": "irritated",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "support_boundary_ended",
+        "handoff_required",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "support/cancellation boundary must end sales path"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-019",
+      "source_pattern_ids": [
+        "objection-too_expensive-008",
+        "persuasion-benefit_framing-011",
+        "discovery-decision_maker_question-009"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "business buyer or evaluator",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "integration",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "curious",
+      "agent_success_pattern": "use consultative_discovery, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-020",
+      "source_pattern_ids": [
+        "close-trial_close-009",
+        "emotion-neutral_to_annoyed-010",
+        "objection-too_expensive-009"
+      ],
+      "domain_family": "regulated operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "timeline",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "anxious",
+      "agent_success_pattern": "use simple_explanation, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no unsupported medical or coverage advice"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-021",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-013",
+        "close-trial_close-010",
+        "emotion-neutral_to_annoyed-011"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "business buyer or evaluator",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "multi-location routing",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use problem_framing, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-022",
+      "source_pattern_ids": [
+        "objection-needs_to_think-010",
+        "persuasion-benefit_framing-014",
+        "close-trial_close-011"
+      ],
+      "domain_family": "multi-step business operations workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "low fit",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "confused",
+      "agent_success_pattern": "use consultative_discovery, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "not_qualified",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-023",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-013",
+        "objection-no_time-011",
+        "persuasion-urgency-016"
+      ],
+      "domain_family": "B2B software workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "operations decision influencer",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "ready to proceed",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "curious",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-024",
+      "source_pattern_ids": [
+        "emotion-neutral_to_annoyed-014",
+        "objection-hidden_objection-012",
+        "persuasion-benefit_framing-017"
+      ],
+      "domain_family": "B2B software workflow",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "workflow gatekeeper",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "needs discovery",
+      "hidden_objection_pattern": "internal priority",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use consultative_discovery, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-025",
+      "source_pattern_ids": [
+        "close-trial_close-013",
+        "emotion-angry_to_de_escalated-015",
+        "objection-payment_fear-013"
+      ],
+      "domain_family": "regulated consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "insurance price",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "anxious",
+      "agent_success_pattern": "use risk_reversal, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-026",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-019",
+        "discovery-priority_question-006",
+        "close-handoff_close-2521"
+      ],
+      "domain_family": "appointment-based consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "spouse input",
+      "hidden_objection_pattern": "stakeholder review",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-027",
+      "source_pattern_ids": [
+        "emotion-angry_to_de_escalated-017",
+        "objection-payment_fear-014",
+        "persuasion-trial_close-020"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "scam or card fear",
+      "hidden_objection_pattern": "payment boundary",
+      "emotional_pattern": "distrustful",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-028",
+      "source_pattern_ids": [
+        "close-handoff_close-3079",
+        "emotion-neutral_to_interested-018",
+        "domain-general_customer_service"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "not interested",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use permission_first, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-029",
+      "source_pattern_ids": [
+        "objection-too_expensive-015",
+        "persuasion-benefit_framing-022",
+        "close-trial_close-018"
+      ],
+      "domain_family": "appointment-based consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "callback",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "rushed",
+      "agent_success_pattern": "use permission_first, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-030",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-019",
+        "objection-too_expensive-016",
+        "persuasion-benefit_framing-023"
+      ],
+      "domain_family": "regulated consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "coverage confusion",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "confused",
+      "agent_success_pattern": "use simple_explanation, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-031",
+      "source_pattern_ids": [
+        "close-trial_close-020",
+        "emotion-confused_to_clear-021",
+        "objection-too_expensive-017"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "already covered",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use objection_isolation, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-032",
+      "source_pattern_ids": [
+        "persuasion-pain_point_discovery-025",
+        "close-trial_close-021",
+        "emotion-confused_to_clear-022"
+      ],
+      "domain_family": "appointment-based consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "bad experience",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "irritated",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-033",
+      "source_pattern_ids": [
+        "objection-too_expensive-018",
+        "persuasion-benefit_framing-026",
+        "emotion-confused_to_clear-023"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "written information",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "skeptical",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-034",
+      "source_pattern_ids": [
+        "objection-needs_spouse_or_manager-019",
+        "persuasion-benefit_framing-028",
+        "close-trial_close-023"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "hostile refusal",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "irritated",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "do_not_contact"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-035",
+      "source_pattern_ids": [
+        "emotion-neutral_to_annoyed-025",
+        "objection-too_expensive-020",
+        "persuasion-benefit_framing-029"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "cancellation",
+      "hidden_objection_pattern": "service boundary",
+      "emotional_pattern": "irritated",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "support_boundary_ended",
+        "handoff_required",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "support/cancellation boundary must end sales path"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-036",
+      "source_pattern_ids": [
+        "close-handoff_close-3603",
+        "emotion-angry_to_de_escalated-026",
+        "objection-payment_fear-021"
+      ],
+      "domain_family": "regulated consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "appointment",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "curious",
+      "agent_success_pattern": "use next_step_close, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-037",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-031",
+        "close-handoff_close-3604",
+        "emotion-neutral_to_interested-027"
+      ],
+      "domain_family": "regulated consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "healthcare sensitivity",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "anxious",
+      "agent_success_pattern": "use risk_reversal, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-038",
+      "source_pattern_ids": [
+        "domain-healthcare_insurance",
+        "objection-payment_fear-022",
+        "persuasion-benefit_framing-032"
+      ],
+      "domain_family": "appointment-based consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "comparison",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "skeptical",
+      "agent_success_pattern": "use social_proof_safe, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-039",
+      "source_pattern_ids": [
+        "close-trial_close-027",
+        "emotion-neutral_to_interested-029",
+        "objection-payment_fear-023"
+      ],
+      "domain_family": "appointment-based consumer service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "reminder plan",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "calm",
+      "agent_success_pattern": "use problem_framing, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    },
+    {
+      "recipe_id": "callcenteren-recipe-040",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-034",
+        "close-trial_close-028",
+        "emotion-neutral_to_interested-030"
+      ],
+      "domain_family": "consumer subscription or membership service",
+      "call_direction": "outbound check-in with support boundary awareness",
+      "caller_role_type": "commercial or service representative",
+      "customer_role_type": "consumer decision maker",
+      "trigger_pattern": "a recurring follow-up, routing, approval, safety, or scheduling problem creates a reason to check relevance",
+      "opening_pattern": "brief identity, reason for call, permission or safety boundary before pitch",
+      "first_objection_pattern": "pressure concern",
+      "hidden_objection_pattern": "personal relevance",
+      "emotional_pattern": "distrustful",
+      "agent_success_pattern": "use trust_repair, answer the first objection, keep pressure low, and earn a valid terminal outcome",
+      "agent_failure_pattern": "turn the abstract concern into a scripted pitch, pressure after refusal, collect payment, or make unsupported claims",
+      "realistic_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing",
+        "close paraphrases of CallCenterEN examples"
+      ],
+      "abstract_pattern_only": true,
+      "original_fictional_context_required": true,
+      "copies_transcript_text": false,
+      "copies_source_sequence": false
+    }
+  ]
+}

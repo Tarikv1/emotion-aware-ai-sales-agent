@@ -24,6 +24,7 @@ OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
 FRAMES_PATH = OUT_DIR / "concrete_scenario_frames.json"
+RECIPES_PATH = OUT_DIR / "scenario_recipes.json"
 TRACE_PATH = OUT_DIR / "scenario_diversity_traces.json"
 SURFACE_PATH = OUT_DIR / "scenario_diversity_review.html"
 SURFACE_DATA_PATH = OUT_DIR / "scenario_diversity_review_data.json"
@@ -131,6 +132,19 @@ BANNED_PHRASES = [
     "The practical blocker for me is still internal priority",
     "Because you kept it brief on",
     "If we continue, I want the step to stay limited to",
+    "asks why",
+    "says manager approval",
+    "states approval",
+    "mentions a bad past",
+    "first_customer_objection",
+    "realistic_next_step",
+    "This is about one concrete issue",
+    "Quick version please -",
+    "Okay, but keep it focused on",
+    "This only matters if no immediate workflow trigger",
+]
+BANNED_REGEXES = [
+    re.compile(r"\bFor\s+[^,.]+,\s+next step would be\b", re.IGNORECASE),
 ]
 IMPERATIVE_GOAL_VERBS = {
     "answer",
@@ -150,6 +164,7 @@ BROKEN_RELEVANCE_PATTERN = re.compile(
 )
 REVIEW_SURFACE_REQUIRED_CALL_FIELDS = [
     "scenario_frame_id",
+    "recipe_id",
     "terminal_outcome",
     "counts_toward_safe_close_rate",
     "counts_toward_non_sale_correctness",
@@ -158,6 +173,7 @@ REVIEW_SURFACE_REQUIRED_CALL_FIELDS = [
     "failure_taxonomy_hits",
     "valid_terminal_outcomes",
     "dialogue_realism",
+    "spoken_trace_authoring",
 ]
 REALISM_COMPONENTS = {
     "natural_customer_language",
@@ -174,6 +190,7 @@ REQUIRED_FILES = [
     DOC_PATH,
     RESULT_PATH,
     REPORT_PATH,
+    RECIPES_PATH,
     FRAMES_PATH,
     TRACE_PATH,
     SURFACE_PATH,
@@ -181,6 +198,93 @@ REQUIRED_FILES = [
     SCENARIO_BANK_PATH,
     PATTERN_BANK_PATH,
 ]
+RECIPE_REQUIRED_FIELDS = [
+    "recipe_id",
+    "source_pattern_ids",
+    "domain_family",
+    "call_direction",
+    "caller_role_type",
+    "customer_role_type",
+    "trigger_pattern",
+    "opening_pattern",
+    "first_objection_pattern",
+    "hidden_objection_pattern",
+    "emotional_pattern",
+    "agent_success_pattern",
+    "agent_failure_pattern",
+    "realistic_terminal_outcomes",
+    "safety_boundaries",
+    "forbidden_source_use",
+]
+FORBIDDEN_SOURCE_USE = {
+    "raw transcript text",
+    "transcript-specific situations",
+    "customer phrasing",
+    "company names",
+    "customer names",
+    "phone numbers",
+    "addresses",
+    "provider names",
+    "unique event sequences",
+    "dataset-specific phrasing",
+    "close paraphrases of CallCenterEN examples",
+}
+PROVIDER_OR_SOURCE_NAME_PATTERN = re.compile(r"\b(AIxBlock|RouteSignal)\b", re.IGNORECASE)
+METADATA_CUSTOMER_PATTERN = re.compile(
+    r"^\s*(asks|says|states|mentions|requires|requests|rejects|references|demands|needs)\b",
+    re.IGNORECASE,
+)
+CASUAL_AGENT_MARKERS = {
+    "can't",
+    "don't",
+    "i'll",
+    "i'm",
+    "it's",
+    "that's",
+    "you're",
+    "we'll",
+    "let's",
+    "no problem",
+    "sure",
+    "okay",
+    "alright",
+    "quick",
+}
+REAL_CUSTOMER_PUSHBACK_MARKERS = {
+    "we already have someone for that",
+    "i'm not sure i follow",
+    "what are you actually offering",
+    "can you just email it",
+    "i don't have time right now",
+    "that sounds like another platform",
+    "i need to check with my manager",
+    "i'm not giving payment details over the phone",
+    "no, please don't call again",
+    "we already have a provider",
+    "just email it",
+    "not interested",
+    "quick version",
+    "that still sounds",
+    "i am not signing",
+    "do not make any security claims",
+    "we already tried",
+    "i cannot approve",
+    "how is this different",
+    "stop calling",
+    "call me later",
+    "this is a support issue",
+    "i need someone technical",
+    "how long",
+    "i am not sure this applies",
+    "start with discovery",
+    "that sounds expensive",
+    "who exactly are you",
+    "are you confirming coverage",
+    "we already have this handled",
+    "i only want to cancel",
+    "why should i look at this",
+    "do not want pressure",
+}
 REQUIRED_FALSE_BOUNDARIES = [
     "provider_calls_made",
     "llm_used",
@@ -243,8 +347,68 @@ def extract_visible_dialogue(call: dict[str, Any]) -> list[str]:
     return visible
 
 
+def normalize_spoken(text: str) -> str:
+    return re.sub(r"[^a-z0-9\s]", " ", text.lower()).strip()
+
+
+def meaningful_tokens(text: str) -> set[str]:
+    stop = {
+        "the",
+        "and",
+        "that",
+        "this",
+        "with",
+        "when",
+        "from",
+        "into",
+        "they",
+        "your",
+        "you",
+        "are",
+        "for",
+        "any",
+        "not",
+        "can",
+        "call",
+        "next",
+        "step",
+    }
+    return {token for token in normalize_spoken(text).split() if len(token) >= 4 and token not in stop}
+
+
+def is_near_direct_restatement(line: str, source_field: str) -> bool:
+    source_tokens = meaningful_tokens(source_field)
+    if len(source_tokens) < 6:
+        return False
+    line_tokens = meaningful_tokens(line)
+    if len(line_tokens) < 6:
+        return False
+    overlap = len(source_tokens & line_tokens) / len(source_tokens)
+    return overlap >= 0.72
+
+
+def field_leakage_findings(line: str, frame: dict[str, Any]) -> list[str]:
+    findings: list[str] = []
+    line_norm = normalize_spoken(line)
+    for field in [
+        "first_customer_objection",
+        "realistic_agent_goal",
+        "realistic_next_step",
+        "practical_trigger",
+        "spoken_reason",
+    ]:
+        value = str(frame.get(field, ""))
+        value_norm = normalize_spoken(value)
+        if value_norm and len(value_norm) >= 16 and value_norm in line_norm:
+            findings.append(f"verbatim {field}")
+        elif is_near_direct_restatement(line, value):
+            findings.append(f"near-direct {field}")
+    return findings
+
+
 def validate_payload(
     payload: dict[str, Any],
+    recipes_payload: dict[str, Any],
     frames_payload: dict[str, Any],
     trace: dict[str, Any],
     surface_data: dict[str, Any],
@@ -255,12 +419,14 @@ def validate_payload(
     assert_condition(payload.get("pattern_source_checkpoint_id") == PATTERN_SOURCE_CHECKPOINT_ID, payload.get("pattern_source_checkpoint_id"))
     assert_condition(payload.get("next_checkpoint_recommended") == NEXT_CHECKPOINT_ID, payload.get("next_checkpoint_recommended"))
     assert_condition(trace.get("checkpoint_id") == CHECKPOINT_ID, trace.get("checkpoint_id"))
+    assert_condition(recipes_payload.get("checkpoint_id") == CHECKPOINT_ID, recipes_payload.get("checkpoint_id"))
     assert_condition(frames_payload.get("checkpoint_id") == CHECKPOINT_ID, frames_payload.get("checkpoint_id"))
     assert_condition(surface_data.get("checkpoint_id") == CHECKPOINT_ID, surface_data.get("checkpoint_id"))
 
     outputs = payload.get("outputs", {})
     assert_condition(outputs.get("result_path") == normalized(RESULT_PATH), outputs)
     assert_condition(outputs.get("report_path") == normalized(REPORT_PATH), outputs)
+    assert_condition(outputs.get("recipes_path") == normalized(RECIPES_PATH), outputs)
     assert_condition(outputs.get("frames_path") == normalized(FRAMES_PATH), outputs)
     assert_condition(outputs.get("trace_path") == normalized(TRACE_PATH), outputs)
     assert_condition(outputs.get("surface_path") == normalized(SURFACE_PATH), outputs)
@@ -269,11 +435,15 @@ def validate_payload(
     for key in REQUIRED_FALSE_BOUNDARIES:
         assert_condition(payload.get("boundaries", {}).get(key) is False, f"boundary {key} must be false")
 
+    recipes = recipes_payload.get("recipes", [])
     frames = frames_payload.get("frames", [])
     calls = trace.get("calls", [])
     profiles = trace.get("scenario_profiles", [])
     summary = payload.get("summary", {})
 
+    assert_condition(len(recipes) == 40, len(recipes))
+    assert_condition(summary.get("recipe_count") == 40, summary)
+    assert_condition(summary.get("spoken_trace_authoring_used") is True, summary)
     assert_condition(len(frames) == 40, len(frames))
     assert_condition(summary.get("frame_count") == 40, summary)
     assert_condition(summary.get("call_count") == 40, summary)
@@ -323,6 +493,23 @@ def validate_payload(
     assert_condition(summary.get("frame_detail_trace_count", 0) >= 10, summary)
     assert_condition(summary.get("challenge_before_final_trace_count", 0) >= 10, summary)
 
+    recipe_ids = [recipe.get("recipe_id") for recipe in recipes]
+    assert_condition(len(set(recipe_ids)) == 40, recipe_ids)
+    recipe_by_id = {recipe["recipe_id"]: recipe for recipe in recipes}
+    assert_condition(len(recipe_by_id) == 40, recipe_by_id)
+
+    for recipe in recipes:
+        for key in RECIPE_REQUIRED_FIELDS:
+            assert_condition(recipe.get(key), f"recipe missing {key}: {recipe.get('recipe_id')}")
+        assert_condition(len(recipe.get("source_pattern_ids", [])) >= 2, recipe)
+        assert_condition(set(recipe.get("forbidden_source_use", [])) >= FORBIDDEN_SOURCE_USE, recipe)
+        assert_condition(recipe.get("original_fictional_context_required") is True, recipe)
+        assert_condition(recipe.get("abstract_pattern_only") is True, recipe)
+        assert_condition(recipe.get("copies_transcript_text") is False, recipe)
+        assert_condition(recipe.get("copies_source_sequence") is False, recipe)
+        recipe_text = json.dumps(recipe, ensure_ascii=False)
+        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(recipe_text), recipe)
+
     frame_ids = [frame["scenario_frame_id"] for frame in frames]
     assert_condition(len(set(frame_ids)) == 40, frame_ids)
     frame_by_id = {frame["scenario_frame_id"]: frame for frame in frames}
@@ -330,7 +517,13 @@ def validate_payload(
 
     for frame in frames:
         assert_condition(frame["scenario_label"] in REQUIRED_LABELS, frame)
+        assert_condition(frame.get("recipe_id") in recipe_by_id, frame)
+        assert_condition(frame.get("source_pattern_ids") == recipe_by_id[frame["recipe_id"]]["source_pattern_ids"], frame)
         assert_condition(len(frame.get("source_pattern_ids", [])) >= 2, frame)
+        assert_condition(frame.get("original_fictional_context") is True, frame)
+        assert_condition(frame.get("source_sequence_copied") is False, frame)
+        assert_condition(frame.get("source_wording_used") is False, frame)
+        assert_condition(frame.get("dataset_specific_phrasing_used") is False, frame)
         for key in [
             "customer_role",
             "real_world_context",
@@ -345,6 +538,8 @@ def validate_payload(
         ]:
             assert_condition(frame.get(key), f"frame missing {key}: {frame.get('scenario_frame_id')}")
         assert_condition(not BROKEN_RELEVANCE_PATTERN.search(frame["spoken_reason"]), frame["spoken_reason"])
+        frame_text = json.dumps(frame, ensure_ascii=False)
+        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(frame_text), frame)
         quality = frame.get("scenario_frame_quality", {})
         assert_condition(quality.get("score", 0) >= 6, quality)
         assert_condition(quality.get("max_score") == 7, quality)
@@ -356,11 +551,18 @@ def validate_payload(
     selected_openings: set[str] = set()
     full_sequences: set[str] = set()
     closing_by_objection: dict[str, set[str]] = defaultdict(set)
+    casual_agent_trace_count = 0
+    pushback_trace_count = 0
     for call, profile in zip(calls, profiles):
         assert_condition(call["scenario_id"] == profile["scenario_id"], call["scenario_id"])
         assert_condition(call["scenario_label"] == profile["scenario_label"], call["scenario_label"])
         assert_condition(call["scenario_frame_id"] == profile["scenario_frame_id"], call["scenario_frame_id"])
+        assert_condition(call["recipe_id"] == profile["recipe_id"], call["recipe_id"])
+        assert_condition(call["recipe_id"] in recipe_by_id, call["recipe_id"])
         assert_condition(call["scenario_frame_id"] in frame_by_id, call["scenario_frame_id"])
+        assert_condition(call.get("spoken_trace_authoring", {}).get("layer") == "spoken_trace_authoring", call)
+        assert_condition(call.get("spoken_trace_authoring", {}).get("uses_frame_fields_as_semantic_inputs_only") is True, call)
+        assert_condition(call.get("spoken_trace_authoring", {}).get("copies_frame_field_values_into_dialogue") is False, call)
         assert_condition(call["b2b_or_b2c"] in {"B2B", "B2C"}, call)
         assert_condition(call["customer_emotional_state_start"] in EMOTIONS, call)
         assert_condition(call["customer_state_shift"] in STATE_SHIFTS, call)
@@ -412,12 +614,27 @@ def validate_payload(
 
         visible_texts = extract_visible_dialogue(call)
         spoken_joined = "\n".join(item.lower() for item in visible_texts)
+        spoken_raw = "\n".join(visible_texts)
         label_text = call["scenario_label"].replace("_", " ").lower()
         concern_text = call["internal_concern_text"].lower()
         assert_condition(label_text not in spoken_joined, call["scenario_label"])
+        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(spoken_raw), call["scenario_id"])
         assert_condition(spoken_joined.count(concern_text) <= 1, concern_text)
         for phrase in BANNED_PHRASES:
             assert_condition(phrase.lower() not in spoken_joined, phrase)
+        for pattern in BANNED_REGEXES:
+            assert_condition(not pattern.search(spoken_raw), pattern.pattern)
+        frame = frame_by_id[call["scenario_frame_id"]]
+        for line in visible_texts:
+            assert_condition(not field_leakage_findings(line, frame), {"line": line, "frame": frame["scenario_frame_id"], "findings": field_leakage_findings(line, frame)})
+        customer_lines = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "customer"]
+        agent_lines = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "agent"]
+        for line in customer_lines:
+            assert_condition(not METADATA_CUSTOMER_PATTERN.search(line), {"metadata_customer_text": line, "scenario_id": call["scenario_id"]})
+        if any(marker in " ".join(agent_lines).lower() for marker in CASUAL_AGENT_MARKERS):
+            casual_agent_trace_count += 1
+        if any(marker in " ".join(customer_lines).lower() for marker in REAL_CUSTOMER_PUSHBACK_MARKERS):
+            pushback_trace_count += 1
         broken_relevance = BROKEN_RELEVANCE_PATTERN.search(spoken_joined)
         assert_condition(
             not broken_relevance,
@@ -432,6 +649,9 @@ def validate_payload(
             assert_condition(turn["detected_strategy"] in STRATEGIES, turn)
             assert_condition(turn["question_count"] <= 2, turn)
             assert_condition(turn["safety_flags"]["hard_failure"] is False, turn)
+
+    assert_condition(casual_agent_trace_count >= 30, f"casual agent language traces too low: {casual_agent_trace_count}")
+    assert_condition(pushback_trace_count >= 20, f"customer pushback traces too low: {pushback_trace_count}")
 
 
 def validate_docs() -> None:
@@ -449,6 +669,7 @@ def validate_docs() -> None:
         for marker in [
             "prod-041a",
             "conditional scenario diversity expansion",
+            "scenario_recipes.json",
             "concrete_scenario_frames.json",
             "dialogue realism",
             "scenario frame",
@@ -480,7 +701,13 @@ def main() -> None:
     assert_condition(not missing, f"missing required PROD-041A files: {missing}")
     completed = run_command([sys.executable, str(RUNNER)])
     assert_condition(completed.returncode == 0, f"runner failed stdout={completed.stdout!r} stderr={completed.stderr!r}")
-    validate_payload(read_json(RESULT_PATH), read_json(FRAMES_PATH), read_json(TRACE_PATH), read_json(SURFACE_DATA_PATH))
+    validate_payload(
+        read_json(RESULT_PATH),
+        read_json(RECIPES_PATH),
+        read_json(FRAMES_PATH),
+        read_json(TRACE_PATH),
+        read_json(SURFACE_DATA_PATH),
+    )
     validate_docs()
     print("PROD-041A conditional scenario diversity expansion validation passed.")
 

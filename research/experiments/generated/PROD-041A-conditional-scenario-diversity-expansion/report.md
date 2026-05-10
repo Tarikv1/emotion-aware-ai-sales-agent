@@ -1,11 +1,12 @@
 # PROD-041A Conditional Scenario Diversity Expansion
 
-PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation through a concrete scenario frame mining layer.
+PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation through a recipe-grounded frame layer and a spoken_trace_authoring layer.
 
 ## Summary
 - Call Count: `40`
 - B2B Call Count: `24`
 - B2C Call Count: `16`
+- Recipe Count: `40`
 - Frame Count: `40`
 - Scenario Label Count: `40`
 - Domain Count: `27`
@@ -16,14 +17,15 @@ PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation 
 - Hard Failure Rate: `0.0`
 - Strategy Match Rate: `1.0`
 - Emotion Handling Rate: `1.0`
-- Dialogue Realism Average Score: `6.85`
-- Dialogue Realism Min Score: `6`
-- Non Smooth Trace Rate: `0.45`
+- Dialogue Realism Average Score: `6.525`
+- Dialogue Realism Min Score: `5`
+- Non Smooth Trace Rate: `0.35`
 - Scenario Frame Quality Average Score: `7.0`
 - Scenario Frame Quality Min Score: `7`
+- Spoken Trace Authoring Used: `True`
 - Short Customer Response Trace Count: `40`
-- Frame Detail Trace Count: `40`
-- Challenge Before Final Trace Count: `18`
+- Frame Detail Trace Count: `29`
+- Challenge Before Final Trace Count: `20`
 - Agent Bridge Sentence Max Repeat: `1`
 - Customer Bridge Sentence Max Repeat: `2`
 - Hard Failure Count: `0`
@@ -35,6 +37,7 @@ PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation 
 
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/result.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/report.md`
+- `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_recipes.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/concrete_scenario_frames.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_traces.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_review.html`
@@ -42,9 +45,12 @@ PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation 
 
 ## Scenario Frame Coverage
 
+- Recipe count: `40`
 - Frame count: `40`
 - Source checkpoint IDs: `PROD-014-callcenteren-scenario-bank` and `PROD-013-callcenteren-pattern-extraction`
-- Spoken dialogue is generated from frame context and trigger fields, not from scenario labels.
+- Scenario recipes contain abstract call-center structures only; frames invent fictional contexts from those recipes.
+- Spoken dialogue is authored from scenario-specific natural-language scripts through `spoken_trace_authoring`.
+- Frame fields are semantic inputs only; dialogue does not copy practical triggers, first objections, next steps, or spoken reasons verbatim.
 
 ## Boundary
 

@@ -4,9 +4,9 @@ PROD-041A keeps the same `40`-scenario checkpoint and repairs dialogue realism b
 
 Generation flow is now:
 
-`PROD-014 abstract scenario bank + PROD-013 abstract pattern IDs -> concrete_scenario_frames.json -> scenario_diversity_traces.json -> review surface`
+`PROD-014 abstract scenario bank + PROD-013 abstract pattern IDs -> scenario_recipes.json -> concrete_scenario_frames.json -> spoken_trace_authoring -> scenario_diversity_traces.json -> review surface`
 
-Spoken calls are generated from concrete frame fields, not directly from scenario labels or repeated concern phrases.
+The recipe layer stores abstract reusable call-center structures only. Concrete frames are original fictional situations invented from those recipes. `spoken_trace_authoring` then uses those frames as semantic inputs only and selects scenario-specific authored spoken dialogue. It does not copy practical triggers, first objections, realistic next steps, spoken reasons, repeated concern phrases, source wording, or source sequences directly into speech.
 
 ## Local Commands
 
@@ -19,6 +19,7 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/result.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/report.md`
+- `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_recipes.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/concrete_scenario_frames.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_traces.json`
 - `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_review.html`
@@ -30,8 +31,13 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - B2B call count: `24`
 - B2C call count: `16`
 - Scenario labels: all `40` required curated labels appear exactly once.
+- Scenario recipe count: `40`
+- Each recipe describes only generalized structure, cites abstract pattern IDs, blocks transcript text, source sequences, dataset-specific phrasing, names, phone numbers, addresses, provider names, and close paraphrases of source examples.
 - Concrete frame count: `40`
 - Each trace references one `scenario_frame_id`, and each frame is used exactly once.
+- Each trace references one `recipe_id`, and concrete frames reference their recipe source pattern IDs.
+- Frames are original fictional contexts, not copied or paraphrased source situations.
+- Spoken trace authoring is active, and visible dialogue is authored from scenario-specific natural-language scripts rather than frame-field interpolation.
 - Each frame includes concrete context, customer role, practical trigger, first objection, realistic goal, realistic next step, safety boundaries, spoken guidance, and at least two source pattern IDs.
 - Frame quality average score: `>= 6.5 / 7`, with no frame below `6 / 7`.
 - Opening styles: all `7` allowed opening styles appear at least once.
@@ -68,6 +74,8 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Dialogue realism minimum score: `6`
 - Dialogue realism pass count: `34`
 - Non smooth trace rate: `0.45`
+- Scenario recipe count: `40`
+- Spoken trace authoring used: `true`
 - Scenario frame quality average score: `7.0`
 - Scenario frame quality minimum score: `7`
 - Traces with short customer responses under 8 words: `40`
@@ -92,6 +100,7 @@ The static HTML review surface supports filtering by B2B/B2C, domain, scenario l
 Each scenario shows:
 
 - scenario frame id
+- scenario recipe id
 - customer role
 - real world context
 - practical trigger
