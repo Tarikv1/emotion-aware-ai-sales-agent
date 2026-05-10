@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-035 runtime decision-trace alignment
+
+- Objective: align the visible runtime decision process with the actual spoken answer behavior in the clean PROD-033 interactive traces.
+- Action taken: added an opt-in `align_decision_trace` path to the guarded response generator, plus the PROD-035 module, runner, validator, product doc, generated aligned trace/report artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated PROD-034 result and PROD-033 interactive trace artifacts only. No provider call, LLM call, private data read, dataset download, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_035_RUNTIME_DECISION_TRACE_ALIGNMENT.md`, `scripts/prod_035_runtime_decision_trace_alignment.py`, `scripts/run_prod_035_runtime_decision_trace_alignment.py`, `scripts/validate_prod_035_runtime_decision_trace_alignment.py`, `research/experiments/generated/PROD-035-runtime-decision-trace-alignment/result.json`, `research/experiments/generated/PROD-035-runtime-decision-trace-alignment/report.md`, `research/experiments/generated/PROD-035-runtime-decision-trace-alignment/aligned_interactive_call_traces.json`, and `research/experiments/generated/PROD-035-runtime-decision-trace-alignment/aligned_interactive_call_trace.html`.
+- What was learned: decision visibility can be improved independently from spoken answer text. PROD-035 preserved spoken answers with changed count `0`, customer response changed count `0`, and terminal outcome changed count `0`, while reducing decision snapshot mismatches from `13` to `0` and unknown-objection decisions from `6` to `0`.
+- Why it matters for the thesis: evaluation needs an honest trace of what the agent decided. Otherwise a good spoken answer can still be hard to audit, reproduce, or explain.
+- Open questions: whether the aligned trace is now strong enough for a local interactive demo readiness review, and whether the opt-in alignment should later become the default runtime trace behavior after broader regression checks.
+
 ### 2026-05-10 - PROD-034 interactive post-fix review
 
 - Objective: review the completed PROD-033 cold-opening and outcome-driven traces before deciding between runtime decision-trace alignment and local demo review.

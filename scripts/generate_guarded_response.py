@@ -5,6 +5,7 @@ import time
 from pathlib import Path
 
 from core_sales_delivery_playbook import build_core_sales_delivery_pack
+from product_agent_output_contract import call_control_for_next_action
 from rag_guarded_retrieval_policy import (
     BLOCKING_CONTEXT_FLAGS,
     load_json as load_retrieval_json,
@@ -452,6 +453,113 @@ def retrieval_query(decision: dict, transcript: str, candidate_response: str) ->
     return " ".join(part for part in parts if part)
 
 
+def direct_answer_difficulty_from_text(transcript: str, final_response: str) -> dict:
+    lowered = f"{transcript} {final_response}".lower()
+    if any(phrase in lowered for phrase in ["stop calling", "do not call", "don't call", "take me off", "not called again"]):
+        return {
+            "sales_difficulty": "do-not-call",
+            "interest_state": "do-not-call",
+            "selected_strategy": "rapport",
+            "next_action": "suppress-contact",
+        }
+    if any(phrase in lowered for phrase in ["account issue", "route me to support", "support, not a sales conversation", "account help"]):
+        return {
+            "sales_difficulty": "human-request",
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+        }
+    if any(phrase in lowered for phrase in ["busy", "not a good time", "not push while you are busy"]):
+        return {
+            "sales_difficulty": "timing-delay",
+            "interest_state": "not-interested",
+            "selected_strategy": "rapport",
+            "next_action": "close-politely",
+        }
+    if any(phrase in lowered for phrase in ["skeptical", "vague software promises", "cannot promise", "proof in writing"]):
+        return {
+            "sales_difficulty": "trust-gap",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "continue",
+        }
+    if any(phrase in lowered for phrase in ["already have a crm", "replace a crm", "alongside our crm"]):
+        return {
+            "sales_difficulty": "provider-comparison",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+        }
+    if any(phrase in lowered for phrase in ["manager version", "manager summary", "tell my manager"]):
+        return {
+            "sales_difficulty": "stakeholder-review",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+        }
+    if any(phrase in lowered for phrase in ["what is this actually about", "do not know routesignal", "not a full crm replacement"]):
+        return {
+            "sales_difficulty": "product-fit-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+        }
+    if any(phrase in lowered for phrase in ["what is it going to cost", "what would it cost", "pricing is", "growth is $59", "starter at $29"]):
+        return {
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+        }
+    return {
+        "sales_difficulty": "general-product-question",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+    }
+
+
+def align_decision_snapshot_for_response(decision: dict, transcript: str, final_response: str, *, enabled: bool = False) -> dict:
+    aligned = dict(decision)
+    aligned["decision_trace_alignment"] = {
+        "enabled": enabled,
+        "changed": False,
+        "reason": "alignment disabled",
+    }
+    if not enabled:
+        return aligned
+
+    has_spoken_question = "?" in final_response
+    if aligned.get("next_action") == "ask-follow-up" and not has_spoken_question:
+        update = direct_answer_difficulty_from_text(transcript, final_response)
+        aligned.update(update)
+        aligned["call_control"] = call_control_for_next_action(aligned.get("next_action"), aligned.get("interest_state"))
+        aligned["decision_trace_alignment"] = {
+            "enabled": True,
+            "changed": True,
+            "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action",
+        }
+        return aligned
+
+    if aligned.get("sales_difficulty") == "unknown-runtime-signal":
+        update = direct_answer_difficulty_from_text(transcript, final_response)
+        aligned.update({key: value for key, value in update.items() if key != "next_action"})
+        aligned["call_control"] = call_control_for_next_action(aligned.get("next_action"), aligned.get("interest_state"))
+        aligned["decision_trace_alignment"] = {
+            "enabled": True,
+            "changed": True,
+            "reason": "unknown runtime signal mapped from transcript and response wording",
+        }
+        return aligned
+
+    aligned["decision_trace_alignment"] = {
+        "enabled": True,
+        "changed": False,
+        "reason": "decision snapshot already matched response shape",
+    }
+    return aligned
+
+
 def summarize_retrieval_items(items: list[dict]) -> list[dict]:
     hints = []
     for item in items:
@@ -583,6 +691,7 @@ def build_guarded_response_packet(
     retrieval_target_latency_ms: int = DEFAULT_RETRIEVAL_TARGET_MS,
     retrieval_acceptable_latency_ms: int = DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
     composer_hooks_enabled: bool = False,
+    align_decision_trace: bool = False,
 ) -> dict:
     case = build_turn_case(campaign["campaign_id"], stage, transcript, input_type, silence_count)
     decision = run_turn_decision(case, campaign)
@@ -601,6 +710,7 @@ def build_guarded_response_packet(
         retrieval_target_latency_ms=retrieval_target_latency_ms,
         retrieval_acceptable_latency_ms=retrieval_acceptable_latency_ms,
         composer_hooks_enabled=composer_hooks_enabled,
+        align_decision_trace=align_decision_trace,
     )
 
 
@@ -619,6 +729,7 @@ def apply_guarded_response_to_decision(
     retrieval_target_latency_ms: int = DEFAULT_RETRIEVAL_TARGET_MS,
     retrieval_acceptable_latency_ms: int = DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
     composer_hooks_enabled: bool = False,
+    align_decision_trace: bool = False,
 ) -> dict:
     policy_response = decision["agent_response"]
     guardrails = build_guardrails(campaign)
@@ -677,6 +788,12 @@ def apply_guarded_response_to_decision(
         )
     validation = validate_candidate_response(candidate_response, guardrails)
     final_response = policy_response if validation["fallback_used"] else candidate_response
+    decision_snapshot = align_decision_snapshot_for_response(
+        decision,
+        transcript,
+        final_response,
+        enabled=align_decision_trace,
+    )
     retrieval = finalize_retrieval_packet(
         retrieval,
         validation,
@@ -711,18 +828,19 @@ def apply_guarded_response_to_decision(
         },
         "guardrails": guardrails,
         "decision_snapshot": {
-            "response_mode": decision.get("response_mode"),
-            "campaign_language": decision.get("campaign_language"),
-            "response_language": decision.get("response_language"),
-            "detected_emotion": decision.get("detected_emotion"),
-            "sales_difficulty": decision.get("sales_difficulty"),
-            "interest_state": decision.get("interest_state"),
-            "selected_strategy": decision.get("selected_strategy"),
-            "next_action": decision.get("next_action"),
-            "call_control": decision.get("call_control"),
-            "background_modules": decision.get("background_modules", []),
-            "first_response_latency_budget_ms": decision.get("first_response_latency_budget_ms"),
-            "first_response_latency_ms": decision.get("first_response_latency_ms"),
+            "response_mode": decision_snapshot.get("response_mode"),
+            "campaign_language": decision_snapshot.get("campaign_language"),
+            "response_language": decision_snapshot.get("response_language"),
+            "detected_emotion": decision_snapshot.get("detected_emotion"),
+            "sales_difficulty": decision_snapshot.get("sales_difficulty"),
+            "interest_state": decision_snapshot.get("interest_state"),
+            "selected_strategy": decision_snapshot.get("selected_strategy"),
+            "next_action": decision_snapshot.get("next_action"),
+            "call_control": decision_snapshot.get("call_control"),
+            "background_modules": decision_snapshot.get("background_modules", []),
+            "first_response_latency_budget_ms": decision_snapshot.get("first_response_latency_budget_ms"),
+            "first_response_latency_ms": decision_snapshot.get("first_response_latency_ms"),
+            "decision_trace_alignment": decision_snapshot.get("decision_trace_alignment"),
         },
         "response_constraints": {
             "changes_allowed": "wording only; state, strategy, next_action, and call_control remain policy-owned",

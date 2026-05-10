@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-035-runtime-decision-trace-alignment` to make the visible runtime decision process match the actual answer behavior in the clean PROD-033/PROD-034 interactive traces.
+- [ ] Current: run `PROD-036-interactive-demo-readiness-review` using the aligned PROD-035 traces to decide whether the local interactive demo surface is ready or still needs behavior polish.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-035, rerun a short post-fix interactive review and decide whether the local interactive demo review can start.
+- [ ] Next: after PROD-036, either build the local interactive demo surface or fix the specific demo-readiness blocker identified by review.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
@@ -58,6 +58,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-035` runtime decision-trace alignment, which applies an opt-in alignment path to the same PROD-033 interactive calls without changing the accepted spoken answers, customer responses, or terminal outcomes. It keeps source PROD-033 and PROD-034 evidence intact and writes a separate aligned trace. Spoken answer changed count is `0`, customer response changed count is `0`, terminal outcome changed count is `0`, decision snapshot mismatches drop from `13` to `0`, unknown-objection decisions drop from `6` to `0`, terminal call-control mismatches after are `0`, direct-answer next actions are `11`, objections mapped are `7`, hard failures are `0`, payment collection count is `0`, unsupported claim count is `0`, and leakage findings are `0`. Provider calls, LLM use, private data reads, dataset downloads, customer data, retrieval defaults, composer-hook defaults, server start, payment collection, runtime decision-trace default change, and production runtime promotion stayed blocked. The next checkpoint is `PROD-036-interactive-demo-readiness-review`.
 
 - [x] `PROD-034` interactive post-fix review, which inspects the completed `PROD-033` cold-call, outcome-driven traces without overwriting them. The simulator mechanics are accepted as fixed: cold opening fix passed `true`, outcome-driven termination passed `true`, all calls start with agent opening `true`, all calls end by customer decision `true`, fixed turn limit used `false`, loop guard triggered `false`, max-turn terminal count `0`, callback converted to sale-ready `0`, repeated agent answers `0`, repeated customer messages `0`, accepted deals `4`, rejected deals `4`, hard failures `0`, payment collection count `0`, unsupported claim count `0`, and leakage findings `0`. The remaining blocker is visible runtime decision-trace alignment: decision snapshot mismatches are `13`, unknown-objection decisions are `6`, terminal call-control mismatches are `0`, and product grounding issues are `0`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-035-runtime-decision-trace-alignment`.
 
@@ -455,20 +457,19 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-035-runtime-decision-trace-alignment` using the completed `PROD-034` post-fix review packet.
+Run `PROD-036-interactive-demo-readiness-review` using the completed `PROD-035` aligned trace packet.
 
 Purpose:
 
-- align visible decision snapshots with actual spoken answer behavior
-- distinguish direct answer, answer-and-check, close, schedule, transfer, and end-call actions instead of overusing `ask-follow-up`
-- map active objection states such as confusion, trust, provider, support, time, and authority away from `unknown-runtime-signal`
+- inspect the exact aligned customer questions, agent answers, decision snapshots, and terminal outcomes as demo evidence
+- decide whether the local interactive demo surface can use these traces as the first safe demo set
+- identify any remaining behavior polish before building a demo UI
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
-- decide whether the local interactive demo review can start after decision traces become honest enough
 
-Immediate product artifact after `PROD-034`:
+Immediate product artifact after `PROD-035`:
 
-- runtime decision-trace alignment fix
-- post-fix validation against the same PROD-033 traces
+- interactive demo readiness review packet
+- go/no-go decision for a local trace demo surface
 
 Next voice checkpoint:
 

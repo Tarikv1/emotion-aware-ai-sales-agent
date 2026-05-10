@@ -1,0 +1,72 @@
+{
+  "checkpoint_id": "PROD-035-runtime-decision-trace-alignment",
+  "title": "PROD-035 runtime decision-trace alignment",
+  "source_checkpoint_id": "PROD-034-interactive-post-fix-review",
+  "trace_source_checkpoint_id": "PROD-033-interactive-simulator-termination-fix",
+  "next_checkpoint_recommended": "PROD-036-interactive-demo-readiness-review",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-035-runtime-decision-trace-alignment/result.json",
+    "report_path": "research/experiments/generated/PROD-035-runtime-decision-trace-alignment/report.md",
+    "trace_path": "research/experiments/generated/PROD-035-runtime-decision-trace-alignment/aligned_interactive_call_traces.json",
+    "trace_html_path": "research/experiments/generated/PROD-035-runtime-decision-trace-alignment/aligned_interactive_call_trace.html"
+  },
+  "source_inputs": {
+    "source_result_path": "research/experiments/generated/PROD-034-interactive-post-fix-review/result.json",
+    "source_trace_path": "research/experiments/generated/PROD-033-interactive-simulator-termination-fix/interactive_call_traces.json",
+    "source_decision_snapshot_mismatch_count": 13,
+    "source_unknown_objection_decision_count": 6
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_used": false,
+    "commercial_runtime_prompt_text_from_transcripts_allowed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_spoken_answer_changed_by_this_checkpoint": false,
+    "runtime_decision_trace_alignment_opt_in": true,
+    "runtime_decision_trace_default_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "source_prod_033_overwritten": false,
+    "source_prod_034_overwritten": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "source_call_count": 8,
+    "source_turn_count": 14,
+    "aligned_call_count": 8,
+    "aligned_turn_count": 14,
+    "spoken_answer_changed_count": 0,
+    "customer_response_changed_count": 0,
+    "terminal_outcome_changed_count": 0,
+    "decision_snapshot_mismatch_before_count": 13,
+    "decision_snapshot_mismatch_after_count": 0,
+    "unknown_objection_decision_before_count": 6,
+    "unknown_objection_decision_after_count": 0,
+    "terminal_call_control_mismatch_after_count": 0,
+    "direct_answer_next_action_count": 11,
+    "objection_mapped_count": 7,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "unsupported_claim_count": 0,
+    "leakage_finding_count": 0,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "production_runtime_promotion_allowed": false,
+    "first_review_recommendation": "interactive_demo_readiness_review"
+  },
+  "decision": {
+    "spoken_answer_policy": "preserve-prod-033-spoken-answers",
+    "decision_trace_alignment": "opt-in-fix-accepted",
+    "runtime_defaults": "unchanged",
+    "next_step": "PROD-036-interactive-demo-readiness-review"
+  }
+}

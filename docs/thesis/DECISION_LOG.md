@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-083 - Keep PROD-035 as the opt-in runtime decision-trace alignment fix
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Add an opt-in decision-trace alignment path that corrects logged runtime decision snapshots without changing the accepted PROD-033 spoken answers or global runtime defaults.
+- Why:
+  - PROD-034 showed the simulator mechanics were fixed but the visible decision process still had decision snapshot mismatches `13` and unknown-objection decisions `6`
+  - PROD-035 clears those review blockers with decision snapshot mismatches after `0` and unknown-objection decisions after `0`
+  - spoken answer changed count is `0`, customer response changed count is `0`, and terminal outcome changed count is `0`
+  - keeping the alignment opt-in avoids rewriting older checkpoint evidence or silently changing all runtime traces before the next review
+- Alternatives considered:
+  - change guarded response decision traces globally by default
+  - rerun and overwrite PROD-033/PROD-034
+  - leave the trace mismatch for demo review notes only
+- Consequences:
+  - the next checkpoint is `PROD-036-interactive-demo-readiness-review`
+  - PROD-035 can be used as the clean decision-trace evidence for demo readiness review
+  - provider calls, live runtime defaults, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-082 - Keep PROD-034 as the post-fix review gate
 
 - Date: 2026-05-10

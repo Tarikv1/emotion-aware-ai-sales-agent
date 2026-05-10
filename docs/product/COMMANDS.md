@@ -1011,6 +1011,18 @@ Validate the PROD-034 cold-opening fix, outcome-driven termination, no fixed-tur
 python scripts\validate_prod_034_interactive_post_fix_review.py
 ```
 
+Run the PROD-035 runtime decision-trace alignment checkpoint:
+
+```powershell
+python scripts\run_prod_035_runtime_decision_trace_alignment.py
+```
+
+Validate the PROD-035 opt-in decision-trace alignment, unchanged spoken answers, cleared direct-answer mismatch counts, cleared unknown-objection counts, and no-provider/no-default-promotion boundary:
+
+```powershell
+python scripts\validate_prod_035_runtime_decision_trace_alignment.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:
