@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-084 - Keep PROD-036 as the local interactive demo readiness gate
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Treat the aligned PROD-035 traces as ready for a local synthetic trace demo surface, while keeping live/customer/provider promotion blocked.
+- Why:
+  - PROD-036 reviews `8` aligned calls and `14` turns with demo-ready calls `8` and demo blocker count `0`
+  - exact customer text, exact agent answers, decision process, state transitions, terminal outcomes, safety flags, and cold openings are all visible
+  - decision snapshot mismatches are `0`, unknown-objection decisions are `0`, hard failures are `0`, payment collection count is `0`, unsupported claim count is `0`, and leakage findings are `0`
+  - a local replayable trace surface directly answers Tarik's need to inspect the exact question, exact answer, and decision process
+- Alternatives considered:
+  - build a live demo immediately
+  - keep reviewing static reports without a UI
+  - wait for voice/provider integration before creating any demo surface
+- Consequences:
+  - the next checkpoint is `PROD-037-local-interactive-trace-demo-surface`
+  - the demo must stay local and synthetic until a separate promotion gate exists
+  - provider calls, live runtime defaults, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-083 - Keep PROD-035 as the opt-in runtime decision-trace alignment fix
 
 - Date: 2026-05-10

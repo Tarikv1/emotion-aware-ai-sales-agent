@@ -1,0 +1,70 @@
+{
+  "checkpoint_id": "PROD-036-interactive-demo-readiness-review",
+  "title": "PROD-036 interactive demo readiness review",
+  "source_checkpoint_id": "PROD-035-runtime-decision-trace-alignment",
+  "next_checkpoint_recommended": "PROD-037-local-interactive-trace-demo-surface",
+  "outputs": {
+    "result_path": "research/experiments/generated/PROD-036-interactive-demo-readiness-review/result.json",
+    "report_path": "research/experiments/generated/PROD-036-interactive-demo-readiness-review/report.md",
+    "packet_path": "research/experiments/generated/PROD-036-interactive-demo-readiness-review/interactive_demo_readiness_packet.json",
+    "demo_html_path": "research/experiments/generated/PROD-036-interactive-demo-readiness-review/interactive_demo_readiness_preview.html"
+  },
+  "source_inputs": {
+    "source_result_path": "research/experiments/generated/PROD-035-runtime-decision-trace-alignment/result.json",
+    "source_trace_path": "research/experiments/generated/PROD-035-runtime-decision-trace-alignment/aligned_interactive_call_traces.json"
+  },
+  "boundaries": {
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "raw_transcript_text_stored": false,
+    "copied_transcript_text_used": false,
+    "commercial_runtime_prompt_text_from_transcripts_allowed": false,
+    "customer_data_allowed": false,
+    "payment_collection_enabled": false,
+    "runtime_behavior_changed_by_this_checkpoint": false,
+    "runtime_decision_trace_default_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "live_provider_default_enabled": false,
+    "server_started": false,
+    "source_prod_035_overwritten": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "summary": {
+    "source_call_count": 8,
+    "source_turn_count": 14,
+    "reviewed_call_count": 8,
+    "reviewed_turn_count": 14,
+    "demo_card_count": 8,
+    "demo_ready_call_count": 8,
+    "demo_blocker_count": 0,
+    "local_interactive_demo_ready": true,
+    "exact_customer_text_visible": true,
+    "exact_agent_answer_visible": true,
+    "decision_process_visible": true,
+    "state_transition_visible": true,
+    "terminal_outcome_visible": true,
+    "safety_flags_visible": true,
+    "cold_opening_visible": true,
+    "decision_snapshot_mismatch_count": 0,
+    "unknown_objection_decision_count": 0,
+    "hard_failure_count": 0,
+    "payment_collection_count": 0,
+    "unsupported_claim_count": 0,
+    "leakage_finding_count": 0,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "runtime_behavior_changed": false,
+    "runtime_retrieval_default_enabled": false,
+    "composer_hook_flag_default_enabled": false,
+    "production_runtime_promotion_allowed": false,
+    "first_build_recommendation": "local_interactive_trace_demo_surface"
+  },
+  "decision": {
+    "demo_readiness": "go-local-trace-demo",
+    "demo_scope": "local synthetic trace replay only",
+    "next_step": "PROD-037-local-interactive-trace-demo-surface"
+  }
+}

@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-036 interactive demo readiness review
+
+- Objective: decide whether the aligned PROD-035 traces are ready to become a local interactive trace demo surface.
+- Action taken: added the PROD-036 readiness module, runner, validator, product doc, generated result/report/readiness-packet/static-preview artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated PROD-035 result and aligned interactive trace artifacts only. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_036_INTERACTIVE_DEMO_READINESS_REVIEW.md`, `scripts/prod_036_interactive_demo_readiness_review.py`, `scripts/run_prod_036_interactive_demo_readiness_review.py`, `scripts/validate_prod_036_interactive_demo_readiness_review.py`, `research/experiments/generated/PROD-036-interactive-demo-readiness-review/result.json`, `research/experiments/generated/PROD-036-interactive-demo-readiness-review/report.md`, `research/experiments/generated/PROD-036-interactive-demo-readiness-review/interactive_demo_readiness_packet.json`, and `research/experiments/generated/PROD-036-interactive-demo-readiness-review/interactive_demo_readiness_preview.html`.
+- What was learned: the aligned traces are sufficient for the first local demo surface. PROD-036 reports local interactive demo ready `true`, demo-ready calls `8`, demo blocker count `0`, exact customer text visible `true`, exact agent answer visible `true`, decision process visible `true`, state transition visible `true`, terminal outcome visible `true`, safety flags visible `true`, cold opening visible `true`, decision snapshot mismatches `0`, and unknown-objection decisions `0`.
+- Why it matters for the thesis: the project now has a reviewable bridge from evaluation artifacts to demo artifacts without confusing synthetic local trace replay with live deployment.
+- Open questions: how interactive the PROD-037 demo surface should be before voice or provider integration becomes useful.
+
 ### 2026-05-10 - PROD-035 runtime decision-trace alignment
 
 - Objective: align the visible runtime decision process with the actual spoken answer behavior in the clean PROD-033 interactive traces.

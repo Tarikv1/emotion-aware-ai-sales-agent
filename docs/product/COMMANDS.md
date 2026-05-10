@@ -1023,6 +1023,18 @@ Validate the PROD-035 opt-in decision-trace alignment, unchanged spoken answers,
 python scripts\validate_prod_035_runtime_decision_trace_alignment.py
 ```
 
+Run the PROD-036 interactive demo readiness review checkpoint:
+
+```powershell
+python scripts\run_prod_036_interactive_demo_readiness_review.py
+```
+
+Validate the PROD-036 exact trace visibility, demo-ready call count, go/no-go decision, aligned decision-process visibility, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_036_interactive_demo_readiness_review.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

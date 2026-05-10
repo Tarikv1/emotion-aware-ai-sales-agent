@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-036 Interactive Demo Readiness Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; color: #202124; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f6f8fa; }
+    .metric { display: inline-block; margin: 6px 12px 6px 0; padding: 6px 8px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <!--
+  PROD-036 interactive demo readiness review
+  local interactive demo ready: `true`
+  demo blocker count: `0`
+  demo-ready calls: `8`
+  decision snapshot mismatches: `0`
+  unknown-objection decisions: `0`
+  first build recommendation: `local_interactive_trace_demo_surface`
+  PROD-037-local-interactive-trace-demo-surface
+  -->
+  <h1>PROD-036 Interactive Demo Readiness Review</h1>
+  <p>Go/no-go review for building a local synthetic trace demo surface from the aligned PROD-035 calls.</p>
+  <div class="metric">Local interactive demo ready: <code>true</code></div>
+  <div class="metric">Demo blocker count: <code>0</code></div>
+  <div class="metric">Demo-ready calls: <code>8</code></div>
+  <div class="metric">Decision snapshot mismatches: <code>0</code></div>
+  <div class="metric">Unknown-objection decisions: <code>0</code></div>
+  <div class="metric">First build recommendation: <code>local_interactive_trace_demo_surface</code></div>
+  <div class="metric">Next checkpoint: <code>PROD-037-local-interactive-trace-demo-surface</code></div>
+  <h2>Demo Requirements</h2>
+  <ul><li>exact-customer-text-visible: <code>true</code></li><li>exact-agent-answer-visible: <code>true</code></li><li>decision-process-visible: <code>true</code></li><li>state-transition-visible: <code>true</code></li><li>terminal-outcome-visible: <code>true</code></li><li>safety-flags-visible: <code>true</code></li><li>cold-opening-visible: <code>true</code></li><li>local-trace-only: <code>true</code></li></ul>
+  <h2>Demo Cards</h2>
+  <table>
+    <thead><tr><th>Seed</th><th>Persona</th><th>Terminal Outcome</th><th>Demo Ready</th><th>Turns</th></tr></thead>
+    <tbody><tr><td>cold-price-sensitive</td><td>price-sensitive operations manager</td><td>accepted-deal</td><td><code>true</code></td><td>2</td></tr><tr><td>cold-confused-product-fit</td><td>confused small-business owner</td><td>accepted-deal</td><td><code>true</code></td><td>3</td></tr><tr><td>cold-skeptical-trust-gap</td><td>skeptical founder</td><td>rejected-deal</td><td><code>true</code></td><td>2</td></tr><tr><td>cold-busy-rejection</td><td>busy sales lead</td><td>rejected-deal</td><td><code>true</code></td><td>1</td></tr><tr><td>cold-existing-provider</td><td>team lead with an existing CRM</td><td>accepted-deal</td><td><code>true</code></td><td>3</td></tr><tr><td>cold-stakeholder-review</td><td>manager who needs approval</td><td>accepted-deal</td><td><code>true</code></td><td>1</td></tr><tr><td>cold-support-boundary</td><td>support-seeking user</td><td>rejected-deal</td><td><code>true</code></td><td>1</td></tr><tr><td>cold-do-not-call</td><td>protected stop-request customer</td><td>rejected-deal</td><td><code>true</code></td><td>1</td></tr></tbody>
+  </table>
+</body>
+</html>
