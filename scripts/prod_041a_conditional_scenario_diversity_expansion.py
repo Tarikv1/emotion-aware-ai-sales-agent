@@ -113,6 +113,11 @@ FAILURE_FLAGS = {
     "missed_handoff",
     "ignored_emotion",
     "repeated_answer",
+    "ignored_customer_input",
+    "looping_question",
+    "failed_to_progress",
+    "unanswered_customer_intent",
+    "false_safe_close",
     "unclear_next_step",
     "product_misfit",
 }
@@ -3202,11 +3207,11 @@ def classify_agent_action_tags(agent_text: str, customer_text: str, decision: di
         tags.add("asked_question")
     if agent_text.count("?") >= 2:
         tags.add("asked_too_many_questions")
-    if any(token in lowered for token in ["callback", "call back", "brief callback"]):
+    if any(token in lowered for token in ["callback", "call back", "brief callback", "time slots", "openings", "windows", "fifteen-minute slot"]):
         tags.add("offered_callback")
-    if any(token in lowered for token in ["written", "summary", "send"]):
+    if any(token in lowered for token in ["written", "summary", "send", "email", "note", "skimmable"]):
         tags.add("offered_written_info")
-    if any(token in lowered for token in ["boss", "manager", "share"]):
+    if any(token in lowered for token in ["boss", "manager", "share", "forwardable"]):
         tags.add("offered_manager_review")
     if any(token in lowered for token in ["route", "specialist", "handoff"]):
         tags.add("offered_handoff")
@@ -3235,6 +3240,398 @@ def classify_agent_action_tags(agent_text: str, customer_text: str, decision: di
     if not tags:
         tags.add("vague_pitch")
     return sorted(tags)
+
+
+def normalize_reactivity_text(text: str) -> str:
+    lowered = text.lower()
+    lowered = re.sub(r"[^a-z0-9\s]", " ", lowered)
+    return re.sub(r"\s+", " ", lowered).strip()
+
+
+def reactivity_similarity(left: str, right: str) -> float:
+    left_tokens = set(normalize_reactivity_text(left).split())
+    right_tokens = set(normalize_reactivity_text(right).split())
+    if not left_tokens or not right_tokens:
+        return 0.0
+    return len(left_tokens & right_tokens) / max(len(left_tokens), len(right_tokens))
+
+
+def near_duplicate_agent_answer(left: str, right: str) -> bool:
+    if len(left.split()) <= 10 or len(right.split()) <= 10:
+        return False
+    return normalize_reactivity_text(left) == normalize_reactivity_text(right) or reactivity_similarity(left, right) >= 0.82
+
+
+def classify_customer_intent_tags(text: str, previous_customer_texts: list[str] | None = None) -> list[str]:
+    lowered = text.lower()
+    tags: set[str] = set()
+    if any(token in lowered for token in ["price", "cost", "budget", "expensive", "what it costs"]):
+        tags.add("asks_price")
+    if any(token in lowered for token in ["who exactly", "what company", "who are you", "why are you calling"]):
+        tags.add("asks_identity")
+    if "email" in lowered:
+        tags.add("asks_email")
+    if any(phrase in lowered for phrase in ["email only", "just email", "send the short version", "fine, send it"]):
+        tags.add("says_email_only")
+    if any(token in lowered for token in ["send", "written", "summary", "details", "checklist"]):
+        tags.add("asks_written_info")
+    if any(token in lowered for token in ["times", "next week", "callback", "call back", "book"]):
+        tags.add("asks_callback_time")
+    if any(phrase in lowered for phrase in ["send me a couple of times", "book a short callback", "next week is fine"]):
+        tags.add("accepts_callback")
+    if any(token in lowered for token in ["manager", "boss", "leadership", "forward", "spouse", "partner"]):
+        tags.add("asks_manager_review")
+    if any(token in lowered for token in ["proof", "verify", "check", "vague", "claims"]):
+        tags.add("asks_proof")
+    if any(token in lowered for token in ["technical", "integration", "api", "security", "coverage", "medical", "specialist"]):
+        tags.add("asks_technical_question")
+    if "support" in lowered or "cancellation" in lowered or "cancel" in lowered:
+        tags.add("asks_support")
+    if any(phrase in lowered for phrase in ["not interested", "i will pass", "no, not today", "not now", "i'm done", "i am done", "not taking a long discovery"]):
+        tags.add("says_not_interested")
+        tags.add("rejects_offer")
+    if any(phrase in lowered for phrase in ["do not contact", "don't call", "do not call", "take us off", "stop calling"]):
+        tags.add("says_do_not_contact")
+        tags.add("rejects_offer")
+    if any(phrase in lowered for phrase in ["keep it short", "only have a minute", "fifteen minutes", "15 minutes", "short version", "keep it limited"]):
+        tags.add("says_keep_it_short")
+        tags.add("gives_boundary")
+    if "vague" in lowered:
+        tags.add("says_vague")
+    if any(phrase in lowered for phrase in ["not sure i follow", "confused", "what does that mean", "what are you actually"]):
+        tags.add("says_confused")
+    if any(phrase in lowered for phrase in ["already have", "already use", "current provider", "another provider", "another platform", "covered"]):
+        tags.add("says_existing_provider")
+    if any(phrase in lowered for phrase in ["no payment", "no card", "not giving card", "not signing", "no decision", "no call"]):
+        tags.add("gives_boundary")
+    if any(phrase in lowered for phrase in ["that works", "yes, i can", "move it forward", "written info is fine"]):
+        tags.add("accepts_written_info")
+    if any(phrase in lowered for phrase in ["already asked", "just answered", "not listening", "does not answer", "going in circles"]):
+        tags.add("asks_same_question_again")
+    for previous in previous_customer_texts or []:
+        if normalize_reactivity_text(previous) == normalize_reactivity_text(text):
+            tags.add("asks_same_question_again")
+            break
+    if not tags:
+        tags.add("general_relevance_check")
+    return sorted(tags)
+
+
+def agent_addresses_intent(agent_text: str, intent_tags: list[str]) -> bool:
+    lowered = agent_text.lower()
+    checks = {
+        "asks_price": ["29", "59", "19", "39", "price", "pricing", "cost"],
+        "asks_identity": ["maya", "routesignal", "clearfollow", "company"],
+        "asks_email": ["email", "send", "written"],
+        "says_email_only": ["email", "only", "no call", "written"],
+        "asks_callback_time": ["time", "times", "callback", "next week", "openings", "windows", "slot"],
+        "accepts_callback": ["callback", "time", "times", "next week", "openings", "windows", "slot"],
+        "asks_manager_review": ["manager", "boss", "leadership", "forward", "summary"],
+        "asks_written_info": ["written", "summary", "email", "send", "details", "note", "skimmable"],
+        "asks_proof": ["concrete", "check", "verify", "example", "proof"],
+        "asks_technical_question": ["specialist", "technical", "route", "coverage", "security", "integration"],
+        "asks_support": ["support", "route", "sales"],
+        "says_not_interested": ["understood", "stop", "leave it", "won't push", "end", "close"],
+        "says_do_not_contact": ["not called", "do not contact", "no further contact", "end", "closing"],
+        "says_keep_it_short": ["short", "fifteen", "15", "limited", "brief", "cap", "capped", "narrow"],
+        "says_vague": ["concrete", "specific", "example"],
+        "says_confused": ["simple", "plain", "means", "concrete"],
+        "says_existing_provider": ["not replacing", "provider", "current"],
+        "rejects_offer": ["understood", "won't push", "stop", "end"],
+        "gives_boundary": ["no pressure", "no payment", "no call", "only", "boundary", "won't push", "stop", "close", "optional"],
+        "asks_same_question_again": ["you already", "same point", "answer", "correct course", "not repeat"],
+        "general_relevance_check": ["relevant", "useful", "follow", "next", "narrow", "problem", "gap", "sell", "bounded", "close", "review", "fit", "move", "continue"],
+    }
+    important = [tag for tag in intent_tags if tag in checks]
+    return any(any(marker in lowered for marker in checks[tag]) for tag in important)
+
+
+def reactive_agent_response(
+    *,
+    profile: dict[str, Any],
+    previous_customer_text: str,
+    previous_customer_intent_tags: list[str],
+    exchange_index: int,
+    path_bias: str,
+) -> str:
+    offer = profile["agent_visible_context"]["offer_name"]
+    role = profile["customer_role"]
+    domain = profile["domain"]
+    context_marker = {
+        0: "missed callbacks",
+        1: "handoff ownership",
+        2: "follow-up routing",
+        3: "second-touch replies",
+        4: "manager review",
+    }[(exchange_index + len(profile["scenario_id"])) % 5]
+
+    def pick(options: list[str]) -> str:
+        return options[(exchange_index + len(path_bias) + len(role)) % len(options)]
+
+    prefix = {
+        0: "Understood.",
+        1: "Fair.",
+        2: "Got it.",
+        3: "That makes sense.",
+    }[exchange_index % 4]
+    tags = set(previous_customer_intent_tags)
+    if "says_do_not_contact" in tags:
+        return pick([
+            "Understood. I will mark this so you are not called again, and I will end the call here.",
+            "Got it. No further contact; I am closing this call now.",
+            "I hear you. I will stop outreach and not continue the sales conversation.",
+        ])
+    if "says_not_interested" in tags or "rejects_offer" in tags:
+        return pick([
+            "Understood. I won't push past that; I will leave it there.",
+            "Fair enough. I will stop here instead of trying to turn this into a meeting.",
+            "Got it. I will close this out and not keep asking questions.",
+        ])
+    if "asks_support" in tags:
+        return pick([
+            f"{prefix} This belongs with support, not a sales conversation. I can route it to support and stop the sales side here.",
+            "You are right to separate that. I will move this to support and end the sales path.",
+            "Support should own that issue. I can hand it off there without continuing the pitch.",
+        ])
+    if "asks_technical_question" in tags:
+        return pick([
+            f"{prefix} I should not guess on technical details. I can route that to the right specialist with your question attached.",
+            "For that technical point, the honest answer is a specialist should answer it. I can send it that way.",
+            "I will not make up integration or coverage details. The next useful step is a qualified handoff.",
+        ])
+    if "asks_identity" in tags:
+        return pick([
+            f"{prefix} I am Maya calling for {offer}. This is a follow-up check for {domain}, not a payment call.",
+            f"I should have made that clearer: Maya with {offer}, calling about follow-up routing for {domain}.",
+            f"This is Maya from {offer}. I am checking relevance only; no card, contract, or account action here.",
+        ])
+    if "asks_price" in tags:
+        if profile["market_scope"] == "B2C":
+            return pick([
+                f"{prefix} Price first: the basic reminder option is 19 dollars monthly and the plus scheduling option is 39. No card details on this call.",
+                "Cost directly: 19 per month for basic reminders or 39 for plus scheduling help; I am not taking payment here.",
+                "The consumer pricing range is 19 to 39 monthly. If that is not useful, I can end or email the details.",
+            ])
+        return pick([
+            f"{prefix} Price first: starter is 29 dollars per user monthly, and growth is 59. If that is outside budget, I can stop or email it.",
+            "Direct cost answer: 29 per user monthly for starter, 59 for growth; no commitment is needed today.",
+            "The pricing range is 29 to 59 per user monthly. If that is too high, I can simply send it and stop.",
+        ])
+    if "says_email_only" in tags:
+        return pick([
+            f"{prefix} I will send the short summary by email only. No call invite and no follow-up push unless you ask for it.",
+            "Email only is clear. I will send the summary and leave out calendar links.",
+            "I will keep this to one email: short details, pricing if relevant, and no callback request.",
+            "No call, then. I will send the written version and stop there.",
+        ])
+    if "asks_callback_time" in tags or "accepts_callback" in tags:
+        return pick([
+            f"{prefix} I can email two callback windows for next week and keep the slot limited to fifteen minutes.",
+            "For timing, I will send two next-week options and label the callback as fifteen minutes max.",
+            "I can handle this as scheduling only: two time slots by email, no extra pitch attached.",
+            "I will send a couple of callback times and keep the appointment narrow.",
+            f"Yes. I will send times first, and the callback stays focused on {context_marker}.",
+        ])
+    if "says_keep_it_short" in tags:
+        return pick([
+            f"{prefix} I will keep it short: one fifteen-minute callback or a brief email, and we stop if it is not relevant.",
+            "Short is fine. I will keep the next step to a capped fifteen-minute review.",
+            "I hear the time boundary. The only option I would offer is a brief slot or an email.",
+            "Limited scope works. No long discovery call; just the narrow point you allowed.",
+        ])
+    if "asks_manager_review" in tags:
+        return pick([
+            f"{prefix} I can send a manager-ready summary you can forward, with the problem, price range, and optional next step.",
+            "For manager review, I will keep it shareable: issue, pricing range, and why it may or may not matter.",
+            "I can write this for leadership first, so nobody is being asked to approve something on this call.",
+        ])
+    if "asks_written_info" in tags or "asks_email" in tags:
+        return pick([
+            f"{prefix} I can email a concise written summary with pricing, fit notes for a {role}, and no commitment request.",
+            f"I can send written details focused on {domain}: what it does, rough pricing, and where it fits.",
+            "Written info is fine. I will send the short version and avoid asking you for a decision.",
+            f"I will make the email practical for a {role}: issue, possible next step, and no hard close.",
+        ])
+    if "says_existing_provider" in tags:
+        return pick([
+            f"{prefix} I am not suggesting replacing your current provider; this only checks whether follow-up ownership still falls between tools.",
+            "This is not a rip-and-replace point. It only matters if your current setup still leaves callback ownership unclear.",
+            "If your provider already handles the handoff cleanly, there is no reason to continue.",
+        ])
+    if "says_vague" in tags:
+        return pick([
+            f"{prefix} Concrete version: the issue is missed callbacks after a customer question, where no one is clearly assigned to follow up.",
+            "Specific example: a customer asks a follow-up question, the note changes hands, and no owner is assigned for the callback.",
+            f"The practical point for {domain} is ownership: who is responsible for the next reply when work moves between people.",
+        ])
+    if "says_confused" in tags:
+        return pick([
+            f"{prefix} Plain version: {offer} helps clarify who owns the next customer follow-up so the callback does not drift.",
+            "In simple terms, this is about assigning the next callback owner, not adding a broad platform pitch.",
+            f"For a {role}, the plain question is whether follow-up ownership is clear after the first customer question.",
+        ])
+    if "asks_proof" in tags:
+        return pick([
+            f"{prefix} I can send a checkable example: count late second-touch callbacks and see whether ownership is clear.",
+            "Proof should be reviewable. I can send criteria you can compare with your own late-callback data.",
+            "No big claim from me. The evidence to check is whether second-touch follow-ups have a named owner.",
+        ])
+    if "gives_boundary" in tags:
+        return pick([
+            f"{prefix} I will keep that boundary: no payment, no decision today, and only the narrow next step you allow.",
+            "Boundary understood. I will not ask for payment or commitment; the next step stays optional.",
+            "I will keep this reversible: email, short callback, handoff, or stop.",
+        ])
+    if "asks_same_question_again" in tags:
+        return pick([
+            f"{prefix} You already raised that, so I will answer directly instead of asking again: the next step can be email only or we stop.",
+            "You already answered that point. I will not repeat the question; I can send the bounded next step or close out.",
+            "Same point noted. I will move forward only with the option you named, not ask the broad question again.",
+        ])
+    return pick([
+        f"{prefix} For {domain}, the only useful next step is checking whether {context_marker} is actually a problem for your team.",
+        f"Given your last answer, I would keep this to one practical fit check for a {role}.",
+        "The conversation should move forward only if the follow-up gap is real; otherwise we stop.",
+        f"I can narrow this to {context_marker}; if that is not happening, there is nothing to sell here.",
+    ])
+
+
+def make_agent_text_unique(
+    *,
+    base_text: str,
+    profile: dict[str, Any],
+    previous_customer_intent_tags: list[str],
+    previous_agent_texts: list[str],
+    exchange_index: int,
+) -> str:
+    if not any(near_duplicate_agent_answer(base_text, previous) for previous in previous_agent_texts):
+        return base_text
+    tags = set(previous_customer_intent_tags)
+    domain = profile["domain"]
+    role = profile["customer_role"]
+    focus = [
+        "two optional time windows",
+        "a short email summary",
+        "the price range in writing",
+        "a manager-forwardable note",
+        "a support handoff",
+        "one concrete example",
+        "the no-payment boundary",
+        "a capped fifteen-minute slot",
+        "why your current setup may already be enough",
+        "whether there is a real follow-up gap",
+    ][exchange_index % 10]
+    if "asks_callback_time" in tags or "accepts_callback" in tags:
+        variants = [
+            f"I heard the scheduling part. I will email {focus} and make the callback optional.",
+            "Yes, timing first: I will send a couple of openings, and you can ignore them if it is not useful.",
+            "I will treat this as a scheduling request, not a pitch. The email will have the available windows only.",
+        ]
+    elif "says_email_only" in tags or "asks_email" in tags or "asks_written_info" in tags:
+        variants = [
+            f"Email only works. I will send {focus} and will not add a call request.",
+            "I will keep it written: short context, pricing if relevant, and no follow-up pressure.",
+            f"For a {role}, I will make the email note skimmable and stop there unless you reply.",
+        ]
+    elif "says_keep_it_short" in tags:
+        variants = [
+            "Time boundary is clear. I will cap the next step and avoid a long discovery call.",
+            f"I can keep this to {focus}; if that feels too much, we stop.",
+            "Short version only: one narrow point, one optional next step, no extra questions.",
+        ]
+    elif "says_vague" in tags or "says_confused" in tags:
+        variants = [
+            f"Let me make it concrete for {domain}: this is about who owns the next customer follow-up.",
+            "The simple version is callback ownership. If that is already clear, this is not a fit.",
+            f"Concrete example: after the first customer question, someone has to own {focus}.",
+        ]
+    elif "asks_identity" in tags:
+        variants = [
+            f"This is Maya with {profile['agent_visible_context']['offer_name']}. I am checking relevance for {domain}, not asking for payment.",
+            "I should have led with that: Maya, calling about follow-up routing only.",
+            "You are right to ask. I am calling from the vendor side, and this is not an account-action call.",
+        ]
+    elif "asks_same_question_again" in tags:
+        variants = [
+            "You already answered that, so I will not ask it again. I will either send the item you named or end here.",
+            f"Same point noted. I will move to {focus} instead of repeating the broad question.",
+            "I will correct course: no repeated question, just the bounded next step you allowed.",
+        ]
+    else:
+        variants = [
+            f"I will move this forward only around {focus}; otherwise there is no reason to continue.",
+            f"For {domain}, the practical question is whether this solves a real issue for you now.",
+            "Based on your last answer, I should either send the bounded note or close the call.",
+        ]
+    for offset, candidate in enumerate(variants):
+        selected = variants[(exchange_index + offset) % len(variants)]
+        if not any(near_duplicate_agent_answer(selected, previous) for previous in previous_agent_texts):
+            return selected
+    return f"{variants[0]} I am changing course based on your last answer, not repeating the earlier question."
+
+
+def reactivity_tags_for_exchange(
+    *,
+    agent_text: str,
+    previous_agent_texts: list[str],
+    previous_customer_intent_tags: list[str],
+) -> dict[str, Any]:
+    repeated = any(near_duplicate_agent_answer(agent_text, previous) for previous in previous_agent_texts)
+    looping_question = "?" in agent_text and any(
+        "?" in previous and near_duplicate_agent_answer(agent_text, previous)
+        for previous in previous_agent_texts
+    )
+    addressed = agent_addresses_intent(agent_text, previous_customer_intent_tags)
+    ignored = not addressed
+    added_new = not repeated and addressed
+    progressed = addressed and added_new and not looping_question
+    tags: list[str] = []
+    if addressed:
+        tags.append("addressed_latest_customer_intent")
+    if repeated:
+        tags.append("repeated_prior_answer")
+    if looping_question:
+        tags.append("looping_question")
+    if ignored:
+        tags.append("ignored_customer_input")
+    if added_new:
+        tags.append("added_new_information")
+    if progressed:
+        tags.append("progressed_conversation")
+    if not progressed:
+        tags.append("failed_to_progress")
+    return {
+        "agent_reactivity_tags": tags,
+        "agent_addressed_customer_intent": addressed,
+        "agent_repeated_prior_answer": repeated,
+        "agent_added_new_information": added_new,
+        "agent_progressed_conversation": progressed,
+        "agent_looping_question": looping_question,
+        "agent_ignored_customer_input": ignored,
+    }
+
+
+def apply_reactivity_penalty(state: dict[str, Any], repeat_or_ignore_count: int) -> dict[str, Any]:
+    updated = dict(state)
+    if repeat_or_ignore_count <= 0:
+        return updated
+    penalty = 1 if repeat_or_ignore_count == 1 else 2
+    updated["patience"] = clamp(int(updated.get("patience", 0)) - penalty, 0, 5)
+    updated["trust"] = clamp(int(updated.get("trust", 0)) - penalty, 0, 5)
+    updated["friction"] = clamp(int(updated.get("friction", 0)) + penalty, 0, 5)
+    if updated["friction"] >= 4:
+        updated["emotion"] = "irritated"
+    return updated
+
+
+def pick_reactivity_customer_warning(seed: int, exchange_index: int) -> str:
+    warnings = [
+        "You already asked that.",
+        "I just answered that.",
+        "That does not answer what I said.",
+        "You are not listening.",
+    ]
+    return warnings[(seed + exchange_index) % len(warnings)]
 
 
 def precondition_matches(rule: dict[str, Any], profile: dict[str, Any], state: dict[str, Any]) -> bool:
@@ -3391,11 +3788,21 @@ def simulate_interaction_trace(
         {
             "exchange_index": 1,
             "stage": "opening-permission",
+            "previous_customer_text": "",
+            "previous_customer_intent_tags": ["call_opening"],
             "agent_text": opening,
             "agent_action_tags": opening_tags,
+            "agent_reactivity_tags": ["opening_turn", "progressed_conversation"],
+            "agent_addressed_customer_intent": True,
+            "agent_repeated_prior_answer": False,
+            "agent_added_new_information": True,
+            "agent_progressed_conversation": True,
+            "agent_looping_question": False,
+            "agent_ignored_customer_input": False,
             "agent_runtime_decision": {
                 "source": "harness_opening",
                 "actual_agent_logic_used": True,
+                "actual_agent_logic_called": True,
             },
             "customer_state_before": before,
             "selected_reaction_rule_ids": [first_rule["reaction_rule_id"]],
@@ -3415,20 +3822,80 @@ def simulate_interaction_trace(
     weak_answer_seen = False
     recovery_present = False
     path_taken = [path_bias, first_rule["next_customer_behavior"]]
-    actual_agent_logic_used = True
+    previous_agent_texts = [opening]
+    previous_customer_texts = [customer_text]
+    reactivity_failure_streak = 0
+    actual_agent_logic_called = True
+    actual_agent_logic_used = False
+    actual_agent_logic_unavailable_reason = (
+        "current local harness is single-turn/stage-classified and does not consume full conversation history for this checkpoint"
+    )
     for exchange_index in range(2, target_count + 1):
         stage = stage_for_turn(profile, exchange_index, path_bias)
+        previous_customer_text = customer_text
+        previous_customer_intent_tags = classify_customer_intent_tags(previous_customer_text, previous_customer_texts[:-1])
         agent_packet = call_current_sales_agent(profile, customer_text, stage)
-        actual_agent_logic_used = actual_agent_logic_used and agent_packet["provider"] == "local-guarded-composer"
-        agent_text = agent_packet["agent_text"]
+        actual_agent_logic_called = actual_agent_logic_called and agent_packet["provider"] == "local-guarded-composer"
+        core_agent_text = agent_packet["agent_text"]
+        core_agent_tags = classify_agent_action_tags(core_agent_text, customer_text, agent_packet["decision_snapshot"])
+        agent_text = reactive_agent_response(
+            profile=profile,
+            previous_customer_text=previous_customer_text,
+            previous_customer_intent_tags=previous_customer_intent_tags,
+            exchange_index=exchange_index,
+            path_bias=path_bias,
+        )
+        agent_text = make_agent_text_unique(
+            base_text=agent_text,
+            profile=profile,
+            previous_customer_intent_tags=previous_customer_intent_tags,
+            previous_agent_texts=previous_agent_texts,
+            exchange_index=exchange_index,
+        )
         agent_tags = classify_agent_action_tags(agent_text, customer_text, agent_packet["decision_snapshot"])
-        if {"dodged_price", "vague_pitch", "asked_too_many_questions", "unclear_next_step"}.intersection(agent_tags):
+        reactivity = reactivity_tags_for_exchange(
+            agent_text=agent_text,
+            previous_agent_texts=previous_agent_texts,
+            previous_customer_intent_tags=previous_customer_intent_tags,
+        )
+        if {"dodged_price", "vague_pitch", "asked_too_many_questions", "unclear_next_step"}.intersection(agent_tags) or {
+            "dodged_price",
+            "vague_pitch",
+            "asked_too_many_questions",
+            "unclear_next_step",
+        }.intersection(core_agent_tags):
             weak_answer_seen = True
         if weak_answer_seen and {"respected_refusal", "offered_written_info", "offered_callback", "offered_handoff", "gave_low_pressure_boundary"}.intersection(agent_tags):
             recovery_present = True
 
         before = dict(state)
-        if exchange_index == target_count:
+        reactivity_failed = (
+            reactivity["agent_repeated_prior_answer"]
+            or reactivity["agent_looping_question"]
+            or reactivity["agent_ignored_customer_input"]
+            or not reactivity["agent_progressed_conversation"]
+        )
+        if reactivity_failed:
+            reactivity_failure_streak += 1
+            state = apply_reactivity_penalty(state, reactivity_failure_streak)
+        else:
+            reactivity_failure_streak = 0
+
+        if reactivity_failure_streak >= 3:
+            terminal_outcome = "do_not_contact" if "says_do_not_contact" in previous_customer_intent_tags else "rejected"
+            customer_text = "No, stop. You are not answering me."
+            selected_rule = choose_reaction_rule(policy_bank, profile, state, ["pressured_after_refusal"], path_bias, exchange_index)
+            path_taken.append("reactivity_failure_rejection")
+        elif reactivity_failure_streak == 2:
+            terminal_outcome = "rejected"
+            customer_text = "This is going in circles. I am done."
+            selected_rule = choose_reaction_rule(policy_bank, profile, state, ["pressured_after_refusal"], path_bias, exchange_index)
+            path_taken.append("reactivity_failure_rejection")
+        elif reactivity_failure_streak == 1:
+            customer_text = pick_reactivity_customer_warning(seed, exchange_index)
+            selected_rule = choose_reaction_rule(policy_bank, profile, state, ["vague_pitch"], path_bias, exchange_index)
+            path_taken.append("reactivity_warning")
+        elif exchange_index == target_count:
             customer_text = terminal_customer_text(terminal_outcome, path_bias, seed)
             terminal_rule = choose_reaction_rule(policy_bank, profile, state, agent_tags, path_bias, exchange_index)
             state = apply_state_delta(state, terminal_rule["customer_state_delta"])
@@ -3448,10 +3915,19 @@ def simulate_interaction_trace(
             {
                 "exchange_index": exchange_index,
                 "stage": stage,
+                "previous_customer_text": previous_customer_text,
+                "previous_customer_intent_tags": previous_customer_intent_tags,
                 "agent_text": agent_text,
                 "agent_action_tags": agent_tags,
+                **reactivity,
                 "agent_runtime_decision": {
                     "source": "generate_guarded_response.build_guarded_response_packet",
+                    "core_agent_text": core_agent_text,
+                    "core_agent_action_tags": core_agent_tags,
+                    "final_agent_text_source": "prod_041a_reactive_agent_adapter",
+                    "actual_agent_logic_called": True,
+                    "actual_agent_logic_used_as_final_text": False,
+                    "actual_agent_logic_unavailable_reason": actual_agent_logic_unavailable_reason,
                     "response_generation_id": agent_packet["response_generation_id"],
                     "provider": agent_packet["provider"],
                     "llm_used": agent_packet["llm_used"],
@@ -3468,8 +3944,12 @@ def simulate_interaction_trace(
                 "depends_on_previous_agent_action_tags": True,
             }
         )
+        previous_agent_texts.append(agent_text)
+        previous_customer_texts.append(customer_text)
 
         if terminal_outcome in {"do_not_contact", "support_boundary_ended"} and exchange_index >= target_count:
+            break
+        if reactivity_failure_streak >= 2:
             break
 
     conversation_sequence: list[dict[str, Any]] = []
@@ -3499,6 +3979,28 @@ def simulate_interaction_trace(
     )
     failure_flags = [flag for flag in failure_flags if flag not in {"missed_handoff"}]
     hard_fail_count = 0 if not failure_flags else hard_fail_count
+    repeated_agent_answer_count = sum(1 for ex in exchanges if ex["agent_repeated_prior_answer"])
+    ignored_customer_input_count = sum(1 for ex in exchanges if ex["agent_ignored_customer_input"])
+    looping_question_count = sum(1 for ex in exchanges if ex["agent_looping_question"])
+    unanswered_customer_intent_count = sum(1 for ex in exchanges if not ex["agent_addressed_customer_intent"])
+    false_safe_close_count = 0
+    if terminal_outcome in SAFE_CLOSE_OUTCOMES and len(exchanges) >= 2:
+        last_two = exchanges[-2:]
+        if any(ex["agent_repeated_prior_answer"] or ex["agent_ignored_customer_input"] for ex in last_two):
+            false_safe_close_count = 1
+    reactive_turns = max(1, len(exchanges))
+    agent_reactivity_score = round(
+        sum(1 for ex in exchanges if ex["agent_progressed_conversation"]) / reactive_turns,
+        4,
+    )
+    agent_reactivity_passed = (
+        repeated_agent_answer_count == 0
+        and ignored_customer_input_count == 0
+        and looping_question_count == 0
+        and unanswered_customer_intent_count == 0
+        and false_safe_close_count == 0
+        and agent_reactivity_score >= 0.9
+    )
     detected_strategies = sorted({tag for ex in exchanges for tag in ex["agent_action_tags"]})
     neutral_pairs = sum(1 for ex in exchanges if ex["customer_state_before"] == ex["customer_state_after"])
     state_change_count = sum(1 for ex in exchanges if ex["customer_state_before"] != ex["customer_state_after"])
@@ -3523,7 +4025,9 @@ def simulate_interaction_trace(
         "hidden_customer_state_visible_to_simulator_only": profile["hidden_customer_state"],
         "agent_visible_context": profile["agent_visible_context"],
         "actual_agent_logic_used": actual_agent_logic_used,
-        "actual_agent_logic_adapter": "generate_guarded_response.build_guarded_response_packet",
+        "actual_agent_logic_called": actual_agent_logic_called,
+        "actual_agent_logic_adapter": "prod_041a_reactive_agent_adapter",
+        "actual_agent_logic_unavailable_reason": actual_agent_logic_unavailable_reason,
         "static_script_used": False,
         "path_bias": path_bias,
         "path_taken": list(dict.fromkeys(path_taken)),
@@ -3544,6 +4048,13 @@ def simulate_interaction_trace(
         "recovery_from_weak_agent_answer": recovery_present,
         "boundary_handling_present": boundary_present,
         "loop_guard": {"triggered": False, "max_exchanges": profile["turn_length_policy"]["max_exchanges"]},
+        "agent_reactivity_score": agent_reactivity_score,
+        "repeated_agent_answer_count": repeated_agent_answer_count,
+        "ignored_customer_input_count": ignored_customer_input_count,
+        "looping_question_count": looping_question_count,
+        "unanswered_customer_intent_count": unanswered_customer_intent_count,
+        "false_safe_close_count": false_safe_close_count,
+        "agent_reactivity_passed": agent_reactivity_passed,
         "hard_failure_count": hard_fail_count,
         "failure_flags": failure_flags,
         "failure_taxonomy_hits": {flag: int(flag in failure_flags) for flag in sorted(FAILURE_FLAGS)},
@@ -3605,6 +4116,11 @@ def summarize_interactive(traces: list[dict[str, Any]], profiles: list[dict[str,
     non_sale_traces = [trace for trace in traces if trace["terminal_outcome"] in NON_SALE_CORRECTNESS_OUTCOMES]
     full_agent_sequences = [" || ".join(ex["agent_text"] for ex in trace["exchanges"]) for trace in traces]
     full_customer_sequences = [" || ".join(ex["customer_text"] for ex in trace["exchanges"]) for trace in traces]
+    all_exchanges = [ex for trace in traces for ex in trace["exchanges"]]
+    actual_agent_logic_used = all(trace["actual_agent_logic_used"] for trace in traces)
+    actual_agent_logic_called = all(trace.get("actual_agent_logic_called") for trace in traces)
+    reactivity_turns = max(1, len(all_exchanges))
+    addressed_count = sum(1 for ex in all_exchanges if ex.get("agent_addressed_customer_intent") is True)
     return {
         "scenario_profile_count": len(profiles),
         "profile_b2b_count": sum(1 for profile in profiles if profile["b2b_or_b2c"] == "B2B"),
@@ -3622,8 +4138,14 @@ def summarize_interactive(traces: list[dict[str, Any]], profiles: list[dict[str,
         "all_labels_present": Counter(REQUIRED_LABELS) == labels,
         "domain_count": len({trace["domain"] for trace in traces}),
         "terminal_outcome_type_count": len({trace["terminal_outcome"] for trace in traces}),
-        "actual_agent_logic_used": all(trace["actual_agent_logic_used"] for trace in traces),
-        "actual_agent_logic_unavailable": False,
+        "actual_agent_logic_used": actual_agent_logic_used,
+        "actual_agent_logic_called": actual_agent_logic_called,
+        "actual_agent_logic_unavailable": not actual_agent_logic_used,
+        "actual_agent_logic_unavailable_reason": (
+            ""
+            if actual_agent_logic_used
+            else "current local harness is single-turn/stage-classified and does not consume full conversation history for this checkpoint"
+        ),
         "provider_calls_made": False,
         "llm_used": False,
         "abstract_pattern_only": True,
@@ -3675,6 +4197,31 @@ def summarize_interactive(traces: list[dict[str, Any]], profiles: list[dict[str,
         "repeated_full_customer_response_sequence_count": total - len(set(full_customer_sequences)),
         "static_script_trace_count": sum(1 for trace in traces if trace["static_script_used"]),
         "loop_guard_triggered_count": sum(1 for trace in traces if trace["loop_guard"]["triggered"]),
+        "agent_reactivity_recorded_for_all_agent_turns": all(
+            "agent_reactivity_tags" in ex
+            and "agent_addressed_customer_intent" in ex
+            and "agent_repeated_prior_answer" in ex
+            and "agent_added_new_information" in ex
+            and "agent_progressed_conversation" in ex
+            and "agent_looping_question" in ex
+            and "agent_ignored_customer_input" in ex
+            for ex in all_exchanges
+        ),
+        "previous_customer_intent_tags_recorded_for_all_agent_turns": all(
+            "previous_customer_text" in ex and bool(ex.get("previous_customer_intent_tags"))
+            for ex in all_exchanges
+        ),
+        "agent_addressed_customer_intent_rate": round(addressed_count / reactivity_turns, 4),
+        "repeated_agent_answer_count": sum(trace["repeated_agent_answer_count"] for trace in traces),
+        "ignored_customer_input_count": sum(trace["ignored_customer_input_count"] for trace in traces),
+        "looping_question_count": sum(trace["looping_question_count"] for trace in traces),
+        "unanswered_customer_intent_count": sum(trace["unanswered_customer_intent_count"] for trace in traces),
+        "false_safe_close_count": sum(trace["false_safe_close_count"] for trace in traces),
+        "agent_reactivity_average_score": round(
+            sum(trace["agent_reactivity_score"] for trace in traces) / max(1, total),
+            4,
+        ),
+        "agent_reactivity_passed_trace_count": sum(1 for trace in traces if trace["agent_reactivity_passed"]),
         "support_boundary_ended_count": sum(1 for trace in traces if trace["terminal_outcome"] == "support_boundary_ended"),
         "not_qualified_count": sum(1 for trace in traces if trace["terminal_outcome"] == "not_qualified"),
         "handoff_required_count": sum(1 for trace in traces if trace["terminal_outcome"] == "handoff_required"),
@@ -3726,7 +4273,9 @@ def build_payload(
         "next_checkpoint_recommended": NEXT_CHECKPOINT_ID,
         "generation_model": "interactive_conditional_customer_simulation",
         "actual_agent_logic_used": summary["actual_agent_logic_used"],
-        "actual_agent_logic_adapter": "generate_guarded_response.build_guarded_response_packet",
+        "actual_agent_logic_called": summary["actual_agent_logic_called"],
+        "actual_agent_logic_adapter": "prod_041a_reactive_agent_adapter",
+        "actual_agent_logic_unavailable_reason": summary["actual_agent_logic_unavailable_reason"],
         "scenario_profiles": profiles,
         "interaction_traces": traces,
         "calls": traces,
@@ -3833,6 +4382,16 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
         "domain_count",
         "terminal_outcome_type_count",
         "actual_agent_logic_used",
+        "actual_agent_logic_called",
+        "actual_agent_logic_unavailable",
+        "agent_addressed_customer_intent_rate",
+        "repeated_agent_answer_count",
+        "ignored_customer_input_count",
+        "looping_question_count",
+        "unanswered_customer_intent_count",
+        "false_safe_close_count",
+        "agent_reactivity_average_score",
+        "agent_reactivity_passed_trace_count",
         "safe_close_rate",
         "non_sale_correctness_rate",
         "hard_failure_count",
@@ -3869,7 +4428,7 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
             "",
             "## Review Trace Fields",
             "",
-            "Each generated interaction trace records `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after each response, failure taxonomy hits, safety flags, loop guard status, and whether actual local agent logic was used.",
+            "Each generated interaction trace records `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after each response, agent reactivity metadata, failure taxonomy hits, safety flags, loop guard status, and whether actual local agent logic was called or used as final contextual text.",
             "",
             "## Boundary",
             "",
@@ -3928,6 +4487,8 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       'scenario_profile_count','generated_trace_count','seed_count_per_scenario_min','reaction_rule_count',
       'traces_with_5_plus_exchanges','traces_with_8_plus_exchanges','traces_with_12_plus_exchanges',
       'traces_with_18_plus_exchanges','same_exchange_count_max_rate','actual_agent_logic_used',
+      'agent_addressed_customer_intent_rate','repeated_agent_answer_count','ignored_customer_input_count',
+      'looping_question_count','false_safe_close_count',
       'hard_failure_count','payment_collection_count','unsupported_claim_count','leakage_finding_count'
     ];
     document.getElementById('metrics').innerHTML = metricKeys.map(k => `<div class="metric"><strong>${{k}}</strong><br><code>${{data.summary[k]}}</code></div>`).join('');
@@ -3956,6 +4517,8 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
           <p><strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Customer role:</strong> ${{esc(call.customer_role)}} | <strong>Emotion:</strong> ${{esc(call.emotion)}}</p>
           <p><strong>Path:</strong> <code>${{esc(call.path_taken.join(' -> '))}}</code> | <strong>Exchanges:</strong> <code>${{call.exchange_count}}</code> | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
           <p><strong>Actual agent logic used:</strong> <code>${{call.actual_agent_logic_used}}</code> | <strong>Adapter:</strong> <code>${{esc(call.actual_agent_logic_adapter)}}</code></p>
+          <p><strong>Agent reactivity score:</strong> <code>${{call.agent_reactivity_score}}</code> | <strong>Passed:</strong> <code>${{call.agent_reactivity_passed}}</code></p>
+          <p><strong>Reactivity counts:</strong> repeated <code>${{call.repeated_agent_answer_count}}</code>, ignored <code>${{call.ignored_customer_input_count}}</code>, looping <code>${{call.looping_question_count}}</code>, unanswered <code>${{call.unanswered_customer_intent_count}}</code>, false safe close <code>${{call.false_safe_close_count}}</code></p>
           <p><strong>Safe close:</strong> <code>${{call.counts_toward_safe_close_rate}}</code> | <strong>Non-sale correctness:</strong> <code>${{call.counts_toward_non_sale_correctness}}</code></p>
           <details><summary>Agent-visible context</summary><pre>${{esc(JSON.stringify(call.agent_visible_context, null, 2))}}</pre></details>
           <details><summary>Scenario-level scores</summary><pre>${{esc(JSON.stringify(call.scenario_level_scores, null, 2))}}</pre></details>
@@ -3971,6 +4534,17 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
               <p><strong>Exchange ${{ex.exchange_index}}</strong> <code>${{esc(ex.stage)}}</code></p>
               <p><strong>Agent:</strong> ${{esc(ex.agent_text)}}</p>
               <p><strong>Agent action tags:</strong> <code>${{esc(ex.agent_action_tags.join(', '))}}</code></p>
+              <p><strong>Previous customer intent:</strong> <code>${{esc(ex.previous_customer_intent_tags.join(', '))}}</code></p>
+              <p><strong>Agent reactivity:</strong> <code>${{esc(ex.agent_reactivity_tags.join(', '))}}</code></p>
+              <pre>${{esc(JSON.stringify({{
+                previous_customer_text: ex.previous_customer_text,
+                agent_addressed_customer_intent: ex.agent_addressed_customer_intent,
+                agent_repeated_prior_answer: ex.agent_repeated_prior_answer,
+                agent_added_new_information: ex.agent_added_new_information,
+                agent_progressed_conversation: ex.agent_progressed_conversation,
+                agent_looping_question: ex.agent_looping_question,
+                agent_ignored_customer_input: ex.agent_ignored_customer_input
+              }}, null, 2))}}</pre>
               <p><strong>Customer:</strong> ${{esc(ex.customer_text)}}</p>
               <p><strong>Reaction rules:</strong> <code>${{esc(ex.selected_reaction_rule_ids.join(', '))}}</code></p>
               <details><summary>Customer state before/after</summary><pre>${{esc(JSON.stringify({{before: ex.customer_state_before, after: ex.customer_state_after}}, null, 2))}}</pre></details>

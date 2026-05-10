@@ -16,6 +16,15 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041A agent reactivity validation repair
+
+- Objective: fix the PROD-041A failure where customer responses changed but agent answers could repeat or ignore the latest customer turn.
+- Action taken: added deterministic customer intent classification, per-turn agent reactivity fields, repeated-answer and looping-question detection, state penalties for repeated/ignored agent behavior, false-safe-close guards, review-surface reactivity fields, and validator gates requiring agent responses to address the immediately previous customer intent.
+- Data used: existing offline PROD-041A recipes, scenario profiles, and deterministic generated artifacts only. No provider call, LLM call, private data read, dataset download, transcript copying, runtime behavior change, or production promotion was used.
+- Output created: regenerated `interaction_traces.json`, `scenario_diversity_traces.json`, `scenario_diversity_review.html`, `scenario_diversity_review_data.json`, `result.json`, and `report.md` under `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/`.
+- What was learned: the current local sales-agent harness is callable but not sufficient as final contextual trace text because it is single-turn/stage-classified. PROD-041A now records that truthfully and validates the deterministic reactivity adapter against zero repeated agent answers, zero ignored customer inputs, zero looping questions, and zero false safe closes.
+- Why it matters for the thesis: it separates customer reactivity from agent reactivity and prevents long offline traces from looking interactive when the agent is actually looping.
+
 ### 2026-05-10 - PROD-041A interactive conditional customer simulation rewrite
 
 - Objective: replace PROD-041A fixed scripted dialogue with interactive conditional customer simulation.

@@ -1089,7 +1089,7 @@ Run the PROD-041A interactive conditional customer simulation expansion checkpoi
 python scripts\run_prod_041a_conditional_scenario_diversity_expansion.py
 ```
 
-Validate the PROD-041A 40-profile, 120-trace interactive simulator gates, customer reaction policy bank, seeded scenario profiles, agent_action_tags linkage, variable exchange counts, customer state before/after records, reaction_rule_ids, no-static-script boundary, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
+Validate the PROD-041A 40-profile, 120-trace interactive simulator gates, customer reaction policy bank, seeded scenario profiles, agent_action_tags linkage, agent reactivity and previous-customer-intent gates, variable exchange counts, customer state before/after records, reaction_rule_ids, no-static-script boundary, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
 
 ```powershell
 python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py

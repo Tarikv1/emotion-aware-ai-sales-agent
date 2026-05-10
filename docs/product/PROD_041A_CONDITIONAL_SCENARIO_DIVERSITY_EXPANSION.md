@@ -43,7 +43,8 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Every trace references `scenario_id`, `seed`, and selected `reaction_rule_ids`.
 - Customer turns depend on immediately previous `agent_action_tags`.
 - Customer state before and after every customer response is recorded.
-- Actual local sales-agent logic use is recorded. Current run uses `generate_guarded_response.build_guarded_response_packet`.
+- Actual local sales-agent logic use is recorded truthfully. The current local harness is called, but it is single-turn/stage-classified and does not consume full conversation history well enough for final contextual trace text, so PROD-041A records `actual_agent_logic_used: false` and uses the deterministic `prod_041a_reactive_agent_adapter` for final agent turns.
+- Every agent turn records previous customer text, deterministic customer intent tags, agent reactivity tags, whether the latest customer intent was addressed, whether the answer repeated prior agent text, whether new information was added, whether the conversation progressed, and whether the agent ignored customer input.
 - Conversations are variable length, not fixed three-turn scripts.
 - At least `70` traces have `5+` exchanges.
 - At least `40` traces have `8+` exchanges.
@@ -53,6 +54,10 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - No scenario uses the same exchange count across all seeds.
 - Repeated full agent response sequence count: `0`
 - Repeated full customer response sequence count: `0`
+- Repeated agent answer count: `0`
+- Ignored customer input count: `0`
+- Looping question count: `0`
+- False safe close count: `0`
 - Hard failure count: `0`
 - Payment collection count: `0`
 - Unsupported claim count: `0`
@@ -71,18 +76,27 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Seed count per scenario: `3`
 - B2B/B2C profiles: `24 / 16`
 - Reaction rules: `20`
+- Actual agent logic called: `true`
+- Actual agent logic used as final contextual text: `false`
+- Agent addressed customer intent rate: `1.0`
+- Agent reactivity average score: `1.0`
+- Agent reactivity passed traces: `120`
 - Traces with `5+` exchanges: `116`
 - Traces with `8+` exchanges: `76`
 - Traces with `12+` exchanges: `47`
 - Traces with `18+` exchanges: `11`
 - Same exchange count max rate: `0.1167`
-- Neutral-state two-exchange traces: `81`
+- Neutral-state two-exchange traces: `98`
 - Agent-caused state-change traces: `120`
-- Customer challenge/pushback traces: `114`
-- Recovery-from-weak-answer traces: `56`
+- Customer challenge/pushback traces: `109`
+- Recovery-from-weak-answer traces: `85`
 - Boundary-handling traces: `23`
 - Repeated full agent response sequence count: `0`
 - Repeated full customer response sequence count: `0`
+- Repeated agent answer count: `0`
+- Ignored customer input count: `0`
+- Looping question count: `0`
+- False safe close count: `0`
 - Hard failure count: `0`
 - Payment collection count: `0`
 - Unsupported claim count: `0`
@@ -102,6 +116,8 @@ Each trace shows:
 - safe-close and non-sale correctness counters
 - exact agent text per exchange
 - `agent_action_tags` per agent turn
+- previous customer intent tags and agent reactivity tags per exchange
+- agent intent-addressing, repetition, new-information, progression, looping-question, and ignored-input booleans per exchange
 - exact customer text per exchange
 - selected `reaction_rule_ids`
 - customer state before and after each customer response

@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-093 - Add agent reactivity gates to PROD-041A
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: PROD-041A must validate agent reactivity in addition to customer reactivity. Every post-opening agent turn records the immediately previous customer text, deterministic customer intent tags, reactivity tags, intent-addressing status, repetition status, new-information status, progression status, looping-question status, and ignored-input status.
+- Why:
+  - the interactive simulator could still produce long traces where the customer changed but the agent repeated the same broad response
+  - repeated agent answers can make safe closes look earned when the agent actually ignored the latest customer input
+  - human review needs to inspect why the agent response was considered reactive, not just why the customer responded
+- Alternatives considered:
+  - add more banned phrases
+  - add more scripted customer pushback
+  - accept the current local sales-agent harness as contextual despite repeated stage responses
+- Consequences:
+  - validator gates now require `0` repeated agent answers, `0` ignored customer inputs, `0` looping questions, and `0` false safe closes
+  - repeated or ignored agent behavior would reduce customer trust/patience and can force rejection instead of a positive terminal outcome
+  - the current local sales-agent harness is still called, but the checkpoint truthfully records it as unavailable for final contextual text because it is single-turn/stage-classified
+  - the review surface exposes agent reactivity metadata per exchange and trace-level reactivity counters
+
 ### DEC-092 - Rewrite PROD-041A as interactive conditional customer simulation
 
 - Date: 2026-05-10

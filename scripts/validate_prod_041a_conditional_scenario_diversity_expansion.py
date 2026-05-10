@@ -97,6 +97,33 @@ BANNED_VISIBLE_DIALOGUE = [
 ]
 
 PROVIDER_OR_SOURCE_NAME_PATTERN = re.compile(r"\b(AIxBlock|CallCenterEN)\b", re.IGNORECASE)
+SAFE_CLOSE_OUTCOMES = {
+    "accepted",
+    "callback_scheduled",
+    "written_info_requested",
+    "manager_review_needed",
+    "handoff_required",
+}
+
+
+def normalize_agent_text(text: str) -> str:
+    lowered = text.lower()
+    lowered = re.sub(r"[^a-z0-9\s]", " ", lowered)
+    return re.sub(r"\s+", " ", lowered).strip()
+
+
+def token_similarity(left: str, right: str) -> float:
+    left_tokens = set(normalize_agent_text(left).split())
+    right_tokens = set(normalize_agent_text(right).split())
+    if not left_tokens or not right_tokens:
+        return 0.0
+    return len(left_tokens & right_tokens) / max(len(left_tokens), len(right_tokens))
+
+
+def near_duplicate_agent_text(left: str, right: str) -> bool:
+    if len(left.split()) <= 10 or len(right.split()) <= 10:
+        return False
+    return normalize_agent_text(left) == normalize_agent_text(right) or token_similarity(left, right) >= 0.82
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -221,8 +248,10 @@ def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surf
     assert_condition(len(profiles) == 40, len(profiles))
     assert_condition(Counter(profile["scenario_label"] for profile in profiles) == Counter(REQUIRED_LABELS), "trace labels")
     assert_condition(summary.get("actual_agent_logic_used") is True or summary.get("actual_agent_logic_unavailable") is True, summary)
+    assert_condition(summary.get("actual_agent_logic_called") is True, summary)
     if summary.get("actual_agent_logic_used") is not True:
         assert_condition(summary.get("actual_agent_logic_unavailable") is True, summary)
+        assert_condition(summary.get("actual_agent_logic_unavailable_reason"), summary)
 
     by_scenario: dict[str, list[dict[str, Any]]] = {}
     for trace in traces:
@@ -249,6 +278,13 @@ def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surf
     assert_condition(summary.get("repeated_full_customer_response_sequence_count") == 0, summary)
     assert_condition(summary.get("static_script_trace_count") == 0, summary)
     assert_condition(summary.get("loop_guard_triggered_count") == 0, summary)
+    assert_condition(summary.get("agent_reactivity_recorded_for_all_agent_turns") is True, summary)
+    assert_condition(summary.get("previous_customer_intent_tags_recorded_for_all_agent_turns") is True, summary)
+    assert_condition(summary.get("agent_addressed_customer_intent_rate", 0) >= 0.9, summary)
+    assert_condition(summary.get("repeated_agent_answer_count") == 0, summary)
+    assert_condition(summary.get("looping_question_count") == 0, summary)
+    assert_condition(summary.get("ignored_customer_input_count") == 0, summary)
+    assert_condition(summary.get("false_safe_close_count") == 0, summary)
 
     for key in [
         "hard_failure_count",
@@ -270,7 +306,9 @@ def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surf
     for trace in traces:
         assert_condition(trace.get("scenario_id"), trace)
         assert_condition(trace.get("seed") in {1, 2, 3}, trace)
-        assert_condition(trace.get("actual_agent_logic_used") is True, trace)
+        assert_condition(trace.get("actual_agent_logic_called") is True, trace)
+        if trace.get("actual_agent_logic_used") is not True:
+            assert_condition(trace.get("actual_agent_logic_unavailable_reason"), trace)
         assert_condition(trace.get("static_script_used") is False, trace)
         assert_condition(trace.get("terminal_outcome_valid") is True, trace)
         assert_condition(trace.get("hard_failure_count") == 0, trace)
@@ -281,6 +319,22 @@ def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surf
         assert_condition(trace.get("selected_reaction_rule_ids"), trace)
         assert_condition(trace.get("scenario_level_scores", {}).get("interactive_generation") is True, trace)
         assert_condition(trace.get("dialogue_realism", {}).get("interactive_not_static") is True, trace)
+        assert_condition(trace.get("agent_reactivity_passed") is True, trace)
+        assert_condition(trace.get("agent_reactivity_score", 0) >= 0.9, trace)
+        assert_condition(trace.get("repeated_agent_answer_count") == 0, trace)
+        assert_condition(trace.get("ignored_customer_input_count") == 0, trace)
+        assert_condition(trace.get("looping_question_count") == 0, trace)
+        assert_condition(trace.get("unanswered_customer_intent_count") == 0, trace)
+        assert_condition(trace.get("false_safe_close_count") == 0, trace)
+        if trace["terminal_outcome"] in SAFE_CLOSE_OUTCOMES and len(trace.get("exchanges", [])) >= 2:
+            last_two = trace["exchanges"][-2:]
+            assert_condition(
+                not any(
+                    ex.get("agent_repeated_prior_answer") or ex.get("agent_ignored_customer_input")
+                    for ex in last_two
+                ),
+                {"false_safe_close_tail": trace["trace_id"], "last_two": last_two},
+            )
         spoken = visible_dialogue(trace)
         assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(spoken), trace["trace_id"])
         for phrase in BANNED_VISIBLE_DIALOGUE:
@@ -289,12 +343,33 @@ def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surf
             assert_condition(exchange.get("agent_text"), exchange)
             assert_condition(exchange.get("customer_text"), exchange)
             assert_condition(exchange.get("agent_action_tags"), exchange)
+            assert_condition("previous_customer_text" in exchange, exchange)
+            assert_condition(exchange.get("previous_customer_intent_tags"), exchange)
+            assert_condition(exchange.get("agent_reactivity_tags") is not None, exchange)
+            assert_condition(exchange.get("agent_addressed_customer_intent") is True, exchange)
+            assert_condition(exchange.get("agent_repeated_prior_answer") is False, exchange)
+            assert_condition(exchange.get("agent_added_new_information") is True, exchange)
+            assert_condition(exchange.get("agent_progressed_conversation") is True, exchange)
+            assert_condition(exchange.get("agent_looping_question") is False, exchange)
+            assert_condition(exchange.get("agent_ignored_customer_input") is False, exchange)
             assert_condition(exchange.get("selected_reaction_rule_ids"), exchange)
             assert_condition(exchange.get("depends_on_previous_agent_action_tags") is True, exchange)
             assert_condition(exchange.get("customer_state_before") is not None, exchange)
             assert_condition(exchange.get("customer_state_after") is not None, exchange)
             assert_condition(exchange.get("agent_runtime_decision"), exchange)
             assert_condition(exchange.get("safety_flags", {}).get("hard_failure") is False, exchange)
+        agent_texts = [exchange["agent_text"] for exchange in trace["exchanges"]]
+        for index, current in enumerate(agent_texts):
+            for previous in agent_texts[:index]:
+                assert_condition(
+                    not near_duplicate_agent_text(current, previous),
+                    {"trace": trace["trace_id"], "repeated_agent_answer": current, "previous": previous},
+                )
+        for start in range(0, max(0, len(trace["exchanges"]) - 2)):
+            triple = trace["exchanges"][start : start + 3]
+            same_tags = len({tuple(item["agent_action_tags"]) for item in triple}) == 1
+            no_progress = not any(item["customer_state_before"] != item["customer_state_after"] for item in triple)
+            assert_condition(not (same_tags and no_progress), {"trace": trace["trace_id"], "triple": triple})
 
     surface_calls = surface_data.get("calls", [])
     assert_condition(len(surface_calls) == len(traces), "surface data trace count")
@@ -312,6 +387,14 @@ def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surf
             "safety_flags",
             "loop_guard",
             "actual_agent_logic_used",
+            "actual_agent_logic_called",
+            "agent_reactivity_score",
+            "repeated_agent_answer_count",
+            "ignored_customer_input_count",
+            "looping_question_count",
+            "unanswered_customer_intent_count",
+            "false_safe_close_count",
+            "agent_reactivity_passed",
         ]:
             assert_condition(field in call, f"surface missing {field}")
 

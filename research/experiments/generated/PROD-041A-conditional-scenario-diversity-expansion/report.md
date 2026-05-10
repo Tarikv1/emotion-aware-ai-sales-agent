@@ -13,7 +13,17 @@ The final HTML contains generated traces after running the local sales-agent tur
 - Reaction Rule Count: `20`
 - Domain Count: `27`
 - Terminal Outcome Type Count: `9`
-- Actual Agent Logic Used: `True`
+- Actual Agent Logic Used: `False`
+- Actual Agent Logic Called: `True`
+- Actual Agent Logic Unavailable: `True`
+- Agent Addressed Customer Intent Rate: `1.0`
+- Repeated Agent Answer Count: `0`
+- Ignored Customer Input Count: `0`
+- Looping Question Count: `0`
+- Unanswered Customer Intent Count: `0`
+- False Safe Close Count: `0`
+- Agent Reactivity Average Score: `1.0`
+- Agent Reactivity Passed Trace Count: `120`
 - Safe Close Rate: `0.8417`
 - Non Sale Correctness Rate: `1.0`
 - Hard Failure Count: `0`
@@ -25,10 +35,10 @@ The final HTML contains generated traces after running the local sales-agent tur
 - Traces With 12 Plus Exchanges: `47`
 - Traces With 18 Plus Exchanges: `11`
 - Same Exchange Count Max Rate: `0.1167`
-- Neutral State Two Exchange Trace Count: `81`
+- Neutral State Two Exchange Trace Count: `98`
 - Agent Caused State Change Trace Count: `120`
-- Challenge Pushback Trace Count: `114`
-- Recovery From Weak Answer Trace Count: `56`
+- Challenge Pushback Trace Count: `109`
+- Recovery From Weak Answer Trace Count: `85`
 - Boundary Handling Trace Count: `23`
 - Repeated Full Agent Response Sequence Count: `0`
 - Repeated Full Customer Response Sequence Count: `0`
@@ -46,7 +56,7 @@ The final HTML contains generated traces after running the local sales-agent tur
 
 ## Review Trace Fields
 
-Each generated interaction trace records `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after each response, failure taxonomy hits, safety flags, loop guard status, and whether actual local agent logic was used.
+Each generated interaction trace records `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after each response, agent reactivity metadata, failure taxonomy hits, safety flags, loop guard status, and whether actual local agent logic was called or used as final contextual text.
 
 ## Boundary
 
