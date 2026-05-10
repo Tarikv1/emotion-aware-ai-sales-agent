@@ -1095,6 +1095,18 @@ Validate the PROD-041A 40-scenario diversity gates, B2B/B2C split, curated scena
 python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 ```
 
+Run the PROD-041 conditional simulation human review checkpoint:
+
+```powershell
+python scripts\run_prod_041_conditional_simulation_review.py
+```
+
+Validate the PROD-041 human review packet, locked PROD-041A source boundary, manual realism findings, rewrite candidates, blocked voice/demo promotion, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_041_conditional_simulation_review.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

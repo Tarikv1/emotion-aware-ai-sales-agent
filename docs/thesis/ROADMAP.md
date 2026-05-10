@@ -33,12 +33,12 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: review `PROD-041-conditional-simulation-review` using the expanded `PROD-041A-conditional-scenario-diversity-expansion` traces to decide whether the CallCenterEN-conditioned customer conversations are realistic enough to unblock voice playback, scenario branching, more seeds, or public demo polish.
+- [ ] Current: keep `PROD-041A-conditional-scenario-diversity-expansion` locked and plan a targeted voice/demo readiness rewrite only for the PROD-041 customer-turn candidates if voice playback or public demo use is reopened.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-041, decide whether customer realism is good enough to unblock voice playback, scenario branching, more call seeds, or another simulator realism pass.
-- [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until the customer-response realism gate passes.
+- [ ] Next: before voice playback or demo use, rewrite only the selected customer turns identified by `PROD-041-conditional-simulation-review`; do not expand or regenerate PROD-041A.
+- [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
@@ -59,6 +59,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-041` conditional simulation review, which manually reviews the locked `PROD-041A-conditional-scenario-diversity-expansion` traces instead of expanding them. It reviewed `40` calls with `24` B2B and `16` B2C scenarios, kept PROD-041A locked, judged remaining deterministic phrasing acceptable for offline review only, found safe-close outcomes only partially earned, identified customer turns that remain too template-like, and marked targeted rewrites required before voice playback or public demo use. Voice playback, scenario branching, public demo polish, provider calls, LLM use, private data reads, dataset downloads, PROD-041A modification, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stay blocked.
 
 - [x] `PROD-041A` conditional scenario diversity expansion, which expands the PROD-040 conditional simulator into `40` mixed calls before the existing PROD-041 human review. It runs `24` B2B and `16` B2C scenarios with all `40` curated scenario labels appearing exactly once, all `7` opening styles used, at least `8` domains, deterministic strategy detection, deterministic emotion handling, scenario-level scores, terminal outcome validity, and failure taxonomy counts. Safe close rate, non sale correctness rate, hard failure rate, strategy match rate, and emotion handling rate are recorded in the generated result. Hard failures, payment collection, unsupported claims, provider calls, LLM use, private data reads, dataset downloads, raw transcript storage, copied transcript text, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, and production runtime promotion stay blocked. The next checkpoint remains `PROD-041-conditional-simulation-review`.
 
@@ -470,19 +472,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Review `PROD-041-conditional-simulation-review` using the completed `PROD-040` conditional traces.
+Use `PROD-041-conditional-simulation-review` as the human review decision for the locked `PROD-041A-conditional-scenario-diversity-expansion` traces.
 
 Purpose:
 
-- inspect whether each customer response changes according to the immediately preceding agent answer
-- verify the CallCenterEN abstract pattern basis is visible without copying transcript text
-- decide whether the conversation now feels realistic enough to unblock voice playback or whether another simulator pass is needed
+- keep PROD-041A offline, deterministic, and locked as the scenario diversity checkpoint
+- inspect whether remaining deterministic phrasing is acceptable for offline review only
+- identify customer turns that remain too template-like before voice playback or demo use
+- decide whether safe-close outcomes feel earned enough to promote
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
 
-Immediate product artifact after `PROD-040`:
+Immediate product artifact after `PROD-041`:
 
-- conditional-simulation review packet
-- review packet deciding whether voice playback, scenario branching, more seeds, or another realism pass should come next
+- targeted rewrite packet for selected customer turns if voice playback or public demo use is reopened
+- no PROD-041A scenario expansion unless a separate checkpoint explicitly reopens the scenario set
 
 Next voice checkpoint:
 

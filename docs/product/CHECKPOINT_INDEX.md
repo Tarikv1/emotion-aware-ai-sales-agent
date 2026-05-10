@@ -44,6 +44,7 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_039_CUSTOMER_REALISM_SIMULATOR_HARDENING.md`
 - `PROD_040_CALLCENTEREN_CONDITIONAL_CUSTOMER_SIMULATION.md`
 - `PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md`
+- `PROD_041_CONDITIONAL_SIMULATION_REVIEW.md`
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 

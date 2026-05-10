@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-090 - Complete PROD-041 human review without expanding PROD-041A
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Complete `PROD-041-conditional-simulation-review` as a human realism review over the locked `PROD-041A-conditional-scenario-diversity-expansion` traces, without expanding or regenerating PROD-041A.
+- Why:
+  - PROD-041A already satisfies the structural diversity and safety coverage needed for the scenario-diversity checkpoint
+  - the next useful evidence is manual realism judgment, not another scenario-generation pass
+  - voice playback and demo use need targeted customer-turn rewrites where safe-close outcomes do not yet feel earned
+- Alternatives considered:
+  - continue expanding PROD-041A with more scenarios
+  - unblock voice playback directly from the structurally valid PROD-041A packet
+  - rewrite PROD-041A in place
+- Consequences:
+  - PROD-041A stays offline, deterministic, and locked as the diversity checkpoint
+  - PROD-041 records that remaining deterministic phrasing is acceptable for offline review only
+  - voice playback, scenario branching, public demo polish, runtime defaults, provider calls, customer data, payment handling, and production promotion remain blocked
+  - any future voice/demo readiness work should rewrite selected customer turns in a separate targeted checkpoint
+
 ### DEC-089 - Add PROD-041A before the PROD-041 human review
 
 - Date: 2026-05-10

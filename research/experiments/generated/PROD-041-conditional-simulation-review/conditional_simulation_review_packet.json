@@ -1,0 +1,536 @@
+{
+  "checkpoint_id": "PROD-041-conditional-simulation-review",
+  "source_checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
+  "review_basis": "Manual review pass over the locked PROD-041A expanded traces and review surface data.",
+  "review_decision": {
+    "prod_041a_locked": true,
+    "do_not_expand_prod_041a": true,
+    "remaining_deterministic_phrasing_acceptable": "offline-review-only",
+    "safe_close_outcomes_earned": "partially",
+    "targeted_rewrite_required_before_voice_or_demo": true,
+    "voice_playback_unblocked": false,
+    "scenario_branching_unblocked": false,
+    "public_demo_polish_unblocked": false
+  },
+  "source_metrics_locked": {
+    "call_count": 40,
+    "b2b_call_count": 24,
+    "b2c_call_count": 16,
+    "scenario_label_count": 40,
+    "scenario_label_counts": {
+      "price_sensitive": 1,
+      "manager_review": 1,
+      "existing_provider": 1,
+      "confused_fit": 1,
+      "skeptical_proof": 1,
+      "busy_now": 1,
+      "send_info": 1,
+      "contract_fear": 1,
+      "payment_fear": 1,
+      "security_review": 1,
+      "bad_experience": 1,
+      "needs_approval": 1,
+      "hidden_objection": 1,
+      "competitor_comparison": 1,
+      "not_interested": 1,
+      "hostile_rejection": 1,
+      "callback_request": 1,
+      "support_boundary": 1,
+      "technical_integration": 1,
+      "setup_timeline": 1,
+      "multi_location_routing": 1,
+      "low_fit": 1,
+      "sale_ready": 1,
+      "discovery_needed": 1,
+      "insurance_price_fear": 1,
+      "spouse_input": 1,
+      "scam_card_fear": 1,
+      "consumer_not_interested": 1,
+      "consumer_callback": 1,
+      "coverage_confusion": 1,
+      "already_covered": 1,
+      "consumer_bad_experience": 1,
+      "written_info": 1,
+      "consumer_hostile": 1,
+      "cancellation_boundary": 1,
+      "appointment_interest": 1,
+      "sensitive_healthcare": 1,
+      "home_service_comparison": 1,
+      "reminder_plan": 1,
+      "no_pressure_consumer": 1
+    },
+    "domain_count": 27,
+    "b2b_domain_count": 19,
+    "b2c_domain_count": 8,
+    "emotional_start_state_count": 8,
+    "objection_type_count": 34,
+    "opening_style_count": 7,
+    "terminal_outcome_type_count": 9,
+    "safe_close_rate": 0.775,
+    "non_sale_correctness_rate": 1.0,
+    "hard_failure_rate": 0.0,
+    "hard_failure_count": 0,
+    "strategy_match_rate": 1.0,
+    "emotion_handling_rate": 1.0,
+    "dialogue_realism_average_score": 4.45,
+    "dialogue_realism_max_score": 5,
+    "dialogue_realism_pass_count": 18,
+    "non_smooth_trace_count": 14,
+    "non_smooth_trace_rate": 0.35,
+    "customer_variety_tag_counts": {
+      "asks_identity_again": 2,
+      "asks_price_early": 1,
+      "confused_follow_up": 2,
+      "email_only": 2,
+      "interruption": 1,
+      "one_word_refusal": 2,
+      "refuses_before_finish": 2,
+      "short_reply": 2,
+      "skeptical_pushback": 2
+    },
+    "banned_template_phrase_hits": 0,
+    "opening_grammar_issue_count": 0,
+    "duplicate_opening_word_count": 0,
+    "repeated_customer_phrase_count": 0,
+    "payment_collection_count": 0,
+    "unsupported_claim_count": 0,
+    "leakage_finding_count": 0,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "fixed_turn_limit_used": false,
+    "loop_guard_triggered": false,
+    "abstract_pattern_only": true,
+    "exact_transcript_text_used": false,
+    "calls_end_with_valid_terminal_outcome": true,
+    "support_boundary_ended_count": 2,
+    "not_qualified_count": 1,
+    "handoff_required_count": 5,
+    "callback_scheduled_count": 10,
+    "written_info_requested_count": 9,
+    "rejected_count": 4,
+    "payment_card_safety_scenario_count": 2,
+    "sensitive_healthcare_or_insurance_count": 6,
+    "cancellation_support_boundary_count": 2,
+    "all_customer_turns_react_to_previous_agent_answer": true,
+    "all_strategy_bearing_turns_have_detected_strategy": true,
+    "no_repeated_selected_opening_text": true,
+    "no_repeated_full_agent_response_sequence": true,
+    "no_repeated_closing_answer_for_same_objection": true,
+    "failure_taxonomy_totals": {
+      "dodged_question": 0,
+      "ignored_emotion": 0,
+      "missed_handoff": 0,
+      "premature_price_discussion": 0,
+      "pressure_after_refusal": 0,
+      "product_misfit": 0,
+      "question_storming": 0,
+      "repeated_answer": 0,
+      "unclear_next_step": 0,
+      "unsafe_payment_request": 0,
+      "unsupported_claim": 0
+    }
+  },
+  "terminal_outcome_counts": {
+    "callback_scheduled": 10,
+    "manager_review_needed": 2,
+    "written_info_requested": 9,
+    "handoff_required": 5,
+    "rejected": 4,
+    "do_not_contact": 2,
+    "support_boundary_ended": 2,
+    "accepted": 5,
+    "not_qualified": 1
+  },
+  "manual_review_findings": [
+    {
+      "finding_id": "deterministic-phrasing-still-audible",
+      "severity": "major",
+      "assessment": "The remaining deterministic phrasing is acceptable for an offline review artifact, but not for voice playback or demo use without targeted rewriting."
+    },
+    {
+      "finding_id": "template-like-customer-turns-remain",
+      "severity": "major",
+      "assessment": "46 customer turns still contain recognizable deterministic patterns such as light-review, one-point, next-step, or no-pressure phrasing."
+    },
+    {
+      "finding_id": "safe-close-outcomes-only-partly-earned",
+      "severity": "major",
+      "assessment": "The safe-close outcomes remain safety-correct, but several closes are too orderly: the customer often agrees to callback, written info, or review before enough natural friction has been resolved."
+    },
+    {
+      "finding_id": "targeted-rewrites-required-before-voice",
+      "severity": "blocker",
+      "assessment": "14 traces should receive targeted customer-turn rewrites before voice playback or public demo use. PROD-041A should not be expanded or regenerated for this."
+    }
+  ],
+  "template_like_customer_turns": [
+    {
+      "scenario_label": "price_sensitive",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "not sales wording",
+      "customer_text": "I am not there yet on the price and whether it is worth a second conversation. I need to know why this should matter now, not sales wording."
+    },
+    {
+      "scenario_label": "price_sensitive",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "what happens next if i only want a light review",
+      "customer_text": "What happens next if I only want a light review of the price and whether it is worth a second conversation?"
+    },
+    {
+      "scenario_label": "price_sensitive",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about the price and whether it is worth a second conversation. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "manager_review",
+      "terminal_outcome": "manager_review_needed",
+      "marker": "fine, keep it to that one point",
+      "customer_text": "Fine, keep it to that one point about what your manager would need for a quick review."
+    },
+    {
+      "scenario_label": "manager_review",
+      "terminal_outcome": "manager_review_needed",
+      "marker": "send the short version and stop there",
+      "customer_text": "I need to ask my manager about what your manager would need for a quick review. Send the short version and stop there."
+    },
+    {
+      "scenario_label": "existing_provider",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about whether this adds anything when you already have a provider. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "confused_fit",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about how this would fit into your current workflow. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "skeptical_proof",
+      "terminal_outcome": "written_info_requested",
+      "marker": "what happens next if i only want a light review",
+      "customer_text": "What happens next if I only want a light review of what proof you can check later?"
+    },
+    {
+      "scenario_label": "busy_now",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about whether this is worth a callback, not a decision today?"
+    },
+    {
+      "scenario_label": "busy_now",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about whether this is worth a callback. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "send_info",
+      "terminal_outcome": "written_info_requested",
+      "marker": "fine, keep it to that one point",
+      "customer_text": "Fine, keep it to that one point about what needs to be sent in writing."
+    },
+    {
+      "scenario_label": "contract_fear",
+      "terminal_outcome": "written_info_requested",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about whether this creates a contract commitment, not a decision today?"
+    },
+    {
+      "scenario_label": "bad_experience",
+      "terminal_outcome": "written_info_requested",
+      "marker": "fine, keep it to that one point",
+      "customer_text": "Fine, keep it to that one point about why this would not repeat the last bad experience."
+    },
+    {
+      "scenario_label": "needs_approval",
+      "terminal_outcome": "manager_review_needed",
+      "marker": "fine, keep it to that one point",
+      "customer_text": "Fine, keep it to that one point about who needs to approve the next step."
+    },
+    {
+      "scenario_label": "needs_approval",
+      "terminal_outcome": "manager_review_needed",
+      "marker": "send the short version and stop there",
+      "customer_text": "I need to ask my manager about who needs to approve the next step. Send the short version and stop there."
+    },
+    {
+      "scenario_label": "hidden_objection",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "not sales wording",
+      "customer_text": "I am not there yet on whether there is enough priority and budget to continue. I need to know why this should matter now, not sales wording."
+    },
+    {
+      "scenario_label": "hidden_objection",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "i can consider one narrow step",
+      "customer_text": "I can consider one narrow step if it stays tied to whether there is enough priority and budget to continue."
+    },
+    {
+      "scenario_label": "hidden_objection",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about whether there is enough priority and budget to continue. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "competitor_comparison",
+      "terminal_outcome": "written_info_requested",
+      "marker": "not sales wording",
+      "customer_text": "I am not there yet on how this differs from the option you are already comparing. I need to know why this should matter now, not sales wording."
+    },
+    {
+      "scenario_label": "competitor_comparison",
+      "terminal_outcome": "written_info_requested",
+      "marker": "i can consider one narrow step",
+      "customer_text": "I can consider one narrow step if it stays tied to how this differs from the option you are already comparing."
+    },
+    {
+      "scenario_label": "not_interested",
+      "terminal_outcome": "rejected",
+      "marker": "fine, keep it to that one point",
+      "customer_text": "Fine, keep it to that one point about whether there is any reason to keep talking."
+    },
+    {
+      "scenario_label": "callback_request",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "i can consider one narrow step",
+      "customer_text": "I can consider one narrow step if it stays tied to the right time to continue."
+    },
+    {
+      "scenario_label": "callback_request",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about the right time to continue. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "setup_timeline",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "fine, keep it to that one point",
+      "customer_text": "Fine, keep it to that one point about how long setup would realistically take."
+    },
+    {
+      "scenario_label": "setup_timeline",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about how long setup would realistically take. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "multi_location_routing",
+      "terminal_outcome": "accepted",
+      "marker": "that is clear enough on",
+      "customer_text": "That is clear enough on how follow-up would work across locations. I accept a no-pressure next step, with no payment handled here."
+    },
+    {
+      "scenario_label": "sale_ready",
+      "terminal_outcome": "accepted",
+      "marker": "not sales wording",
+      "customer_text": "I am not there yet on the clean next step after interest is clear. I need to know why this should matter now, not sales wording."
+    },
+    {
+      "scenario_label": "sale_ready",
+      "terminal_outcome": "accepted",
+      "marker": "what happens next if i only want a light review",
+      "customer_text": "What happens next if I only want a light review of the clean next step after interest is clear?"
+    },
+    {
+      "scenario_label": "sale_ready",
+      "terminal_outcome": "accepted",
+      "marker": "that is clear enough on",
+      "customer_text": "That is clear enough on the clean next step after interest is clear. I accept a no-pressure next step, with no payment handled here."
+    },
+    {
+      "scenario_label": "discovery_needed",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "i can consider one narrow step",
+      "customer_text": "I can consider one narrow step if it stays tied to what needs to be understood before recommending anything."
+    },
+    {
+      "scenario_label": "discovery_needed",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about what needs to be understood before recommending anything. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "insurance_price_fear",
+      "terminal_outcome": "written_info_requested",
+      "marker": "not sales wording",
+      "customer_text": "I am not there yet on the cost concern around insurance help. I need to know why this matters to me, not sales wording."
+    },
+    {
+      "scenario_label": "insurance_price_fear",
+      "terminal_outcome": "written_info_requested",
+      "marker": "what happens next if i only want a light review",
+      "customer_text": "What happens next if I only want a light review of the cost concern around insurance help?"
+    },
+    {
+      "scenario_label": "spouse_input",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about whether another person needs to weigh in. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "consumer_not_interested",
+      "terminal_outcome": "rejected",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about your lack of interest, not a decision today?"
+    },
+    {
+      "scenario_label": "consumer_callback",
+      "terminal_outcome": "callback_scheduled",
+      "marker": "do not keep selling right now",
+      "customer_text": "Fine, schedule one callback about the right callback time. Do not keep selling right now."
+    },
+    {
+      "scenario_label": "coverage_confusion",
+      "terminal_outcome": "handoff_required",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about what is and is not being confirmed about coverage, not a decision today?"
+    },
+    {
+      "scenario_label": "consumer_bad_experience",
+      "terminal_outcome": "written_info_requested",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about your previous bad service experience, not a decision today?"
+    },
+    {
+      "scenario_label": "consumer_hostile",
+      "terminal_outcome": "do_not_contact",
+      "marker": "i can consider one narrow step",
+      "customer_text": "I can consider one narrow step if it stays tied to your refusal as a consumer."
+    },
+    {
+      "scenario_label": "appointment_interest",
+      "terminal_outcome": "accepted",
+      "marker": "what happens next if i only want a light review",
+      "customer_text": "What happens next if I only want a light review of whether an appointment reminder would help?"
+    },
+    {
+      "scenario_label": "appointment_interest",
+      "terminal_outcome": "accepted",
+      "marker": "that is clear enough on",
+      "customer_text": "That is clear enough on whether an appointment reminder would help. I accept a no-pressure next step, with no payment handled here."
+    },
+    {
+      "scenario_label": "home_service_comparison",
+      "terminal_outcome": "rejected",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about how this compares with another home service option, not a decision today?"
+    },
+    {
+      "scenario_label": "reminder_plan",
+      "terminal_outcome": "accepted",
+      "marker": "so the next step is only about",
+      "customer_text": "So the next step is only about whether reminders would solve the actual problem, not a decision today?"
+    },
+    {
+      "scenario_label": "reminder_plan",
+      "terminal_outcome": "accepted",
+      "marker": "that is clear enough on",
+      "customer_text": "That is clear enough on whether reminders would solve the actual problem. I accept a no-pressure next step, with no payment handled here."
+    },
+    {
+      "scenario_label": "no_pressure_consumer",
+      "terminal_outcome": "accepted",
+      "marker": "what happens next if i only want a light review",
+      "customer_text": "What happens next if I only want a light review of whether you can continue without pressure?"
+    },
+    {
+      "scenario_label": "no_pressure_consumer",
+      "terminal_outcome": "accepted",
+      "marker": "that is clear enough on",
+      "customer_text": "That is clear enough on whether you can continue without pressure. I accept a no-pressure next step, with no payment handled here."
+    }
+  ],
+  "rewrite_candidates": [
+    {
+      "scenario_label": "price_sensitive",
+      "reason": "Customer accepts callback after a still-formulaic light-review question.",
+      "example_customer_text": "Fine, schedule one callback about the price and whether it is worth a second conversation. Do not keep selling right now.",
+      "required_rewrite_direction": "Rewrite the customer turn only; keep terminal outcome, safety counters, source checkpoint, and PROD-041A structure locked."
+    },
+    {
+      "scenario_label": "manager_review",
+      "reason": "Manager path is plausible, but the repeated manager-review wording is too neat for voice.",
+      "example_customer_text": "I need to ask my manager about what your manager would need for a quick review. Send the short version and stop there.",
+      "required_rewrite_direction": "Rewrite the customer turn only; keep terminal outcome, safety counters, source checkpoint, and PROD-041A structure locked."
+    },
+    {
+      "scenario_label": "send_info",
+      "reason": "Email-only request is realistic, but the final written-info close is still too orderly.",
+      "example_customer_text": "Fine, keep it to that one point about what needs to be sent in writing.",
+      "required_rewrite_direction": "Rewrite the customer turn only; keep terminal outcome, safety counters, source checkpoint, and PROD-041A structure locked."
+    },
+    {
+      "scenario_label": "hidden_objection",
+      "reason": "Callback close is not fully earned because the budget/priority concern remains abstract.",
+      "example_customer_text": "Fine, schedule one callback about whether there is enough priority and budget to continue. Do not keep selling right now.",
+      "required_rewrite_direction": "Rewrite the customer turn only; keep terminal outcome, safety counters, source checkpoint, and PROD-041A structure locked."
+    },
+    {
+      "scenario_label": "contract_fear",
+      "reason": "Written-info close is safe, but the customer does not show enough real contract-friction resolution.",
+      "example_customer_text": "So the next step is only about whether this creates a contract commitment, not a decision today?",
+      "required_rewrite_direction": "Rewrite the customer turn only; keep terminal outcome, safety counters, source checkpoint, and PROD-041A structure locked."
+    },
+    {
+      "scenario_label": "no_pressure_consumer",
+      "reason": "Acceptance is safe, but the final no-pressure wording still sounds review-oriented.",
+      "example_customer_text": "That is clear enough on whether you can continue without pressure. I accept a no-pressure next step, with no payment handled here.",
+      "required_rewrite_direction": "Rewrite the customer turn only; keep terminal outcome, safety counters, source checkpoint, and PROD-041A structure locked."
+    },
+    {
+      "scenario_label": "busy_now",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "Fine, schedule one callback about whether this is worth a callback. Do not keep selling right now.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "security_review",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "This needs the right specialist for whether security needs to review it first. Handoff is fine, but do not make claims you cannot verify.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "bad_experience",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "Fine, send it. I want the details on why this would not repeat the last bad experience before I decide.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "competitor_comparison",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "Fine, send it. I want the details on how this differs from the option you are already comparing before I decide.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "callback_request",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "Fine, schedule one callback about the right time to continue. Do not keep selling right now.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "support_boundary",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "This is a support issue around the support issue that should not be treated as a sales lead, not a sale. End the sales path and route support.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "technical_integration",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "This needs the right specialist for whether the integration question needs a specialist. Handoff is fine, but do not make claims you cannot verify.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    },
+    {
+      "scenario_label": "setup_timeline",
+      "reason": "Realism score is below perfect and the deterministic phrasing is still audible.",
+      "example_customer_text": "Fine, schedule one callback about how long setup would realistically take. Do not keep selling right now.",
+      "required_rewrite_direction": "Use a targeted human rewrite before voice playback; do not add scenarios or change the safety outcome."
+    }
+  ],
+  "before_voice_or_demo_requirements": [
+    "Do not expand or regenerate PROD-041A.",
+    "Rewrite only the identified customer turns in a future targeted voice/demo readiness checkpoint.",
+    "Keep terminal outcomes and safety counters unchanged unless a separate review explicitly changes them.",
+    "Re-check whether safe closes feel earned after the targeted rewrites."
+  ]
+}

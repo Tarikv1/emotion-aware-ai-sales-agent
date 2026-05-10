@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041 conditional simulation review
+
+- Objective: complete the human review checkpoint for the locked PROD-041A expanded traces without expanding the scenario set again.
+- Action taken: added the PROD-041 review module, runner, validator, product doc, generated result/report/review-packet artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the generated `PROD-041A-conditional-scenario-diversity-expansion` result and trace artifacts only. No provider call, LLM call, private data read, dataset download, PROD-041A modification, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_041_CONDITIONAL_SIMULATION_REVIEW.md`, `scripts/prod_041_conditional_simulation_review.py`, `scripts/run_prod_041_conditional_simulation_review.py`, `scripts/validate_prod_041_conditional_simulation_review.py`, `research/experiments/generated/PROD-041-conditional-simulation-review/result.json`, `research/experiments/generated/PROD-041-conditional-simulation-review/report.md`, and `research/experiments/generated/PROD-041-conditional-simulation-review/conditional_simulation_review_packet.json`.
+- What was learned: PROD-041A is structurally complete and should stay locked. The remaining deterministic phrasing is acceptable for offline review only, but customer language still has template-like moments and some safe-close outcomes are only partially earned. Targeted customer-turn rewrites are required before voice playback or public demo use.
+- Why it matters for the thesis: the checkpoint separates broad deterministic scenario coverage from human realism judgment, preventing the project from hiding demo-readiness concerns behind more generated scenarios.
+- Open questions: which selected customer turns should be rewritten first if voice playback or public demo polish is reopened.
+
 ### 2026-05-10 - PROD-041A conditional scenario diversity expansion
 
 - Objective: expand the conditional simulator before the PROD-041 human review so the review is based on a broader, mixed B2B/B2C scenario set instead of the original eight calls.
