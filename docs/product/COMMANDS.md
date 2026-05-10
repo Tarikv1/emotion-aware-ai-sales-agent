@@ -987,6 +987,18 @@ Validate trace-level finding classification, first-fix recommendation, product-g
 python scripts\validate_prod_032_interactive_simulation_review.py
 ```
 
+Run the PROD-033 interactive simulator termination fix checkpoint:
+
+```powershell
+python scripts\run_prod_033_interactive_simulator_termination_fix.py
+```
+
+Validate cold-call openings, outcome-driven call endings, no fixed turn-limit outcome, repeat suppression, callback-state preservation, and no-provider/no-runtime-change behavior:
+
+```powershell
+python scripts\validate_prod_033_interactive_simulator_termination_fix.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

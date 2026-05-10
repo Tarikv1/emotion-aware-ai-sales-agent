@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-081 - Keep PROD-033 as the cold-opening and outcome-driven termination fix
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Expand the PROD-033 simulator fix so calls start with real outbound cold-call entrances and end only by customer acceptance or rejection, not by a fixed turn target.
+- Why:
+  - Tarik identified two realism failures: repeated answers and conversations starting midstream instead of from cold-call entrances
+  - the fixed simulator starts all `8` calls with greeting, identity disclosure, company disclosure, reason for call, and permission to continue
+  - all calls end by customer decision, with fixed turn limit used `false`, loop guard triggered `false`, and max-turn terminal count `0`
+  - the fix removes the PROD-032 simulator blockers: callback converted to sale-ready `0`, repeated agent answers `0`, and repeated customer messages `0`
+- Alternatives considered:
+  - only fix termination loops and leave cold-call openings for a later checkpoint
+  - keep a fixed four-turn minimum for consistent benchmark length
+  - treat callback acceptance as equivalent to accepting the deal
+- Consequences:
+  - the next checkpoint is `PROD-034-interactive-post-fix-review`
+  - post-fix review should judge whether the cleaner simulator is strong enough for runtime-policy alignment work
+  - provider calls, live runtime changes, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-080 - Keep PROD-032 as the interactive trace review gate
 
 - Date: 2026-05-09

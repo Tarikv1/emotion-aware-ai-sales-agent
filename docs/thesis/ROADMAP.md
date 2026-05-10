@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-033-interactive-simulator-termination-fix` to preserve callback commitments, terminate or schedule when customer intent is terminal, and remove repeated customer/agent loops before runtime-policy cleanup.
+- [ ] Current: run `PROD-034-interactive-post-fix-review` to inspect the cold-opening, outcome-driven PROD-033 traces and decide whether runtime decision-snapshot alignment or full demo review comes next.
 
 Next checkpoints:
 
-- [ ] Next: after PROD-033, rerun the interactive review and decide whether runtime decision-snapshot route alignment or static route-gap cleanup should be fixed first.
+- [ ] Next: after PROD-034, fix runtime decision-snapshot route alignment if the post-fix review still shows answer/decision mismatch.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
 - [ ] Next: record a human listening decision for `RESP-007` before unblocking the voice-personality selector. The dry-run packet exists, but no German pacing-stability quality claim is allowed until the audio is heard and accepted.
@@ -58,6 +58,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-033` interactive simulator termination fix, which expands the simulator fix to include cold-call entrances and outcome-driven endings. It runs `8` deterministic cold-call seeds, each starting with agent greeting, caller identity, company disclosure, reason for call, and permission to continue before the customer's first response. Every call ends by customer decision rather than a fixed turn target: fixed turn limit used `false`, loop guard triggered `false`, max-turn terminal count `0`, accepted deals `4`, rejected deals `4`, and expected terminal matches `8`. It removes the highest-priority PROD-032 simulator artifacts with callback converted to sale-ready `0`, repeated agent answers `0`, and repeated customer messages `0`. Hard failures are `0`, payment collection count is `0`, unsupported claim count is `0`, and leakage findings are `0`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-034-interactive-post-fix-review`.
 
 - [x] `PROD-032` interactive simulation review, which inspects the completed `PROD-031` reactive customer-state traces and classifies remaining issues before any runtime, demo, provider, or route-gap cleanup step. It reviewed `8` calls and `26` turns, found `54` raw trace findings across `7` affected calls, and kept `1` call clean. Findings split into simulator-design limits `21`, runtime-policy issues `25`, product-grounding issues `0`, and still-relevant static route gaps `2`. The still-relevant static route gaps are `callback_request` and `price_objection`. The main blocker is terminal-control quality: callback converted to sale-ready `5` times, repeated agent answers appeared `12` times, and repeated customer messages appeared `4` times. Decision snapshot mismatches were `19`, unknown-objection decisions were `6`, premature close markers were `3`, hard failures were `0`, payment collection count was `0`, unsupported claim count was `0`, and leakage findings were `0`. Provider calls, LLM use, private data reads, dataset downloads, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-033-interactive-simulator-termination-fix`.
 
@@ -451,20 +453,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Run `PROD-033-interactive-simulator-termination-fix` using the completed `PROD-032` review packet.
+Run `PROD-034-interactive-post-fix-review` using the completed `PROD-033` cold-opening, outcome-driven traces.
 
 Purpose:
 
-- preserve callback commitments instead of converting them to sale-ready
-- terminate or schedule when the customer asks for callback, handoff, stop, or a slower follow-up
-- remove repeated customer/agent loops caused by forced minimum turns
+- inspect exact cold-call openings, customer opening responses, terminal outcomes, and customer decision reasons
+- verify whether callback conversion, repeated answer loops, and fixed-turn endings remain removed
+- classify any remaining issue as simulator realism, runtime decision-trace alignment, product grounding, or demo polish
 - keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
-- rerun the interactive review after the fix before static route-gap cleanup, provider, voice, telephony, or client-facing work
+- decide whether runtime decision-snapshot alignment or local demo review comes next
 
-Immediate product artifact after `PROD-032`:
+Immediate product artifact after `PROD-033`:
 
-- simulator terminal-control fix
-- post-fix interactive review metrics showing whether callback conversion and repetition loops are removed
+- post-fix interactive review packet
+- prioritized recommendation for runtime decision-trace alignment or demo review
 
 Next voice checkpoint:
 

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-033 Interactive Simulator Termination Fix</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; color: #202124; }
+    table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #f6f8fa; }
+    .metric { display: inline-block; margin: 6px 12px 6px 0; padding: 6px 8px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>PROD-033 Interactive Simulator Termination Fix</h1>
+  <p>Cold-call openings plus customer-decision endings. No fixed turn limit is used for normal call completion.</p>
+  <div class="metric">Cold-call openings: `8`</div>
+  <div class="metric">All calls start with agent opening: `true`</div>
+  <div class="metric">All calls end by customer decision: `true`</div>
+  <div class="metric">Fixed turn limit used: `false`</div>
+  <div class="metric">Loop guard triggered: `false`</div>
+  <div class="metric">Max-turn terminal count: `0`</div>
+  <div class="metric">Callback converted to sale-ready: `0`</div>
+  <div class="metric">Repeated agent answers: `0`</div>
+  <div class="metric">Repeated customer messages: `0`</div>
+  <div class="metric">Next checkpoint: `PROD-034-interactive-post-fix-review`</div>
+  <table>
+    <thead><tr><th>Seed</th><th>Terminal outcome</th><th>Sales turns</th><th>Reason</th></tr></thead>
+    <tbody><tr><td>cold-price-sensitive</td><td>accepted-deal</td><td>2</td><td>customer accepted the non-binding sales outcome</td></tr><tr><td>cold-confused-product-fit</td><td>accepted-deal</td><td>3</td><td>customer accepted the non-binding sales outcome</td></tr><tr><td>cold-skeptical-trust-gap</td><td>rejected-deal</td><td>2</td><td>customer rejected pending written information</td></tr><tr><td>cold-busy-rejection</td><td>rejected-deal</td><td>1</td><td>customer rejected because timing was not acceptable</td></tr><tr><td>cold-existing-provider</td><td>accepted-deal</td><td>3</td><td>customer accepted the non-binding sales outcome</td></tr><tr><td>cold-stakeholder-review</td><td>accepted-deal</td><td>1</td><td>customer accepted the non-binding sales outcome</td></tr><tr><td>cold-support-boundary</td><td>rejected-deal</td><td>1</td><td>customer needed support rather than sales</td></tr><tr><td>cold-do-not-call</td><td>rejected-deal</td><td>1</td><td>customer rejected and requested no more sales contact</td></tr></tbody>
+  </table>
+</body>
+</html>

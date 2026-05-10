@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-033 interactive simulator termination fix
+
+- Objective: fix the interactive simulator so calls start from cold-call entrances and end by customer acceptance or rejection instead of repeated fixed-length turns.
+- Action taken: added the PROD-033 simulator, runner, validator, product doc, generated trace/report artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the RouteSignal CRM synthetic campaign and deterministic cold-call seeds. No provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_033_INTERACTIVE_SIMULATOR_TERMINATION_FIX.md`, `scripts/prod_033_interactive_simulator_termination_fix.py`, `scripts/run_prod_033_interactive_simulator_termination_fix.py`, `scripts/validate_prod_033_interactive_simulator_termination_fix.py`, `research/experiments/generated/PROD-033-interactive-simulator-termination-fix/result.json`, `research/experiments/generated/PROD-033-interactive-simulator-termination-fix/report.md`, `research/experiments/generated/PROD-033-interactive-simulator-termination-fix/interactive_call_traces.json`, and `research/experiments/generated/PROD-033-interactive-simulator-termination-fix/interactive_call_trace.html`.
+- What was learned: cold-call openings and outcome-driven termination remove the most obvious simulator artifacts. PROD-033 produced `8` cold-call openings, all calls started with an agent opening, all calls ended by customer decision, fixed turn limit used was `false`, loop guard triggered was `false`, max-turn terminal count was `0`, accepted deals were `4`, rejected deals were `4`, callback converted to sale-ready was `0`, repeated agent answers were `0`, and repeated customer messages were `0`.
+- Why it matters for the thesis: simulator realism now includes the first-contact sales opening and a terminal customer decision, so later policy reviews are less likely to optimize for artificial benchmark structure.
+- Open questions: whether the post-fix traces still expose runtime decision-snapshot mismatches, and whether the next fix should target decision trace alignment or full demo review.
+
 ### 2026-05-09 - PROD-032 interactive simulation review
 
 - Objective: inspect the PROD-031 reactive state traces and decide which issues are simulator-design limits, runtime-policy issues, product-grounding issues, or still-relevant static route gaps.
