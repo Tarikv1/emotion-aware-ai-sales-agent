@@ -134,6 +134,10 @@ def validate_payload(payload: dict[str, Any]) -> None:
     assert_condition(summary.get("unique_agent_answer_count") == summary.get("total_turn_count"), summary)
     assert_condition(summary.get("repeated_agent_answer_count") == 0, summary)
     assert_condition(summary.get("profile_customized_agent_answer_count") == summary.get("total_turn_count"), summary)
+    assert_condition(summary.get("b2b_call_count", 0) >= 4, summary)
+    assert_condition(summary.get("b2c_call_count", 0) >= 2, summary)
+    assert_condition(summary.get("internal_reason_answer_count", 0) >= 3, summary)
+    assert_condition(summary.get("internal_reason_price_first_violation_count") == 0, summary)
     assert_condition(summary.get("callcenteren_pattern_source_count", 0) >= 20, summary)
     assert_condition(summary.get("scenario_bank_source_count") == 8, summary)
     assert_condition(summary.get("abstract_pattern_only") is True, summary)
@@ -162,6 +166,7 @@ def validate_payload(payload: dict[str, Any]) -> None:
     assert_condition(len(turns) == summary.get("total_turn_count"), "turn count mismatch")
     seen_customer_responses: set[str] = set()
     for call in trace["calls"]:
+        assert_condition(call.get("market_scope") in {"B2B", "B2C"}, call)
         assert_condition(call.get("opening", {}).get("agent_opening"), call)
         assert_condition(call.get("opening", {}).get("customer_opening_response"), call)
         sequence = call.get("conversation_sequence", [])
@@ -180,6 +185,7 @@ def validate_payload(payload: dict[str, Any]) -> None:
             assert_condition(turn.get("customer_context"), turn)
             assert_condition(turn.get("agent_answer"), turn)
             assert_condition(turn.get("agent_answer_customization"), turn)
+            assert_condition(turn["agent_answer_customization"].get("market_scope") in {"B2B", "B2C"}, turn)
             assert_condition(turn.get("customer_response"), turn)
             assert_condition(turn.get("agent_answer_signals"), turn)
             assert_condition(turn.get("customer_response_condition"), turn)
@@ -190,6 +196,32 @@ def validate_payload(payload: dict[str, Any]) -> None:
             assert_condition(turn.get("copied_transcript_text_used") is False, turn)
             assert_condition(turn.get("contains_transcript_derived_prompt_text") is False, turn)
             assert_condition(turn.get("safety_flags", {}).get("hard_failure") is False, turn)
+            if turn.get("state_before", {}).get("active_objection") == "authority":
+                lowered_context = turn.get("customer_context", "").lower()
+                asks_internal_reason = any(
+                    marker in lowered_context
+                    for marker in [
+                        "internal reason",
+                        "what problem",
+                        "what would i tell",
+                        "version i can repeat",
+                        "plain reason",
+                        "simple reason",
+                    ]
+                )
+                if asks_internal_reason:
+                    answer = turn["agent_answer"].lower()
+                    assert_condition(
+                        "inbound" in answer
+                        or "routing" in answer
+                        or "callback" in answer
+                        or "response" in answer
+                        or "appointment" in answer
+                        or "reminder" in answer
+                        or "service follow-up" in answer,
+                        turn,
+                    )
+                    assert_condition("$" not in turn["agent_answer"], turn)
 
 
 def validate_docs() -> None:
@@ -214,6 +246,10 @@ def validate_docs() -> None:
             "unique agent answer count",
             "repeated agent answer count: `0`",
             "profile customized agent answer count",
+            "B2B call count",
+            "B2C call count",
+            "internal reason answer count",
+            "internal reason price-first violation count: `0`",
             "agent opening line visible count",
             "conversation sequence starts with agent count",
             "fixed turn limit used: `false`",

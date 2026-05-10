@@ -98,7 +98,13 @@ def safe_label(value: str) -> str:
     return value.replace("_", "-").replace(" ", "-").lower()
 
 
-def opening_agent_message(campaign: dict[str, Any]) -> str:
+def opening_agent_message(campaign: dict[str, Any], profile: dict[str, Any]) -> str:
+    if profile.get("market_scope") == "B2C":
+        return (
+            f"Hi, this is Maya from {profile.get('offer_name', campaign['product_name'])}. "
+            "I am calling about missed service follow-ups and appointment reminders for individual customers. "
+            "Did I catch you at an okay moment for the short reason I called?"
+        )
     return (
         f"Hi, this is Maya from {campaign['product_name']}. "
         "We help teams route inbound leads and keep callback ownership from getting lost. "
@@ -112,7 +118,10 @@ def opening_checks(opening: str) -> dict[str, bool]:
         "greeting": lowered.startswith("hi") or lowered.startswith("hello"),
         "identity_disclosure": "this is maya" in lowered,
         "company_disclosure": "routesignal" in lowered,
-        "reason_for_call": "route inbound leads" in lowered and "callback ownership" in lowered,
+        "reason_for_call": (
+            ("route inbound leads" in lowered and "callback ownership" in lowered)
+            or ("service follow-ups" in lowered and "appointment reminders" in lowered)
+        ),
         "permission_to_continue": "did i catch you" in lowered and "?" in opening,
     }
 
@@ -151,59 +160,99 @@ def build_profiles(scenario_bank: dict[str, Any]) -> list[dict[str, Any]]:
     bases = [
         {
             "seed_id": "conditional-price-sensitive",
+            "market_scope": "B2B",
+            "offer_name": "RouteSignal CRM",
             "persona": "price-sensitive operations manager",
             "opening_response": "I have a few minutes, but if this is another paid tool I need the real cost first.",
             "initial_state": {"interest": 3, "trust": 2, "clarity": 1, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "price"},
             "target_outcome": "accepted-deal",
+            "internal_reason": "missed inbound leads get one owner, one callback path, and cleaner manager visibility before prospects go cold",
+            "price_line": "Starter is $29 per user per month annually and Growth is $59 per user per month annually",
+            "fit_criteria": "inbound leads are delayed, assigned twice, or missing callback owners",
         },
         {
             "seed_id": "conditional-confused-fit",
+            "market_scope": "B2B",
+            "offer_name": "RouteSignal CRM",
             "persona": "confused owner trying to understand product fit",
             "opening_response": "RouteSignal does not ring a bell. Is this a CRM thing or something else?",
             "initial_state": {"interest": 2, "trust": 2, "clarity": 0, "friction": 2, "patience": 4, "emotion": "confused", "active_objection": "confusion"},
             "target_outcome": "accepted-deal",
+            "internal_reason": "the business gets a shared lead intake layer so callbacks stop depending on memory, spreadsheets, or one busy person",
+            "price_line": "Starter is $29 per user per month annually and Growth is $59 per user per month annually",
+            "fit_criteria": "leads are coming from multiple places and nobody is fully sure who owns the next callback",
         },
         {
             "seed_id": "conditional-skeptical-proof",
+            "market_scope": "B2B",
+            "offer_name": "RouteSignal CRM",
             "persona": "skeptical founder who wants proof before engaging",
             "opening_response": "I get these calls all the time. If this is vague software talk, I am out.",
             "initial_state": {"interest": 2, "trust": 1, "clarity": 1, "friction": 3, "patience": 3, "emotion": "skeptical", "active_objection": "trust"},
             "target_outcome": "rejected-deal",
+            "internal_reason": "the only defensible case is operational control: clearer lead ownership, routing, and written follow-up details",
+            "price_line": "Starter is $29 per user per month annually and Growth is $59 per user per month annually",
+            "fit_criteria": "the current process makes it hard to prove who followed up with each lead",
         },
         {
             "seed_id": "conditional-busy-now",
+            "market_scope": "B2B",
+            "offer_name": "RouteSignal CRM",
             "persona": "busy sales lead with low patience",
             "opening_response": "Not a good time. You have one sentence before I jump back into work.",
             "initial_state": {"interest": 1, "trust": 2, "clarity": 1, "friction": 4, "patience": 1, "emotion": "annoyed", "active_objection": "time"},
             "target_outcome": "rejected-deal",
+            "internal_reason": "the team has a simple way to see which leads still need a callback without chasing people manually",
+            "price_line": "Starter is $29 per user per month annually and Growth is $59 per user per month annually",
+            "fit_criteria": "callbacks are being delayed because ownership is unclear",
         },
         {
             "seed_id": "conditional-existing-provider",
+            "market_scope": "B2B",
+            "offer_name": "RouteSignal CRM",
             "persona": "team lead already using a CRM",
             "opening_response": "We already have a CRM, so I am not looking to rip anything out.",
             "initial_state": {"interest": 2, "trust": 3, "clarity": 1, "friction": 2, "patience": 4, "emotion": "neutral", "active_objection": "provider"},
             "target_outcome": "accepted-deal",
+            "internal_reason": "the case is not replacing the CRM; it is reducing the routing and callback gaps around the CRM",
+            "price_line": "Starter is $29 per user per month annually and Growth is $59 per user per month annually",
+            "fit_criteria": "the CRM stores records but routing, reminders, or owner follow-through still break outside it",
         },
         {
             "seed_id": "conditional-manager-review",
+            "market_scope": "B2B",
+            "offer_name": "RouteSignal CRM",
             "persona": "manager who needs a concise internal case",
             "opening_response": "If this is useful, I need the version I can repeat to my manager.",
             "initial_state": {"interest": 4, "trust": 3, "clarity": 2, "friction": 2, "patience": 4, "emotion": "curious", "active_objection": "authority"},
             "target_outcome": "accepted-deal",
+            "internal_reason": "the manager-level reason is fewer dropped leads: each inbound request gets routed, owned, and followed up without a messy handoff",
+            "price_line": "Starter is $29 per user per month annually and Growth is $59 per user per month annually",
+            "fit_criteria": "multiple people touch leads before a callback and managers cannot quickly see what is stuck",
         },
         {
-            "seed_id": "conditional-support-boundary",
-            "persona": "support-seeking user who should not be sold",
-            "opening_response": "I am not shopping. I need help with an account problem first.",
-            "initial_state": {"interest": 0, "trust": 2, "clarity": 2, "friction": 3, "patience": 3, "emotion": "annoyed", "active_objection": "support"},
-            "target_outcome": "rejected-deal",
+            "seed_id": "conditional-consumer-budget",
+            "market_scope": "B2C",
+            "offer_name": "RouteSignal Home",
+            "persona": "budget-conscious consumer comparing a service plan",
+            "opening_response": "I can listen, but I am not signing up for a surprise subscription. What would this actually do for me?",
+            "initial_state": {"interest": 2, "trust": 2, "clarity": 0, "friction": 3, "patience": 4, "emotion": "cautious", "active_objection": "confusion"},
+            "target_outcome": "accepted-deal",
+            "internal_reason": "the personal reason is fewer missed appointments and clearer reminders, so the customer does not have to chase service follow-ups",
+            "price_line": "the synthetic consumer option is $19 per month for Basic reminders and $39 per month for Plus scheduling help",
+            "fit_criteria": "appointments, reminders, or service callbacks are easy to miss and the customer wants one clear follow-up path",
         },
         {
-            "seed_id": "conditional-do-not-call",
-            "persona": "protected stop-request customer",
-            "opening_response": "No. Remove me from your list and do not call this number again.",
-            "initial_state": {"interest": 0, "trust": 1, "clarity": 3, "friction": 5, "patience": 0, "emotion": "annoyed", "active_objection": "do-not-call"},
-            "target_outcome": "rejected-deal",
+            "seed_id": "conditional-consumer-no-pressure",
+            "market_scope": "B2C",
+            "offer_name": "RouteSignal Home",
+            "persona": "consumer wary of pressure and payment collection",
+            "opening_response": "I am not giving card details on a phone call. If this is a hard sell, I am done.",
+            "initial_state": {"interest": 1, "trust": 1, "clarity": 1, "friction": 4, "patience": 3, "emotion": "guarded", "active_objection": "trust"},
+            "target_outcome": "accepted-deal",
+            "internal_reason": "the only safe reason to continue is a no-payment explanation of whether reminders and service follow-ups solve a real personal problem",
+            "price_line": "the synthetic consumer option is $19 per month for Basic reminders and $39 per month for Plus scheduling help",
+            "fit_criteria": "the customer actually wants help tracking appointment reminders and service follow-ups",
         },
     ]
     profiles = []
@@ -234,7 +283,9 @@ def answer_customization(profile: dict[str, Any], state: dict[str, Any]) -> dict
     scenario = profile["callcenteren_scenario"]
     return {
         "seed_id": profile["seed_id"],
+        "market_scope": profile["market_scope"],
         "persona": profile["persona"],
+        "offer_name": profile["offer_name"],
         "domain": str(scenario.get("domain", "unknown")),
         "scenario_label": str(scenario.get("scenario_label", "unknown")),
         "safe_agent_tactic": str(scenario.get("safe_agent_tactic", "unknown")),
@@ -244,11 +295,15 @@ def answer_customization(profile: dict[str, Any], state: dict[str, Any]) -> dict
 
 
 def answer_for_state(state: dict[str, Any], campaign: dict[str, Any], profile: dict[str, Any]) -> tuple[str, dict[str, str]]:
-    product_name = campaign["product_name"]
+    product_name = profile.get("offer_name", campaign["product_name"])
     specialist = campaign.get("human_handoff_role", "solutions specialist")
     objection = state["active_objection"]
     customization = answer_customization(profile, state)
     seed = profile["seed_id"]
+    is_b2c = profile.get("market_scope") == "B2C"
+    internal_reason = profile["internal_reason"]
+    price_line = profile["price_line"]
+    fit_criteria = profile["fit_criteria"]
     if objection == "do-not-call":
         return "Understood. I will mark this number as do not call and end the sales conversation now.", customization
     if objection == "support":
@@ -256,27 +311,33 @@ def answer_for_state(state: dict[str, Any], campaign: dict[str, Any], profile: d
     if objection == "time":
         return f"Then I will keep it to the point for a busy sales lead: {product_name} helps stop inbound leads getting lost between routing and callback ownership. If that problem is not active today, we can stop here.", customization
     if objection == "price":
+        if is_b2c:
+            return f"For an individual customer, {price_line}. Payment stays outside this call, so the only useful question is whether appointment reminders and service follow-ups would actually help you.", customization
         if seed == "conditional-confused-fit":
-            return "For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.", customization
+            return f"For a small team still figuring out fit, {price_line}. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.", customization
         if seed == "conditional-existing-provider":
-            return "If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.", customization
-        return "For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.", customization
+            return f"If this sits beside your existing CRM, {price_line}. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.", customization
+        return f"For a price-sensitive operations team, {price_line}. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.", customization
     if objection == "confusion":
+        if is_b2c:
+            return f"{product_name} is not a card-collection call or a hard commitment. In your case, it would help with appointment reminders, service follow-ups, and one clear place to confirm next steps.", customization
         return f"{product_name} is not a full CRM replacement. For your case, think of it as a layer around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.", customization
     if objection == "trust":
+        if is_b2c:
+            return f"Fair concern. I cannot ask for card details or treat this as a purchase decision. The safe claim is narrower: {product_name} can help track appointment reminders and service follow-ups, and you can say no after the explanation.", customization
         return f"Fair concern. I cannot promise revenue lift or pretend this is proven for your company. The verifiable claim is narrower: {product_name} centralizes lead intake and routes leads by region, source, priority, or owner.", customization
     if objection == "written-info":
+        if is_b2c:
+            return "That is reasonable for a cautious customer. A specialist can send written details first, including what the reminder plan does, what it costs, and that no payment is handled on this call.", customization
         return "That is reasonable for a skeptical review. A specialist can send written details and separate confirmed product facts from what still needs a fit review for your team.", customization
     if objection == "provider":
         return f"I would not ask a team with an existing CRM to rip it out. {product_name} is only worth a look if routing, callback ownership, or reporting are still messy around that CRM.", customization
     if objection == "authority":
-        if seed == "conditional-confused-fit":
-            return "For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing.", customization
-        if seed == "conditional-existing-provider":
-            return "For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks.", customization
+        if is_b2c:
+            return f"The simple reason to consider it is this: {internal_reason}. If that is not a real problem for you, there is no reason to continue.", customization
         if seed == "conditional-manager-review":
-            return "For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist.", customization
-        return "For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review.", customization
+            return f"For the manager version you asked for: {internal_reason}. That is the business reason; commercial and security details can be separated into a written specialist follow-up.", customization
+        return f"The internal reason is simple: {internal_reason}. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear.", customization
     if objection == "final-review":
         if seed == "conditional-confused-fit":
             return "For you, the next step would be an educational workflow review with a specialist to confirm fit. No payment, contract, or purchase decision should happen on this call.", customization
@@ -284,24 +345,40 @@ def answer_for_state(state: dict[str, Any], campaign: dict[str, Any], profile: d
             return "For your CRM situation, the review would only compare routing gaps and handoff fit with a specialist. No payment, contract, or replacement decision should happen on this call.", customization
         if seed == "conditional-manager-review":
             return "For a manager-led review, this would only schedule a specialist conversation around fit, security notes, and workflow impact. No payment, contract, or purchase decision happens here.", customization
+        if is_b2c:
+            if seed == "conditional-consumer-budget":
+                return "For your budget concern, the next step would only be a no-payment explanation about reminders, follow-ups, and whether the plan fits your situation. No card details, contract, or purchase decision should happen on this call.", customization
+            return "For you, the next step would only be a no-payment explanation with a specialist about reminders and follow-ups. No card details, contract, or purchase decision should happen on this call.", customization
         return "For the price-sensitive case, this would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.", customization
     if objection == "fit-check":
-        return "A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent.", customization
+        if is_b2c:
+            return f"A useful fit check would be whether {fit_criteria}. If that is not happening, this is probably not useful enough to continue.", customization
+        return f"A useful fit check would be whether {fit_criteria}. If none of those happen, this is probably not urgent.", customization
     return f"{product_name} helps this type of team centralize lead intake, route leads, and track callback ownership without collecting payment on this call.", customization
 
 
 def agent_answer_signals(answer: str) -> dict[str, bool]:
     lowered = answer.lower()
     return {
-        "answers_price": "$29" in answer or "$59" in answer or "pricing" in lowered,
-        "answers_product_fit": "not a full crm replacement" in lowered or "lead intake" in lowered or "inbound leads" in lowered,
-        "answers_trust": "cannot promise" in lowered or "verifiable claim" in lowered,
+        "answers_price": "$29" in answer or "$59" in answer or "$19" in answer or "$39" in answer or "pricing" in lowered or "costs" in lowered,
+        "answers_product_fit": (
+            "not a full crm replacement" in lowered
+            or "lead intake" in lowered
+            or "inbound leads" in lowered
+            or "routing" in lowered
+            or "dropped leads" in lowered
+            or "callback path" in lowered
+            or "gets routed" in lowered
+            or "appointment reminders" in lowered
+            or "service follow-ups" in lowered
+        ),
+        "answers_trust": "cannot promise" in lowered or "verifiable claim" in lowered or "cannot ask for card details" in lowered,
         "offers_written_confirmation": "in writing" in lowered or "written details" in lowered,
         "respects_time": "keep it to the point" in lowered or "we can stop here" in lowered,
         "respects_support_boundary": "support before sales" in lowered or "account help instead of pitching" in lowered,
         "respects_do_not_call": "do not call" in lowered and "end the sales conversation" in lowered,
         "answers_provider_overlap": "replace a crm" in lowered or "around the crm" in lowered or "rip it out" in lowered or "existing crm" in lowered,
-        "manager_summary": "manager version" in lowered or "setup is typically" in lowered,
+        "manager_summary": "manager version" in lowered or "internal reason" in lowered or "simple reason" in lowered or "business reason" in lowered,
         "asks_multiple_questions": count_questions(answer) > 1,
         "premature_close_language": "sale-ready" in lowered or "accepted" in lowered or "buy" in lowered,
     }
@@ -365,6 +442,7 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
     after = deepcopy(state)
     signals = agent_answer_signals(answer)
     seed = profile["seed_id"]
+    is_b2c = profile.get("market_scope") == "B2C"
     objection = state["active_objection"]
     terminal: str | None = None
     condition = ""
@@ -411,7 +489,9 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
             after["active_objection"] = "authority"
             condition = "agent answered price and kept billing outside call"
             reason = "customer moves from price concern to internal justification"
-            if seed == "conditional-confused-fit":
+            if is_b2c:
+                response = "That is clearer. Before I consider even a no-payment review, give me the plain reason this helps me personally."
+            elif seed == "conditional-confused-fit":
                 response = "Okay, that is more concrete. Before I take it anywhere, what is the simple internal reason for looking at it?"
             elif seed == "conditional-existing-provider":
                 response = "That price is not tiny, so I would need a clean reason this helps alongside our CRM. What would I tell the team?"
@@ -431,7 +511,11 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
             after["active_objection"] = "price"
             condition = "agent clarified product fit without replacing CRM"
             reason = "customer understands enough to ask about cost"
-            response = "That helps. If it is mainly routing and callback ownership, what would a small team pay?"
+            if is_b2c:
+                condition = "agent clarified consumer product fit without payment pressure"
+                response = "That helps. If it is just reminders and service follow-ups, what would it cost me as an individual?"
+            else:
+                response = "That helps. If it is mainly routing and callback ownership, what would a small team pay?"
         else:
             after["friction"] = clamp(after["friction"] + 1)
             condition = "agent left product fit unclear"
@@ -443,10 +527,16 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
         if signals["answers_trust"]:
             after["clarity"] = clamp(after["clarity"] + 1)
             after["trust"] = clamp(after["trust"] + 1)
-            after["active_objection"] = "written-info"
-            condition = "agent avoided unsupported claims"
-            reason = "customer asks for proof in writing instead of accepting"
-            response = "That is more believable than a big promise. Send the exact proof points first; I am not agreeing on a call."
+            if is_b2c:
+                after["active_objection"] = "authority"
+                condition = "agent removed payment pressure for cautious consumer"
+                reason = "customer asks for a personal reason before allowing any next step"
+                response = "Okay, no card details matters. Give me the simple reason this would help me, not a company."
+            else:
+                after["active_objection"] = "written-info"
+                condition = "agent avoided unsupported claims"
+                reason = "customer asks for proof in writing instead of accepting"
+                response = "That is more believable than a big promise. Send the exact proof points first; I am not agreeing on a call."
         else:
             after["trust"] = clamp(after["trust"] - 1)
             condition = "agent sounded vague under skepticism"
@@ -501,7 +591,7 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
         return response, after, terminal, condition, reason, pattern_basis(profile, "eligibility_check", "answers_product_fit")
 
     if objection == "authority":
-        if signals["manager_summary"] or signals["answers_price"]:
+        if signals["manager_summary"] and not signals["answers_price"]:
             after["clarity"] = clamp(after["clarity"] + 2)
             after["trust"] = clamp(after["trust"] + 1)
             after["interest"] = clamp(after["interest"] + 1)
@@ -509,7 +599,12 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
             after["active_objection"] = "final-review"
             condition = "agent gave manager-ready summary"
             reason = "customer understands the internal case but checks the commitment boundary"
-            if seed == "conditional-manager-review":
+            if is_b2c:
+                if seed == "conditional-consumer-budget":
+                    response = "That is the kind of practical reason I meant. Before anything else, confirm this is only an explanation and not a payment step."
+                else:
+                    response = "That answers the personal-use part. Now confirm this stays no-payment and does not sign me up."
+            elif seed == "conditional-manager-review":
                 response = "That is concise enough. Before I agree to a slot, confirm this is only a fit review and not a purchase step."
             elif seed == "conditional-existing-provider":
                 response = "That gives me enough to explain it. I still need to know whether the next step creates any contract or payment obligation."
@@ -536,6 +631,11 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
             response = "Alright, book the review. I want it framed around routing gaps, not replacing the CRM."
         elif seed == "conditional-confused-fit":
             response = "Okay, I can do a short review if it stays educational and nobody asks for payment."
+        elif is_b2c:
+            if seed == "conditional-consumer-budget":
+                response = "That works. I will hear the explanation as long as it stays no-payment and focused on reminders."
+            else:
+                response = "That is fine. I will take a no-payment explanation, but I am not buying anything on this call."
         else:
             response = "That works. Send a short workflow review slot, and keep billing out of it."
         terminal = "accepted-deal"
@@ -550,7 +650,7 @@ def customer_reaction(profile: dict[str, Any], state: dict[str, Any], answer: st
 
 
 def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str, Any]:
-    opening_packet = guarded_answer(opening_agent_message(campaign), "", campaign)
+    opening_packet = guarded_answer(opening_agent_message(campaign, profile), "", campaign)
     opening_final = str(opening_packet["final_response"])
     opening = {
         "agent_opening": opening_final,
@@ -614,7 +714,9 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
 
     return {
         "seed_id": profile["seed_id"],
+        "market_scope": profile["market_scope"],
         "persona": profile["persona"],
+        "offer_name": profile["offer_name"],
         "target_outcome": profile["target_outcome"],
         "terminal_outcome": terminal_outcome,
         "terminal_decision_source": "customer",
@@ -628,6 +730,7 @@ def simulate_call(profile: dict[str, Any], campaign: dict[str, Any]) -> dict[str
             "scenario_id": profile["callcenteren_scenario"]["scenario_id"],
             "scenario_label": profile["callcenteren_scenario"]["scenario_label"],
             "domain": profile["callcenteren_scenario"]["domain"],
+            "market_scope": profile["market_scope"],
             "source_pattern_ids": profile["callcenteren_scenario"]["source_pattern_ids"],
             "source_pattern_categories": profile["callcenteren_scenario"]["source_pattern_categories"],
             "uses_exact_transcript_text": False,
@@ -684,6 +787,22 @@ def build_summary(calls: list[dict[str, Any]], pattern_bank: dict[str, Any]) -> 
     turns = all_turns(calls)
     customer_responses = [turn["customer_response"] for turn in turns]
     agent_answers = [turn["agent_answer"] for turn in turns]
+    internal_reason_turns = [
+        turn
+        for turn in turns
+        if turn.get("state_before", {}).get("active_objection") == "authority"
+        and any(
+            marker in turn.get("customer_context", "").lower()
+            for marker in [
+                "internal reason",
+                "what problem",
+                "what would i tell",
+                "version i can repeat",
+                "plain reason",
+                "simple reason",
+            ]
+        )
+    ]
     unique_pattern_ids = {
         pattern_id
         for call in calls
@@ -705,6 +824,10 @@ def build_summary(calls: list[dict[str, Any]], pattern_bank: dict[str, Any]) -> 
         "unique_agent_answer_count": len(set(agent_answers)),
         "repeated_agent_answer_count": len(agent_answers) - len(set(agent_answers)),
         "profile_customized_agent_answer_count": sum(1 for turn in turns if turn.get("agent_answer_customization")),
+        "b2b_call_count": sum(1 for call in calls if call.get("market_scope") == "B2B"),
+        "b2c_call_count": sum(1 for call in calls if call.get("market_scope") == "B2C"),
+        "internal_reason_answer_count": len(internal_reason_turns),
+        "internal_reason_price_first_violation_count": sum(1 for turn in internal_reason_turns if "$" in turn["agent_answer"]),
         "callcenteren_pattern_source_count": len(unique_pattern_ids),
         "scenario_bank_source_count": len({call["source_recipe"]["scenario_id"] for call in calls}),
         "pattern_bank_conversation_count": pattern_bank.get("summary", {}).get("conversation_count", 0),
@@ -838,6 +961,10 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         f"- Unique agent answer count: `{summary['unique_agent_answer_count']}`",
         f"- Repeated agent answer count: `{summary['repeated_agent_answer_count']}`",
         f"- Profile customized agent answer count: `{summary['profile_customized_agent_answer_count']}`",
+        f"- B2B call count: `{summary['b2b_call_count']}`",
+        f"- B2C call count: `{summary['b2c_call_count']}`",
+        f"- Internal reason answer count: `{summary['internal_reason_answer_count']}`",
+        f"- Internal reason price-first violation count: `{summary['internal_reason_price_first_violation_count']}`",
         f"- CallCenterEN pattern source count: `{summary['callcenteren_pattern_source_count']}`",
         f"- Scenario bank source count: `{summary['scenario_bank_source_count']}`",
         f"- Abstract pattern only: `{str(summary['abstract_pattern_only']).lower()}`",
@@ -859,12 +986,12 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         "",
         "## Call Outcomes",
         "",
-        "| Seed | Persona | Turns | Terminal outcome | First scenario pattern |",
-        "| --- | --- | ---: | --- | --- |",
+        "| Seed | Scope | Persona | Turns | Terminal outcome | First scenario pattern |",
+        "| --- | --- | --- | ---: | --- | --- |",
     ]
     for call in trace["calls"]:
         first_pattern = call["source_recipe"]["source_pattern_ids"][0] if call["source_recipe"]["source_pattern_ids"] else ""
-        lines.append(f"| {call['seed_id']} | {call['persona']} | {call['turn_count']} | {call['terminal_outcome']} | {first_pattern} |")
+        lines.append(f"| {call['seed_id']} | {call['market_scope']} | {call['persona']} | {call['turn_count']} | {call['terminal_outcome']} | {first_pattern} |")
     lines.extend(["", "## Conditional Trace Notes", ""])
     for call in trace["calls"]:
         lines.extend([f"### {call['seed_id']}", "", f"- Terminal outcome: `{call['terminal_outcome']}`", ""])
@@ -972,6 +1099,10 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   unique agent answer count: `{summary['unique_agent_answer_count']}`
   repeated agent answer count: `0`
   profile customized agent answer count: `{summary['profile_customized_agent_answer_count']}`
+  B2B call count: `{summary['b2b_call_count']}`
+  B2C call count: `{summary['b2c_call_count']}`
+  internal reason answer count: `{summary['internal_reason_answer_count']}`
+  internal reason price-first violation count: `0`
   fixed turn limit used: `false`
   loop guard triggered: `false`
   leakage findings: `0`
@@ -990,6 +1121,10 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       <span class="metric">Unique agent answer count: <code>{summary['unique_agent_answer_count']}</code></span>
       <span class="metric">Repeated agent answer count: <code>{summary['repeated_agent_answer_count']}</code></span>
       <span class="metric">Profile customized agent answer count: <code>{summary['profile_customized_agent_answer_count']}</code></span>
+      <span class="metric">B2B call count: <code>{summary['b2b_call_count']}</code></span>
+      <span class="metric">B2C call count: <code>{summary['b2c_call_count']}</code></span>
+      <span class="metric">Internal reason answer count: <code>{summary['internal_reason_answer_count']}</code></span>
+      <span class="metric">Internal reason price-first violation count: <code>{summary['internal_reason_price_first_violation_count']}</code></span>
       <span class="metric">Agent opening line visible count: <code>{summary['agent_opening_line_visible_count']}</code></span>
       <span class="metric">Conversation starts with agent: <code>{summary['conversation_sequence_starts_with_agent_count']}</code></span>
       <span class="metric">CallCenterEN pattern source count: <code>{summary['callcenteren_pattern_source_count']}</code></span>

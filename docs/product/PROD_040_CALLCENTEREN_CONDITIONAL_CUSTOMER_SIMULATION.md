@@ -21,13 +21,17 @@ python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
 
 ## Result
 
-- Conditional customer turn count: `19`
-- Agent-conditioned customer reply count: `19`
-- Unique customer response count: `19`
+- Conditional customer turn count: `24`
+- Agent-conditioned customer reply count: `24`
+- Unique customer response count: `24`
 - Repeated customer response count: `0`
-- Unique agent answer count: `19`
+- Unique agent answer count: `24`
 - Repeated agent answer count: `0`
-- Profile customized agent answer count: `19`
+- Profile customized agent answer count: `24`
+- B2B call count: `6`
+- B2C call count: `2`
+- Internal reason answer count: `6`
+- Internal reason price-first violation count: `0`
 - Agent opening line visible count: `8`
 - Conversation sequence starts with agent count: `8`
 - CallCenterEN pattern source count: `59`
@@ -38,8 +42,8 @@ python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
 - All calls end by customer decision: `true`
 - Fixed turn limit used: `false`
 - Loop guard triggered: `false`
-- Accepted deals: `4`
-- Rejected deals: `4`
+- Accepted deals: `6`
+- Rejected deals: `2`
 - Hard failures: `0`
 - Payment collection count: `0`
 - Leakage findings: `0`

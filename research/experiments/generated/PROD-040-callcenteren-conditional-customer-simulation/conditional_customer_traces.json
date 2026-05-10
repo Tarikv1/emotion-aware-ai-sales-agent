@@ -6,7 +6,9 @@
   "calls": [
     {
       "seed_id": "conditional-price-sensitive",
+      "market_scope": "B2B",
       "persona": "price-sensitive operations manager",
+      "offer_name": "RouteSignal CRM",
       "target_outcome": "accepted-deal",
       "terminal_outcome": "accepted-deal",
       "terminal_decision_source": "customer",
@@ -69,7 +71,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review."
+          "text": "For a price-sensitive operations team, Starter is $29 per user per month annually and Growth is $59 per user per month annually. Billing stays outside this call, so the decision is only whether the workflow deserves a short review."
         },
         {
           "speaker": "customer",
@@ -82,7 +84,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review."
+          "text": "The internal reason is simple: missed inbound leads get one owner, one callback path, and cleaner manager visibility before prospects go cold. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear."
         },
         {
           "speaker": "customer",
@@ -110,6 +112,7 @@
         "scenario_id": "prod-014-price_objection-001",
         "scenario_label": "price_objection",
         "domain": "auto_insurance",
+        "market_scope": "B2B",
         "source_pattern_ids": [
           "scenario-appointment_request-003",
           "domain-auto_insurance",
@@ -159,10 +162,12 @@
         {
           "turn_index": 1,
           "customer_context": "I have a few minutes, but if this is another paid tool I need the real cost first.",
-          "agent_answer": "For a price-sensitive operations team, the synthetic pricing is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.",
+          "agent_answer": "For a price-sensitive operations team, Starter is $29 per user per month annually and Growth is $59 per user per month annually. Billing stays outside this call, so the decision is only whether the workflow deserves a short review.",
           "agent_answer_customization": {
             "seed_id": "conditional-price-sensitive",
+            "market_scope": "B2B",
             "persona": "price-sensitive operations manager",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "price_objection",
             "safe_agent_tactic": "benefit_framing",
@@ -276,10 +281,12 @@
         {
           "turn_index": 2,
           "customer_context": "Okay, now I know the range. If I mention this internally, what problem am I saying it solves?",
-          "agent_answer": "For an operations manager, I would frame it as fewer lost inbound leads, clearer callback owners, Growth at $59 per user per month annually, 15% less on annual billing, and a two-to-four-week setup review.",
+          "agent_answer": "The internal reason is simple: missed inbound leads get one owner, one callback path, and cleaner manager visibility before prospects go cold. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear.",
           "agent_answer_customization": {
             "seed_id": "conditional-price-sensitive",
+            "market_scope": "B2B",
             "persona": "price-sensitive operations manager",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "price_objection",
             "safe_agent_tactic": "benefit_framing",
@@ -288,7 +295,7 @@
           },
           "customer_response": "That is enough to keep talking. Just be clear: is the review non-binding, or am I agreeing to something commercial?",
           "agent_answer_signals": {
-            "answers_price": true,
+            "answers_price": false,
             "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
@@ -296,7 +303,7 @@
             "respects_support_boundary": false,
             "respects_do_not_call": false,
             "answers_provider_overlap": false,
-            "manager_summary": false,
+            "manager_summary": true,
             "asks_multiple_questions": false,
             "premature_close_language": false
           },
@@ -396,7 +403,9 @@
           "agent_answer": "For the price-sensitive case, this would only be a non-binding workflow review with a specialist. No payment, contract, or purchase decision should happen on this call.",
           "agent_answer_customization": {
             "seed_id": "conditional-price-sensitive",
+            "market_scope": "B2B",
             "persona": "price-sensitive operations manager",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "price_objection",
             "safe_agent_tactic": "benefit_framing",
@@ -511,7 +520,9 @@
     },
     {
       "seed_id": "conditional-confused-fit",
+      "market_scope": "B2B",
       "persona": "confused owner trying to understand product fit",
+      "offer_name": "RouteSignal CRM",
       "target_outcome": "accepted-deal",
       "terminal_outcome": "accepted-deal",
       "terminal_decision_source": "customer",
@@ -587,7 +598,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review."
+          "text": "For a small team still figuring out fit, Starter is $29 per user per month annually and Growth is $59 per user per month annually. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review."
         },
         {
           "speaker": "customer",
@@ -600,7 +611,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 3,
-          "text": "For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing."
+          "text": "The internal reason is simple: the business gets a shared lead intake layer so callbacks stop depending on memory, spreadsheets, or one busy person. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear."
         },
         {
           "speaker": "customer",
@@ -628,6 +639,7 @@
         "scenario_id": "prod-014-sale_eligible-001",
         "scenario_label": "sale_eligible",
         "domain": "auto_insurance",
+        "market_scope": "B2B",
         "source_pattern_ids": [
           "scenario-buying_interest-002",
           "domain-auto_insurance",
@@ -680,7 +692,9 @@
           "agent_answer": "RouteSignal CRM is not a full CRM replacement. For your case, think of it as a layer around lead intake, routing, callback ownership, Gmail and Outlook sync, Slack and Zapier handoffs, and CSV import.",
           "agent_answer_customization": {
             "seed_id": "conditional-confused-fit",
+            "market_scope": "B2B",
             "persona": "confused owner trying to understand product fit",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "sale_eligible",
             "safe_agent_tactic": "benefit_framing",
@@ -794,10 +808,12 @@
         {
           "turn_index": 2,
           "customer_context": "That helps. If it is mainly routing and callback ownership, what would a small team pay?",
-          "agent_answer": "For a small team still figuring out fit, the synthetic range is Starter at $29 per user per month annually and Growth at $59. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.",
+          "agent_answer": "For a small team still figuring out fit, Starter is $29 per user per month annually and Growth is $59 per user per month annually. Billing stays outside this call; the useful question is whether routing and callback ownership are real enough to review.",
           "agent_answer_customization": {
             "seed_id": "conditional-confused-fit",
+            "market_scope": "B2B",
             "persona": "confused owner trying to understand product fit",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "sale_eligible",
             "safe_agent_tactic": "benefit_framing",
@@ -807,7 +823,7 @@
           "customer_response": "Okay, that is more concrete. Before I take it anywhere, what is the simple internal reason for looking at it?",
           "agent_answer_signals": {
             "answers_price": true,
-            "answers_product_fit": false,
+            "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
             "respects_time": false,
@@ -911,10 +927,12 @@
         {
           "turn_index": 3,
           "customer_context": "Okay, that is more concrete. Before I take it anywhere, what is the simple internal reason for looking at it?",
-          "agent_answer": "For your manager version after the product-fit question: this is a routing and callback-ownership review, Growth is $59 per user per month annually, setup is typically two to four weeks, and a specialist can confirm security details in writing.",
+          "agent_answer": "The internal reason is simple: the business gets a shared lead intake layer so callbacks stop depending on memory, spreadsheets, or one busy person. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear.",
           "agent_answer_customization": {
             "seed_id": "conditional-confused-fit",
+            "market_scope": "B2B",
             "persona": "confused owner trying to understand product fit",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "sale_eligible",
             "safe_agent_tactic": "benefit_framing",
@@ -923,10 +941,10 @@
           },
           "customer_response": "I can explain that now. Before I say yes to a review, tell me whether this creates any payment commitment.",
           "agent_answer_signals": {
-            "answers_price": true,
-            "answers_product_fit": false,
+            "answers_price": false,
+            "answers_product_fit": true,
             "answers_trust": false,
-            "offers_written_confirmation": true,
+            "offers_written_confirmation": false,
             "respects_time": false,
             "respects_support_boundary": false,
             "respects_do_not_call": false,
@@ -998,11 +1016,11 @@
             "campaign_language": "en",
             "response_language": "en",
             "detected_emotion": "neutral",
-            "sales_difficulty": "stakeholder-review",
-            "interest_state": "maybe-interested",
-            "selected_strategy": "evidence-or-benefit",
-            "next_action": "continue",
-            "call_control": "continue-call",
+            "sales_difficulty": "timing-delay",
+            "interest_state": "not-interested",
+            "selected_strategy": "rapport",
+            "next_action": "close-politely",
+            "call_control": "end-call",
             "background_modules": [],
             "first_response_latency_budget_ms": 700,
             "first_response_latency_ms": 0,
@@ -1031,7 +1049,9 @@
           "agent_answer": "For you, the next step would be an educational workflow review with a specialist to confirm fit. No payment, contract, or purchase decision should happen on this call.",
           "agent_answer_customization": {
             "seed_id": "conditional-confused-fit",
+            "market_scope": "B2B",
             "persona": "confused owner trying to understand product fit",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "sale_eligible",
             "safe_agent_tactic": "benefit_framing",
@@ -1146,7 +1166,9 @@
     },
     {
       "seed_id": "conditional-skeptical-proof",
+      "market_scope": "B2B",
       "persona": "skeptical founder who wants proof before engaging",
+      "offer_name": "RouteSignal CRM",
       "target_outcome": "rejected-deal",
       "terminal_outcome": "rejected-deal",
       "terminal_decision_source": "customer",
@@ -1237,6 +1259,7 @@
         "scenario_id": "prod-014-trust_repair-001",
         "scenario_label": "trust_repair",
         "domain": "auto_insurance",
+        "market_scope": "B2B",
         "source_pattern_ids": [
           "scenario-billing_issue-008",
           "domain-auto_insurance",
@@ -1291,7 +1314,9 @@
           "agent_answer": "Fair concern. I cannot promise revenue lift or pretend this is proven for your company. The verifiable claim is narrower: RouteSignal CRM centralizes lead intake and routes leads by region, source, priority, or owner.",
           "agent_answer_customization": {
             "seed_id": "conditional-skeptical-proof",
+            "market_scope": "B2B",
             "persona": "skeptical founder who wants proof before engaging",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "trust_repair",
             "safe_agent_tactic": "benefit_framing",
@@ -1409,7 +1434,9 @@
           "agent_answer": "That is reasonable for a skeptical review. A specialist can send written details and separate confirmed product facts from what still needs a fit review for your team.",
           "agent_answer_customization": {
             "seed_id": "conditional-skeptical-proof",
+            "market_scope": "B2B",
             "persona": "skeptical founder who wants proof before engaging",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "trust_repair",
             "safe_agent_tactic": "benefit_framing",
@@ -1525,7 +1552,9 @@
     },
     {
       "seed_id": "conditional-busy-now",
+      "market_scope": "B2B",
       "persona": "busy sales lead with low patience",
+      "offer_name": "RouteSignal CRM",
       "target_outcome": "rejected-deal",
       "terminal_outcome": "rejected-deal",
       "terminal_decision_source": "customer",
@@ -1603,6 +1632,7 @@
         "scenario_id": "prod-014-callback_request-001",
         "scenario_label": "callback_request",
         "domain": "auto_insurance",
+        "market_scope": "B2B",
         "source_pattern_ids": [
           "scenario-callback_request-005",
           "domain-auto_insurance",
@@ -1655,7 +1685,9 @@
           "agent_answer": "Then I will keep it to the point for a busy sales lead: RouteSignal CRM helps stop inbound leads getting lost between routing and callback ownership. If that problem is not active today, we can stop here.",
           "agent_answer_customization": {
             "seed_id": "conditional-busy-now",
+            "market_scope": "B2B",
             "persona": "busy sales lead with low patience",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "callback_request",
             "safe_agent_tactic": "benefit_framing",
@@ -1770,7 +1802,9 @@
     },
     {
       "seed_id": "conditional-existing-provider",
+      "market_scope": "B2B",
       "persona": "team lead already using a CRM",
+      "offer_name": "RouteSignal CRM",
       "target_outcome": "accepted-deal",
       "terminal_outcome": "accepted-deal",
       "terminal_decision_source": "customer",
@@ -1846,7 +1880,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 2,
-          "text": "A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent."
+          "text": "A useful fit check would be whether the CRM stores records but routing, reminders, or owner follow-through still break outside it. If none of those happen, this is probably not urgent."
         },
         {
           "speaker": "customer",
@@ -1859,7 +1893,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 3,
-          "text": "If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today."
+          "text": "If this sits beside your existing CRM, Starter is $29 per user per month annually and Growth is $59 per user per month annually. I would judge it only against routing gaps around the CRM, not as a replacement purchase today."
         },
         {
           "speaker": "customer",
@@ -1872,7 +1906,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 4,
-          "text": "For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks."
+          "text": "The internal reason is simple: the case is not replacing the CRM; it is reducing the routing and callback gaps around the CRM. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear."
         },
         {
           "speaker": "customer",
@@ -1900,6 +1934,7 @@
         "scenario_id": "prod-014-support_handoff-001",
         "scenario_label": "support_handoff",
         "domain": "auto_insurance",
+        "market_scope": "B2B",
         "source_pattern_ids": [
           "scenario-technical_problem-007",
           "domain-auto_insurance",
@@ -1954,7 +1989,9 @@
           "agent_answer": "I would not ask a team with an existing CRM to rip it out. RouteSignal CRM is only worth a look if routing, callback ownership, or reporting are still messy around that CRM.",
           "agent_answer_customization": {
             "seed_id": "conditional-existing-provider",
+            "market_scope": "B2B",
             "persona": "team lead already using a CRM",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "support_handoff",
             "safe_agent_tactic": "pain_point_discovery",
@@ -1964,7 +2001,7 @@
           "customer_response": "Okay, not replacing the CRM matters. The real question is whether our routing is messy enough to justify another layer.",
           "agent_answer_signals": {
             "answers_price": false,
-            "answers_product_fit": false,
+            "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
             "respects_time": false,
@@ -2069,10 +2106,12 @@
         {
           "turn_index": 2,
           "customer_context": "Okay, not replacing the CRM matters. The real question is whether our routing is messy enough to justify another layer.",
-          "agent_answer": "A useful fit check for a CRM-using team would be whether inbound leads are delayed, assigned twice, or missing callback owners. If none of those happen around your CRM, this is probably not urgent.",
+          "agent_answer": "A useful fit check would be whether the CRM stores records but routing, reminders, or owner follow-through still break outside it. If none of those happen, this is probably not urgent.",
           "agent_answer_customization": {
             "seed_id": "conditional-existing-provider",
+            "market_scope": "B2B",
             "persona": "team lead already using a CRM",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "support_handoff",
             "safe_agent_tactic": "pain_point_discovery",
@@ -2187,10 +2226,12 @@
         {
           "turn_index": 3,
           "customer_context": "Those are real issues for us sometimes. If we looked at it, what would the Growth plan cost?",
-          "agent_answer": "If this sits beside your existing CRM, the synthetic Growth plan is $59 per user per month annually and Starter is $29. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.",
+          "agent_answer": "If this sits beside your existing CRM, Starter is $29 per user per month annually and Growth is $59 per user per month annually. I would judge it only against routing gaps around the CRM, not as a replacement purchase today.",
           "agent_answer_customization": {
             "seed_id": "conditional-existing-provider",
+            "market_scope": "B2B",
             "persona": "team lead already using a CRM",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "support_handoff",
             "safe_agent_tactic": "pain_point_discovery",
@@ -2200,7 +2241,7 @@
           "customer_response": "That price is not tiny, so I would need a clean reason this helps alongside our CRM. What would I tell the team?",
           "agent_answer_signals": {
             "answers_price": true,
-            "answers_product_fit": false,
+            "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
             "respects_time": false,
@@ -2275,7 +2316,7 @@
             "campaign_language": "en",
             "response_language": "en",
             "detected_emotion": "skeptical-or-negative",
-            "sales_difficulty": "general-product-question",
+            "sales_difficulty": "price-objection",
             "interest_state": "maybe-interested",
             "selected_strategy": "evidence-or-benefit",
             "next_action": "continue",
@@ -2305,10 +2346,12 @@
         {
           "turn_index": 4,
           "customer_context": "That price is not tiny, so I would need a clean reason this helps alongside our CRM. What would I tell the team?",
-          "agent_answer": "For your team summary: this would be reviewed as an add-on around CRM routing gaps, Growth is $59 per user per month annually, annual billing reduces subscription price by 15%, and setup is typically two to four weeks.",
+          "agent_answer": "The internal reason is simple: the case is not replacing the CRM; it is reducing the routing and callback gaps around the CRM. If that problem is real, the next step is only to check fit; commercial and security details can come after the business case is clear.",
           "agent_answer_customization": {
             "seed_id": "conditional-existing-provider",
+            "market_scope": "B2B",
             "persona": "team lead already using a CRM",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "support_handoff",
             "safe_agent_tactic": "pain_point_discovery",
@@ -2317,14 +2360,14 @@
           },
           "customer_response": "That gives me enough to explain it. I still need to know whether the next step creates any contract or payment obligation.",
           "agent_answer_signals": {
-            "answers_price": true,
-            "answers_product_fit": false,
+            "answers_price": false,
+            "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
             "respects_time": false,
             "respects_support_boundary": false,
             "respects_do_not_call": false,
-            "answers_provider_overlap": false,
+            "answers_provider_overlap": true,
             "manager_summary": true,
             "asks_multiple_questions": false,
             "premature_close_language": false
@@ -2426,7 +2469,9 @@
           "agent_answer": "For your CRM situation, the review would only compare routing gaps and handoff fit with a specialist. No payment, contract, or replacement decision should happen on this call.",
           "agent_answer_customization": {
             "seed_id": "conditional-existing-provider",
+            "market_scope": "B2B",
             "persona": "team lead already using a CRM",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "support_handoff",
             "safe_agent_tactic": "pain_point_discovery",
@@ -2436,7 +2481,7 @@
           "customer_response": "Alright, book the review. I want it framed around routing gaps, not replacing the CRM.",
           "agent_answer_signals": {
             "answers_price": false,
-            "answers_product_fit": false,
+            "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
             "respects_time": false,
@@ -2542,7 +2587,9 @@
     },
     {
       "seed_id": "conditional-manager-review",
+      "market_scope": "B2B",
       "persona": "manager who needs a concise internal case",
+      "offer_name": "RouteSignal CRM",
       "target_outcome": "accepted-deal",
       "terminal_outcome": "accepted-deal",
       "terminal_decision_source": "customer",
@@ -2605,7 +2652,7 @@
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist."
+          "text": "For the manager version you asked for: the manager-level reason is fewer dropped leads: each inbound request gets routed, owned, and followed up without a messy handoff. That is the business reason; commercial and security details can be separated into a written specialist follow-up."
         },
         {
           "speaker": "customer",
@@ -2633,6 +2680,7 @@
         "scenario_id": "prod-014-cancellation_boundary-001",
         "scenario_label": "cancellation_boundary",
         "domain": "auto_insurance",
+        "market_scope": "B2B",
         "source_pattern_ids": [
           "scenario-cancellation-006",
           "domain-auto_insurance",
@@ -2684,10 +2732,12 @@
         {
           "turn_index": 1,
           "customer_context": "If this is useful, I need the version I can repeat to my manager.",
-          "agent_answer": "For the manager version you asked for: the case is cleaner lead routing, callback ownership, Growth at $59 per user per month annually, a 15% annual-billing reduction, and security details confirmed in writing by a specialist.",
+          "agent_answer": "For the manager version you asked for: the manager-level reason is fewer dropped leads: each inbound request gets routed, owned, and followed up without a messy handoff. That is the business reason; commercial and security details can be separated into a written specialist follow-up.",
           "agent_answer_customization": {
             "seed_id": "conditional-manager-review",
+            "market_scope": "B2B",
             "persona": "manager who needs a concise internal case",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "cancellation_boundary",
             "safe_agent_tactic": "pain_point_discovery",
@@ -2696,10 +2746,10 @@
           },
           "customer_response": "That is concise enough. Before I agree to a slot, confirm this is only a fit review and not a purchase step.",
           "agent_answer_signals": {
-            "answers_price": true,
-            "answers_product_fit": false,
+            "answers_price": false,
+            "answers_product_fit": true,
             "answers_trust": false,
-            "offers_written_confirmation": true,
+            "offers_written_confirmation": false,
             "respects_time": false,
             "respects_support_boundary": false,
             "respects_do_not_call": false,
@@ -2805,7 +2855,9 @@
           "agent_answer": "For a manager-led review, this would only schedule a specialist conversation around fit, security notes, and workflow impact. No payment, contract, or purchase decision happens here.",
           "agent_answer_customization": {
             "seed_id": "conditional-manager-review",
+            "market_scope": "B2B",
             "persona": "manager who needs a concise internal case",
+            "offer_name": "RouteSignal CRM",
             "domain": "auto_insurance",
             "scenario_label": "cancellation_boundary",
             "safe_agent_tactic": "pain_point_discovery",
@@ -2920,17 +2972,19 @@
       ]
     },
     {
-      "seed_id": "conditional-support-boundary",
-      "persona": "support-seeking user who should not be sold",
-      "target_outcome": "rejected-deal",
-      "terminal_outcome": "rejected-deal",
+      "seed_id": "conditional-consumer-budget",
+      "market_scope": "B2C",
+      "persona": "budget-conscious consumer comparing a service plan",
+      "offer_name": "RouteSignal Home",
+      "target_outcome": "accepted-deal",
+      "terminal_outcome": "accepted-deal",
       "terminal_decision_source": "customer",
-      "terminal_reason": "customer accepts handoff but rejects sales conversation",
+      "terminal_reason": "customer accepts only after commitment boundary is clear",
       "starts_with_agent_opening": true,
       "loop_guard_triggered": false,
       "opening": {
-        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?",
-        "customer_opening_response": "I am not shopping. I need help with an account problem first.",
+        "agent_opening": "Hi, this is Maya from RouteSignal Home. I am calling about missed service follow-ups and appointment reminders for individual customers. Did I catch you at an okay moment for the short reason I called?",
+        "customer_opening_response": "I can listen, but I am not signing up for a surprise subscription. What would this actually do for me?",
         "opening_checks": {
           "greeting": true,
           "identity_disclosure": true,
@@ -2972,26 +3026,65 @@
           "speaker": "agent",
           "kind": "opening_line",
           "turn_index": 0,
-          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+          "text": "Hi, this is Maya from RouteSignal Home. I am calling about missed service follow-ups and appointment reminders for individual customers. Did I catch you at an okay moment for the short reason I called?"
         },
         {
           "speaker": "customer",
           "kind": "opening_response",
           "turn_index": 0,
-          "text": "I am not shopping. I need help with an account problem first."
+          "text": "I can listen, but I am not signing up for a surprise subscription. What would this actually do for me?"
         },
         {
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "That account issue should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching RouteSignal."
+          "text": "RouteSignal Home is not a card-collection call or a hard commitment. In your case, it would help with appointment reminders, service follow-ups, and one clear place to confirm next steps."
         },
         {
           "speaker": "customer",
           "kind": "customer_response",
           "turn_index": 1,
-          "text": "Good, then send me to the support person. I am not evaluating software while the account issue is open.",
-          "condition": "agent routed support before sales"
+          "text": "That helps. If it is just reminders and service follow-ups, what would it cost me as an individual?",
+          "condition": "agent clarified consumer product fit without payment pressure"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "For an individual customer, the synthetic consumer option is $19 per month for Basic reminders and $39 per month for Plus scheduling help. Payment stays outside this call, so the only useful question is whether appointment reminders and service follow-ups would actually help you."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "That is clearer. Before I consider even a no-payment review, give me the plain reason this helps me personally.",
+          "condition": "agent answered price and kept billing outside call"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 3,
+          "text": "The simple reason to consider it is this: the personal reason is fewer missed appointments and clearer reminders, so the customer does not have to chase service follow-ups. If that is not a real problem for you, there is no reason to continue."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 3,
+          "text": "That is the kind of practical reason I meant. Before anything else, confirm this is only an explanation and not a payment step.",
+          "condition": "agent gave manager-ready summary"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 4,
+          "text": "For your budget concern, the next step would only be a no-payment explanation about reminders, follow-ups, and whether the plan fits your situation. No card details, contract, or purchase decision should happen on this call."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 4,
+          "text": "That works. I will hear the explanation as long as it stays no-payment and focused on reminders.",
+          "condition": "agent confirmed non-binding no-payment next step"
         }
       ],
       "source_recipe": {
@@ -2999,6 +3092,7 @@
         "scenario_id": "prod-014-price_objection-002",
         "scenario_label": "price_objection",
         "domain": "auto_insurance",
+        "market_scope": "B2C",
         "source_pattern_ids": [
           "scenario-price_request-004",
           "domain-auto_insurance",
@@ -3026,61 +3120,63 @@
         "uses_single_source_transcript": false
       },
       "initial_state": {
-        "interest": 0,
+        "interest": 2,
         "trust": 2,
-        "clarity": 2,
+        "clarity": 0,
         "friction": 3,
-        "patience": 3,
-        "emotion": "annoyed",
-        "active_objection": "support"
+        "patience": 4,
+        "emotion": "cautious",
+        "active_objection": "confusion"
       },
       "final_state": {
-        "interest": 0,
-        "trust": 3,
-        "clarity": 2,
-        "friction": 3,
-        "patience": 3,
-        "emotion": "annoyed",
-        "active_objection": "support"
+        "interest": 5,
+        "trust": 5,
+        "clarity": 5,
+        "friction": 0,
+        "patience": 4,
+        "emotion": "cautious",
+        "active_objection": "final-review"
       },
-      "turn_count": 1,
+      "turn_count": 4,
       "turns": [
         {
           "turn_index": 1,
-          "customer_context": "I am not shopping. I need help with an account problem first.",
-          "agent_answer": "That account issue should be handled as support before sales. I will route you to a solutions specialist for account help instead of pitching RouteSignal.",
+          "customer_context": "I can listen, but I am not signing up for a surprise subscription. What would this actually do for me?",
+          "agent_answer": "RouteSignal Home is not a card-collection call or a hard commitment. In your case, it would help with appointment reminders, service follow-ups, and one clear place to confirm next steps.",
           "agent_answer_customization": {
-            "seed_id": "conditional-support-boundary",
-            "persona": "support-seeking user who should not be sold",
+            "seed_id": "conditional-consumer-budget",
+            "market_scope": "B2C",
+            "persona": "budget-conscious consumer comparing a service plan",
+            "offer_name": "RouteSignal Home",
             "domain": "auto_insurance",
             "scenario_label": "price_objection",
             "safe_agent_tactic": "benefit_framing",
-            "active_objection": "support",
+            "active_objection": "confusion",
             "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
           },
-          "customer_response": "Good, then send me to the support person. I am not evaluating software while the account issue is open.",
+          "customer_response": "That helps. If it is just reminders and service follow-ups, what would it cost me as an individual?",
           "agent_answer_signals": {
             "answers_price": false,
-            "answers_product_fit": false,
+            "answers_product_fit": true,
             "answers_trust": false,
             "offers_written_confirmation": false,
             "respects_time": false,
-            "respects_support_boundary": true,
+            "respects_support_boundary": false,
             "respects_do_not_call": false,
             "answers_provider_overlap": false,
             "manager_summary": false,
             "asks_multiple_questions": false,
             "premature_close_language": false
           },
-          "customer_response_condition": "agent routed support before sales",
-          "customer_reaction_reason": "customer accepts handoff but rejects sales conversation",
+          "customer_response_condition": "agent clarified consumer product fit without payment pressure",
+          "customer_reaction_reason": "customer understands enough to ask about cost",
           "callcenteren_pattern_basis": {
             "source": "PROD-014 abstract CallCenterEN scenario bank",
             "scenario_id": "prod-014-price_objection-002",
             "scenario_label": "price_objection",
             "domain": "auto_insurance",
-            "stage": "handoff",
-            "condition_signal": "support_boundary",
+            "stage": "clarification",
+            "condition_signal": "answers_product_fit",
             "pattern_categories": [
               "scenario_template",
               "domain_pattern",
@@ -3106,27 +3202,27 @@
             "uses_exact_transcript_text": false
           },
           "state_before": {
-            "interest": 0,
+            "interest": 2,
             "trust": 2,
-            "clarity": 2,
+            "clarity": 0,
             "friction": 3,
-            "patience": 3,
-            "emotion": "annoyed",
-            "active_objection": "support"
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "confusion"
           },
           "state_after": {
-            "interest": 0,
-            "trust": 3,
-            "clarity": 2,
+            "interest": 3,
+            "trust": 2,
+            "clarity": 3,
             "friction": 3,
-            "patience": 3,
-            "emotion": "annoyed",
-            "active_objection": "support"
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "price"
           },
           "state_delta": {
-            "interest": 0,
-            "trust": 1,
-            "clarity": 0,
+            "interest": 1,
+            "trust": 0,
+            "clarity": 3,
             "friction": 0,
             "patience": 0
           },
@@ -3135,11 +3231,368 @@
             "campaign_language": "en",
             "response_language": "en",
             "detected_emotion": "neutral",
-            "sales_difficulty": "human-request",
-            "interest_state": "needs-human",
-            "selected_strategy": "rapport",
-            "next_action": "escalate",
-            "call_control": "transfer-or-escalate",
+            "sales_difficulty": "general-product-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "background_modules": [],
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_ms": 0,
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "question_count": 0,
+          "reacts_to_agent_answer": true,
+          "copied_transcript_text_used": false,
+          "contains_transcript_derived_prompt_text": false
+        },
+        {
+          "turn_index": 2,
+          "customer_context": "That helps. If it is just reminders and service follow-ups, what would it cost me as an individual?",
+          "agent_answer": "For an individual customer, the synthetic consumer option is $19 per month for Basic reminders and $39 per month for Plus scheduling help. Payment stays outside this call, so the only useful question is whether appointment reminders and service follow-ups would actually help you.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-consumer-budget",
+            "market_scope": "B2C",
+            "persona": "budget-conscious consumer comparing a service plan",
+            "offer_name": "RouteSignal Home",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "price",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
+          "customer_response": "That is clearer. Before I consider even a no-payment review, give me the plain reason this helps me personally.",
+          "agent_answer_signals": {
+            "answers_price": true,
+            "answers_product_fit": true,
+            "answers_trust": false,
+            "offers_written_confirmation": false,
+            "respects_time": false,
+            "respects_support_boundary": false,
+            "respects_do_not_call": false,
+            "answers_provider_overlap": false,
+            "manager_summary": false,
+            "asks_multiple_questions": false,
+            "premature_close_language": false
+          },
+          "customer_response_condition": "agent answered price and kept billing outside call",
+          "customer_reaction_reason": "customer moves from price concern to internal justification",
+          "callcenteren_pattern_basis": {
+            "source": "PROD-014 abstract CallCenterEN scenario bank",
+            "scenario_id": "prod-014-price_objection-002",
+            "scenario_label": "price_objection",
+            "domain": "auto_insurance",
+            "stage": "price_discussion",
+            "condition_signal": "answers_price",
+            "pattern_categories": [
+              "scenario_template",
+              "domain_pattern",
+              "customer_intent",
+              "objection",
+              "persuasion_strategy",
+              "discovery_question",
+              "turn_stage",
+              "close_attempt",
+              "emotion_transition"
+            ],
+            "source_pattern_ids": [
+              "scenario-price_request-004",
+              "domain-auto_insurance",
+              "intent-price_request-004",
+              "objection-too_expensive-003",
+              "persuasion-benefit_framing-004",
+              "discovery-eligibility_question-003",
+              "stage-rapport-001",
+              "stage-clarification-002"
+            ],
+            "abstract_pattern_only": true,
+            "uses_exact_transcript_text": false
+          },
+          "state_before": {
+            "interest": 3,
+            "trust": 2,
+            "clarity": 3,
+            "friction": 3,
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "price"
+          },
+          "state_after": {
+            "interest": 3,
+            "trust": 3,
+            "clarity": 5,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "authority"
+          },
+          "state_delta": {
+            "interest": 0,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "decision_snapshot": {
+            "response_mode": "fast-response",
+            "campaign_language": "en",
+            "response_language": "en",
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": "price-objection",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "background_modules": [],
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_ms": 0,
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "question_count": 0,
+          "reacts_to_agent_answer": true,
+          "copied_transcript_text_used": false,
+          "contains_transcript_derived_prompt_text": false
+        },
+        {
+          "turn_index": 3,
+          "customer_context": "That is clearer. Before I consider even a no-payment review, give me the plain reason this helps me personally.",
+          "agent_answer": "The simple reason to consider it is this: the personal reason is fewer missed appointments and clearer reminders, so the customer does not have to chase service follow-ups. If that is not a real problem for you, there is no reason to continue.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-consumer-budget",
+            "market_scope": "B2C",
+            "persona": "budget-conscious consumer comparing a service plan",
+            "offer_name": "RouteSignal Home",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "authority",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
+          "customer_response": "That is the kind of practical reason I meant. Before anything else, confirm this is only an explanation and not a payment step.",
+          "agent_answer_signals": {
+            "answers_price": false,
+            "answers_product_fit": true,
+            "answers_trust": false,
+            "offers_written_confirmation": false,
+            "respects_time": false,
+            "respects_support_boundary": false,
+            "respects_do_not_call": false,
+            "answers_provider_overlap": false,
+            "manager_summary": true,
+            "asks_multiple_questions": false,
+            "premature_close_language": false
+          },
+          "customer_response_condition": "agent gave manager-ready summary",
+          "customer_reaction_reason": "customer understands the internal case but checks the commitment boundary",
+          "callcenteren_pattern_basis": {
+            "source": "PROD-014 abstract CallCenterEN scenario bank",
+            "scenario_id": "prod-014-price_objection-002",
+            "scenario_label": "price_objection",
+            "domain": "auto_insurance",
+            "stage": "commitment_confirmation",
+            "condition_signal": "manager_summary",
+            "pattern_categories": [
+              "scenario_template",
+              "domain_pattern",
+              "customer_intent",
+              "objection",
+              "persuasion_strategy",
+              "discovery_question",
+              "turn_stage",
+              "close_attempt",
+              "emotion_transition"
+            ],
+            "source_pattern_ids": [
+              "scenario-price_request-004",
+              "domain-auto_insurance",
+              "intent-price_request-004",
+              "objection-too_expensive-003",
+              "persuasion-benefit_framing-004",
+              "discovery-eligibility_question-003",
+              "stage-rapport-001",
+              "stage-clarification-002"
+            ],
+            "abstract_pattern_only": true,
+            "uses_exact_transcript_text": false
+          },
+          "state_before": {
+            "interest": 3,
+            "trust": 3,
+            "clarity": 5,
+            "friction": 2,
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "authority"
+          },
+          "state_after": {
+            "interest": 4,
+            "trust": 4,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "final-review"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 0,
+            "friction": -1,
+            "patience": 0
+          },
+          "decision_snapshot": {
+            "response_mode": "fast-response",
+            "campaign_language": "en",
+            "response_language": "en",
+            "detected_emotion": "neutral",
+            "sales_difficulty": "general-product-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "background_modules": [],
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_ms": 0,
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "question_count": 0,
+          "reacts_to_agent_answer": true,
+          "copied_transcript_text_used": false,
+          "contains_transcript_derived_prompt_text": false
+        },
+        {
+          "turn_index": 4,
+          "customer_context": "That is the kind of practical reason I meant. Before anything else, confirm this is only an explanation and not a payment step.",
+          "agent_answer": "For your budget concern, the next step would only be a no-payment explanation about reminders, follow-ups, and whether the plan fits your situation. No card details, contract, or purchase decision should happen on this call.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-consumer-budget",
+            "market_scope": "B2C",
+            "persona": "budget-conscious consumer comparing a service plan",
+            "offer_name": "RouteSignal Home",
+            "domain": "auto_insurance",
+            "scenario_label": "price_objection",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "final-review",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
+          "customer_response": "That works. I will hear the explanation as long as it stays no-payment and focused on reminders.",
+          "agent_answer_signals": {
+            "answers_price": false,
+            "answers_product_fit": false,
+            "answers_trust": false,
+            "offers_written_confirmation": false,
+            "respects_time": false,
+            "respects_support_boundary": false,
+            "respects_do_not_call": false,
+            "answers_provider_overlap": false,
+            "manager_summary": false,
+            "asks_multiple_questions": false,
+            "premature_close_language": false
+          },
+          "customer_response_condition": "agent confirmed non-binding no-payment next step",
+          "customer_reaction_reason": "customer accepts only after commitment boundary is clear",
+          "callcenteren_pattern_basis": {
+            "source": "PROD-014 abstract CallCenterEN scenario bank",
+            "scenario_id": "prod-014-price_objection-002",
+            "scenario_label": "price_objection",
+            "domain": "auto_insurance",
+            "stage": "sale_ready_close",
+            "condition_signal": "non_binding_boundary",
+            "pattern_categories": [
+              "scenario_template",
+              "domain_pattern",
+              "customer_intent",
+              "objection",
+              "persuasion_strategy",
+              "discovery_question",
+              "turn_stage",
+              "close_attempt",
+              "emotion_transition"
+            ],
+            "source_pattern_ids": [
+              "scenario-price_request-004",
+              "domain-auto_insurance",
+              "intent-price_request-004",
+              "objection-too_expensive-003",
+              "persuasion-benefit_framing-004",
+              "discovery-eligibility_question-003",
+              "stage-rapport-001",
+              "stage-clarification-002"
+            ],
+            "abstract_pattern_only": true,
+            "uses_exact_transcript_text": false
+          },
+          "state_before": {
+            "interest": 4,
+            "trust": 4,
+            "clarity": 5,
+            "friction": 1,
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "final-review"
+          },
+          "state_after": {
+            "interest": 5,
+            "trust": 5,
+            "clarity": 5,
+            "friction": 0,
+            "patience": 4,
+            "emotion": "cautious",
+            "active_objection": "final-review"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 0,
+            "friction": -1,
+            "patience": 0
+          },
+          "decision_snapshot": {
+            "response_mode": "fast-response",
+            "campaign_language": "en",
+            "response_language": "en",
+            "detected_emotion": "neutral",
+            "sales_difficulty": "general-product-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
             "background_modules": [],
             "first_response_latency_budget_ms": 700,
             "first_response_latency_ms": 0,
@@ -3165,17 +3618,19 @@
       ]
     },
     {
-      "seed_id": "conditional-do-not-call",
-      "persona": "protected stop-request customer",
-      "target_outcome": "rejected-deal",
-      "terminal_outcome": "rejected-deal",
+      "seed_id": "conditional-consumer-no-pressure",
+      "market_scope": "B2C",
+      "persona": "consumer wary of pressure and payment collection",
+      "offer_name": "RouteSignal Home",
+      "target_outcome": "accepted-deal",
+      "terminal_outcome": "accepted-deal",
       "terminal_decision_source": "customer",
-      "terminal_reason": "customer confirms stop request because agent ended sales path",
+      "terminal_reason": "customer accepts only after commitment boundary is clear",
       "starts_with_agent_opening": true,
       "loop_guard_triggered": false,
       "opening": {
-        "agent_opening": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?",
-        "customer_opening_response": "No. Remove me from your list and do not call this number again.",
+        "agent_opening": "Hi, this is Maya from RouteSignal Home. I am calling about missed service follow-ups and appointment reminders for individual customers. Did I catch you at an okay moment for the short reason I called?",
+        "customer_opening_response": "I am not giving card details on a phone call. If this is a hard sell, I am done.",
         "opening_checks": {
           "greeting": true,
           "identity_disclosure": true,
@@ -3217,26 +3672,52 @@
           "speaker": "agent",
           "kind": "opening_line",
           "turn_index": 0,
-          "text": "Hi, this is Maya from RouteSignal CRM. We help teams route inbound leads and keep callback ownership from getting lost. Did I catch you at a workable moment for the short reason I called?"
+          "text": "Hi, this is Maya from RouteSignal Home. I am calling about missed service follow-ups and appointment reminders for individual customers. Did I catch you at an okay moment for the short reason I called?"
         },
         {
           "speaker": "customer",
           "kind": "opening_response",
           "turn_index": 0,
-          "text": "No. Remove me from your list and do not call this number again."
+          "text": "I am not giving card details on a phone call. If this is a hard sell, I am done."
         },
         {
           "speaker": "agent",
           "kind": "agent_answer",
           "turn_index": 1,
-          "text": "Understood. I will mark this number as do not call and end the sales conversation now."
+          "text": "Fair concern. I cannot ask for card details or treat this as a purchase decision. The safe claim is narrower: RouteSignal Home can help track appointment reminders and service follow-ups, and you can say no after the explanation."
         },
         {
           "speaker": "customer",
           "kind": "customer_response",
           "turn_index": 1,
-          "text": "Yes. Remove me and do not follow up. That is the only outcome I wanted from this call.",
-          "condition": "agent respected do-not-call boundary"
+          "text": "Okay, no card details matters. Give me the simple reason this would help me, not a company.",
+          "condition": "agent removed payment pressure for cautious consumer"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 2,
+          "text": "The simple reason to consider it is this: the only safe reason to continue is a no-payment explanation of whether reminders and service follow-ups solve a real personal problem. If that is not a real problem for you, there is no reason to continue."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 2,
+          "text": "That answers the personal-use part. Now confirm this stays no-payment and does not sign me up.",
+          "condition": "agent gave manager-ready summary"
+        },
+        {
+          "speaker": "agent",
+          "kind": "agent_answer",
+          "turn_index": 3,
+          "text": "For you, the next step would only be a no-payment explanation with a specialist about reminders and follow-ups. No card details, contract, or purchase decision should happen on this call."
+        },
+        {
+          "speaker": "customer",
+          "kind": "customer_response",
+          "turn_index": 3,
+          "text": "That is fine. I will take a no-payment explanation, but I am not buying anything on this call.",
+          "condition": "agent confirmed non-binding no-payment next step"
         }
       ],
       "source_recipe": {
@@ -3244,6 +3725,7 @@
         "scenario_id": "prod-014-sale_eligible-002",
         "scenario_label": "sale_eligible",
         "domain": "automotive",
+        "market_scope": "B2C",
         "source_pattern_ids": [
           "scenario-buying_interest-002",
           "domain-automotive",
@@ -3271,61 +3753,63 @@
         "uses_single_source_transcript": false
       },
       "initial_state": {
-        "interest": 0,
+        "interest": 1,
         "trust": 1,
-        "clarity": 3,
-        "friction": 5,
-        "patience": 0,
-        "emotion": "annoyed",
-        "active_objection": "do-not-call"
+        "clarity": 1,
+        "friction": 4,
+        "patience": 3,
+        "emotion": "guarded",
+        "active_objection": "trust"
       },
       "final_state": {
-        "interest": 0,
-        "trust": 1,
-        "clarity": 3,
-        "friction": 5,
-        "patience": 0,
-        "emotion": "annoyed",
-        "active_objection": "do-not-call"
+        "interest": 3,
+        "trust": 4,
+        "clarity": 4,
+        "friction": 2,
+        "patience": 3,
+        "emotion": "guarded",
+        "active_objection": "final-review"
       },
-      "turn_count": 1,
+      "turn_count": 3,
       "turns": [
         {
           "turn_index": 1,
-          "customer_context": "No. Remove me from your list and do not call this number again.",
-          "agent_answer": "Understood. I will mark this number as do not call and end the sales conversation now.",
+          "customer_context": "I am not giving card details on a phone call. If this is a hard sell, I am done.",
+          "agent_answer": "Fair concern. I cannot ask for card details or treat this as a purchase decision. The safe claim is narrower: RouteSignal Home can help track appointment reminders and service follow-ups, and you can say no after the explanation.",
           "agent_answer_customization": {
-            "seed_id": "conditional-do-not-call",
-            "persona": "protected stop-request customer",
+            "seed_id": "conditional-consumer-no-pressure",
+            "market_scope": "B2C",
+            "persona": "consumer wary of pressure and payment collection",
+            "offer_name": "RouteSignal Home",
             "domain": "automotive",
             "scenario_label": "sale_eligible",
             "safe_agent_tactic": "benefit_framing",
-            "active_objection": "do-not-call",
+            "active_objection": "trust",
             "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
           },
-          "customer_response": "Yes. Remove me and do not follow up. That is the only outcome I wanted from this call.",
+          "customer_response": "Okay, no card details matters. Give me the simple reason this would help me, not a company.",
           "agent_answer_signals": {
             "answers_price": false,
-            "answers_product_fit": false,
-            "answers_trust": false,
+            "answers_product_fit": true,
+            "answers_trust": true,
             "offers_written_confirmation": false,
             "respects_time": false,
             "respects_support_boundary": false,
-            "respects_do_not_call": true,
+            "respects_do_not_call": false,
             "answers_provider_overlap": false,
             "manager_summary": false,
             "asks_multiple_questions": false,
             "premature_close_language": false
           },
-          "customer_response_condition": "agent respected do-not-call boundary",
-          "customer_reaction_reason": "customer confirms stop request because agent ended sales path",
+          "customer_response_condition": "agent removed payment pressure for cautious consumer",
+          "customer_reaction_reason": "customer asks for a personal reason before allowing any next step",
           "callcenteren_pattern_basis": {
             "source": "PROD-014 abstract CallCenterEN scenario bank",
             "scenario_id": "prod-014-sale_eligible-002",
             "scenario_label": "sale_eligible",
             "domain": "automotive",
-            "stage": "safety_boundary",
-            "condition_signal": "do_not_call",
+            "stage": "trust_repair",
+            "condition_signal": "answers_trust",
             "pattern_categories": [
               "scenario_template",
               "domain_pattern",
@@ -3351,27 +3835,27 @@
             "uses_exact_transcript_text": false
           },
           "state_before": {
-            "interest": 0,
+            "interest": 1,
             "trust": 1,
-            "clarity": 3,
-            "friction": 5,
-            "patience": 0,
-            "emotion": "annoyed",
-            "active_objection": "do-not-call"
+            "clarity": 1,
+            "friction": 4,
+            "patience": 3,
+            "emotion": "guarded",
+            "active_objection": "trust"
           },
           "state_after": {
-            "interest": 0,
-            "trust": 1,
-            "clarity": 3,
-            "friction": 5,
-            "patience": 0,
-            "emotion": "annoyed",
-            "active_objection": "do-not-call"
+            "interest": 1,
+            "trust": 2,
+            "clarity": 2,
+            "friction": 4,
+            "patience": 3,
+            "emotion": "guarded",
+            "active_objection": "authority"
           },
           "state_delta": {
             "interest": 0,
-            "trust": 0,
-            "clarity": 0,
+            "trust": 1,
+            "clarity": 1,
             "friction": 0,
             "patience": 0
           },
@@ -3379,21 +3863,257 @@
             "response_mode": "fast-response",
             "campaign_language": "en",
             "response_language": "en",
-            "detected_emotion": "skeptical-or-negative",
-            "sales_difficulty": "do-not-call",
-            "interest_state": "do-not-call",
-            "selected_strategy": "rapport",
-            "next_action": "suppress-contact",
-            "call_control": "end-call",
-            "background_modules": [
-              "crm-suppression-update"
-            ],
+            "detected_emotion": "neutral",
+            "sales_difficulty": "general-product-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "background_modules": [],
             "first_response_latency_budget_ms": 700,
             "first_response_latency_ms": 0,
             "decision_trace_alignment": {
               "enabled": true,
-              "changed": false,
-              "reason": "decision snapshot already matched response shape"
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "question_count": 0,
+          "reacts_to_agent_answer": true,
+          "copied_transcript_text_used": false,
+          "contains_transcript_derived_prompt_text": false
+        },
+        {
+          "turn_index": 2,
+          "customer_context": "Okay, no card details matters. Give me the simple reason this would help me, not a company.",
+          "agent_answer": "The simple reason to consider it is this: the only safe reason to continue is a no-payment explanation of whether reminders and service follow-ups solve a real personal problem. If that is not a real problem for you, there is no reason to continue.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-consumer-no-pressure",
+            "market_scope": "B2C",
+            "persona": "consumer wary of pressure and payment collection",
+            "offer_name": "RouteSignal Home",
+            "domain": "automotive",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "authority",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
+          "customer_response": "That answers the personal-use part. Now confirm this stays no-payment and does not sign me up.",
+          "agent_answer_signals": {
+            "answers_price": false,
+            "answers_product_fit": true,
+            "answers_trust": false,
+            "offers_written_confirmation": false,
+            "respects_time": false,
+            "respects_support_boundary": false,
+            "respects_do_not_call": false,
+            "answers_provider_overlap": false,
+            "manager_summary": true,
+            "asks_multiple_questions": false,
+            "premature_close_language": false
+          },
+          "customer_response_condition": "agent gave manager-ready summary",
+          "customer_reaction_reason": "customer understands the internal case but checks the commitment boundary",
+          "callcenteren_pattern_basis": {
+            "source": "PROD-014 abstract CallCenterEN scenario bank",
+            "scenario_id": "prod-014-sale_eligible-002",
+            "scenario_label": "sale_eligible",
+            "domain": "automotive",
+            "stage": "commitment_confirmation",
+            "condition_signal": "manager_summary",
+            "pattern_categories": [
+              "scenario_template",
+              "domain_pattern",
+              "customer_intent",
+              "objection",
+              "persuasion_strategy",
+              "discovery_question",
+              "turn_stage",
+              "close_attempt",
+              "emotion_transition"
+            ],
+            "source_pattern_ids": [
+              "scenario-buying_interest-002",
+              "domain-automotive",
+              "intent-buying_interest-002",
+              "objection-too_expensive-008",
+              "persuasion-benefit_framing-011",
+              "discovery-decision_maker_question-009",
+              "stage-rapport-001",
+              "stage-clarification-002"
+            ],
+            "abstract_pattern_only": true,
+            "uses_exact_transcript_text": false
+          },
+          "state_before": {
+            "interest": 1,
+            "trust": 2,
+            "clarity": 2,
+            "friction": 4,
+            "patience": 3,
+            "emotion": "guarded",
+            "active_objection": "authority"
+          },
+          "state_after": {
+            "interest": 2,
+            "trust": 3,
+            "clarity": 4,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "guarded",
+            "active_objection": "final-review"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 2,
+            "friction": -1,
+            "patience": 0
+          },
+          "decision_snapshot": {
+            "response_mode": "fast-response",
+            "campaign_language": "en",
+            "response_language": "en",
+            "detected_emotion": "neutral",
+            "sales_difficulty": "general-product-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "background_modules": [],
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_ms": 0,
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
+            }
+          },
+          "safety_flags": {
+            "payment_collection": false,
+            "unsupported_claim": false,
+            "validation_failed": false,
+            "language_mismatch": false,
+            "forbidden_response_text": false,
+            "hard_failure": false
+          },
+          "question_count": 0,
+          "reacts_to_agent_answer": true,
+          "copied_transcript_text_used": false,
+          "contains_transcript_derived_prompt_text": false
+        },
+        {
+          "turn_index": 3,
+          "customer_context": "That answers the personal-use part. Now confirm this stays no-payment and does not sign me up.",
+          "agent_answer": "For you, the next step would only be a no-payment explanation with a specialist about reminders and follow-ups. No card details, contract, or purchase decision should happen on this call.",
+          "agent_answer_customization": {
+            "seed_id": "conditional-consumer-no-pressure",
+            "market_scope": "B2C",
+            "persona": "consumer wary of pressure and payment collection",
+            "offer_name": "RouteSignal Home",
+            "domain": "automotive",
+            "scenario_label": "sale_eligible",
+            "safe_agent_tactic": "benefit_framing",
+            "active_objection": "final-review",
+            "customization_basis": "profile + current objection + abstract CallCenterEN scenario labels"
+          },
+          "customer_response": "That is fine. I will take a no-payment explanation, but I am not buying anything on this call.",
+          "agent_answer_signals": {
+            "answers_price": false,
+            "answers_product_fit": false,
+            "answers_trust": false,
+            "offers_written_confirmation": false,
+            "respects_time": false,
+            "respects_support_boundary": false,
+            "respects_do_not_call": false,
+            "answers_provider_overlap": false,
+            "manager_summary": false,
+            "asks_multiple_questions": false,
+            "premature_close_language": false
+          },
+          "customer_response_condition": "agent confirmed non-binding no-payment next step",
+          "customer_reaction_reason": "customer accepts only after commitment boundary is clear",
+          "callcenteren_pattern_basis": {
+            "source": "PROD-014 abstract CallCenterEN scenario bank",
+            "scenario_id": "prod-014-sale_eligible-002",
+            "scenario_label": "sale_eligible",
+            "domain": "automotive",
+            "stage": "sale_ready_close",
+            "condition_signal": "non_binding_boundary",
+            "pattern_categories": [
+              "scenario_template",
+              "domain_pattern",
+              "customer_intent",
+              "objection",
+              "persuasion_strategy",
+              "discovery_question",
+              "turn_stage",
+              "close_attempt",
+              "emotion_transition"
+            ],
+            "source_pattern_ids": [
+              "scenario-buying_interest-002",
+              "domain-automotive",
+              "intent-buying_interest-002",
+              "objection-too_expensive-008",
+              "persuasion-benefit_framing-011",
+              "discovery-decision_maker_question-009",
+              "stage-rapport-001",
+              "stage-clarification-002"
+            ],
+            "abstract_pattern_only": true,
+            "uses_exact_transcript_text": false
+          },
+          "state_before": {
+            "interest": 2,
+            "trust": 3,
+            "clarity": 4,
+            "friction": 3,
+            "patience": 3,
+            "emotion": "guarded",
+            "active_objection": "final-review"
+          },
+          "state_after": {
+            "interest": 3,
+            "trust": 4,
+            "clarity": 4,
+            "friction": 2,
+            "patience": 3,
+            "emotion": "guarded",
+            "active_objection": "final-review"
+          },
+          "state_delta": {
+            "interest": 1,
+            "trust": 1,
+            "clarity": 0,
+            "friction": -1,
+            "patience": 0
+          },
+          "decision_snapshot": {
+            "response_mode": "fast-response",
+            "campaign_language": "en",
+            "response_language": "en",
+            "detected_emotion": "neutral",
+            "sales_difficulty": "general-product-question",
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "continue",
+            "call_control": "continue-call",
+            "background_modules": [],
+            "first_response_latency_budget_ms": 700,
+            "first_response_latency_ms": 0,
+            "decision_trace_alignment": {
+              "enabled": true,
+              "changed": true,
+              "reason": "direct answer spoken, so trace uses direct-answer-compatible next_action"
             }
           },
           "safety_flags": {
