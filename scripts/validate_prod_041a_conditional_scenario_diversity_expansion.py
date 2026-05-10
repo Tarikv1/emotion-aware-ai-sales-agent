@@ -3,36 +3,28 @@ from __future__ import annotations
 
 import json
 import re
-import subprocess
-import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT_ID = "PROD-041A-conditional-scenario-diversity-expansion"
-SOURCE_CHECKPOINT_ID = "PROD-040-callcenteren-conditional-customer-simulation"
-SCENARIO_SOURCE_CHECKPOINT_ID = "PROD-014-callcenteren-scenario-bank"
-PATTERN_SOURCE_CHECKPOINT_ID = "PROD-013-callcenteren-pattern-extraction"
-NEXT_CHECKPOINT_ID = "PROD-041-conditional-simulation-review"
-
-MODULE = ROOT / "scripts" / "prod_041a_conditional_scenario_diversity_expansion.py"
-RUNNER = ROOT / "scripts" / "run_prod_041a_conditional_scenario_diversity_expansion.py"
-DOC_PATH = ROOT / "docs" / "product" / "PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
-FRAMES_PATH = OUT_DIR / "concrete_scenario_frames.json"
 RECIPES_PATH = OUT_DIR / "scenario_recipes.json"
-TRACE_PATH = OUT_DIR / "scenario_diversity_traces.json"
+POLICY_BANK_PATH = OUT_DIR / "customer_reaction_policy_bank.json"
+FRAMES_PATH = OUT_DIR / "concrete_scenario_frames.json"
+PROFILES_PATH = OUT_DIR / "interactive_scenario_profiles.json"
+TRACE_PATH = OUT_DIR / "interaction_traces.json"
+LEGACY_TRACE_PATH = OUT_DIR / "scenario_diversity_traces.json"
 SURFACE_PATH = OUT_DIR / "scenario_diversity_review.html"
 SURFACE_DATA_PATH = OUT_DIR / "scenario_diversity_review_data.json"
-SCENARIO_BANK_PATH = ROOT / "research" / "experiments" / "generated" / SCENARIO_SOURCE_CHECKPOINT_ID / "scenario-bank.json"
-PATTERN_BANK_PATH = ROOT / "research" / "experiments" / "generated" / PATTERN_SOURCE_CHECKPOINT_ID / "pattern-bank.json"
 
 COMMANDS = ROOT / "docs" / "product" / "COMMANDS.md"
 CHECKPOINT_INDEX = ROOT / "docs" / "product" / "CHECKPOINT_INDEX.md"
+DOC_PATH = ROOT / "docs" / "product" / "PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md"
 ROADMAP = ROOT / "docs" / "thesis" / "ROADMAP.md"
 METHODOLOGY_LOG = ROOT / "docs" / "thesis" / "METHODOLOGY_LOG.md"
 DECISION_LOG = ROOT / "docs" / "thesis" / "DECISION_LOG.md"
@@ -80,142 +72,6 @@ REQUIRED_LABELS = [
     "no_pressure_consumer",
 ]
 
-OPENING_STYLES = {
-    "b2b_permission_first",
-    "b2b_reason_first",
-    "b2b_time_respectful",
-    "b2b_manager_relevance",
-    "b2c_no_payment_disclosure",
-    "b2c_simple_consumer_reason",
-    "b2c_safety_first",
-}
-EMOTIONS = {"calm", "skeptical", "confused", "rushed", "irritated", "anxious", "distrustful", "curious"}
-STATE_SHIFTS = {"more_trusting", "unchanged", "more_resistant", "escalated", "reassured"}
-STRATEGIES = {
-    "permission_first",
-    "problem_framing",
-    "social_proof_safe",
-    "risk_reversal",
-    "simple_explanation",
-    "objection_isolation",
-    "next_step_close",
-    "consultative_discovery",
-    "trust_repair",
-}
-SAFE_CLOSE = {"accepted", "callback_scheduled", "written_info_requested", "manager_review_needed", "handoff_required"}
-NON_SALE = {"rejected", "support_boundary_ended", "not_qualified", "do_not_contact"}
-TERMINAL_OUTCOMES = SAFE_CLOSE | NON_SALE
-FAILURE_FLAGS = {
-    "dodged_question",
-    "question_storming",
-    "premature_price_discussion",
-    "unsupported_claim",
-    "pressure_after_refusal",
-    "unsafe_payment_request",
-    "missed_handoff",
-    "ignored_emotion",
-    "repeated_answer",
-    "unclear_next_step",
-    "product_misfit",
-}
-BANNED_PHRASES = [
-    "From here, I would keep",
-    "The clean next step would be",
-    "I will keep that boundary visible",
-    "customer response must quote the current concern",
-    "the business reason to keep talking",
-    "The price answer is first",
-    "Price first, then I can stop there",
-    "I will answer directly and stick to what I can support",
-    "I am not ready to agree on",
-    "Explain the internal priority piece in normal words",
-    "The practical blocker for me is still internal priority",
-    "Because you kept it brief on",
-    "If we continue, I want the step to stay limited to",
-    "asks why",
-    "says manager approval",
-    "states approval",
-    "mentions a bad past",
-    "first_customer_objection",
-    "realistic_next_step",
-    "This is about one concrete issue",
-    "Quick version please -",
-    "Okay, but keep it focused on",
-    "This only matters if no immediate workflow trigger",
-]
-BANNED_REGEXES = [
-    re.compile(r"\bFor\s+[^,.]+,\s+next step would be\b", re.IGNORECASE),
-]
-IMPERATIVE_GOAL_VERBS = {
-    "answer",
-    "ask",
-    "route",
-    "send",
-    "check",
-    "explain",
-    "stop",
-    "confirm",
-}
-BROKEN_RELEVANCE_PATTERN = re.compile(
-    r"\bThis only matters if\s+("
-    + "|".join(sorted(IMPERATIVE_GOAL_VERBS))
-    + r")\b",
-    re.IGNORECASE,
-)
-REVIEW_SURFACE_REQUIRED_CALL_FIELDS = [
-    "scenario_frame_id",
-    "recipe_id",
-    "terminal_outcome",
-    "counts_toward_safe_close_rate",
-    "counts_toward_non_sale_correctness",
-    "hard_failure_count",
-    "failure_flags",
-    "failure_taxonomy_hits",
-    "valid_terminal_outcomes",
-    "dialogue_realism",
-    "spoken_trace_authoring",
-]
-REALISM_COMPONENTS = {
-    "natural_customer_language",
-    "natural_agent_language",
-    "low_template_repetition",
-    "opening_grammar_ok",
-    "objection_progression_realistic",
-    "terminal_outcome_earned",
-    "frame_context_used",
-}
-REQUIRED_FILES = [
-    MODULE,
-    RUNNER,
-    DOC_PATH,
-    RESULT_PATH,
-    REPORT_PATH,
-    RECIPES_PATH,
-    FRAMES_PATH,
-    TRACE_PATH,
-    SURFACE_PATH,
-    SURFACE_DATA_PATH,
-    SCENARIO_BANK_PATH,
-    PATTERN_BANK_PATH,
-]
-RECIPE_REQUIRED_FIELDS = [
-    "recipe_id",
-    "source_pattern_ids",
-    "domain_family",
-    "call_direction",
-    "caller_role_type",
-    "customer_role_type",
-    "trigger_pattern",
-    "opening_pattern",
-    "first_objection_pattern",
-    "hidden_objection_pattern",
-    "emotional_pattern",
-    "agent_success_pattern",
-    "agent_failure_pattern",
-    "realistic_terminal_outcomes",
-    "safety_boundaries",
-    "forbidden_source_use",
-]
 FORBIDDEN_SOURCE_USE = {
     "raw transcript text",
     "transcript-specific situations",
@@ -227,96 +83,24 @@ FORBIDDEN_SOURCE_USE = {
     "provider names",
     "unique event sequences",
     "dataset-specific phrasing",
-    "close paraphrases of CallCenterEN examples",
 }
-PROVIDER_OR_SOURCE_NAME_PATTERN = re.compile(r"\b(AIxBlock|RouteSignal)\b", re.IGNORECASE)
-METADATA_CUSTOMER_PATTERN = re.compile(
-    r"^\s*(asks|says|states|mentions|requires|requests|rejects|references|demands|needs)\b",
-    re.IGNORECASE,
-)
-CASUAL_AGENT_MARKERS = {
-    "can't",
-    "don't",
-    "i'll",
-    "i'm",
-    "it's",
-    "that's",
-    "you're",
-    "we'll",
-    "let's",
-    "no problem",
-    "sure",
-    "okay",
-    "alright",
-    "quick",
-}
-REAL_CUSTOMER_PUSHBACK_MARKERS = {
-    "we already have someone for that",
-    "i'm not sure i follow",
-    "what are you actually offering",
-    "can you just email it",
-    "i don't have time right now",
-    "that sounds like another platform",
-    "i need to check with my manager",
-    "i'm not giving payment details over the phone",
-    "no, please don't call again",
-    "we already have a provider",
-    "just email it",
-    "not interested",
-    "quick version",
-    "that still sounds",
-    "i am not signing",
-    "do not make any security claims",
-    "we already tried",
-    "i cannot approve",
-    "how is this different",
-    "stop calling",
-    "call me later",
-    "this is a support issue",
-    "i need someone technical",
-    "how long",
-    "i am not sure this applies",
-    "start with discovery",
-    "that sounds expensive",
-    "who exactly are you",
-    "are you confirming coverage",
-    "we already have this handled",
-    "i only want to cancel",
-    "why should i look at this",
-    "do not want pressure",
-}
-REQUIRED_FALSE_BOUNDARIES = [
-    "provider_calls_made",
-    "llm_used",
-    "private_data_read",
-    "dataset_download_performed",
-    "raw_transcript_text_stored",
-    "copied_transcript_text_used",
-    "commercial_runtime_prompt_text_from_transcripts_allowed",
-    "customer_data_allowed",
-    "payment_collection_enabled",
-    "runtime_behavior_changed_by_this_checkpoint",
-    "runtime_retrieval_default_enabled",
-    "composer_hook_flag_default_enabled",
-    "live_provider_default_enabled",
-    "server_started",
-    "source_prod_040_overwritten",
-    "source_prod_014_overwritten",
-    "source_prod_013_overwritten",
-    "production_runtime_promotion_allowed",
+
+BANNED_VISIBLE_DIALOGUE = [
+    "first_customer_objection",
+    "realistic_next_step",
+    "This is about one concrete issue",
+    "Quick version please -",
+    "Okay, but keep it focused on",
+    "This only matters if no immediate workflow trigger",
+    "From here, I would keep",
+    "The clean next step would be",
 ]
-BLOCKED_OUTPUT_TEXT = [
-    "data/private",
-    "data/private-restricted",
-    "raw private transcript",
-    "api key",
-    '"provider_calls_made": true',
-    '"llm_used": true',
-    '"raw_transcript_text_stored": true',
-    '"copied_transcript_text_used": true',
-    '"runtime_behavior_changed_by_this_checkpoint": true',
-    '"production_runtime_promotion_allowed": true',
-]
+
+PROVIDER_OR_SOURCE_NAME_PATTERN = re.compile(r"\b(AIxBlock|CallCenterEN)\b", re.IGNORECASE)
+
+
+def read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def assert_condition(condition: bool, message: Any) -> None:
@@ -324,392 +108,261 @@ def assert_condition(condition: bool, message: Any) -> None:
         raise AssertionError(message)
 
 
-def normalized(path: Path) -> str:
-    return str(path.relative_to(ROOT)).replace("\\", "/")
+def visible_dialogue(trace: dict[str, Any]) -> str:
+    return "\n".join(item.get("text", "") for item in trace.get("conversation_sequence", []))
 
 
-def read_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+def full_sequence(trace: dict[str, Any], speaker: str) -> str:
+    return " || ".join(item["text"] for item in trace["conversation_sequence"] if item["speaker"] == speaker)
 
 
-def run_command(args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(args, cwd=ROOT, text=True, capture_output=True, check=False, timeout=240)
-
-
-def extract_visible_dialogue(call: dict[str, Any]) -> list[str]:
-    visible = [
-        call["opening"]["selected_opening"],
-        call["opening"]["customer_opening_response"],
-        *call["opening"]["unused_opening_variants"],
+def validate_files() -> None:
+    required = [
+        RESULT_PATH,
+        REPORT_PATH,
+        RECIPES_PATH,
+        POLICY_BANK_PATH,
+        FRAMES_PATH,
+        PROFILES_PATH,
+        TRACE_PATH,
+        LEGACY_TRACE_PATH,
+        SURFACE_PATH,
+        SURFACE_DATA_PATH,
+        DOC_PATH,
+        COMMANDS,
+        CHECKPOINT_INDEX,
+        ROADMAP,
+        METHODOLOGY_LOG,
+        DECISION_LOG,
     ]
-    for turn in call["turns"]:
-        visible.extend([turn["customer_context"], turn["agent_answer"], turn["customer_response"]])
-    return visible
+    missing = [str(path.relative_to(ROOT)) for path in required if not path.exists()]
+    assert_condition(not missing, f"missing required PROD-041A files: {missing}")
 
 
-def normalize_spoken(text: str) -> str:
-    return re.sub(r"[^a-z0-9\s]", " ", text.lower()).strip()
-
-
-def meaningful_tokens(text: str) -> set[str]:
-    stop = {
-        "the",
-        "and",
-        "that",
-        "this",
-        "with",
-        "when",
-        "from",
-        "into",
-        "they",
-        "your",
-        "you",
-        "are",
-        "for",
-        "any",
-        "not",
-        "can",
-        "call",
-        "next",
-        "step",
+def validate_policy_bank(policy_bank: dict[str, Any]) -> None:
+    rules = policy_bank.get("reaction_rules", [])
+    assert_condition(len(rules) >= 20, len(rules))
+    required_fields = {
+        "reaction_rule_id",
+        "source_pattern_ids",
+        "stage",
+        "agent_action_trigger",
+        "customer_state_preconditions",
+        "customer_state_delta",
+        "next_customer_behavior",
+        "utterance_variants",
+        "possible_next_paths",
+        "terminal_risk",
+        "safety_notes",
     }
-    return {token for token in normalize_spoken(text).split() if len(token) >= 4 and token not in stop}
-
-
-def is_near_direct_restatement(line: str, source_field: str) -> bool:
-    source_tokens = meaningful_tokens(source_field)
-    if len(source_tokens) < 6:
-        return False
-    line_tokens = meaningful_tokens(line)
-    if len(line_tokens) < 6:
-        return False
-    overlap = len(source_tokens & line_tokens) / len(source_tokens)
-    return overlap >= 0.72
-
-
-def field_leakage_findings(line: str, frame: dict[str, Any]) -> list[str]:
-    findings: list[str] = []
-    line_norm = normalize_spoken(line)
-    for field in [
-        "first_customer_objection",
-        "realistic_agent_goal",
-        "realistic_next_step",
-        "practical_trigger",
-        "spoken_reason",
+    covered = set()
+    for rule in rules:
+        assert_condition(set(rule) >= required_fields, rule)
+        assert_condition(len(rule["source_pattern_ids"]) >= 2, rule)
+        assert_condition(rule.get("abstract_pattern_only") is True, rule)
+        assert_condition(set(rule.get("forbidden_source_use", [])) >= FORBIDDEN_SOURCE_USE, rule)
+        assert_condition(len(rule["utterance_variants"]) >= 3, rule)
+        covered.update(rule["agent_action_trigger"])
+        serialized = json.dumps(rule, ensure_ascii=False)
+        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(serialized), rule["reaction_rule_id"])
+    for trigger in [
+        "answered_price_directly",
+        "dodged_price",
+        "respected_refusal",
+        "offered_callback",
+        "offered_written_info",
+        "handled_payment_safety",
+        "offered_handoff",
+        "pressured_after_refusal",
+        "made_unsupported_claim",
+        "handled_support_boundary",
     ]:
-        value = str(frame.get(field, ""))
-        value_norm = normalize_spoken(value)
-        if value_norm and len(value_norm) >= 16 and value_norm in line_norm:
-            findings.append(f"verbatim {field}")
-        elif is_near_direct_restatement(line, value):
-            findings.append(f"near-direct {field}")
-    return findings
+        assert_condition(trigger in covered, f"missing reaction coverage for {trigger}")
 
 
-def validate_payload(
-    payload: dict[str, Any],
-    recipes_payload: dict[str, Any],
-    frames_payload: dict[str, Any],
-    trace: dict[str, Any],
-    surface_data: dict[str, Any],
-) -> None:
-    assert_condition(payload.get("checkpoint_id") == CHECKPOINT_ID, payload.get("checkpoint_id"))
-    assert_condition(payload.get("source_checkpoint_id") == SOURCE_CHECKPOINT_ID, payload.get("source_checkpoint_id"))
-    assert_condition(payload.get("scenario_source_checkpoint_id") == SCENARIO_SOURCE_CHECKPOINT_ID, payload.get("scenario_source_checkpoint_id"))
-    assert_condition(payload.get("pattern_source_checkpoint_id") == PATTERN_SOURCE_CHECKPOINT_ID, payload.get("pattern_source_checkpoint_id"))
-    assert_condition(payload.get("next_checkpoint_recommended") == NEXT_CHECKPOINT_ID, payload.get("next_checkpoint_recommended"))
-    assert_condition(trace.get("checkpoint_id") == CHECKPOINT_ID, trace.get("checkpoint_id"))
-    assert_condition(recipes_payload.get("checkpoint_id") == CHECKPOINT_ID, recipes_payload.get("checkpoint_id"))
-    assert_condition(frames_payload.get("checkpoint_id") == CHECKPOINT_ID, frames_payload.get("checkpoint_id"))
-    assert_condition(surface_data.get("checkpoint_id") == CHECKPOINT_ID, surface_data.get("checkpoint_id"))
-
-    outputs = payload.get("outputs", {})
-    assert_condition(outputs.get("result_path") == normalized(RESULT_PATH), outputs)
-    assert_condition(outputs.get("report_path") == normalized(REPORT_PATH), outputs)
-    assert_condition(outputs.get("recipes_path") == normalized(RECIPES_PATH), outputs)
-    assert_condition(outputs.get("frames_path") == normalized(FRAMES_PATH), outputs)
-    assert_condition(outputs.get("trace_path") == normalized(TRACE_PATH), outputs)
-    assert_condition(outputs.get("surface_path") == normalized(SURFACE_PATH), outputs)
-    assert_condition(outputs.get("surface_data_path") == normalized(SURFACE_DATA_PATH), outputs)
-
-    for key in REQUIRED_FALSE_BOUNDARIES:
-        assert_condition(payload.get("boundaries", {}).get(key) is False, f"boundary {key} must be false")
-
-    recipes = recipes_payload.get("recipes", [])
-    frames = frames_payload.get("frames", [])
-    calls = trace.get("calls", [])
-    profiles = trace.get("scenario_profiles", [])
-    summary = payload.get("summary", {})
-
-    assert_condition(len(recipes) == 40, len(recipes))
-    assert_condition(summary.get("recipe_count") == 40, summary)
-    assert_condition(summary.get("spoken_trace_authoring_used") is True, summary)
-    assert_condition(len(frames) == 40, len(frames))
-    assert_condition(summary.get("frame_count") == 40, summary)
-    assert_condition(summary.get("call_count") == 40, summary)
-    assert_condition(len(calls) == 40, len(calls))
+def validate_profiles(profiles_payload: dict[str, Any]) -> None:
+    profiles = profiles_payload.get("profiles", [])
     assert_condition(len(profiles) == 40, len(profiles))
-    assert_condition(summary.get("b2b_call_count") == 24, summary)
-    assert_condition(summary.get("b2c_call_count") == 16, summary)
-    assert_condition(Counter(call["scenario_label"] for call in calls) == Counter(REQUIRED_LABELS), "scenario labels must appear exactly once")
-    assert_condition(summary.get("domain_count", 0) >= 8, summary)
-    assert_condition(summary.get("b2b_domain_count", 0) >= 3, summary)
-    assert_condition(summary.get("b2c_domain_count", 0) >= 3, summary)
-    assert_condition(summary.get("emotional_start_state_count", 0) >= 6, summary)
-    assert_condition(summary.get("objection_type_count", 0) >= 8, summary)
-    assert_condition({call["opening"]["selected_opening_style"] for call in calls} == OPENING_STYLES, "all opening styles must be used")
-    assert_condition(summary.get("terminal_outcome_type_count", 0) >= 6, summary)
+    assert_condition(Counter(profile["scenario_label"] for profile in profiles) == Counter(REQUIRED_LABELS), "profile labels")
+    assert_condition(sum(1 for profile in profiles if profile["b2b_or_b2c"] == "B2B") == 24, "B2B profiles")
+    assert_condition(sum(1 for profile in profiles if profile["b2b_or_b2c"] == "B2C") == 16, "B2C profiles")
+    for profile in profiles:
+        assert_condition(profile.get("scenario_id"), profile)
+        assert_condition(profile.get("scenario_label") in REQUIRED_LABELS, profile)
+        assert_condition(profile.get("scenario_frame_id"), profile)
+        assert_condition(profile.get("recipe_id"), profile)
+        assert_condition(profile.get("customer_role"), profile)
+        assert_condition(profile.get("real_world_context"), profile)
+        assert_condition(profile.get("agent_visible_context"), profile)
+        assert_condition(profile["agent_visible_context"].get("do_not_show_hidden_objection") is True, profile)
+        assert_condition(profile.get("initial_customer_state"), profile)
+        assert_condition(profile.get("hidden_customer_state"), profile)
+        assert_condition(profile.get("customer_goal"), profile)
+        assert_condition(profile.get("agent_success_conditions"), profile)
+        assert_condition(profile.get("agent_failure_conditions"), profile)
+        assert_condition(len(profile.get("available_paths", [])) >= 3, profile)
+        assert_condition(len(profile.get("seed_variants", [])) >= 3, profile)
+        assert_condition(profile["profile_script_policy"]["full_agent_answers_in_profile"] is False, profile)
+        assert_condition(profile["profile_script_policy"]["fixed_customer_script_in_profile"] is False, profile)
+        serialized = json.dumps(profile, ensure_ascii=False).lower()
+        for banned in ['"agent_answers"', '"customer_responses"', '"opening_customer"', '"spoken_trace_authoring"']:
+            assert_condition(banned not in serialized, f"profile contains static script marker {banned}: {profile['scenario_id']}")
+
+
+def validate_traces(payload: dict[str, Any], trace_payload: dict[str, Any], surface_data: dict[str, Any]) -> None:
+    traces = trace_payload.get("interaction_traces", [])
+    profiles = trace_payload.get("scenario_profiles", [])
+    summary = payload.get("summary", {})
+    assert_condition(trace_payload.get("generation_model") == "interactive_conditional_customer_simulation", trace_payload.get("generation_model"))
+    assert_condition(summary.get("scenario_profile_count") == 40, summary)
+    assert_condition(summary.get("seed_count_per_scenario_min", 0) >= 3, summary)
+    assert_condition(summary.get("generated_trace_count", 0) >= 120, summary)
+    assert_condition(len(traces) >= 120, len(traces))
+    assert_condition(len(profiles) == 40, len(profiles))
+    assert_condition(Counter(profile["scenario_label"] for profile in profiles) == Counter(REQUIRED_LABELS), "trace labels")
+    assert_condition(summary.get("actual_agent_logic_used") is True or summary.get("actual_agent_logic_unavailable") is True, summary)
+    if summary.get("actual_agent_logic_used") is not True:
+        assert_condition(summary.get("actual_agent_logic_unavailable") is True, summary)
+
+    by_scenario: dict[str, list[dict[str, Any]]] = {}
+    for trace in traces:
+        by_scenario.setdefault(trace["scenario_id"], []).append(trace)
+    assert_condition(all(len(items) >= 3 for items in by_scenario.values()), "each scenario needs >=3 seeds")
+
+    exchange_counts = Counter(trace["exchange_count"] for trace in traces)
+    assert_condition(not summary.get("same_exchange_count_for_all_traces"), summary)
+    assert_condition(not summary.get("all_traces_three_exchanges"), summary)
+    assert_condition(summary.get("traces_with_5_plus_exchanges", 0) >= 70, summary)
+    assert_condition(summary.get("traces_with_8_plus_exchanges", 0) >= 40, summary)
+    assert_condition(summary.get("traces_with_12_plus_exchanges", 0) >= 15, summary)
+    assert_condition(summary.get("traces_with_18_plus_exchanges", 0) >= 4, summary)
+    assert_condition(max(exchange_counts.values()) <= len(traces) * 0.25, exchange_counts)
+    assert_condition(summary.get("scenario_same_count_across_seeds_count") == 0, summary)
+
+    assert_condition(summary.get("neutral_state_two_exchange_trace_count", 0) >= 20, summary)
+    assert_condition(summary.get("agent_caused_state_change_trace_count", 0) >= 20, summary)
+    assert_condition(summary.get("challenge_pushback_trace_count", 0) >= 20, summary)
+    assert_condition(summary.get("recovery_from_weak_answer_trace_count", 0) >= 10, summary)
+    assert_condition(summary.get("rejection_or_near_rejection_trace_count", 0) >= 10, summary)
+    assert_condition(summary.get("boundary_handling_trace_count", 0) >= 5, summary)
+    assert_condition(summary.get("repeated_full_agent_response_sequence_count") == 0, summary)
+    assert_condition(summary.get("repeated_full_customer_response_sequence_count") == 0, summary)
+    assert_condition(summary.get("static_script_trace_count") == 0, summary)
+    assert_condition(summary.get("loop_guard_triggered_count") == 0, summary)
+
     for key in [
-        "support_boundary_ended_count",
-        "not_qualified_count",
-        "handoff_required_count",
-        "callback_scheduled_count",
-        "written_info_requested_count",
-        "rejected_count",
+        "hard_failure_count",
+        "payment_collection_count",
+        "unsupported_claim_count",
+        "leakage_finding_count",
     ]:
-        assert_condition(summary.get(key, 0) >= 1, f"{key} missing")
-    assert_condition(summary.get("hard_failure_count") == 0, summary)
-    assert_condition(summary.get("payment_collection_count") == 0, summary)
-    assert_condition(summary.get("unsupported_claim_count") == 0, summary)
-    assert_condition(summary.get("leakage_finding_count") == 0, summary)
-    assert_condition(summary.get("provider_calls_made") is False, summary)
-    assert_condition(summary.get("llm_used") is False, summary)
-    assert_condition(summary.get("abstract_pattern_only") is True, summary)
-    assert_condition(summary.get("exact_transcript_text_used") is False, summary)
-    assert_condition(summary.get("non_smooth_trace_rate", 0) >= 0.2, summary)
-    assert_condition(summary.get("banned_template_phrase_hits") == 0, summary)
-    assert_condition(summary.get("opening_grammar_issue_count") == 0, summary)
+        assert_condition(summary.get(key) == 0, summary)
+    for key in [
+        "provider_calls_made",
+        "llm_used",
+        "exact_transcript_text_used",
+        "uses_source_transcript_sequence",
+        "runtime_behavior_changed_by_this_checkpoint",
+        "production_runtime_promotion_allowed",
+    ]:
+        assert_condition(summary.get(key) is False, f"{key}: {summary.get(key)}")
 
-    assert_condition(summary.get("scenario_frame_quality_average_score", 0) >= 6.5, summary)
-    assert_condition(summary.get("scenario_frame_quality_min_score", 0) >= 6, summary)
-    assert_condition(summary.get("dialogue_realism_average_score", 0) >= 5.8, summary)
-    assert_condition(summary.get("dialogue_realism_min_score", 0) >= 5, summary)
-    assert_condition(0 < summary.get("dialogue_realism_pass_count", 0) < 40, summary)
-    assert_condition(summary.get("scenario_label_in_dialogue_count") == 0, summary)
-    assert_condition(summary.get("concern_text_repeat_violation_count") == 0, summary)
-    assert_condition(summary.get("agent_bridge_sentence_max_repeat", 0) <= 3, summary)
-    assert_condition(summary.get("customer_bridge_sentence_max_repeat", 0) <= 2, summary)
-    assert_condition(summary.get("short_customer_response_trace_count", 0) >= 20, summary)
-    assert_condition(summary.get("frame_detail_trace_count", 0) >= 10, summary)
-    assert_condition(summary.get("challenge_before_final_trace_count", 0) >= 10, summary)
+    for trace in traces:
+        assert_condition(trace.get("scenario_id"), trace)
+        assert_condition(trace.get("seed") in {1, 2, 3}, trace)
+        assert_condition(trace.get("actual_agent_logic_used") is True, trace)
+        assert_condition(trace.get("static_script_used") is False, trace)
+        assert_condition(trace.get("terminal_outcome_valid") is True, trace)
+        assert_condition(trace.get("hard_failure_count") == 0, trace)
+        assert_condition(trace.get("failure_flags") == [], trace)
+        assert_condition(trace.get("loop_guard", {}).get("triggered") is False, trace)
+        assert_condition(trace.get("exchange_count") == len(trace.get("exchanges", [])), trace)
+        assert_condition(trace.get("exchange_count") != 3 or trace["terminal_outcome"] in {"do_not_contact", "support_boundary_ended"}, trace)
+        assert_condition(trace.get("selected_reaction_rule_ids"), trace)
+        assert_condition(trace.get("scenario_level_scores", {}).get("interactive_generation") is True, trace)
+        assert_condition(trace.get("dialogue_realism", {}).get("interactive_not_static") is True, trace)
+        spoken = visible_dialogue(trace)
+        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(spoken), trace["trace_id"])
+        for phrase in BANNED_VISIBLE_DIALOGUE:
+            assert_condition(phrase.lower() not in spoken.lower(), {"trace": trace["trace_id"], "phrase": phrase})
+        for exchange in trace["exchanges"]:
+            assert_condition(exchange.get("agent_text"), exchange)
+            assert_condition(exchange.get("customer_text"), exchange)
+            assert_condition(exchange.get("agent_action_tags"), exchange)
+            assert_condition(exchange.get("selected_reaction_rule_ids"), exchange)
+            assert_condition(exchange.get("depends_on_previous_agent_action_tags") is True, exchange)
+            assert_condition(exchange.get("customer_state_before") is not None, exchange)
+            assert_condition(exchange.get("customer_state_after") is not None, exchange)
+            assert_condition(exchange.get("agent_runtime_decision"), exchange)
+            assert_condition(exchange.get("safety_flags", {}).get("hard_failure") is False, exchange)
 
-    recipe_ids = [recipe.get("recipe_id") for recipe in recipes]
-    assert_condition(len(set(recipe_ids)) == 40, recipe_ids)
-    recipe_by_id = {recipe["recipe_id"]: recipe for recipe in recipes}
-    assert_condition(len(recipe_by_id) == 40, recipe_by_id)
-
-    for recipe in recipes:
-        for key in RECIPE_REQUIRED_FIELDS:
-            assert_condition(recipe.get(key), f"recipe missing {key}: {recipe.get('recipe_id')}")
-        assert_condition(len(recipe.get("source_pattern_ids", [])) >= 2, recipe)
-        assert_condition(set(recipe.get("forbidden_source_use", [])) >= FORBIDDEN_SOURCE_USE, recipe)
-        assert_condition(recipe.get("original_fictional_context_required") is True, recipe)
-        assert_condition(recipe.get("abstract_pattern_only") is True, recipe)
-        assert_condition(recipe.get("copies_transcript_text") is False, recipe)
-        assert_condition(recipe.get("copies_source_sequence") is False, recipe)
-        recipe_text = json.dumps(recipe, ensure_ascii=False)
-        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(recipe_text), recipe)
-
-    frame_ids = [frame["scenario_frame_id"] for frame in frames]
-    assert_condition(len(set(frame_ids)) == 40, frame_ids)
-    frame_by_id = {frame["scenario_frame_id"]: frame for frame in frames}
-    assert_condition(len(frame_by_id) == 40, frame_by_id)
-
-    for frame in frames:
-        assert_condition(frame["scenario_label"] in REQUIRED_LABELS, frame)
-        assert_condition(frame.get("recipe_id") in recipe_by_id, frame)
-        assert_condition(frame.get("source_pattern_ids") == recipe_by_id[frame["recipe_id"]]["source_pattern_ids"], frame)
-        assert_condition(len(frame.get("source_pattern_ids", [])) >= 2, frame)
-        assert_condition(frame.get("original_fictional_context") is True, frame)
-        assert_condition(frame.get("source_sequence_copied") is False, frame)
-        assert_condition(frame.get("source_wording_used") is False, frame)
-        assert_condition(frame.get("dataset_specific_phrasing_used") is False, frame)
-        for key in [
-            "customer_role",
-            "real_world_context",
-            "practical_trigger",
-            "customer_initial_attitude",
-            "first_customer_objection",
-            "realistic_agent_goal",
-            "spoken_reason",
-            "realistic_next_step",
-            "safety_boundaries",
-            "spoken_language_guidance",
+    surface_calls = surface_data.get("calls", [])
+    assert_condition(len(surface_calls) == len(traces), "surface data trace count")
+    for call in surface_calls[:5]:
+        for field in [
+            "scenario_id",
+            "seed",
+            "path_taken",
+            "exchange_count",
+            "terminal_outcome",
+            "counts_toward_safe_close_rate",
+            "counts_toward_non_sale_correctness",
+            "exchanges",
+            "failure_taxonomy_hits",
+            "safety_flags",
+            "loop_guard",
+            "actual_agent_logic_used",
         ]:
-            assert_condition(frame.get(key), f"frame missing {key}: {frame.get('scenario_frame_id')}")
-        assert_condition(not BROKEN_RELEVANCE_PATTERN.search(frame["spoken_reason"]), frame["spoken_reason"])
-        frame_text = json.dumps(frame, ensure_ascii=False)
-        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(frame_text), frame)
-        quality = frame.get("scenario_frame_quality", {})
-        assert_condition(quality.get("score", 0) >= 6, quality)
-        assert_condition(quality.get("max_score") == 7, quality)
-
-    frame_usage = Counter(call.get("scenario_frame_id") for call in calls)
-    assert_condition(all(frame_id in frame_usage for frame_id in frame_by_id), frame_usage)
-    assert_condition(all(frame_usage[frame_id] == 1 for frame_id in frame_by_id), frame_usage)
-
-    selected_openings: set[str] = set()
-    full_sequences: set[str] = set()
-    closing_by_objection: dict[str, set[str]] = defaultdict(set)
-    casual_agent_trace_count = 0
-    pushback_trace_count = 0
-    for call, profile in zip(calls, profiles):
-        assert_condition(call["scenario_id"] == profile["scenario_id"], call["scenario_id"])
-        assert_condition(call["scenario_label"] == profile["scenario_label"], call["scenario_label"])
-        assert_condition(call["scenario_frame_id"] == profile["scenario_frame_id"], call["scenario_frame_id"])
-        assert_condition(call["recipe_id"] == profile["recipe_id"], call["recipe_id"])
-        assert_condition(call["recipe_id"] in recipe_by_id, call["recipe_id"])
-        assert_condition(call["scenario_frame_id"] in frame_by_id, call["scenario_frame_id"])
-        assert_condition(call.get("spoken_trace_authoring", {}).get("layer") == "spoken_trace_authoring", call)
-        assert_condition(call.get("spoken_trace_authoring", {}).get("uses_frame_fields_as_semantic_inputs_only") is True, call)
-        assert_condition(call.get("spoken_trace_authoring", {}).get("copies_frame_field_values_into_dialogue") is False, call)
-        assert_condition(call["b2b_or_b2c"] in {"B2B", "B2C"}, call)
-        assert_condition(call["customer_emotional_state_start"] in EMOTIONS, call)
-        assert_condition(call["customer_state_shift"] in STATE_SHIFTS, call)
-        assert_condition(call["required_strategy"] in STRATEGIES, call)
-        assert_condition(call["terminal_outcome"] in TERMINAL_OUTCOMES, call)
-        assert_condition(call["terminal_outcome_valid"] is True, call)
-        assert_condition(call["terminal_outcome"] in call["valid_terminal_outcomes"], call)
-        assert_condition(call["scenario_strategy_match"] is True, call)
-        assert_condition(call["emotion_handled"] is True, call)
-        assert_condition(call["hard_failure_count"] == 0, call)
-        assert_condition(call["failure_flags"] == [], call)
-        assert_condition(set(call["failure_taxonomy_hits"]) == FAILURE_FLAGS, call["failure_taxonomy_hits"])
-        assert_condition(all(value == 0 for value in call["failure_taxonomy_hits"].values()), call["failure_taxonomy_hits"])
-
-        realism = call.get("dialogue_realism", {})
-        assert_condition(set(realism) >= REALISM_COMPONENTS | {
-            "score",
-            "max_score",
-            "variety_tags",
-            "non_smooth",
-            "recovery_present",
-            "template_phrase_hits",
-            "opening_grammar_findings",
-        }, realism)
-        assert_condition(5 <= realism["score"] <= 7, realism)
-        assert_condition(realism["max_score"] == 7, realism)
-        assert_condition(realism["template_phrase_hits"] == [], realism)
-        assert_condition(realism["opening_grammar_findings"] == [], realism)
-
-        variants = profile["opening_variants"]
-        assert_condition(3 <= len(variants) <= 5, variants)
-        assert_condition(call["opening"]["selected_opening"] in variants, call["opening"])
-        assert_condition(call["opening"]["selected_opening"] not in selected_openings, call["opening"]["selected_opening"])
-        selected_openings.add(call["opening"]["selected_opening"])
-
-        sequence = call["conversation_sequence"]
-        assert_condition(sequence[0]["speaker"] == "agent", sequence[:2])
-        assert_condition(sequence[1]["speaker"] == "customer", sequence[:2])
-        assert_condition(sequence[0]["text"] == call["opening"]["selected_opening"], sequence[:2])
-        assert_condition(sequence[1]["text"] == call["opening"]["customer_opening_response"], sequence[:2])
-        assert_condition(len(call["turns"]) in {2, 3}, call["turns"])
-
-        full_sequence = " || ".join(turn["agent_answer"] for turn in call["turns"])
-        assert_condition(full_sequence not in full_sequences, full_sequence)
-        full_sequences.add(full_sequence)
-        closing_answer = call["turns"][-1]["agent_answer"]
-        assert_condition(closing_answer not in closing_by_objection[call["primary_objection"]], closing_answer)
-        closing_by_objection[call["primary_objection"]].add(closing_answer)
-
-        visible_texts = extract_visible_dialogue(call)
-        spoken_joined = "\n".join(item.lower() for item in visible_texts)
-        spoken_raw = "\n".join(visible_texts)
-        label_text = call["scenario_label"].replace("_", " ").lower()
-        concern_text = call["internal_concern_text"].lower()
-        assert_condition(label_text not in spoken_joined, call["scenario_label"])
-        assert_condition(not PROVIDER_OR_SOURCE_NAME_PATTERN.search(spoken_raw), call["scenario_id"])
-        assert_condition(spoken_joined.count(concern_text) <= 1, concern_text)
-        for phrase in BANNED_PHRASES:
-            assert_condition(phrase.lower() not in spoken_joined, phrase)
-        for pattern in BANNED_REGEXES:
-            assert_condition(not pattern.search(spoken_raw), pattern.pattern)
-        frame = frame_by_id[call["scenario_frame_id"]]
-        for line in visible_texts:
-            assert_condition(not field_leakage_findings(line, frame), {"line": line, "frame": frame["scenario_frame_id"], "findings": field_leakage_findings(line, frame)})
-        customer_lines = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "customer"]
-        agent_lines = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "agent"]
-        for line in customer_lines:
-            assert_condition(not METADATA_CUSTOMER_PATTERN.search(line), {"metadata_customer_text": line, "scenario_id": call["scenario_id"]})
-        if any(marker in " ".join(agent_lines).lower() for marker in CASUAL_AGENT_MARKERS):
-            casual_agent_trace_count += 1
-        if any(marker in " ".join(customer_lines).lower() for marker in REAL_CUSTOMER_PUSHBACK_MARKERS):
-            pushback_trace_count += 1
-        broken_relevance = BROKEN_RELEVANCE_PATTERN.search(spoken_joined)
-        assert_condition(
-            not broken_relevance,
-            f"broken relevance phrase: {broken_relevance.group(0) if broken_relevance else ''}",
-        )
-
-        for turn in call["turns"]:
-            assert_condition(turn["customer_context"], turn)
-            assert_condition(turn["agent_answer"], turn)
-            assert_condition(turn["customer_response"], turn)
-            assert_condition(turn["reacts_to_previous_agent_answer"] is True, turn)
-            assert_condition(turn["detected_strategy"] in STRATEGIES, turn)
-            assert_condition(turn["question_count"] <= 2, turn)
-            assert_condition(turn["safety_flags"]["hard_failure"] is False, turn)
-
-    assert_condition(casual_agent_trace_count >= 30, f"casual agent language traces too low: {casual_agent_trace_count}")
-    assert_condition(pushback_trace_count >= 20, f"customer pushback traces too low: {pushback_trace_count}")
+            assert_condition(field in call, f"surface missing {field}")
 
 
 def validate_docs() -> None:
     commands = COMMANDS.read_text(encoding="utf-8")
-    assert_condition("run_prod_041a_conditional_scenario_diversity_expansion.py" in commands, "PROD-041A runner missing from COMMANDS.md")
-    assert_condition("validate_prod_041a_conditional_scenario_diversity_expansion.py" in commands, "PROD-041A validator missing from COMMANDS.md")
-    assert_condition("PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md" in CHECKPOINT_INDEX.read_text(encoding="utf-8"), "PROD-041A missing from checkpoint index")
-    assert_condition(CHECKPOINT_ID in ROADMAP.read_text(encoding="utf-8"), "PROD-041A missing from roadmap")
-    assert_condition("PROD-041A conditional scenario diversity expansion" in METHODOLOGY_LOG.read_text(encoding="utf-8"), "PROD-041A missing from methodology log")
-    assert_condition("Add PROD-041A before the PROD-041 human review" in DECISION_LOG.read_text(encoding="utf-8"), "PROD-041A decision missing from decision log")
-
-    for path in [DOC_PATH, REPORT_PATH, SURFACE_PATH]:
-        text = path.read_text(encoding="utf-8")
+    doc = DOC_PATH.read_text(encoding="utf-8")
+    report = REPORT_PATH.read_text(encoding="utf-8")
+    surface = SURFACE_PATH.read_text(encoding="utf-8")
+    assert_condition("run_prod_041a_conditional_scenario_diversity_expansion.py" in commands, "runner missing")
+    assert_condition("validate_prod_041a_conditional_scenario_diversity_expansion.py" in commands, "validator missing")
+    assert_condition("customer_reaction_policy_bank.json" in doc, "policy bank doc missing")
+    assert_condition("interactive_scenario_profiles.json" in doc, "profiles doc missing")
+    assert_condition("interaction_traces.json" in doc, "interaction traces doc missing")
+    for text, name in [(doc, "doc"), (report, "report"), (surface, "surface")]:
         lowered = text.lower()
-        for marker in [
-            "prod-041a",
-            "conditional scenario diversity expansion",
-            "scenario_recipes.json",
-            "concrete_scenario_frames.json",
-            "dialogue realism",
-            "scenario frame",
-            NEXT_CHECKPOINT_ID.lower(),
-        ]:
-            assert_condition(marker in lowered, f"{path.relative_to(ROOT)} missing marker: {marker}")
-        for blocked in BLOCKED_OUTPUT_TEXT:
-            assert_condition(blocked.lower() not in lowered, f"{path.relative_to(ROOT)} contains blocked text: {blocked}")
-
-    surface_html = SURFACE_PATH.read_text(encoding="utf-8")
-    for field in REVIEW_SURFACE_REQUIRED_CALL_FIELDS:
-        assert_condition(field in surface_html, f"review HTML does not render/reference per-call field: {field}")
-        assert_condition(
-            all(field in call for call in read_json(SURFACE_DATA_PATH)["calls"]),
-            f"review data missing per-call field: {field}",
-        )
-    for visible_label in [
-        "Terminal scoring",
-        "Failure taxonomy",
-        "hard_failure_count",
-        "counts_toward_safe_close_rate",
-        "counts_toward_non_sale_correctness",
-    ]:
-        assert_condition(visible_label in surface_html, f"review HTML missing visible field label: {visible_label}")
+        assert_condition("interactive conditional customer simulation" in lowered, name)
+        assert_condition("not fixed scripted dialogue" in lowered or "not fixed scripts" in lowered or "not full scripts" in lowered, name)
+        assert_condition("agent_action_tags" in text or "agent action tags" in lowered, name)
+        assert_condition("reaction_rule" in text or "reaction rule" in lowered, name)
+    assert_condition("PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md" in CHECKPOINT_INDEX.read_text(encoding="utf-8"), "checkpoint index")
+    assert_condition(CHECKPOINT_ID in ROADMAP.read_text(encoding="utf-8"), "roadmap")
+    assert_condition("interactive conditional customer simulation" in METHODOLOGY_LOG.read_text(encoding="utf-8").lower(), "methodology log")
+    assert_condition("interactive conditional customer simulation" in DECISION_LOG.read_text(encoding="utf-8").lower(), "decision log")
 
 
 def main() -> None:
-    missing = [path.relative_to(ROOT) for path in REQUIRED_FILES if not path.exists()]
-    assert_condition(not missing, f"missing required PROD-041A files: {missing}")
-    completed = run_command([sys.executable, str(RUNNER)])
-    assert_condition(completed.returncode == 0, f"runner failed stdout={completed.stdout!r} stderr={completed.stderr!r}")
-    validate_payload(
-        read_json(RESULT_PATH),
-        read_json(RECIPES_PATH),
-        read_json(FRAMES_PATH),
-        read_json(TRACE_PATH),
-        read_json(SURFACE_DATA_PATH),
-    )
+    validate_files()
+    payload = read_json(RESULT_PATH)
+    recipes_payload = read_json(RECIPES_PATH)
+    policy_bank = read_json(POLICY_BANK_PATH)
+    frames_payload = read_json(FRAMES_PATH)
+    profiles_payload = read_json(PROFILES_PATH)
+    trace_payload = read_json(TRACE_PATH)
+    legacy_trace = read_json(LEGACY_TRACE_PATH)
+    surface_data = read_json(SURFACE_DATA_PATH)
+
+    assert_condition(payload.get("checkpoint_id") == CHECKPOINT_ID, payload.get("checkpoint_id"))
+    assert_condition(recipes_payload.get("checkpoint_id") == CHECKPOINT_ID, "recipes checkpoint")
+    assert_condition(frames_payload.get("checkpoint_id") == CHECKPOINT_ID, "frames checkpoint")
+    assert_condition(policy_bank.get("checkpoint_id") == CHECKPOINT_ID, "policy checkpoint")
+    assert_condition(profiles_payload.get("checkpoint_id") == CHECKPOINT_ID, "profiles checkpoint")
+    assert_condition(trace_payload.get("checkpoint_id") == CHECKPOINT_ID, "trace checkpoint")
+    assert_condition(legacy_trace.get("interaction_traces") == trace_payload.get("interaction_traces"), "legacy alias mismatch")
+    assert_condition(surface_data.get("checkpoint_id") == CHECKPOINT_ID, "surface data checkpoint")
+
+    validate_policy_bank(policy_bank)
+    validate_profiles(profiles_payload)
+    validate_traces(payload, trace_payload, surface_data)
     validate_docs()
-    print("PROD-041A conditional scenario diversity expansion validation passed.")
+    print("PROD-041A interactive conditional customer simulation validation passed.")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,6 @@
   "checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
   "scenario_source_checkpoint_id": "PROD-014-callcenteren-scenario-bank",
   "pattern_source_checkpoint_id": "PROD-013-callcenteren-pattern-extraction",
-  "recipe_source_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_recipes.json",
   "frames": [
     {
       "scenario_frame_id": "callcenteren-frame-001",

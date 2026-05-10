@@ -1083,13 +1083,13 @@ Validate the PROD-040 agent-conditioned customer replies, unique customer respon
 python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
 ```
 
-Run the PROD-041A conditional scenario diversity expansion checkpoint:
+Run the PROD-041A interactive conditional customer simulation expansion checkpoint:
 
 ```powershell
 python scripts\run_prod_041a_conditional_scenario_diversity_expansion.py
 ```
 
-Validate the PROD-041A 40-scenario diversity gates, leakage-safe scenario recipe output, concrete scenario frame mining output, spoken trace authoring, recipe/frame-to-trace linkage, dialogue naturalness checks, deterministic strategy/emotion scoring, terminal outcome coverage, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
+Validate the PROD-041A 40-profile, 120-trace interactive simulator gates, customer reaction policy bank, seeded scenario profiles, agent_action_tags linkage, variable exchange counts, customer state before/after records, reaction_rule_ids, no-static-script boundary, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
 
 ```powershell
 python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py

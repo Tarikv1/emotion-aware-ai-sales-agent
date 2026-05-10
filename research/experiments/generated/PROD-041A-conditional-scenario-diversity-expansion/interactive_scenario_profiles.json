@@ -1,0 +1,4895 @@
+{
+  "checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
+  "scenario_profile_count": 40,
+  "profiles": [
+    {
+      "scenario_id": "prod-041a-01-price_sensitive",
+      "scenario_label": "price_sensitive",
+      "market_scope": "B2B",
+      "domain": "field-service software",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-001",
+      "scenario_frame_id": "callcenteren-frame-001",
+      "source_pattern_ids": [
+        "scenario-buying_interest-002",
+        "domain-auto_insurance",
+        "intent-buying_interest-002"
+      ],
+      "customer_role": "operations manager",
+      "real_world_context": "The customer runs a field-service team and tracks callbacks through a shared inbox and spreadsheets.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "field-service software",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "skeptical",
+        "trust": 2,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 3,
+        "primary_objection": "price"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want another subscription unless missed follow-ups are measurable",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "high",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses price in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "extended",
+          "target_exchange_count": 19,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-02-manager_review",
+      "scenario_label": "manager_review",
+      "market_scope": "B2B",
+      "domain": "logistics",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-002",
+      "scenario_frame_id": "callcenteren-frame-002",
+      "source_pattern_ids": [
+        "objection-contract_fear-001",
+        "persuasion-benefit_framing-001",
+        "discovery-usage_question-001"
+      ],
+      "customer_role": "operations supervisor",
+      "real_world_context": "The supervisor can flag workflow problems but cannot approve new tools alone.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "logistics",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "curious",
+        "trust": 3,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 3,
+        "primary_objection": "manager approval"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want to bring weak or vague ideas to leadership",
+        "decision_power": "influencer",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses manager approval in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "manager_review_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "manager_review_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "manager_review_needed"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "manager_review_needed"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "extended",
+          "target_exchange_count": 20,
+          "target_terminal_outcome": "manager_review_needed"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "manager_review_needed",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-03-existing_provider",
+      "scenario_label": "existing_provider",
+      "market_scope": "B2B",
+      "domain": "healthcare operations",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-003",
+      "scenario_frame_id": "callcenteren-frame-003",
+      "source_pattern_ids": [
+        "stage-rapport-001",
+        "stage-clarification-002",
+        "close-trial_close-001"
+      ],
+      "customer_role": "care coordination lead",
+      "real_world_context": "The team already uses a provider but still handles manual callback lists for overflow.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "healthcare operations",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no unsupported medical or coverage advice"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 2,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 2,
+        "primary_objection": "existing provider"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears migration work and internal disruption",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses existing provider in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "extended",
+          "target_exchange_count": 21,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no unsupported medical or coverage advice"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-04-confused_fit",
+      "scenario_label": "confused_fit",
+      "market_scope": "B2B",
+      "domain": "manufacturing",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-004",
+      "scenario_frame_id": "callcenteren-frame-004",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-001",
+        "scenario-appointment_request-003",
+        "intent-appointment_request-003"
+      ],
+      "customer_role": "plant operations coordinator",
+      "real_world_context": "The coordinator uses multiple tools and is unsure where another workflow check fits.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "manufacturing",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "confused",
+        "trust": 3,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 3,
+        "primary_objection": "fit confusion"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "worries this creates another dashboard without clear ownership gains",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses fit confusion in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "extended",
+          "target_exchange_count": 22,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-05-skeptical_proof",
+      "scenario_label": "skeptical_proof",
+      "market_scope": "B2B",
+      "domain": "financial services",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-005",
+      "scenario_frame_id": "callcenteren-frame-005",
+      "source_pattern_ids": [
+        "objection-too_expensive-002",
+        "persuasion-benefit_framing-002",
+        "discovery-timeline_question-002"
+      ],
+      "customer_role": "finance operations analyst",
+      "real_world_context": "The analyst has heard many optimization pitches and trusts only documented evidence.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "financial services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "skeptical",
+        "trust": 2,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 2,
+        "primary_objection": "proof"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects inflated claims and wants to avoid another pilot with no metrics",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses proof in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "written_info_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "skeptical_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "extended",
+          "target_exchange_count": 19,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-06-busy_now",
+      "scenario_label": "busy_now",
+      "market_scope": "B2B",
+      "domain": "SaaS operations",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-006",
+      "scenario_frame_id": "callcenteren-frame-006",
+      "source_pattern_ids": [
+        "close-trial_close-002",
+        "emotion-neutral_to_interested-002",
+        "scenario-price_request-004"
+      ],
+      "customer_role": "revops manager",
+      "real_world_context": "The manager is between meetings and only accepts short calls with clear purpose.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "SaaS operations",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "rushed",
+        "trust": 3,
+        "patience": 2,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 3,
+        "primary_objection": "time"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects a long pitch and wants to cut the call quickly",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses time in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 18,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-07-send_info",
+      "scenario_label": "send_info",
+      "market_scope": "B2B",
+      "domain": "education services",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-007",
+      "scenario_frame_id": "callcenteren-frame-007",
+      "source_pattern_ids": [
+        "intent-price_request-004",
+        "objection-too_expensive-003",
+        "persuasion-benefit_framing-004"
+      ],
+      "customer_role": "district operations admin",
+      "real_world_context": "The admin handles vendor intake by email and avoids live calls for first pass.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "education services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 2,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 2,
+        "primary_objection": "written information"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want open-ended conversations without internal context",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses written information in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "written_info_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "skeptical_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 13,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-08-contract_fear",
+      "scenario_label": "contract_fear",
+      "market_scope": "B2B",
+      "domain": "hospitality",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-008",
+      "scenario_frame_id": "callcenteren-frame-008",
+      "source_pattern_ids": [
+        "discovery-eligibility_question-003",
+        "close-trial_close-003",
+        "emotion-confused_to_clear-003"
+      ],
+      "customer_role": "hotel operations manager",
+      "real_world_context": "The manager has been locked into inflexible software contracts before.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "hospitality",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "anxious",
+        "trust": 1,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 4,
+        "primary_objection": "contract"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears hidden terms and automatic renewals",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses contract in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "written_info_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "skeptical_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 14,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-09-payment_fear",
+      "scenario_label": "payment_fear",
+      "market_scope": "B2B",
+      "domain": "automotive services",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-009",
+      "scenario_frame_id": "callcenteren-frame-009",
+      "source_pattern_ids": [
+        "scenario-callback_request-005",
+        "intent-callback_request-005",
+        "objection-needs_to_think-004"
+      ],
+      "customer_role": "service desk supervisor",
+      "real_world_context": "The supervisor received scam calls before and blocks anything that requests card data.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "automotive services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "distrustful",
+        "trust": 1,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 4,
+        "primary_objection": "payment safety"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "assumes unknown callers may ask for card details",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "high",
+        "support_boundary_risk": false,
+        "payment_safety_risk": true
+      },
+      "customer_goal": "avoid wasting time unless the call addresses payment safety in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "handoff_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "handoff_required"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 15,
+          "target_terminal_outcome": "handoff_required"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "handoff_required",
+          "written_info_requested",
+          "support_boundary_ended"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-10-security_review",
+      "scenario_label": "security_review",
+      "market_scope": "B2B",
+      "domain": "cybersecurity",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-010",
+      "scenario_frame_id": "callcenteren-frame-010",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-005",
+        "discovery-pain_point_question-004",
+        "close-callback_close-281"
+      ],
+      "customer_role": "security program manager",
+      "real_world_context": "Any workflow vendor discussion must pass security intake before technical review.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "cybersecurity",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "skeptical",
+        "trust": 3,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 3,
+        "primary_objection": "security review"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects overpromising around compliance",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses security review in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "handoff_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "handoff_required"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 16,
+          "target_terminal_outcome": "handoff_required"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "handoff_required",
+          "written_info_requested",
+          "support_boundary_ended"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-11-bad_experience",
+      "scenario_label": "bad_experience",
+      "market_scope": "B2B",
+      "domain": "retail chain",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-011",
+      "scenario_frame_id": "callcenteren-frame-011",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-005",
+        "scenario-cancellation-006",
+        "intent-cancellation-006"
+      ],
+      "customer_role": "regional operations director",
+      "real_world_context": "The director had a failed rollout and is wary of new follow-up tools.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "retail chain",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "irritated",
+        "trust": 1,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 4,
+        "primary_objection": "bad experience"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects another disrupted rollout",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses bad experience in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 17,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-12-needs_approval",
+      "scenario_label": "needs_approval",
+      "market_scope": "B2B",
+      "domain": "real estate",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-012",
+      "scenario_frame_id": "callcenteren-frame-012",
+      "source_pattern_ids": [
+        "objection-confused_about_offer-005",
+        "persuasion-pain_point_discovery-007",
+        "discovery-current_problem_question-005"
+      ],
+      "customer_role": "brokerage operations assistant",
+      "real_world_context": "The assistant can evaluate fit but approval sits with department leadership.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "real estate",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 3,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 3,
+        "primary_objection": "approval"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want to escalate half-baked proposals",
+        "decision_power": "influencer",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses approval in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "manager_review_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "manager_review_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "manager_review_needed"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "manager_review_needed"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 18,
+          "target_terminal_outcome": "manager_review_needed"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "manager_review_needed",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-13-hidden_objection",
+      "scenario_label": "hidden_objection",
+      "market_scope": "B2B",
+      "domain": "professional services",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-013",
+      "scenario_frame_id": "callcenteren-frame-013",
+      "source_pattern_ids": [
+        "close-trial_close-005",
+        "emotion-neutral_to_interested-006",
+        "safety-avoid_pressure_or_unsafe_persuasion-001"
+      ],
+      "customer_role": "operations lead",
+      "real_world_context": "The lead sounds open but is balancing multiple priorities this quarter.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "professional services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "curious",
+        "trust": 2,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 2,
+        "primary_objection": "hidden budget concern"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "priority and budget may not support new initiatives now",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses hidden budget concern in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 13,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-14-competitor_comparison",
+      "scenario_label": "competitor_comparison",
+      "market_scope": "B2B",
+      "domain": "marketing agency",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-014",
+      "scenario_frame_id": "callcenteren-frame-014",
+      "source_pattern_ids": [
+        "scenario-technical_problem-007",
+        "intent-technical_problem-007",
+        "objection-too_expensive-006"
+      ],
+      "customer_role": "agency operations manager",
+      "real_world_context": "The manager is comparing two vendors and wants neutral criteria.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "marketing agency",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "skeptical",
+        "trust": 3,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 3,
+        "primary_objection": "comparison"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects biased claims instead of useful criteria",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses comparison in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 14,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-15-not_interested",
+      "scenario_label": "not_interested",
+      "market_scope": "B2B",
+      "domain": "wholesale distribution",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-015",
+      "scenario_frame_id": "callcenteren-frame-015",
+      "source_pattern_ids": [
+        "persuasion-pain_point_discovery-008",
+        "discovery-budget_question-007",
+        "close-handoff_close-3197"
+      ],
+      "customer_role": "distribution operations manager",
+      "real_world_context": "The manager is not actively evaluating tools and wants minimal interruption.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "wholesale distribution",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 2,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 1,
+        "friction": 2,
+        "primary_objection": "not interested"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "protects team focus from non-priority outreach",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses not interested in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "rejected"
+        },
+        {
+          "seed": 2,
+          "path_bias": "rejection_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "written_info_path",
+          "target_length_class": "long",
+          "target_exchange_count": 15,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "rejected",
+          "written_info_requested",
+          "callback_scheduled"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-16-hostile_rejection",
+      "scenario_label": "hostile_rejection",
+      "market_scope": "B2B",
+      "domain": "telecom reseller",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-016",
+      "scenario_frame_id": "callcenteren-frame-016",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-007",
+        "scenario-billing_issue-008",
+        "intent-billing_issue-008"
+      ],
+      "customer_role": "partner channel manager",
+      "real_world_context": "The manager has little tolerance for cold calls after repeated spam outreach.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "telecom reseller",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "irritated",
+        "trust": 1,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 4,
+        "primary_objection": "hostile refusal"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects manipulation and wants immediate shutdown",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses hostile refusal in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path",
+        "do_not_contact_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "do_not_contact_path",
+          "target_length_class": "early_exit",
+          "target_exchange_count": 3,
+          "target_terminal_outcome": "do_not_contact"
+        },
+        {
+          "seed": 2,
+          "path_bias": "rejection_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "do_not_contact"
+        },
+        {
+          "seed": 3,
+          "path_bias": "do_not_contact_path",
+          "target_length_class": "long",
+          "target_exchange_count": 16,
+          "target_terminal_outcome": "do_not_contact"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "do_not_contact"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-17-callback_request",
+      "scenario_label": "callback_request",
+      "market_scope": "B2B",
+      "domain": "property management",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-017",
+      "scenario_frame_id": "callcenteren-frame-017",
+      "source_pattern_ids": [
+        "objection-too_expensive-007",
+        "persuasion-benefit_framing-010",
+        "discovery-current_provider_question-008"
+      ],
+      "customer_role": "property operations coordinator",
+      "real_world_context": "The coordinator handles urgent onsite issues and cannot talk immediately.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "property management",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "rushed",
+        "trust": 2,
+        "patience": 2,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 2,
+        "primary_objection": "callback"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects the call to become longer than promised",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses callback in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 17,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-18-support_boundary",
+      "scenario_label": "support_boundary",
+      "market_scope": "B2B",
+      "domain": "B2B software",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-018",
+      "scenario_frame_id": "callcenteren-frame-018",
+      "source_pattern_ids": [
+        "close-handoff_close-3198",
+        "emotion-neutral_to_interested-009",
+        "domain-automotive"
+      ],
+      "customer_role": "customer success manager",
+      "real_world_context": "The customer is calling about a live support issue, not a new purchase.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "B2B software",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "support/cancellation boundary must end sales path"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "irritated",
+        "trust": 1,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 4,
+        "primary_objection": "support issue"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears sales will delay support resolution",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": true,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses support issue in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path",
+        "support_boundary_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "support_boundary_path",
+          "target_length_class": "early_exit",
+          "target_exchange_count": 3,
+          "target_terminal_outcome": "support_boundary_ended"
+        },
+        {
+          "seed": 2,
+          "path_bias": "handoff_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "support_boundary_ended"
+        },
+        {
+          "seed": 3,
+          "path_bias": "support_boundary_path",
+          "target_length_class": "long",
+          "target_exchange_count": 18,
+          "target_terminal_outcome": "support_boundary_ended"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "support_boundary_ended",
+          "handoff_required",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "support/cancellation boundary must end sales path"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-19-technical_integration",
+      "scenario_label": "technical_integration",
+      "market_scope": "B2B",
+      "domain": "manufacturing",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-019",
+      "scenario_frame_id": "callcenteren-frame-019",
+      "source_pattern_ids": [
+        "objection-too_expensive-008",
+        "persuasion-benefit_framing-011",
+        "discovery-decision_maker_question-009"
+      ],
+      "customer_role": "integration architect",
+      "real_world_context": "The architect needs technical specifics before any discussion can continue.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "manufacturing",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "curious",
+        "trust": 2,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 2,
+        "primary_objection": "integration"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects hand-wavy answers from non-technical callers",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses integration in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "handoff_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "handoff_required"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 13,
+          "target_terminal_outcome": "handoff_required"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "handoff_required",
+          "written_info_requested",
+          "support_boundary_ended"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-20-setup_timeline",
+      "scenario_label": "setup_timeline",
+      "market_scope": "B2B",
+      "domain": "healthcare operations",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-020",
+      "scenario_frame_id": "callcenteren-frame-020",
+      "source_pattern_ids": [
+        "close-trial_close-009",
+        "emotion-neutral_to_annoyed-010",
+        "objection-too_expensive-009"
+      ],
+      "customer_role": "clinic operations manager",
+      "real_world_context": "The manager needs predictable setup timing around staffing constraints.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "healthcare operations",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no unsupported medical or coverage advice"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "anxious",
+        "trust": 1,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 4,
+        "primary_objection": "timeline"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "worries about operational disruption",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses timeline in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 14,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no unsupported medical or coverage advice"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-21-multi_location_routing",
+      "scenario_label": "multi_location_routing",
+      "market_scope": "B2B",
+      "domain": "retail chain",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-021",
+      "scenario_frame_id": "callcenteren-frame-021",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-013",
+        "close-trial_close-010",
+        "emotion-neutral_to_annoyed-011"
+      ],
+      "customer_role": "multi-site operations director",
+      "real_world_context": "The director manages multiple stores with uneven callback ownership standards.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "retail chain",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 2,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 2,
+        "primary_objection": "multi-location routing"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears centralized workflows may not fit local teams",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses multi-location routing in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "accepted"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 15,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "accepted",
+          "callback_scheduled",
+          "written_info_requested"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-22-low_fit",
+      "scenario_label": "low_fit",
+      "market_scope": "B2B",
+      "domain": "construction",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-022",
+      "scenario_frame_id": "callcenteren-frame-022",
+      "source_pattern_ids": [
+        "objection-needs_to_think-010",
+        "persuasion-benefit_framing-014",
+        "close-trial_close-011"
+      ],
+      "customer_role": "construction office manager",
+      "real_world_context": "The team may not have the callback volume that justifies additional tooling.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "construction",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "confused",
+        "trust": 3,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 3,
+        "primary_objection": "low fit"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want forced qualification",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses low fit in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path",
+        "low_fit_path",
+        "not_qualified_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "low_fit_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "not_qualified"
+        },
+        {
+          "seed": 2,
+          "path_bias": "not_qualified_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "not_qualified"
+        },
+        {
+          "seed": 3,
+          "path_bias": "rejection_path",
+          "target_length_class": "long",
+          "target_exchange_count": 16,
+          "target_terminal_outcome": "not_qualified"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "not_qualified",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-23-sale_ready",
+      "scenario_label": "sale_ready",
+      "market_scope": "B2B",
+      "domain": "field-service software",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-023",
+      "scenario_frame_id": "callcenteren-frame-023",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-013",
+        "objection-no_time-011",
+        "persuasion-urgency-016"
+      ],
+      "customer_role": "service operations manager",
+      "real_world_context": "The customer already sees callback ownership gaps and is open to next steps.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "field-service software",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "curious",
+        "trust": 2,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 2,
+        "primary_objection": "ready to proceed"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want hidden commitments during the first call",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses ready to proceed in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "accepted"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 17,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "accepted",
+          "callback_scheduled",
+          "written_info_requested"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-24-discovery_needed",
+      "scenario_label": "discovery_needed",
+      "market_scope": "B2B",
+      "domain": "SaaS operations",
+      "b2b_or_b2c": "B2B",
+      "recipe_id": "callcenteren-recipe-024",
+      "scenario_frame_id": "callcenteren-frame-024",
+      "source_pattern_ids": [
+        "emotion-neutral_to_annoyed-014",
+        "objection-hidden_objection-012",
+        "persuasion-benefit_framing-017"
+      ],
+      "customer_role": "operations analyst",
+      "real_world_context": "The analyst needs problem discovery before evaluating any solution fit.",
+      "agent_visible_context": {
+        "offer_name": "RouteSignal",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "SaaS operations",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 3,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 3,
+        "primary_objection": "needs discovery"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "wants to avoid premature solution framing",
+        "decision_power": "can recommend but not approve",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses needs discovery in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 18,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-25-insurance_price_fear",
+      "scenario_label": "insurance_price_fear",
+      "market_scope": "B2C",
+      "domain": "insurance service",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-025",
+      "scenario_frame_id": "callcenteren-frame-025",
+      "source_pattern_ids": [
+        "close-trial_close-013",
+        "emotion-angry_to_de_escalated-015",
+        "objection-payment_fear-013"
+      ],
+      "customer_role": "household policy holder",
+      "real_world_context": "The customer is sensitive to insurance costs and skeptical of phone offers.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "insurance service",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call",
+          "no unsupported medical or coverage advice"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "anxious",
+        "trust": 1,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 4,
+        "primary_objection": "insurance price"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears hidden charges and unverified coverage promises",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "high",
+        "support_boundary_risk": false,
+        "payment_safety_risk": true
+      },
+      "customer_goal": "avoid wasting time unless the call addresses insurance price in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 13,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-26-spouse_input",
+      "scenario_label": "spouse_input",
+      "market_scope": "B2C",
+      "domain": "home services",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-026",
+      "scenario_frame_id": "callcenteren-frame-026",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-019",
+        "discovery-priority_question-006",
+        "close-handoff_close-2521"
+      ],
+      "customer_role": "home owner",
+      "real_world_context": "The buyer shares household decisions and avoids deciding alone on first contact.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "home services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 3,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 3,
+        "primary_objection": "spouse input"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want sales pressure before discussing at home",
+        "decision_power": "shared household decision",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses spouse input in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 14,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-27-scam_card_fear",
+      "scenario_label": "scam_card_fear",
+      "market_scope": "B2C",
+      "domain": "consumer telecom",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-027",
+      "scenario_frame_id": "callcenteren-frame-027",
+      "source_pattern_ids": [
+        "emotion-angry_to_de_escalated-017",
+        "objection-payment_fear-014",
+        "persuasion-trial_close-020"
+      ],
+      "customer_role": "mobile plan customer",
+      "real_world_context": "The customer has seen scam calls and refuses card discussions on inbound calls.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "consumer telecom",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "distrustful",
+        "trust": 1,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 4,
+        "primary_objection": "scam or card fear"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "assumes unknown callers are unsafe",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": true
+      },
+      "customer_goal": "avoid wasting time unless the call addresses scam or card fear in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 15,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-28-consumer_not_interested",
+      "scenario_label": "consumer_not_interested",
+      "market_scope": "B2C",
+      "domain": "retail membership",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-028",
+      "scenario_frame_id": "callcenteren-frame-028",
+      "source_pattern_ids": [
+        "close-handoff_close-3079",
+        "emotion-neutral_to_interested-018",
+        "domain-general_customer_service"
+      ],
+      "customer_role": "membership customer",
+      "real_world_context": "The customer is not shopping and wants the call ended quickly.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "retail membership",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 3,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 1,
+        "friction": 3,
+        "primary_objection": "not interested"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "protects attention and avoids unsolicited offers",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses not interested in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "rejected"
+        },
+        {
+          "seed": 2,
+          "path_bias": "rejection_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "written_info_path",
+          "target_length_class": "long",
+          "target_exchange_count": 16,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "rejected",
+          "written_info_requested",
+          "callback_scheduled"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-29-consumer_callback",
+      "scenario_label": "consumer_callback",
+      "market_scope": "B2C",
+      "domain": "automotive service",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-029",
+      "scenario_frame_id": "callcenteren-frame-029",
+      "source_pattern_ids": [
+        "objection-too_expensive-015",
+        "persuasion-benefit_framing-022",
+        "close-trial_close-018"
+      ],
+      "customer_role": "vehicle service customer",
+      "real_world_context": "The customer can only discuss follow-up plans outside work hours.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "automotive service",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "rushed",
+        "trust": 2,
+        "patience": 2,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 2,
+        "primary_objection": "callback"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects continued pressure if they stay on the line",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses callback in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "callback_scheduled"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 17,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "callback_scheduled",
+          "written_info_requested",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-30-coverage_confusion",
+      "scenario_label": "coverage_confusion",
+      "market_scope": "B2C",
+      "domain": "insurance service",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-030",
+      "scenario_frame_id": "callcenteren-frame-030",
+      "source_pattern_ids": [
+        "emotion-neutral_to_interested-019",
+        "objection-too_expensive-016",
+        "persuasion-benefit_framing-023"
+      ],
+      "customer_role": "policy holder",
+      "real_world_context": "The customer is confused about what support can be discussed without formal coverage review.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "insurance service",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call",
+          "no unsupported medical or coverage advice"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "confused",
+        "trust": 3,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 3,
+        "primary_objection": "coverage confusion"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears being misled by unqualified claims",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses coverage confusion in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "handoff_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "handoff_required"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 18,
+          "target_terminal_outcome": "handoff_required"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "handoff_required",
+          "written_info_requested",
+          "support_boundary_ended"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-31-already_covered",
+      "scenario_label": "already_covered",
+      "market_scope": "B2C",
+      "domain": "consumer telecom",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-031",
+      "scenario_frame_id": "callcenteren-frame-031",
+      "source_pattern_ids": [
+        "close-trial_close-020",
+        "emotion-confused_to_clear-021",
+        "objection-too_expensive-017"
+      ],
+      "customer_role": "telecom customer",
+      "real_world_context": "The customer says they already have coverage and does not need another service.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "consumer telecom",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 2,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 2,
+        "primary_objection": "already covered"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want service overlap or confusion",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses already covered in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "rejected"
+        },
+        {
+          "seed": 2,
+          "path_bias": "rejection_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "written_info_path",
+          "target_length_class": "long",
+          "target_exchange_count": 13,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "rejected",
+          "written_info_requested",
+          "callback_scheduled"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-32-consumer_bad_experience",
+      "scenario_label": "consumer_bad_experience",
+      "market_scope": "B2C",
+      "domain": "home services",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-032",
+      "scenario_frame_id": "callcenteren-frame-032",
+      "source_pattern_ids": [
+        "persuasion-pain_point_discovery-025",
+        "close-trial_close-021",
+        "emotion-confused_to_clear-022"
+      ],
+      "customer_role": "home service customer",
+      "real_world_context": "The customer had a poor service experience and distrusts follow-up promises.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "home services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "irritated",
+        "trust": 1,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 4,
+        "primary_objection": "bad experience"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects the same failure pattern",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses bad experience in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 14,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-33-written_info",
+      "scenario_label": "written_info",
+      "market_scope": "B2C",
+      "domain": "consumer wellness",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-033",
+      "scenario_frame_id": "callcenteren-frame-033",
+      "source_pattern_ids": [
+        "objection-too_expensive-018",
+        "persuasion-benefit_framing-026",
+        "emotion-confused_to_clear-023"
+      ],
+      "customer_role": "wellness subscriber",
+      "real_world_context": "The subscriber reviews options by reading first and avoids verbal commitments.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "consumer wellness",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "skeptical",
+        "trust": 2,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 2,
+        "primary_objection": "written information"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not trust spoken summaries alone",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses written information in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "written_info_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 2,
+          "path_bias": "skeptical_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 15,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "written_info_requested",
+          "callback_scheduled",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-34-consumer_hostile",
+      "scenario_label": "consumer_hostile",
+      "market_scope": "B2C",
+      "domain": "retail membership",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-034",
+      "scenario_frame_id": "callcenteren-frame-034",
+      "source_pattern_ids": [
+        "objection-needs_spouse_or_manager-019",
+        "persuasion-benefit_framing-028",
+        "close-trial_close-023"
+      ],
+      "customer_role": "membership account holder",
+      "real_world_context": "The customer is upset by unsolicited calls and reacts sharply.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "retail membership",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "irritated",
+        "trust": 1,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 4,
+        "primary_objection": "hostile refusal"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "assumes bad intent from outreach calls",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses hostile refusal in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path",
+        "do_not_contact_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "do_not_contact_path",
+          "target_length_class": "early_exit",
+          "target_exchange_count": 3,
+          "target_terminal_outcome": "do_not_contact"
+        },
+        {
+          "seed": 2,
+          "path_bias": "rejection_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "do_not_contact"
+        },
+        {
+          "seed": 3,
+          "path_bias": "do_not_contact_path",
+          "target_length_class": "long",
+          "target_exchange_count": 16,
+          "target_terminal_outcome": "do_not_contact"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "do_not_contact"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-35-cancellation_boundary",
+      "scenario_label": "cancellation_boundary",
+      "market_scope": "B2C",
+      "domain": "subscription service",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-035",
+      "scenario_frame_id": "callcenteren-frame-035",
+      "source_pattern_ids": [
+        "emotion-neutral_to_annoyed-025",
+        "objection-too_expensive-020",
+        "persuasion-benefit_framing-029"
+      ],
+      "customer_role": "subscription customer",
+      "real_world_context": "The customer called to cancel and does not want the call redirected into sales.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "subscription service",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call",
+          "support/cancellation boundary must end sales path"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "irritated",
+        "trust": 1,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 4,
+        "primary_objection": "cancellation"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects retention pressure instead of support resolution",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": true,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses cancellation in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path",
+        "support_boundary_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "support_boundary_path",
+          "target_length_class": "early_exit",
+          "target_exchange_count": 4,
+          "target_terminal_outcome": "support_boundary_ended"
+        },
+        {
+          "seed": 2,
+          "path_bias": "handoff_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "support_boundary_ended"
+        },
+        {
+          "seed": 3,
+          "path_bias": "support_boundary_path",
+          "target_length_class": "long",
+          "target_exchange_count": 17,
+          "target_terminal_outcome": "support_boundary_ended"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "support_boundary_ended",
+          "handoff_required",
+          "rejected"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "support/cancellation boundary must end sales path"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-36-appointment_interest",
+      "scenario_label": "appointment_interest",
+      "market_scope": "B2C",
+      "domain": "healthcare scheduling",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-036",
+      "scenario_frame_id": "callcenteren-frame-036",
+      "source_pattern_ids": [
+        "close-handoff_close-3603",
+        "emotion-angry_to_de_escalated-026",
+        "objection-payment_fear-021"
+      ],
+      "customer_role": "clinic patient",
+      "real_world_context": "The patient is open to appointment reminders but wants clear boundaries.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "healthcare scheduling",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call",
+          "no unsupported medical or coverage advice"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "curious",
+        "trust": 3,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 3,
+        "primary_objection": "appointment"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want hidden payment or treatment claims",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses appointment in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 8,
+          "target_terminal_outcome": "accepted"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 18,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "accepted",
+          "callback_scheduled",
+          "written_info_requested"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-37-sensitive_healthcare",
+      "scenario_label": "sensitive_healthcare",
+      "market_scope": "B2C",
+      "domain": "healthcare scheduling",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-037",
+      "scenario_frame_id": "callcenteren-frame-037",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-031",
+        "close-handoff_close-3604",
+        "emotion-neutral_to_interested-027"
+      ],
+      "customer_role": "caregiver",
+      "real_world_context": "The caller is discussing a sensitive healthcare scheduling situation.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "healthcare scheduling",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call",
+          "no unsupported medical or coverage advice"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "anxious",
+        "trust": 1,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 4,
+        "primary_objection": "healthcare sensitivity"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "fears unsafe guidance from non-clinical staff",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses healthcare sensitivity in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path",
+        "handoff_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "handoff_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 9,
+          "target_terminal_outcome": "handoff_required"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 13,
+          "target_terminal_outcome": "handoff_required"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "handoff_required",
+          "written_info_requested",
+          "support_boundary_ended"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-38-home_service_comparison",
+      "scenario_label": "home_service_comparison",
+      "market_scope": "B2C",
+      "domain": "home services",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-038",
+      "scenario_frame_id": "callcenteren-frame-038",
+      "source_pattern_ids": [
+        "domain-healthcare_insurance",
+        "objection-payment_fear-022",
+        "persuasion-benefit_framing-032"
+      ],
+      "customer_role": "home owner",
+      "real_world_context": "The customer is comparing service providers and wants practical differences.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "home services",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "skeptical",
+        "trust": 3,
+        "patience": 4,
+        "clarity": 2,
+        "interest": 3,
+        "friction": 3,
+        "primary_objection": "comparison"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects exaggerated claims",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses comparison in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 10,
+          "target_terminal_outcome": "rejected"
+        },
+        {
+          "seed": 2,
+          "path_bias": "rejection_path",
+          "target_length_class": "short",
+          "target_exchange_count": 6,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "written_info_path",
+          "target_length_class": "long",
+          "target_exchange_count": 14,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "rejected",
+          "written_info_requested",
+          "callback_scheduled"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-39-reminder_plan",
+      "scenario_label": "reminder_plan",
+      "market_scope": "B2C",
+      "domain": "automotive service",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-039",
+      "scenario_frame_id": "callcenteren-frame-039",
+      "source_pattern_ids": [
+        "close-trial_close-027",
+        "emotion-neutral_to_interested-029",
+        "objection-payment_fear-023"
+      ],
+      "customer_role": "vehicle owner",
+      "real_world_context": "The customer misses maintenance follow-ups when reminders are inconsistent.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "automotive service",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "calm",
+        "trust": 2,
+        "patience": 5,
+        "clarity": 2,
+        "interest": 4,
+        "friction": 2,
+        "primary_objection": "reminder plan"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "does not want a complex system for a simple need",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses reminder plan in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 11,
+          "target_terminal_outcome": "accepted"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 7,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 15,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "accepted",
+          "callback_scheduled",
+          "written_info_requested"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    },
+    {
+      "scenario_id": "prod-041a-40-no_pressure_consumer",
+      "scenario_label": "no_pressure_consumer",
+      "market_scope": "B2C",
+      "domain": "consumer wellness",
+      "b2b_or_b2c": "B2C",
+      "recipe_id": "callcenteren-recipe-040",
+      "scenario_frame_id": "callcenteren-frame-040",
+      "source_pattern_ids": [
+        "persuasion-benefit_framing-034",
+        "close-trial_close-028",
+        "emotion-neutral_to_interested-030"
+      ],
+      "customer_role": "wellness customer",
+      "real_world_context": "The customer will continue only if the call remains low-pressure and reversible.",
+      "agent_visible_context": {
+        "offer_name": "ClearFollow",
+        "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+        "market": "consumer wellness",
+        "do_not_show_hidden_objection": true,
+        "safety_boundaries": [
+          "no payment collection",
+          "no guaranteed ROI claim",
+          "no pressure after refusal",
+          "no card details on call"
+        ]
+      },
+      "initial_customer_state": {
+        "emotion": "distrustful",
+        "trust": 1,
+        "patience": 3,
+        "clarity": 2,
+        "interest": 2,
+        "friction": 4,
+        "primary_objection": "pressure concern"
+      },
+      "hidden_customer_state": {
+        "hidden_objection": "expects manipulative close tactics",
+        "decision_power": "can decide personally",
+        "budget_sensitivity": "medium",
+        "support_boundary_risk": false,
+        "payment_safety_risk": false
+      },
+      "customer_goal": "avoid wasting time unless the call addresses pressure concern in a concrete, low-pressure way",
+      "agent_success_conditions": [
+        "answers the active objection directly",
+        "does not pressure after refusal",
+        "uses only approved offer context",
+        "offers written info, callback, review, or handoff as optional next step"
+      ],
+      "agent_failure_conditions": [
+        "dodges the active objection",
+        "asks too many questions before answering",
+        "makes unsupported claims",
+        "pushes after refusal",
+        "asks for payment"
+      ],
+      "available_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path",
+        "rejection_path"
+      ],
+      "seed_variants": [
+        {
+          "seed": 1,
+          "path_bias": "skeptical_path",
+          "target_length_class": "medium",
+          "target_exchange_count": 12,
+          "target_terminal_outcome": "accepted"
+        },
+        {
+          "seed": 2,
+          "path_bias": "written_info_path",
+          "target_length_class": "short",
+          "target_exchange_count": 5,
+          "target_terminal_outcome": "written_info_requested"
+        },
+        {
+          "seed": 3,
+          "path_bias": "callback_path",
+          "target_length_class": "long",
+          "target_exchange_count": 16,
+          "target_terminal_outcome": "callback_scheduled"
+        }
+      ],
+      "turn_length_policy": {
+        "min_exchanges": 5,
+        "target_exchanges": 8,
+        "max_exchanges": 28,
+        "can_end_early_for": [
+          "do_not_contact",
+          "hard_refusal",
+          "support_boundary",
+          "unsafe_payment_request",
+          "clear rejection with no permission to continue"
+        ]
+      },
+      "terminal_policy": {
+        "valid_outcomes": [
+          "accepted",
+          "callback_scheduled",
+          "written_info_requested"
+        ],
+        "terminal_conditions": [
+          "customer accepts valid next step",
+          "customer clearly rejects",
+          "agent triggers hard failure",
+          "conversation loops without progress"
+        ]
+      },
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "profile_script_policy": {
+        "full_agent_answers_in_profile": false,
+        "fixed_customer_script_in_profile": false,
+        "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags"
+      }
+    }
+  ]
+}

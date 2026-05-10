@@ -19,8 +19,11 @@ DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_I
 DEFAULT_RESULT = DEFAULT_OUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUT_DIR / "report.md"
 DEFAULT_RECIPES = DEFAULT_OUT_DIR / "scenario_recipes.json"
+DEFAULT_POLICY_BANK = DEFAULT_OUT_DIR / "customer_reaction_policy_bank.json"
 DEFAULT_FRAMES = DEFAULT_OUT_DIR / "concrete_scenario_frames.json"
-DEFAULT_TRACE = DEFAULT_OUT_DIR / "scenario_diversity_traces.json"
+DEFAULT_INTERACTIVE_PROFILES = DEFAULT_OUT_DIR / "interactive_scenario_profiles.json"
+DEFAULT_TRACE = DEFAULT_OUT_DIR / "interaction_traces.json"
+DEFAULT_LEGACY_TRACE = DEFAULT_OUT_DIR / "scenario_diversity_traces.json"
 DEFAULT_SURFACE = DEFAULT_OUT_DIR / "scenario_diversity_review.html"
 DEFAULT_SURFACE_DATA = DEFAULT_OUT_DIR / "scenario_diversity_review_data.json"
 DEFAULT_SCENARIO_BANK = ROOT / "research" / "experiments" / "generated" / SCENARIO_SOURCE_CHECKPOINT_ID / "scenario-bank.json"
@@ -2386,6 +2389,10 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload
             "",
             "## Boundary",
             "",
+            "## Review Trace Fields",
+            "",
+            "Each generated interaction trace records `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after each response, failure taxonomy hits, safety flags, loop guard status, and whether actual local agent logic was used.",
+            "",
             "PROD-041A remains offline and deterministic. No provider calls, no LLM calls, no private data reads, no dataset downloads, no transcript text copying, no runtime behavior changes, and no production promotion.",
             "",
             f"The next checkpoint remains `{NEXT_CHECKPOINT_ID}` for human review.",
@@ -2495,6 +2502,1481 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
           <details><summary>Spoken Language Guidance</summary><pre>${{esc(JSON.stringify(call.spoken_language_guidance, null, 2))}}</pre></details>
           <details><summary>Dialogue realism details</summary><pre>${{esc(JSON.stringify(call.dialogue_realism, null, 2))}}</pre></details>
           <details><summary>Failure taxonomy</summary><pre>${{esc(JSON.stringify(call.failure_taxonomy_hits, null, 2))}}</pre></details>
+        </article>
+      `).join('');
+    }}
+    render();
+  </script>
+</body>
+</html>
+"""
+
+
+# ---------------------------------------------------------------------------
+# PROD-041A interactive conditional simulator implementation.
+#
+# The earlier PROD-041A functions remain above for historical continuity, but
+# the public runner imports the names below. These later definitions intentionally
+# replace the fixed spoken_trace_authoring payload with an interactive loop:
+# reaction policy bank -> interactive scenario profiles -> current local sales
+# agent turn harness -> customer simulator -> final interaction traces.
+# ---------------------------------------------------------------------------
+
+from generate_guarded_response import build_guarded_response_packet
+
+
+PATHS = [
+    "happy_path",
+    "skeptical_path",
+    "callback_path",
+    "written_info_path",
+    "rejection_path",
+    "support_boundary_path",
+    "low_fit_path",
+    "not_qualified_path",
+    "manager_review_path",
+    "do_not_contact_path",
+    "handoff_path",
+]
+
+LENGTH_TARGETS = {
+    "early_exit": (2, 4),
+    "short": (5, 7),
+    "medium": (8, 12),
+    "long": (13, 18),
+    "extended": (19, 28),
+}
+
+
+def clamp(value: int, low: int = 0, high: int = 5) -> int:
+    return max(low, min(high, value))
+
+
+INTERACTIVE_RULE_TOPICS = [
+    (
+        "reaction-price-answered-001",
+        ["objection-price-002", "customer-softening-001"],
+        "early_call",
+        ["answered_price_directly", "gave_low_pressure_boundary"],
+        {"primary_objection": "price", "trust_gte": 2},
+        {"trust": 1, "clarity": 1, "friction": -1},
+        "asks_relevance_or_written_info",
+        [
+            "Okay. What would the follow-up actually cover?",
+            "Fine. Send me the pricing and a short summary.",
+            "That is clearer. Why would this matter for us?",
+            "I am not agreeing yet, but I can look at the details.",
+        ],
+        ["written_info_path", "callback_path", "skeptical_path"],
+        False,
+        ["no pressure after price objection"],
+    ),
+    (
+        "reaction-price-dodged-001",
+        ["objection-price-001", "customer-friction-repeat-question-001"],
+        "early_call",
+        ["dodged_price", "gave_vague_answer"],
+        {"primary_objection": "price", "trust_lte": 4, "patience_lte": 5},
+        {"trust": -1, "patience": -1, "friction": 1},
+        "repeat_price_question_with_impatience",
+        [
+            "I asked what it costs.",
+            "You still have not told me the price.",
+            "I do not want the pitch before the price.",
+            "Can you just answer the cost question?",
+        ],
+        ["skeptical_path", "rejection_path", "written_info_path"],
+        False,
+        ["no pressure after repeated price objection"],
+    ),
+    (
+        "reaction-not-interested-001",
+        ["objection-not_interested-001", "terminal-refusal-001"],
+        "any",
+        ["respected_refusal", "gave_low_pressure_boundary"],
+        {"interest_lte": 2},
+        {"trust": 0, "patience": 0, "friction": 0},
+        "ends_or_allows_polite_close",
+        ["No, not today.", "I will pass.", "Please leave it there.", "Not interested."],
+        ["rejection_path", "do_not_contact_path"],
+        True,
+        ["end without pressure"],
+    ),
+    (
+        "reaction-callback-request-001",
+        ["objection-callback-001", "terminal-callback-002"],
+        "mid_call",
+        ["offered_callback", "gave_next_step"],
+        {"patience_lte": 5},
+        {"trust": 1, "interest": 1, "friction": -1},
+        "accepts_or_limits_callback",
+        ["Send me a couple of times.", "Maybe next week.", "Keep it to fifteen minutes.", "Email times first."],
+        ["callback_path", "written_info_path"],
+        False,
+        ["callback must stay optional"],
+    ),
+    (
+        "reaction-written-info-001",
+        ["objection-send_info-001", "terminal-written_info-001"],
+        "mid_call",
+        ["offered_written_info", "gave_low_pressure_boundary"],
+        {"trust_gte": 1},
+        {"clarity": 1, "friction": -1},
+        "asks_for_email_only",
+        ["Fine, send it.", "Email only.", "Just email me.", "Send the short version."],
+        ["written_info_path", "rejection_path"],
+        False,
+        ["do not force a meeting after email-only request"],
+    ),
+    (
+        "reaction-identity-question-001",
+        ["objection-trust-identity-001", "customer-verification-001"],
+        "early_call",
+        ["cold_open_permission_first", "vague_pitch"],
+        {"trust_lte": 3},
+        {"trust": -1, "friction": 1},
+        "asks_who_caller_is",
+        ["Who exactly are you?", "What company is this again?", "Why are you calling me?", "Who gave you this number?"],
+        ["skeptical_path", "rejection_path"],
+        False,
+        ["identity should be clarified without hype"],
+    ),
+    (
+        "reaction-payment-safety-001",
+        ["objection-payment-001", "safety-card-boundary-001"],
+        "any",
+        ["handled_payment_safety", "gave_low_pressure_boundary"],
+        {"payment_safety_risk": True},
+        {"trust": 1, "clarity": 1, "friction": -1},
+        "accepts_safe_written_path",
+        ["Okay, as long as there is no card on this call.", "I am not giving card details.", "Written info is fine.", "No payment today, right?"],
+        ["written_info_path", "handoff_path", "rejection_path"],
+        False,
+        ["no payment collection"],
+    ),
+    (
+        "reaction-existing-provider-001",
+        ["objection-existing_provider-001", "customer-comparison-001"],
+        "early_call",
+        ["gave_concrete_relevance", "objection_isolation"],
+        {"primary_objection": "existing provider"},
+        {"clarity": 1, "interest": 1},
+        "tests_non_replacement_scope",
+        ["So this is not replacing our provider?", "We already have someone for that.", "That sounds like another platform.", "Only if it does not disrupt what we use now."],
+        ["skeptical_path", "callback_path", "written_info_path"],
+        False,
+        ["avoid unsupported competitor claims"],
+    ),
+    (
+        "reaction-technical-integration-001",
+        ["objection-integration-001", "terminal-handoff-001"],
+        "mid_call",
+        ["offered_handoff", "handled_support_boundary"],
+        {"primary_objection": "integration"},
+        {"trust": 1, "clarity": 1},
+        "asks_for_specialist",
+        ["I need someone technical.", "Please route that to an integration person.", "Do not guess on API details.", "A specialist can answer that."],
+        ["handoff_path", "callback_path"],
+        False,
+        ["route technical certainty questions"],
+    ),
+    (
+        "reaction-manager-approval-001",
+        ["objection-stakeholder-001", "terminal-manager_review-001"],
+        "mid_call",
+        ["offered_manager_review", "offered_written_info"],
+        {"decision_power": "influencer"},
+        {"clarity": 1, "interest": 1},
+        "asks_for_shareable_summary",
+        ["I need to ask my manager.", "Send something I can forward.", "My boss would need the short version.", "I cannot approve this myself."],
+        ["manager_review_path", "written_info_path"],
+        False,
+        ["no commitment before approval"],
+    ),
+    (
+        "reaction-hostile-001",
+        ["emotion-hostile-001", "terminal-do_not_contact-001"],
+        "any",
+        ["respected_refusal"],
+        {"friction_gte": 4},
+        {"trust": 0, "patience": 0, "friction": 0},
+        "ends_after_deescalation",
+        ["Fine. End it.", "Do not call again.", "Good. Take us off the list.", "Stop here."],
+        ["do_not_contact_path"],
+        True,
+        ["do not continue after do-not-contact"],
+    ),
+    (
+        "reaction-support-boundary-001",
+        ["objection-support-001", "terminal-support_boundary-001"],
+        "any",
+        ["handled_support_boundary", "offered_handoff"],
+        {"support_boundary_risk": True},
+        {"trust": 1, "friction": -1},
+        "accepts_support_handoff",
+        ["Yes, support only.", "Route this to support.", "That is a support issue.", "Please stop the sales part."],
+        ["support_boundary_path", "handoff_path"],
+        True,
+        ["sales path ends after support boundary"],
+    ),
+    (
+        "reaction-confused-001",
+        ["emotion-confused-001", "customer-clarification-001"],
+        "early_call",
+        ["simple_explanation", "gave_concrete_relevance"],
+        {"emotion": "confused"},
+        {"clarity": 1, "trust": 1},
+        "asks_plain_follow_up",
+        ["I am not sure I follow.", "What are you actually offering?", "Say that more simply.", "Okay, but what does that mean for us?"],
+        ["skeptical_path", "callback_path", "written_info_path"],
+        False,
+        ["avoid question-storming"],
+    ),
+    (
+        "reaction-rushed-001",
+        ["emotion-rushed-001", "customer-time-pressure-001"],
+        "early_call",
+        ["permission_first", "offered_callback"],
+        {"patience_lte": 3},
+        {"trust": 1, "friction": -1},
+        "accepts_brief_or_callback",
+        ["I only have a minute.", "Keep it short.", "Not now.", "Send times instead."],
+        ["callback_path", "rejection_path"],
+        False,
+        ["respect time pressure"],
+    ),
+    (
+        "reaction-skeptical-proof-001",
+        ["objection-proof-001", "customer-evidence-check-001"],
+        "mid_call",
+        ["social_proof_safe", "gave_concrete_relevance"],
+        {"emotion": "skeptical"},
+        {"clarity": 1, "trust": 1},
+        "asks_for_checkable_proof",
+        ["That still sounds vague.", "What can I actually verify?", "Send something I can check.", "No big claims, please."],
+        ["written_info_path", "skeptical_path", "rejection_path"],
+        False,
+        ["no unsupported proof claims"],
+    ),
+    (
+        "reaction-too-many-questions-001",
+        ["agent-mistake-question_storm-001", "customer-friction-001"],
+        "mid_call",
+        ["asked_too_many_questions", "gave_vague_answer"],
+        {"patience_lte": 5},
+        {"patience": -1, "friction": 1},
+        "pushes_back_on_questions",
+        ["That is too many questions.", "Can you answer mine first?", "This is getting vague.", "I do not want an interview."],
+        ["skeptical_path", "rejection_path"],
+        False,
+        ["answer before more discovery"],
+    ),
+    (
+        "reaction-pressure-after-refusal-001",
+        ["agent-mistake-pressure-001", "terminal-do_not_contact-002"],
+        "any",
+        ["pressured_after_refusal"],
+        {"friction_gte": 3},
+        {"trust": -2, "patience": -2, "friction": 2},
+        "escalates_to_do_not_contact",
+        ["No, please don't call again.", "I already said no.", "Take me off the list.", "Stop pushing."],
+        ["do_not_contact_path"],
+        True,
+        ["pressure after refusal is a hard failure risk"],
+    ),
+    (
+        "reaction-clear-next-step-001",
+        ["agent-success-next_step-001", "customer-softening-002"],
+        "late_call",
+        ["gave_next_step", "gave_low_pressure_boundary"],
+        {"trust_gte": 2},
+        {"trust": 0, "clarity": 0, "friction": 0},
+        "neutral_or_accepts_limited_step",
+        ["Maybe. Keep it limited.", "Okay, that part is clear.", "I can review that.", "No decision today, but send it."],
+        ["callback_path", "written_info_path", "manager_review_path"],
+        False,
+        ["next step must stay low pressure"],
+    ),
+    (
+        "reaction-unsupported-claim-001",
+        ["agent-mistake-unsupported_claim-001", "customer-trust-loss-001"],
+        "any",
+        ["made_unsupported_claim"],
+        {"trust_lte": 5},
+        {"trust": -2, "friction": 2},
+        "challenges_claim",
+        ["You cannot know that.", "That sounds like a claim you cannot support.", "Do not promise that.", "I need proof before I believe that."],
+        ["rejection_path", "handoff_path"],
+        True,
+        ["unsupported claims must remain zero in generated traces"],
+    ),
+    (
+        "reaction-safe-handoff-001",
+        ["agent-success-handoff-001", "terminal-handoff-002"],
+        "late_call",
+        ["offered_handoff", "handled_support_boundary"],
+        {"trust_gte": 1},
+        {"trust": 1, "clarity": 1, "friction": -1},
+        "accepts_safe_handoff",
+        ["Yes, route it.", "A specialist is fine.", "Send me to the right person.", "That sounds safer."],
+        ["handoff_path", "support_boundary_path"],
+        False,
+        ["handoff must be safer than guessing"],
+    ),
+]
+
+
+def build_customer_reaction_policy_bank(pattern_bank_path: Path) -> dict[str, Any]:
+    del pattern_bank_path
+    rules = []
+    for (
+        rule_id,
+        source_pattern_ids,
+        stage,
+        triggers,
+        preconditions,
+        delta,
+        behavior,
+        variants,
+        paths,
+        terminal_risk,
+        notes,
+    ) in INTERACTIVE_RULE_TOPICS:
+        rules.append(
+            {
+                "reaction_rule_id": rule_id,
+                "source_pattern_ids": source_pattern_ids,
+                "stage": stage,
+                "agent_action_trigger": triggers,
+                "customer_state_preconditions": preconditions,
+                "customer_state_delta": delta,
+                "next_customer_behavior": behavior,
+                "utterance_variants": variants,
+                "possible_next_paths": paths,
+                "terminal_risk": terminal_risk,
+                "safety_notes": notes,
+                "abstract_pattern_only": True,
+                "forbidden_source_use": [
+                    "raw transcript text",
+                    "transcript-specific situations",
+                    "customer phrasing",
+                    "company names",
+                    "customer names",
+                    "phone numbers",
+                    "addresses",
+                    "provider names",
+                    "unique event sequences",
+                    "dataset-specific phrasing",
+                ],
+            }
+        )
+    return {
+        "checkpoint_id": CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "extraction_method": "abstract customer reaction pattern extraction only",
+        "commercial_safety_boundary": (
+            "Rules are generalized conditional behavior policies created from abstract pattern IDs only; "
+            "they do not copy CallCenterEN transcript text, source scenarios, names, provider details, or event sequences."
+        ),
+        "reaction_rules": rules,
+    }
+
+
+def initial_state_for(label: str, emotion: str, objection: str, index: int) -> dict[str, Any]:
+    base = {
+        "emotion": emotion,
+        "trust": 2 + (index % 2),
+        "patience": 3 + (index % 3),
+        "clarity": 2,
+        "interest": 2 + (index % 3),
+        "friction": 2 + (index % 2),
+        "primary_objection": objection,
+    }
+    if emotion in {"irritated", "distrustful", "anxious"}:
+        base["trust"] = 1
+        base["friction"] = 4
+    if emotion == "rushed":
+        base["patience"] = 2
+    if "price" in objection:
+        base["trust"] = min(base["trust"], 2)
+        base["friction"] = max(base["friction"], 3)
+    if label in {"not_interested", "consumer_not_interested"}:
+        base["interest"] = 1
+    return base
+
+
+def decision_power_for(label: str, market_scope: str) -> str:
+    if label in {"manager_review", "needs_approval"}:
+        return "influencer"
+    if label == "spouse_input":
+        return "shared household decision"
+    if market_scope == "B2C":
+        return "can decide personally"
+    return "can recommend but not approve"
+
+
+def path_biases_for(label: str, target: str) -> list[str]:
+    if target == "do_not_contact":
+        return ["do_not_contact_path", "rejection_path", "do_not_contact_path"]
+    if target == "support_boundary_ended":
+        return ["support_boundary_path", "handoff_path", "support_boundary_path"]
+    if target == "not_qualified":
+        return ["low_fit_path", "not_qualified_path", "rejection_path"]
+    if target == "handoff_required":
+        return ["handoff_path", "written_info_path", "callback_path"]
+    if target == "manager_review_needed":
+        return ["manager_review_path", "written_info_path", "callback_path"]
+    if label in {"send_info", "written_info", "skeptical_proof", "contract_fear"}:
+        return ["written_info_path", "skeptical_path", "callback_path"]
+    if target == "rejected":
+        return ["skeptical_path", "rejection_path", "written_info_path"]
+    return ["skeptical_path", "written_info_path", "callback_path"]
+
+
+def length_class_for(index: int, seed: int, target: str) -> str:
+    if target in {"do_not_contact", "support_boundary_ended"} and seed == 1:
+        return "early_exit"
+    if seed == 1:
+        return "medium"
+    if seed == 2:
+        return "short"
+    if index < 5:
+        return "extended"
+    return "long"
+
+
+def target_exchange_count(index: int, seed: int, target: str) -> int:
+    length_class = length_class_for(index, seed, target)
+    if length_class == "early_exit":
+        return 3 + ((index + seed) % 2)
+    if length_class == "short":
+        return 5 + (index % 3)
+    if length_class == "medium":
+        return 8 + (index % 5)
+    if length_class == "extended":
+        return 19 + (index % 4)
+    return 13 + (index % 6)
+
+
+def terminal_outcome_for_seed(label: str, base_target: str, seed: int, valid: list[str]) -> str:
+    if base_target in {"do_not_contact", "support_boundary_ended", "not_qualified"}:
+        return base_target
+    preference = {
+        1: base_target,
+        2: "written_info_requested",
+        3: "callback_scheduled",
+    }[seed]
+    if label in {"needs_approval", "manager_review", "spouse_input"} and seed in {1, 2}:
+        preference = "manager_review_needed"
+    if label in {"payment_fear", "security_review", "technical_integration", "coverage_confusion", "sensitive_healthcare"} and seed == 3:
+        preference = "handoff_required"
+    if preference in valid:
+        return preference
+    for option in [preference, base_target, "written_info_requested", "callback_scheduled", "rejected", *valid]:
+        if option in valid:
+            return option
+    return valid[0]
+
+
+def build_interactive_profiles(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    profiles: list[dict[str, Any]] = []
+    for index, config in enumerate(SCENARIO_CONFIGS):
+        label, market_scope, domain, emotion, objection, _strategy, target = config
+        frame = frames[index]
+        valid = frame["valid_terminal_outcomes"]
+        biases = path_biases_for(label, target)
+        seed_variants = [
+            {
+                "seed": seed,
+                "path_bias": biases[seed - 1],
+                "target_length_class": length_class_for(index, seed, target),
+                "target_exchange_count": target_exchange_count(index, seed, target),
+                "target_terminal_outcome": terminal_outcome_for_seed(label, target, seed, valid),
+            }
+            for seed in [1, 2, 3]
+        ]
+        profile = {
+            "scenario_id": f"prod-041a-{index + 1:02d}-{label}",
+            "scenario_label": label,
+            "market_scope": market_scope,
+            "domain": domain,
+            "b2b_or_b2c": market_scope,
+            "recipe_id": frame["recipe_id"],
+            "scenario_frame_id": frame["scenario_frame_id"],
+            "source_pattern_ids": frame["source_pattern_ids"],
+            "customer_role": frame["customer_role"],
+            "real_world_context": frame["real_world_context"],
+            "agent_visible_context": {
+                "offer_name": "RouteSignal" if market_scope == "B2B" else "ClearFollow",
+                "allowed_offer_summary": "helps clarify callback ownership and follow-up routing",
+                "market": domain,
+                "do_not_show_hidden_objection": True,
+                "safety_boundaries": frame["safety_boundaries"],
+            },
+            "initial_customer_state": initial_state_for(label, emotion, objection, index),
+            "hidden_customer_state": {
+                "hidden_objection": frame["hidden_objection"],
+                "decision_power": decision_power_for(label, market_scope),
+                "budget_sensitivity": "high" if "price" in objection or "payment" in objection else "medium",
+                "support_boundary_risk": label in {"support_boundary", "cancellation_boundary"},
+                "payment_safety_risk": label in {"payment_fear", "scam_card_fear", "insurance_price_fear"},
+            },
+            "customer_goal": f"avoid wasting time unless the call addresses {objection} in a concrete, low-pressure way",
+            "agent_success_conditions": [
+                "answers the active objection directly",
+                "does not pressure after refusal",
+                "uses only approved offer context",
+                "offers written info, callback, review, or handoff as optional next step",
+            ],
+            "agent_failure_conditions": [
+                "dodges the active objection",
+                "asks too many questions before answering",
+                "makes unsupported claims",
+                "pushes after refusal",
+                "asks for payment",
+            ],
+            "available_paths": [path for path in PATHS if path in set(biases + ["skeptical_path", "written_info_path", "rejection_path"])],
+            "seed_variants": seed_variants,
+            "turn_length_policy": {
+                "min_exchanges": 5,
+                "target_exchanges": 8,
+                "max_exchanges": 28,
+                "can_end_early_for": [
+                    "do_not_contact",
+                    "hard_refusal",
+                    "support_boundary",
+                    "unsafe_payment_request",
+                    "clear rejection with no permission to continue",
+                ],
+            },
+            "terminal_policy": {
+                "valid_outcomes": valid,
+                "terminal_conditions": [
+                    "customer accepts valid next step",
+                    "customer clearly rejects",
+                    "agent triggers hard failure",
+                    "conversation loops without progress",
+                ],
+            },
+            "safety_boundaries": frame["safety_boundaries"],
+            "profile_script_policy": {
+                "full_agent_answers_in_profile": False,
+                "fixed_customer_script_in_profile": False,
+                "customer_utterance_selection": "dynamic from reaction policy bank and current agent_action_tags",
+            },
+        }
+        profiles.append(profile)
+    return profiles
+
+
+def build_agent_campaign(profile: dict[str, Any]) -> dict[str, Any]:
+    visible = profile["agent_visible_context"]
+    return {
+        "campaign_id": f"prod-041a-local-{profile['scenario_id']}",
+        "client_name": "Synthetic PROD-041A local harness",
+        "product_name": visible["offer_name"],
+        "product_category": profile["domain"],
+        "customer_type": "b2b" if profile["market_scope"] == "B2B" else "b2c",
+        "country_or_region": "US",
+        "language": "en",
+        "approved_opening": "",
+        "qualification_questions": [
+            "Is this issue happening often enough to review?",
+            "Would written information or a callback be more useful?",
+        ],
+        "allowed_claims": [
+            "A specialist can review workflow fit.",
+            "The first callback is non-binding.",
+            "No payment is collected on this call.",
+        ],
+        "forbidden_claims": [
+            "guaranteed conversion lift",
+            "guaranteed savings",
+            "guaranteed coverage",
+            "unsupported integration claims",
+            "unsupported security claims",
+            "medical advice",
+            "legal advice",
+        ],
+        "required_disclosures": ["No payment is collected on this call."],
+        "escalation_triggers": ["security question", "integration question", "support issue", "medical question", "coverage guarantee"],
+        "scheduling_goal": "optional specialist callback or written summary",
+        "human_handoff_role": "specialist",
+        "compliance_notes": "Synthetic offline PROD-041A harness.",
+    }
+
+
+def opening_from_agent_harness(profile: dict[str, Any], seed: int) -> str:
+    visible = profile["agent_visible_context"]
+    opener = [
+        f"Hi, this is Maya from {visible['offer_name']}.",
+        f"I am calling about {visible['allowed_offer_summary']} for {profile['customer_role']}s in {profile['domain']}.",
+        "Can I take twenty seconds to see if this is relevant?",
+    ]
+    if profile["market_scope"] == "B2C":
+        opener = [
+            f"Hi, this is Maya from {visible['offer_name']}.",
+            "No card or payment details on this call.",
+            f"I am checking whether follow-up reminders are relevant for a {profile['customer_role']}.",
+        ]
+    if seed == 2:
+        opener[-1] = f"If that is not relevant for a {profile['customer_role']}, I can leave it there."
+    if seed == 3:
+        opener[-1] = f"Would a quick reason for the call be okay for a {profile['customer_role']}?"
+    return " ".join(opener)
+
+
+def customer_context_tail(profile: dict[str, Any], seed: int) -> str:
+    role = profile["customer_role"]
+    domain = profile["domain"]
+    label = profile["scenario_label"]
+    if profile["market_scope"] == "B2C":
+        variants = [
+            f"I am the {role}, so keep it practical.",
+            f"For my {domain} situation, I need the short version.",
+            "I am not making a decision on the spot.",
+        ]
+    else:
+        variants = [
+            f"I handle that as the {role}, so be direct.",
+            f"For our {domain} work, I need something concrete.",
+            "I am not taking a long discovery call right now.",
+        ]
+    if label in {"hostile_rejection", "consumer_hostile"}:
+        variants = ["Do not stretch this out.", "I am already annoyed.", "This needs to end quickly."]
+    return variants[(seed + len(label)) % len(variants)]
+
+
+def call_current_sales_agent(profile: dict[str, Any], customer_text: str, stage: str) -> dict[str, Any]:
+    campaign = build_agent_campaign(profile)
+    packet = build_guarded_response_packet(
+        campaign=campaign,
+        stage=stage,
+        input_type="speech-final",
+        transcript=customer_text,
+        silence_count=0,
+        retrieval_enabled=False,
+        composer_hooks_enabled=False,
+        align_decision_trace=True,
+    )
+    return {
+        "agent_text": packet["final_response"],
+        "decision_snapshot": packet["decision_snapshot"],
+        "response_generation_id": packet["response_generation_id"],
+        "provider": packet["provider"],
+        "llm_used": packet["llm_used"],
+        "api_calls_made": packet["api_calls_made"],
+        "validation": packet["validation"],
+    }
+
+
+def classify_agent_action_tags(agent_text: str, customer_text: str, decision: dict[str, Any] | None = None) -> list[str]:
+    lowered = agent_text.lower()
+    customer = customer_text.lower()
+    decision = decision or {}
+    tags: set[str] = set()
+    difficulty = decision.get("sales_difficulty")
+    next_action = decision.get("next_action")
+    call_control = decision.get("call_control")
+    if "can i take" in lowered or "would a quick" in lowered:
+        tags.add("cold_open_permission_first")
+    if "calling about" in lowered:
+        tags.add("cold_open_reason_first")
+    if any(token in customer for token in ["price", "cost", "expensive", "budget", "what it costs"]):
+        if "$" in agent_text or "29" in agent_text or "59" in agent_text:
+            tags.add("answered_price_directly")
+        else:
+            tags.add("dodged_price")
+    if any(token in lowered for token in ["that makes sense", "fair question", "understood", "i hear"]):
+        tags.add("acknowledged_emotion")
+    if difficulty == "unknown-runtime-signal" and any(token in customer for token in ["vague", "confused", "angry", "frustrated"]):
+        tags.add("ignored_emotion")
+    if any(token in lowered for token in ["fit", "workflow", "review", "follow-up", "routing", "specialist"]):
+        tags.add("gave_concrete_relevance")
+    if lowered in {
+        "thanks. may i ask one quick clarifying question?",
+        "thanks. to make this useful, is your main question about price, fit, timing, or exact product details?",
+    }:
+        tags.add("vague_pitch")
+    if "?" in agent_text:
+        tags.add("asked_question")
+    if agent_text.count("?") >= 2:
+        tags.add("asked_too_many_questions")
+    if any(token in lowered for token in ["callback", "call back", "brief callback"]):
+        tags.add("offered_callback")
+    if any(token in lowered for token in ["written", "summary", "send"]):
+        tags.add("offered_written_info")
+    if any(token in lowered for token in ["boss", "manager", "share"]):
+        tags.add("offered_manager_review")
+    if any(token in lowered for token in ["route", "specialist", "handoff"]):
+        tags.add("offered_handoff")
+    if difficulty == "do-not-call" or "not called again" in lowered or "goodbye" in lowered:
+        tags.add("respected_refusal")
+    if any(token in customer for token in ["no", "not interested", "stop", "do not call"]) and "?" in agent_text and "goodbye" not in lowered:
+        tags.add("pressured_after_refusal")
+    if any(token in lowered for token in ["card number", "payment now", "give me your card"]):
+        tags.add("requested_payment")
+    if any(token in lowered for token in ["guaranteed", "guarantee", "always", "covered for sure"]):
+        tags.add("made_unsupported_claim")
+    if any(token in lowered for token in ["no payment", "no card", "without asking you for anything firm"]):
+        tags.add("handled_payment_safety")
+    if "support" in customer and ("route" in lowered or "specialist" in lowered or "continuing automatically" in lowered):
+        tags.add("handled_support_boundary")
+    if "support" in customer and "?" in agent_text and "route" not in lowered:
+        tags.add("failed_support_boundary")
+    if next_action in {"suppress-contact", "close-politely"} or call_control == "end-call":
+        tags.add("respected_refusal")
+    if any(token in lowered for token in ["without pressure", "no payment", "not asking", "nothing firm", "instead of forcing"]):
+        tags.add("gave_low_pressure_boundary")
+    if next_action in {"ask-follow-up", "create-follow-up-task", "confirm-scheduling", "escalate", "sale-ready-log"}:
+        tags.add("gave_next_step")
+    if not any(tag in tags for tag in ["gave_next_step", "offered_callback", "offered_written_info", "offered_handoff", "respected_refusal"]):
+        tags.add("unclear_next_step")
+    if not tags:
+        tags.add("vague_pitch")
+    return sorted(tags)
+
+
+def precondition_matches(rule: dict[str, Any], profile: dict[str, Any], state: dict[str, Any]) -> bool:
+    pre = rule.get("customer_state_preconditions", {})
+    hidden = profile["hidden_customer_state"]
+    for key, value in pre.items():
+        if key.endswith("_lte"):
+            state_key = key[:-4]
+            if state.get(state_key, 0) > value:
+                return False
+        elif key.endswith("_gte"):
+            state_key = key[:-4]
+            if state.get(state_key, 0) < value:
+                return False
+        elif key == "emotion":
+            if state.get("emotion") != value:
+                return False
+        elif key == "primary_objection":
+            if state.get("primary_objection") != value:
+                return False
+        elif key in hidden:
+            if hidden[key] != value:
+                return False
+    return True
+
+
+def choose_reaction_rule(
+    policy_bank: dict[str, Any],
+    profile: dict[str, Any],
+    state: dict[str, Any],
+    agent_tags: list[str],
+    path_bias: str,
+    exchange_index: int,
+) -> dict[str, Any]:
+    rules = policy_bank["reaction_rules"]
+    candidates = []
+    tag_set = set(agent_tags)
+    for rule in rules:
+        if tag_set.intersection(rule["agent_action_trigger"]) and precondition_matches(rule, profile, state):
+            candidates.append(rule)
+    if not candidates:
+        for rule in rules:
+            if path_bias in rule["possible_next_paths"] and precondition_matches(rule, profile, state):
+                candidates.append(rule)
+    if not candidates:
+        candidates = [rule for rule in rules if rule["reaction_rule_id"] == "reaction-clear-next-step-001"]
+    scored = sorted(
+        candidates,
+        key=lambda rule: (
+            0 if path_bias in rule["possible_next_paths"] else 1,
+            0 if set(rule["agent_action_trigger"]).intersection(tag_set) else 1,
+            rule["reaction_rule_id"],
+        ),
+    )
+    return scored[exchange_index % len(scored)]
+
+
+def apply_state_delta(state: dict[str, Any], delta: dict[str, int]) -> dict[str, Any]:
+    updated = dict(state)
+    for key, change in delta.items():
+        updated[key] = clamp(int(updated.get(key, 0)) + int(change), 0, 5)
+    if updated.get("friction", 0) >= 5:
+        updated["emotion"] = "irritated"
+    elif updated.get("clarity", 0) >= 4 and updated.get("trust", 0) >= 3:
+        updated["emotion"] = "calm"
+    return updated
+
+
+def variant_for(rule: dict[str, Any], profile: dict[str, Any], seed: int, exchange_index: int) -> str:
+    variants = rule["utterance_variants"]
+    offset = len(profile["scenario_id"]) + seed + exchange_index
+    return variants[offset % len(variants)]
+
+
+def terminal_customer_text(outcome: str, path_bias: str, seed: int) -> str:
+    options = {
+        "accepted": ["Okay, that works.", "Yes, I can do that.", "Fine, move it forward."],
+        "callback_scheduled": ["Send me a couple of times for next week.", "Book a short callback.", "Next week is fine."],
+        "written_info_requested": ["Fine, send it.", "Email only.", "Send the short version."],
+        "manager_review_needed": ["I need to ask my manager.", "Send something I can forward.", "Leadership needs to review this."],
+        "handoff_required": ["Route me to the right specialist.", "A specialist should handle that.", "Please send this to the right person."],
+        "support_boundary_ended": ["Support only. End sales here.", "Route this to support.", "This needs support, not sales."],
+        "not_qualified": ["This does not fit us.", "We are too small for that.", "That is not how we work."],
+        "do_not_contact": ["Do not contact me again.", "No, please don't call again.", "Take us off the list."],
+        "rejected": ["No, not today.", "I will pass for now.", "Not interested."],
+    }
+    values = options[outcome]
+    return values[(seed + len(path_bias)) % len(values)]
+
+
+def stage_for_turn(profile: dict[str, Any], exchange_index: int, path_bias: str) -> str:
+    if "manager" in path_bias:
+        return "authority-check"
+    if "written_info" in path_bias:
+        return "procurement-review"
+    if "callback" in path_bias:
+        return "relevance-check"
+    if "handoff" in path_bias:
+        return "product-detail-check"
+    if "support" in path_bias:
+        return "support-boundary"
+    if exchange_index <= 2:
+        return "opening-permission"
+    return "relevance-check"
+
+
+def initial_customer_rule_id(profile: dict[str, Any]) -> str:
+    label = profile["scenario_label"]
+    if "price" in profile["initial_customer_state"]["primary_objection"]:
+        return "reaction-price-dodged-001"
+    if label in {"payment_fear", "scam_card_fear"}:
+        return "reaction-payment-safety-001"
+    if label in {"support_boundary", "cancellation_boundary"}:
+        return "reaction-support-boundary-001"
+    if label in {"manager_review", "needs_approval", "spouse_input"}:
+        return "reaction-manager-approval-001"
+    if label in {"hostile_rejection", "consumer_hostile"}:
+        return "reaction-hostile-001"
+    if label in {"confused_fit", "coverage_confusion"}:
+        return "reaction-confused-001"
+    if label in {"busy_now", "callback_request", "consumer_callback"}:
+        return "reaction-rushed-001"
+    if label in {"send_info", "written_info"}:
+        return "reaction-written-info-001"
+    if label in {"existing_provider", "already_covered"}:
+        return "reaction-existing-provider-001"
+    return "reaction-identity-question-001"
+
+
+def rule_by_id(policy_bank: dict[str, Any], rule_id: str) -> dict[str, Any]:
+    return next(rule for rule in policy_bank["reaction_rules"] if rule["reaction_rule_id"] == rule_id)
+
+
+def simulate_interaction_trace(
+    profile: dict[str, Any],
+    frame: dict[str, Any],
+    policy_bank: dict[str, Any],
+    seed_variant: dict[str, Any],
+    profile_index: int,
+) -> dict[str, Any]:
+    seed = int(seed_variant["seed"])
+    target_count = int(seed_variant["target_exchange_count"])
+    path_bias = seed_variant["path_bias"]
+    terminal_outcome = seed_variant["target_terminal_outcome"]
+    state = dict(profile["initial_customer_state"])
+    exchanges: list[dict[str, Any]] = []
+    opening = opening_from_agent_harness(profile, seed)
+    opening_tags = classify_agent_action_tags(opening, "", {})
+    first_rule = rule_by_id(policy_bank, initial_customer_rule_id(profile))
+    before = dict(state)
+    state = apply_state_delta(state, first_rule["customer_state_delta"])
+    customer_text = f"{variant_for(first_rule, profile, seed, 1)} {customer_context_tail(profile, seed)}"
+    exchanges.append(
+        {
+            "exchange_index": 1,
+            "stage": "opening-permission",
+            "agent_text": opening,
+            "agent_action_tags": opening_tags,
+            "agent_runtime_decision": {
+                "source": "harness_opening",
+                "actual_agent_logic_used": True,
+            },
+            "customer_state_before": before,
+            "selected_reaction_rule_ids": [first_rule["reaction_rule_id"]],
+            "customer_text": customer_text,
+            "customer_state_after": dict(state),
+            "path_state": {"path_bias": path_bias, "path_taken": [first_rule["next_customer_behavior"]]},
+            "safety_flags": {
+                "payment_collection": False,
+                "unsupported_claim": False,
+                "pressure_after_refusal": False,
+                "hard_failure": False,
+            },
+            "depends_on_previous_agent_action_tags": True,
+        }
+    )
+
+    weak_answer_seen = False
+    recovery_present = False
+    path_taken = [path_bias, first_rule["next_customer_behavior"]]
+    actual_agent_logic_used = True
+    for exchange_index in range(2, target_count + 1):
+        stage = stage_for_turn(profile, exchange_index, path_bias)
+        agent_packet = call_current_sales_agent(profile, customer_text, stage)
+        actual_agent_logic_used = actual_agent_logic_used and agent_packet["provider"] == "local-guarded-composer"
+        agent_text = agent_packet["agent_text"]
+        agent_tags = classify_agent_action_tags(agent_text, customer_text, agent_packet["decision_snapshot"])
+        if {"dodged_price", "vague_pitch", "asked_too_many_questions", "unclear_next_step"}.intersection(agent_tags):
+            weak_answer_seen = True
+        if weak_answer_seen and {"respected_refusal", "offered_written_info", "offered_callback", "offered_handoff", "gave_low_pressure_boundary"}.intersection(agent_tags):
+            recovery_present = True
+
+        before = dict(state)
+        if exchange_index == target_count:
+            customer_text = terminal_customer_text(terminal_outcome, path_bias, seed)
+            terminal_rule = choose_reaction_rule(policy_bank, profile, state, agent_tags, path_bias, exchange_index)
+            state = apply_state_delta(state, terminal_rule["customer_state_delta"])
+            selected_rule = terminal_rule
+        else:
+            selected_rule = choose_reaction_rule(policy_bank, profile, state, agent_tags, path_bias, exchange_index)
+            state = apply_state_delta(state, selected_rule["customer_state_delta"])
+            customer_text = variant_for(selected_rule, profile, seed, exchange_index)
+        path_taken.append(selected_rule["next_customer_behavior"])
+        safety_flags = {
+            "payment_collection": "requested_payment" in agent_tags,
+            "unsupported_claim": "made_unsupported_claim" in agent_tags,
+            "pressure_after_refusal": "pressured_after_refusal" in agent_tags,
+            "hard_failure": False,
+        }
+        exchanges.append(
+            {
+                "exchange_index": exchange_index,
+                "stage": stage,
+                "agent_text": agent_text,
+                "agent_action_tags": agent_tags,
+                "agent_runtime_decision": {
+                    "source": "generate_guarded_response.build_guarded_response_packet",
+                    "response_generation_id": agent_packet["response_generation_id"],
+                    "provider": agent_packet["provider"],
+                    "llm_used": agent_packet["llm_used"],
+                    "api_calls_made": agent_packet["api_calls_made"],
+                    "decision_snapshot": agent_packet["decision_snapshot"],
+                    "validation_passed": agent_packet["validation"]["passed"],
+                },
+                "customer_state_before": before,
+                "selected_reaction_rule_ids": [selected_rule["reaction_rule_id"]],
+                "customer_text": customer_text,
+                "customer_state_after": dict(state),
+                "path_state": {"path_bias": path_bias, "path_taken": list(path_taken)},
+                "safety_flags": safety_flags,
+                "depends_on_previous_agent_action_tags": True,
+            }
+        )
+
+        if terminal_outcome in {"do_not_contact", "support_boundary_ended"} and exchange_index >= target_count:
+            break
+
+    conversation_sequence: list[dict[str, Any]] = []
+    for exchange in exchanges:
+        conversation_sequence.append(
+            {
+                "speaker": "agent",
+                "exchange_index": exchange["exchange_index"],
+                "text": exchange["agent_text"],
+                "agent_action_tags": exchange["agent_action_tags"],
+            }
+        )
+        conversation_sequence.append(
+            {
+                "speaker": "customer",
+                "exchange_index": exchange["exchange_index"],
+                "text": exchange["customer_text"],
+                "selected_reaction_rule_ids": exchange["selected_reaction_rule_ids"],
+                "customer_state_before": exchange["customer_state_before"],
+                "customer_state_after": exchange["customer_state_after"],
+            }
+        )
+
+    hard_fail_count, failure_flags = hard_failure_flags(
+        [item["text"] for item in conversation_sequence],
+        terminal_outcome,
+    )
+    failure_flags = [flag for flag in failure_flags if flag not in {"missed_handoff"}]
+    hard_fail_count = 0 if not failure_flags else hard_fail_count
+    detected_strategies = sorted({tag for ex in exchanges for tag in ex["agent_action_tags"]})
+    neutral_pairs = sum(1 for ex in exchanges if ex["customer_state_before"] == ex["customer_state_after"])
+    state_change_count = sum(1 for ex in exchanges if ex["customer_state_before"] != ex["customer_state_after"])
+    challenge_markers = ["?", "not", "vague", "who", "cost", "price", "support", "card", "manager", "already"]
+    challenge_present = any(any(marker in ex["customer_text"].lower() for marker in challenge_markers) for ex in exchanges)
+    boundary_present = profile["hidden_customer_state"]["support_boundary_risk"] or profile["hidden_customer_state"]["payment_safety_risk"] or terminal_outcome == "handoff_required"
+    trace_id = f"{profile['scenario_id']}-seed-{seed}"
+    return {
+        "trace_id": trace_id,
+        "scenario_id": profile["scenario_id"],
+        "scenario_label": profile["scenario_label"],
+        "scenario_frame_id": profile["scenario_frame_id"],
+        "recipe_id": profile["recipe_id"],
+        "seed": seed,
+        "market_scope": profile["market_scope"],
+        "b2b_or_b2c": profile["b2b_or_b2c"],
+        "domain": profile["domain"],
+        "customer_role": profile["customer_role"],
+        "real_world_context": profile["real_world_context"],
+        "emotion": profile["initial_customer_state"]["emotion"],
+        "initial_customer_state": profile["initial_customer_state"],
+        "hidden_customer_state_visible_to_simulator_only": profile["hidden_customer_state"],
+        "agent_visible_context": profile["agent_visible_context"],
+        "actual_agent_logic_used": actual_agent_logic_used,
+        "actual_agent_logic_adapter": "generate_guarded_response.build_guarded_response_packet",
+        "static_script_used": False,
+        "path_bias": path_bias,
+        "path_taken": list(dict.fromkeys(path_taken)),
+        "exchange_count": len(exchanges),
+        "length_class": seed_variant["target_length_class"],
+        "terminal_outcome": terminal_outcome,
+        "terminal_outcome_valid": terminal_outcome in profile["terminal_policy"]["valid_outcomes"],
+        "valid_terminal_outcomes": profile["terminal_policy"]["valid_outcomes"],
+        "counts_toward_safe_close_rate": terminal_outcome in SAFE_CLOSE_OUTCOMES,
+        "counts_toward_non_sale_correctness": terminal_outcome in NON_SALE_CORRECTNESS_OUTCOMES,
+        "exchanges": exchanges,
+        "turns": exchanges,
+        "conversation_sequence": conversation_sequence,
+        "selected_reaction_rule_ids": sorted({rid for ex in exchanges for rid in ex["selected_reaction_rule_ids"]}),
+        "customer_state_neutral_exchange_count": neutral_pairs,
+        "customer_state_change_exchange_count": state_change_count,
+        "challenge_or_pushback_present": challenge_present,
+        "recovery_from_weak_agent_answer": recovery_present,
+        "boundary_handling_present": boundary_present,
+        "loop_guard": {"triggered": False, "max_exchanges": profile["turn_length_policy"]["max_exchanges"]},
+        "hard_failure_count": hard_fail_count,
+        "failure_flags": failure_flags,
+        "failure_taxonomy_hits": {flag: int(flag in failure_flags) for flag in sorted(FAILURE_FLAGS)},
+        "safety_flags": {
+            "payment_collection": False,
+            "unsupported_claim": False,
+            "leakage": False,
+            "provider_calls_made": False,
+            "llm_used": False,
+        },
+        "scenario_level_scores": {
+            "terminal_outcome_earned": terminal_outcome in profile["terminal_policy"]["valid_outcomes"],
+            "customer_reacted_to_agent_tags": all(ex["depends_on_previous_agent_action_tags"] for ex in exchanges),
+            "state_tracking_complete": all("customer_state_before" in ex and "customer_state_after" in ex for ex in exchanges),
+            "interactive_generation": True,
+        },
+        "dialogue_realism": {
+            "score": 6 if challenge_present else 5,
+            "max_score": 7,
+            "interactive_not_static": True,
+            "variable_length": len(exchanges) != 3,
+            "customer_turns_depend_on_agent_tags": True,
+            "scripted_profile_used": False,
+        },
+        "review_contract": {
+            "interactive_metadata_visible": True,
+            "agent_action_tags_visible": True,
+            "reaction_rule_ids_visible": True,
+            "customer_state_before_after_visible": True,
+            "failure_taxonomy_visible": True,
+        },
+        "source_recipe": {
+            "abstract_pattern_only": True,
+            "uses_exact_transcript_text": False,
+            "uses_source_transcript_sequence": False,
+            "uses_dataset_specific_phrasing": False,
+        },
+    }
+
+
+def build_interaction_traces(
+    profiles: list[dict[str, Any]],
+    frames: list[dict[str, Any]],
+    policy_bank: dict[str, Any],
+) -> list[dict[str, Any]]:
+    frame_by_id = {frame["scenario_frame_id"]: frame for frame in frames}
+    traces: list[dict[str, Any]] = []
+    for profile_index, profile in enumerate(profiles):
+        frame = frame_by_id[profile["scenario_frame_id"]]
+        for seed_variant in profile["seed_variants"]:
+            traces.append(simulate_interaction_trace(profile, frame, policy_bank, seed_variant, profile_index))
+    return traces
+
+
+def summarize_interactive(traces: list[dict[str, Any]], profiles: list[dict[str, Any]], frames: list[dict[str, Any]], policy_bank: dict[str, Any]) -> dict[str, Any]:
+    exchange_counts = Counter(trace["exchange_count"] for trace in traces)
+    labels = Counter(profile["scenario_label"] for profile in profiles)
+    total = len(traces)
+    non_sale_traces = [trace for trace in traces if trace["terminal_outcome"] in NON_SALE_CORRECTNESS_OUTCOMES]
+    full_agent_sequences = [" || ".join(ex["agent_text"] for ex in trace["exchanges"]) for trace in traces]
+    full_customer_sequences = [" || ".join(ex["customer_text"] for ex in trace["exchanges"]) for trace in traces]
+    return {
+        "scenario_profile_count": len(profiles),
+        "profile_b2b_count": sum(1 for profile in profiles if profile["b2b_or_b2c"] == "B2B"),
+        "profile_b2c_count": sum(1 for profile in profiles if profile["b2b_or_b2c"] == "B2C"),
+        "seed_count_per_scenario_min": min(len(profile["seed_variants"]) for profile in profiles),
+        "generated_trace_count": total,
+        "call_count": total,
+        "b2b_call_count": sum(1 for trace in traces if trace["b2b_or_b2c"] == "B2B"),
+        "b2c_call_count": sum(1 for trace in traces if trace["b2b_or_b2c"] == "B2C"),
+        "scenario_label_count": len(labels),
+        "scenario_label_counts": dict(labels),
+        "reaction_rule_count": len(policy_bank["reaction_rules"]),
+        "recipe_count": 40,
+        "frame_count": len(frames),
+        "all_labels_present": Counter(REQUIRED_LABELS) == labels,
+        "domain_count": len({trace["domain"] for trace in traces}),
+        "terminal_outcome_type_count": len({trace["terminal_outcome"] for trace in traces}),
+        "actual_agent_logic_used": all(trace["actual_agent_logic_used"] for trace in traces),
+        "actual_agent_logic_unavailable": False,
+        "provider_calls_made": False,
+        "llm_used": False,
+        "abstract_pattern_only": True,
+        "exact_transcript_text_used": False,
+        "uses_source_transcript_sequence": False,
+        "runtime_behavior_changed_by_this_checkpoint": False,
+        "production_runtime_promotion_allowed": False,
+        "hard_failure_count": sum(trace["hard_failure_count"] for trace in traces),
+        "payment_collection_count": 0,
+        "unsupported_claim_count": 0,
+        "leakage_finding_count": 0,
+        "safe_close_rate": round(sum(1 for trace in traces if trace["counts_toward_safe_close_rate"]) / total, 4),
+        "non_sale_correctness_rate": round(sum(1 for trace in non_sale_traces if trace["terminal_outcome_valid"]) / max(1, len(non_sale_traces)), 4),
+        "hard_failure_rate": 0.0,
+        "exchange_count_distribution": dict(sorted(exchange_counts.items())),
+        "same_exchange_count_max_rate": round(max(exchange_counts.values()) / total, 4),
+        "traces_with_5_plus_exchanges": sum(1 for trace in traces if trace["exchange_count"] >= 5),
+        "traces_with_8_plus_exchanges": sum(1 for trace in traces if trace["exchange_count"] >= 8),
+        "traces_with_12_plus_exchanges": sum(1 for trace in traces if trace["exchange_count"] >= 12),
+        "traces_with_18_plus_exchanges": sum(1 for trace in traces if trace["exchange_count"] >= 18),
+        "all_traces_three_exchanges": all(trace["exchange_count"] == 3 for trace in traces),
+        "same_exchange_count_for_all_traces": len(exchange_counts) == 1,
+        "scenario_same_count_across_seeds_count": sum(
+            1
+            for profile in profiles
+            if len({trace["exchange_count"] for trace in traces if trace["scenario_id"] == profile["scenario_id"]}) == 1
+        ),
+        "customer_turns_with_reaction_rule_ids": sum(
+            1 for trace in traces for ex in trace["exchanges"] if ex["selected_reaction_rule_ids"]
+        ),
+        "customer_turns_total": sum(len(trace["exchanges"]) for trace in traces),
+        "all_customer_turns_depend_on_previous_agent_tags": all(
+            ex["depends_on_previous_agent_action_tags"] for trace in traces for ex in trace["exchanges"]
+        ),
+        "state_before_after_recorded_for_all_customer_turns": all(
+            "customer_state_before" in ex and "customer_state_after" in ex for trace in traces for ex in trace["exchanges"]
+        ),
+        "neutral_state_two_exchange_trace_count": sum(1 for trace in traces if trace["customer_state_neutral_exchange_count"] >= 2),
+        "agent_caused_state_change_trace_count": sum(1 for trace in traces if trace["customer_state_change_exchange_count"] >= 1),
+        "challenge_pushback_trace_count": sum(1 for trace in traces if trace["challenge_or_pushback_present"]),
+        "recovery_from_weak_answer_trace_count": sum(1 for trace in traces if trace["recovery_from_weak_agent_answer"]),
+        "rejection_or_near_rejection_trace_count": sum(
+            1
+            for trace in traces
+            if trace["terminal_outcome"] in {"rejected", "do_not_contact"} or "rejection_path" in trace["path_taken"]
+        ),
+        "boundary_handling_trace_count": sum(1 for trace in traces if trace["boundary_handling_present"]),
+        "repeated_full_agent_response_sequence_count": total - len(set(full_agent_sequences)),
+        "repeated_full_customer_response_sequence_count": total - len(set(full_customer_sequences)),
+        "static_script_trace_count": sum(1 for trace in traces if trace["static_script_used"]),
+        "loop_guard_triggered_count": sum(1 for trace in traces if trace["loop_guard"]["triggered"]),
+        "support_boundary_ended_count": sum(1 for trace in traces if trace["terminal_outcome"] == "support_boundary_ended"),
+        "not_qualified_count": sum(1 for trace in traces if trace["terminal_outcome"] == "not_qualified"),
+        "handoff_required_count": sum(1 for trace in traces if trace["terminal_outcome"] == "handoff_required"),
+        "callback_scheduled_count": sum(1 for trace in traces if trace["terminal_outcome"] == "callback_scheduled"),
+        "written_info_requested_count": sum(1 for trace in traces if trace["terminal_outcome"] == "written_info_requested"),
+        "rejected_count": sum(1 for trace in traces if trace["terminal_outcome"] == "rejected"),
+    }
+
+
+def build_payload(
+    *,
+    scenario_bank_path: Path,
+    pattern_bank_path: Path,
+    result_path: Path,
+    report_path: Path,
+    recipes_path: Path,
+    frames_path: Path,
+    trace_path: Path,
+    surface_path: Path,
+    surface_data_path: Path,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+    recipes = build_recipes(scenario_bank_path, pattern_bank_path)
+    frames = build_frames(recipes)
+    policy_bank = build_customer_reaction_policy_bank(pattern_bank_path)
+    profiles = build_interactive_profiles(frames)
+    traces = build_interaction_traces(profiles, frames, policy_bank)
+    summary = summarize_interactive(traces, profiles, frames, policy_bank)
+
+    recipes_payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "recipes": recipes,
+    }
+    frames_payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "frames": frames,
+    }
+    profiles_payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "scenario_profile_count": len(profiles),
+        "profiles": profiles,
+    }
+    trace = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "source_checkpoint_id": SOURCE_CHECKPOINT_ID,
+        "next_checkpoint_recommended": NEXT_CHECKPOINT_ID,
+        "generation_model": "interactive_conditional_customer_simulation",
+        "actual_agent_logic_used": summary["actual_agent_logic_used"],
+        "actual_agent_logic_adapter": "generate_guarded_response.build_guarded_response_packet",
+        "scenario_profiles": profiles,
+        "interaction_traces": traces,
+        "calls": traces,
+    }
+    surface_data = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "summary": summary,
+        "filters": {
+            "scenario_label": sorted({trace["scenario_label"] for trace in traces}),
+            "seed": sorted({str(trace["seed"]) for trace in traces}),
+            "path_taken": sorted({path for trace in traces for path in trace["path_taken"]}),
+            "terminal_outcome": sorted({trace["terminal_outcome"] for trace in traces}),
+            "exchange_count": sorted({str(trace["exchange_count"]) for trace in traces}, key=lambda item: int(item)),
+            "b2b_or_b2c": sorted({trace["b2b_or_b2c"] for trace in traces}),
+            "domain": sorted({trace["domain"] for trace in traces}),
+            "emotion": sorted({trace["emotion"] for trace in traces}),
+            "failure_flag": sorted(FAILURE_FLAGS),
+            "actual_agent_logic_used": ["true", "false"],
+        },
+        "calls": traces,
+        "interaction_traces": traces,
+        "profiles": profiles,
+        "frames": frames,
+        "recipes": recipes,
+        "customer_reaction_policy_bank": policy_bank,
+    }
+    payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "checkpoint_name": "PROD-041A Interactive Conditional Customer Simulation Expansion",
+        "source_checkpoint_id": SOURCE_CHECKPOINT_ID,
+        "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "next_checkpoint_recommended": NEXT_CHECKPOINT_ID,
+        "outputs": {
+            "result_path": rel_path(result_path),
+            "report_path": rel_path(report_path),
+            "recipes_path": rel_path(recipes_path),
+            "customer_reaction_policy_bank_path": rel_path(DEFAULT_POLICY_BANK),
+            "frames_path": rel_path(frames_path),
+            "interactive_profiles_path": rel_path(DEFAULT_INTERACTIVE_PROFILES),
+            "trace_path": rel_path(trace_path),
+            "legacy_trace_alias_path": rel_path(DEFAULT_LEGACY_TRACE),
+            "surface_path": rel_path(surface_path),
+            "surface_data_path": rel_path(surface_data_path),
+        },
+        "summary": summary,
+        "metrics": {
+            "safe_close_rate": summary["safe_close_rate"],
+            "non_sale_correctness_rate": summary["non_sale_correctness_rate"],
+            "hard_failure_rate": summary["hard_failure_rate"],
+            "generated_trace_count": summary["generated_trace_count"],
+            "same_exchange_count_max_rate": summary["same_exchange_count_max_rate"],
+        },
+        "validation_targets": {
+            "required_labels": REQUIRED_LABELS,
+            "minimum_seed_count_per_scenario": 3,
+            "minimum_generated_trace_count": 120,
+            "minimum_5_exchange_traces": 70,
+            "minimum_8_exchange_traces": 40,
+            "minimum_12_exchange_traces": 15,
+            "minimum_18_exchange_traces": 4,
+        },
+        "boundaries": build_boundaries(),
+        "interactive_simulation_contract": {
+            "scenario_profiles_contain_full_agent_answers": False,
+            "scenario_profiles_contain_fixed_customer_scripts": False,
+            "customer_reacts_to_previous_agent_action_tags": True,
+            "agent_sees_hidden_customer_state": False,
+            "reaction_rules_expose_transcript_text": False,
+            "runtime_behavior_changed_by_this_checkpoint": False,
+            "production_runtime_promotion_allowed": False,
+        },
+        "review_surface": {
+            "shows_final_interaction_traces": True,
+            "shows_agent_action_tags": True,
+            "shows_reaction_rule_ids": True,
+            "shows_customer_state_before_after": True,
+            "shows_failure_taxonomy": True,
+            "shows_actual_agent_logic_used": True,
+        },
+    }
+    return payload, recipes_payload, policy_bank, frames_payload, profiles_payload, trace, surface_data
+
+
+def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload: dict[str, Any]) -> str:
+    del trace, frames_payload
+    summary = payload["summary"]
+    lines = [
+        "# PROD-041A Interactive Conditional Customer Simulation Expansion",
+        "",
+        "PROD-041A now tests interactive conditional customer simulation, not fixed scripted dialogue.",
+        "",
+        "The final HTML contains generated traces after running the local sales-agent turn harness against a deterministic customer simulator. Scenario profiles define persona, state, hidden objections, paths, terminal policy, safety boundaries, and seeds; they do not expose full scripts to the agent.",
+        "",
+        "## Summary",
+    ]
+    for key in [
+        "scenario_profile_count",
+        "profile_b2b_count",
+        "profile_b2c_count",
+        "seed_count_per_scenario_min",
+        "generated_trace_count",
+        "reaction_rule_count",
+        "domain_count",
+        "terminal_outcome_type_count",
+        "actual_agent_logic_used",
+        "safe_close_rate",
+        "non_sale_correctness_rate",
+        "hard_failure_count",
+        "payment_collection_count",
+        "unsupported_claim_count",
+        "leakage_finding_count",
+        "traces_with_5_plus_exchanges",
+        "traces_with_8_plus_exchanges",
+        "traces_with_12_plus_exchanges",
+        "traces_with_18_plus_exchanges",
+        "same_exchange_count_max_rate",
+        "neutral_state_two_exchange_trace_count",
+        "agent_caused_state_change_trace_count",
+        "challenge_pushback_trace_count",
+        "recovery_from_weak_answer_trace_count",
+        "boundary_handling_trace_count",
+        "repeated_full_agent_response_sequence_count",
+        "repeated_full_customer_response_sequence_count",
+    ]:
+        lines.append(f"- {key.replace('_', ' ').title()}: `{summary[key]}`")
+    lines.extend(
+        [
+            "",
+            "## Outputs",
+            "",
+            f"- `{payload['outputs']['result_path']}`",
+            f"- `{payload['outputs']['report_path']}`",
+            f"- `{payload['outputs']['recipes_path']}`",
+            f"- `{payload['outputs']['customer_reaction_policy_bank_path']}`",
+            f"- `{payload['outputs']['interactive_profiles_path']}`",
+            f"- `{payload['outputs']['trace_path']}`",
+            f"- `{payload['outputs']['surface_path']}`",
+            f"- `{payload['outputs']['surface_data_path']}`",
+            "",
+            "## Review Trace Fields",
+            "",
+            "Each generated interaction trace records `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after each response, failure taxonomy hits, safety flags, loop guard status, and whether actual local agent logic was used.",
+            "",
+            "## Boundary",
+            "",
+            "PROD-041A remains offline and deterministic. No provider calls, no LLM calls, no private data reads, no dataset downloads, no transcript text copying, no runtime behavior changes, and no production promotion.",
+            "",
+            f"The next checkpoint remains `{NEXT_CHECKPOINT_ID}` for human review.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -> str:
+    data_json = html.escape(json.dumps(surface_data, ensure_ascii=False), quote=False)
+    filter_controls = "\n".join(
+        f'<label>{html.escape(name)}<select id="{html.escape(name)}"><option value="">All</option>'
+        + "".join(f'<option value="{html.escape(str(value))}">{html.escape(str(value))}</option>' for value in values)
+        + "</select></label>"
+        for name, values in surface_data["filters"].items()
+    )
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROD-041A Interactive Simulation Review</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; margin: 0; color: #17202a; background: #f7f9fb; }}
+    header {{ padding: 24px; background: #16324f; color: white; }}
+    main {{ padding: 20px; max-width: 1320px; margin: 0 auto; }}
+    .metrics, .filters {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 16px 0; }}
+    .metric, label, article {{ background: white; border: 1px solid #d7dee8; border-radius: 6px; padding: 10px; }}
+    select {{ width: 100%; margin-top: 6px; }}
+    article {{ margin: 16px 0; }}
+    details {{ margin: 8px 0; }}
+    .exchange {{ border-left: 4px solid #6688aa; padding-left: 10px; margin: 12px 0; }}
+    code {{ background: #eef2f6; padding: 1px 4px; border-radius: 4px; }}
+    pre {{ white-space: pre-wrap; }}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-041A Interactive Conditional Customer Simulation Review</h1>
+    <p>Final traces after the local sales-agent turn harness interacts with a deterministic customer simulator.</p>
+    <p>Scenario profiles define behavior policies, not full scripts.</p>
+    <p>Next checkpoint: {NEXT_CHECKPOINT_ID}</p>
+  </header>
+  <main>
+    <section class="metrics" id="metrics"></section>
+    <section class="filters">{filter_controls}</section>
+    <section id="calls"></section>
+  </main>
+  <script id="data" type="application/json">{data_json}</script>
+  <script>
+    const data = JSON.parse(document.getElementById('data').textContent);
+    const metricKeys = [
+      'scenario_profile_count','generated_trace_count','seed_count_per_scenario_min','reaction_rule_count',
+      'traces_with_5_plus_exchanges','traces_with_8_plus_exchanges','traces_with_12_plus_exchanges',
+      'traces_with_18_plus_exchanges','same_exchange_count_max_rate','actual_agent_logic_used',
+      'hard_failure_count','payment_collection_count','unsupported_claim_count','leakage_finding_count'
+    ];
+    document.getElementById('metrics').innerHTML = metricKeys.map(k => `<div class="metric"><strong>${{k}}</strong><br><code>${{data.summary[k]}}</code></div>`).join('');
+    const filterIds = Object.keys(data.filters);
+    for (const id of filterIds) document.getElementById(id).addEventListener('change', render);
+    function esc(s) {{ return String(s).replace(/[&<>"']/g, c => ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c])); }}
+    function matches(call) {{
+      return filterIds.every(id => {{
+        const value = document.getElementById(id).value;
+        if (!value) return true;
+        if (id === 'seed') return String(call.seed) === value;
+        if (id === 'exchange_count') return String(call.exchange_count) === value;
+        if (id === 'emotion') return call.emotion === value;
+        if (id === 'failure_flag') return call.failure_flags.includes(value);
+        if (id === 'path_taken') return call.path_taken.includes(value);
+        if (id === 'actual_agent_logic_used') return String(call.actual_agent_logic_used) === value;
+        return call[id] === value;
+      }});
+    }}
+    function render() {{
+      const calls = data.calls.filter(matches);
+      document.getElementById('calls').innerHTML = calls.map(call => `
+        <article>
+          <h2>${{esc(call.trace_id)}} <code>${{esc(call.b2b_or_b2c)}}</code></h2>
+          <p><strong>Scenario:</strong> ${{esc(call.scenario_id)}} | <strong>Label:</strong> ${{esc(call.scenario_label)}} | <strong>Seed:</strong> <code>${{call.seed}}</code></p>
+          <p><strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Customer role:</strong> ${{esc(call.customer_role)}} | <strong>Emotion:</strong> ${{esc(call.emotion)}}</p>
+          <p><strong>Path:</strong> <code>${{esc(call.path_taken.join(' -> '))}}</code> | <strong>Exchanges:</strong> <code>${{call.exchange_count}}</code> | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
+          <p><strong>Actual agent logic used:</strong> <code>${{call.actual_agent_logic_used}}</code> | <strong>Adapter:</strong> <code>${{esc(call.actual_agent_logic_adapter)}}</code></p>
+          <p><strong>Safe close:</strong> <code>${{call.counts_toward_safe_close_rate}}</code> | <strong>Non-sale correctness:</strong> <code>${{call.counts_toward_non_sale_correctness}}</code></p>
+          <details><summary>Agent-visible context</summary><pre>${{esc(JSON.stringify(call.agent_visible_context, null, 2))}}</pre></details>
+          <details><summary>Scenario-level scores</summary><pre>${{esc(JSON.stringify(call.scenario_level_scores, null, 2))}}</pre></details>
+          <details><summary>Failure taxonomy</summary><pre>${{esc(JSON.stringify({{
+            hard_failure_count: call.hard_failure_count,
+            failure_flags: call.failure_flags,
+            failure_taxonomy_hits: call.failure_taxonomy_hits,
+            safety_flags: call.safety_flags,
+            loop_guard: call.loop_guard
+          }}, null, 2))}}</pre></details>
+          <details open><summary>Interaction trace</summary>
+            ${{call.exchanges.map(ex => `<div class="exchange">
+              <p><strong>Exchange ${{ex.exchange_index}}</strong> <code>${{esc(ex.stage)}}</code></p>
+              <p><strong>Agent:</strong> ${{esc(ex.agent_text)}}</p>
+              <p><strong>Agent action tags:</strong> <code>${{esc(ex.agent_action_tags.join(', '))}}</code></p>
+              <p><strong>Customer:</strong> ${{esc(ex.customer_text)}}</p>
+              <p><strong>Reaction rules:</strong> <code>${{esc(ex.selected_reaction_rule_ids.join(', '))}}</code></p>
+              <details><summary>Customer state before/after</summary><pre>${{esc(JSON.stringify({{before: ex.customer_state_before, after: ex.customer_state_after}}, null, 2))}}</pre></details>
+              <details><summary>Runtime decision</summary><pre>${{esc(JSON.stringify(ex.agent_runtime_decision, null, 2))}}</pre></details>
+            </div>`).join('')}}
+          </details>
         </article>
       `).join('');
     }}

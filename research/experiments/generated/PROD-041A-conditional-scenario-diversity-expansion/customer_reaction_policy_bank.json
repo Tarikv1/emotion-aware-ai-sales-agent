@@ -1,0 +1,962 @@
+{
+  "checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
+  "pattern_source_checkpoint_id": "PROD-013-callcenteren-pattern-extraction",
+  "extraction_method": "abstract customer reaction pattern extraction only",
+  "commercial_safety_boundary": "Rules are generalized conditional behavior policies created from abstract pattern IDs only; they do not copy CallCenterEN transcript text, source scenarios, names, provider details, or event sequences.",
+  "reaction_rules": [
+    {
+      "reaction_rule_id": "reaction-price-answered-001",
+      "source_pattern_ids": [
+        "objection-price-002",
+        "customer-softening-001"
+      ],
+      "stage": "early_call",
+      "agent_action_trigger": [
+        "answered_price_directly",
+        "gave_low_pressure_boundary"
+      ],
+      "customer_state_preconditions": {
+        "primary_objection": "price",
+        "trust_gte": 2
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "clarity": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "asks_relevance_or_written_info",
+      "utterance_variants": [
+        "Okay. What would the follow-up actually cover?",
+        "Fine. Send me the pricing and a short summary.",
+        "That is clearer. Why would this matter for us?",
+        "I am not agreeing yet, but I can look at the details."
+      ],
+      "possible_next_paths": [
+        "written_info_path",
+        "callback_path",
+        "skeptical_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "no pressure after price objection"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-price-dodged-001",
+      "source_pattern_ids": [
+        "objection-price-001",
+        "customer-friction-repeat-question-001"
+      ],
+      "stage": "early_call",
+      "agent_action_trigger": [
+        "dodged_price",
+        "gave_vague_answer"
+      ],
+      "customer_state_preconditions": {
+        "primary_objection": "price",
+        "trust_lte": 4,
+        "patience_lte": 5
+      },
+      "customer_state_delta": {
+        "trust": -1,
+        "patience": -1,
+        "friction": 1
+      },
+      "next_customer_behavior": "repeat_price_question_with_impatience",
+      "utterance_variants": [
+        "I asked what it costs.",
+        "You still have not told me the price.",
+        "I do not want the pitch before the price.",
+        "Can you just answer the cost question?"
+      ],
+      "possible_next_paths": [
+        "skeptical_path",
+        "rejection_path",
+        "written_info_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "no pressure after repeated price objection"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-not-interested-001",
+      "source_pattern_ids": [
+        "objection-not_interested-001",
+        "terminal-refusal-001"
+      ],
+      "stage": "any",
+      "agent_action_trigger": [
+        "respected_refusal",
+        "gave_low_pressure_boundary"
+      ],
+      "customer_state_preconditions": {
+        "interest_lte": 2
+      },
+      "customer_state_delta": {
+        "trust": 0,
+        "patience": 0,
+        "friction": 0
+      },
+      "next_customer_behavior": "ends_or_allows_polite_close",
+      "utterance_variants": [
+        "No, not today.",
+        "I will pass.",
+        "Please leave it there.",
+        "Not interested."
+      ],
+      "possible_next_paths": [
+        "rejection_path",
+        "do_not_contact_path"
+      ],
+      "terminal_risk": true,
+      "safety_notes": [
+        "end without pressure"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-callback-request-001",
+      "source_pattern_ids": [
+        "objection-callback-001",
+        "terminal-callback-002"
+      ],
+      "stage": "mid_call",
+      "agent_action_trigger": [
+        "offered_callback",
+        "gave_next_step"
+      ],
+      "customer_state_preconditions": {
+        "patience_lte": 5
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "interest": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "accepts_or_limits_callback",
+      "utterance_variants": [
+        "Send me a couple of times.",
+        "Maybe next week.",
+        "Keep it to fifteen minutes.",
+        "Email times first."
+      ],
+      "possible_next_paths": [
+        "callback_path",
+        "written_info_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "callback must stay optional"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-written-info-001",
+      "source_pattern_ids": [
+        "objection-send_info-001",
+        "terminal-written_info-001"
+      ],
+      "stage": "mid_call",
+      "agent_action_trigger": [
+        "offered_written_info",
+        "gave_low_pressure_boundary"
+      ],
+      "customer_state_preconditions": {
+        "trust_gte": 1
+      },
+      "customer_state_delta": {
+        "clarity": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "asks_for_email_only",
+      "utterance_variants": [
+        "Fine, send it.",
+        "Email only.",
+        "Just email me.",
+        "Send the short version."
+      ],
+      "possible_next_paths": [
+        "written_info_path",
+        "rejection_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "do not force a meeting after email-only request"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-identity-question-001",
+      "source_pattern_ids": [
+        "objection-trust-identity-001",
+        "customer-verification-001"
+      ],
+      "stage": "early_call",
+      "agent_action_trigger": [
+        "cold_open_permission_first",
+        "vague_pitch"
+      ],
+      "customer_state_preconditions": {
+        "trust_lte": 3
+      },
+      "customer_state_delta": {
+        "trust": -1,
+        "friction": 1
+      },
+      "next_customer_behavior": "asks_who_caller_is",
+      "utterance_variants": [
+        "Who exactly are you?",
+        "What company is this again?",
+        "Why are you calling me?",
+        "Who gave you this number?"
+      ],
+      "possible_next_paths": [
+        "skeptical_path",
+        "rejection_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "identity should be clarified without hype"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-payment-safety-001",
+      "source_pattern_ids": [
+        "objection-payment-001",
+        "safety-card-boundary-001"
+      ],
+      "stage": "any",
+      "agent_action_trigger": [
+        "handled_payment_safety",
+        "gave_low_pressure_boundary"
+      ],
+      "customer_state_preconditions": {
+        "payment_safety_risk": true
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "clarity": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "accepts_safe_written_path",
+      "utterance_variants": [
+        "Okay, as long as there is no card on this call.",
+        "I am not giving card details.",
+        "Written info is fine.",
+        "No payment today, right?"
+      ],
+      "possible_next_paths": [
+        "written_info_path",
+        "handoff_path",
+        "rejection_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "no payment collection"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-existing-provider-001",
+      "source_pattern_ids": [
+        "objection-existing_provider-001",
+        "customer-comparison-001"
+      ],
+      "stage": "early_call",
+      "agent_action_trigger": [
+        "gave_concrete_relevance",
+        "objection_isolation"
+      ],
+      "customer_state_preconditions": {
+        "primary_objection": "existing provider"
+      },
+      "customer_state_delta": {
+        "clarity": 1,
+        "interest": 1
+      },
+      "next_customer_behavior": "tests_non_replacement_scope",
+      "utterance_variants": [
+        "So this is not replacing our provider?",
+        "We already have someone for that.",
+        "That sounds like another platform.",
+        "Only if it does not disrupt what we use now."
+      ],
+      "possible_next_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "avoid unsupported competitor claims"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-technical-integration-001",
+      "source_pattern_ids": [
+        "objection-integration-001",
+        "terminal-handoff-001"
+      ],
+      "stage": "mid_call",
+      "agent_action_trigger": [
+        "offered_handoff",
+        "handled_support_boundary"
+      ],
+      "customer_state_preconditions": {
+        "primary_objection": "integration"
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "clarity": 1
+      },
+      "next_customer_behavior": "asks_for_specialist",
+      "utterance_variants": [
+        "I need someone technical.",
+        "Please route that to an integration person.",
+        "Do not guess on API details.",
+        "A specialist can answer that."
+      ],
+      "possible_next_paths": [
+        "handoff_path",
+        "callback_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "route technical certainty questions"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-manager-approval-001",
+      "source_pattern_ids": [
+        "objection-stakeholder-001",
+        "terminal-manager_review-001"
+      ],
+      "stage": "mid_call",
+      "agent_action_trigger": [
+        "offered_manager_review",
+        "offered_written_info"
+      ],
+      "customer_state_preconditions": {
+        "decision_power": "influencer"
+      },
+      "customer_state_delta": {
+        "clarity": 1,
+        "interest": 1
+      },
+      "next_customer_behavior": "asks_for_shareable_summary",
+      "utterance_variants": [
+        "I need to ask my manager.",
+        "Send something I can forward.",
+        "My boss would need the short version.",
+        "I cannot approve this myself."
+      ],
+      "possible_next_paths": [
+        "manager_review_path",
+        "written_info_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "no commitment before approval"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-hostile-001",
+      "source_pattern_ids": [
+        "emotion-hostile-001",
+        "terminal-do_not_contact-001"
+      ],
+      "stage": "any",
+      "agent_action_trigger": [
+        "respected_refusal"
+      ],
+      "customer_state_preconditions": {
+        "friction_gte": 4
+      },
+      "customer_state_delta": {
+        "trust": 0,
+        "patience": 0,
+        "friction": 0
+      },
+      "next_customer_behavior": "ends_after_deescalation",
+      "utterance_variants": [
+        "Fine. End it.",
+        "Do not call again.",
+        "Good. Take us off the list.",
+        "Stop here."
+      ],
+      "possible_next_paths": [
+        "do_not_contact_path"
+      ],
+      "terminal_risk": true,
+      "safety_notes": [
+        "do not continue after do-not-contact"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-support-boundary-001",
+      "source_pattern_ids": [
+        "objection-support-001",
+        "terminal-support_boundary-001"
+      ],
+      "stage": "any",
+      "agent_action_trigger": [
+        "handled_support_boundary",
+        "offered_handoff"
+      ],
+      "customer_state_preconditions": {
+        "support_boundary_risk": true
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "accepts_support_handoff",
+      "utterance_variants": [
+        "Yes, support only.",
+        "Route this to support.",
+        "That is a support issue.",
+        "Please stop the sales part."
+      ],
+      "possible_next_paths": [
+        "support_boundary_path",
+        "handoff_path"
+      ],
+      "terminal_risk": true,
+      "safety_notes": [
+        "sales path ends after support boundary"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-confused-001",
+      "source_pattern_ids": [
+        "emotion-confused-001",
+        "customer-clarification-001"
+      ],
+      "stage": "early_call",
+      "agent_action_trigger": [
+        "simple_explanation",
+        "gave_concrete_relevance"
+      ],
+      "customer_state_preconditions": {
+        "emotion": "confused"
+      },
+      "customer_state_delta": {
+        "clarity": 1,
+        "trust": 1
+      },
+      "next_customer_behavior": "asks_plain_follow_up",
+      "utterance_variants": [
+        "I am not sure I follow.",
+        "What are you actually offering?",
+        "Say that more simply.",
+        "Okay, but what does that mean for us?"
+      ],
+      "possible_next_paths": [
+        "skeptical_path",
+        "callback_path",
+        "written_info_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "avoid question-storming"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-rushed-001",
+      "source_pattern_ids": [
+        "emotion-rushed-001",
+        "customer-time-pressure-001"
+      ],
+      "stage": "early_call",
+      "agent_action_trigger": [
+        "permission_first",
+        "offered_callback"
+      ],
+      "customer_state_preconditions": {
+        "patience_lte": 3
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "accepts_brief_or_callback",
+      "utterance_variants": [
+        "I only have a minute.",
+        "Keep it short.",
+        "Not now.",
+        "Send times instead."
+      ],
+      "possible_next_paths": [
+        "callback_path",
+        "rejection_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "respect time pressure"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-skeptical-proof-001",
+      "source_pattern_ids": [
+        "objection-proof-001",
+        "customer-evidence-check-001"
+      ],
+      "stage": "mid_call",
+      "agent_action_trigger": [
+        "social_proof_safe",
+        "gave_concrete_relevance"
+      ],
+      "customer_state_preconditions": {
+        "emotion": "skeptical"
+      },
+      "customer_state_delta": {
+        "clarity": 1,
+        "trust": 1
+      },
+      "next_customer_behavior": "asks_for_checkable_proof",
+      "utterance_variants": [
+        "That still sounds vague.",
+        "What can I actually verify?",
+        "Send something I can check.",
+        "No big claims, please."
+      ],
+      "possible_next_paths": [
+        "written_info_path",
+        "skeptical_path",
+        "rejection_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "no unsupported proof claims"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-too-many-questions-001",
+      "source_pattern_ids": [
+        "agent-mistake-question_storm-001",
+        "customer-friction-001"
+      ],
+      "stage": "mid_call",
+      "agent_action_trigger": [
+        "asked_too_many_questions",
+        "gave_vague_answer"
+      ],
+      "customer_state_preconditions": {
+        "patience_lte": 5
+      },
+      "customer_state_delta": {
+        "patience": -1,
+        "friction": 1
+      },
+      "next_customer_behavior": "pushes_back_on_questions",
+      "utterance_variants": [
+        "That is too many questions.",
+        "Can you answer mine first?",
+        "This is getting vague.",
+        "I do not want an interview."
+      ],
+      "possible_next_paths": [
+        "skeptical_path",
+        "rejection_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "answer before more discovery"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-pressure-after-refusal-001",
+      "source_pattern_ids": [
+        "agent-mistake-pressure-001",
+        "terminal-do_not_contact-002"
+      ],
+      "stage": "any",
+      "agent_action_trigger": [
+        "pressured_after_refusal"
+      ],
+      "customer_state_preconditions": {
+        "friction_gte": 3
+      },
+      "customer_state_delta": {
+        "trust": -2,
+        "patience": -2,
+        "friction": 2
+      },
+      "next_customer_behavior": "escalates_to_do_not_contact",
+      "utterance_variants": [
+        "No, please don't call again.",
+        "I already said no.",
+        "Take me off the list.",
+        "Stop pushing."
+      ],
+      "possible_next_paths": [
+        "do_not_contact_path"
+      ],
+      "terminal_risk": true,
+      "safety_notes": [
+        "pressure after refusal is a hard failure risk"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-clear-next-step-001",
+      "source_pattern_ids": [
+        "agent-success-next_step-001",
+        "customer-softening-002"
+      ],
+      "stage": "late_call",
+      "agent_action_trigger": [
+        "gave_next_step",
+        "gave_low_pressure_boundary"
+      ],
+      "customer_state_preconditions": {
+        "trust_gte": 2
+      },
+      "customer_state_delta": {
+        "trust": 0,
+        "clarity": 0,
+        "friction": 0
+      },
+      "next_customer_behavior": "neutral_or_accepts_limited_step",
+      "utterance_variants": [
+        "Maybe. Keep it limited.",
+        "Okay, that part is clear.",
+        "I can review that.",
+        "No decision today, but send it."
+      ],
+      "possible_next_paths": [
+        "callback_path",
+        "written_info_path",
+        "manager_review_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "next step must stay low pressure"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-unsupported-claim-001",
+      "source_pattern_ids": [
+        "agent-mistake-unsupported_claim-001",
+        "customer-trust-loss-001"
+      ],
+      "stage": "any",
+      "agent_action_trigger": [
+        "made_unsupported_claim"
+      ],
+      "customer_state_preconditions": {
+        "trust_lte": 5
+      },
+      "customer_state_delta": {
+        "trust": -2,
+        "friction": 2
+      },
+      "next_customer_behavior": "challenges_claim",
+      "utterance_variants": [
+        "You cannot know that.",
+        "That sounds like a claim you cannot support.",
+        "Do not promise that.",
+        "I need proof before I believe that."
+      ],
+      "possible_next_paths": [
+        "rejection_path",
+        "handoff_path"
+      ],
+      "terminal_risk": true,
+      "safety_notes": [
+        "unsupported claims must remain zero in generated traces"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    },
+    {
+      "reaction_rule_id": "reaction-safe-handoff-001",
+      "source_pattern_ids": [
+        "agent-success-handoff-001",
+        "terminal-handoff-002"
+      ],
+      "stage": "late_call",
+      "agent_action_trigger": [
+        "offered_handoff",
+        "handled_support_boundary"
+      ],
+      "customer_state_preconditions": {
+        "trust_gte": 1
+      },
+      "customer_state_delta": {
+        "trust": 1,
+        "clarity": 1,
+        "friction": -1
+      },
+      "next_customer_behavior": "accepts_safe_handoff",
+      "utterance_variants": [
+        "Yes, route it.",
+        "A specialist is fine.",
+        "Send me to the right person.",
+        "That sounds safer."
+      ],
+      "possible_next_paths": [
+        "handoff_path",
+        "support_boundary_path"
+      ],
+      "terminal_risk": false,
+      "safety_notes": [
+        "handoff must be safer than guessing"
+      ],
+      "abstract_pattern_only": true,
+      "forbidden_source_use": [
+        "raw transcript text",
+        "transcript-specific situations",
+        "customer phrasing",
+        "company names",
+        "customer names",
+        "phone numbers",
+        "addresses",
+        "provider names",
+        "unique event sequences",
+        "dataset-specific phrasing"
+      ]
+    }
+  ]
+}

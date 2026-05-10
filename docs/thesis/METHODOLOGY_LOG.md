@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041A interactive conditional customer simulation rewrite
+
+- Objective: replace PROD-041A fixed scripted dialogue with interactive conditional customer simulation.
+- Action taken: added `customer_reaction_policy_bank.json`, `interactive_scenario_profiles.json`, canonical `interaction_traces.json`, and a validator that checks seeded variation, variable exchange counts, `agent_action_tags`, selected `reaction_rule_ids`, customer state before/after records, no static scripts, and no runtime promotion.
+- Data used: existing PROD-013/PROD-014 abstract pattern IDs and the local deterministic sales-agent turn harness only. No provider call, LLM call, private data read, dataset download, transcript text copying, source sequence copying, or runtime behavior change was used.
+- Output created: regenerated `scenario_recipes.json`, `customer_reaction_policy_bank.json`, `concrete_scenario_frames.json`, `interactive_scenario_profiles.json`, `interaction_traces.json`, `scenario_diversity_traces.json`, `scenario_diversity_review.html`, `scenario_diversity_review_data.json`, `result.json`, and `report.md` under `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/`.
+- What was learned: a useful offline sales simulator needs customer state and reaction policies, not prewritten calls. The repaired checkpoint now produces `120` traces from `40` profiles x `3` seeds, with variable lengths and customer turns reacting to the immediately previous agent tags.
+- Why it matters for the thesis: it tests dynamic interaction quality and safe recovery behavior while keeping CallCenterEN use leakage-safe and abstract.
+- Open questions: whether PROD-041 human review should accept the local deterministic agent harness behavior or require a later runtime-agent upgrade before voice/demo use.
+
 ### 2026-05-10 - PROD-041A leakage-safe scenario recipe layer
 
 - Objective: repair PROD-041A grounding so concrete frames and dialogue are produced from abstract reusable scenario recipes, not direct scenario labels or any individual CallCenterEN-like source situation.

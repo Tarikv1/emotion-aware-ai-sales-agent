@@ -7,7 +7,10 @@ from pathlib import Path
 
 from prod_041a_conditional_scenario_diversity_expansion import (
     DEFAULT_FRAMES,
+    DEFAULT_INTERACTIVE_PROFILES,
+    DEFAULT_LEGACY_TRACE,
     DEFAULT_PATTERN_BANK,
+    DEFAULT_POLICY_BANK,
     DEFAULT_RECIPES,
     DEFAULT_REPORT,
     DEFAULT_RESULT,
@@ -49,8 +52,11 @@ def main() -> None:
     parser.add_argument("--out", default=str(DEFAULT_RESULT), help="Result JSON output path.")
     parser.add_argument("--report-out", default=str(DEFAULT_REPORT), help="Markdown report output path.")
     parser.add_argument("--recipes-out", default=str(DEFAULT_RECIPES), help="Scenario recipes JSON output path.")
+    parser.add_argument("--policy-bank-out", default=str(DEFAULT_POLICY_BANK), help="Customer reaction policy bank JSON output path.")
     parser.add_argument("--frames-out", default=str(DEFAULT_FRAMES), help="Concrete scenario frames JSON output path.")
-    parser.add_argument("--trace-out", default=str(DEFAULT_TRACE), help="Scenario trace JSON output path.")
+    parser.add_argument("--interactive-profiles-out", default=str(DEFAULT_INTERACTIVE_PROFILES), help="Interactive scenario profiles JSON output path.")
+    parser.add_argument("--trace-out", default=str(DEFAULT_TRACE), help="Interaction trace JSON output path.")
+    parser.add_argument("--legacy-trace-out", default=str(DEFAULT_LEGACY_TRACE), help="Legacy scenario_diversity_traces alias output path.")
     parser.add_argument("--surface-out", default=str(DEFAULT_SURFACE), help="Static HTML surface output path.")
     parser.add_argument("--surface-data-out", default=str(DEFAULT_SURFACE_DATA), help="Static HTML data output path.")
     args = parser.parse_args()
@@ -60,12 +66,15 @@ def main() -> None:
     out_path = resolve_path(args.out)
     report_path = resolve_path(args.report_out)
     recipes_path = resolve_path(args.recipes_out)
+    policy_bank_path = resolve_path(args.policy_bank_out)
     frames_path = resolve_path(args.frames_out)
+    interactive_profiles_path = resolve_path(args.interactive_profiles_out)
     trace_path = resolve_path(args.trace_out)
+    legacy_trace_path = resolve_path(args.legacy_trace_out)
     surface_path = resolve_path(args.surface_out)
     surface_data_path = resolve_path(args.surface_data_out)
 
-    payload, recipes_payload, frames_payload, trace, surface_data = build_payload(
+    payload, recipes_payload, policy_bank_payload, frames_payload, profiles_payload, trace, surface_data = build_payload(
         scenario_bank_path=scenario_bank,
         pattern_bank_path=pattern_bank,
         result_path=out_path,
@@ -78,8 +87,11 @@ def main() -> None:
     )
     write_json(out_path, payload)
     write_json(recipes_path, recipes_payload)
+    write_json(policy_bank_path, policy_bank_payload)
     write_json(frames_path, frames_payload)
+    write_json(interactive_profiles_path, profiles_payload)
     write_json(trace_path, trace)
+    write_json(legacy_trace_path, trace)
     write_json(surface_data_path, surface_data)
     write_text(report_path, render_report(payload, trace, frames_payload))
     write_text(surface_path, render_surface_html(payload, surface_data))

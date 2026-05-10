@@ -46,6 +46,8 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md`
 - `PROD_041_CONDITIONAL_SIMULATION_REVIEW.md`
 
+Current PROD-041A scope: interactive conditional customer simulation with `customer_reaction_policy_bank.json`, `interactive_scenario_profiles.json`, and `interaction_traces.json`; it is not a fixed scripted-dialogue generator.
+
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 
 ## Retrieval And RAG

@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-092 - Rewrite PROD-041A as interactive conditional customer simulation
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Rewrite `PROD-041A-conditional-scenario-diversity-expansion` around interactive conditional customer simulation rather than fixed scripted dialogue.
+- Why:
+  - static three-exchange scripts did not test whether customer behavior changes in response to what the agent actually says
+  - the checkpoint needs seeded variations, variable conversation lengths, customer state transitions, branch policies, and terminal policies before human review
+  - the final review surface should show generated traces after the current local sales-agent turn harness runs against the simulator
+- Alternatives considered:
+  - patch more phrases in the fixed script generator
+  - expand beyond 40 scenarios
+  - use LLM scoring or provider calls
+- Consequences:
+  - `customer_reaction_policy_bank.json` is now the core scenario-behavior artifact
+  - `interactive_scenario_profiles.json` stores persona, state, hidden objections, branch policies, seeds, terminal policies, and safety boundaries, not full scripts
+  - `interaction_traces.json` stores `120` generated traces from `40` profiles x `3` seeds
+  - every customer response records selected `reaction_rule_ids`, prior `agent_action_tags`, and customer state before/after
+  - PROD-041A remains offline, deterministic, no-provider, no-LLM, no transcript-copying, and no runtime promotion
+  - the next checkpoint remains `PROD-041-conditional-simulation-review`
+
 ### DEC-091 - Repair PROD-041A with recipe-grounded concrete scenario frames only
 
 - Date: 2026-05-10
