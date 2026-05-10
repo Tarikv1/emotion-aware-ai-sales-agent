@@ -1089,7 +1089,7 @@ Run the PROD-041A conditional scenario diversity expansion checkpoint:
 python scripts\run_prod_041a_conditional_scenario_diversity_expansion.py
 ```
 
-Validate the PROD-041A 40-scenario diversity gates, B2B/B2C split, curated scenario labels, opening-style coverage, deterministic strategy/emotion scoring, terminal outcome coverage, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
+Validate the PROD-041A 40-scenario diversity gates, concrete scenario frame mining output, frame-to-trace linkage, dialogue naturalness checks, deterministic strategy/emotion scoring, terminal outcome coverage, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
 
 ```powershell
 python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py

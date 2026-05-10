@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041A concrete scenario frame mining and dialogue naturalness repair
+
+- Objective: repair PROD-041A dialogue realism without adding scenarios by introducing a concrete frame-mining layer between abstract pattern sources and generated traces.
+- Action taken: rewrote PROD-041A generation so spoken dialogue is produced from `concrete_scenario_frames.json` instead of direct scenario-label concern text; updated runner outputs, validator gates, review surface fields, and naturalness checks.
+- Data used: abstract-only sources from `PROD-014` scenario-bank IDs and `PROD-013` pattern IDs. No provider call, LLM call, private data read, dataset download, transcript copying, or runtime behavior change was used.
+- Output created: updated `scripts/prod_041a_conditional_scenario_diversity_expansion.py`, `scripts/run_prod_041a_conditional_scenario_diversity_expansion.py`, `scripts/validate_prod_041a_conditional_scenario_diversity_expansion.py`, and regenerated `result.json`, `report.md`, `concrete_scenario_frames.json`, `scenario_diversity_traces.json`, `scenario_diversity_review.html`, `scenario_diversity_review_data.json` under `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/`.
+- What was learned: frame-grounded generation removes most evaluator-style phrasing while keeping deterministic coverage. Each trace now references one unique frame, dialogue realism scores use a `7`-component naturalness model, and frame-quality/bridge-repeat/short-reply/challenge metrics can be validated directly.
+- Why it matters for the thesis: this isolates realism repair from scenario-count expansion and keeps the evidence chain clean: abstract mined patterns -> concrete safe frames -> deterministic review-ready traces.
+- Open questions: whether PROD-041 human review accepts the repaired dialogue as sufficiently natural, or requests targeted trace rewrites before any voice/demo use.
+
 ### 2026-05-10 - PROD-041 conditional simulation review
 
 - Objective: complete the human review checkpoint for the locked PROD-041A expanded traces without expanding the scenario set again.

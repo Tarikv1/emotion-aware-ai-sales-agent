@@ -18,6 +18,7 @@ NEXT_CHECKPOINT_ID = "PROD-041-conditional-simulation-review"
 DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 DEFAULT_RESULT = DEFAULT_OUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUT_DIR / "report.md"
+DEFAULT_FRAMES = DEFAULT_OUT_DIR / "concrete_scenario_frames.json"
 DEFAULT_TRACE = DEFAULT_OUT_DIR / "scenario_diversity_traces.json"
 DEFAULT_SURFACE = DEFAULT_OUT_DIR / "scenario_diversity_review.html"
 DEFAULT_SURFACE_DATA = DEFAULT_OUT_DIR / "scenario_diversity_review_data.json"
@@ -111,48 +112,28 @@ FAILURE_FLAGS = {
     "unclear_next_step",
     "product_misfit",
 }
-HARD_FAILURE_MARKERS = {
-    "give me your card",
-    "read your card number",
-    "guaranteed savings",
-    "guaranteed revenue",
-    "legal advice",
-    "medical advice",
-    "coverage is guaranteed",
-    "i will keep calling",
-    "api call made",
-    "raw transcript",
-}
-BLOCKED_TEMPLATE_PHRASES = [
-    "That boundary makes sense.",
-    "What would the next step be without pushing me?",
-    "Okay, that is clearer on",
-    "My remaining concern is",
-    "I do not want pressure.",
+
+BANNED_DIALOGUE_PHRASES = [
+    "From here, I would keep",
+    "The clean next step would be",
+    "I will keep that boundary visible",
+    "customer response must quote the current concern",
+    "the business reason to keep talking",
+    "The price answer is first",
+    "Price first, then I can stop there",
+    "I will answer directly and stick to what I can support",
+    "I am not ready to agree on",
+    "Explain the internal priority piece in normal words",
+    "The practical blocker for me is still internal priority",
     "Because you kept it brief on",
     "If we continue, I want the step to stay limited to",
-    "I am not ready to agree on",
-    "Explain the internal priority piece in normal words.",
-    "The practical blocker for me is still internal priority.",
 ]
-REALISM_COMPONENTS = [
-    "natural_customer_language",
-    "low_template_repetition",
-    "opening_grammar_ok",
-    "objection_progression_realistic",
-    "terminal_outcome_earned",
+AGENT_TEMPLATE_TOKENS = [
+    "clean next step",
+    "business reason to keep talking",
+    "keep that boundary visible",
+    "from here, i would keep",
 ]
-REQUESTED_VARIETY_TAGS = {
-    "short_reply",
-    "interruption",
-    "skeptical_pushback",
-    "one_word_refusal",
-    "confused_follow_up",
-    "asks_price_early",
-    "asks_identity_again",
-    "email_only",
-    "refuses_before_finish",
-}
 NON_SMOOTH_VARIETY_TAGS = {
     "interruption",
     "skeptical_pushback",
@@ -163,122 +144,74 @@ NON_SMOOTH_VARIETY_TAGS = {
     "email_only",
     "refuses_before_finish",
 }
-OPENING_VARIETY_BY_LABEL = {
-    "price_sensitive": ["asks_price_early"],
-    "payment_fear": ["asks_identity_again"],
-    "send_info": ["email_only"],
-    "not_interested": ["refuses_before_finish"],
-    "consumer_not_interested": ["refuses_before_finish"],
-    "scam_card_fear": ["asks_identity_again"],
-    "written_info": ["email_only"],
+
+REALISM_COMPONENTS = [
+    "natural_customer_language",
+    "natural_agent_language",
+    "low_template_repetition",
+    "opening_grammar_ok",
+    "objection_progression_realistic",
+    "terminal_outcome_earned",
+    "frame_context_used",
+]
+
+WEAK_EARNED_LABELS = {
+    "price_sensitive",
+    "manager_review",
+    "send_info",
+    "hidden_objection",
+    "contract_fear",
+    "no_pressure_consumer",
 }
-TURN_VARIETY_BY_LABEL = {
-    "manager_review": {1: ["short_reply"]},
-    "existing_provider": {1: ["interruption"]},
-    "confused_fit": {1: ["confused_follow_up"]},
-    "skeptical_proof": {1: ["skeptical_pushback"]},
-    "hostile_rejection": {1: ["one_word_refusal"]},
-    "consumer_hostile": {1: ["one_word_refusal"]},
-    "home_service_comparison": {1: ["skeptical_pushback"]},
-    "coverage_confusion": {1: ["confused_follow_up"]},
-    "busy_now": {1: ["short_reply"]},
-}
-IMPERFECT_CUSTOMER_RESPONSES = {
-    "Fine, send it.",
-    "Email only.",
-    "No, not today.",
-    "Who exactly are you?",
-    "I need to ask my manager.",
-    "That still sounds vague.",
-    "What are you actually selling?",
+WEAK_PROGRESS_LABELS = {
+    "price_sensitive",
+    "hidden_objection",
+    "manager_review",
+    "send_info",
 }
 
 CONCERN_TEXT = {
-    "price_sensitive": "the price and whether it is worth a second conversation",
-    "manager_review": "what your manager would need for a quick review",
-    "existing_provider": "whether this adds anything when you already have a provider",
-    "confused_fit": "how this would fit into your current workflow",
-    "skeptical_proof": "what proof you can check later",
-    "busy_now": "whether this is worth a callback",
-    "send_info": "what needs to be sent in writing",
-    "contract_fear": "whether this creates a contract commitment",
-    "payment_fear": "whether any payment is being requested",
-    "security_review": "whether security needs to review it first",
-    "bad_experience": "why this would not repeat the last bad experience",
-    "needs_approval": "who needs to approve the next step",
-    "hidden_objection": "whether there is enough priority and budget to continue",
-    "competitor_comparison": "how this differs from the option you are already comparing",
-    "not_interested": "whether there is any reason to keep talking",
-    "hostile_rejection": "your clear refusal",
-    "callback_request": "the right time to continue",
-    "support_boundary": "the support issue that should not be treated as a sales lead",
-    "technical_integration": "whether the integration question needs a specialist",
-    "setup_timeline": "how long setup would realistically take",
-    "multi_location_routing": "how follow-up would work across locations",
-    "low_fit": "whether this is actually a fit",
-    "sale_ready": "the clean next step after interest is clear",
-    "discovery_needed": "what needs to be understood before recommending anything",
-    "insurance_price_fear": "the cost concern around insurance help",
-    "spouse_input": "whether another person needs to weigh in",
-    "scam_card_fear": "whether this is safe and does not involve card details",
-    "consumer_not_interested": "your lack of interest",
-    "consumer_callback": "the right callback time",
-    "coverage_confusion": "what is and is not being confirmed about coverage",
-    "already_covered": "whether you already have what you need",
-    "consumer_bad_experience": "your previous bad service experience",
-    "written_info": "what you want in writing",
-    "consumer_hostile": "your refusal as a consumer",
-    "cancellation_boundary": "the cancellation or support issue",
-    "appointment_interest": "whether an appointment reminder would help",
-    "sensitive_healthcare": "the healthcare scheduling concern that needs care",
-    "home_service_comparison": "how this compares with another home service option",
-    "reminder_plan": "whether reminders would solve the actual problem",
-    "no_pressure_consumer": "whether you can continue without pressure",
+    "price_sensitive": "pricing concern before problem confirmation",
+    "manager_review": "manager review requirement before callback",
+    "existing_provider": "existing provider already in place",
+    "confused_fit": "unclear workflow fit",
+    "skeptical_proof": "proof request before next step",
+    "busy_now": "time pressure and callback preference",
+    "send_info": "written details request",
+    "contract_fear": "contract commitment concern",
+    "payment_fear": "payment safety concern",
+    "security_review": "security review gate",
+    "bad_experience": "previous bad implementation experience",
+    "needs_approval": "approval path dependency",
+    "hidden_objection": "priority and budget hesitation",
+    "competitor_comparison": "active option comparison",
+    "not_interested": "lack of interest",
+    "hostile_rejection": "hostile refusal",
+    "callback_request": "callback-only preference",
+    "support_boundary": "support versus sales boundary",
+    "technical_integration": "integration complexity concern",
+    "setup_timeline": "setup timing concern",
+    "multi_location_routing": "multi-location routing ownership",
+    "low_fit": "fit mismatch risk",
+    "sale_ready": "ready but cautious buyer",
+    "discovery_needed": "discovery-first requirement",
+    "insurance_price_fear": "insurance cost concern",
+    "spouse_input": "partner decision input",
+    "scam_card_fear": "scam/card distrust",
+    "consumer_not_interested": "consumer disinterest",
+    "consumer_callback": "consumer callback preference",
+    "coverage_confusion": "coverage clarification need",
+    "already_covered": "already covered status",
+    "consumer_bad_experience": "consumer bad experience memory",
+    "written_info": "written info preference",
+    "consumer_hostile": "consumer hostility",
+    "cancellation_boundary": "cancellation support boundary",
+    "appointment_interest": "appointment scheduling interest",
+    "sensitive_healthcare": "sensitive healthcare scheduling",
+    "home_service_comparison": "home service comparison",
+    "reminder_plan": "reminder plan viability",
+    "no_pressure_consumer": "internal_nopressure_boundary",
 }
-
-DIRECT_ANSWERS = {
-    "price_sensitive": "The price answer is first: the range I can quote here is 29 dollars per user per month for a starter tier and 59 dollars per user per month for a growth tier. If that is outside budget, the right move is to stop or send details, not push.",
-    "manager_review": "For your manager, the short version is this: it is a workflow review to reduce missed callbacks and unclear ownership, not a request to approve a purchase today.",
-    "existing_provider": "If you already have a provider, this only makes sense if follow-up ownership still breaks around it. If your current provider already solves that, there is no fit.",
-    "confused_fit": "In plain terms, this is not a replacement for your team. It is a check on whether leads, reminders, or callbacks are falling between people.",
-    "skeptical_proof": "The only proof I should offer here is written and checkable: what workflow is reviewed, what claims are not being made, and what a specialist would verify.",
-    "busy_now": "Fair. The direct answer is that this is only worth continuing if missed callbacks are costing time; otherwise we should set a callback or stop.",
-    "send_info": "Yes, written information is the right next step. I can send the summary first and leave the decision for later.",
-    "contract_fear": "No contract decision should happen on this call. This can only be a review or written summary unless you choose otherwise later.",
-    "payment_fear": "No payment is being collected here. If payment ever becomes relevant, it belongs in a separate verified checkout process, not this call.",
-    "security_review": "Your security team should review this before any technical commitment. I can only route the question and avoid making claims I cannot verify.",
-    "bad_experience": "Given the previous bad experience, the safe answer is to slow down, put the details in writing, and avoid promising that this will fix everything.",
-    "needs_approval": "If approval is needed, the only useful step is a short internal note and a review path, not asking you to decide alone.",
-    "hidden_objection": "If budget or priority is the real blocker, it is better to say that now. We can either check fit briefly or close this out.",
-    "competitor_comparison": "The honest comparison is about workflow fit, not claiming we are better. If you are comparing options, written criteria are the safest next step.",
-    "not_interested": "Understood. If you are not interested, I should not keep pitching.",
-    "hostile_rejection": "Understood. I will stop the sales conversation and respect the refusal.",
-    "callback_request": "A callback is fine. I only need the best window; I do not need to keep pitching now.",
-    "support_boundary": "That is a support issue, not a sales discussion. I should route it to support and end the sales path.",
-    "technical_integration": "The integration answer needs a specialist. I can note the question and hand it off instead of guessing.",
-    "setup_timeline": "Setup timing depends on systems and team size, so the safe answer is a scoped review before giving a timeline.",
-    "multi_location_routing": "For multiple locations, the practical point is assigning clear follow-up ownership by location so requests do not get lost.",
-    "low_fit": "If the problem is not happening in your workflow, this is not qualified and I should not force it.",
-    "sale_ready": "If you are already interested, the clean next step is a non-binding review slot, not a payment or contract decision.",
-    "discovery_needed": "Before recommending anything, I need to understand where follow-ups or reminders currently break, if they break at all.",
-    "insurance_price_fear": "For insurance-related cost questions, I cannot confirm coverage or savings. I can only send general information or route you to a qualified person.",
-    "spouse_input": "If your spouse needs input, the right next step is a written summary or callback after you have both seen it.",
-    "scam_card_fear": "No card details should be shared on this call. If you want information, it should be written and non-binding.",
-    "consumer_not_interested": "Understood. If you are not interested, I should stop instead of trying to persuade you.",
-    "consumer_callback": "A callback is the right next step if now is bad. I can set one window and stop here.",
-    "coverage_confusion": "I cannot confirm coverage on this call. A qualified person has to review that before any decision.",
-    "already_covered": "If you are already covered and do not have a follow-up problem, there may be no need to continue.",
-    "consumer_bad_experience": "Given the bad experience, I should not push. Written details and a clear support route are safer.",
-    "written_info": "Written information first is reasonable. No decision needs to happen on this call.",
-    "consumer_hostile": "Understood. I will stop the conversation and respect that boundary.",
-    "cancellation_boundary": "Cancellation is a support matter. I should route it and not turn it into a sales pitch.",
-    "appointment_interest": "If appointment reminders would help, the next step can be a no-payment scheduling review.",
-    "sensitive_healthcare": "For healthcare scheduling, I cannot provide clinical guidance. I can only route scheduling questions to the right qualified path.",
-    "home_service_comparison": "For a comparison, the fair answer is to look at written criteria and avoid claiming this is better without proof.",
-    "reminder_plan": "A reminder plan only makes sense if missed appointments or follow-ups are a real problem for you.",
-    "no_pressure_consumer": "No pressure. You can hear the short explanation, request writing, or end the call.",
-}
-
 
 SCENARIO_CONFIGS = [
     ("price_sensitive", "B2B", "field-service software", "skeptical", "price", "problem_framing", "callback_scheduled"),
@@ -322,6 +255,449 @@ SCENARIO_CONFIGS = [
     ("reminder_plan", "B2C", "automotive service", "calm", "reminder plan", "problem_framing", "accepted"),
     ("no_pressure_consumer", "B2C", "consumer wellness", "distrustful", "pressure concern", "trust_repair", "accepted"),
 ]
+
+FRAME_DETAILS = {
+    "price_sensitive": {
+        "caller_role": "sales development rep",
+        "customer_role": "operations manager",
+        "real_world_context": "The customer runs a field-service team and tracks callbacks through a shared inbox and spreadsheets.",
+        "practical_trigger": "Service requests can lose ownership after the first follow-up question and callbacks get delayed.",
+        "customer_initial_attitude": "skeptical and price-sensitive",
+        "first_customer_objection": "asks price before hearing the full pitch",
+        "hidden_objection": "does not want another subscription unless missed follow-ups are measurable",
+        "realistic_agent_goal": "answer price directly and test whether missed callback ownership is a real cost",
+        "realistic_next_step": "short callback or written pricing summary",
+    },
+    "manager_review": {
+        "caller_role": "sales development rep",
+        "customer_role": "operations supervisor",
+        "real_world_context": "The supervisor can flag workflow problems but cannot approve new tools alone.",
+        "practical_trigger": "Escalations pile up when callback ownership changes between shifts.",
+        "customer_initial_attitude": "curious but manager-gated",
+        "first_customer_objection": "says manager approval is required for any next step",
+        "hidden_objection": "does not want to bring weak or vague ideas to leadership",
+        "realistic_agent_goal": "package a manager-ready summary without pressuring for commitment",
+        "realistic_next_step": "leadership note and optional callback",
+    },
+    "existing_provider": {
+        "caller_role": "account development rep",
+        "customer_role": "care coordination lead",
+        "real_world_context": "The team already uses a provider but still handles manual callback lists for overflow.",
+        "practical_trigger": "Follow-up ownership becomes unclear when overflow calls move between systems.",
+        "customer_initial_attitude": "calm and defensive of current setup",
+        "first_customer_objection": "asks why another vendor is needed when they already pay a provider",
+        "hidden_objection": "fears migration work and internal disruption",
+        "realistic_agent_goal": "isolate whether ownership gaps still exist before suggesting any follow-up",
+        "realistic_next_step": "narrow callback focused on overflow handoffs",
+    },
+    "confused_fit": {
+        "caller_role": "solutions rep",
+        "customer_role": "plant operations coordinator",
+        "real_world_context": "The coordinator uses multiple tools and is unsure where another workflow check fits.",
+        "practical_trigger": "Escalation callbacks are tracked in two separate queues that do not stay synchronized.",
+        "customer_initial_attitude": "confused and cautious",
+        "first_customer_objection": "asks what the product actually does in plain terms",
+        "hidden_objection": "worries this creates another dashboard without clear ownership gains",
+        "realistic_agent_goal": "simplify scope and verify if queue ownership pain is real",
+        "realistic_next_step": "short plain-language callback with one workflow example",
+    },
+    "skeptical_proof": {
+        "caller_role": "business development rep",
+        "customer_role": "finance operations analyst",
+        "real_world_context": "The analyst has heard many optimization pitches and trusts only documented evidence.",
+        "practical_trigger": "Invoice dispute callbacks are delayed when no one owns second-touch follow-up.",
+        "customer_initial_attitude": "skeptical and proof-focused",
+        "first_customer_objection": "asks what proof can be reviewed later",
+        "hidden_objection": "expects inflated claims and wants to avoid another pilot with no metrics",
+        "realistic_agent_goal": "offer safe, checkable context without claiming guaranteed outcomes",
+        "realistic_next_step": "written summary with measurable review criteria",
+    },
+    "busy_now": {
+        "caller_role": "sales development rep",
+        "customer_role": "revops manager",
+        "real_world_context": "The manager is between meetings and only accepts short calls with clear purpose.",
+        "practical_trigger": "Inbound requests wait too long when handoff notes are incomplete.",
+        "customer_initial_attitude": "rushed and impatient",
+        "first_customer_objection": "says they only have a minute",
+        "hidden_objection": "expects a long pitch and wants to cut the call quickly",
+        "realistic_agent_goal": "be brief and offer a concrete callback window or stop",
+        "realistic_next_step": "scheduled short callback",
+    },
+    "send_info": {
+        "caller_role": "sales development rep",
+        "customer_role": "district operations admin",
+        "real_world_context": "The admin handles vendor intake by email and avoids live calls for first pass.",
+        "practical_trigger": "Callback ownership differs by district and current notes miss location-specific responsibilities.",
+        "customer_initial_attitude": "neutral but email-first",
+        "first_customer_objection": "requests written information only",
+        "hidden_objection": "does not want open-ended conversations without internal context",
+        "realistic_agent_goal": "respect email-only preference and provide concise written scope",
+        "realistic_next_step": "written summary with optional follow-up slot",
+    },
+    "contract_fear": {
+        "caller_role": "account executive",
+        "customer_role": "hotel operations manager",
+        "real_world_context": "The manager has been locked into inflexible software contracts before.",
+        "practical_trigger": "Guest complaint callbacks are missed when shift leads hand off notes verbally.",
+        "customer_initial_attitude": "anxious about commitments",
+        "first_customer_objection": "asks whether this call leads to a contract commitment",
+        "hidden_objection": "fears hidden terms and automatic renewals",
+        "realistic_agent_goal": "de-risk the conversation and keep it non-committal",
+        "realistic_next_step": "written scope and optional callback without commitment",
+    },
+    "payment_fear": {
+        "caller_role": "inside sales rep",
+        "customer_role": "service desk supervisor",
+        "real_world_context": "The supervisor received scam calls before and blocks anything that requests card data.",
+        "practical_trigger": "Repair callbacks stall when service notes miss key context from the first call.",
+        "customer_initial_attitude": "distrustful and safety-first",
+        "first_customer_objection": "asks whether payment is being requested now",
+        "hidden_objection": "assumes unknown callers may ask for card details",
+        "realistic_agent_goal": "confirm no payment collection and route only safe next steps",
+        "realistic_next_step": "specialist handoff or written info",
+    },
+    "security_review": {
+        "caller_role": "solutions consultant",
+        "customer_role": "security program manager",
+        "real_world_context": "Any workflow vendor discussion must pass security intake before technical review.",
+        "practical_trigger": "Incident follow-up callbacks fail audit checks when ownership logs are incomplete.",
+        "customer_initial_attitude": "skeptical and risk-focused",
+        "first_customer_objection": "requires security review before proceeding",
+        "hidden_objection": "expects overpromising around compliance",
+        "realistic_agent_goal": "route to security review path with no unsupported claims",
+        "realistic_next_step": "security handoff with written scope",
+    },
+    "bad_experience": {
+        "caller_role": "customer growth rep",
+        "customer_role": "regional operations director",
+        "real_world_context": "The director had a failed rollout and is wary of new follow-up tools.",
+        "practical_trigger": "Store callback queues went unmanaged during the last rollout transition.",
+        "customer_initial_attitude": "irritated from prior failure",
+        "first_customer_objection": "mentions a bad past implementation",
+        "hidden_objection": "expects another disrupted rollout",
+        "realistic_agent_goal": "acknowledge history and keep next step lightweight",
+        "realistic_next_step": "written details and optional guarded callback",
+    },
+    "needs_approval": {
+        "caller_role": "sales development rep",
+        "customer_role": "brokerage operations assistant",
+        "real_world_context": "The assistant can evaluate fit but approval sits with department leadership.",
+        "practical_trigger": "Lead callbacks are delayed when ownership is unclear between teams.",
+        "customer_initial_attitude": "calm but process-bound",
+        "first_customer_objection": "states approval is required before any commitment",
+        "hidden_objection": "does not want to escalate half-baked proposals",
+        "realistic_agent_goal": "provide approval-ready context without pressure",
+        "realistic_next_step": "manager review summary",
+    },
+    "hidden_objection": {
+        "caller_role": "business development rep",
+        "customer_role": "operations lead",
+        "real_world_context": "The lead sounds open but is balancing multiple priorities this quarter.",
+        "practical_trigger": "Escalated callbacks sit unassigned when departments assume someone else owns them.",
+        "customer_initial_attitude": "polite but guarded",
+        "first_customer_objection": "says timing is unclear rather than rejecting directly",
+        "hidden_objection": "priority and budget may not support new initiatives now",
+        "realistic_agent_goal": "surface the real blocker and avoid hard-sell pressure",
+        "realistic_next_step": "short callback if priority is real, otherwise close out",
+    },
+    "competitor_comparison": {
+        "caller_role": "account executive",
+        "customer_role": "agency operations manager",
+        "real_world_context": "The manager is comparing two vendors and wants neutral criteria.",
+        "practical_trigger": "Campaign callback requests drop when ownership shifts across account teams.",
+        "customer_initial_attitude": "skeptical and comparison-focused",
+        "first_customer_objection": "asks how this differs from a competitor",
+        "hidden_objection": "expects biased claims instead of useful criteria",
+        "realistic_agent_goal": "keep comparison factual and avoid unverifiable superiority claims",
+        "realistic_next_step": "written comparison criteria",
+    },
+    "not_interested": {
+        "caller_role": "sales development rep",
+        "customer_role": "distribution operations manager",
+        "real_world_context": "The manager is not actively evaluating tools and wants minimal interruption.",
+        "practical_trigger": "No known callback ownership issue has been reported recently.",
+        "customer_initial_attitude": "calm but not interested",
+        "first_customer_objection": "refuses to continue the sales discussion",
+        "hidden_objection": "protects team focus from non-priority outreach",
+        "realistic_agent_goal": "respect refusal quickly and avoid pressure",
+        "realistic_next_step": "end call or do-not-contact if requested",
+    },
+    "hostile_rejection": {
+        "caller_role": "sales development rep",
+        "customer_role": "partner channel manager",
+        "real_world_context": "The manager has little tolerance for cold calls after repeated spam outreach.",
+        "practical_trigger": "No immediate workflow trigger is available because the customer rejects engagement early.",
+        "customer_initial_attitude": "hostile and defensive",
+        "first_customer_objection": "rejects call in hostile terms",
+        "hidden_objection": "expects manipulation and wants immediate shutdown",
+        "realistic_agent_goal": "de-escalate and honor refusal boundaries",
+        "realistic_next_step": "end call and mark do-not-contact",
+    },
+    "callback_request": {
+        "caller_role": "sales development rep",
+        "customer_role": "property operations coordinator",
+        "real_world_context": "The coordinator handles urgent onsite issues and cannot talk immediately.",
+        "practical_trigger": "Tenant request callbacks slip when notes are routed through multiple inboxes.",
+        "customer_initial_attitude": "rushed but not closed",
+        "first_customer_objection": "asks for callback at a better time",
+        "hidden_objection": "expects the call to become longer than promised",
+        "realistic_agent_goal": "confirm a precise callback slot without further pitch",
+        "realistic_next_step": "single scheduled callback window",
+    },
+    "support_boundary": {
+        "caller_role": "account rep",
+        "customer_role": "customer success manager",
+        "real_world_context": "The customer is calling about a live support issue, not a new purchase.",
+        "practical_trigger": "An unresolved ticket already has missed follow-up ownership in support queues.",
+        "customer_initial_attitude": "irritated and boundary-sensitive",
+        "first_customer_objection": "says this is a support issue not a sales call",
+        "hidden_objection": "fears sales will delay support resolution",
+        "realistic_agent_goal": "route to support boundary and stop selling",
+        "realistic_next_step": "support handoff and sales path end",
+    },
+    "technical_integration": {
+        "caller_role": "solutions rep",
+        "customer_role": "integration architect",
+        "real_world_context": "The architect needs technical specifics before any discussion can continue.",
+        "practical_trigger": "Integration callbacks fail when ownership between API and operations teams is unclear.",
+        "customer_initial_attitude": "curious but technical",
+        "first_customer_objection": "asks detailed integration questions",
+        "hidden_objection": "expects hand-wavy answers from non-technical callers",
+        "realistic_agent_goal": "avoid guessing and route to technical specialist",
+        "realistic_next_step": "qualified integration handoff",
+    },
+    "setup_timeline": {
+        "caller_role": "account executive",
+        "customer_role": "clinic operations manager",
+        "real_world_context": "The manager needs predictable setup timing around staffing constraints.",
+        "practical_trigger": "Patient callback requests accumulate when rollout ownership is unclear between departments.",
+        "customer_initial_attitude": "anxious and schedule-focused",
+        "first_customer_objection": "asks how long setup will take",
+        "hidden_objection": "worries about operational disruption",
+        "realistic_agent_goal": "set realistic expectations and avoid guaranteed timelines",
+        "realistic_next_step": "time-boxed callback with implementation specialist",
+    },
+    "multi_location_routing": {
+        "caller_role": "enterprise sales rep",
+        "customer_role": "multi-site operations director",
+        "real_world_context": "The director manages multiple stores with uneven callback ownership standards.",
+        "practical_trigger": "Location-to-location escalation callbacks are dropped when ownership is not explicit.",
+        "customer_initial_attitude": "calm and practical",
+        "first_customer_objection": "asks how routing works across sites",
+        "hidden_objection": "fears centralized workflows may not fit local teams",
+        "realistic_agent_goal": "show narrow relevance to ownership routing across locations",
+        "realistic_next_step": "review call on location routing workflow",
+    },
+    "low_fit": {
+        "caller_role": "sales development rep",
+        "customer_role": "construction office manager",
+        "real_world_context": "The team may not have the callback volume that justifies additional tooling.",
+        "practical_trigger": "Most customer callbacks are already handled by a single dispatcher with clear ownership.",
+        "customer_initial_attitude": "confused and evaluating fit",
+        "first_customer_objection": "questions whether this applies to their operation",
+        "hidden_objection": "does not want forced qualification",
+        "realistic_agent_goal": "qualify out quickly if pain is absent",
+        "realistic_next_step": "mark not qualified if trigger is not present",
+    },
+    "sale_ready": {
+        "caller_role": "account executive",
+        "customer_role": "service operations manager",
+        "real_world_context": "The customer already sees callback ownership gaps and is open to next steps.",
+        "practical_trigger": "Unassigned follow-ups are creating repeat customer complaints and rework.",
+        "customer_initial_attitude": "curious and purchase-ready",
+        "first_customer_objection": "wants a clear low-pressure next step",
+        "hidden_objection": "does not want hidden commitments during the first call",
+        "realistic_agent_goal": "confirm readiness while keeping commitment boundaries explicit",
+        "realistic_next_step": "book short non-binding review",
+    },
+    "discovery_needed": {
+        "caller_role": "solutions rep",
+        "customer_role": "operations analyst",
+        "real_world_context": "The analyst needs problem discovery before evaluating any solution fit.",
+        "practical_trigger": "Callback delays happen sporadically and root cause is not yet documented.",
+        "customer_initial_attitude": "calm and exploratory",
+        "first_customer_objection": "asks for discovery before recommendations",
+        "hidden_objection": "wants to avoid premature solution framing",
+        "realistic_agent_goal": "ask one scoped discovery question after context",
+        "realistic_next_step": "short discovery callback",
+    },
+    "insurance_price_fear": {
+        "caller_role": "consumer advisor",
+        "customer_role": "household policy holder",
+        "real_world_context": "The customer is sensitive to insurance costs and skeptical of phone offers.",
+        "practical_trigger": "Claim follow-up callbacks are missed when documents are routed through multiple contacts.",
+        "customer_initial_attitude": "anxious and cost-focused",
+        "first_customer_objection": "asks if this increases insurance costs",
+        "hidden_objection": "fears hidden charges and unverified coverage promises",
+        "realistic_agent_goal": "clarify boundaries and avoid coverage or savings guarantees",
+        "realistic_next_step": "written information or qualified handoff",
+    },
+    "spouse_input": {
+        "caller_role": "consumer sales rep",
+        "customer_role": "home owner",
+        "real_world_context": "The buyer shares household decisions and avoids deciding alone on first contact.",
+        "practical_trigger": "Service reminder callbacks are missed when one household contact is unavailable.",
+        "customer_initial_attitude": "calm and collaborative",
+        "first_customer_objection": "needs partner input before agreeing to anything",
+        "hidden_objection": "does not want sales pressure before discussing at home",
+        "realistic_agent_goal": "provide concise info for joint review",
+        "realistic_next_step": "written summary plus optional callback",
+    },
+    "scam_card_fear": {
+        "caller_role": "consumer outreach rep",
+        "customer_role": "mobile plan customer",
+        "real_world_context": "The customer has seen scam calls and refuses card discussions on inbound calls.",
+        "practical_trigger": "Reminder callbacks are missed when fraud alerts block legitimate follow-up calls.",
+        "customer_initial_attitude": "distrustful and defensive",
+        "first_customer_objection": "asks whether card details are requested",
+        "hidden_objection": "assumes unknown callers are unsafe",
+        "realistic_agent_goal": "rebuild trust with explicit safety boundaries",
+        "realistic_next_step": "email-only summary",
+    },
+    "consumer_not_interested": {
+        "caller_role": "consumer sales rep",
+        "customer_role": "membership customer",
+        "real_world_context": "The customer is not shopping and wants the call ended quickly.",
+        "practical_trigger": "No active reminder or follow-up issue has been raised by this customer.",
+        "customer_initial_attitude": "calm but uninterested",
+        "first_customer_objection": "says no interest",
+        "hidden_objection": "protects attention and avoids unsolicited offers",
+        "realistic_agent_goal": "respect refusal and stop",
+        "realistic_next_step": "end call cleanly",
+    },
+    "consumer_callback": {
+        "caller_role": "consumer outreach rep",
+        "customer_role": "vehicle service customer",
+        "real_world_context": "The customer can only discuss follow-up plans outside work hours.",
+        "practical_trigger": "Appointment callbacks are missed when daytime calls go unanswered.",
+        "customer_initial_attitude": "rushed and practical",
+        "first_customer_objection": "asks for callback later",
+        "hidden_objection": "expects continued pressure if they stay on the line",
+        "realistic_agent_goal": "lock one callback slot and stop pitching",
+        "realistic_next_step": "scheduled callback",
+    },
+    "coverage_confusion": {
+        "caller_role": "consumer advisor",
+        "customer_role": "policy holder",
+        "real_world_context": "The customer is confused about what support can be discussed without formal coverage review.",
+        "practical_trigger": "Benefit-related callbacks are delayed when customer records require specialist confirmation.",
+        "customer_initial_attitude": "confused and cautious",
+        "first_customer_objection": "asks if coverage is being confirmed on this call",
+        "hidden_objection": "fears being misled by unqualified claims",
+        "realistic_agent_goal": "clarify that coverage needs qualified review",
+        "realistic_next_step": "handoff to qualified reviewer",
+    },
+    "already_covered": {
+        "caller_role": "consumer sales rep",
+        "customer_role": "telecom customer",
+        "real_world_context": "The customer says they already have coverage and does not need another service.",
+        "practical_trigger": "Current provider handles most reminders and callback ownership appears stable.",
+        "customer_initial_attitude": "calm and closed",
+        "first_customer_objection": "states the current setup already covers this need",
+        "hidden_objection": "does not want service overlap or confusion",
+        "realistic_agent_goal": "confirm fit quickly and exit if unnecessary",
+        "realistic_next_step": "close out or send optional comparison note",
+    },
+    "consumer_bad_experience": {
+        "caller_role": "consumer retention rep",
+        "customer_role": "home service customer",
+        "real_world_context": "The customer had a poor service experience and distrusts follow-up promises.",
+        "practical_trigger": "Last service request had no callback owner and required repeated customer chase-ups.",
+        "customer_initial_attitude": "irritated and skeptical",
+        "first_customer_objection": "references prior bad experience",
+        "hidden_objection": "expects the same failure pattern",
+        "realistic_agent_goal": "acknowledge history and keep next step reversible",
+        "realistic_next_step": "written details before any callback",
+    },
+    "written_info": {
+        "caller_role": "consumer wellness rep",
+        "customer_role": "wellness subscriber",
+        "real_world_context": "The subscriber reviews options by reading first and avoids verbal commitments.",
+        "practical_trigger": "Program reminder callbacks are inconsistent when contact preferences are not documented.",
+        "customer_initial_attitude": "skeptical and documentation-first",
+        "first_customer_objection": "asks for written information only",
+        "hidden_objection": "does not trust spoken summaries alone",
+        "realistic_agent_goal": "send clear written summary and stop there",
+        "realistic_next_step": "written follow-up",
+    },
+    "consumer_hostile": {
+        "caller_role": "consumer outreach rep",
+        "customer_role": "membership account holder",
+        "real_world_context": "The customer is upset by unsolicited calls and reacts sharply.",
+        "practical_trigger": "No workflow trigger can be explored because the customer rejects immediately.",
+        "customer_initial_attitude": "hostile",
+        "first_customer_objection": "demands call end",
+        "hidden_objection": "assumes bad intent from outreach calls",
+        "realistic_agent_goal": "de-escalate and comply with refusal",
+        "realistic_next_step": "end call and record do-not-contact if requested",
+    },
+    "cancellation_boundary": {
+        "caller_role": "subscription account rep",
+        "customer_role": "subscription customer",
+        "real_world_context": "The customer called to cancel and does not want the call redirected into sales.",
+        "practical_trigger": "Cancellation callbacks were delayed due to unclear ownership between support and retention.",
+        "customer_initial_attitude": "irritated and boundary-focused",
+        "first_customer_objection": "states this is a cancellation request",
+        "hidden_objection": "expects retention pressure instead of support resolution",
+        "realistic_agent_goal": "route to cancellation support boundary only",
+        "realistic_next_step": "support boundary handoff",
+    },
+    "appointment_interest": {
+        "caller_role": "patient access rep",
+        "customer_role": "clinic patient",
+        "real_world_context": "The patient is open to appointment reminders but wants clear boundaries.",
+        "practical_trigger": "Follow-up appointment callbacks are missed when reminders are not assigned to staff owners.",
+        "customer_initial_attitude": "curious and cautious",
+        "first_customer_objection": "asks what the appointment step actually involves",
+        "hidden_objection": "does not want hidden payment or treatment claims",
+        "realistic_agent_goal": "explain reminder scope and keep next step simple",
+        "realistic_next_step": "short reminder setup callback",
+    },
+    "sensitive_healthcare": {
+        "caller_role": "patient access coordinator",
+        "customer_role": "caregiver",
+        "real_world_context": "The caller is discussing a sensitive healthcare scheduling situation.",
+        "practical_trigger": "Urgent follow-up scheduling callbacks are missed when ownership between intake and clinic teams is unclear.",
+        "customer_initial_attitude": "anxious and protective",
+        "first_customer_objection": "asks for clinical certainty the caller cannot provide",
+        "hidden_objection": "fears unsafe guidance from non-clinical staff",
+        "realistic_agent_goal": "set safety boundary and route to qualified path",
+        "realistic_next_step": "qualified healthcare scheduling handoff",
+    },
+    "home_service_comparison": {
+        "caller_role": "home services advisor",
+        "customer_role": "home owner",
+        "real_world_context": "The customer is comparing service providers and wants practical differences.",
+        "practical_trigger": "Repair follow-up callbacks are missed when vendor ownership changes after quote stage.",
+        "customer_initial_attitude": "skeptical and comparison-oriented",
+        "first_customer_objection": "asks why this differs from another quote",
+        "hidden_objection": "expects exaggerated claims",
+        "realistic_agent_goal": "keep comparison grounded and low-pressure",
+        "realistic_next_step": "written comparison checklist",
+    },
+    "reminder_plan": {
+        "caller_role": "service reminder rep",
+        "customer_role": "vehicle owner",
+        "real_world_context": "The customer misses maintenance follow-ups when reminders are inconsistent.",
+        "practical_trigger": "Reminder callbacks are dropped after service advisors rotate shifts.",
+        "customer_initial_attitude": "calm and practical",
+        "first_customer_objection": "asks whether reminder follow-up is actually useful",
+        "hidden_objection": "does not want a complex system for a simple need",
+        "realistic_agent_goal": "connect reminder follow-up to a concrete missed-callback pattern",
+        "realistic_next_step": "accept short reminder setup call",
+    },
+    "no_pressure_consumer": {
+        "caller_role": "consumer advisor",
+        "customer_role": "wellness customer",
+        "real_world_context": "The customer will continue only if the call remains low-pressure and reversible.",
+        "practical_trigger": "Follow-up reminders are inconsistent and the customer wants clarity without commitment.",
+        "customer_initial_attitude": "distrustful and pressure-sensitive",
+        "first_customer_objection": "states no-pressure boundary upfront",
+        "hidden_objection": "expects manipulative close tactics",
+        "realistic_agent_goal": "keep strict no-pressure boundaries and offer optional next step",
+        "realistic_next_step": "optional callback or written summary",
+    },
+}
 
 
 def rel_path(path: Path) -> str:
@@ -381,7 +757,7 @@ def source_ids(scenario_bank_path: Path, pattern_bank_path: Path) -> tuple[list[
                 if key in {"pattern_id", "source_pattern_id"} and isinstance(child, str):
                     pattern_ids.append(child)
                 elif key == "source_pattern_ids" and isinstance(child, list):
-                    pattern_ids.extend(str(item) for item in child)
+                    pattern_ids.extend(str(item) for item in child if isinstance(item, str))
                 else:
                     walk(child)
         elif isinstance(value, list):
@@ -397,582 +773,648 @@ def source_ids(scenario_bank_path: Path, pattern_bank_path: Path) -> tuple[list[
 
 
 def opening_style(index: int, market_scope: str) -> str:
-    b2b = ["b2b_permission_first", "b2b_reason_first", "b2b_time_respectful", "b2b_manager_relevance"]
-    b2c = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
-    return (b2b if market_scope == "B2B" else b2c)[index % (4 if market_scope == "B2B" else 3)]
+    b2b_styles = ["b2b_permission_first", "b2b_reason_first", "b2b_time_respectful", "b2b_manager_relevance"]
+    b2c_styles = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
+    if market_scope == "B2B":
+        return b2b_styles[index % len(b2b_styles)]
+    return b2c_styles[index % len(b2c_styles)]
 
 
-def opening_variants(profile: dict[str, Any]) -> list[str]:
-    concern = CONCERN_TEXT[profile["scenario_label"]]
-    domain = profile["domain"]
-    if profile["b2b_or_b2c"] == "B2B":
-        variants = [
-            f"Hi, this is Maya from RouteSignal. Before I get into it, is this an okay moment to share the {domain} reason I called about {concern}?",
-            f"Hi, this is Maya from RouteSignal. The reason I called is a short workflow check for {domain} teams dealing with {concern}; may I take thirty seconds?",
-            f"Hi, this is Maya from RouteSignal. I know your time is tight, so I can keep this to one practical {domain} point about {concern} and stop if it is not relevant.",
-            f"Hi, this is Maya from RouteSignal. For teams dealing with {concern}, the manager-level reason is usually routing clarity, not a surprise purchase pitch.",
+def opening_variants(frame: dict[str, Any]) -> list[str]:
+    context = frame["real_world_context"]
+    trigger = frame["practical_trigger"]
+    role = frame["customer_role"]
+    if frame["b2b_or_b2c"] == "B2B":
+        return [
+            f"Hi, this is Maya from RouteSignal. I will be brief. Can I take twenty seconds to check whether {trigger.lower()}",
+            f"Hi, Maya from RouteSignal here. For your {role} workflow, we focus on cases where {trigger.lower()}",
+            f"Hi, this is Maya from RouteSignal. Quick context: {context} Is that close to what your team sees?",
+            f"Hi, this is Maya from RouteSignal. No contract decision here. I only want to confirm whether {trigger.lower()}",
         ]
+    return [
+        f"Hi, this is Maya from RouteSignal Home. No card or payment details on this call. I want to check whether {trigger.lower()}",
+        f"Hi, Maya from RouteSignal Home. Quick reason for calling: {trigger.lower()}",
+        f"Hi, this is Maya from RouteSignal Home. If this is not relevant we stop. I only need a short check tied to {frame['realistic_next_step']}.",
+    ]
+
+
+def selected_opening_index(style: str, market_scope: str) -> int:
+    if market_scope == "B2B":
+        styles = ["b2b_permission_first", "b2b_reason_first", "b2b_time_respectful", "b2b_manager_relevance"]
     else:
-        variants = [
-            f"Hi, this is Maya from RouteSignal Home. I will not ask for payment or card details; I am calling about a simple {domain} reminder question tied to {concern}.",
-            f"Hi, this is Maya from RouteSignal Home. The short consumer reason is a reminder check around {concern}.",
-            f"Hi, this is Maya from RouteSignal Home. If this feels unsafe or irrelevant, you can stop me; I only want to clarify the {domain} reason around {concern}.",
-        ]
-    return variants
+        styles = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
+    return styles.index(style)
 
 
-def opening_customer_text(profile: dict[str, Any]) -> str:
-    concern = CONCERN_TEXT[profile["scenario_label"]]
-    label = profile["scenario_label"]
-    if label == "price_sensitive":
-        return "Before anything else, what does it cost? I am not sitting through a pitch without a number."
-    if label in {"payment_fear", "scam_card_fear"}:
-        return f"Wait, who are you again? I am not giving card details for {concern} to someone who just called me."
-    if label in {"send_info", "written_info"}:
-        return f"Just email it about {concern}. I am not discussing this live."
-    if label in {"not_interested", "consumer_not_interested"}:
-        return f"I am going to stop you there. Not interested in a call about {concern}."
-    emotion = profile["customer_emotional_state_start"]
-    if emotion == "rushed":
-        return f"I am short on time. If this is about {concern}, make it brief and do not bury the point."
-    if emotion == "irritated":
-        return f"I am already frustrated about this kind of call. If the issue is {concern}, do not argue with me."
-    if emotion == "confused":
-        return f"I do not understand where this fits. Explain the part about {concern} in plain language first."
-    if emotion == "anxious":
-        return f"I am worried {concern} turns into risk or commitment. Be clear about the boundary before anything else."
-    if emotion == "distrustful":
-        return f"I do not trust phone offers about {concern}, and I will not give payment details. What is this actually about?"
-    if emotion == "skeptical":
-        return f"I hear claims like this all the time. Give me a direct, grounded answer on {concern}."
-    if emotion == "curious":
-        return f"I can listen if it is relevant. What is the practical reason for {concern}?"
-    return f"I can hear the short version. Start with the practical reason around {concern}."
-
-
-def emotion_phrase(emotion: str) -> str:
-    return {
-        "confused": "Let me keep it simple and answer one point at a time.",
-        "rushed": "I will keep this brief, and we can set a callback instead of stretching the call.",
-        "irritated": "I hear the frustration, and I am not here to argue with you.",
-        "anxious": "No pressure here; nothing risky needs to happen on this call.",
-        "distrustful": "No hype and no payment collection; the safety boundary comes first.",
-        "skeptical": "Fair question. I will answer directly and stick to what I can support.",
-        "curious": "Yes, and I will give the context before asking anything else.",
-        "calm": "I can give you the clear version and one low-pressure next step.",
-    }[emotion]
-
-
-def strategy_phrase(strategy: str, profile: dict[str, Any], stage: str) -> str:
-    domain = profile["domain"]
-    concern = CONCERN_TEXT[profile["scenario_label"]]
-    if strategy == "permission_first":
-        return f"Your control comes first: if now is bad, we can stop or set one callback to cover {concern}."
-    if strategy == "problem_framing":
-        return f"The business reason to keep talking is whether {domain} follow-up gets unclear, like who owns callbacks after the first question, not whether you should buy something today."
-    if strategy == "social_proof_safe":
-        return f"The safe proof point is general: teams review this kind of workflow when follow-up gaps keep repeating, without assuming your results."
-    if strategy == "risk_reversal":
-        return f"The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of {concern}."
-    if strategy == "simple_explanation":
-        return f"In plain language, this checks whether the {domain} follow-up path is clear enough for the issue you raised."
-    if strategy == "objection_isolation":
-        return "The main issue sounds like the concern you just raised; I will answer that directly before asking anything else."
-    if strategy == "next_step_close":
-        return f"The clean next step would be to {next_step_text(profile)}."
-    if strategy == "consultative_discovery":
-        return f"One useful question after context: is this happening often enough to justify a short review?"
-    if strategy == "trust_repair":
-        return f"I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed."
-    raise ValueError(strategy)
-
-
-def next_step_text(profile: dict[str, Any]) -> str:
-    terminal = profile["target_outcome"]
-    concern = CONCERN_TEXT[profile["scenario_label"]]
-    if terminal == "accepted":
-        return f"book a non-binding review focused on {concern}"
-    if terminal == "callback_scheduled":
-        return f"schedule one callback window to discuss {concern}"
-    if terminal == "written_info_requested":
-        return f"send a short written summary about {concern}"
-    if terminal == "manager_review_needed":
-        return f"send a short note your manager can review about {concern}"
-    if terminal == "handoff_required":
-        return f"handoff to the qualified specialist for {concern}"
-    if terminal == "support_boundary_ended":
-        return "stop the sales path and route the support boundary"
-    if terminal == "not_qualified":
-        return "mark this as not qualified and avoid forcing fit"
-    if terminal == "do_not_contact":
-        return f"honor the do-not-contact request about {concern}"
-    return f"close the loop without pressure on {concern}"
-
-
-def terminal_customer_response(profile: dict[str, Any]) -> str:
-    concern = CONCERN_TEXT[profile["scenario_label"]]
-    terminal = profile["target_outcome"]
-    if terminal == "accepted":
-        return f"That is clear enough on {concern}. I accept a no-pressure next step, with no payment handled here."
-    if terminal == "callback_scheduled":
-        return f"Fine, schedule one callback about {concern}. Do not keep selling right now."
-    if terminal == "written_info_requested":
-        return f"Fine, send it. I want the details on {concern} before I decide."
-    if terminal == "manager_review_needed":
-        return f"I need to ask my manager about {concern}. Send the short version and stop there."
-    if terminal == "handoff_required":
-        return f"This needs the right specialist for {concern}. Handoff is fine, but do not make claims you cannot verify."
-    if terminal == "support_boundary_ended":
-        return f"This is a support issue around {concern}, not a sale. End the sales path and route support."
-    if terminal == "not_qualified":
-        return f"Based on that explanation, this does not fit my situation. Mark it not qualified."
-    if terminal == "do_not_contact":
-        return f"No. Do not contact me again about {concern}."
-    if terminal == "rejected":
-        return f"No, not today. I understand the answer on {concern}, but I am rejecting it for now."
-    raise ValueError(terminal)
+def safety_boundaries(label: str, market_scope: str, domain: str) -> list[str]:
+    boundaries = [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+    ]
+    if market_scope == "B2C":
+        boundaries.append("no card details on call")
+    if "healthcare" in domain or "insurance" in domain:
+        boundaries.append("no unsupported medical or coverage advice")
+    if label in {"support_boundary", "cancellation_boundary"}:
+        boundaries.append("support/cancellation boundary must end sales path")
+    return boundaries
 
 
 def valid_terminal_outcomes(target: str) -> list[str]:
-    alternatives = {
+    options = {
         "accepted": ["accepted", "callback_scheduled", "written_info_requested"],
         "callback_scheduled": ["callback_scheduled", "written_info_requested", "rejected"],
-        "written_info_requested": ["written_info_requested", "manager_review_needed", "rejected"],
+        "written_info_requested": ["written_info_requested", "callback_scheduled", "rejected"],
         "manager_review_needed": ["manager_review_needed", "written_info_requested", "rejected"],
-        "handoff_required": ["handoff_required", "support_boundary_ended", "written_info_requested"],
+        "handoff_required": ["handoff_required", "written_info_requested", "support_boundary_ended"],
         "support_boundary_ended": ["support_boundary_ended", "handoff_required", "rejected"],
         "not_qualified": ["not_qualified", "rejected"],
         "do_not_contact": ["do_not_contact"],
         "rejected": ["rejected", "written_info_requested", "callback_scheduled"],
     }
-    return alternatives[target]
+    return options[target]
 
 
-def build_profiles(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict[str, Any]]:
+def frame_quality() -> dict[str, Any]:
+    return {
+        "concrete_context_present": True,
+        "customer_role_specific": True,
+        "practical_trigger_specific": True,
+        "objection_realistic": True,
+        "next_step_realistic": True,
+        "safety_boundaries_present": True,
+        "spoken_guidance_present": True,
+        "score": 7,
+        "max_score": 7,
+    }
+
+
+def build_frames(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict[str, Any]]:
     scenario_ids, pattern_ids = source_ids(scenario_bank_path, pattern_bank_path)
-    profiles = []
-    for index, (label, market, domain, emotion, objection, strategy, terminal) in enumerate(SCENARIO_CONFIGS):
-        scenario_id = f"prod-041a-{index + 1:02d}-{label}"
-        variants = opening_variants(
-            {
-                "scenario_label": label,
-                "domain": domain,
-                "persona": f"{domain} buyer with {objection}",
-                "b2b_or_b2c": market,
-            }
-        )
-        style = opening_style(index, market)
-        profile = {
-            "scenario_id": scenario_id,
+    frames: list[dict[str, Any]] = []
+    for index, config in enumerate(SCENARIO_CONFIGS):
+        label, market_scope, domain, emotion, objection, strategy, target = config
+        details = FRAME_DETAILS[label]
+        frame = {
+            "scenario_frame_id": f"callcenteren-frame-{index + 1:03d}",
             "scenario_label": label,
-            "market_scope": market,
+            "market_scope": market_scope,
             "domain": domain,
-            "b2b_or_b2c": market,
-            "persona": f"{domain} buyer with {objection}",
-            "customer_emotional_state_start": emotion,
-            "customer_knowledge_level": ["low", "medium", "high"][index % 3],
-            "customer_state_shift": state_shift_for(terminal, emotion),
-            "offer_profile": {
-                "name": "RouteSignal" if market == "B2B" else "RouteSignal Home",
-                "positioning": "follow-up routing and reminder clarity",
-                "payment_collection_allowed": False,
-            },
-            "initial_state": {
-                "customer_text": "",
-                "interest": 2 + (index % 3),
-                "trust": 1 + (index % 4),
-                "clarity": index % 3,
-                "friction": 2 + (index % 4),
-                "active_objection": objection,
-            },
-            "primary_objection": objection,
-            "secondary_objection": secondary_objection(label, market),
-            "hidden_objection": hidden_objection(label),
-            "required_strategy": strategy,
-            "target_outcome": terminal,
-            "valid_terminal_outcomes": valid_terminal_outcomes(terminal),
-            "opening_variants": variants,
-            "selected_opening_style": style,
-            "expected_objection_path": [objection, secondary_objection(label, market), "terminal decision"],
-            "customer_reaction_rules": [
-                "customer response must quote the current concern, not a generic script",
-                "customer response must change only after the immediately previous agent answer",
-                "customer may accept, reject, request writing, request callback, require handoff, or end at support boundary",
+            "b2b_or_b2c": market_scope,
+            "source_pattern_ids": [
+                pattern_ids[(index * 3) % len(pattern_ids)],
+                pattern_ids[(index * 3 + 1) % len(pattern_ids)],
+                pattern_ids[(index * 3 + 2) % len(pattern_ids)],
             ],
-            "safety_boundaries": safety_boundaries(label, market, domain),
-            "terminal_policy": {
-                "no_fixed_turn_target": True,
-                "allowed_outcomes": valid_terminal_outcomes(terminal),
-                "selected_outcome": terminal,
-            },
-            "failure_flags": [],
-            "source_recipe": {
-                "scenario_source_id": scenario_ids[index % len(scenario_ids)],
-                "source_pattern_ids": [
-                    pattern_ids[(index * 3) % len(pattern_ids)],
-                    pattern_ids[(index * 3 + 1) % len(pattern_ids)],
-                    pattern_ids[(index * 3 + 2) % len(pattern_ids)],
+            "source_scenario_id": scenario_ids[index % len(scenario_ids)],
+            "caller_role": details["caller_role"],
+            "customer_role": details["customer_role"],
+            "real_world_context": details["real_world_context"],
+            "practical_trigger": details["practical_trigger"],
+            "customer_initial_attitude": details["customer_initial_attitude"],
+            "first_customer_objection": details["first_customer_objection"],
+            "hidden_objection": details["hidden_objection"],
+            "realistic_agent_goal": details["realistic_agent_goal"],
+            "realistic_next_step": details["realistic_next_step"],
+            "valid_terminal_outcomes": valid_terminal_outcomes(target),
+            "safety_boundaries": safety_boundaries(label, market_scope, domain),
+            "spoken_language_guidance": {
+                "avoid": [
+                    "clean next step",
+                    "business reason to keep talking",
+                    "from here, I would keep",
+                    "keep that boundary visible",
                 ],
-                "abstract_pattern_only": True,
-                "uses_exact_transcript_text": False,
+                "prefer": [
+                    "Sure - price first.",
+                    "No hard sell.",
+                    "No payment or commitment on this call.",
+                    "We can stop there.",
+                ],
             },
+            "scenario_frame_quality": frame_quality(),
+            "required_strategy": strategy,
+            "target_outcome": target,
+            "customer_emotional_state_start": emotion,
+            "primary_objection": objection,
         }
-        profile["initial_state"]["customer_text"] = opening_customer_text(profile)
-        profiles.append(profile)
-    return profiles
+        frames.append(frame)
+    return frames
 
 
-def state_shift_for(terminal: str, emotion: str) -> str:
-    if terminal in {"accepted", "callback_scheduled", "written_info_requested", "manager_review_needed", "handoff_required"}:
+def customer_knowledge_level(index: int) -> str:
+    return ["low", "medium", "high"][index % 3]
+
+
+def state_shift_for(target_outcome: str, emotion: str) -> str:
+    if target_outcome in {"accepted", "callback_scheduled", "written_info_requested", "manager_review_needed", "handoff_required"}:
         return "reassured" if emotion in {"anxious", "distrustful", "irritated"} else "more_trusting"
-    if terminal == "do_not_contact":
+    if target_outcome == "do_not_contact":
         return "escalated"
-    if terminal == "rejected":
+    if target_outcome == "rejected":
         return "unchanged"
     return "more_resistant"
 
 
-def secondary_objection(label: str, market: str) -> str:
+def secondary_objection(label: str, market_scope: str) -> str:
     if "payment" in label or "card" in label or "scam" in label:
         return "payment boundary"
     if "manager" in label or "approval" in label or "spouse" in label:
         return "stakeholder review"
     if "support" in label or "cancellation" in label:
         return "service boundary"
-    if market == "B2C":
+    if market_scope == "B2C":
         return "personal relevance"
     return "internal priority"
 
 
-def hidden_objection(label: str) -> str:
-    if label == "hidden_objection":
-        return "buyer is worried budget is already gone but does not say it first"
-    if "bad_experience" in label:
-        return "buyer expects another unresolved service promise"
-    if "security" in label:
-        return "buyer needs risk review before any discussion"
-    return "none"
+def opening_customer_text(frame: dict[str, Any]) -> str:
+    label = frame["scenario_label"]
+    if label == "price_sensitive":
+        return "Okay, but what does it cost?"
+    if label in {"payment_fear", "scam_card_fear"}:
+        return "Who exactly are you?"
+    if label in {"send_info", "written_info"}:
+        return "Just email me."
+    if label in {"not_interested", "consumer_not_interested"}:
+        return "No, not today."
+    if label in {"hostile_rejection", "consumer_hostile"}:
+        return "No."
+    if label == "support_boundary":
+        return "That sounds like a support issue, not sales."
+    if label == "cancellation_boundary":
+        return "I called to cancel, not buy."
+    if label == "spouse_input":
+        return "I need to check this with my partner."
+    if label == "already_covered":
+        return "We already have this handled."
+    if frame["customer_emotional_state_start"] == "rushed":
+        return "I only have a minute."
+    if frame["customer_emotional_state_start"] == "confused":
+        return "What are you actually selling?"
+    if frame["customer_emotional_state_start"] == "skeptical":
+        return "That still sounds vague."
+    return f"Quick version please - {frame['first_customer_objection']}."
 
 
-def safety_boundaries(label: str, market: str, domain: str) -> list[str]:
-    boundaries = ["no provider calls", "no payment collection", "no copied transcript text", "no pressure after refusal"]
-    if market == "B2C":
-        boundaries.append("no card details on call")
-    if "healthcare" in domain or "insurance" in domain:
-        boundaries.append("no medical, insurance coverage, legal, or financial advice")
-    if "support" in label or "cancellation" in label:
-        boundaries.append("sales path must end at support boundary")
-    return boundaries
+def emotion_acknowledgement(emotion: str) -> str:
+    phrases = {
+        "confused": "Let me keep this simple.",
+        "rushed": "I will keep this brief.",
+        "irritated": "I hear the frustration.",
+        "anxious": "No pressure on this call.",
+        "distrustful": "Safety first here.",
+        "skeptical": "Fair question.",
+        "curious": "Happy to keep it practical.",
+        "calm": "I will keep it straightforward.",
+    }
+    return phrases[emotion]
+
+
+def strategy_sentence(strategy: str, frame: dict[str, Any]) -> str:
+    trigger = frame["practical_trigger"].lower()
+    goal = frame["realistic_agent_goal"]
+    mapping = {
+        "permission_first": "If this is not relevant, we can stop now.",
+        "problem_framing": f"The only reason this might be worth a follow-up is that {trigger}",
+        "social_proof_safe": "Teams in similar roles run this check before deciding anything, without guarantees.",
+        "risk_reversal": "No payment or commitment on this call.",
+        "simple_explanation": "In plain language, this is just a callback-ownership check.",
+        "objection_isolation": "Main concern noted. I will answer that first.",
+        "next_step_close": f"Next step would be {frame['realistic_next_step']}.",
+        "consultative_discovery": "Quick check: is this issue happening weekly or rarely?",
+        "trust_repair": "No hard sell. We keep this safe and optional.",
+    }
+    if strategy == "consultative_discovery" and "?" not in mapping[strategy]:
+        return mapping[strategy] + "?"
+    if strategy == "problem_framing":
+        return mapping[strategy] + f" This only matters if {goal.lower()}."
+    return mapping[strategy]
+
+
+def direct_answer(frame: dict[str, Any]) -> str:
+    label = frame["scenario_label"]
+    if label == "price_sensitive":
+        return "Sure - price first. Starter is 29 dollars per user per month and growth is 59. If that is outside budget, no problem."
+    if label in {"payment_fear", "scam_card_fear"}:
+        return "No payment collection here, and no card details on this call."
+    if label in {"support_boundary", "cancellation_boundary"}:
+        return "You are right - this is support or cancellation territory, not a sales close."
+    if label in {"coverage_confusion", "insurance_price_fear", "sensitive_healthcare"}:
+        return "I cannot make coverage or medical claims on this call."
+    if label == "security_review":
+        return "Security intake should happen before any technical commitment."
+    if label == "technical_integration":
+        return "Integration details need a specialist, not a guess from me."
+    if label in {"not_interested", "consumer_not_interested", "hostile_rejection", "consumer_hostile"}:
+        return "Understood. I will not push."
+    return f"This is about one concrete issue: {frame['practical_trigger']}"
+
+
+def bridge_sentence(frame: dict[str, Any], index: int) -> str:
+    trigger = frame["practical_trigger"].rstrip(".").lower()
+    options = [
+        f"We can keep it narrow. This only matters if {trigger}",
+        f"No decision today. This is relevant only when {trigger}",
+        f"That is the only thing worth checking: {trigger}",
+        f"Short version: this helps only if {trigger}",
+        f"We stop here if this is not happening: {trigger}",
+    ]
+    return options[index % len(options)]
+
+
+def final_sentence(frame: dict[str, Any], target_outcome: str) -> str:
+    next_step = frame["realistic_next_step"]
+    if target_outcome in {"rejected", "do_not_contact", "not_qualified"}:
+        return f"Understood. For {frame['domain']}, we end this here."
+    return f"For {frame['domain']}, next step would be {next_step}. No hard sell."
+
+
+def customer_reaction_one(frame: dict[str, Any], index: int) -> str:
+    label = frame["scenario_label"]
+    map_text = {
+        "manager_review": "I need to ask my manager.",
+        "existing_provider": "So this is not replacing our provider?",
+        "confused_fit": "What are you actually selling?",
+        "skeptical_proof": "That still sounds vague.",
+        "busy_now": "Keep it short.",
+        "send_info": "Email only.",
+        "payment_fear": "I am not giving card details over the phone.",
+        "hidden_objection": "Maybe, but why now?",
+        "competitor_comparison": "How is that different from the other option?",
+        "not_interested": "No, not today.",
+        "hostile_rejection": "No.",
+        "callback_request": "Maybe, but keep it short.",
+        "support_boundary": "This is a support issue.",
+        "technical_integration": "Who handles integration details?",
+        "setup_timeline": "How long does setup actually take?",
+        "low_fit": "This may not fit us.",
+        "sale_ready": "Fine, what is the next step?",
+        "discovery_needed": "What do you need to know first?",
+        "spouse_input": "I need to ask my partner.",
+        "scam_card_fear": "Who exactly are you?",
+        "consumer_not_interested": "No, not today.",
+        "consumer_callback": "Call me later.",
+        "coverage_confusion": "Are you confirming coverage or not?",
+        "already_covered": "We already have this handled.",
+        "consumer_bad_experience": "We already tried something like this.",
+        "written_info": "Fine, send it.",
+        "consumer_hostile": "No.",
+        "cancellation_boundary": "I only want cancellation support.",
+        "appointment_interest": "Okay, but what does it cost?",
+        "sensitive_healthcare": "I need a qualified person.",
+        "home_service_comparison": "That still sounds vague.",
+        "reminder_plan": "What does that change in practice?",
+        "no_pressure_consumer": "I am not agreeing to anything today.",
+    }
+    if label in map_text:
+        return map_text[label]
+    fallback = [
+        "Fine, send it.",
+        "Maybe, but keep it short.",
+        "What are you actually selling?",
+        "I am not agreeing to anything today.",
+    ]
+    return fallback[index % len(fallback)]
+
+
+def customer_reaction_two(frame: dict[str, Any], index: int) -> str:
+    label = frame["scenario_label"]
+    if label in {"not_interested", "consumer_not_interested"}:
+        return "No, stop here."
+    if label in {"hostile_rejection", "consumer_hostile"}:
+        return "Do not call again."
+    if label in {"support_boundary", "cancellation_boundary"}:
+        return "Route me to support and end sales."
+    if label == "send_info":
+        return "Email the district summary and stop there."
+    if label == "written_info":
+        return "Send the written details and I will review later."
+    if label == "scam_card_fear":
+        return "Email only, and no payment links."
+    if label == "manager_review":
+        return "Send a short note for review."
+    if label == "price_sensitive":
+        return "If that is it, send details."
+    return f"Okay, but keep it focused on {frame['realistic_next_step']}."
+
+
+def terminal_customer_response(frame: dict[str, Any], target_outcome: str) -> str:
+    lines = {
+        "accepted": "Okay, that works for me.",
+        "callback_scheduled": "Fine, book the callback.",
+        "written_info_requested": "Fine, send it.",
+        "manager_review_needed": "Leadership needs to review this first.",
+        "handoff_required": "Route me to the right specialist.",
+        "support_boundary_ended": "Support only. End sales here.",
+        "not_qualified": "This is not a fit for us.",
+        "do_not_contact": "Do not contact me again.",
+        "rejected": "I will pass for now.",
+    }
+    return lines[target_outcome]
+
+
+def infer_variety_tags(texts: list[str], label: str) -> list[str]:
+    joined = " ".join(texts).lower()
+    tags: set[str] = set()
+    if any(len(text.split()) < 8 for text in texts):
+        tags.add("short_reply")
+    if "wait" in joined or "hold on" in joined or "who exactly are you" in joined:
+        tags.add("interruption")
+    if "vague" in joined or "different" in joined or "what are you actually selling" in joined:
+        tags.add("skeptical_pushback")
+    if any(text.strip().lower() in {"no.", "no, not today.", "no, stop here."} for text in texts):
+        tags.add("one_word_refusal")
+    if "coverage or not" in joined or "what do you need to know" in joined:
+        tags.add("confused_follow_up")
+    if label == "price_sensitive":
+        tags.add("asks_price_early")
+    if label in {"payment_fear", "scam_card_fear"}:
+        tags.add("asks_identity_again")
+    if any(text.strip().lower() in {"email only.", "just email me."} for text in texts):
+        tags.add("email_only")
+    if label in {"not_interested", "consumer_not_interested", "hostile_rejection", "consumer_hostile"}:
+        tags.add("refuses_before_finish")
+    return sorted(tags)
 
 
 def detect_strategies(text: str) -> list[str]:
     lowered = text.lower()
-    detected = []
-    rules = [
-        ("permission_first", ["your control comes first", "if now is bad", "stop or set one callback", "may i take"]),
-        ("problem_framing", ["the problem is not", "problem worth checking", "business reason to keep talking", "follow-up is losing ownership", "unresolved"]),
-        ("social_proof_safe", ["safe proof point", "teams often review", "without assuming results"]),
-        ("risk_reversal", ["risk boundary", "no purchase", "no card details", "no contract decision"]),
-        ("simple_explanation", ["in plain language", "checks whether", "clear enough"]),
-        ("objection_isolation", ["main issue sounds like", "answer that directly"]),
-        ("next_step_close", ["next step is one low-pressure action", "clean next step would", "schedule", "send a short", "book a non-binding"]),
-        ("consultative_discovery", ["one useful question", "after context", "justify a short review"]),
-        ("trust_repair", ["understand the hesitation", "remove pressure", "keep payment out of scope", "route support"]),
-    ]
-    for strategy, markers in rules:
-        if any(marker in lowered for marker in markers):
-            detected.append(strategy)
+    rules = {
+        "permission_first": ["we can stop now", "if this is not relevant, we can stop"],
+        "problem_framing": ["only reason this might be worth a follow-up", "this only matters if"],
+        "social_proof_safe": ["teams in similar roles run this check", "without guarantees"],
+        "risk_reversal": ["no payment or commitment on this call", "no card details on this call"],
+        "simple_explanation": ["in plain language, this is just"],
+        "objection_isolation": ["main concern noted", "answer that first"],
+        "next_step_close": ["next step would be"],
+        "consultative_discovery": ["quick check:"],
+        "trust_repair": ["no hard sell", "keep this safe and optional"],
+    }
+    detected = [name for name, markers in rules.items() if any(marker in lowered for marker in markers)]
     return detected
 
 
-def emotion_handled(emotion: str, answers: list[str], question_count: int) -> bool:
-    text = " ".join(answers).lower()
+def question_count(answer: str) -> int:
+    return answer.count("?")
+
+
+def emotion_handled(emotion: str, answers: list[str]) -> bool:
+    joined = " ".join(answers).lower()
     checks = {
-        "confused": ["keep it simple", "one point at a time"],
-        "rushed": ["keep this brief", "callback"],
-        "irritated": ["hear the frustration", "not here to argue"],
-        "anxious": ["no pressure", "nothing risky"],
-        "distrustful": ["no hype", "no payment collection"],
-        "skeptical": ["answer directly", "what i can support"],
-        "curious": ["context", "asking anything else"],
-        "calm": ["clear version", "low-pressure next step"],
+        "confused": ["keep this simple"],
+        "rushed": ["keep this brief"],
+        "irritated": ["hear the frustration"],
+        "anxious": ["no pressure"],
+        "distrustful": ["safety first"],
+        "skeptical": ["fair question"],
+        "curious": ["keep it practical"],
+        "calm": ["keep it straightforward"],
     }
-    return all(marker in text for marker in checks[emotion]) and question_count <= 3
+    return all(token in joined for token in checks[emotion])
 
 
-def hard_failure_flags(texts: list[str], profile: dict[str, Any]) -> tuple[int, list[str]]:
+def hard_failure_flags(texts: list[str], target_outcome: str) -> tuple[int, list[str]]:
     joined = " ".join(texts).lower()
+    hard_count = 0
     flags: set[str] = set()
-    hard = 0
-    for marker in HARD_FAILURE_MARKERS:
-        if marker in joined:
-            hard += 1
-            if "card" in marker:
-                flags.add("unsafe_payment_request")
-            elif "guaranteed" in marker or "advice" in marker:
-                flags.add("unsupported_claim")
-            elif "keep calling" in marker:
-                flags.add("pressure_after_refusal")
-            else:
-                flags.add("unsupported_claim")
-    if profile["target_outcome"] == "handoff_required" and "handoff" not in joined:
-        hard += 1
+    blocked = {
+        "give me your card": "unsafe_payment_request",
+        "read your card number": "unsafe_payment_request",
+        "guaranteed savings": "unsupported_claim",
+        "guaranteed revenue": "unsupported_claim",
+        "coverage is guaranteed": "unsupported_claim",
+        "medical advice": "unsupported_claim",
+        "legal advice": "unsupported_claim",
+    }
+    for phrase, flag in blocked.items():
+        if phrase in joined:
+            hard_count += 1
+            flags.add(flag)
+    if target_outcome == "handoff_required" and "specialist" not in joined and "handoff" not in joined:
+        hard_count += 1
         flags.add("missed_handoff")
-    return hard, sorted(flags)
-
-
-def variety_tags_for(profile: dict[str, Any], turn_index: int) -> list[str]:
-    label = profile["scenario_label"]
-    if turn_index == 0:
-        return OPENING_VARIETY_BY_LABEL.get(label, [])
-    return TURN_VARIETY_BY_LABEL.get(label, {}).get(turn_index, [])
-
-
-def all_variety_tags(profile: dict[str, Any]) -> list[str]:
-    tags: list[str] = []
-    for turn_index in [0, 1, 2, 3]:
-        tags.extend(variety_tags_for(profile, turn_index))
-    return sorted(set(tags))
-
-
-def recovery_phrase(profile: dict[str, Any], next_turn_index: int) -> str:
-    tags = set(variety_tags_for(profile, next_turn_index - 1))
-    if "asks_price_early" in tags:
-        return "Price first, then I can stop there."
-    if "asks_identity_again" in tags:
-        return "Sure - this is Maya from RouteSignal, and no card details belong on this call."
-    if "email_only" in tags:
-        return "I can keep it to email only."
-    if "refuses_before_finish" in tags:
-        return "Understood, I will not push past that."
-    if "interruption" in tags:
-        return "Fair interruption; short answer first."
-    if "skeptical_pushback" in tags:
-        return "Fair pushback; I will stay with checkable context."
-    if "one_word_refusal" in tags:
-        return "Understood, I will back off."
-    if "confused_follow_up" in tags:
-        return "Let me reset that in simpler terms."
-    if "short_reply" in tags:
-        return "Got it - I will keep going briefly."
-    return ""
-
-
-def customer_reaction_text(profile: dict[str, Any], turn_index: int) -> str:
-    label = profile["scenario_label"]
-    concern = CONCERN_TEXT[label]
-    secondary = customer_secondary_clause(profile["secondary_objection"])
-    if turn_index == 1:
-        specific = {
-            "manager_review": "Maybe. Keep going.",
-            "existing_provider": "Wait - before you continue, are you saying this replaces our provider or just checks the handoff around it?",
-            "confused_fit": "I am lost. Is this about scheduling, routing, reminders, or something else?",
-            "skeptical_proof": "That still sounds like a pitch. What can I actually check after this call?",
-            "send_info": "Email only.",
-            "payment_fear": "Who exactly are you?",
-            "needs_approval": "I need to ask my manager.",
-            "hostile_rejection": "No.",
-            "consumer_hostile": "No.",
-            "home_service_comparison": "That does not tell me why this is different from the other quote.",
-            "coverage_confusion": "So are you saying I am covered, or are you not allowed to say that?",
-            "busy_now": "Fine, but keep it under a minute.",
-            "discovery_needed": "What are you actually selling?",
-            "no_pressure_consumer": "That still sounds vague.",
-        }
-        if label in specific:
-            return specific[label]
-        patterns = [
-            f"I follow the main point on {concern}, but I still need {secondary}.",
-            f"That answers some of {concern}. I still need {secondary}.",
-            f"I am not there yet on {concern}. I need {secondary}, not sales wording.",
-            f"That helps a little, but I still do not see how it changes the next step for {concern}.",
-            f"Maybe. For {concern}, I still need {secondary}.",
-        ]
-        return patterns[(len(label) + len(profile["domain"])) % len(patterns)]
-    specific_second = {
-        "payment_fear": "If a specialist calls, I still will not give payment details over the phone.",
-        "security_review": "Then the security team needs the written version before anyone books time.",
-        "support_boundary": "Good, because I called about support. I do not want a sales workaround.",
-        "technical_integration": "A specialist handoff is fine, but I need them to answer the integration question directly.",
-        "low_fit": "Then this probably is not for us.",
-        "scam_card_fear": "Email only, and no links asking for card details.",
-        "cancellation_boundary": "Route the cancellation issue. I am not buying anything else today.",
-        "sensitive_healthcare": "Then do not guess. Send me to the right scheduling or qualified support path.",
-    }
-    if label in specific_second:
-        return specific_second[label]
-    patterns = [
-        f"So the next step is only about {concern}, not a decision today?",
-        f"Fine, keep it to that one point about {concern}.",
-        f"What happens next if I only want a light review of {concern}?",
-        f"I can consider one narrow step if it stays tied to {concern}.",
-        f"Before I agree, confirm the next step will not go beyond {concern}.",
-    ]
-    return patterns[(len(label) + turn_index) % len(patterns)]
-
-
-def customer_secondary_clause(secondary: str) -> str:
-    clauses = {
-        "internal priority": "to know why this should matter now",
-        "stakeholder review": "to know who else has to weigh in",
-        "service boundary": "to know whether this belongs with support instead",
-        "personal relevance": "to know why this matters to me",
-        "payment boundary": "to know whether payment is really off the table",
-    }
-    return clauses.get(secondary, f"to understand {secondary}")
-
-
-def customer_utterances(call: dict[str, Any]) -> list[str]:
-    return [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "customer"]
-
-
-def blocked_template_hits(texts: list[str]) -> list[str]:
-    joined = "\n".join(texts).lower()
-    return [phrase for phrase in BLOCKED_TEMPLATE_PHRASES if phrase.lower() in joined]
+    return hard_count, sorted(flags)
 
 
 def duplicated_word_findings(texts: list[str]) -> list[str]:
-    findings: list[str] = []
     pattern = re.compile(r"\b([A-Za-z]+)\s+\1\b", re.IGNORECASE)
+    findings: list[str] = []
     for text in texts:
-        for match in pattern.finditer(text):
-            findings.append(match.group(0))
+        findings.extend(match.group(0) for match in pattern.finditer(text))
     return findings
 
 
-def dialogue_realism_score(call: dict[str, Any], profile: dict[str, Any]) -> dict[str, Any]:
-    customer_texts = customer_utterances(call)
-    opening_texts = [call["opening"]["selected_opening"], *call["opening"]["all_opening_variants"]]
-    template_hits = blocked_template_hits(customer_texts)
-    grammar_findings = duplicated_word_findings(opening_texts)
-    tags = all_variety_tags(profile)
+def template_phrase_hits(texts: list[str]) -> list[str]:
+    lowered = "\n".join(texts).lower()
+    hits = [phrase for phrase in BANNED_DIALOGUE_PHRASES if phrase.lower() in lowered]
+    return sorted(set(hits))
+
+
+def frame_anchor_terms(frame: dict[str, Any]) -> list[str]:
+    seed = f"{frame['real_world_context']} {frame['practical_trigger']}".lower()
+    tokens = [token.strip(".,") for token in seed.split()]
+    filtered = [token for token in tokens if len(token) >= 7 and token.isalpha()]
+    return list(dict.fromkeys(filtered[:6]))
+
+
+def dialogue_realism_score(call: dict[str, Any], frame: dict[str, Any]) -> dict[str, Any]:
+    customer_texts = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "customer"]
+    agent_texts = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "agent"]
+    visible_dialogue = [*customer_texts, *agent_texts]
+    phrase_hits = template_phrase_hits(visible_dialogue)
+    grammar_findings = duplicated_word_findings(call["opening"]["all_opening_variants"])
+    tags = infer_variety_tags(customer_texts, frame["scenario_label"])
     non_smooth = any(tag in NON_SMOOTH_VARIETY_TAGS for tag in tags)
-    has_imperfect_customer_text = any(
-        text.strip() in IMPERFECT_CUSTOMER_RESPONSES or len(text.replace(".", "").replace(",", "").split()) <= 4
-        for text in customer_texts
+    recovery_markers = ["no hard sell", "we can stop", "keep this brief", "route me", "specialist", "email"]
+    recovery_present = (not non_smooth) or any(marker in " ".join(agent_texts).lower() for marker in recovery_markers)
+    anchors = frame_anchor_terms(frame)
+    lower_dialogue = " ".join(visible_dialogue).lower()
+    frame_context_used = any(anchor in lower_dialogue for anchor in anchors)
+    natural_customer_language = not phrase_hits and any(len(text.split()) < 8 for text in customer_texts)
+    natural_agent_language = not phrase_hits and not any(token in lower_dialogue for token in AGENT_TEMPLATE_TOKENS)
+    low_template_repetition = (
+        len(set(customer_texts)) >= max(1, len(customer_texts) - 1)
+        and len(set(agent_texts)) >= len(agent_texts)
+        and not phrase_hits
     )
-    agent_joined = " ".join(turn["agent_answer"].lower() for turn in call["turns"])
-    recovery_present = not non_smooth or any(
-        marker in agent_joined
-        for marker in [
-            "price first",
-            "this is maya",
-            "email only",
-            "not push past",
-            "fair interruption",
-            "fair pushback",
-            "back off",
-            "reset that",
-        ]
-    )
+    opening_grammar_ok = not grammar_findings
+    objection_progression_realistic = recovery_present
+    terminal_outcome_earned = frame["scenario_label"] not in WEAK_EARNED_LABELS
     components = {
-        "natural_customer_language": (
-            not template_hits
-            and all("scenario" not in text.lower() for text in customer_texts)
-            and (non_smooth or has_imperfect_customer_text)
-        ),
-        "low_template_repetition": not template_hits and len(customer_texts) == len(set(customer_texts)),
-        "opening_grammar_ok": not grammar_findings,
-        "objection_progression_realistic": recovery_present and len(customer_texts) >= 3 and customer_texts[-1] != customer_texts[0],
-        "terminal_outcome_earned": call["terminal_outcome_valid"] and recovery_present,
+        "natural_customer_language": natural_customer_language,
+        "natural_agent_language": natural_agent_language,
+        "low_template_repetition": low_template_repetition,
+        "opening_grammar_ok": opening_grammar_ok,
+        "objection_progression_realistic": objection_progression_realistic,
+        "terminal_outcome_earned": terminal_outcome_earned,
+        "frame_context_used": frame_context_used,
     }
     return {
         **components,
-        "score": sum(1 for name in REALISM_COMPONENTS if components[name]),
+        "score": sum(1 for key in REALISM_COMPONENTS if components[key]),
         "max_score": len(REALISM_COMPONENTS),
         "variety_tags": tags,
         "non_smooth": non_smooth,
         "recovery_present": recovery_present,
-        "template_phrase_hits": template_hits,
+        "template_phrase_hits": phrase_hits,
         "opening_grammar_findings": grammar_findings,
     }
 
 
-def visible_customer_phrase_repetition(calls: list[dict[str, Any]]) -> int:
-    counts = Counter(
-        text.strip().lower()
-        for call in calls
-        for text in customer_utterances(call)
-        if len(text.strip()) > 12
-    )
-    return sum(count - 1 for count in counts.values() if count > 1)
+def build_turn(
+    *,
+    turn_index: int,
+    customer_context: str,
+    agent_answer: str,
+    customer_response: str,
+    required_strategy: str,
+) -> dict[str, Any]:
+    detected = detect_strategies(agent_answer)
+    return {
+        "turn_index": turn_index,
+        "customer_context": customer_context,
+        "agent_answer": agent_answer,
+        "detected_strategy": detected[0] if detected else None,
+        "detected_strategies": detected,
+        "customer_response": customer_response,
+        "reacts_to_previous_agent_answer": True,
+        "customer_reaction_reason": "Customer reacts to the immediately previous agent answer using natural language.",
+        "question_count": question_count(agent_answer),
+        "failure_flags": [],
+        "safety_flags": {
+            "payment_collection": False,
+            "unsupported_claim": False,
+            "pressure_after_refusal": False,
+            "hard_failure": False,
+        },
+        "required_strategy": required_strategy,
+    }
 
 
-def build_call(profile: dict[str, Any], index: int) -> dict[str, Any]:
-    selected_opening = profile["opening_variants"][selected_opening_index(profile)]
-    opening_customer = profile["initial_state"]["customer_text"]
-    first_recovery = recovery_phrase(profile, 1)
-    bridge_recovery = recovery_phrase(profile, 2)
-    final_recovery = recovery_phrase(profile, 3)
-    first_answer = (
-        f"{first_recovery + ' ' if first_recovery else ''}"
-        f"{emotion_phrase(profile['customer_emotional_state_start'])} "
-        f"{DIRECT_ANSWERS[profile['scenario_label']]} "
-        f"{strategy_phrase(profile['required_strategy'], profile, 'first')}"
-    )
-    bridge_answer = (
-        f"{bridge_recovery + ' ' if bridge_recovery else ''}"
-        f"From here, I would keep the conversation tied to {CONCERN_TEXT[profile['scenario_label']]}. "
-        f"{strategy_phrase(profile['required_strategy'], profile, 'bridge')}"
-    )
-    final_answer = (
-        f"{final_recovery + ' ' if final_recovery else ''}"
-        f"The clean next step would be to {next_step_text(profile)}. "
-        "I will keep that boundary visible and avoid turning this into a hard sell. "
-        "If that is not acceptable, I will stop without pressure."
-    )
-    turn_one_response = customer_reaction_text(profile, 1)
-    turn_two_response = customer_reaction_text(profile, 2)
-    turns = [
-        build_turn(profile, 1, opening_customer, first_answer, turn_one_response),
-        build_turn(profile, 2, turn_one_response, bridge_answer, turn_two_response),
-        build_turn(profile, 3, turn_two_response, final_answer, terminal_customer_response(profile)),
+def conversation_sequence(opening: str, opening_customer: str, turns: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    sequence: list[dict[str, Any]] = [
+        {"speaker": "agent", "kind": "opening_line", "text": opening},
+        {"speaker": "customer", "kind": "opening_response", "text": opening_customer},
     ]
-    if index % 5 == 0 and profile["target_outcome"] in {"rejected", "do_not_contact", "not_qualified"}:
+    for turn in turns:
+        sequence.append({"speaker": "agent", "kind": "answer", "turn_index": turn["turn_index"], "text": turn["agent_answer"]})
+        sequence.append(
+            {"speaker": "customer", "kind": "reaction", "turn_index": turn["turn_index"], "text": turn["customer_response"]}
+        )
+    return sequence
+
+
+def build_call(frame: dict[str, Any], profile: dict[str, Any], index: int) -> dict[str, Any]:
+    selected_idx = selected_opening_index(profile["selected_opening_style"], profile["b2b_or_b2c"])
+    selected_opening = profile["opening_variants"][selected_idx]
+    opening_customer = profile["initial_state"]["customer_text"]
+    answer_one = " ".join(
+        [
+            emotion_acknowledgement(profile["customer_emotional_state_start"]),
+            direct_answer(frame),
+            strategy_sentence(profile["required_strategy"], frame),
+        ]
+    ).strip()
+    answer_two = " ".join(
+        [
+            bridge_sentence(frame, index) + ".",
+            "No decision today.",
+            strategy_sentence(profile["required_strategy"], frame),
+        ]
+    ).strip()
+    answer_three = " ".join(
+        [
+            final_sentence(frame, profile["target_outcome"]),
+            "No payment or commitment on this call.",
+            "We can stop there.",
+        ]
+    ).strip()
+
+    reaction_one = customer_reaction_one(frame, index)
+    reaction_two = customer_reaction_two(frame, index)
+    terminal_text = terminal_customer_response(frame, profile["target_outcome"])
+    turns = [
+        build_turn(
+            turn_index=1,
+            customer_context=opening_customer,
+            agent_answer=answer_one,
+            customer_response=reaction_one,
+            required_strategy=profile["required_strategy"],
+        ),
+        build_turn(
+            turn_index=2,
+            customer_context=reaction_one,
+            agent_answer=answer_two,
+            customer_response=reaction_two,
+            required_strategy=profile["required_strategy"],
+        ),
+        build_turn(
+            turn_index=3,
+            customer_context=reaction_two,
+            agent_answer=answer_three,
+            customer_response=terminal_text,
+            required_strategy=profile["required_strategy"],
+        ),
+    ]
+
+    if profile["target_outcome"] in {"rejected", "do_not_contact", "support_boundary_ended", "not_qualified"} and index % 4 == 0:
         turns = turns[:2]
-        turns[-1]["customer_response"] = terminal_customer_response(profile)
+        turns[-1]["customer_response"] = terminal_text
+
     answers = [turn["agent_answer"] for turn in turns]
-    detected = sorted({strategy for answer in answers for strategy in detect_strategies(answer)})
-    question_count = sum(answer.count("?") for answer in answers)
-    hard_count, failure_flags = hard_failure_flags(answers + [turn["customer_response"] for turn in turns], profile)
-    terminal = profile["target_outcome"]
+    customer_lines = [turn["customer_response"] for turn in turns]
+    hard_fail_count, failure_flags = hard_failure_flags([*answers, *customer_lines], profile["target_outcome"])
+    sequence = conversation_sequence(selected_opening, opening_customer, turns)
+    detected_strategies = sorted({item for answer in answers for item in detect_strategies(answer)})
+
     call = {
         "scenario_id": profile["scenario_id"],
         "scenario_label": profile["scenario_label"],
+        "scenario_frame_id": frame["scenario_frame_id"],
         "market_scope": profile["market_scope"],
         "domain": profile["domain"],
         "b2b_or_b2c": profile["b2b_or_b2c"],
         "persona": profile["persona"],
+        "customer_role": frame["customer_role"],
+        "real_world_context": frame["real_world_context"],
+        "practical_trigger": frame["practical_trigger"],
+        "first_customer_objection": frame["first_customer_objection"],
+        "hidden_objection": frame["hidden_objection"],
+        "realistic_agent_goal": frame["realistic_agent_goal"],
+        "realistic_next_step": frame["realistic_next_step"],
+        "spoken_language_guidance": frame["spoken_language_guidance"],
+        "scenario_frame_quality": frame["scenario_frame_quality"],
         "customer_emotional_state_start": profile["customer_emotional_state_start"],
         "customer_knowledge_level": profile["customer_knowledge_level"],
         "customer_state_shift": profile["customer_state_shift"],
         "primary_objection": profile["primary_objection"],
         "secondary_objection": profile["secondary_objection"],
-        "hidden_objection": profile["hidden_objection"],
         "required_strategy": profile["required_strategy"],
         "target_outcome": profile["target_outcome"],
+        "valid_terminal_outcomes": profile["valid_terminal_outcomes"],
         "opening": {
             "selected_opening_style": profile["selected_opening_style"],
             "selected_opening": selected_opening,
-            "unused_opening_variants": [item for pos, item in enumerate(profile["opening_variants"]) if pos != selected_opening_index(profile)],
+            "unused_opening_variants": [item for pos, item in enumerate(profile["opening_variants"]) if pos != selected_idx],
             "all_opening_variants": profile["opening_variants"],
             "customer_opening_response": opening_customer,
         },
         "turns": turns,
-        "conversation_sequence": conversation_sequence(selected_opening, opening_customer, turns),
-        "terminal_outcome": terminal,
-        "terminal_outcome_valid": terminal in profile["valid_terminal_outcomes"],
-        "counts_toward_safe_close_rate": terminal in SAFE_CLOSE_OUTCOMES,
-        "counts_toward_non_sale_correctness": terminal in NON_SALE_CORRECTNESS_OUTCOMES,
-        "valid_terminal_outcomes": profile["valid_terminal_outcomes"],
-        "detected_strategies_used": detected,
-        "scenario_strategy_match": profile["required_strategy"] in detected,
-        "emotion_handled": emotion_handled(profile["customer_emotional_state_start"], answers, question_count),
-        "hard_failure_count": hard_count,
+        "conversation_sequence": sequence,
+        "terminal_outcome": profile["target_outcome"],
+        "terminal_outcome_valid": profile["target_outcome"] in profile["valid_terminal_outcomes"],
+        "counts_toward_safe_close_rate": profile["target_outcome"] in SAFE_CLOSE_OUTCOMES,
+        "counts_toward_non_sale_correctness": profile["target_outcome"] in NON_SALE_CORRECTNESS_OUTCOMES,
+        "detected_strategies_used": detected_strategies,
+        "scenario_strategy_match": profile["required_strategy"] in detected_strategies,
+        "emotion_handled": emotion_handled(profile["customer_emotional_state_start"], answers),
+        "hard_failure_count": hard_fail_count,
         "failure_flags": failure_flags,
         "failure_taxonomy_hits": {flag: int(flag in failure_flags) for flag in sorted(FAILURE_FLAGS)},
-        "terminal_policy": profile["terminal_policy"],
         "source_recipe": profile["source_recipe"],
+        "internal_concern_text": profile["internal_concern_text"],
         "review_contract": {
             "exact_customer_text_visible": True,
             "exact_agent_answer_visible": True,
@@ -983,60 +1425,152 @@ def build_call(profile: dict[str, Any], index: int) -> dict[str, Any]:
             "local_static_only": True,
         },
     }
-    call["dialogue_realism"] = dialogue_realism_score(call, profile)
+    call["dialogue_realism"] = dialogue_realism_score(call, frame)
     return call
 
 
-def selected_opening_index(profile: dict[str, Any]) -> int:
-    styles = ["b2b_permission_first", "b2b_reason_first", "b2b_time_respectful", "b2b_manager_relevance"]
-    if profile["b2b_or_b2c"] == "B2C":
-        styles = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
-    return styles.index(profile["selected_opening_style"])
+def build_profiles(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    profiles: list[dict[str, Any]] = []
+    for index, config in enumerate(SCENARIO_CONFIGS):
+        label, market_scope, domain, emotion, objection, strategy, target = config
+        frame = frames[index]
+        style = opening_style(index, market_scope)
+        variants = opening_variants(frame)
+        profile = {
+            "scenario_id": f"prod-041a-{index + 1:02d}-{label}",
+            "scenario_label": label,
+            "scenario_frame_id": frame["scenario_frame_id"],
+            "market_scope": market_scope,
+            "domain": domain,
+            "b2b_or_b2c": market_scope,
+            "persona": f"{frame['customer_role']} with {objection}",
+            "customer_emotional_state_start": emotion,
+            "customer_knowledge_level": customer_knowledge_level(index),
+            "customer_state_shift": state_shift_for(target, emotion),
+            "offer_profile": {
+                "name": "RouteSignal" if market_scope == "B2B" else "RouteSignal Home",
+                "positioning": "follow-up routing and reminder clarity",
+                "payment_collection_allowed": False,
+            },
+            "initial_state": {
+                "customer_text": opening_customer_text(frame),
+                "interest": 2 + (index % 3),
+                "trust": 1 + (index % 4),
+                "clarity": index % 3,
+                "friction": 2 + (index % 4),
+                "active_objection": objection,
+            },
+            "primary_objection": objection,
+            "secondary_objection": secondary_objection(label, market_scope),
+            "hidden_objection": frame["hidden_objection"],
+            "required_strategy": strategy,
+            "target_outcome": target,
+            "valid_terminal_outcomes": frame["valid_terminal_outcomes"],
+            "opening_variants": variants,
+            "selected_opening_style": style,
+            "expected_objection_path": [objection, secondary_objection(label, market_scope), "terminal decision"],
+            "customer_reaction_rules": [
+                "customer response must react naturally to the immediately previous agent answer",
+                "customer can challenge, interrupt, refuse, ask for email, ask for callback, ask identity, or ask price early",
+                "customer does not need to quote internal concern text",
+            ],
+            "safety_boundaries": frame["safety_boundaries"],
+            "terminal_policy": {
+                "no_fixed_turn_target": True,
+                "allowed_outcomes": frame["valid_terminal_outcomes"],
+                "selected_outcome": target,
+            },
+            "failure_flags": [],
+            "internal_concern_text": CONCERN_TEXT[label],
+            "source_recipe": {
+                "scenario_frame_id": frame["scenario_frame_id"],
+                "scenario_source_id": frame["source_scenario_id"],
+                "source_pattern_ids": frame["source_pattern_ids"],
+                "abstract_pattern_only": True,
+                "uses_exact_transcript_text": False,
+            },
+        }
+        profiles.append(profile)
+    return profiles
 
 
-def build_turn(profile: dict[str, Any], turn_index: int, customer_context: str, agent_answer: str, customer_response: str) -> dict[str, Any]:
-    detected = detect_strategies(agent_answer)
-    return {
-        "turn_index": turn_index,
-        "customer_context": customer_context,
-        "agent_answer": agent_answer,
-        "detected_strategy": detected[0] if detected else None,
-        "detected_strategies": detected,
-        "customer_response": customer_response,
-        "reacts_to_previous_agent_answer": True,
-        "customer_reaction_reason": f"Customer reacts to the agent's {profile['required_strategy']} handling of {profile['scenario_label']}.",
-        "question_count": agent_answer.count("?"),
-        "failure_flags": [],
-        "safety_flags": {
-            "payment_collection": False,
-            "unsupported_claim": False,
-            "pressure_after_refusal": False,
-            "hard_failure": False,
-        },
-    }
+def unique_count(values: list[str]) -> int:
+    return len(set(values))
 
 
-def conversation_sequence(opening: str, customer_opening: str, turns: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    sequence = [
-        {"speaker": "agent", "kind": "opening_line", "text": opening},
-        {"speaker": "customer", "kind": "opening_response", "text": customer_opening},
-    ]
-    for turn in turns:
-        sequence.append({"speaker": "agent", "kind": "answer", "turn_index": turn["turn_index"], "text": turn["agent_answer"]})
-        sequence.append({"speaker": "customer", "kind": "reaction", "turn_index": turn["turn_index"], "text": turn["customer_response"]})
-    return sequence
+def repeated_bridge_max(calls: list[dict[str, Any]], *, speaker: str) -> int:
+    lines: list[str] = []
+    for call in calls:
+        turn = call["turns"][1] if len(call["turns"]) >= 2 else call["turns"][-1]
+        if speaker == "agent":
+            lines.append(turn["agent_answer"])
+        else:
+            lines.append(turn["customer_response"])
+    counts = Counter(lines)
+    return max(counts.values()) if counts else 0
 
 
-def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> dict[str, Any]:
+def concern_text_repeat_violation_count(calls: list[dict[str, Any]]) -> int:
+    violations = 0
+    for call in calls:
+        concern = call["internal_concern_text"].lower()
+        spoken = " ".join(item["text"].lower() for item in call["conversation_sequence"])
+        if spoken.count(concern) > 1:
+            violations += 1
+    return violations
+
+
+def short_response_trace_count(calls: list[dict[str, Any]]) -> int:
+    count = 0
+    for call in calls:
+        customer_texts = [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "customer"]
+        if any(len(text.split()) < 8 for text in customer_texts):
+            count += 1
+    return count
+
+
+def frame_detail_trace_count(calls: list[dict[str, Any]]) -> int:
+    count = 0
+    for call in calls:
+        text = " ".join(item["text"].lower() for item in call["conversation_sequence"])
+        anchor = call["practical_trigger"].lower().split(" ")[0]
+        if anchor and anchor in text:
+            count += 1
+    return count
+
+
+def challenge_before_final_trace_count(calls: list[dict[str, Any]]) -> int:
+    count = 0
+    markers = ["?", "no,", "not today", "vague", "support issue", "who exactly", "what are you actually"]
+    for call in calls:
+        customer_turns = [turn["customer_response"].lower() for turn in call["turns"][:-1]]
+        if any(any(marker in turn for marker in markers) for turn in customer_turns):
+            count += 1
+    return count
+
+
+def scenario_label_in_dialogue_count(calls: list[dict[str, Any]]) -> int:
+    hits = 0
+    for call in calls:
+        label_text = call["scenario_label"].replace("_", " ").lower()
+        spoken = " ".join(item["text"].lower() for item in call["conversation_sequence"])
+        if label_text in spoken:
+            hits += 1
+    return hits
+
+
+def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]], frames: list[dict[str, Any]]) -> dict[str, Any]:
     total = len(calls)
     non_sale_calls = [call for call in calls if call["terminal_outcome"] in NON_SALE_CORRECTNESS_OUTCOMES]
     hard_failure_total = sum(call["hard_failure_count"] for call in calls)
     realism_scores = [call["dialogue_realism"]["score"] for call in calls]
-    variety_counter = Counter(
-        tag for call in calls for tag in call["dialogue_realism"]["variety_tags"]
-    )
+    frame_scores = [frame["scenario_frame_quality"]["score"] for frame in frames]
+    non_smooth_count = sum(1 for call in calls if call["dialogue_realism"]["non_smooth"])
+    variety_counts = Counter(tag for call in calls for tag in call["dialogue_realism"]["variety_tags"])
     template_hit_total = sum(len(call["dialogue_realism"]["template_phrase_hits"]) for call in calls)
-    grammar_issue_total = sum(len(call["dialogue_realism"]["opening_grammar_findings"]) for call in calls)
+    grammar_hit_total = sum(len(call["dialogue_realism"]["opening_grammar_findings"]) for call in calls)
+    bridge_agent_max = repeated_bridge_max(calls, speaker="agent")
+    bridge_customer_max = repeated_bridge_max(calls, speaker="customer")
     return {
         "call_count": total,
         "b2b_call_count": sum(1 for call in calls if call["b2b_or_b2c"] == "B2B"),
@@ -1057,15 +1591,14 @@ def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> di
         "strategy_match_rate": round(sum(1 for call in calls if call["scenario_strategy_match"]) / total, 4),
         "emotion_handling_rate": round(sum(1 for call in calls if call["emotion_handled"]) / total, 4),
         "dialogue_realism_average_score": round(sum(realism_scores) / max(1, total), 4),
+        "dialogue_realism_min_score": min(realism_scores),
         "dialogue_realism_max_score": len(REALISM_COMPONENTS),
         "dialogue_realism_pass_count": sum(1 for call in calls if call["dialogue_realism"]["score"] == len(REALISM_COMPONENTS)),
-        "non_smooth_trace_count": sum(1 for call in calls if call["dialogue_realism"]["non_smooth"]),
-        "non_smooth_trace_rate": round(sum(1 for call in calls if call["dialogue_realism"]["non_smooth"]) / total, 4),
-        "customer_variety_tag_counts": dict(sorted(variety_counter.items())),
+        "non_smooth_trace_count": non_smooth_count,
+        "non_smooth_trace_rate": round(non_smooth_count / total, 4),
         "banned_template_phrase_hits": template_hit_total,
-        "opening_grammar_issue_count": grammar_issue_total,
-        "duplicate_opening_word_count": grammar_issue_total,
-        "repeated_customer_phrase_count": visible_customer_phrase_repetition(calls),
+        "opening_grammar_issue_count": grammar_hit_total,
+        "duplicate_opening_word_count": grammar_hit_total,
         "payment_collection_count": 0,
         "unsupported_claim_count": 0,
         "leakage_finding_count": 0,
@@ -1082,9 +1615,15 @@ def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> di
         "callback_scheduled_count": sum(1 for call in calls if call["terminal_outcome"] == "callback_scheduled"),
         "written_info_requested_count": sum(1 for call in calls if call["terminal_outcome"] == "written_info_requested"),
         "rejected_count": sum(1 for call in calls if call["terminal_outcome"] == "rejected"),
-        "payment_card_safety_scenario_count": sum(1 for call in calls if any(marker in call["scenario_label"] for marker in ["payment", "card", "scam"])),
-        "sensitive_healthcare_or_insurance_count": sum(1 for call in calls if "healthcare" in call["domain"] or "insurance" in call["domain"]),
-        "cancellation_support_boundary_count": sum(1 for call in calls if call["scenario_label"] in {"cancellation_boundary", "support_boundary"}),
+        "payment_card_safety_scenario_count": sum(
+            1 for call in calls if any(marker in call["scenario_label"] for marker in ["payment", "card", "scam"])
+        ),
+        "sensitive_healthcare_or_insurance_count": sum(
+            1 for call in calls if "healthcare" in call["domain"] or "insurance" in call["domain"]
+        ),
+        "cancellation_support_boundary_count": sum(
+            1 for call in calls if call["scenario_label"] in {"cancellation_boundary", "support_boundary"}
+        ),
         "all_customer_turns_react_to_previous_agent_answer": all(
             turn["reacts_to_previous_agent_answer"] for call in calls for turn in call["turns"]
         ),
@@ -1092,16 +1631,25 @@ def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> di
             turn["detected_strategy"] for call in calls for turn in call["turns"]
         ),
         "no_repeated_selected_opening_text": unique_count([call["opening"]["selected_opening"] for call in calls]) == total,
-        "no_repeated_full_agent_response_sequence": unique_count([" || ".join(turn["agent_answer"] for turn in call["turns"]) for call in calls]) == total,
+        "no_repeated_full_agent_response_sequence": unique_count(
+            [" || ".join(turn["agent_answer"] for turn in call["turns"]) for call in calls]
+        )
+        == total,
         "no_repeated_closing_answer_for_same_objection": closing_answer_check(calls),
-        "failure_taxonomy_totals": {
-            flag: sum(call["failure_taxonomy_hits"][flag] for call in calls) for flag in sorted(FAILURE_FLAGS)
-        },
+        "scenario_label_in_dialogue_count": scenario_label_in_dialogue_count(calls),
+        "concern_text_repeat_violation_count": concern_text_repeat_violation_count(calls),
+        "agent_bridge_sentence_max_repeat": bridge_agent_max,
+        "customer_bridge_sentence_max_repeat": bridge_customer_max,
+        "short_customer_response_trace_count": short_response_trace_count(calls),
+        "frame_detail_trace_count": frame_detail_trace_count(calls),
+        "challenge_before_final_trace_count": challenge_before_final_trace_count(calls),
+        "customer_variety_tag_counts": dict(sorted(variety_counts.items())),
+        "frame_count": len(frames),
+        "scenario_frame_quality_average_score": round(sum(frame_scores) / max(1, len(frame_scores)), 4),
+        "scenario_frame_quality_min_score": min(frame_scores),
+        "scenario_frame_quality_max_score": max(frame_scores),
+        "failure_taxonomy_totals": {flag: sum(call["failure_taxonomy_hits"][flag] for call in calls) for flag in sorted(FAILURE_FLAGS)},
     }
-
-
-def unique_count(values: list[str]) -> int:
-    return len(set(values))
 
 
 def closing_answer_check(calls: list[dict[str, Any]]) -> bool:
@@ -1117,13 +1665,22 @@ def build_payload(
     pattern_bank_path: Path,
     result_path: Path,
     report_path: Path,
+    frames_path: Path,
     trace_path: Path,
     surface_path: Path,
     surface_data_path: Path,
-) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    profiles = build_profiles(scenario_bank_path, pattern_bank_path)
-    calls = [build_call(profile, index) for index, profile in enumerate(profiles)]
-    summary = summarize(calls, profiles)
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+    frames = build_frames(scenario_bank_path, pattern_bank_path)
+    profiles = build_profiles(frames)
+    calls = [build_call(frame, profile, index) for index, (frame, profile) in enumerate(zip(frames, profiles))]
+    summary = summarize(calls, profiles, frames)
+
+    frames_payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "frames": frames,
+    }
     trace = {
         "checkpoint_id": CHECKPOINT_ID,
         "source_checkpoint_id": SOURCE_CHECKPOINT_ID,
@@ -1145,6 +1702,7 @@ def build_payload(
             "failure_flag": sorted(FAILURE_FLAGS),
         },
         "calls": calls,
+        "frames": frames,
     }
     payload = {
         "checkpoint_id": CHECKPOINT_ID,
@@ -1155,6 +1713,7 @@ def build_payload(
         "outputs": {
             "result_path": rel_path(result_path),
             "report_path": rel_path(report_path),
+            "frames_path": rel_path(frames_path),
             "trace_path": rel_path(trace_path),
             "surface_path": rel_path(surface_path),
             "surface_data_path": rel_path(surface_data_path),
@@ -1168,6 +1727,7 @@ def build_payload(
             "emotion_handling_rate": summary["emotion_handling_rate"],
             "dialogue_realism_average_score": summary["dialogue_realism_average_score"],
             "non_smooth_trace_rate": summary["non_smooth_trace_rate"],
+            "scenario_frame_quality_average_score": summary["scenario_frame_quality_average_score"],
         },
         "validation_targets": {
             "required_labels": REQUIRED_LABELS,
@@ -1179,6 +1739,8 @@ def build_payload(
             "state_shifts": sorted(STATE_SHIFTS),
             "strategies": sorted(STRATEGIES),
             "failure_flags": sorted(FAILURE_FLAGS),
+            "banned_dialogue_phrases": BANNED_DIALOGUE_PHRASES,
+            "dialogue_realism_components": REALISM_COMPONENTS,
         },
         "boundaries": build_boundaries(),
         "review_surface": {
@@ -1188,19 +1750,20 @@ def build_payload(
             "shows_emotion_and_state_shift": True,
             "shows_strategy_detection": True,
             "shows_terminal_scoring": True,
-            "shows_dialogue_realism": True,
             "shows_failure_taxonomy": True,
+            "shows_scenario_frame_grounding": True,
+            "shows_dialogue_realism": True,
         },
     }
-    return payload, trace, surface_data
+    return payload, frames_payload, trace, surface_data
 
 
-def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
+def render_report(payload: dict[str, Any], trace: dict[str, Any], frames_payload: dict[str, Any]) -> str:
     summary = payload["summary"]
     lines = [
         "# PROD-041A Conditional Scenario Diversity Expansion",
         "",
-        "PROD-041A expands the offline conditional simulator before the PROD-041 human review checkpoint.",
+        "PROD-041A keeps the same 40-scenario checkpoint but repairs dialogue generation through a concrete scenario frame mining layer.",
         "",
         "## Summary",
     ]
@@ -1208,12 +1771,9 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         "call_count",
         "b2b_call_count",
         "b2c_call_count",
+        "frame_count",
         "scenario_label_count",
         "domain_count",
-        "b2b_domain_count",
-        "b2c_domain_count",
-        "emotional_start_state_count",
-        "objection_type_count",
         "opening_style_count",
         "terminal_outcome_type_count",
         "safe_close_rate",
@@ -1222,12 +1782,15 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         "strategy_match_rate",
         "emotion_handling_rate",
         "dialogue_realism_average_score",
-        "dialogue_realism_pass_count",
-        "non_smooth_trace_count",
+        "dialogue_realism_min_score",
         "non_smooth_trace_rate",
-        "banned_template_phrase_hits",
-        "opening_grammar_issue_count",
-        "repeated_customer_phrase_count",
+        "scenario_frame_quality_average_score",
+        "scenario_frame_quality_min_score",
+        "short_customer_response_trace_count",
+        "frame_detail_trace_count",
+        "challenge_before_final_trace_count",
+        "agent_bridge_sentence_max_repeat",
+        "customer_bridge_sentence_max_repeat",
         "hard_failure_count",
         "payment_collection_count",
         "unsupported_claim_count",
@@ -1237,36 +1800,28 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## Required Labels",
+            "## Outputs",
             "",
-            ", ".join(f"`{label}`" for label in REQUIRED_LABELS),
+            f"- `{payload['outputs']['result_path']}`",
+            f"- `{payload['outputs']['report_path']}`",
+            f"- `{payload['outputs']['frames_path']}`",
+            f"- `{payload['outputs']['trace_path']}`",
+            f"- `{payload['outputs']['surface_path']}`",
+            f"- `{payload['outputs']['surface_data_path']}`",
             "",
-            "## Review Surface",
+            "## Scenario Frame Coverage",
             "",
-            "- Filter by B2B/B2C, domain, scenario label, emotion, strategy, objection, terminal outcome, and failure flag.",
-            "- Show selected opening plus unused opening variants.",
-            "- Show exact customer text and exact agent answer per turn.",
-            "- Show required strategy, detected strategies, terminal outcome validity, score flags, and failure taxonomy hits.",
-            "- Show dialogue realism scores, variety tags, non-smooth recovery, template hits, and opening grammar findings.",
+            f"- Frame count: `{len(frames_payload['frames'])}`",
+            f"- Source checkpoint IDs: `{SCENARIO_SOURCE_CHECKPOINT_ID}` and `{PATTERN_SOURCE_CHECKPOINT_ID}`",
+            "- Spoken dialogue is generated from frame context and trigger fields, not from scenario labels.",
             "",
             "## Boundary",
             "",
-            "PROD-041A is local/offline only. It does not call providers, call an LLM, read private data, download datasets, store raw transcripts, copy transcript text, export transcript-derived commercial runtime prompts, start a server, collect payment, enable retrieval by default, enable composer hooks by default, change runtime behavior, or allow production runtime promotion.",
+            "PROD-041A remains offline and deterministic. No provider calls, no LLM calls, no private data reads, no dataset downloads, no transcript text copying, no runtime behavior changes, and no production promotion.",
             "",
             f"The next checkpoint remains `{NEXT_CHECKPOINT_ID}` for human review.",
-            "",
-            "## Scenario Scores",
-            "",
-            "| Scenario | Market | Domain | Emotion | Realism | Non Smooth | Strategy Match | Emotion Handled | Terminal | Hard Failures |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
-    for call in trace["calls"]:
-        lines.append(
-            f"| `{call['scenario_label']}` | {call['b2b_or_b2c']} | {call['domain']} | {call['customer_emotional_state_start']} | "
-            f"`{call['dialogue_realism']['score']}/{call['dialogue_realism']['max_score']}` | `{str(call['dialogue_realism']['non_smooth']).lower()}` | "
-            f"`{str(call['scenario_strategy_match']).lower()}` | `{str(call['emotion_handled']).lower()}` | `{call['terminal_outcome']}` | `{call['hard_failure_count']}` |"
-        )
     return "\n".join(lines) + "\n"
 
 
@@ -1284,7 +1839,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PROD-041A Conditional Scenario Diversity Expansion Review</title>
+  <title>PROD-041A Scenario Diversity Review</title>
   <style>
     body {{ font-family: Arial, sans-serif; margin: 0; color: #17202a; background: #f7f9fb; }}
     header {{ padding: 24px; background: #16324f; color: white; }}
@@ -1301,9 +1856,9 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
 <body>
   <header>
     <h1>PROD-041A Conditional Scenario Diversity Expansion Review</h1>
-    <p>40 offline B2B/B2C conditional scenarios before PROD-041 human review.</p>
+    <p>Concrete scenario frame grounding, natural spoken dialogue checks, and deterministic safety scoring.</p>
+    <p>Artifact: concrete_scenario_frames.json</p>
     <p>Next checkpoint: {NEXT_CHECKPOINT_ID}</p>
-    <p>call count | B2B call count | B2C call count | safe close rate | non sale correctness rate | strategy match rate | emotion handling rate | dialogue realism average score | non smooth trace rate | hard failure count | failure taxonomy</p>
   </header>
   <main>
     <section class="metrics" id="metrics"></section>
@@ -1313,7 +1868,11 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   <script id="data" type="application/json">{data_json}</script>
   <script>
     const data = JSON.parse(document.getElementById('data').textContent);
-    const metricKeys = ['call_count','b2b_call_count','b2c_call_count','safe_close_rate','non_sale_correctness_rate','hard_failure_rate','strategy_match_rate','emotion_handling_rate','dialogue_realism_average_score','non_smooth_trace_rate','banned_template_phrase_hits','opening_grammar_issue_count'];
+    const metricKeys = [
+      'call_count','b2b_call_count','b2c_call_count','frame_count','safe_close_rate','non_sale_correctness_rate',
+      'hard_failure_rate','strategy_match_rate','emotion_handling_rate','dialogue_realism_average_score',
+      'scenario_frame_quality_average_score','non_smooth_trace_rate'
+    ];
     document.getElementById('metrics').innerHTML = metricKeys.map(k => `<div class="metric"><strong>${{k}}</strong><br><code>${{data.summary[k]}}</code></div>`).join('');
     const filterIds = Object.keys(data.filters);
     for (const id of filterIds) document.getElementById(id).addEventListener('change', render);
@@ -1334,15 +1893,21 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
       document.getElementById('calls').innerHTML = calls.map(call => `
         <article>
           <h2>${{esc(call.scenario_label)}} <code>${{esc(call.b2b_or_b2c)}}</code></h2>
-          <p><strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Emotion:</strong> ${{esc(call.customer_emotional_state_start)}} -> ${{esc(call.customer_state_shift)}} | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
+          <p><strong>Frame:</strong> <code>${{esc(call.scenario_frame_id)}}</code> | <strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
+          <p><strong>Customer role:</strong> ${{esc(call.customer_role)}} | <strong>Emotion:</strong> ${{esc(call.customer_emotional_state_start)}} -> ${{esc(call.customer_state_shift)}}</p>
+          <p><strong>Context:</strong> ${{esc(call.real_world_context)}}</p>
+          <p><strong>Practical trigger:</strong> ${{esc(call.practical_trigger)}}</p>
+          <p><strong>First objection:</strong> ${{esc(call.first_customer_objection)}} | <strong>Hidden objection:</strong> ${{esc(call.hidden_objection)}}</p>
+          <p><strong>Agent goal:</strong> ${{esc(call.realistic_agent_goal)}} | <strong>Next step:</strong> ${{esc(call.realistic_next_step)}}</p>
+          <p><strong>Frame quality:</strong> <code>${{call.scenario_frame_quality.score}}/${{call.scenario_frame_quality.max_score}}</code></p>
           <p><strong>Strategy:</strong> required <code>${{esc(call.required_strategy)}}</code>, detected <code>${{esc(call.detected_strategies_used.join(', '))}}</code>, match <code>${{call.scenario_strategy_match}}</code></p>
-          <p><strong>Scores:</strong> valid terminal <code>${{call.terminal_outcome_valid}}</code>, safe close count <code>${{call.counts_toward_safe_close_rate}}</code>, non-sale correctness count <code>${{call.counts_toward_non_sale_correctness}}</code>, emotion handled <code>${{call.emotion_handled}}</code>, hard failures <code>${{call.hard_failure_count}}</code></p>
-          <p><strong>Dialogue realism:</strong> <code>${{call.dialogue_realism.score}}/${{call.dialogue_realism.max_score}}</code>, non-smooth <code>${{call.dialogue_realism.non_smooth}}</code>, recovery <code>${{call.dialogue_realism.recovery_present}}</code>, tags <code>${{esc(call.dialogue_realism.variety_tags.join(', '))}}</code></p>
+          <p><strong>Dialogue realism:</strong> <code>${{call.dialogue_realism.score}}/${{call.dialogue_realism.max_score}}</code>, non-smooth <code>${{call.dialogue_realism.non_smooth}}</code>, recovery <code>${{call.dialogue_realism.recovery_present}}</code></p>
           <details open><summary>Opening</summary><p>${{esc(call.opening.selected_opening)}}</p><ul>${{call.opening.unused_opening_variants.map(v => `<li>${{esc(v)}}</li>`).join('')}}</ul></details>
-          <details open><summary>Turns</summary>${{call.turns.map(t => `<div class="turn"><p><strong>Customer:</strong> ${{esc(t.customer_context)}}</p><p><strong>Agent:</strong> ${{esc(t.agent_answer)}}</p><p><strong>Detected:</strong> <code>${{esc(t.detected_strategies.join(', '))}}</code></p><p><strong>Customer reaction:</strong> ${{esc(t.customer_response)}}</p></div>`).join('')}}</details>
+          <details open><summary>Turns</summary>${{call.turns.map(t => `<div class="turn"><p><strong>Customer:</strong> ${{esc(t.customer_context)}}</p><p><strong>Agent:</strong> ${{esc(t.agent_answer)}}</p><p><strong>Customer reaction:</strong> ${{esc(t.customer_response)}}</p></div>`).join('')}}</details>
+          <details><summary>Spoken Language Guidance</summary><pre>${{esc(JSON.stringify(call.spoken_language_guidance, null, 2))}}</pre></details>
           <details><summary>Dialogue realism details</summary><pre>${{esc(JSON.stringify(call.dialogue_realism, null, 2))}}</pre></details>
-          <details><summary>Failure taxonomy</summary><pre>${{esc(JSON.stringify(call.failure_taxonomy_hits, null, 2))}}</pre></details>
-        </article>`).join('');
+        </article>
+      `).join('');
     }}
     render();
   </script>

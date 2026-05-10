@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from prod_041a_conditional_scenario_diversity_expansion import (
+    DEFAULT_FRAMES,
     DEFAULT_PATTERN_BANK,
     DEFAULT_REPORT,
     DEFAULT_RESULT,
@@ -46,6 +47,7 @@ def main() -> None:
     parser.add_argument("--pattern-bank", default=str(DEFAULT_PATTERN_BANK), help="PROD-013 pattern bank path.")
     parser.add_argument("--out", default=str(DEFAULT_RESULT), help="Result JSON output path.")
     parser.add_argument("--report-out", default=str(DEFAULT_REPORT), help="Markdown report output path.")
+    parser.add_argument("--frames-out", default=str(DEFAULT_FRAMES), help="Concrete scenario frames JSON output path.")
     parser.add_argument("--trace-out", default=str(DEFAULT_TRACE), help="Scenario trace JSON output path.")
     parser.add_argument("--surface-out", default=str(DEFAULT_SURFACE), help="Static HTML surface output path.")
     parser.add_argument("--surface-data-out", default=str(DEFAULT_SURFACE_DATA), help="Static HTML data output path.")
@@ -55,23 +57,26 @@ def main() -> None:
     pattern_bank = resolve_path(args.pattern_bank)
     out_path = resolve_path(args.out)
     report_path = resolve_path(args.report_out)
+    frames_path = resolve_path(args.frames_out)
     trace_path = resolve_path(args.trace_out)
     surface_path = resolve_path(args.surface_out)
     surface_data_path = resolve_path(args.surface_data_out)
 
-    payload, trace, surface_data = build_payload(
+    payload, frames_payload, trace, surface_data = build_payload(
         scenario_bank_path=scenario_bank,
         pattern_bank_path=pattern_bank,
         result_path=out_path,
         report_path=report_path,
+        frames_path=frames_path,
         trace_path=trace_path,
         surface_path=surface_path,
         surface_data_path=surface_data_path,
     )
     write_json(out_path, payload)
+    write_json(frames_path, frames_payload)
     write_json(trace_path, trace)
     write_json(surface_data_path, surface_data)
-    write_text(report_path, render_report(payload, trace))
+    write_text(report_path, render_report(payload, trace, frames_payload))
     write_text(surface_path, render_surface_html(payload, surface_data))
     print(json.dumps(payload["summary"], indent=2, ensure_ascii=False))
 

@@ -1,0 +1,2466 @@
+{
+  "checkpoint_id": "PROD-041A-conditional-scenario-diversity-expansion",
+  "scenario_source_checkpoint_id": "PROD-014-callcenteren-scenario-bank",
+  "pattern_source_checkpoint_id": "PROD-013-callcenteren-pattern-extraction",
+  "frames": [
+    {
+      "scenario_frame_id": "callcenteren-frame-001",
+      "scenario_label": "price_sensitive",
+      "market_scope": "B2B",
+      "domain": "field-service software",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-001",
+        "opening-agent_led_outbound-002",
+        "opening-agent_led_outbound-003"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-001",
+      "caller_role": "sales development rep",
+      "customer_role": "operations manager",
+      "real_world_context": "The customer runs a field-service team and tracks callbacks through a shared inbox and spreadsheets.",
+      "practical_trigger": "Service requests can lose ownership after the first follow-up question and callbacks get delayed.",
+      "customer_initial_attitude": "skeptical and price-sensitive",
+      "first_customer_objection": "asks price before hearing the full pitch",
+      "hidden_objection": "does not want another subscription unless missed follow-ups are measurable",
+      "realistic_agent_goal": "answer price directly and test whether missed callback ownership is a real cost",
+      "realistic_next_step": "short callback or written pricing summary",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "problem_framing",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "skeptical",
+      "primary_objection": "price"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-002",
+      "scenario_label": "manager_review",
+      "market_scope": "B2B",
+      "domain": "logistics",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-004",
+        "opening-agent_led_outbound-005",
+        "opening-agent_led_outbound-006"
+      ],
+      "source_scenario_id": "prod-014-price_objection-001",
+      "caller_role": "sales development rep",
+      "customer_role": "operations supervisor",
+      "real_world_context": "The supervisor can flag workflow problems but cannot approve new tools alone.",
+      "practical_trigger": "Escalations pile up when callback ownership changes between shifts.",
+      "customer_initial_attitude": "curious but manager-gated",
+      "first_customer_objection": "says manager approval is required for any next step",
+      "hidden_objection": "does not want to bring weak or vague ideas to leadership",
+      "realistic_agent_goal": "package a manager-ready summary without pressuring for commitment",
+      "realistic_next_step": "leadership note and optional callback",
+      "valid_terminal_outcomes": [
+        "manager_review_needed",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "manager_review_needed",
+      "customer_emotional_state_start": "curious",
+      "primary_objection": "manager approval"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-003",
+      "scenario_label": "existing_provider",
+      "market_scope": "B2B",
+      "domain": "healthcare operations",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-007",
+        "opening-agent_led_outbound-008",
+        "opening-agent_led_outbound-009"
+      ],
+      "source_scenario_id": "prod-014-price_objection-002",
+      "caller_role": "account development rep",
+      "customer_role": "care coordination lead",
+      "real_world_context": "The team already uses a provider but still handles manual callback lists for overflow.",
+      "practical_trigger": "Follow-up ownership becomes unclear when overflow calls move between systems.",
+      "customer_initial_attitude": "calm and defensive of current setup",
+      "first_customer_objection": "asks why another vendor is needed when they already pay a provider",
+      "hidden_objection": "fears migration work and internal disruption",
+      "realistic_agent_goal": "isolate whether ownership gaps still exist before suggesting any follow-up",
+      "realistic_next_step": "narrow callback focused on overflow handoffs",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no unsupported medical or coverage advice"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "objection_isolation",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "existing provider"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-004",
+      "scenario_label": "confused_fit",
+      "market_scope": "B2B",
+      "domain": "manufacturing",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-010",
+        "opening-agent_led_outbound-011",
+        "opening-agent_led_outbound-012"
+      ],
+      "source_scenario_id": "prod-014-callback_request-001",
+      "caller_role": "solutions rep",
+      "customer_role": "plant operations coordinator",
+      "real_world_context": "The coordinator uses multiple tools and is unsure where another workflow check fits.",
+      "practical_trigger": "Escalation callbacks are tracked in two separate queues that do not stay synchronized.",
+      "customer_initial_attitude": "confused and cautious",
+      "first_customer_objection": "asks what the product actually does in plain terms",
+      "hidden_objection": "worries this creates another dashboard without clear ownership gains",
+      "realistic_agent_goal": "simplify scope and verify if queue ownership pain is real",
+      "realistic_next_step": "short plain-language callback with one workflow example",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "simple_explanation",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "confused",
+      "primary_objection": "fit confusion"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-005",
+      "scenario_label": "skeptical_proof",
+      "market_scope": "B2B",
+      "domain": "financial services",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-013",
+        "opening-agent_led_outbound-014",
+        "opening-agent_led_outbound-015"
+      ],
+      "source_scenario_id": "prod-014-cancellation_boundary-001",
+      "caller_role": "business development rep",
+      "customer_role": "finance operations analyst",
+      "real_world_context": "The analyst has heard many optimization pitches and trusts only documented evidence.",
+      "practical_trigger": "Invoice dispute callbacks are delayed when no one owns second-touch follow-up.",
+      "customer_initial_attitude": "skeptical and proof-focused",
+      "first_customer_objection": "asks what proof can be reviewed later",
+      "hidden_objection": "expects inflated claims and wants to avoid another pilot with no metrics",
+      "realistic_agent_goal": "offer safe, checkable context without claiming guaranteed outcomes",
+      "realistic_next_step": "written summary with measurable review criteria",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "social_proof_safe",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "skeptical",
+      "primary_objection": "proof"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-006",
+      "scenario_label": "busy_now",
+      "market_scope": "B2B",
+      "domain": "SaaS operations",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-016",
+        "opening-agent_led_outbound-017",
+        "opening-agent_led_outbound-018"
+      ],
+      "source_scenario_id": "prod-014-support_handoff-001",
+      "caller_role": "sales development rep",
+      "customer_role": "revops manager",
+      "real_world_context": "The manager is between meetings and only accepts short calls with clear purpose.",
+      "practical_trigger": "Inbound requests wait too long when handoff notes are incomplete.",
+      "customer_initial_attitude": "rushed and impatient",
+      "first_customer_objection": "says they only have a minute",
+      "hidden_objection": "expects a long pitch and wants to cut the call quickly",
+      "realistic_agent_goal": "be brief and offer a concrete callback window or stop",
+      "realistic_next_step": "scheduled short callback",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "permission_first",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "rushed",
+      "primary_objection": "time"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-007",
+      "scenario_label": "send_info",
+      "market_scope": "B2B",
+      "domain": "education services",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-019",
+        "opening-agent_led_outbound-020",
+        "opening-agent_led_outbound-021"
+      ],
+      "source_scenario_id": "prod-014-trust_repair-001",
+      "caller_role": "sales development rep",
+      "customer_role": "district operations admin",
+      "real_world_context": "The admin handles vendor intake by email and avoids live calls for first pass.",
+      "practical_trigger": "Callback ownership differs by district and current notes miss location-specific responsibilities.",
+      "customer_initial_attitude": "neutral but email-first",
+      "first_customer_objection": "requests written information only",
+      "hidden_objection": "does not want open-ended conversations without internal context",
+      "realistic_agent_goal": "respect email-only preference and provide concise written scope",
+      "realistic_next_step": "written summary with optional follow-up slot",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "written information"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-008",
+      "scenario_label": "contract_fear",
+      "market_scope": "B2B",
+      "domain": "hospitality",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-022",
+        "opening-agent_led_outbound-023",
+        "opening-agent_led_outbound-024"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-002",
+      "caller_role": "account executive",
+      "customer_role": "hotel operations manager",
+      "real_world_context": "The manager has been locked into inflexible software contracts before.",
+      "practical_trigger": "Guest complaint callbacks are missed when shift leads hand off notes verbally.",
+      "customer_initial_attitude": "anxious about commitments",
+      "first_customer_objection": "asks whether this call leads to a contract commitment",
+      "hidden_objection": "fears hidden terms and automatic renewals",
+      "realistic_agent_goal": "de-risk the conversation and keep it non-committal",
+      "realistic_next_step": "written scope and optional callback without commitment",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "risk_reversal",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "anxious",
+      "primary_objection": "contract"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-009",
+      "scenario_label": "payment_fear",
+      "market_scope": "B2B",
+      "domain": "automotive services",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-025",
+        "opening-agent_led_outbound-026",
+        "opening-agent_led_outbound-027"
+      ],
+      "source_scenario_id": "prod-014-price_objection-003",
+      "caller_role": "inside sales rep",
+      "customer_role": "service desk supervisor",
+      "real_world_context": "The supervisor received scam calls before and blocks anything that requests card data.",
+      "practical_trigger": "Repair callbacks stall when service notes miss key context from the first call.",
+      "customer_initial_attitude": "distrustful and safety-first",
+      "first_customer_objection": "asks whether payment is being requested now",
+      "hidden_objection": "assumes unknown callers may ask for card details",
+      "realistic_agent_goal": "confirm no payment collection and route only safe next steps",
+      "realistic_next_step": "specialist handoff or written info",
+      "valid_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "handoff_required",
+      "customer_emotional_state_start": "distrustful",
+      "primary_objection": "payment safety"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-010",
+      "scenario_label": "security_review",
+      "market_scope": "B2B",
+      "domain": "cybersecurity",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-028",
+        "opening-agent_led_outbound-029",
+        "opening-agent_led_outbound-030"
+      ],
+      "source_scenario_id": "prod-014-price_objection-004",
+      "caller_role": "solutions consultant",
+      "customer_role": "security program manager",
+      "real_world_context": "Any workflow vendor discussion must pass security intake before technical review.",
+      "practical_trigger": "Incident follow-up callbacks fail audit checks when ownership logs are incomplete.",
+      "customer_initial_attitude": "skeptical and risk-focused",
+      "first_customer_objection": "requires security review before proceeding",
+      "hidden_objection": "expects overpromising around compliance",
+      "realistic_agent_goal": "route to security review path with no unsupported claims",
+      "realistic_next_step": "security handoff with written scope",
+      "valid_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "social_proof_safe",
+      "target_outcome": "handoff_required",
+      "customer_emotional_state_start": "skeptical",
+      "primary_objection": "security review"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-011",
+      "scenario_label": "bad_experience",
+      "market_scope": "B2B",
+      "domain": "retail chain",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-031",
+        "opening-agent_led_outbound-032",
+        "opening-agent_led_outbound-033"
+      ],
+      "source_scenario_id": "prod-014-callback_request-002",
+      "caller_role": "customer growth rep",
+      "customer_role": "regional operations director",
+      "real_world_context": "The director had a failed rollout and is wary of new follow-up tools.",
+      "practical_trigger": "Store callback queues went unmanaged during the last rollout transition.",
+      "customer_initial_attitude": "irritated from prior failure",
+      "first_customer_objection": "mentions a bad past implementation",
+      "hidden_objection": "expects another disrupted rollout",
+      "realistic_agent_goal": "acknowledge history and keep next step lightweight",
+      "realistic_next_step": "written details and optional guarded callback",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "irritated",
+      "primary_objection": "bad experience"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-012",
+      "scenario_label": "needs_approval",
+      "market_scope": "B2B",
+      "domain": "real estate",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-034",
+        "opening-agent_led_outbound-035",
+        "opening-agent_led_outbound-036"
+      ],
+      "source_scenario_id": "prod-014-cancellation_boundary-002",
+      "caller_role": "sales development rep",
+      "customer_role": "brokerage operations assistant",
+      "real_world_context": "The assistant can evaluate fit but approval sits with department leadership.",
+      "practical_trigger": "Lead callbacks are delayed when ownership is unclear between teams.",
+      "customer_initial_attitude": "calm but process-bound",
+      "first_customer_objection": "states approval is required before any commitment",
+      "hidden_objection": "does not want to escalate half-baked proposals",
+      "realistic_agent_goal": "provide approval-ready context without pressure",
+      "realistic_next_step": "manager review summary",
+      "valid_terminal_outcomes": [
+        "manager_review_needed",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "manager_review_needed",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "approval"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-013",
+      "scenario_label": "hidden_objection",
+      "market_scope": "B2B",
+      "domain": "professional services",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-037",
+        "opening-agent_led_outbound-038",
+        "opening-agent_led_outbound-039"
+      ],
+      "source_scenario_id": "prod-014-support_handoff-002",
+      "caller_role": "business development rep",
+      "customer_role": "operations lead",
+      "real_world_context": "The lead sounds open but is balancing multiple priorities this quarter.",
+      "practical_trigger": "Escalated callbacks sit unassigned when departments assume someone else owns them.",
+      "customer_initial_attitude": "polite but guarded",
+      "first_customer_objection": "says timing is unclear rather than rejecting directly",
+      "hidden_objection": "priority and budget may not support new initiatives now",
+      "realistic_agent_goal": "surface the real blocker and avoid hard-sell pressure",
+      "realistic_next_step": "short callback if priority is real, otherwise close out",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "objection_isolation",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "curious",
+      "primary_objection": "hidden budget concern"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-014",
+      "scenario_label": "competitor_comparison",
+      "market_scope": "B2B",
+      "domain": "marketing agency",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-040",
+        "opening-agent_led_outbound-041",
+        "opening-agent_led_outbound-042"
+      ],
+      "source_scenario_id": "prod-014-trust_repair-002",
+      "caller_role": "account executive",
+      "customer_role": "agency operations manager",
+      "real_world_context": "The manager is comparing two vendors and wants neutral criteria.",
+      "practical_trigger": "Campaign callback requests drop when ownership shifts across account teams.",
+      "customer_initial_attitude": "skeptical and comparison-focused",
+      "first_customer_objection": "asks how this differs from a competitor",
+      "hidden_objection": "expects biased claims instead of useful criteria",
+      "realistic_agent_goal": "keep comparison factual and avoid unverifiable superiority claims",
+      "realistic_next_step": "written comparison criteria",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "social_proof_safe",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "skeptical",
+      "primary_objection": "comparison"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-015",
+      "scenario_label": "not_interested",
+      "market_scope": "B2B",
+      "domain": "wholesale distribution",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-043",
+        "opening-agent_led_outbound-044",
+        "opening-agent_led_outbound-045"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-003",
+      "caller_role": "sales development rep",
+      "customer_role": "distribution operations manager",
+      "real_world_context": "The manager is not actively evaluating tools and wants minimal interruption.",
+      "practical_trigger": "No known callback ownership issue has been reported recently.",
+      "customer_initial_attitude": "calm but not interested",
+      "first_customer_objection": "refuses to continue the sales discussion",
+      "hidden_objection": "protects team focus from non-priority outreach",
+      "realistic_agent_goal": "respect refusal quickly and avoid pressure",
+      "realistic_next_step": "end call or do-not-contact if requested",
+      "valid_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "permission_first",
+      "target_outcome": "rejected",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "not interested"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-016",
+      "scenario_label": "hostile_rejection",
+      "market_scope": "B2B",
+      "domain": "telecom reseller",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-046",
+        "opening-agent_led_outbound-047",
+        "opening-agent_led_outbound-048"
+      ],
+      "source_scenario_id": "prod-014-price_objection-005",
+      "caller_role": "sales development rep",
+      "customer_role": "partner channel manager",
+      "real_world_context": "The manager has little tolerance for cold calls after repeated spam outreach.",
+      "practical_trigger": "No immediate workflow trigger is available because the customer rejects engagement early.",
+      "customer_initial_attitude": "hostile and defensive",
+      "first_customer_objection": "rejects call in hostile terms",
+      "hidden_objection": "expects manipulation and wants immediate shutdown",
+      "realistic_agent_goal": "de-escalate and honor refusal boundaries",
+      "realistic_next_step": "end call and mark do-not-contact",
+      "valid_terminal_outcomes": [
+        "do_not_contact"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "do_not_contact",
+      "customer_emotional_state_start": "irritated",
+      "primary_objection": "hostile refusal"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-017",
+      "scenario_label": "callback_request",
+      "market_scope": "B2B",
+      "domain": "property management",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-049",
+        "opening-agent_led_outbound-050",
+        "opening-agent_led_outbound-051"
+      ],
+      "source_scenario_id": "prod-014-price_objection-006",
+      "caller_role": "sales development rep",
+      "customer_role": "property operations coordinator",
+      "real_world_context": "The coordinator handles urgent onsite issues and cannot talk immediately.",
+      "practical_trigger": "Tenant request callbacks slip when notes are routed through multiple inboxes.",
+      "customer_initial_attitude": "rushed but not closed",
+      "first_customer_objection": "asks for callback at a better time",
+      "hidden_objection": "expects the call to become longer than promised",
+      "realistic_agent_goal": "confirm a precise callback slot without further pitch",
+      "realistic_next_step": "single scheduled callback window",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "permission_first",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "rushed",
+      "primary_objection": "callback"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-018",
+      "scenario_label": "support_boundary",
+      "market_scope": "B2B",
+      "domain": "B2B software",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-052",
+        "opening-agent_led_outbound-053",
+        "opening-agent_led_outbound-054"
+      ],
+      "source_scenario_id": "prod-014-callback_request-003",
+      "caller_role": "account rep",
+      "customer_role": "customer success manager",
+      "real_world_context": "The customer is calling about a live support issue, not a new purchase.",
+      "practical_trigger": "An unresolved ticket already has missed follow-up ownership in support queues.",
+      "customer_initial_attitude": "irritated and boundary-sensitive",
+      "first_customer_objection": "says this is a support issue not a sales call",
+      "hidden_objection": "fears sales will delay support resolution",
+      "realistic_agent_goal": "route to support boundary and stop selling",
+      "realistic_next_step": "support handoff and sales path end",
+      "valid_terminal_outcomes": [
+        "support_boundary_ended",
+        "handoff_required",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "support/cancellation boundary must end sales path"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "support_boundary_ended",
+      "customer_emotional_state_start": "irritated",
+      "primary_objection": "support issue"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-019",
+      "scenario_label": "technical_integration",
+      "market_scope": "B2B",
+      "domain": "manufacturing",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-055",
+        "opening-agent_led_outbound-056",
+        "opening-agent_led_outbound-057"
+      ],
+      "source_scenario_id": "prod-014-cancellation_boundary-003",
+      "caller_role": "solutions rep",
+      "customer_role": "integration architect",
+      "real_world_context": "The architect needs technical specifics before any discussion can continue.",
+      "practical_trigger": "Integration callbacks fail when ownership between API and operations teams is unclear.",
+      "customer_initial_attitude": "curious but technical",
+      "first_customer_objection": "asks detailed integration questions",
+      "hidden_objection": "expects hand-wavy answers from non-technical callers",
+      "realistic_agent_goal": "avoid guessing and route to technical specialist",
+      "realistic_next_step": "qualified integration handoff",
+      "valid_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "consultative_discovery",
+      "target_outcome": "handoff_required",
+      "customer_emotional_state_start": "curious",
+      "primary_objection": "integration"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-020",
+      "scenario_label": "setup_timeline",
+      "market_scope": "B2B",
+      "domain": "healthcare operations",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-058",
+        "opening-agent_led_outbound-059",
+        "opening-agent_led_outbound-060"
+      ],
+      "source_scenario_id": "prod-014-support_handoff-003",
+      "caller_role": "account executive",
+      "customer_role": "clinic operations manager",
+      "real_world_context": "The manager needs predictable setup timing around staffing constraints.",
+      "practical_trigger": "Patient callback requests accumulate when rollout ownership is unclear between departments.",
+      "customer_initial_attitude": "anxious and schedule-focused",
+      "first_customer_objection": "asks how long setup will take",
+      "hidden_objection": "worries about operational disruption",
+      "realistic_agent_goal": "set realistic expectations and avoid guaranteed timelines",
+      "realistic_next_step": "time-boxed callback with implementation specialist",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no unsupported medical or coverage advice"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "simple_explanation",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "anxious",
+      "primary_objection": "timeline"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-021",
+      "scenario_label": "multi_location_routing",
+      "market_scope": "B2B",
+      "domain": "retail chain",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-061",
+        "opening-agent_led_outbound-062",
+        "opening-agent_led_outbound-063"
+      ],
+      "source_scenario_id": "prod-014-trust_repair-003",
+      "caller_role": "enterprise sales rep",
+      "customer_role": "multi-site operations director",
+      "real_world_context": "The director manages multiple stores with uneven callback ownership standards.",
+      "practical_trigger": "Location-to-location escalation callbacks are dropped when ownership is not explicit.",
+      "customer_initial_attitude": "calm and practical",
+      "first_customer_objection": "asks how routing works across sites",
+      "hidden_objection": "fears centralized workflows may not fit local teams",
+      "realistic_agent_goal": "show narrow relevance to ownership routing across locations",
+      "realistic_next_step": "review call on location routing workflow",
+      "valid_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "problem_framing",
+      "target_outcome": "accepted",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "multi-location routing"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-022",
+      "scenario_label": "low_fit",
+      "market_scope": "B2B",
+      "domain": "construction",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-064",
+        "opening-agent_led_outbound-065",
+        "opening-agent_led_outbound-066"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-004",
+      "caller_role": "sales development rep",
+      "customer_role": "construction office manager",
+      "real_world_context": "The team may not have the callback volume that justifies additional tooling.",
+      "practical_trigger": "Most customer callbacks are already handled by a single dispatcher with clear ownership.",
+      "customer_initial_attitude": "confused and evaluating fit",
+      "first_customer_objection": "questions whether this applies to their operation",
+      "hidden_objection": "does not want forced qualification",
+      "realistic_agent_goal": "qualify out quickly if pain is absent",
+      "realistic_next_step": "mark not qualified if trigger is not present",
+      "valid_terminal_outcomes": [
+        "not_qualified",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "consultative_discovery",
+      "target_outcome": "not_qualified",
+      "customer_emotional_state_start": "confused",
+      "primary_objection": "low fit"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-023",
+      "scenario_label": "sale_ready",
+      "market_scope": "B2B",
+      "domain": "field-service software",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-067",
+        "opening-agent_led_outbound-068",
+        "opening-agent_led_outbound-069"
+      ],
+      "source_scenario_id": "prod-014-price_objection-007",
+      "caller_role": "account executive",
+      "customer_role": "service operations manager",
+      "real_world_context": "The customer already sees callback ownership gaps and is open to next steps.",
+      "practical_trigger": "Unassigned follow-ups are creating repeat customer complaints and rework.",
+      "customer_initial_attitude": "curious and purchase-ready",
+      "first_customer_objection": "wants a clear low-pressure next step",
+      "hidden_objection": "does not want hidden commitments during the first call",
+      "realistic_agent_goal": "confirm readiness while keeping commitment boundaries explicit",
+      "realistic_next_step": "book short non-binding review",
+      "valid_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "accepted",
+      "customer_emotional_state_start": "curious",
+      "primary_objection": "ready to proceed"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-024",
+      "scenario_label": "discovery_needed",
+      "market_scope": "B2B",
+      "domain": "SaaS operations",
+      "b2b_or_b2c": "B2B",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-070",
+        "opening-agent_led_outbound-071",
+        "opening-agent_led_outbound-072"
+      ],
+      "source_scenario_id": "prod-014-price_objection-008",
+      "caller_role": "solutions rep",
+      "customer_role": "operations analyst",
+      "real_world_context": "The analyst needs problem discovery before evaluating any solution fit.",
+      "practical_trigger": "Callback delays happen sporadically and root cause is not yet documented.",
+      "customer_initial_attitude": "calm and exploratory",
+      "first_customer_objection": "asks for discovery before recommendations",
+      "hidden_objection": "wants to avoid premature solution framing",
+      "realistic_agent_goal": "ask one scoped discovery question after context",
+      "realistic_next_step": "short discovery callback",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "consultative_discovery",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "needs discovery"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-025",
+      "scenario_label": "insurance_price_fear",
+      "market_scope": "B2C",
+      "domain": "insurance service",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-073",
+        "opening-agent_led_outbound-074",
+        "opening-agent_led_outbound-075"
+      ],
+      "source_scenario_id": "prod-014-callback_request-004",
+      "caller_role": "consumer advisor",
+      "customer_role": "household policy holder",
+      "real_world_context": "The customer is sensitive to insurance costs and skeptical of phone offers.",
+      "practical_trigger": "Claim follow-up callbacks are missed when documents are routed through multiple contacts.",
+      "customer_initial_attitude": "anxious and cost-focused",
+      "first_customer_objection": "asks if this increases insurance costs",
+      "hidden_objection": "fears hidden charges and unverified coverage promises",
+      "realistic_agent_goal": "clarify boundaries and avoid coverage or savings guarantees",
+      "realistic_next_step": "written information or qualified handoff",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "risk_reversal",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "anxious",
+      "primary_objection": "insurance price"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-026",
+      "scenario_label": "spouse_input",
+      "market_scope": "B2C",
+      "domain": "home services",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-076",
+        "opening-agent_led_outbound-077",
+        "opening-agent_led_outbound-078"
+      ],
+      "source_scenario_id": "prod-014-cancellation_boundary-004",
+      "caller_role": "consumer sales rep",
+      "customer_role": "home owner",
+      "real_world_context": "The buyer shares household decisions and avoids deciding alone on first contact.",
+      "practical_trigger": "Service reminder callbacks are missed when one household contact is unavailable.",
+      "customer_initial_attitude": "calm and collaborative",
+      "first_customer_objection": "needs partner input before agreeing to anything",
+      "hidden_objection": "does not want sales pressure before discussing at home",
+      "realistic_agent_goal": "provide concise info for joint review",
+      "realistic_next_step": "written summary plus optional callback",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "spouse input"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-027",
+      "scenario_label": "scam_card_fear",
+      "market_scope": "B2C",
+      "domain": "consumer telecom",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-079",
+        "opening-agent_led_outbound-080",
+        "opening-agent_led_outbound-081"
+      ],
+      "source_scenario_id": "prod-014-support_handoff-004",
+      "caller_role": "consumer outreach rep",
+      "customer_role": "mobile plan customer",
+      "real_world_context": "The customer has seen scam calls and refuses card discussions on inbound calls.",
+      "practical_trigger": "Reminder callbacks are missed when fraud alerts block legitimate follow-up calls.",
+      "customer_initial_attitude": "distrustful and defensive",
+      "first_customer_objection": "asks whether card details are requested",
+      "hidden_objection": "assumes unknown callers are unsafe",
+      "realistic_agent_goal": "rebuild trust with explicit safety boundaries",
+      "realistic_next_step": "email-only summary",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "distrustful",
+      "primary_objection": "scam or card fear"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-028",
+      "scenario_label": "consumer_not_interested",
+      "market_scope": "B2C",
+      "domain": "retail membership",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-082",
+        "opening-agent_led_outbound-083",
+        "opening-agent_led_outbound-084"
+      ],
+      "source_scenario_id": "prod-014-trust_repair-004",
+      "caller_role": "consumer sales rep",
+      "customer_role": "membership customer",
+      "real_world_context": "The customer is not shopping and wants the call ended quickly.",
+      "practical_trigger": "No active reminder or follow-up issue has been raised by this customer.",
+      "customer_initial_attitude": "calm but uninterested",
+      "first_customer_objection": "says no interest",
+      "hidden_objection": "protects attention and avoids unsolicited offers",
+      "realistic_agent_goal": "respect refusal and stop",
+      "realistic_next_step": "end call cleanly",
+      "valid_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "permission_first",
+      "target_outcome": "rejected",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "not interested"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-029",
+      "scenario_label": "consumer_callback",
+      "market_scope": "B2C",
+      "domain": "automotive service",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-085",
+        "opening-agent_led_outbound-086",
+        "opening-agent_led_outbound-087"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-005",
+      "caller_role": "consumer outreach rep",
+      "customer_role": "vehicle service customer",
+      "real_world_context": "The customer can only discuss follow-up plans outside work hours.",
+      "practical_trigger": "Appointment callbacks are missed when daytime calls go unanswered.",
+      "customer_initial_attitude": "rushed and practical",
+      "first_customer_objection": "asks for callback later",
+      "hidden_objection": "expects continued pressure if they stay on the line",
+      "realistic_agent_goal": "lock one callback slot and stop pitching",
+      "realistic_next_step": "scheduled callback",
+      "valid_terminal_outcomes": [
+        "callback_scheduled",
+        "written_info_requested",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "permission_first",
+      "target_outcome": "callback_scheduled",
+      "customer_emotional_state_start": "rushed",
+      "primary_objection": "callback"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-030",
+      "scenario_label": "coverage_confusion",
+      "market_scope": "B2C",
+      "domain": "insurance service",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-088",
+        "opening-agent_led_outbound-089",
+        "opening-agent_led_outbound-090"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-006",
+      "caller_role": "consumer advisor",
+      "customer_role": "policy holder",
+      "real_world_context": "The customer is confused about what support can be discussed without formal coverage review.",
+      "practical_trigger": "Benefit-related callbacks are delayed when customer records require specialist confirmation.",
+      "customer_initial_attitude": "confused and cautious",
+      "first_customer_objection": "asks if coverage is being confirmed on this call",
+      "hidden_objection": "fears being misled by unqualified claims",
+      "realistic_agent_goal": "clarify that coverage needs qualified review",
+      "realistic_next_step": "handoff to qualified reviewer",
+      "valid_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "simple_explanation",
+      "target_outcome": "handoff_required",
+      "customer_emotional_state_start": "confused",
+      "primary_objection": "coverage confusion"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-031",
+      "scenario_label": "already_covered",
+      "market_scope": "B2C",
+      "domain": "consumer telecom",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-091",
+        "opening-agent_led_outbound-092",
+        "opening-agent_led_outbound-093"
+      ],
+      "source_scenario_id": "prod-014-price_objection-009",
+      "caller_role": "consumer sales rep",
+      "customer_role": "telecom customer",
+      "real_world_context": "The customer says they already have coverage and does not need another service.",
+      "practical_trigger": "Current provider handles most reminders and callback ownership appears stable.",
+      "customer_initial_attitude": "calm and closed",
+      "first_customer_objection": "states the current setup already covers this need",
+      "hidden_objection": "does not want service overlap or confusion",
+      "realistic_agent_goal": "confirm fit quickly and exit if unnecessary",
+      "realistic_next_step": "close out or send optional comparison note",
+      "valid_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "objection_isolation",
+      "target_outcome": "rejected",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "already covered"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-032",
+      "scenario_label": "consumer_bad_experience",
+      "market_scope": "B2C",
+      "domain": "home services",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-094",
+        "opening-agent_led_outbound-095",
+        "opening-agent_led_outbound-096"
+      ],
+      "source_scenario_id": "prod-014-callback_request-005",
+      "caller_role": "consumer retention rep",
+      "customer_role": "home service customer",
+      "real_world_context": "The customer had a poor service experience and distrusts follow-up promises.",
+      "practical_trigger": "Last service request had no callback owner and required repeated customer chase-ups.",
+      "customer_initial_attitude": "irritated and skeptical",
+      "first_customer_objection": "references prior bad experience",
+      "hidden_objection": "expects the same failure pattern",
+      "realistic_agent_goal": "acknowledge history and keep next step reversible",
+      "realistic_next_step": "written details before any callback",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "irritated",
+      "primary_objection": "bad experience"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-033",
+      "scenario_label": "written_info",
+      "market_scope": "B2C",
+      "domain": "consumer wellness",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-097",
+        "opening-agent_led_outbound-098",
+        "opening-agent_led_outbound-099"
+      ],
+      "source_scenario_id": "prod-014-cancellation_boundary-005",
+      "caller_role": "consumer wellness rep",
+      "customer_role": "wellness subscriber",
+      "real_world_context": "The subscriber reviews options by reading first and avoids verbal commitments.",
+      "practical_trigger": "Program reminder callbacks are inconsistent when contact preferences are not documented.",
+      "customer_initial_attitude": "skeptical and documentation-first",
+      "first_customer_objection": "asks for written information only",
+      "hidden_objection": "does not trust spoken summaries alone",
+      "realistic_agent_goal": "send clear written summary and stop there",
+      "realistic_next_step": "written follow-up",
+      "valid_terminal_outcomes": [
+        "written_info_requested",
+        "callback_scheduled",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "written_info_requested",
+      "customer_emotional_state_start": "skeptical",
+      "primary_objection": "written information"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-034",
+      "scenario_label": "consumer_hostile",
+      "market_scope": "B2C",
+      "domain": "retail membership",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-100",
+        "opening-agent_led_outbound-101",
+        "opening-agent_led_outbound-102"
+      ],
+      "source_scenario_id": "prod-014-support_handoff-005",
+      "caller_role": "consumer outreach rep",
+      "customer_role": "membership account holder",
+      "real_world_context": "The customer is upset by unsolicited calls and reacts sharply.",
+      "practical_trigger": "No workflow trigger can be explored because the customer rejects immediately.",
+      "customer_initial_attitude": "hostile",
+      "first_customer_objection": "demands call end",
+      "hidden_objection": "assumes bad intent from outreach calls",
+      "realistic_agent_goal": "de-escalate and comply with refusal",
+      "realistic_next_step": "end call and record do-not-contact if requested",
+      "valid_terminal_outcomes": [
+        "do_not_contact"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "do_not_contact",
+      "customer_emotional_state_start": "irritated",
+      "primary_objection": "hostile refusal"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-035",
+      "scenario_label": "cancellation_boundary",
+      "market_scope": "B2C",
+      "domain": "subscription service",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-103",
+        "opening-agent_led_outbound-104",
+        "opening-agent_led_outbound-105"
+      ],
+      "source_scenario_id": "prod-014-trust_repair-005",
+      "caller_role": "subscription account rep",
+      "customer_role": "subscription customer",
+      "real_world_context": "The customer called to cancel and does not want the call redirected into sales.",
+      "practical_trigger": "Cancellation callbacks were delayed due to unclear ownership between support and retention.",
+      "customer_initial_attitude": "irritated and boundary-focused",
+      "first_customer_objection": "states this is a cancellation request",
+      "hidden_objection": "expects retention pressure instead of support resolution",
+      "realistic_agent_goal": "route to cancellation support boundary only",
+      "realistic_next_step": "support boundary handoff",
+      "valid_terminal_outcomes": [
+        "support_boundary_ended",
+        "handoff_required",
+        "rejected"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "support/cancellation boundary must end sales path"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "support_boundary_ended",
+      "customer_emotional_state_start": "irritated",
+      "primary_objection": "cancellation"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-036",
+      "scenario_label": "appointment_interest",
+      "market_scope": "B2C",
+      "domain": "healthcare scheduling",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-106",
+        "opening-agent_led_outbound-107",
+        "opening-agent_led_outbound-108"
+      ],
+      "source_scenario_id": "prod-014-sale_eligible-007",
+      "caller_role": "patient access rep",
+      "customer_role": "clinic patient",
+      "real_world_context": "The patient is open to appointment reminders but wants clear boundaries.",
+      "practical_trigger": "Follow-up appointment callbacks are missed when reminders are not assigned to staff owners.",
+      "customer_initial_attitude": "curious and cautious",
+      "first_customer_objection": "asks what the appointment step actually involves",
+      "hidden_objection": "does not want hidden payment or treatment claims",
+      "realistic_agent_goal": "explain reminder scope and keep next step simple",
+      "realistic_next_step": "short reminder setup callback",
+      "valid_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "next_step_close",
+      "target_outcome": "accepted",
+      "customer_emotional_state_start": "curious",
+      "primary_objection": "appointment"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-037",
+      "scenario_label": "sensitive_healthcare",
+      "market_scope": "B2C",
+      "domain": "healthcare scheduling",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-109",
+        "opening-agent_led_outbound-110",
+        "opening-agent_led_outbound-111"
+      ],
+      "source_scenario_id": "prod-014-price_objection-010",
+      "caller_role": "patient access coordinator",
+      "customer_role": "caregiver",
+      "real_world_context": "The caller is discussing a sensitive healthcare scheduling situation.",
+      "practical_trigger": "Urgent follow-up scheduling callbacks are missed when ownership between intake and clinic teams is unclear.",
+      "customer_initial_attitude": "anxious and protective",
+      "first_customer_objection": "asks for clinical certainty the caller cannot provide",
+      "hidden_objection": "fears unsafe guidance from non-clinical staff",
+      "realistic_agent_goal": "set safety boundary and route to qualified path",
+      "realistic_next_step": "qualified healthcare scheduling handoff",
+      "valid_terminal_outcomes": [
+        "handoff_required",
+        "written_info_requested",
+        "support_boundary_ended"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call",
+        "no unsupported medical or coverage advice"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "risk_reversal",
+      "target_outcome": "handoff_required",
+      "customer_emotional_state_start": "anxious",
+      "primary_objection": "healthcare sensitivity"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-038",
+      "scenario_label": "home_service_comparison",
+      "market_scope": "B2C",
+      "domain": "home services",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-112",
+        "opening-agent_led_outbound-113",
+        "opening-agent_led_outbound-114"
+      ],
+      "source_scenario_id": "prod-014-price_objection-011",
+      "caller_role": "home services advisor",
+      "customer_role": "home owner",
+      "real_world_context": "The customer is comparing service providers and wants practical differences.",
+      "practical_trigger": "Repair follow-up callbacks are missed when vendor ownership changes after quote stage.",
+      "customer_initial_attitude": "skeptical and comparison-oriented",
+      "first_customer_objection": "asks why this differs from another quote",
+      "hidden_objection": "expects exaggerated claims",
+      "realistic_agent_goal": "keep comparison grounded and low-pressure",
+      "realistic_next_step": "written comparison checklist",
+      "valid_terminal_outcomes": [
+        "rejected",
+        "written_info_requested",
+        "callback_scheduled"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "social_proof_safe",
+      "target_outcome": "rejected",
+      "customer_emotional_state_start": "skeptical",
+      "primary_objection": "comparison"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-039",
+      "scenario_label": "reminder_plan",
+      "market_scope": "B2C",
+      "domain": "automotive service",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-115",
+        "opening-agent_led_outbound-116",
+        "opening-agent_led_outbound-117"
+      ],
+      "source_scenario_id": "prod-014-callback_request-006",
+      "caller_role": "service reminder rep",
+      "customer_role": "vehicle owner",
+      "real_world_context": "The customer misses maintenance follow-ups when reminders are inconsistent.",
+      "practical_trigger": "Reminder callbacks are dropped after service advisors rotate shifts.",
+      "customer_initial_attitude": "calm and practical",
+      "first_customer_objection": "asks whether reminder follow-up is actually useful",
+      "hidden_objection": "does not want a complex system for a simple need",
+      "realistic_agent_goal": "connect reminder follow-up to a concrete missed-callback pattern",
+      "realistic_next_step": "accept short reminder setup call",
+      "valid_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "problem_framing",
+      "target_outcome": "accepted",
+      "customer_emotional_state_start": "calm",
+      "primary_objection": "reminder plan"
+    },
+    {
+      "scenario_frame_id": "callcenteren-frame-040",
+      "scenario_label": "no_pressure_consumer",
+      "market_scope": "B2C",
+      "domain": "consumer wellness",
+      "b2b_or_b2c": "B2C",
+      "source_pattern_ids": [
+        "opening-agent_led_outbound-118",
+        "opening-agent_led_outbound-119",
+        "opening-agent_led_outbound-120"
+      ],
+      "source_scenario_id": "prod-014-cancellation_boundary-006",
+      "caller_role": "consumer advisor",
+      "customer_role": "wellness customer",
+      "real_world_context": "The customer will continue only if the call remains low-pressure and reversible.",
+      "practical_trigger": "Follow-up reminders are inconsistent and the customer wants clarity without commitment.",
+      "customer_initial_attitude": "distrustful and pressure-sensitive",
+      "first_customer_objection": "states no-pressure boundary upfront",
+      "hidden_objection": "expects manipulative close tactics",
+      "realistic_agent_goal": "keep strict no-pressure boundaries and offer optional next step",
+      "realistic_next_step": "optional callback or written summary",
+      "valid_terminal_outcomes": [
+        "accepted",
+        "callback_scheduled",
+        "written_info_requested"
+      ],
+      "safety_boundaries": [
+        "no payment collection",
+        "no guaranteed ROI claim",
+        "no pressure after refusal",
+        "no card details on call"
+      ],
+      "spoken_language_guidance": {
+        "avoid": [
+          "clean next step",
+          "business reason to keep talking",
+          "from here, I would keep",
+          "keep that boundary visible"
+        ],
+        "prefer": [
+          "Sure - price first.",
+          "No hard sell.",
+          "No payment or commitment on this call.",
+          "We can stop there."
+        ]
+      },
+      "scenario_frame_quality": {
+        "concrete_context_present": true,
+        "customer_role_specific": true,
+        "practical_trigger_specific": true,
+        "objection_realistic": true,
+        "next_step_realistic": true,
+        "safety_boundaries_present": true,
+        "spoken_guidance_present": true,
+        "score": 7,
+        "max_score": 7
+      },
+      "required_strategy": "trust_repair",
+      "target_outcome": "accepted",
+      "customer_emotional_state_start": "distrustful",
+      "primary_objection": "pressure concern"
+    }
+  ]
+}

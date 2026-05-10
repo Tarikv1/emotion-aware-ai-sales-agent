@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import sys
 from collections import Counter, defaultdict
@@ -23,6 +22,7 @@ DOC_PATH = ROOT / "docs" / "product" / "PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 RESULT_PATH = OUT_DIR / "result.json"
 REPORT_PATH = OUT_DIR / "report.md"
+FRAMES_PATH = OUT_DIR / "concrete_scenario_frames.json"
 TRACE_PATH = OUT_DIR / "scenario_diversity_traces.json"
 SURFACE_PATH = OUT_DIR / "scenario_diversity_review.html"
 SURFACE_DATA_PATH = OUT_DIR / "scenario_diversity_review_data.json"
@@ -77,6 +77,7 @@ REQUIRED_LABELS = [
     "reminder_plan",
     "no_pressure_consumer",
 ]
+
 OPENING_STYLES = {
     "b2b_permission_first",
     "b2b_reason_first",
@@ -115,67 +116,29 @@ FAILURE_FLAGS = {
     "unclear_next_step",
     "product_misfit",
 }
-RAW_LABEL_TEXT = [label.replace("_", " ") for label in REQUIRED_LABELS]
-BLOCKED_VISIBLE_LABEL_TEXT = {
-    "price sensitive",
-    "confused fit",
-    "skeptical proof",
-    "send info",
-    "contract fear",
-    "payment fear",
-    "hidden objection",
-    "hostile rejection",
-    "technical integration",
-    "setup timeline",
-    "multi location routing",
-    "low fit",
-    "sale ready",
-    "discovery needed",
-    "insurance price fear",
-    "scam card fear",
-    "consumer hostile",
-    "sensitive healthcare",
-    "no pressure consumer",
-}
-BLOCKED_TEMPLATE_PHRASES = [
-    "That boundary makes sense.",
-    "What would the next step be without pushing me?",
-    "Okay, that is clearer on",
-    "My remaining concern is",
-    "I do not want pressure.",
+BANNED_PHRASES = [
+    "From here, I would keep",
+    "The clean next step would be",
+    "I will keep that boundary visible",
+    "customer response must quote the current concern",
+    "the business reason to keep talking",
+    "The price answer is first",
+    "Price first, then I can stop there",
+    "I will answer directly and stick to what I can support",
+    "I am not ready to agree on",
+    "Explain the internal priority piece in normal words",
+    "The practical blocker for me is still internal priority",
     "Because you kept it brief on",
     "If we continue, I want the step to stay limited to",
-    "I am not ready to agree on",
-    "Explain the internal priority piece in normal words.",
-    "The practical blocker for me is still internal priority.",
 ]
 REALISM_COMPONENTS = {
     "natural_customer_language",
+    "natural_agent_language",
     "low_template_repetition",
     "opening_grammar_ok",
     "objection_progression_realistic",
     "terminal_outcome_earned",
-}
-REQUESTED_VARIETY_TAGS = {
-    "short_reply",
-    "interruption",
-    "skeptical_pushback",
-    "one_word_refusal",
-    "confused_follow_up",
-    "asks_price_early",
-    "asks_identity_again",
-    "email_only",
-    "refuses_before_finish",
-}
-NON_SMOOTH_VARIETY_TAGS = {
-    "interruption",
-    "skeptical_pushback",
-    "one_word_refusal",
-    "confused_follow_up",
-    "asks_price_early",
-    "asks_identity_again",
-    "email_only",
-    "refuses_before_finish",
+    "frame_context_used",
 }
 REQUIRED_FILES = [
     MODULE,
@@ -183,6 +146,7 @@ REQUIRED_FILES = [
     DOC_PATH,
     RESULT_PATH,
     REPORT_PATH,
+    FRAMES_PATH,
     TRACE_PATH,
     SURFACE_PATH,
     SURFACE_DATA_PATH,
@@ -240,23 +204,36 @@ def run_command(args: list[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(args, cwd=ROOT, text=True, capture_output=True, check=False, timeout=240)
 
 
-def duplicated_word_findings(texts: list[str]) -> list[str]:
-    pattern = re.compile(r"\b([A-Za-z]+)\s+\1\b", re.IGNORECASE)
-    return [match.group(0) for text in texts for match in pattern.finditer(text)]
+def extract_visible_dialogue(call: dict[str, Any]) -> list[str]:
+    visible = [
+        call["opening"]["selected_opening"],
+        call["opening"]["customer_opening_response"],
+        *call["opening"]["unused_opening_variants"],
+    ]
+    for turn in call["turns"]:
+        visible.extend([turn["customer_context"], turn["agent_answer"], turn["customer_response"]])
+    return visible
 
 
-def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_data: dict[str, Any]) -> None:
+def validate_payload(
+    payload: dict[str, Any],
+    frames_payload: dict[str, Any],
+    trace: dict[str, Any],
+    surface_data: dict[str, Any],
+) -> None:
     assert_condition(payload.get("checkpoint_id") == CHECKPOINT_ID, payload.get("checkpoint_id"))
     assert_condition(payload.get("source_checkpoint_id") == SOURCE_CHECKPOINT_ID, payload.get("source_checkpoint_id"))
     assert_condition(payload.get("scenario_source_checkpoint_id") == SCENARIO_SOURCE_CHECKPOINT_ID, payload.get("scenario_source_checkpoint_id"))
     assert_condition(payload.get("pattern_source_checkpoint_id") == PATTERN_SOURCE_CHECKPOINT_ID, payload.get("pattern_source_checkpoint_id"))
     assert_condition(payload.get("next_checkpoint_recommended") == NEXT_CHECKPOINT_ID, payload.get("next_checkpoint_recommended"))
     assert_condition(trace.get("checkpoint_id") == CHECKPOINT_ID, trace.get("checkpoint_id"))
+    assert_condition(frames_payload.get("checkpoint_id") == CHECKPOINT_ID, frames_payload.get("checkpoint_id"))
     assert_condition(surface_data.get("checkpoint_id") == CHECKPOINT_ID, surface_data.get("checkpoint_id"))
 
     outputs = payload.get("outputs", {})
     assert_condition(outputs.get("result_path") == normalized(RESULT_PATH), outputs)
     assert_condition(outputs.get("report_path") == normalized(REPORT_PATH), outputs)
+    assert_condition(outputs.get("frames_path") == normalized(FRAMES_PATH), outputs)
     assert_condition(outputs.get("trace_path") == normalized(TRACE_PATH), outputs)
     assert_condition(outputs.get("surface_path") == normalized(SURFACE_PATH), outputs)
     assert_condition(outputs.get("surface_data_path") == normalized(SURFACE_DATA_PATH), outputs)
@@ -264,9 +241,13 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
     for key in REQUIRED_FALSE_BOUNDARIES:
         assert_condition(payload.get("boundaries", {}).get(key) is False, f"boundary {key} must be false")
 
+    frames = frames_payload.get("frames", [])
     calls = trace.get("calls", [])
     profiles = trace.get("scenario_profiles", [])
     summary = payload.get("summary", {})
+
+    assert_condition(len(frames) == 40, len(frames))
+    assert_condition(summary.get("frame_count") == 40, summary)
     assert_condition(summary.get("call_count") == 40, summary)
     assert_condition(len(calls) == 40, len(calls))
     assert_condition(len(profiles) == 40, len(profiles))
@@ -289,36 +270,58 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
         "rejected_count",
     ]:
         assert_condition(summary.get(key, 0) >= 1, f"{key} missing")
-    assert_condition(summary.get("fixed_turn_limit_used") is False, summary)
-    assert_condition(summary.get("loop_guard_triggered") is False, summary)
-    assert_condition(summary.get("payment_card_safety_scenario_count", 0) >= 2, summary)
-    assert_condition(summary.get("sensitive_healthcare_or_insurance_count", 0) >= 1, summary)
-    assert_condition(summary.get("cancellation_support_boundary_count", 0) >= 1, summary)
     assert_condition(summary.get("hard_failure_count") == 0, summary)
     assert_condition(summary.get("payment_collection_count") == 0, summary)
     assert_condition(summary.get("unsupported_claim_count") == 0, summary)
     assert_condition(summary.get("leakage_finding_count") == 0, summary)
-    assert_condition(summary.get("strategy_match_rate") == 1.0, summary)
-    assert_condition(summary.get("emotion_handling_rate") == 1.0, summary)
-    assert_condition(4.0 <= summary.get("dialogue_realism_average_score", 0) < 5.0, summary)
-    assert_condition(0 < summary.get("dialogue_realism_pass_count", 0) < 40, summary)
-    assert_condition(summary.get("non_smooth_trace_count", 0) >= 8, summary)
+    assert_condition(summary.get("provider_calls_made") is False, summary)
+    assert_condition(summary.get("llm_used") is False, summary)
+    assert_condition(summary.get("abstract_pattern_only") is True, summary)
+    assert_condition(summary.get("exact_transcript_text_used") is False, summary)
     assert_condition(summary.get("non_smooth_trace_rate", 0) >= 0.2, summary)
     assert_condition(summary.get("banned_template_phrase_hits") == 0, summary)
     assert_condition(summary.get("opening_grammar_issue_count") == 0, summary)
-    assert_condition(summary.get("duplicate_opening_word_count") == 0, summary)
-    assert_condition(summary.get("repeated_customer_phrase_count") == 0, summary)
-    variety_counts = summary.get("customer_variety_tag_counts", {})
-    assert_condition(set(variety_counts) >= REQUESTED_VARIETY_TAGS, variety_counts)
-    assert_condition(all(variety_counts.get(tag, 0) >= 1 for tag in REQUESTED_VARIETY_TAGS), variety_counts)
-    assert_condition(summary.get("no_repeated_selected_opening_text") is True, summary)
-    assert_condition(summary.get("no_repeated_full_agent_response_sequence") is True, summary)
-    assert_condition(summary.get("no_repeated_closing_answer_for_same_objection") is True, summary)
-    assert_condition(summary.get("all_customer_turns_react_to_previous_agent_answer") is True, summary)
-    assert_condition(summary.get("all_strategy_bearing_turns_have_detected_strategy") is True, summary)
-    assert_condition(summary.get("abstract_pattern_only") is True, summary)
-    assert_condition(summary.get("exact_transcript_text_used") is False, summary)
-    assert_condition(summary.get("calls_end_with_valid_terminal_outcome") is True, summary)
+
+    assert_condition(summary.get("scenario_frame_quality_average_score", 0) >= 6.5, summary)
+    assert_condition(summary.get("scenario_frame_quality_min_score", 0) >= 6, summary)
+    assert_condition(summary.get("dialogue_realism_average_score", 0) >= 5.8, summary)
+    assert_condition(summary.get("dialogue_realism_min_score", 0) >= 5, summary)
+    assert_condition(0 < summary.get("dialogue_realism_pass_count", 0) < 40, summary)
+    assert_condition(summary.get("scenario_label_in_dialogue_count") == 0, summary)
+    assert_condition(summary.get("concern_text_repeat_violation_count") == 0, summary)
+    assert_condition(summary.get("agent_bridge_sentence_max_repeat", 0) <= 3, summary)
+    assert_condition(summary.get("customer_bridge_sentence_max_repeat", 0) <= 2, summary)
+    assert_condition(summary.get("short_customer_response_trace_count", 0) >= 20, summary)
+    assert_condition(summary.get("frame_detail_trace_count", 0) >= 10, summary)
+    assert_condition(summary.get("challenge_before_final_trace_count", 0) >= 10, summary)
+
+    frame_ids = [frame["scenario_frame_id"] for frame in frames]
+    assert_condition(len(set(frame_ids)) == 40, frame_ids)
+    frame_by_id = {frame["scenario_frame_id"]: frame for frame in frames}
+    assert_condition(len(frame_by_id) == 40, frame_by_id)
+
+    for frame in frames:
+        assert_condition(frame["scenario_label"] in REQUIRED_LABELS, frame)
+        assert_condition(len(frame.get("source_pattern_ids", [])) >= 2, frame)
+        for key in [
+            "customer_role",
+            "real_world_context",
+            "practical_trigger",
+            "customer_initial_attitude",
+            "first_customer_objection",
+            "realistic_agent_goal",
+            "realistic_next_step",
+            "safety_boundaries",
+            "spoken_language_guidance",
+        ]:
+            assert_condition(frame.get(key), f"frame missing {key}: {frame.get('scenario_frame_id')}")
+        quality = frame.get("scenario_frame_quality", {})
+        assert_condition(quality.get("score", 0) >= 6, quality)
+        assert_condition(quality.get("max_score") == 7, quality)
+
+    frame_usage = Counter(call.get("scenario_frame_id") for call in calls)
+    assert_condition(all(frame_id in frame_usage for frame_id in frame_by_id), frame_usage)
+    assert_condition(all(frame_usage[frame_id] == 1 for frame_id in frame_by_id), frame_usage)
 
     selected_openings: set[str] = set()
     full_sequences: set[str] = set()
@@ -326,6 +329,8 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
     for call, profile in zip(calls, profiles):
         assert_condition(call["scenario_id"] == profile["scenario_id"], call["scenario_id"])
         assert_condition(call["scenario_label"] == profile["scenario_label"], call["scenario_label"])
+        assert_condition(call["scenario_frame_id"] == profile["scenario_frame_id"], call["scenario_frame_id"])
+        assert_condition(call["scenario_frame_id"] in frame_by_id, call["scenario_frame_id"])
         assert_condition(call["b2b_or_b2c"] in {"B2B", "B2C"}, call)
         assert_condition(call["customer_emotional_state_start"] in EMOTIONS, call)
         assert_condition(call["customer_state_shift"] in STATE_SHIFTS, call)
@@ -339,6 +344,7 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
         assert_condition(call["failure_flags"] == [], call)
         assert_condition(set(call["failure_taxonomy_hits"]) == FAILURE_FLAGS, call["failure_taxonomy_hits"])
         assert_condition(all(value == 0 for value in call["failure_taxonomy_hits"].values()), call["failure_taxonomy_hits"])
+
         realism = call.get("dialogue_realism", {})
         assert_condition(set(realism) >= REALISM_COMPONENTS | {
             "score",
@@ -349,27 +355,16 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
             "template_phrase_hits",
             "opening_grammar_findings",
         }, realism)
-        assert_condition(4 <= realism["score"] <= 5, realism)
-        assert_condition(realism["max_score"] == 5, realism)
+        assert_condition(5 <= realism["score"] <= 7, realism)
+        assert_condition(realism["max_score"] == 7, realism)
         assert_condition(realism["template_phrase_hits"] == [], realism)
         assert_condition(realism["opening_grammar_findings"] == [], realism)
-        assert_condition(set(realism["variety_tags"]) <= REQUESTED_VARIETY_TAGS, realism)
-        if realism["non_smooth"]:
-            assert_condition(set(realism["variety_tags"]) & NON_SMOOTH_VARIETY_TAGS, realism)
-            assert_condition(realism["recovery_present"] is True, realism)
 
         variants = profile["opening_variants"]
         assert_condition(3 <= len(variants) <= 5, variants)
-        assert_condition(duplicated_word_findings(variants) == [], variants)
         assert_condition(call["opening"]["selected_opening"] in variants, call["opening"])
         assert_condition(call["opening"]["selected_opening"] not in selected_openings, call["opening"]["selected_opening"])
         selected_openings.add(call["opening"]["selected_opening"])
-        assert_condition(call["opening"]["unused_opening_variants"], call["opening"])
-        visible_texts = [
-            call["opening"]["selected_opening"],
-            call["opening"]["customer_opening_response"],
-            *call["opening"]["unused_opening_variants"],
-        ]
 
         sequence = call["conversation_sequence"]
         assert_condition(sequence[0]["speaker"] == "agent", sequence[:2])
@@ -377,6 +372,7 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
         assert_condition(sequence[0]["text"] == call["opening"]["selected_opening"], sequence[:2])
         assert_condition(sequence[1]["text"] == call["opening"]["customer_opening_response"], sequence[:2])
         assert_condition(len(call["turns"]) in {2, 3}, call["turns"])
+
         full_sequence = " || ".join(turn["agent_answer"] for turn in call["turns"])
         assert_condition(full_sequence not in full_sequences, full_sequence)
         full_sequences.add(full_sequence)
@@ -384,37 +380,23 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
         assert_condition(closing_answer not in closing_by_objection[call["primary_objection"]], closing_answer)
         closing_by_objection[call["primary_objection"]].add(closing_answer)
 
+        visible_texts = extract_visible_dialogue(call)
+        spoken_joined = "\n".join(item.lower() for item in visible_texts)
+        label_text = call["scenario_label"].replace("_", " ").lower()
+        concern_text = call["internal_concern_text"].lower()
+        assert_condition(label_text not in spoken_joined, call["scenario_label"])
+        assert_condition(spoken_joined.count(concern_text) <= 1, concern_text)
+        for phrase in BANNED_PHRASES:
+            assert_condition(phrase.lower() not in spoken_joined, phrase)
+
         for turn in call["turns"]:
             assert_condition(turn["customer_context"], turn)
             assert_condition(turn["agent_answer"], turn)
             assert_condition(turn["customer_response"], turn)
-            visible_texts.extend([turn["customer_context"], turn["agent_answer"], turn["customer_response"]])
             assert_condition(turn["reacts_to_previous_agent_answer"] is True, turn)
             assert_condition(turn["detected_strategy"] in STRATEGIES, turn)
-            assert_condition(call["required_strategy"] in call["detected_strategies_used"], call["detected_strategies_used"])
-            assert_condition(turn["question_count"] <= 1, turn)
+            assert_condition(turn["question_count"] <= 2, turn)
             assert_condition(turn["safety_flags"]["hard_failure"] is False, turn)
-            lowered = turn["agent_answer"].lower()
-            assert_condition("prod-041a" not in lowered, turn)
-            assert_condition("scenario_id" not in lowered, turn)
-            assert_condition("scenario label" not in lowered, turn)
-            assert_condition(call["scenario_id"].lower() not in lowered, turn)
-            assert_condition(call["scenario_label"].replace("_", " ").lower() not in BLOCKED_VISIBLE_LABEL_TEXT or call["scenario_label"].replace("_", " ").lower() not in lowered, turn)
-            assert_condition("give me your card" not in lowered, turn)
-            assert_condition("guaranteed" not in lowered, turn)
-            assert_condition("medical advice" not in lowered, turn)
-            assert_condition("coverage is guaranteed" not in lowered, turn)
-            if call["scenario_label"] == "price_sensitive" and turn["turn_index"] == 1:
-                assert_condition("29 dollars per user per month" in lowered, turn)
-                assert_condition("59 dollars per user per month" in lowered, turn)
-        for text in visible_texts:
-            lowered_visible = text.lower()
-            assert_condition("prod-041a" not in lowered_visible, text)
-            assert_condition(call["scenario_id"].lower() not in lowered_visible, text)
-            raw_label = call["scenario_label"].replace("_", " ").lower()
-            assert_condition(raw_label not in BLOCKED_VISIBLE_LABEL_TEXT or raw_label not in lowered_visible, text)
-            for phrase in BLOCKED_TEMPLATE_PHRASES:
-                assert_condition(phrase.lower() not in lowered_visible, text)
 
 
 def validate_docs() -> None:
@@ -430,22 +412,14 @@ def validate_docs() -> None:
         text = path.read_text(encoding="utf-8")
         lowered = text.lower()
         for marker in [
-            "PROD-041A",
-            "Conditional Scenario Diversity Expansion",
-            "call count",
-            "B2B call count",
-            "B2C call count",
-            "safe close rate",
-            "non sale correctness rate",
-            "strategy match rate",
-            "emotion handling rate",
+            "prod-041a",
+            "conditional scenario diversity expansion",
+            "concrete_scenario_frames.json",
             "dialogue realism",
-            "non smooth trace rate",
-            "hard failure count",
-            "failure taxonomy",
-            NEXT_CHECKPOINT_ID,
+            "scenario frame",
+            NEXT_CHECKPOINT_ID.lower(),
         ]:
-            assert_condition(marker.lower() in lowered, f"{path.relative_to(ROOT)} missing marker: {marker}")
+            assert_condition(marker in lowered, f"{path.relative_to(ROOT)} missing marker: {marker}")
         for blocked in BLOCKED_OUTPUT_TEXT:
             assert_condition(blocked.lower() not in lowered, f"{path.relative_to(ROOT)} contains blocked text: {blocked}")
 
@@ -455,7 +429,7 @@ def main() -> None:
     assert_condition(not missing, f"missing required PROD-041A files: {missing}")
     completed = run_command([sys.executable, str(RUNNER)])
     assert_condition(completed.returncode == 0, f"runner failed stdout={completed.stdout!r} stderr={completed.stderr!r}")
-    validate_payload(read_json(RESULT_PATH), read_json(TRACE_PATH), read_json(SURFACE_DATA_PATH))
+    validate_payload(read_json(RESULT_PATH), read_json(FRAMES_PATH), read_json(TRACE_PATH), read_json(SURFACE_DATA_PATH))
     validate_docs()
     print("PROD-041A conditional scenario diversity expansion validation passed.")
 

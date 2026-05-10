@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-091 - Repair PROD-041A with concrete scenario frame mining only
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Keep PROD-041A at exactly 40 scenarios and repair dialogue generation by inserting a concrete scenario frame layer (`concrete_scenario_frames.json`) between abstract source patterns and spoken traces.
+- Why:
+  - scenario labels plus concern-text scaffolding were still producing unnatural, evaluator-like dialogue
+  - human review needs concrete real-world context per scenario without transcript leakage
+  - the fix target is realism quality, not checkpoint expansion
+- Alternatives considered:
+  - add more scenarios
+  - add LLM judging for realism
+  - leave frame metadata out of visible review artifacts
+- Consequences:
+  - every trace must reference one unique `scenario_frame_id`
+  - validator now enforces frame-quality gates, banned phrase checks, bridge-repeat limits, short-response and challenge coverage, and frame-context usage
+  - PROD-041A remains offline, deterministic, leakage-safe, and locked as the diversity checkpoint
+  - the next checkpoint remains `PROD-041-conditional-simulation-review`
+
 ### DEC-090 - Complete PROD-041 human review without expanding PROD-041A
 
 - Date: 2026-05-10

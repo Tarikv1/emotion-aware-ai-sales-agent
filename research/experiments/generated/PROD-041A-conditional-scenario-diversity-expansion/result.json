@@ -7,6 +7,7 @@
   "outputs": {
     "result_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/result.json",
     "report_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/report.md",
+    "frames_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/concrete_scenario_frames.json",
     "trace_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_traces.json",
     "surface_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_review.html",
     "surface_data_path": "research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_review_data.json"
@@ -71,26 +72,15 @@
     "hard_failure_count": 0,
     "strategy_match_rate": 1.0,
     "emotion_handling_rate": 1.0,
-    "dialogue_realism_average_score": 4.45,
-    "dialogue_realism_max_score": 5,
-    "dialogue_realism_pass_count": 18,
-    "non_smooth_trace_count": 14,
-    "non_smooth_trace_rate": 0.35,
-    "customer_variety_tag_counts": {
-      "asks_identity_again": 2,
-      "asks_price_early": 1,
-      "confused_follow_up": 2,
-      "email_only": 2,
-      "interruption": 1,
-      "one_word_refusal": 2,
-      "refuses_before_finish": 2,
-      "short_reply": 2,
-      "skeptical_pushback": 2
-    },
+    "dialogue_realism_average_score": 6.85,
+    "dialogue_realism_min_score": 6,
+    "dialogue_realism_max_score": 7,
+    "dialogue_realism_pass_count": 34,
+    "non_smooth_trace_count": 18,
+    "non_smooth_trace_rate": 0.45,
     "banned_template_phrase_hits": 0,
     "opening_grammar_issue_count": 0,
     "duplicate_opening_word_count": 0,
-    "repeated_customer_phrase_count": 0,
     "payment_collection_count": 0,
     "unsupported_claim_count": 0,
     "leakage_finding_count": 0,
@@ -115,6 +105,28 @@
     "no_repeated_selected_opening_text": true,
     "no_repeated_full_agent_response_sequence": true,
     "no_repeated_closing_answer_for_same_objection": true,
+    "scenario_label_in_dialogue_count": 0,
+    "concern_text_repeat_violation_count": 0,
+    "agent_bridge_sentence_max_repeat": 1,
+    "customer_bridge_sentence_max_repeat": 2,
+    "short_customer_response_trace_count": 40,
+    "frame_detail_trace_count": 40,
+    "challenge_before_final_trace_count": 18,
+    "customer_variety_tag_counts": {
+      "asks_identity_again": 2,
+      "asks_price_early": 1,
+      "confused_follow_up": 2,
+      "email_only": 2,
+      "interruption": 2,
+      "one_word_refusal": 4,
+      "refuses_before_finish": 4,
+      "short_reply": 40,
+      "skeptical_pushback": 8
+    },
+    "frame_count": 40,
+    "scenario_frame_quality_average_score": 7.0,
+    "scenario_frame_quality_min_score": 7,
+    "scenario_frame_quality_max_score": 7,
     "failure_taxonomy_totals": {
       "dodged_question": 0,
       "ignored_emotion": 0,
@@ -135,8 +147,9 @@
     "hard_failure_rate": 0.0,
     "strategy_match_rate": 1.0,
     "emotion_handling_rate": 1.0,
-    "dialogue_realism_average_score": 4.45,
-    "non_smooth_trace_rate": 0.35
+    "dialogue_realism_average_score": 6.85,
+    "non_smooth_trace_rate": 0.45,
+    "scenario_frame_quality_average_score": 7.0
   },
   "validation_targets": {
     "required_labels": [
@@ -254,6 +267,30 @@
       "unclear_next_step",
       "unsafe_payment_request",
       "unsupported_claim"
+    ],
+    "banned_dialogue_phrases": [
+      "From here, I would keep",
+      "The clean next step would be",
+      "I will keep that boundary visible",
+      "customer response must quote the current concern",
+      "the business reason to keep talking",
+      "The price answer is first",
+      "Price first, then I can stop there",
+      "I will answer directly and stick to what I can support",
+      "I am not ready to agree on",
+      "Explain the internal priority piece in normal words",
+      "The practical blocker for me is still internal priority",
+      "Because you kept it brief on",
+      "If we continue, I want the step to stay limited to"
+    ],
+    "dialogue_realism_components": [
+      "natural_customer_language",
+      "natural_agent_language",
+      "low_template_repetition",
+      "opening_grammar_ok",
+      "objection_progression_realistic",
+      "terminal_outcome_earned",
+      "frame_context_used"
     ]
   },
   "boundaries": {
@@ -440,7 +477,8 @@
     "shows_emotion_and_state_shift": true,
     "shows_strategy_detection": true,
     "shows_terminal_scoring": true,
-    "shows_dialogue_realism": true,
-    "shows_failure_taxonomy": true
+    "shows_failure_taxonomy": true,
+    "shows_scenario_frame_grounding": true,
+    "shows_dialogue_realism": true
   }
 }
