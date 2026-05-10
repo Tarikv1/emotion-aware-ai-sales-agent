@@ -2,7 +2,7 @@
 
 PROD-041A expands the offline conditional simulator before the PROD-041 human review checkpoint.
 
-It creates `40` deterministic mixed B2B/B2C calls with one curated label per scenario, richer terminal outcomes, opening-style diversity, rule-based strategy detection, deterministic emotion handling checks, scenario-level scores, hard-failure definitions, and failure taxonomy counts.
+It creates `40` deterministic mixed B2B/B2C calls with one curated label per scenario, richer terminal outcomes, opening-style diversity, rule-based strategy detection, deterministic emotion handling checks, dialogue realism scoring, scenario-level scores, hard-failure definitions, and failure taxonomy counts.
 
 ## Local Commands
 
@@ -29,6 +29,11 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Terminal outcomes: at least `6` terminal outcome types appear, including support boundary, not qualified, handoff, callback, written information, and rejection.
 - Strategy detection: deterministic rules only; no LLM judging.
 - Emotion handling: deterministic rules only.
+- Dialogue realism: each trace records `natural_customer_language`, `low_template_repetition`, `opening_grammar_ok`, `objection_progression_realistic`, and `terminal_outcome_earned`.
+- Non smooth trace rate: at least `0.2`, with customer interruptions, skeptical pushback, one-word refusals, confused follow-ups, early price asks, identity checks, email-only requests, and refusal-before-finish cases represented.
+- Opening grammar issue count: `0`
+- Banned template phrase hits: `0`
+- Repeated customer phrase count: `0`
 - Hard failure count: `0`
 - Payment collection count: `0`
 - Unsupported claim count: `0`
@@ -41,6 +46,11 @@ python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
 - Hard failure rate: `0.0`
 - Strategy match rate: `1.0`
 - Emotion handling rate: `1.0`
+- Dialogue realism average score: `5.0`
+- Non smooth trace rate: `0.35`
+- Banned template phrase hits: `0`
+- Opening grammar issue count: `0`
+- Repeated customer phrase count: `0`
 - Hard failure count: `0`
 - Payment collection count: `0`
 - Unsupported claim count: `0`
@@ -58,6 +68,7 @@ Each scenario shows:
 - emotional state start and customer state shift
 - required strategy, detected strategies used, and scenario strategy match
 - terminal outcome and whether it counts toward safe close rate or non sale correctness rate
+- dialogue realism score, non-smooth flag, recovery marker, variety tags, template hits, and opening grammar findings
 - scenario-level scores
 - failure taxonomy hits
 

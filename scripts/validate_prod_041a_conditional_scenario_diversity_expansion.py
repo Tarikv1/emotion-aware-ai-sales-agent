@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from collections import Counter, defaultdict
@@ -136,6 +137,41 @@ BLOCKED_VISIBLE_LABEL_TEXT = {
     "sensitive healthcare",
     "no pressure consumer",
 }
+BLOCKED_TEMPLATE_PHRASES = [
+    "That boundary makes sense.",
+    "What would the next step be without pushing me?",
+    "Okay, that is clearer on",
+    "My remaining concern is",
+    "I do not want pressure.",
+]
+REALISM_COMPONENTS = {
+    "natural_customer_language",
+    "low_template_repetition",
+    "opening_grammar_ok",
+    "objection_progression_realistic",
+    "terminal_outcome_earned",
+}
+REQUESTED_VARIETY_TAGS = {
+    "short_reply",
+    "interruption",
+    "skeptical_pushback",
+    "one_word_refusal",
+    "confused_follow_up",
+    "asks_price_early",
+    "asks_identity_again",
+    "email_only",
+    "refuses_before_finish",
+}
+NON_SMOOTH_VARIETY_TAGS = {
+    "interruption",
+    "skeptical_pushback",
+    "one_word_refusal",
+    "confused_follow_up",
+    "asks_price_early",
+    "asks_identity_again",
+    "email_only",
+    "refuses_before_finish",
+}
 REQUIRED_FILES = [
     MODULE,
     RUNNER,
@@ -199,6 +235,11 @@ def run_command(args: list[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(args, cwd=ROOT, text=True, capture_output=True, check=False, timeout=240)
 
 
+def duplicated_word_findings(texts: list[str]) -> list[str]:
+    pattern = re.compile(r"\b([A-Za-z]+)\s+\1\b", re.IGNORECASE)
+    return [match.group(0) for text in texts for match in pattern.finditer(text)]
+
+
 def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_data: dict[str, Any]) -> None:
     assert_condition(payload.get("checkpoint_id") == CHECKPOINT_ID, payload.get("checkpoint_id"))
     assert_condition(payload.get("source_checkpoint_id") == SOURCE_CHECKPOINT_ID, payload.get("source_checkpoint_id"))
@@ -254,6 +295,17 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
     assert_condition(summary.get("leakage_finding_count") == 0, summary)
     assert_condition(summary.get("strategy_match_rate") == 1.0, summary)
     assert_condition(summary.get("emotion_handling_rate") == 1.0, summary)
+    assert_condition(summary.get("dialogue_realism_average_score") == 5.0, summary)
+    assert_condition(summary.get("dialogue_realism_pass_count") == 40, summary)
+    assert_condition(summary.get("non_smooth_trace_count", 0) >= 8, summary)
+    assert_condition(summary.get("non_smooth_trace_rate", 0) >= 0.2, summary)
+    assert_condition(summary.get("banned_template_phrase_hits") == 0, summary)
+    assert_condition(summary.get("opening_grammar_issue_count") == 0, summary)
+    assert_condition(summary.get("duplicate_opening_word_count") == 0, summary)
+    assert_condition(summary.get("repeated_customer_phrase_count") == 0, summary)
+    variety_counts = summary.get("customer_variety_tag_counts", {})
+    assert_condition(set(variety_counts) >= REQUESTED_VARIETY_TAGS, variety_counts)
+    assert_condition(all(variety_counts.get(tag, 0) >= 1 for tag in REQUESTED_VARIETY_TAGS), variety_counts)
     assert_condition(summary.get("no_repeated_selected_opening_text") is True, summary)
     assert_condition(summary.get("no_repeated_full_agent_response_sequence") is True, summary)
     assert_condition(summary.get("no_repeated_closing_answer_for_same_objection") is True, summary)
@@ -282,9 +334,29 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
         assert_condition(call["failure_flags"] == [], call)
         assert_condition(set(call["failure_taxonomy_hits"]) == FAILURE_FLAGS, call["failure_taxonomy_hits"])
         assert_condition(all(value == 0 for value in call["failure_taxonomy_hits"].values()), call["failure_taxonomy_hits"])
+        realism = call.get("dialogue_realism", {})
+        assert_condition(set(realism) >= REALISM_COMPONENTS | {
+            "score",
+            "max_score",
+            "variety_tags",
+            "non_smooth",
+            "recovery_present",
+            "template_phrase_hits",
+            "opening_grammar_findings",
+        }, realism)
+        assert_condition(realism["score"] == 5, realism)
+        assert_condition(realism["max_score"] == 5, realism)
+        assert_condition(all(realism[name] is True for name in REALISM_COMPONENTS), realism)
+        assert_condition(realism["template_phrase_hits"] == [], realism)
+        assert_condition(realism["opening_grammar_findings"] == [], realism)
+        assert_condition(set(realism["variety_tags"]) <= REQUESTED_VARIETY_TAGS, realism)
+        if realism["non_smooth"]:
+            assert_condition(set(realism["variety_tags"]) & NON_SMOOTH_VARIETY_TAGS, realism)
+            assert_condition(realism["recovery_present"] is True, realism)
 
         variants = profile["opening_variants"]
         assert_condition(3 <= len(variants) <= 5, variants)
+        assert_condition(duplicated_word_findings(variants) == [], variants)
         assert_condition(call["opening"]["selected_opening"] in variants, call["opening"])
         assert_condition(call["opening"]["selected_opening"] not in selected_openings, call["opening"]["selected_opening"])
         selected_openings.add(call["opening"]["selected_opening"])
@@ -337,6 +409,8 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
             assert_condition(call["scenario_id"].lower() not in lowered_visible, text)
             raw_label = call["scenario_label"].replace("_", " ").lower()
             assert_condition(raw_label not in BLOCKED_VISIBLE_LABEL_TEXT or raw_label not in lowered_visible, text)
+            for phrase in BLOCKED_TEMPLATE_PHRASES:
+                assert_condition(phrase.lower() not in lowered_visible, text)
 
 
 def validate_docs() -> None:
@@ -361,6 +435,8 @@ def validate_docs() -> None:
             "non sale correctness rate",
             "strategy match rate",
             "emotion handling rate",
+            "dialogue realism",
+            "non smooth trace rate",
             "hard failure count",
             "failure taxonomy",
             NEXT_CHECKPOINT_ID,

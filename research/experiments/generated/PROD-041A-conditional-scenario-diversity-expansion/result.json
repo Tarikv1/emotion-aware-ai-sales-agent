@@ -71,6 +71,26 @@
     "hard_failure_count": 0,
     "strategy_match_rate": 1.0,
     "emotion_handling_rate": 1.0,
+    "dialogue_realism_average_score": 5.0,
+    "dialogue_realism_max_score": 5,
+    "dialogue_realism_pass_count": 40,
+    "non_smooth_trace_count": 14,
+    "non_smooth_trace_rate": 0.35,
+    "customer_variety_tag_counts": {
+      "asks_identity_again": 2,
+      "asks_price_early": 1,
+      "confused_follow_up": 2,
+      "email_only": 2,
+      "interruption": 1,
+      "one_word_refusal": 2,
+      "refuses_before_finish": 2,
+      "short_reply": 2,
+      "skeptical_pushback": 2
+    },
+    "banned_template_phrase_hits": 0,
+    "opening_grammar_issue_count": 0,
+    "duplicate_opening_word_count": 0,
+    "repeated_customer_phrase_count": 0,
     "payment_collection_count": 0,
     "unsupported_claim_count": 0,
     "leakage_finding_count": 0,
@@ -114,7 +134,9 @@
     "non_sale_correctness_rate": 1.0,
     "hard_failure_rate": 0.0,
     "strategy_match_rate": 1.0,
-    "emotion_handling_rate": 1.0
+    "emotion_handling_rate": 1.0,
+    "dialogue_realism_average_score": 5.0,
+    "non_smooth_trace_rate": 0.35
   },
   "validation_targets": {
     "required_labels": [
@@ -418,6 +440,7 @@
     "shows_emotion_and_state_shift": true,
     "shows_strategy_detection": true,
     "shows_terminal_scoring": true,
+    "shows_dialogue_realism": true,
     "shows_failure_taxonomy": true
   }
 }

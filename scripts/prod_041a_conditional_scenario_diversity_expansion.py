@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -122,12 +123,67 @@ HARD_FAILURE_MARKERS = {
     "api call made",
     "raw transcript",
 }
+BLOCKED_TEMPLATE_PHRASES = [
+    "That boundary makes sense.",
+    "What would the next step be without pushing me?",
+    "Okay, that is clearer on",
+    "My remaining concern is",
+    "I do not want pressure.",
+]
+REALISM_COMPONENTS = [
+    "natural_customer_language",
+    "low_template_repetition",
+    "opening_grammar_ok",
+    "objection_progression_realistic",
+    "terminal_outcome_earned",
+]
+REQUESTED_VARIETY_TAGS = {
+    "short_reply",
+    "interruption",
+    "skeptical_pushback",
+    "one_word_refusal",
+    "confused_follow_up",
+    "asks_price_early",
+    "asks_identity_again",
+    "email_only",
+    "refuses_before_finish",
+}
+NON_SMOOTH_VARIETY_TAGS = {
+    "interruption",
+    "skeptical_pushback",
+    "one_word_refusal",
+    "confused_follow_up",
+    "asks_price_early",
+    "asks_identity_again",
+    "email_only",
+    "refuses_before_finish",
+}
+OPENING_VARIETY_BY_LABEL = {
+    "price_sensitive": ["asks_price_early"],
+    "payment_fear": ["asks_identity_again"],
+    "send_info": ["email_only"],
+    "not_interested": ["refuses_before_finish"],
+    "consumer_not_interested": ["refuses_before_finish"],
+    "scam_card_fear": ["asks_identity_again"],
+    "written_info": ["email_only"],
+}
+TURN_VARIETY_BY_LABEL = {
+    "manager_review": {1: ["short_reply"]},
+    "existing_provider": {1: ["interruption"]},
+    "confused_fit": {1: ["confused_follow_up"]},
+    "skeptical_proof": {1: ["skeptical_pushback"]},
+    "hostile_rejection": {1: ["one_word_refusal"]},
+    "consumer_hostile": {1: ["one_word_refusal"]},
+    "home_service_comparison": {1: ["skeptical_pushback"]},
+    "coverage_confusion": {1: ["confused_follow_up"]},
+    "busy_now": {1: ["short_reply"]},
+}
 
 CONCERN_TEXT = {
     "price_sensitive": "the price and whether it is worth a second conversation",
-    "manager_review": "the short internal case your manager would need",
+    "manager_review": "what your manager would need for a quick review",
     "existing_provider": "whether this adds anything when you already have a provider",
-    "confused_fit": "where this fits in your current workflow",
+    "confused_fit": "how this would fit into your current workflow",
     "skeptical_proof": "what proof you can check later",
     "busy_now": "whether this is worth a callback",
     "send_info": "what needs to be sent in writing",
@@ -157,7 +213,7 @@ CONCERN_TEXT = {
     "already_covered": "whether you already have what you need",
     "consumer_bad_experience": "your previous bad service experience",
     "written_info": "what you want in writing",
-    "consumer_hostile": "your clear refusal",
+    "consumer_hostile": "your refusal as a consumer",
     "cancellation_boundary": "the cancellation or support issue",
     "appointment_interest": "whether an appointment reminder would help",
     "sensitive_healthcare": "the healthcare scheduling concern that needs care",
@@ -340,12 +396,12 @@ def opening_variants(profile: dict[str, Any]) -> list[str]:
             f"Hi, this is Maya from RouteSignal. Before I get into it, is this an okay moment to share the {domain} reason I called about {concern}?",
             f"Hi, this is Maya from RouteSignal. The reason I called is a short workflow check for {domain} teams dealing with {concern}; may I take thirty seconds?",
             f"Hi, this is Maya from RouteSignal. I know your time is tight, so I can keep this to one practical {domain} point about {concern} and stop if it is not relevant.",
-            f"Hi, this is Maya from RouteSignal. For teams where {concern}, the manager-level reason is usually routing clarity, not a surprise purchase pitch.",
+            f"Hi, this is Maya from RouteSignal. For teams dealing with {concern}, the manager-level reason is usually routing clarity, not a surprise purchase pitch.",
         ]
     else:
         variants = [
             f"Hi, this is Maya from RouteSignal Home. I will not ask for payment or card details; I am calling about a simple {domain} reminder question tied to {concern}.",
-            f"Hi, this is Maya from RouteSignal Home. The short consumer reason is whether {concern} is creating missed reminders or follow-up confusion.",
+            f"Hi, this is Maya from RouteSignal Home. The short consumer reason is a reminder check around {concern}.",
             f"Hi, this is Maya from RouteSignal Home. If this feels unsafe or irrelevant, you can stop me; I only want to clarify the {domain} reason around {concern}.",
         ]
     return variants
@@ -353,6 +409,15 @@ def opening_variants(profile: dict[str, Any]) -> list[str]:
 
 def opening_customer_text(profile: dict[str, Any]) -> str:
     concern = CONCERN_TEXT[profile["scenario_label"]]
+    label = profile["scenario_label"]
+    if label == "price_sensitive":
+        return "Before anything else, what does it cost? I am not sitting through a pitch without a number."
+    if label in {"payment_fear", "scam_card_fear"}:
+        return f"Wait, who are you again? I am not giving card details for {concern} to someone who just called me."
+    if label in {"send_info", "written_info"}:
+        return f"Just email it about {concern}. I am not discussing this live."
+    if label in {"not_interested", "consumer_not_interested"}:
+        return f"I am going to stop you there. Not interested in a call about {concern}."
     emotion = profile["customer_emotional_state_start"]
     if emotion == "rushed":
         return f"I am short on time. If this is about {concern}, make it brief and do not bury the point."
@@ -361,9 +426,9 @@ def opening_customer_text(profile: dict[str, Any]) -> str:
     if emotion == "confused":
         return f"I do not understand where this fits. Explain the part about {concern} in plain language first."
     if emotion == "anxious":
-        return f"I am worried this turns into risk or commitment. Be clear about the boundary before anything else."
+        return f"I am worried {concern} turns into risk or commitment. Be clear about the boundary before anything else."
     if emotion == "distrustful":
-        return f"I do not trust phone offers, and I will not give payment details. What is this actually about?"
+        return f"I do not trust phone offers about {concern}, and I will not give payment details. What is this actually about?"
     if emotion == "skeptical":
         return f"I hear claims like this all the time. Give me a direct, grounded answer on {concern}."
     if emotion == "curious":
@@ -390,7 +455,7 @@ def strategy_phrase(strategy: str, profile: dict[str, Any], stage: str) -> str:
     if strategy == "permission_first":
         return f"Your control comes first: if now is bad, we can stop or set one callback to cover {concern}."
     if strategy == "problem_framing":
-        return f"The business reason to keep talking is whether {domain} follow-up is losing ownership, not whether you should buy something today."
+        return f"The business reason to keep talking is whether {domain} follow-up gets unclear, like who owns callbacks after the first question, not whether you should buy something today."
     if strategy == "social_proof_safe":
         return f"The safe proof point is general: teams review this kind of workflow when follow-up gaps keep repeating, without assuming your results."
     if strategy == "risk_reversal":
@@ -440,7 +505,7 @@ def terminal_customer_response(profile: dict[str, Any]) -> str:
     if terminal == "written_info_requested":
         return f"Send the details on {concern} in writing first. I am not deciding on this call."
     if terminal == "manager_review_needed":
-        return f"I need my manager to review that before anything else. Send the short internal summary and stop there."
+        return f"I need my manager to review {concern} before anything else. Send the short internal summary and stop there."
     if terminal == "handoff_required":
         return f"This needs the right specialist for {concern}. Handoff is fine, but do not make claims you cannot verify."
     if terminal == "support_boundary_ended":
@@ -448,7 +513,7 @@ def terminal_customer_response(profile: dict[str, Any]) -> str:
     if terminal == "not_qualified":
         return f"Based on that explanation, this does not fit my situation. Mark it not qualified."
     if terminal == "do_not_contact":
-        return f"No. Do not contact me again about this."
+        return f"No. Do not contact me again about {concern}."
     if terminal == "rejected":
         return f"I understand the answer on {concern}, but I am rejecting the offer for now."
     raise ValueError(terminal)
@@ -642,27 +707,188 @@ def hard_failure_flags(texts: list[str], profile: dict[str, Any]) -> tuple[int, 
     return hard, sorted(flags)
 
 
+def variety_tags_for(profile: dict[str, Any], turn_index: int) -> list[str]:
+    label = profile["scenario_label"]
+    if turn_index == 0:
+        return OPENING_VARIETY_BY_LABEL.get(label, [])
+    return TURN_VARIETY_BY_LABEL.get(label, {}).get(turn_index, [])
+
+
+def all_variety_tags(profile: dict[str, Any]) -> list[str]:
+    tags: list[str] = []
+    for turn_index in [0, 1, 2, 3]:
+        tags.extend(variety_tags_for(profile, turn_index))
+    return sorted(set(tags))
+
+
+def recovery_phrase(profile: dict[str, Any], next_turn_index: int) -> str:
+    tags = set(variety_tags_for(profile, next_turn_index - 1))
+    if "asks_price_early" in tags:
+        return "Price first, then I can stop there."
+    if "asks_identity_again" in tags:
+        return "Sure - this is Maya from RouteSignal, and no card details belong on this call."
+    if "email_only" in tags:
+        return "I can keep it to email only."
+    if "refuses_before_finish" in tags:
+        return "Understood, I will not push past that."
+    if "interruption" in tags:
+        return "Fair interruption; short answer first."
+    if "skeptical_pushback" in tags:
+        return "Fair pushback; I will stay with checkable context."
+    if "one_word_refusal" in tags:
+        return "Understood, I will back off."
+    if "confused_follow_up" in tags:
+        return "Let me reset that in simpler terms."
+    if "short_reply" in tags:
+        return "Got it - I will keep going briefly."
+    return ""
+
+
+def customer_reaction_text(profile: dict[str, Any], turn_index: int) -> str:
+    label = profile["scenario_label"]
+    concern = CONCERN_TEXT[label]
+    secondary = profile["secondary_objection"]
+    if turn_index == 1:
+        specific = {
+            "manager_review": "Maybe. Keep going.",
+            "existing_provider": "Wait - before you continue, are you saying this replaces our provider or just checks the handoff around it?",
+            "confused_fit": "I am lost. Is this about scheduling, routing, reminders, or something else?",
+            "skeptical_proof": "That still sounds like a pitch. What can I actually check after this call?",
+            "hostile_rejection": "No.",
+            "consumer_hostile": "No.",
+            "home_service_comparison": "That does not tell me why this is different from the other quote.",
+            "coverage_confusion": "So are you saying I am covered, or are you not allowed to say that?",
+            "busy_now": "Fine, but keep it under a minute.",
+        }
+        if label in specific:
+            return specific[label]
+        patterns = [
+            f"I follow the main point on {concern}, but {secondary} is still the part I would need resolved.",
+            f"That answers some of it. For {concern}, the part I am still unsure about is {secondary}.",
+            f"I am not ready to agree on {concern}. Explain the {secondary} piece in normal words.",
+            f"That helps a little. I still need to know how {secondary} changes the next step for {concern}.",
+            f"I hear you on {concern}. The practical blocker for me is still {secondary}.",
+        ]
+        return patterns[(len(label) + len(profile["domain"])) % len(patterns)]
+    specific_second = {
+        "payment_fear": "If a specialist calls, I still will not give payment details over the phone.",
+        "security_review": "Then the security team needs the written version before anyone books time.",
+        "support_boundary": "Good, because I called about support. I do not want a sales workaround.",
+        "technical_integration": "A specialist handoff is fine, but I need them to answer the integration question directly.",
+        "low_fit": "Then this probably is not for us.",
+        "scam_card_fear": "Email only, and no links asking for card details.",
+        "cancellation_boundary": "Route the cancellation issue. I am not buying anything else today.",
+        "sensitive_healthcare": "Then do not guess. Send me to the right scheduling or qualified support path.",
+    }
+    if label in specific_second:
+        return specific_second[label]
+    patterns = [
+        f"So the next step is only about {concern}, not a decision today?",
+        f"If we continue, I want the step to stay limited to {concern}.",
+        f"What happens next if I only want a light review of {concern}?",
+        f"I can consider one narrow step if it stays tied to {concern}.",
+        f"Before I agree, confirm the next step will not go beyond {concern}.",
+    ]
+    return patterns[(len(label) + turn_index) % len(patterns)]
+
+
+def customer_utterances(call: dict[str, Any]) -> list[str]:
+    return [item["text"] for item in call["conversation_sequence"] if item["speaker"] == "customer"]
+
+
+def blocked_template_hits(texts: list[str]) -> list[str]:
+    joined = "\n".join(texts).lower()
+    return [phrase for phrase in BLOCKED_TEMPLATE_PHRASES if phrase.lower() in joined]
+
+
+def duplicated_word_findings(texts: list[str]) -> list[str]:
+    findings: list[str] = []
+    pattern = re.compile(r"\b([A-Za-z]+)\s+\1\b", re.IGNORECASE)
+    for text in texts:
+        for match in pattern.finditer(text):
+            findings.append(match.group(0))
+    return findings
+
+
+def dialogue_realism_score(call: dict[str, Any], profile: dict[str, Any]) -> dict[str, Any]:
+    customer_texts = customer_utterances(call)
+    opening_texts = [call["opening"]["selected_opening"], *call["opening"]["all_opening_variants"]]
+    template_hits = blocked_template_hits(customer_texts)
+    grammar_findings = duplicated_word_findings(opening_texts)
+    tags = all_variety_tags(profile)
+    non_smooth = any(tag in NON_SMOOTH_VARIETY_TAGS for tag in tags)
+    agent_joined = " ".join(turn["agent_answer"].lower() for turn in call["turns"])
+    recovery_present = not non_smooth or any(
+        marker in agent_joined
+        for marker in [
+            "price first",
+            "this is maya",
+            "email only",
+            "not push past",
+            "fair interruption",
+            "fair pushback",
+            "back off",
+            "reset that",
+        ]
+    )
+    components = {
+        "natural_customer_language": not template_hits and all("scenario" not in text.lower() for text in customer_texts),
+        "low_template_repetition": not template_hits and len(customer_texts) == len(set(customer_texts)),
+        "opening_grammar_ok": not grammar_findings,
+        "objection_progression_realistic": recovery_present and len(customer_texts) >= 3 and customer_texts[-1] != customer_texts[0],
+        "terminal_outcome_earned": call["terminal_outcome_valid"] and recovery_present,
+    }
+    return {
+        **components,
+        "score": sum(1 for name in REALISM_COMPONENTS if components[name]),
+        "max_score": len(REALISM_COMPONENTS),
+        "variety_tags": tags,
+        "non_smooth": non_smooth,
+        "recovery_present": recovery_present,
+        "template_phrase_hits": template_hits,
+        "opening_grammar_findings": grammar_findings,
+    }
+
+
+def visible_customer_phrase_repetition(calls: list[dict[str, Any]]) -> int:
+    counts = Counter(
+        text.strip().lower()
+        for call in calls
+        for text in customer_utterances(call)
+        if len(text.strip()) > 12
+    )
+    return sum(count - 1 for count in counts.values() if count > 1)
+
+
 def build_call(profile: dict[str, Any], index: int) -> dict[str, Any]:
     selected_opening = profile["opening_variants"][selected_opening_index(profile)]
     opening_customer = profile["initial_state"]["customer_text"]
+    first_recovery = recovery_phrase(profile, 1)
+    bridge_recovery = recovery_phrase(profile, 2)
+    final_recovery = recovery_phrase(profile, 3)
     first_answer = (
+        f"{first_recovery + ' ' if first_recovery else ''}"
         f"{emotion_phrase(profile['customer_emotional_state_start'])} "
         f"{DIRECT_ANSWERS[profile['scenario_label']]} "
         f"{strategy_phrase(profile['required_strategy'], profile, 'first')}"
     )
     bridge_answer = (
+        f"{bridge_recovery + ' ' if bridge_recovery else ''}"
         f"From here, I would keep the conversation tied to {CONCERN_TEXT[profile['scenario_label']]}. "
         f"{strategy_phrase(profile['required_strategy'], profile, 'bridge')}"
     )
     final_answer = (
+        f"{final_recovery + ' ' if final_recovery else ''}"
         f"The clean next step would be to {next_step_text(profile)}. "
         "I will keep that boundary visible and avoid turning this into a hard sell. "
         "If that is not acceptable, I will stop without pressure."
     )
+    turn_one_response = customer_reaction_text(profile, 1)
+    turn_two_response = customer_reaction_text(profile, 2)
     turns = [
-        build_turn(profile, 1, opening_customer, first_answer, intermediate_customer_response(profile, 1)),
-        build_turn(profile, 2, intermediate_customer_response(profile, 1), bridge_answer, intermediate_customer_response(profile, 2)),
-        build_turn(profile, 3, intermediate_customer_response(profile, 2), final_answer, terminal_customer_response(profile)),
+        build_turn(profile, 1, opening_customer, first_answer, turn_one_response),
+        build_turn(profile, 2, turn_one_response, bridge_answer, turn_two_response),
+        build_turn(profile, 3, turn_two_response, final_answer, terminal_customer_response(profile)),
     ]
     if index % 5 == 0 and profile["target_outcome"] in {"rejected", "do_not_contact", "not_qualified"}:
         turns = turns[:2]
@@ -714,10 +940,12 @@ def build_call(profile: dict[str, Any], index: int) -> dict[str, Any]:
             "exact_agent_answer_visible": True,
             "selected_opening_and_unused_variants_visible": True,
             "scenario_level_scores_visible": True,
+            "dialogue_realism_visible": True,
             "failure_taxonomy_visible": True,
             "local_static_only": True,
         },
     }
+    call["dialogue_realism"] = dialogue_realism_score(call, profile)
     return call
 
 
@@ -726,18 +954,6 @@ def selected_opening_index(profile: dict[str, Any]) -> int:
     if profile["b2b_or_b2c"] == "B2C":
         styles = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
     return styles.index(profile["selected_opening_style"])
-
-
-def intermediate_customer_response(profile: dict[str, Any], turn_index: int) -> str:
-    concern = CONCERN_TEXT[profile["scenario_label"]]
-    if turn_index == 1:
-        return (
-            f"Okay, that is clearer on {concern}. My remaining concern is "
-            f"{profile['secondary_objection']}, and I do not want pressure."
-        )
-    return (
-        "That boundary makes sense. What would the next step be without pushing me?"
-    )
 
 
 def build_turn(profile: dict[str, Any], turn_index: int, customer_context: str, agent_answer: str, customer_response: str) -> dict[str, Any]:
@@ -777,6 +993,12 @@ def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> di
     total = len(calls)
     non_sale_calls = [call for call in calls if call["terminal_outcome"] in NON_SALE_CORRECTNESS_OUTCOMES]
     hard_failure_total = sum(call["hard_failure_count"] for call in calls)
+    realism_scores = [call["dialogue_realism"]["score"] for call in calls]
+    variety_counter = Counter(
+        tag for call in calls for tag in call["dialogue_realism"]["variety_tags"]
+    )
+    template_hit_total = sum(len(call["dialogue_realism"]["template_phrase_hits"]) for call in calls)
+    grammar_issue_total = sum(len(call["dialogue_realism"]["opening_grammar_findings"]) for call in calls)
     return {
         "call_count": total,
         "b2b_call_count": sum(1 for call in calls if call["b2b_or_b2c"] == "B2B"),
@@ -796,6 +1018,16 @@ def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> di
         "hard_failure_count": hard_failure_total,
         "strategy_match_rate": round(sum(1 for call in calls if call["scenario_strategy_match"]) / total, 4),
         "emotion_handling_rate": round(sum(1 for call in calls if call["emotion_handled"]) / total, 4),
+        "dialogue_realism_average_score": round(sum(realism_scores) / max(1, total), 4),
+        "dialogue_realism_max_score": len(REALISM_COMPONENTS),
+        "dialogue_realism_pass_count": sum(1 for call in calls if call["dialogue_realism"]["score"] == len(REALISM_COMPONENTS)),
+        "non_smooth_trace_count": sum(1 for call in calls if call["dialogue_realism"]["non_smooth"]),
+        "non_smooth_trace_rate": round(sum(1 for call in calls if call["dialogue_realism"]["non_smooth"]) / total, 4),
+        "customer_variety_tag_counts": dict(sorted(variety_counter.items())),
+        "banned_template_phrase_hits": template_hit_total,
+        "opening_grammar_issue_count": grammar_issue_total,
+        "duplicate_opening_word_count": grammar_issue_total,
+        "repeated_customer_phrase_count": visible_customer_phrase_repetition(calls),
         "payment_collection_count": 0,
         "unsupported_claim_count": 0,
         "leakage_finding_count": 0,
@@ -896,6 +1128,8 @@ def build_payload(
             "hard_failure_rate": summary["hard_failure_rate"],
             "strategy_match_rate": summary["strategy_match_rate"],
             "emotion_handling_rate": summary["emotion_handling_rate"],
+            "dialogue_realism_average_score": summary["dialogue_realism_average_score"],
+            "non_smooth_trace_rate": summary["non_smooth_trace_rate"],
         },
         "validation_targets": {
             "required_labels": REQUIRED_LABELS,
@@ -916,6 +1150,7 @@ def build_payload(
             "shows_emotion_and_state_shift": True,
             "shows_strategy_detection": True,
             "shows_terminal_scoring": True,
+            "shows_dialogue_realism": True,
             "shows_failure_taxonomy": True,
         },
     }
@@ -948,6 +1183,13 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
         "hard_failure_rate",
         "strategy_match_rate",
         "emotion_handling_rate",
+        "dialogue_realism_average_score",
+        "dialogue_realism_pass_count",
+        "non_smooth_trace_count",
+        "non_smooth_trace_rate",
+        "banned_template_phrase_hits",
+        "opening_grammar_issue_count",
+        "repeated_customer_phrase_count",
         "hard_failure_count",
         "payment_collection_count",
         "unsupported_claim_count",
@@ -967,6 +1209,7 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
             "- Show selected opening plus unused opening variants.",
             "- Show exact customer text and exact agent answer per turn.",
             "- Show required strategy, detected strategies, terminal outcome validity, score flags, and failure taxonomy hits.",
+            "- Show dialogue realism scores, variety tags, non-smooth recovery, template hits, and opening grammar findings.",
             "",
             "## Boundary",
             "",
@@ -976,13 +1219,14 @@ def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
             "",
             "## Scenario Scores",
             "",
-            "| Scenario | Market | Domain | Emotion | Strategy Match | Emotion Handled | Terminal | Hard Failures |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Scenario | Market | Domain | Emotion | Realism | Non Smooth | Strategy Match | Emotion Handled | Terminal | Hard Failures |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         ]
     )
     for call in trace["calls"]:
         lines.append(
             f"| `{call['scenario_label']}` | {call['b2b_or_b2c']} | {call['domain']} | {call['customer_emotional_state_start']} | "
+            f"`{call['dialogue_realism']['score']}/{call['dialogue_realism']['max_score']}` | `{str(call['dialogue_realism']['non_smooth']).lower()}` | "
             f"`{str(call['scenario_strategy_match']).lower()}` | `{str(call['emotion_handled']).lower()}` | `{call['terminal_outcome']}` | `{call['hard_failure_count']}` |"
         )
     return "\n".join(lines) + "\n"
@@ -1021,7 +1265,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
     <h1>PROD-041A Conditional Scenario Diversity Expansion Review</h1>
     <p>40 offline B2B/B2C conditional scenarios before PROD-041 human review.</p>
     <p>Next checkpoint: {NEXT_CHECKPOINT_ID}</p>
-    <p>call count | B2B call count | B2C call count | safe close rate | non sale correctness rate | strategy match rate | emotion handling rate | hard failure count | failure taxonomy</p>
+    <p>call count | B2B call count | B2C call count | safe close rate | non sale correctness rate | strategy match rate | emotion handling rate | dialogue realism average score | non smooth trace rate | hard failure count | failure taxonomy</p>
   </header>
   <main>
     <section class="metrics" id="metrics"></section>
@@ -1031,7 +1275,7 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
   <script id="data" type="application/json">{data_json}</script>
   <script>
     const data = JSON.parse(document.getElementById('data').textContent);
-    const metricKeys = ['call_count','b2b_call_count','b2c_call_count','safe_close_rate','non_sale_correctness_rate','hard_failure_rate','strategy_match_rate','emotion_handling_rate'];
+    const metricKeys = ['call_count','b2b_call_count','b2c_call_count','safe_close_rate','non_sale_correctness_rate','hard_failure_rate','strategy_match_rate','emotion_handling_rate','dialogue_realism_average_score','non_smooth_trace_rate','banned_template_phrase_hits','opening_grammar_issue_count'];
     document.getElementById('metrics').innerHTML = metricKeys.map(k => `<div class="metric"><strong>${{k}}</strong><br><code>${{data.summary[k]}}</code></div>`).join('');
     const filterIds = Object.keys(data.filters);
     for (const id of filterIds) document.getElementById(id).addEventListener('change', render);
@@ -1055,8 +1299,10 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
           <p><strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Emotion:</strong> ${{esc(call.customer_emotional_state_start)}} -> ${{esc(call.customer_state_shift)}} | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
           <p><strong>Strategy:</strong> required <code>${{esc(call.required_strategy)}}</code>, detected <code>${{esc(call.detected_strategies_used.join(', '))}}</code>, match <code>${{call.scenario_strategy_match}}</code></p>
           <p><strong>Scores:</strong> valid terminal <code>${{call.terminal_outcome_valid}}</code>, safe close count <code>${{call.counts_toward_safe_close_rate}}</code>, non-sale correctness count <code>${{call.counts_toward_non_sale_correctness}}</code>, emotion handled <code>${{call.emotion_handled}}</code>, hard failures <code>${{call.hard_failure_count}}</code></p>
+          <p><strong>Dialogue realism:</strong> <code>${{call.dialogue_realism.score}}/${{call.dialogue_realism.max_score}}</code>, non-smooth <code>${{call.dialogue_realism.non_smooth}}</code>, recovery <code>${{call.dialogue_realism.recovery_present}}</code>, tags <code>${{esc(call.dialogue_realism.variety_tags.join(', '))}}</code></p>
           <details open><summary>Opening</summary><p>${{esc(call.opening.selected_opening)}}</p><ul>${{call.opening.unused_opening_variants.map(v => `<li>${{esc(v)}}</li>`).join('')}}</ul></details>
           <details open><summary>Turns</summary>${{call.turns.map(t => `<div class="turn"><p><strong>Customer:</strong> ${{esc(t.customer_context)}}</p><p><strong>Agent:</strong> ${{esc(t.agent_answer)}}</p><p><strong>Detected:</strong> <code>${{esc(t.detected_strategies.join(', '))}}</code></p><p><strong>Customer reaction:</strong> ${{esc(t.customer_response)}}</p></div>`).join('')}}</details>
+          <details><summary>Dialogue realism details</summary><pre>${{esc(JSON.stringify(call.dialogue_realism, null, 2))}}</pre></details>
           <details><summary>Failure taxonomy</summary><pre>${{esc(JSON.stringify(call.failure_taxonomy_hits, null, 2))}}</pre></details>
         </article>`).join('');
     }}
