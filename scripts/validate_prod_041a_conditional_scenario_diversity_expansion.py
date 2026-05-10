@@ -114,6 +114,28 @@ FAILURE_FLAGS = {
     "unclear_next_step",
     "product_misfit",
 }
+RAW_LABEL_TEXT = [label.replace("_", " ") for label in REQUIRED_LABELS]
+BLOCKED_VISIBLE_LABEL_TEXT = {
+    "price sensitive",
+    "confused fit",
+    "skeptical proof",
+    "send info",
+    "contract fear",
+    "payment fear",
+    "hidden objection",
+    "hostile rejection",
+    "technical integration",
+    "setup timeline",
+    "multi location routing",
+    "low fit",
+    "sale ready",
+    "discovery needed",
+    "insurance price fear",
+    "scam card fear",
+    "consumer hostile",
+    "sensitive healthcare",
+    "no pressure consumer",
+}
 REQUIRED_FILES = [
     MODULE,
     RUNNER,
@@ -267,6 +289,11 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
         assert_condition(call["opening"]["selected_opening"] not in selected_openings, call["opening"]["selected_opening"])
         selected_openings.add(call["opening"]["selected_opening"])
         assert_condition(call["opening"]["unused_opening_variants"], call["opening"])
+        visible_texts = [
+            call["opening"]["selected_opening"],
+            call["opening"]["customer_opening_response"],
+            *call["opening"]["unused_opening_variants"],
+        ]
 
         sequence = call["conversation_sequence"]
         assert_condition(sequence[0]["speaker"] == "agent", sequence[:2])
@@ -285,16 +312,31 @@ def validate_payload(payload: dict[str, Any], trace: dict[str, Any], surface_dat
             assert_condition(turn["customer_context"], turn)
             assert_condition(turn["agent_answer"], turn)
             assert_condition(turn["customer_response"], turn)
+            visible_texts.extend([turn["customer_context"], turn["agent_answer"], turn["customer_response"]])
             assert_condition(turn["reacts_to_previous_agent_answer"] is True, turn)
             assert_condition(turn["detected_strategy"] in STRATEGIES, turn)
             assert_condition(call["required_strategy"] in call["detected_strategies_used"], call["detected_strategies_used"])
             assert_condition(turn["question_count"] <= 1, turn)
             assert_condition(turn["safety_flags"]["hard_failure"] is False, turn)
             lowered = turn["agent_answer"].lower()
+            assert_condition("prod-041a" not in lowered, turn)
+            assert_condition("scenario_id" not in lowered, turn)
+            assert_condition("scenario label" not in lowered, turn)
+            assert_condition(call["scenario_id"].lower() not in lowered, turn)
+            assert_condition(call["scenario_label"].replace("_", " ").lower() not in BLOCKED_VISIBLE_LABEL_TEXT or call["scenario_label"].replace("_", " ").lower() not in lowered, turn)
             assert_condition("give me your card" not in lowered, turn)
             assert_condition("guaranteed" not in lowered, turn)
             assert_condition("medical advice" not in lowered, turn)
             assert_condition("coverage is guaranteed" not in lowered, turn)
+            if call["scenario_label"] == "price_sensitive" and turn["turn_index"] == 1:
+                assert_condition("29 dollars per user per month" in lowered, turn)
+                assert_condition("59 dollars per user per month" in lowered, turn)
+        for text in visible_texts:
+            lowered_visible = text.lower()
+            assert_condition("prod-041a" not in lowered_visible, text)
+            assert_condition(call["scenario_id"].lower() not in lowered_visible, text)
+            raw_label = call["scenario_label"].replace("_", " ").lower()
+            assert_condition(raw_label not in BLOCKED_VISIBLE_LABEL_TEXT or raw_label not in lowered_visible, text)
 
 
 def validate_docs() -> None:

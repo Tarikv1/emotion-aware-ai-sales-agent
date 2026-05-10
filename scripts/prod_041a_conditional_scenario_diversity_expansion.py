@@ -123,6 +123,92 @@ HARD_FAILURE_MARKERS = {
     "raw transcript",
 }
 
+CONCERN_TEXT = {
+    "price_sensitive": "the price and whether it is worth a second conversation",
+    "manager_review": "the short internal case your manager would need",
+    "existing_provider": "whether this adds anything when you already have a provider",
+    "confused_fit": "where this fits in your current workflow",
+    "skeptical_proof": "what proof you can check later",
+    "busy_now": "whether this is worth a callback",
+    "send_info": "what needs to be sent in writing",
+    "contract_fear": "whether this creates a contract commitment",
+    "payment_fear": "whether any payment is being requested",
+    "security_review": "whether security needs to review it first",
+    "bad_experience": "why this would not repeat the last bad experience",
+    "needs_approval": "who needs to approve the next step",
+    "hidden_objection": "whether there is enough priority and budget to continue",
+    "competitor_comparison": "how this differs from the option you are already comparing",
+    "not_interested": "whether there is any reason to keep talking",
+    "hostile_rejection": "your clear refusal",
+    "callback_request": "the right time to continue",
+    "support_boundary": "the support issue that should not be treated as a sales lead",
+    "technical_integration": "whether the integration question needs a specialist",
+    "setup_timeline": "how long setup would realistically take",
+    "multi_location_routing": "how follow-up would work across locations",
+    "low_fit": "whether this is actually a fit",
+    "sale_ready": "the clean next step after interest is clear",
+    "discovery_needed": "what needs to be understood before recommending anything",
+    "insurance_price_fear": "the cost concern around insurance help",
+    "spouse_input": "whether another person needs to weigh in",
+    "scam_card_fear": "whether this is safe and does not involve card details",
+    "consumer_not_interested": "your lack of interest",
+    "consumer_callback": "the right callback time",
+    "coverage_confusion": "what is and is not being confirmed about coverage",
+    "already_covered": "whether you already have what you need",
+    "consumer_bad_experience": "your previous bad service experience",
+    "written_info": "what you want in writing",
+    "consumer_hostile": "your clear refusal",
+    "cancellation_boundary": "the cancellation or support issue",
+    "appointment_interest": "whether an appointment reminder would help",
+    "sensitive_healthcare": "the healthcare scheduling concern that needs care",
+    "home_service_comparison": "how this compares with another home service option",
+    "reminder_plan": "whether reminders would solve the actual problem",
+    "no_pressure_consumer": "whether you can continue without pressure",
+}
+
+DIRECT_ANSWERS = {
+    "price_sensitive": "The price answer is first: the range I can quote here is 29 dollars per user per month for a starter tier and 59 dollars per user per month for a growth tier. If that is outside budget, the right move is to stop or send details, not push.",
+    "manager_review": "For your manager, the short version is this: it is a workflow review to reduce missed callbacks and unclear ownership, not a request to approve a purchase today.",
+    "existing_provider": "If you already have a provider, this only makes sense if follow-up ownership still breaks around it. If your current provider already solves that, there is no fit.",
+    "confused_fit": "In plain terms, this is not a replacement for your team. It is a check on whether leads, reminders, or callbacks are falling between people.",
+    "skeptical_proof": "The only proof I should offer here is written and checkable: what workflow is reviewed, what claims are not being made, and what a specialist would verify.",
+    "busy_now": "Fair. The direct answer is that this is only worth continuing if missed callbacks are costing time; otherwise we should set a callback or stop.",
+    "send_info": "Yes, written information is the right next step. I can send the summary first and leave the decision for later.",
+    "contract_fear": "No contract decision should happen on this call. This can only be a review or written summary unless you choose otherwise later.",
+    "payment_fear": "No payment is being collected here. If payment ever becomes relevant, it belongs in a separate verified checkout process, not this call.",
+    "security_review": "Your security team should review this before any technical commitment. I can only route the question and avoid making claims I cannot verify.",
+    "bad_experience": "Given the previous bad experience, the safe answer is to slow down, put the details in writing, and avoid promising that this will fix everything.",
+    "needs_approval": "If approval is needed, the only useful step is a short internal note and a review path, not asking you to decide alone.",
+    "hidden_objection": "If budget or priority is the real blocker, it is better to say that now. We can either check fit briefly or close this out.",
+    "competitor_comparison": "The honest comparison is about workflow fit, not claiming we are better. If you are comparing options, written criteria are the safest next step.",
+    "not_interested": "Understood. If you are not interested, I should not keep pitching.",
+    "hostile_rejection": "Understood. I will stop the sales conversation and respect the refusal.",
+    "callback_request": "A callback is fine. I only need the best window; I do not need to keep pitching now.",
+    "support_boundary": "That is a support issue, not a sales discussion. I should route it to support and end the sales path.",
+    "technical_integration": "The integration answer needs a specialist. I can note the question and hand it off instead of guessing.",
+    "setup_timeline": "Setup timing depends on systems and team size, so the safe answer is a scoped review before giving a timeline.",
+    "multi_location_routing": "For multiple locations, the practical point is assigning clear follow-up ownership by location so requests do not get lost.",
+    "low_fit": "If the problem is not happening in your workflow, this is not qualified and I should not force it.",
+    "sale_ready": "If you are already interested, the clean next step is a non-binding review slot, not a payment or contract decision.",
+    "discovery_needed": "Before recommending anything, I need to understand where follow-ups or reminders currently break, if they break at all.",
+    "insurance_price_fear": "For insurance-related cost questions, I cannot confirm coverage or savings. I can only send general information or route you to a qualified person.",
+    "spouse_input": "If your spouse needs input, the right next step is a written summary or callback after you have both seen it.",
+    "scam_card_fear": "No card details should be shared on this call. If you want information, it should be written and non-binding.",
+    "consumer_not_interested": "Understood. If you are not interested, I should stop instead of trying to persuade you.",
+    "consumer_callback": "A callback is the right next step if now is bad. I can set one window and stop here.",
+    "coverage_confusion": "I cannot confirm coverage on this call. A qualified person has to review that before any decision.",
+    "already_covered": "If you are already covered and do not have a follow-up problem, there may be no need to continue.",
+    "consumer_bad_experience": "Given the bad experience, I should not push. Written details and a clear support route are safer.",
+    "written_info": "Written information first is reasonable. No decision needs to happen on this call.",
+    "consumer_hostile": "Understood. I will stop the conversation and respect that boundary.",
+    "cancellation_boundary": "Cancellation is a support matter. I should route it and not turn it into a sales pitch.",
+    "appointment_interest": "If appointment reminders would help, the next step can be a no-payment scheduling review.",
+    "sensitive_healthcare": "For healthcare scheduling, I cannot provide clinical guidance. I can only route scheduling questions to the right qualified path.",
+    "home_service_comparison": "For a comparison, the fair answer is to look at written criteria and avoid claiming this is better without proof.",
+    "reminder_plan": "A reminder plan only makes sense if missed appointments or follow-ups are a real problem for you.",
+    "no_pressure_consumer": "No pressure. You can hear the short explanation, request writing, or end the call.",
+}
+
 
 SCENARIO_CONFIGS = [
     ("price_sensitive", "B2B", "field-service software", "skeptical", "price", "problem_framing", "callback_scheduled"),
@@ -247,78 +333,76 @@ def opening_style(index: int, market_scope: str) -> str:
 
 
 def opening_variants(profile: dict[str, Any]) -> list[str]:
-    label = profile["scenario_label"].replace("_", " ")
+    concern = CONCERN_TEXT[profile["scenario_label"]]
     domain = profile["domain"]
-    persona = profile["persona"]
     if profile["b2b_or_b2c"] == "B2B":
         variants = [
-            f"Hi, this is Maya from RouteSignal. Before I get into it, is this an okay moment to share the {domain} reason I called about {label}?",
-            f"Hi, this is Maya from RouteSignal. The reason I called is a short workflow check for {domain} teams dealing with {label}; may I take thirty seconds?",
-            f"Hi, this is Maya from RouteSignal. I know your time is tight, so I can keep this to one practical {domain} point about {label} and stop if it is not relevant.",
-            f"Hi, this is Maya from RouteSignal. For a {persona}, the manager-level reason is usually routing clarity, not a surprise purchase pitch.",
+            f"Hi, this is Maya from RouteSignal. Before I get into it, is this an okay moment to share the {domain} reason I called about {concern}?",
+            f"Hi, this is Maya from RouteSignal. The reason I called is a short workflow check for {domain} teams dealing with {concern}; may I take thirty seconds?",
+            f"Hi, this is Maya from RouteSignal. I know your time is tight, so I can keep this to one practical {domain} point about {concern} and stop if it is not relevant.",
+            f"Hi, this is Maya from RouteSignal. For teams where {concern}, the manager-level reason is usually routing clarity, not a surprise purchase pitch.",
         ]
     else:
         variants = [
-            f"Hi, this is Maya from RouteSignal Home. I will not ask for payment or card details; I am calling about a simple {domain} reminder question tied to {label}.",
-            f"Hi, this is Maya from RouteSignal Home. The short consumer reason is whether {label} is creating missed reminders or follow-up confusion.",
-            f"Hi, this is Maya from RouteSignal Home. If this feels unsafe or irrelevant, you can stop me; I only want to clarify the {domain} reason around {label}.",
+            f"Hi, this is Maya from RouteSignal Home. I will not ask for payment or card details; I am calling about a simple {domain} reminder question tied to {concern}.",
+            f"Hi, this is Maya from RouteSignal Home. The short consumer reason is whether {concern} is creating missed reminders or follow-up confusion.",
+            f"Hi, this is Maya from RouteSignal Home. If this feels unsafe or irrelevant, you can stop me; I only want to clarify the {domain} reason around {concern}.",
         ]
     return variants
 
 
 def opening_customer_text(profile: dict[str, Any]) -> str:
-    label = profile["scenario_label"].replace("_", " ")
+    concern = CONCERN_TEXT[profile["scenario_label"]]
     emotion = profile["customer_emotional_state_start"]
-    objection = profile["primary_objection"]
     if emotion == "rushed":
-        return f"I am short on time. If this is about {label}, make it brief and do not bury the point."
+        return f"I am short on time. If this is about {concern}, make it brief and do not bury the point."
     if emotion == "irritated":
-        return f"I am already frustrated about this kind of call. If the issue is {objection}, do not argue with me."
+        return f"I am already frustrated about this kind of call. If the issue is {concern}, do not argue with me."
     if emotion == "confused":
-        return f"I do not understand where this fits. Explain the {label} part in plain language first."
+        return f"I do not understand where this fits. Explain the part about {concern} in plain language first."
     if emotion == "anxious":
         return f"I am worried this turns into risk or commitment. Be clear about the boundary before anything else."
     if emotion == "distrustful":
         return f"I do not trust phone offers, and I will not give payment details. What is this actually about?"
     if emotion == "skeptical":
-        return f"I hear claims like this all the time. Give me a direct, grounded answer on {objection}."
+        return f"I hear claims like this all the time. Give me a direct, grounded answer on {concern}."
     if emotion == "curious":
-        return f"I can listen if it is relevant. What is the practical reason for {label}?"
-    return f"I can hear the short version. Start with the practical reason around {label}."
+        return f"I can listen if it is relevant. What is the practical reason for {concern}?"
+    return f"I can hear the short version. Start with the practical reason around {concern}."
 
 
 def emotion_phrase(emotion: str) -> str:
     return {
-        "confused": "I will keep this in plain language, clarify one point, and avoid piling on questions.",
-        "rushed": "I will be brief, respect the time pressure, and offer a callback instead of stretching the call.",
-        "irritated": "I hear the frustration; I am not here to argue or push past it.",
-        "anxious": "No pressure here; the boundary is clear and nothing risky needs to happen on this call.",
-        "distrustful": "No hype and no payment collection; I can explain the safety boundary first.",
-        "skeptical": "Direct answer first, with safe context only and no unsupported claim.",
-        "curious": "I can continue with one useful question after giving the context.",
-        "calm": "I will give a clear explanation and one low-pressure next step.",
+        "confused": "Let me keep it simple and answer one point at a time.",
+        "rushed": "I will keep this brief, and we can set a callback instead of stretching the call.",
+        "irritated": "I hear the frustration, and I am not here to argue with you.",
+        "anxious": "No pressure here; nothing risky needs to happen on this call.",
+        "distrustful": "No hype and no payment collection; the safety boundary comes first.",
+        "skeptical": "Fair question. I will answer directly and stick to what I can support.",
+        "curious": "Yes, and I will give the context before asking anything else.",
+        "calm": "I can give you the clear version and one low-pressure next step.",
     }[emotion]
 
 
 def strategy_phrase(strategy: str, profile: dict[str, Any], stage: str) -> str:
-    label = profile["scenario_label"].replace("_", " ")
     domain = profile["domain"]
+    concern = CONCERN_TEXT[profile["scenario_label"]]
     if strategy == "permission_first":
-        return f"Your control comes first: if now is bad, we can stop or set one callback for the {label} question."
+        return f"Your control comes first: if now is bad, we can stop or set one callback to cover {concern}."
     if strategy == "problem_framing":
-        return f"The problem is not buying software; it is that {domain} follow-up can lose ownership when {label} is unresolved."
+        return f"The business reason to keep talking is whether {domain} follow-up is losing ownership, not whether you should buy something today."
     if strategy == "social_proof_safe":
-        return f"The safe proof point is general: teams often review this workflow when {label} creates repeated follow-up gaps, without assuming results."
+        return f"The safe proof point is general: teams review this kind of workflow when follow-up gaps keep repeating, without assuming your results."
     if strategy == "risk_reversal":
-        return f"The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of {label}."
+        return f"The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of {concern}."
     if strategy == "simple_explanation":
-        return f"In plain language, this checks whether the {domain} follow-up path is clear enough when {label} appears."
+        return f"In plain language, this checks whether the {domain} follow-up path is clear enough for the issue you raised."
     if strategy == "objection_isolation":
-        return f"The main issue sounds like {profile['primary_objection']}; I will answer that directly before asking anything else."
+        return "The main issue sounds like the concern you just raised; I will answer that directly before asking anything else."
     if strategy == "next_step_close":
-        return f"The next step is one low-pressure action: {next_step_text(profile)}."
+        return f"The clean next step would be to {next_step_text(profile)}."
     if strategy == "consultative_discovery":
-        return f"One useful question after context: is the {label} problem happening often enough to justify a short review?"
+        return f"One useful question after context: is this happening often enough to justify a short review?"
     if strategy == "trust_repair":
         return f"I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed."
     raise ValueError(strategy)
@@ -326,46 +410,47 @@ def strategy_phrase(strategy: str, profile: dict[str, Any], stage: str) -> str:
 
 def next_step_text(profile: dict[str, Any]) -> str:
     terminal = profile["target_outcome"]
+    concern = CONCERN_TEXT[profile["scenario_label"]]
     if terminal == "accepted":
-        return f"log a non-binding accepted review for {profile['scenario_label']}"
+        return f"book a non-binding review focused on {concern}"
     if terminal == "callback_scheduled":
-        return f"schedule one callback window for {profile['scenario_label']}"
+        return f"schedule one callback window to discuss {concern}"
     if terminal == "written_info_requested":
-        return f"send a short written summary on {profile['scenario_label']}"
+        return f"send a short written summary about {concern}"
     if terminal == "manager_review_needed":
-        return f"prepare a manager-review note for {profile['scenario_label']}"
+        return f"send a short note your manager can review about {concern}"
     if terminal == "handoff_required":
-        return f"handoff to the qualified specialist for {profile['scenario_label']}"
+        return f"handoff to the qualified specialist for {concern}"
     if terminal == "support_boundary_ended":
         return "stop the sales path and route the support boundary"
     if terminal == "not_qualified":
         return "mark this as not qualified and avoid forcing fit"
     if terminal == "do_not_contact":
-        return "honor the do-not-contact request"
-    return "close the loop without pressure"
+        return f"honor the do-not-contact request about {concern}"
+    return f"close the loop without pressure on {concern}"
 
 
 def terminal_customer_response(profile: dict[str, Any]) -> str:
-    label = profile["scenario_label"].replace("_", " ")
+    concern = CONCERN_TEXT[profile["scenario_label"]]
     terminal = profile["target_outcome"]
     if terminal == "accepted":
-        return f"That is clear enough for {label}. I accept a no-pressure next step, with no payment handled here."
+        return f"That is clear enough on {concern}. I accept a no-pressure next step, with no payment handled here."
     if terminal == "callback_scheduled":
-        return f"Because you kept it brief on {label}, schedule one callback and do not keep selling now."
+        return f"Because you kept it brief on {concern}, schedule one callback and do not keep selling now."
     if terminal == "written_info_requested":
-        return f"Send the {label} details in writing first. I am not deciding on this call."
+        return f"Send the details on {concern} in writing first. I am not deciding on this call."
     if terminal == "manager_review_needed":
-        return f"I need manager review for {label}. Send the short internal summary and stop there."
+        return f"I need my manager to review that before anything else. Send the short internal summary and stop there."
     if terminal == "handoff_required":
-        return f"This needs the right specialist for {label}. Handoff is fine, but do not make claims you cannot verify."
+        return f"This needs the right specialist for {concern}. Handoff is fine, but do not make claims you cannot verify."
     if terminal == "support_boundary_ended":
-        return f"This is a support issue around {label}, not a sale. End the sales path and route support."
+        return f"This is a support issue around {concern}, not a sale. End the sales path and route support."
     if terminal == "not_qualified":
-        return f"Based on that explanation, {label} does not fit my situation. Mark it not qualified."
+        return f"Based on that explanation, this does not fit my situation. Mark it not qualified."
     if terminal == "do_not_contact":
-        return f"No. Do not contact me again about {label}."
+        return f"No. Do not contact me again about this."
     if terminal == "rejected":
-        return f"I understand the answer on {label}, but I am rejecting the offer for now."
+        return f"I understand the answer on {concern}, but I am rejecting the offer for now."
     raise ValueError(terminal)
 
 
@@ -506,12 +591,12 @@ def detect_strategies(text: str) -> list[str]:
     detected = []
     rules = [
         ("permission_first", ["your control comes first", "if now is bad", "stop or set one callback", "may i take"]),
-        ("problem_framing", ["the problem is not", "follow-up can lose ownership", "unresolved"]),
+        ("problem_framing", ["the problem is not", "problem worth checking", "business reason to keep talking", "follow-up is losing ownership", "unresolved"]),
         ("social_proof_safe", ["safe proof point", "teams often review", "without assuming results"]),
         ("risk_reversal", ["risk boundary", "no purchase", "no card details", "no contract decision"]),
         ("simple_explanation", ["in plain language", "checks whether", "clear enough"]),
         ("objection_isolation", ["main issue sounds like", "answer that directly"]),
-        ("next_step_close", ["next step is one low-pressure action", "schedule", "send a short", "log a non-binding"]),
+        ("next_step_close", ["next step is one low-pressure action", "clean next step would", "schedule", "send a short", "book a non-binding"]),
         ("consultative_discovery", ["one useful question", "after context", "justify a short review"]),
         ("trust_repair", ["understand the hesitation", "remove pressure", "keep payment out of scope", "route support"]),
     ]
@@ -524,14 +609,14 @@ def detect_strategies(text: str) -> list[str]:
 def emotion_handled(emotion: str, answers: list[str], question_count: int) -> bool:
     text = " ".join(answers).lower()
     checks = {
-        "confused": ["plain language", "clarify one point"],
-        "rushed": ["brief", "respect the time pressure", "callback"],
+        "confused": ["keep it simple", "one point at a time"],
+        "rushed": ["keep this brief", "callback"],
         "irritated": ["hear the frustration", "not here to argue"],
-        "anxious": ["no pressure", "boundary is clear"],
+        "anxious": ["no pressure", "nothing risky"],
         "distrustful": ["no hype", "no payment collection"],
-        "skeptical": ["direct answer first", "no unsupported claim"],
-        "curious": ["one useful question", "context"],
-        "calm": ["clear explanation", "low-pressure next step"],
+        "skeptical": ["answer directly", "what i can support"],
+        "curious": ["context", "asking anything else"],
+        "calm": ["clear version", "low-pressure next step"],
     }
     return all(marker in text for marker in checks[emotion]) and question_count <= 3
 
@@ -562,16 +647,16 @@ def build_call(profile: dict[str, Any], index: int) -> dict[str, Any]:
     opening_customer = profile["initial_state"]["customer_text"]
     first_answer = (
         f"{emotion_phrase(profile['customer_emotional_state_start'])} "
+        f"{DIRECT_ANSWERS[profile['scenario_label']]} "
         f"{strategy_phrase(profile['required_strategy'], profile, 'first')}"
     )
     bridge_answer = (
-        f"For {profile['scenario_id']}, the direct answer is that {profile['scenario_label'].replace('_', ' ')} "
-        f"should be handled through {profile['domain']} follow-up clarity, not a hard sell. "
+        f"From here, I would keep the conversation tied to {CONCERN_TEXT[profile['scenario_label']]}. "
         f"{strategy_phrase(profile['required_strategy'], profile, 'bridge')}"
     )
     final_answer = (
-        f"The next step is one low-pressure action: {next_step_text(profile)}. "
-        f"To close {profile['scenario_label'].replace('_', ' ')} cleanly, keep that boundary visible. "
+        f"The clean next step would be to {next_step_text(profile)}. "
+        "I will keep that boundary visible and avoid turning this into a hard sell. "
         "If that is not acceptable, I will stop without pressure."
     )
     turns = [
@@ -644,15 +729,14 @@ def selected_opening_index(profile: dict[str, Any]) -> int:
 
 
 def intermediate_customer_response(profile: dict[str, Any], turn_index: int) -> str:
-    label = profile["scenario_label"].replace("_", " ")
+    concern = CONCERN_TEXT[profile["scenario_label"]]
     if turn_index == 1:
         return (
-            f"That answers the first concern on {label}, but I still need you to address "
-            f"{profile['secondary_objection']} without adding pressure."
+            f"Okay, that is clearer on {concern}. My remaining concern is "
+            f"{profile['secondary_objection']}, and I do not want pressure."
         )
     return (
-        f"Now I understand the {label} boundary. Give me the clean next step and keep it aligned with "
-        f"{profile['primary_objection']}."
+        "That boundary makes sense. What would the next step be without pushing me?"
     )
 
 
