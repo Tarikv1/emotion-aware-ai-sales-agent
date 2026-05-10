@@ -15,6 +15,24 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-089 - Add PROD-041A before the PROD-041 human review
+
+- Date: 2026-05-10
+- Status: accepted
+- Decision: Insert `PROD-041A-conditional-scenario-diversity-expansion` before the existing `PROD-041-conditional-simulation-review`.
+- Why:
+  - the PROD-040 simulator proved conditional customer responses, but the human review needs broader coverage than eight calls
+  - the next evidence should cover mixed B2B/B2C scenarios, diverse openings, terminal outcomes, objections, emotions, and strategy requirements
+  - strategy and emotion scoring must stay deterministic and offline for this checkpoint rather than relying on LLM judging
+- Alternatives considered:
+  - proceed directly to PROD-041 using only the PROD-040 eight-call packet
+  - expand directly into voice playback or public demo polish
+  - use LLM-based judging for strategy and emotion handling
+- Consequences:
+  - PROD-041A creates a 40-call offline review packet with one curated scenario label per scenario
+  - PROD-041 remains the human review checkpoint after the expanded traces exist
+  - provider calls, live runtime defaults, retrieval defaults, composer-hook defaults, customer data, payment handling, and production promotion remain blocked
+
 ### DEC-088 - Keep PROD-040 as the CallCenterEN-conditioned customer simulator
 
 - Date: 2026-05-10

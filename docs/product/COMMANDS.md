@@ -1083,6 +1083,18 @@ Validate the PROD-040 agent-conditioned customer replies, unique customer respon
 python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py
 ```
 
+Run the PROD-041A conditional scenario diversity expansion checkpoint:
+
+```powershell
+python scripts\run_prod_041a_conditional_scenario_diversity_expansion.py
+```
+
+Validate the PROD-041A 40-scenario diversity gates, B2B/B2C split, curated scenario labels, opening-style coverage, deterministic strategy/emotion scoring, terminal outcome coverage, hard-failure boundary, and no-provider/no-runtime-promotion boundary:
+
+```powershell
+python scripts\validate_prod_041a_conditional_scenario_diversity_expansion.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

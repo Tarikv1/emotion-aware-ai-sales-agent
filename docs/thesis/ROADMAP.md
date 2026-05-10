@@ -33,7 +33,7 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: review `PROD-041-conditional-simulation-review` to decide whether the CallCenterEN-conditioned customer conversations are realistic enough to unblock voice playback, scenario branching, more seeds, or public demo polish.
+- [ ] Current: review `PROD-041-conditional-simulation-review` using the expanded `PROD-041A-conditional-scenario-diversity-expansion` traces to decide whether the CallCenterEN-conditioned customer conversations are realistic enough to unblock voice playback, scenario branching, more seeds, or public demo polish.
 
 Next checkpoints:
 
@@ -59,6 +59,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-041A` conditional scenario diversity expansion, which expands the PROD-040 conditional simulator into `40` mixed calls before the existing PROD-041 human review. It runs `24` B2B and `16` B2C scenarios with all `40` curated scenario labels appearing exactly once, all `7` opening styles used, at least `8` domains, deterministic strategy detection, deterministic emotion handling, scenario-level scores, terminal outcome validity, and failure taxonomy counts. Safe close rate, non sale correctness rate, hard failure rate, strategy match rate, and emotion handling rate are recorded in the generated result. Hard failures, payment collection, unsupported claims, provider calls, LLM use, private data reads, dataset downloads, raw transcript storage, copied transcript text, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, and production runtime promotion stay blocked. The next checkpoint remains `PROD-041-conditional-simulation-review`.
 
 - [x] `PROD-040` CallCenterEN conditional customer simulation, which replaces the planned same-text demo-surface rerun with a stronger conditional simulator. It runs `8` cold-call conversations and `24` customer turns where every customer response is conditioned on the immediately preceding agent answer. Conditional customer turn count is `24`, agent-conditioned customer reply count is `24`, unique customer response count is `24`, repeated customer response count is `0`, unique agent answer count is `24`, repeated agent answer count is `0`, profile customized agent answer count is `24`, B2B call count is `6`, B2C call count is `2`, internal reason answer count is `6`, internal reason price-first violation count is `0`, agent opening line visible count is `8`, conversation sequence starts with agent count is `8`, CallCenterEN pattern source count is `59`, scenario bank source count is `8`, abstract pattern only is `true`, exact transcript text used is `false`, all calls start with cold opening is `true`, all calls end by customer decision is `true`, fixed turn limit used is `false`, loop guard triggered is `false`, accepted deals are `6`, rejected deals are `2`, hard failures are `0`, payment collection count is `0`, and leakage findings are `0`. Provider calls, LLM use, private data reads, dataset downloads, raw transcript storage, copied transcript text, transcript-derived commercial runtime prompts, customer data, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stayed blocked. The next checkpoint is `PROD-041-conditional-simulation-review`.
 

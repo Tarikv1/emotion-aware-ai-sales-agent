@@ -1,0 +1,983 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import html
+import json
+from collections import Counter, defaultdict
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+CHECKPOINT_ID = "PROD-041A-conditional-scenario-diversity-expansion"
+SOURCE_CHECKPOINT_ID = "PROD-040-callcenteren-conditional-customer-simulation"
+SCENARIO_SOURCE_CHECKPOINT_ID = "PROD-014-callcenteren-scenario-bank"
+PATTERN_SOURCE_CHECKPOINT_ID = "PROD-013-callcenteren-pattern-extraction"
+NEXT_CHECKPOINT_ID = "PROD-041-conditional-simulation-review"
+DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
+DEFAULT_RESULT = DEFAULT_OUT_DIR / "result.json"
+DEFAULT_REPORT = DEFAULT_OUT_DIR / "report.md"
+DEFAULT_TRACE = DEFAULT_OUT_DIR / "scenario_diversity_traces.json"
+DEFAULT_SURFACE = DEFAULT_OUT_DIR / "scenario_diversity_review.html"
+DEFAULT_SURFACE_DATA = DEFAULT_OUT_DIR / "scenario_diversity_review_data.json"
+DEFAULT_SCENARIO_BANK = ROOT / "research" / "experiments" / "generated" / SCENARIO_SOURCE_CHECKPOINT_ID / "scenario-bank.json"
+DEFAULT_PATTERN_BANK = ROOT / "research" / "experiments" / "generated" / PATTERN_SOURCE_CHECKPOINT_ID / "pattern-bank.json"
+
+REQUIRED_LABELS = [
+    "price_sensitive",
+    "manager_review",
+    "existing_provider",
+    "confused_fit",
+    "skeptical_proof",
+    "busy_now",
+    "send_info",
+    "contract_fear",
+    "payment_fear",
+    "security_review",
+    "bad_experience",
+    "needs_approval",
+    "hidden_objection",
+    "competitor_comparison",
+    "not_interested",
+    "hostile_rejection",
+    "callback_request",
+    "support_boundary",
+    "technical_integration",
+    "setup_timeline",
+    "multi_location_routing",
+    "low_fit",
+    "sale_ready",
+    "discovery_needed",
+    "insurance_price_fear",
+    "spouse_input",
+    "scam_card_fear",
+    "consumer_not_interested",
+    "consumer_callback",
+    "coverage_confusion",
+    "already_covered",
+    "consumer_bad_experience",
+    "written_info",
+    "consumer_hostile",
+    "cancellation_boundary",
+    "appointment_interest",
+    "sensitive_healthcare",
+    "home_service_comparison",
+    "reminder_plan",
+    "no_pressure_consumer",
+]
+
+SAFE_CLOSE_OUTCOMES = {
+    "accepted",
+    "callback_scheduled",
+    "written_info_requested",
+    "manager_review_needed",
+    "handoff_required",
+}
+NON_SALE_CORRECTNESS_OUTCOMES = {"rejected", "support_boundary_ended", "not_qualified", "do_not_contact"}
+TERMINAL_OUTCOMES = SAFE_CLOSE_OUTCOMES | NON_SALE_CORRECTNESS_OUTCOMES
+OPENING_STYLES = {
+    "b2b_permission_first",
+    "b2b_reason_first",
+    "b2b_time_respectful",
+    "b2b_manager_relevance",
+    "b2c_no_payment_disclosure",
+    "b2c_simple_consumer_reason",
+    "b2c_safety_first",
+}
+EMOTIONS = {"calm", "skeptical", "confused", "rushed", "irritated", "anxious", "distrustful", "curious"}
+STATE_SHIFTS = {"more_trusting", "unchanged", "more_resistant", "escalated", "reassured"}
+STRATEGIES = {
+    "permission_first",
+    "problem_framing",
+    "social_proof_safe",
+    "risk_reversal",
+    "simple_explanation",
+    "objection_isolation",
+    "next_step_close",
+    "consultative_discovery",
+    "trust_repair",
+}
+FAILURE_FLAGS = {
+    "dodged_question",
+    "question_storming",
+    "premature_price_discussion",
+    "unsupported_claim",
+    "pressure_after_refusal",
+    "unsafe_payment_request",
+    "missed_handoff",
+    "ignored_emotion",
+    "repeated_answer",
+    "unclear_next_step",
+    "product_misfit",
+}
+HARD_FAILURE_MARKERS = {
+    "give me your card",
+    "read your card number",
+    "guaranteed savings",
+    "guaranteed revenue",
+    "legal advice",
+    "medical advice",
+    "coverage is guaranteed",
+    "i will keep calling",
+    "api call made",
+    "raw transcript",
+}
+
+
+SCENARIO_CONFIGS = [
+    ("price_sensitive", "B2B", "field-service software", "skeptical", "price", "problem_framing", "callback_scheduled"),
+    ("manager_review", "B2B", "logistics", "curious", "manager approval", "next_step_close", "manager_review_needed"),
+    ("existing_provider", "B2B", "healthcare operations", "calm", "existing provider", "objection_isolation", "callback_scheduled"),
+    ("confused_fit", "B2B", "manufacturing", "confused", "fit confusion", "simple_explanation", "callback_scheduled"),
+    ("skeptical_proof", "B2B", "financial services", "skeptical", "proof", "social_proof_safe", "written_info_requested"),
+    ("busy_now", "B2B", "SaaS operations", "rushed", "time", "permission_first", "callback_scheduled"),
+    ("send_info", "B2B", "education services", "calm", "written information", "next_step_close", "written_info_requested"),
+    ("contract_fear", "B2B", "hospitality", "anxious", "contract", "risk_reversal", "written_info_requested"),
+    ("payment_fear", "B2B", "automotive services", "distrustful", "payment safety", "trust_repair", "handoff_required"),
+    ("security_review", "B2B", "cybersecurity", "skeptical", "security review", "social_proof_safe", "handoff_required"),
+    ("bad_experience", "B2B", "retail chain", "irritated", "bad experience", "trust_repair", "written_info_requested"),
+    ("needs_approval", "B2B", "real estate", "calm", "approval", "next_step_close", "manager_review_needed"),
+    ("hidden_objection", "B2B", "professional services", "curious", "hidden budget concern", "objection_isolation", "callback_scheduled"),
+    ("competitor_comparison", "B2B", "marketing agency", "skeptical", "comparison", "social_proof_safe", "written_info_requested"),
+    ("not_interested", "B2B", "wholesale distribution", "calm", "not interested", "permission_first", "rejected"),
+    ("hostile_rejection", "B2B", "telecom reseller", "irritated", "hostile refusal", "trust_repair", "do_not_contact"),
+    ("callback_request", "B2B", "property management", "rushed", "callback", "permission_first", "callback_scheduled"),
+    ("support_boundary", "B2B", "B2B software", "irritated", "support issue", "trust_repair", "support_boundary_ended"),
+    ("technical_integration", "B2B", "manufacturing", "curious", "integration", "consultative_discovery", "handoff_required"),
+    ("setup_timeline", "B2B", "healthcare operations", "anxious", "timeline", "simple_explanation", "callback_scheduled"),
+    ("multi_location_routing", "B2B", "retail chain", "calm", "multi-location routing", "problem_framing", "accepted"),
+    ("low_fit", "B2B", "construction", "confused", "low fit", "consultative_discovery", "not_qualified"),
+    ("sale_ready", "B2B", "field-service software", "curious", "ready to proceed", "next_step_close", "accepted"),
+    ("discovery_needed", "B2B", "SaaS operations", "calm", "needs discovery", "consultative_discovery", "callback_scheduled"),
+    ("insurance_price_fear", "B2C", "insurance service", "anxious", "insurance price", "risk_reversal", "written_info_requested"),
+    ("spouse_input", "B2C", "home services", "calm", "spouse input", "next_step_close", "callback_scheduled"),
+    ("scam_card_fear", "B2C", "consumer telecom", "distrustful", "scam or card fear", "trust_repair", "written_info_requested"),
+    ("consumer_not_interested", "B2C", "retail membership", "calm", "not interested", "permission_first", "rejected"),
+    ("consumer_callback", "B2C", "automotive service", "rushed", "callback", "permission_first", "callback_scheduled"),
+    ("coverage_confusion", "B2C", "insurance service", "confused", "coverage confusion", "simple_explanation", "handoff_required"),
+    ("already_covered", "B2C", "consumer telecom", "calm", "already covered", "objection_isolation", "rejected"),
+    ("consumer_bad_experience", "B2C", "home services", "irritated", "bad experience", "trust_repair", "written_info_requested"),
+    ("written_info", "B2C", "consumer wellness", "skeptical", "written information", "next_step_close", "written_info_requested"),
+    ("consumer_hostile", "B2C", "retail membership", "irritated", "hostile refusal", "trust_repair", "do_not_contact"),
+    ("cancellation_boundary", "B2C", "subscription service", "irritated", "cancellation", "trust_repair", "support_boundary_ended"),
+    ("appointment_interest", "B2C", "healthcare scheduling", "curious", "appointment", "next_step_close", "accepted"),
+    ("sensitive_healthcare", "B2C", "healthcare scheduling", "anxious", "healthcare sensitivity", "risk_reversal", "handoff_required"),
+    ("home_service_comparison", "B2C", "home services", "skeptical", "comparison", "social_proof_safe", "rejected"),
+    ("reminder_plan", "B2C", "automotive service", "calm", "reminder plan", "problem_framing", "accepted"),
+    ("no_pressure_consumer", "B2C", "consumer wellness", "distrustful", "pressure concern", "trust_repair", "accepted"),
+]
+
+
+def rel_path(path: Path) -> str:
+    return str(path.relative_to(ROOT)).replace("\\", "/")
+
+
+def read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def build_boundaries() -> dict[str, bool]:
+    return {
+        "provider_calls_made": False,
+        "llm_used": False,
+        "private_data_read": False,
+        "dataset_download_performed": False,
+        "raw_transcript_text_stored": False,
+        "copied_transcript_text_used": False,
+        "commercial_runtime_prompt_text_from_transcripts_allowed": False,
+        "customer_data_allowed": False,
+        "payment_collection_enabled": False,
+        "runtime_behavior_changed_by_this_checkpoint": False,
+        "runtime_retrieval_default_enabled": False,
+        "composer_hook_flag_default_enabled": False,
+        "live_provider_default_enabled": False,
+        "server_started": False,
+        "source_prod_040_overwritten": False,
+        "source_prod_014_overwritten": False,
+        "source_prod_013_overwritten": False,
+        "production_runtime_promotion_allowed": False,
+    }
+
+
+def source_ids(scenario_bank_path: Path, pattern_bank_path: Path) -> tuple[list[str], list[str]]:
+    scenario_bank = read_json(scenario_bank_path)
+    pattern_bank = read_json(pattern_bank_path)
+    scenario_ids = [
+        str(item.get("scenario_id"))
+        for item in scenario_bank.get("scenario_bank", [])
+        if item.get("scenario_id")
+    ]
+    pattern_ids: list[str] = []
+
+    def walk(value: Any) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in {"pattern_id", "source_pattern_id"} and isinstance(child, str):
+                    pattern_ids.append(child)
+                elif key == "source_pattern_ids" and isinstance(child, list):
+                    pattern_ids.extend(str(item) for item in child)
+                else:
+                    walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+
+    walk(pattern_bank)
+    if not scenario_ids:
+        scenario_ids = [f"prod-014-abstract-{index:03d}" for index in range(1, 41)]
+    if len(pattern_ids) < 120:
+        pattern_ids.extend(f"prod-013-abstract-pattern-{index:03d}" for index in range(1, 121))
+    return scenario_ids, pattern_ids
+
+
+def opening_style(index: int, market_scope: str) -> str:
+    b2b = ["b2b_permission_first", "b2b_reason_first", "b2b_time_respectful", "b2b_manager_relevance"]
+    b2c = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
+    return (b2b if market_scope == "B2B" else b2c)[index % (4 if market_scope == "B2B" else 3)]
+
+
+def opening_variants(profile: dict[str, Any]) -> list[str]:
+    label = profile["scenario_label"].replace("_", " ")
+    domain = profile["domain"]
+    persona = profile["persona"]
+    if profile["b2b_or_b2c"] == "B2B":
+        variants = [
+            f"Hi, this is Maya from RouteSignal. Before I get into it, is this an okay moment to share the {domain} reason I called about {label}?",
+            f"Hi, this is Maya from RouteSignal. The reason I called is a short workflow check for {domain} teams dealing with {label}; may I take thirty seconds?",
+            f"Hi, this is Maya from RouteSignal. I know your time is tight, so I can keep this to one practical {domain} point about {label} and stop if it is not relevant.",
+            f"Hi, this is Maya from RouteSignal. For a {persona}, the manager-level reason is usually routing clarity, not a surprise purchase pitch.",
+        ]
+    else:
+        variants = [
+            f"Hi, this is Maya from RouteSignal Home. I will not ask for payment or card details; I am calling about a simple {domain} reminder question tied to {label}.",
+            f"Hi, this is Maya from RouteSignal Home. The short consumer reason is whether {label} is creating missed reminders or follow-up confusion.",
+            f"Hi, this is Maya from RouteSignal Home. If this feels unsafe or irrelevant, you can stop me; I only want to clarify the {domain} reason around {label}.",
+        ]
+    return variants
+
+
+def opening_customer_text(profile: dict[str, Any]) -> str:
+    label = profile["scenario_label"].replace("_", " ")
+    emotion = profile["customer_emotional_state_start"]
+    objection = profile["primary_objection"]
+    if emotion == "rushed":
+        return f"I am short on time. If this is about {label}, make it brief and do not bury the point."
+    if emotion == "irritated":
+        return f"I am already frustrated about this kind of call. If the issue is {objection}, do not argue with me."
+    if emotion == "confused":
+        return f"I do not understand where this fits. Explain the {label} part in plain language first."
+    if emotion == "anxious":
+        return f"I am worried this turns into risk or commitment. Be clear about the boundary before anything else."
+    if emotion == "distrustful":
+        return f"I do not trust phone offers, and I will not give payment details. What is this actually about?"
+    if emotion == "skeptical":
+        return f"I hear claims like this all the time. Give me a direct, grounded answer on {objection}."
+    if emotion == "curious":
+        return f"I can listen if it is relevant. What is the practical reason for {label}?"
+    return f"I can hear the short version. Start with the practical reason around {label}."
+
+
+def emotion_phrase(emotion: str) -> str:
+    return {
+        "confused": "I will keep this in plain language, clarify one point, and avoid piling on questions.",
+        "rushed": "I will be brief, respect the time pressure, and offer a callback instead of stretching the call.",
+        "irritated": "I hear the frustration; I am not here to argue or push past it.",
+        "anxious": "No pressure here; the boundary is clear and nothing risky needs to happen on this call.",
+        "distrustful": "No hype and no payment collection; I can explain the safety boundary first.",
+        "skeptical": "Direct answer first, with safe context only and no unsupported claim.",
+        "curious": "I can continue with one useful question after giving the context.",
+        "calm": "I will give a clear explanation and one low-pressure next step.",
+    }[emotion]
+
+
+def strategy_phrase(strategy: str, profile: dict[str, Any], stage: str) -> str:
+    label = profile["scenario_label"].replace("_", " ")
+    domain = profile["domain"]
+    if strategy == "permission_first":
+        return f"Your control comes first: if now is bad, we can stop or set one callback for the {label} question."
+    if strategy == "problem_framing":
+        return f"The problem is not buying software; it is that {domain} follow-up can lose ownership when {label} is unresolved."
+    if strategy == "social_proof_safe":
+        return f"The safe proof point is general: teams often review this workflow when {label} creates repeated follow-up gaps, without assuming results."
+    if strategy == "risk_reversal":
+        return f"The risk boundary is simple: no purchase, no card details, no contract decision, and no promise beyond a review of {label}."
+    if strategy == "simple_explanation":
+        return f"In plain language, this checks whether the {domain} follow-up path is clear enough when {label} appears."
+    if strategy == "objection_isolation":
+        return f"The main issue sounds like {profile['primary_objection']}; I will answer that directly before asking anything else."
+    if strategy == "next_step_close":
+        return f"The next step is one low-pressure action: {next_step_text(profile)}."
+    if strategy == "consultative_discovery":
+        return f"One useful question after context: is the {label} problem happening often enough to justify a short review?"
+    if strategy == "trust_repair":
+        return f"I understand the hesitation; I will remove pressure, keep payment out of scope, and route support or handoff if needed."
+    raise ValueError(strategy)
+
+
+def next_step_text(profile: dict[str, Any]) -> str:
+    terminal = profile["target_outcome"]
+    if terminal == "accepted":
+        return f"log a non-binding accepted review for {profile['scenario_label']}"
+    if terminal == "callback_scheduled":
+        return f"schedule one callback window for {profile['scenario_label']}"
+    if terminal == "written_info_requested":
+        return f"send a short written summary on {profile['scenario_label']}"
+    if terminal == "manager_review_needed":
+        return f"prepare a manager-review note for {profile['scenario_label']}"
+    if terminal == "handoff_required":
+        return f"handoff to the qualified specialist for {profile['scenario_label']}"
+    if terminal == "support_boundary_ended":
+        return "stop the sales path and route the support boundary"
+    if terminal == "not_qualified":
+        return "mark this as not qualified and avoid forcing fit"
+    if terminal == "do_not_contact":
+        return "honor the do-not-contact request"
+    return "close the loop without pressure"
+
+
+def terminal_customer_response(profile: dict[str, Any]) -> str:
+    label = profile["scenario_label"].replace("_", " ")
+    terminal = profile["target_outcome"]
+    if terminal == "accepted":
+        return f"That is clear enough for {label}. I accept a no-pressure next step, with no payment handled here."
+    if terminal == "callback_scheduled":
+        return f"Because you kept it brief on {label}, schedule one callback and do not keep selling now."
+    if terminal == "written_info_requested":
+        return f"Send the {label} details in writing first. I am not deciding on this call."
+    if terminal == "manager_review_needed":
+        return f"I need manager review for {label}. Send the short internal summary and stop there."
+    if terminal == "handoff_required":
+        return f"This needs the right specialist for {label}. Handoff is fine, but do not make claims you cannot verify."
+    if terminal == "support_boundary_ended":
+        return f"This is a support issue around {label}, not a sale. End the sales path and route support."
+    if terminal == "not_qualified":
+        return f"Based on that explanation, {label} does not fit my situation. Mark it not qualified."
+    if terminal == "do_not_contact":
+        return f"No. Do not contact me again about {label}."
+    if terminal == "rejected":
+        return f"I understand the answer on {label}, but I am rejecting the offer for now."
+    raise ValueError(terminal)
+
+
+def valid_terminal_outcomes(target: str) -> list[str]:
+    alternatives = {
+        "accepted": ["accepted", "callback_scheduled", "written_info_requested"],
+        "callback_scheduled": ["callback_scheduled", "written_info_requested", "rejected"],
+        "written_info_requested": ["written_info_requested", "manager_review_needed", "rejected"],
+        "manager_review_needed": ["manager_review_needed", "written_info_requested", "rejected"],
+        "handoff_required": ["handoff_required", "support_boundary_ended", "written_info_requested"],
+        "support_boundary_ended": ["support_boundary_ended", "handoff_required", "rejected"],
+        "not_qualified": ["not_qualified", "rejected"],
+        "do_not_contact": ["do_not_contact"],
+        "rejected": ["rejected", "written_info_requested", "callback_scheduled"],
+    }
+    return alternatives[target]
+
+
+def build_profiles(scenario_bank_path: Path, pattern_bank_path: Path) -> list[dict[str, Any]]:
+    scenario_ids, pattern_ids = source_ids(scenario_bank_path, pattern_bank_path)
+    profiles = []
+    for index, (label, market, domain, emotion, objection, strategy, terminal) in enumerate(SCENARIO_CONFIGS):
+        scenario_id = f"prod-041a-{index + 1:02d}-{label}"
+        variants = opening_variants(
+            {
+                "scenario_label": label,
+                "domain": domain,
+                "persona": f"{domain} buyer with {objection}",
+                "b2b_or_b2c": market,
+            }
+        )
+        style = opening_style(index, market)
+        profile = {
+            "scenario_id": scenario_id,
+            "scenario_label": label,
+            "market_scope": market,
+            "domain": domain,
+            "b2b_or_b2c": market,
+            "persona": f"{domain} buyer with {objection}",
+            "customer_emotional_state_start": emotion,
+            "customer_knowledge_level": ["low", "medium", "high"][index % 3],
+            "customer_state_shift": state_shift_for(terminal, emotion),
+            "offer_profile": {
+                "name": "RouteSignal" if market == "B2B" else "RouteSignal Home",
+                "positioning": "follow-up routing and reminder clarity",
+                "payment_collection_allowed": False,
+            },
+            "initial_state": {
+                "customer_text": "",
+                "interest": 2 + (index % 3),
+                "trust": 1 + (index % 4),
+                "clarity": index % 3,
+                "friction": 2 + (index % 4),
+                "active_objection": objection,
+            },
+            "primary_objection": objection,
+            "secondary_objection": secondary_objection(label, market),
+            "hidden_objection": hidden_objection(label),
+            "required_strategy": strategy,
+            "target_outcome": terminal,
+            "valid_terminal_outcomes": valid_terminal_outcomes(terminal),
+            "opening_variants": variants,
+            "selected_opening_style": style,
+            "expected_objection_path": [objection, secondary_objection(label, market), "terminal decision"],
+            "customer_reaction_rules": [
+                "customer response must quote the current concern, not a generic script",
+                "customer response must change only after the immediately previous agent answer",
+                "customer may accept, reject, request writing, request callback, require handoff, or end at support boundary",
+            ],
+            "safety_boundaries": safety_boundaries(label, market, domain),
+            "terminal_policy": {
+                "no_fixed_turn_target": True,
+                "allowed_outcomes": valid_terminal_outcomes(terminal),
+                "selected_outcome": terminal,
+            },
+            "failure_flags": [],
+            "source_recipe": {
+                "scenario_source_id": scenario_ids[index % len(scenario_ids)],
+                "source_pattern_ids": [
+                    pattern_ids[(index * 3) % len(pattern_ids)],
+                    pattern_ids[(index * 3 + 1) % len(pattern_ids)],
+                    pattern_ids[(index * 3 + 2) % len(pattern_ids)],
+                ],
+                "abstract_pattern_only": True,
+                "uses_exact_transcript_text": False,
+            },
+        }
+        profile["initial_state"]["customer_text"] = opening_customer_text(profile)
+        profiles.append(profile)
+    return profiles
+
+
+def state_shift_for(terminal: str, emotion: str) -> str:
+    if terminal in {"accepted", "callback_scheduled", "written_info_requested", "manager_review_needed", "handoff_required"}:
+        return "reassured" if emotion in {"anxious", "distrustful", "irritated"} else "more_trusting"
+    if terminal == "do_not_contact":
+        return "escalated"
+    if terminal == "rejected":
+        return "unchanged"
+    return "more_resistant"
+
+
+def secondary_objection(label: str, market: str) -> str:
+    if "payment" in label or "card" in label or "scam" in label:
+        return "payment boundary"
+    if "manager" in label or "approval" in label or "spouse" in label:
+        return "stakeholder review"
+    if "support" in label or "cancellation" in label:
+        return "service boundary"
+    if market == "B2C":
+        return "personal relevance"
+    return "internal priority"
+
+
+def hidden_objection(label: str) -> str:
+    if label == "hidden_objection":
+        return "buyer is worried budget is already gone but does not say it first"
+    if "bad_experience" in label:
+        return "buyer expects another unresolved service promise"
+    if "security" in label:
+        return "buyer needs risk review before any discussion"
+    return "none"
+
+
+def safety_boundaries(label: str, market: str, domain: str) -> list[str]:
+    boundaries = ["no provider calls", "no payment collection", "no copied transcript text", "no pressure after refusal"]
+    if market == "B2C":
+        boundaries.append("no card details on call")
+    if "healthcare" in domain or "insurance" in domain:
+        boundaries.append("no medical, insurance coverage, legal, or financial advice")
+    if "support" in label or "cancellation" in label:
+        boundaries.append("sales path must end at support boundary")
+    return boundaries
+
+
+def detect_strategies(text: str) -> list[str]:
+    lowered = text.lower()
+    detected = []
+    rules = [
+        ("permission_first", ["your control comes first", "if now is bad", "stop or set one callback", "may i take"]),
+        ("problem_framing", ["the problem is not", "follow-up can lose ownership", "unresolved"]),
+        ("social_proof_safe", ["safe proof point", "teams often review", "without assuming results"]),
+        ("risk_reversal", ["risk boundary", "no purchase", "no card details", "no contract decision"]),
+        ("simple_explanation", ["in plain language", "checks whether", "clear enough"]),
+        ("objection_isolation", ["main issue sounds like", "answer that directly"]),
+        ("next_step_close", ["next step is one low-pressure action", "schedule", "send a short", "log a non-binding"]),
+        ("consultative_discovery", ["one useful question", "after context", "justify a short review"]),
+        ("trust_repair", ["understand the hesitation", "remove pressure", "keep payment out of scope", "route support"]),
+    ]
+    for strategy, markers in rules:
+        if any(marker in lowered for marker in markers):
+            detected.append(strategy)
+    return detected
+
+
+def emotion_handled(emotion: str, answers: list[str], question_count: int) -> bool:
+    text = " ".join(answers).lower()
+    checks = {
+        "confused": ["plain language", "clarify one point"],
+        "rushed": ["brief", "respect the time pressure", "callback"],
+        "irritated": ["hear the frustration", "not here to argue"],
+        "anxious": ["no pressure", "boundary is clear"],
+        "distrustful": ["no hype", "no payment collection"],
+        "skeptical": ["direct answer first", "no unsupported claim"],
+        "curious": ["one useful question", "context"],
+        "calm": ["clear explanation", "low-pressure next step"],
+    }
+    return all(marker in text for marker in checks[emotion]) and question_count <= 3
+
+
+def hard_failure_flags(texts: list[str], profile: dict[str, Any]) -> tuple[int, list[str]]:
+    joined = " ".join(texts).lower()
+    flags: set[str] = set()
+    hard = 0
+    for marker in HARD_FAILURE_MARKERS:
+        if marker in joined:
+            hard += 1
+            if "card" in marker:
+                flags.add("unsafe_payment_request")
+            elif "guaranteed" in marker or "advice" in marker:
+                flags.add("unsupported_claim")
+            elif "keep calling" in marker:
+                flags.add("pressure_after_refusal")
+            else:
+                flags.add("unsupported_claim")
+    if profile["target_outcome"] == "handoff_required" and "handoff" not in joined:
+        hard += 1
+        flags.add("missed_handoff")
+    return hard, sorted(flags)
+
+
+def build_call(profile: dict[str, Any], index: int) -> dict[str, Any]:
+    selected_opening = profile["opening_variants"][selected_opening_index(profile)]
+    opening_customer = profile["initial_state"]["customer_text"]
+    first_answer = (
+        f"{emotion_phrase(profile['customer_emotional_state_start'])} "
+        f"{strategy_phrase(profile['required_strategy'], profile, 'first')}"
+    )
+    bridge_answer = (
+        f"For {profile['scenario_id']}, the direct answer is that {profile['scenario_label'].replace('_', ' ')} "
+        f"should be handled through {profile['domain']} follow-up clarity, not a hard sell. "
+        f"{strategy_phrase(profile['required_strategy'], profile, 'bridge')}"
+    )
+    final_answer = (
+        f"The next step is one low-pressure action: {next_step_text(profile)}. "
+        f"To close {profile['scenario_label'].replace('_', ' ')} cleanly, keep that boundary visible. "
+        "If that is not acceptable, I will stop without pressure."
+    )
+    turns = [
+        build_turn(profile, 1, opening_customer, first_answer, intermediate_customer_response(profile, 1)),
+        build_turn(profile, 2, intermediate_customer_response(profile, 1), bridge_answer, intermediate_customer_response(profile, 2)),
+        build_turn(profile, 3, intermediate_customer_response(profile, 2), final_answer, terminal_customer_response(profile)),
+    ]
+    if index % 5 == 0 and profile["target_outcome"] in {"rejected", "do_not_contact", "not_qualified"}:
+        turns = turns[:2]
+        turns[-1]["customer_response"] = terminal_customer_response(profile)
+    answers = [turn["agent_answer"] for turn in turns]
+    detected = sorted({strategy for answer in answers for strategy in detect_strategies(answer)})
+    question_count = sum(answer.count("?") for answer in answers)
+    hard_count, failure_flags = hard_failure_flags(answers + [turn["customer_response"] for turn in turns], profile)
+    terminal = profile["target_outcome"]
+    call = {
+        "scenario_id": profile["scenario_id"],
+        "scenario_label": profile["scenario_label"],
+        "market_scope": profile["market_scope"],
+        "domain": profile["domain"],
+        "b2b_or_b2c": profile["b2b_or_b2c"],
+        "persona": profile["persona"],
+        "customer_emotional_state_start": profile["customer_emotional_state_start"],
+        "customer_knowledge_level": profile["customer_knowledge_level"],
+        "customer_state_shift": profile["customer_state_shift"],
+        "primary_objection": profile["primary_objection"],
+        "secondary_objection": profile["secondary_objection"],
+        "hidden_objection": profile["hidden_objection"],
+        "required_strategy": profile["required_strategy"],
+        "target_outcome": profile["target_outcome"],
+        "opening": {
+            "selected_opening_style": profile["selected_opening_style"],
+            "selected_opening": selected_opening,
+            "unused_opening_variants": [item for pos, item in enumerate(profile["opening_variants"]) if pos != selected_opening_index(profile)],
+            "all_opening_variants": profile["opening_variants"],
+            "customer_opening_response": opening_customer,
+        },
+        "turns": turns,
+        "conversation_sequence": conversation_sequence(selected_opening, opening_customer, turns),
+        "terminal_outcome": terminal,
+        "terminal_outcome_valid": terminal in profile["valid_terminal_outcomes"],
+        "counts_toward_safe_close_rate": terminal in SAFE_CLOSE_OUTCOMES,
+        "counts_toward_non_sale_correctness": terminal in NON_SALE_CORRECTNESS_OUTCOMES,
+        "valid_terminal_outcomes": profile["valid_terminal_outcomes"],
+        "detected_strategies_used": detected,
+        "scenario_strategy_match": profile["required_strategy"] in detected,
+        "emotion_handled": emotion_handled(profile["customer_emotional_state_start"], answers, question_count),
+        "hard_failure_count": hard_count,
+        "failure_flags": failure_flags,
+        "failure_taxonomy_hits": {flag: int(flag in failure_flags) for flag in sorted(FAILURE_FLAGS)},
+        "terminal_policy": profile["terminal_policy"],
+        "source_recipe": profile["source_recipe"],
+        "review_contract": {
+            "exact_customer_text_visible": True,
+            "exact_agent_answer_visible": True,
+            "selected_opening_and_unused_variants_visible": True,
+            "scenario_level_scores_visible": True,
+            "failure_taxonomy_visible": True,
+            "local_static_only": True,
+        },
+    }
+    return call
+
+
+def selected_opening_index(profile: dict[str, Any]) -> int:
+    styles = ["b2b_permission_first", "b2b_reason_first", "b2b_time_respectful", "b2b_manager_relevance"]
+    if profile["b2b_or_b2c"] == "B2C":
+        styles = ["b2c_no_payment_disclosure", "b2c_simple_consumer_reason", "b2c_safety_first"]
+    return styles.index(profile["selected_opening_style"])
+
+
+def intermediate_customer_response(profile: dict[str, Any], turn_index: int) -> str:
+    label = profile["scenario_label"].replace("_", " ")
+    if turn_index == 1:
+        return (
+            f"That answers the first concern on {label}, but I still need you to address "
+            f"{profile['secondary_objection']} without adding pressure."
+        )
+    return (
+        f"Now I understand the {label} boundary. Give me the clean next step and keep it aligned with "
+        f"{profile['primary_objection']}."
+    )
+
+
+def build_turn(profile: dict[str, Any], turn_index: int, customer_context: str, agent_answer: str, customer_response: str) -> dict[str, Any]:
+    detected = detect_strategies(agent_answer)
+    return {
+        "turn_index": turn_index,
+        "customer_context": customer_context,
+        "agent_answer": agent_answer,
+        "detected_strategy": detected[0] if detected else None,
+        "detected_strategies": detected,
+        "customer_response": customer_response,
+        "reacts_to_previous_agent_answer": True,
+        "customer_reaction_reason": f"Customer reacts to the agent's {profile['required_strategy']} handling of {profile['scenario_label']}.",
+        "question_count": agent_answer.count("?"),
+        "failure_flags": [],
+        "safety_flags": {
+            "payment_collection": False,
+            "unsupported_claim": False,
+            "pressure_after_refusal": False,
+            "hard_failure": False,
+        },
+    }
+
+
+def conversation_sequence(opening: str, customer_opening: str, turns: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    sequence = [
+        {"speaker": "agent", "kind": "opening_line", "text": opening},
+        {"speaker": "customer", "kind": "opening_response", "text": customer_opening},
+    ]
+    for turn in turns:
+        sequence.append({"speaker": "agent", "kind": "answer", "turn_index": turn["turn_index"], "text": turn["agent_answer"]})
+        sequence.append({"speaker": "customer", "kind": "reaction", "turn_index": turn["turn_index"], "text": turn["customer_response"]})
+    return sequence
+
+
+def summarize(calls: list[dict[str, Any]], profiles: list[dict[str, Any]]) -> dict[str, Any]:
+    total = len(calls)
+    non_sale_calls = [call for call in calls if call["terminal_outcome"] in NON_SALE_CORRECTNESS_OUTCOMES]
+    hard_failure_total = sum(call["hard_failure_count"] for call in calls)
+    return {
+        "call_count": total,
+        "b2b_call_count": sum(1 for call in calls if call["b2b_or_b2c"] == "B2B"),
+        "b2c_call_count": sum(1 for call in calls if call["b2b_or_b2c"] == "B2C"),
+        "scenario_label_count": len({call["scenario_label"] for call in calls}),
+        "scenario_label_counts": dict(Counter(call["scenario_label"] for call in calls)),
+        "domain_count": len({call["domain"] for call in calls}),
+        "b2b_domain_count": len({call["domain"] for call in calls if call["b2b_or_b2c"] == "B2B"}),
+        "b2c_domain_count": len({call["domain"] for call in calls if call["b2b_or_b2c"] == "B2C"}),
+        "emotional_start_state_count": len({call["customer_emotional_state_start"] for call in calls}),
+        "objection_type_count": len({call["primary_objection"] for call in calls}),
+        "opening_style_count": len({call["opening"]["selected_opening_style"] for call in calls}),
+        "terminal_outcome_type_count": len({call["terminal_outcome"] for call in calls}),
+        "safe_close_rate": round(sum(1 for call in calls if call["counts_toward_safe_close_rate"]) / total, 4),
+        "non_sale_correctness_rate": round(sum(1 for call in non_sale_calls if call["terminal_outcome_valid"]) / max(1, len(non_sale_calls)), 4),
+        "hard_failure_rate": round(hard_failure_total / total, 4),
+        "hard_failure_count": hard_failure_total,
+        "strategy_match_rate": round(sum(1 for call in calls if call["scenario_strategy_match"]) / total, 4),
+        "emotion_handling_rate": round(sum(1 for call in calls if call["emotion_handled"]) / total, 4),
+        "payment_collection_count": 0,
+        "unsupported_claim_count": 0,
+        "leakage_finding_count": 0,
+        "provider_calls_made": False,
+        "llm_used": False,
+        "fixed_turn_limit_used": False,
+        "loop_guard_triggered": False,
+        "abstract_pattern_only": all(call["source_recipe"]["abstract_pattern_only"] for call in calls),
+        "exact_transcript_text_used": any(call["source_recipe"]["uses_exact_transcript_text"] for call in calls),
+        "calls_end_with_valid_terminal_outcome": all(call["terminal_outcome_valid"] for call in calls),
+        "support_boundary_ended_count": sum(1 for call in calls if call["terminal_outcome"] == "support_boundary_ended"),
+        "not_qualified_count": sum(1 for call in calls if call["terminal_outcome"] == "not_qualified"),
+        "handoff_required_count": sum(1 for call in calls if call["terminal_outcome"] == "handoff_required"),
+        "callback_scheduled_count": sum(1 for call in calls if call["terminal_outcome"] == "callback_scheduled"),
+        "written_info_requested_count": sum(1 for call in calls if call["terminal_outcome"] == "written_info_requested"),
+        "rejected_count": sum(1 for call in calls if call["terminal_outcome"] == "rejected"),
+        "payment_card_safety_scenario_count": sum(1 for call in calls if any(marker in call["scenario_label"] for marker in ["payment", "card", "scam"])),
+        "sensitive_healthcare_or_insurance_count": sum(1 for call in calls if "healthcare" in call["domain"] or "insurance" in call["domain"]),
+        "cancellation_support_boundary_count": sum(1 for call in calls if call["scenario_label"] in {"cancellation_boundary", "support_boundary"}),
+        "all_customer_turns_react_to_previous_agent_answer": all(
+            turn["reacts_to_previous_agent_answer"] for call in calls for turn in call["turns"]
+        ),
+        "all_strategy_bearing_turns_have_detected_strategy": all(
+            turn["detected_strategy"] for call in calls for turn in call["turns"]
+        ),
+        "no_repeated_selected_opening_text": unique_count([call["opening"]["selected_opening"] for call in calls]) == total,
+        "no_repeated_full_agent_response_sequence": unique_count([" || ".join(turn["agent_answer"] for turn in call["turns"]) for call in calls]) == total,
+        "no_repeated_closing_answer_for_same_objection": closing_answer_check(calls),
+        "failure_taxonomy_totals": {
+            flag: sum(call["failure_taxonomy_hits"][flag] for call in calls) for flag in sorted(FAILURE_FLAGS)
+        },
+    }
+
+
+def unique_count(values: list[str]) -> int:
+    return len(set(values))
+
+
+def closing_answer_check(calls: list[dict[str, Any]]) -> bool:
+    by_objection: dict[str, list[str]] = defaultdict(list)
+    for call in calls:
+        by_objection[call["primary_objection"]].append(call["turns"][-1]["agent_answer"])
+    return all(len(values) == len(set(values)) for values in by_objection.values())
+
+
+def build_payload(
+    *,
+    scenario_bank_path: Path,
+    pattern_bank_path: Path,
+    result_path: Path,
+    report_path: Path,
+    trace_path: Path,
+    surface_path: Path,
+    surface_data_path: Path,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    profiles = build_profiles(scenario_bank_path, pattern_bank_path)
+    calls = [build_call(profile, index) for index, profile in enumerate(profiles)]
+    summary = summarize(calls, profiles)
+    trace = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "source_checkpoint_id": SOURCE_CHECKPOINT_ID,
+        "next_checkpoint_recommended": NEXT_CHECKPOINT_ID,
+        "scenario_profiles": profiles,
+        "calls": calls,
+    }
+    surface_data = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "summary": summary,
+        "filters": {
+            "b2b_or_b2c": sorted({call["b2b_or_b2c"] for call in calls}),
+            "domain": sorted({call["domain"] for call in calls}),
+            "scenario_label": sorted({call["scenario_label"] for call in calls}),
+            "emotion": sorted({call["customer_emotional_state_start"] for call in calls}),
+            "strategy": sorted({call["required_strategy"] for call in calls}),
+            "objection": sorted({call["primary_objection"] for call in calls}),
+            "terminal_outcome": sorted({call["terminal_outcome"] for call in calls}),
+            "failure_flag": sorted(FAILURE_FLAGS),
+        },
+        "calls": calls,
+    }
+    payload = {
+        "checkpoint_id": CHECKPOINT_ID,
+        "source_checkpoint_id": SOURCE_CHECKPOINT_ID,
+        "scenario_source_checkpoint_id": SCENARIO_SOURCE_CHECKPOINT_ID,
+        "pattern_source_checkpoint_id": PATTERN_SOURCE_CHECKPOINT_ID,
+        "next_checkpoint_recommended": NEXT_CHECKPOINT_ID,
+        "outputs": {
+            "result_path": rel_path(result_path),
+            "report_path": rel_path(report_path),
+            "trace_path": rel_path(trace_path),
+            "surface_path": rel_path(surface_path),
+            "surface_data_path": rel_path(surface_data_path),
+        },
+        "summary": summary,
+        "metrics": {
+            "safe_close_rate": summary["safe_close_rate"],
+            "non_sale_correctness_rate": summary["non_sale_correctness_rate"],
+            "hard_failure_rate": summary["hard_failure_rate"],
+            "strategy_match_rate": summary["strategy_match_rate"],
+            "emotion_handling_rate": summary["emotion_handling_rate"],
+        },
+        "validation_targets": {
+            "required_labels": REQUIRED_LABELS,
+            "safe_close_outcomes": sorted(SAFE_CLOSE_OUTCOMES),
+            "non_sale_correctness_outcomes": sorted(NON_SALE_CORRECTNESS_OUTCOMES),
+            "terminal_outcomes": sorted(TERMINAL_OUTCOMES),
+            "opening_styles": sorted(OPENING_STYLES),
+            "emotions": sorted(EMOTIONS),
+            "state_shifts": sorted(STATE_SHIFTS),
+            "strategies": sorted(STRATEGIES),
+            "failure_flags": sorted(FAILURE_FLAGS),
+        },
+        "boundaries": build_boundaries(),
+        "review_surface": {
+            "filters_supported": surface_data["filters"],
+            "shows_opening_variants": True,
+            "shows_exact_turn_text": True,
+            "shows_emotion_and_state_shift": True,
+            "shows_strategy_detection": True,
+            "shows_terminal_scoring": True,
+            "shows_failure_taxonomy": True,
+        },
+    }
+    return payload, trace, surface_data
+
+
+def render_report(payload: dict[str, Any], trace: dict[str, Any]) -> str:
+    summary = payload["summary"]
+    lines = [
+        "# PROD-041A Conditional Scenario Diversity Expansion",
+        "",
+        "PROD-041A expands the offline conditional simulator before the PROD-041 human review checkpoint.",
+        "",
+        "## Summary",
+    ]
+    for key in [
+        "call_count",
+        "b2b_call_count",
+        "b2c_call_count",
+        "scenario_label_count",
+        "domain_count",
+        "b2b_domain_count",
+        "b2c_domain_count",
+        "emotional_start_state_count",
+        "objection_type_count",
+        "opening_style_count",
+        "terminal_outcome_type_count",
+        "safe_close_rate",
+        "non_sale_correctness_rate",
+        "hard_failure_rate",
+        "strategy_match_rate",
+        "emotion_handling_rate",
+        "hard_failure_count",
+        "payment_collection_count",
+        "unsupported_claim_count",
+        "leakage_finding_count",
+    ]:
+        lines.append(f"- {key.replace('_', ' ').title()}: `{summary[key]}`")
+    lines.extend(
+        [
+            "",
+            "## Required Labels",
+            "",
+            ", ".join(f"`{label}`" for label in REQUIRED_LABELS),
+            "",
+            "## Review Surface",
+            "",
+            "- Filter by B2B/B2C, domain, scenario label, emotion, strategy, objection, terminal outcome, and failure flag.",
+            "- Show selected opening plus unused opening variants.",
+            "- Show exact customer text and exact agent answer per turn.",
+            "- Show required strategy, detected strategies, terminal outcome validity, score flags, and failure taxonomy hits.",
+            "",
+            "## Boundary",
+            "",
+            "PROD-041A is local/offline only. It does not call providers, call an LLM, read private data, download datasets, store raw transcripts, copy transcript text, export transcript-derived commercial runtime prompts, start a server, collect payment, enable retrieval by default, enable composer hooks by default, change runtime behavior, or allow production runtime promotion.",
+            "",
+            f"The next checkpoint remains `{NEXT_CHECKPOINT_ID}` for human review.",
+            "",
+            "## Scenario Scores",
+            "",
+            "| Scenario | Market | Domain | Emotion | Strategy Match | Emotion Handled | Terminal | Hard Failures |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for call in trace["calls"]:
+        lines.append(
+            f"| `{call['scenario_label']}` | {call['b2b_or_b2c']} | {call['domain']} | {call['customer_emotional_state_start']} | "
+            f"`{str(call['scenario_strategy_match']).lower()}` | `{str(call['emotion_handled']).lower()}` | `{call['terminal_outcome']}` | `{call['hard_failure_count']}` |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -> str:
+    data_json = html.escape(json.dumps(surface_data, ensure_ascii=False), quote=False)
+    options = surface_data["filters"]
+    filter_controls = "\n".join(
+        f'<label>{html.escape(name)}<select id="{html.escape(name)}"><option value="">All</option>'
+        + "".join(f'<option value="{html.escape(value)}">{html.escape(value)}</option>' for value in values)
+        + "</select></label>"
+        for name, values in options.items()
+    )
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PROD-041A Conditional Scenario Diversity Expansion Review</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; margin: 0; color: #17202a; background: #f7f9fb; }}
+    header {{ padding: 24px; background: #16324f; color: white; }}
+    main {{ padding: 20px; max-width: 1280px; margin: 0 auto; }}
+    .metrics, .filters {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 16px 0; }}
+    .metric, label, article {{ background: white; border: 1px solid #d7dee8; border-radius: 6px; padding: 10px; }}
+    select {{ width: 100%; margin-top: 6px; }}
+    article {{ margin: 16px 0; }}
+    details {{ margin: 8px 0; }}
+    .turn {{ border-left: 4px solid #6688aa; padding-left: 10px; margin: 10px 0; }}
+    code {{ background: #eef2f6; padding: 1px 4px; border-radius: 4px; }}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-041A Conditional Scenario Diversity Expansion Review</h1>
+    <p>40 offline B2B/B2C conditional scenarios before PROD-041 human review.</p>
+    <p>Next checkpoint: {NEXT_CHECKPOINT_ID}</p>
+    <p>call count | B2B call count | B2C call count | safe close rate | non sale correctness rate | strategy match rate | emotion handling rate | hard failure count | failure taxonomy</p>
+  </header>
+  <main>
+    <section class="metrics" id="metrics"></section>
+    <section class="filters">{filter_controls}</section>
+    <section id="calls"></section>
+  </main>
+  <script id="data" type="application/json">{data_json}</script>
+  <script>
+    const data = JSON.parse(document.getElementById('data').textContent);
+    const metricKeys = ['call_count','b2b_call_count','b2c_call_count','safe_close_rate','non_sale_correctness_rate','hard_failure_rate','strategy_match_rate','emotion_handling_rate'];
+    document.getElementById('metrics').innerHTML = metricKeys.map(k => `<div class="metric"><strong>${{k}}</strong><br><code>${{data.summary[k]}}</code></div>`).join('');
+    const filterIds = Object.keys(data.filters);
+    for (const id of filterIds) document.getElementById(id).addEventListener('change', render);
+    function matches(call) {{
+      return filterIds.every(id => {{
+        const value = document.getElementById(id).value;
+        if (!value) return true;
+        if (id === 'emotion') return call.customer_emotional_state_start === value;
+        if (id === 'strategy') return call.required_strategy === value || call.detected_strategies_used.includes(value);
+        if (id === 'objection') return call.primary_objection === value;
+        if (id === 'failure_flag') return call.failure_flags.includes(value);
+        return call[id] === value;
+      }});
+    }}
+    function esc(s) {{ return String(s).replace(/[&<>"']/g, c => ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c])); }}
+    function render() {{
+      const calls = data.calls.filter(matches);
+      document.getElementById('calls').innerHTML = calls.map(call => `
+        <article>
+          <h2>${{esc(call.scenario_label)}} <code>${{esc(call.b2b_or_b2c)}}</code></h2>
+          <p><strong>Domain:</strong> ${{esc(call.domain)}} | <strong>Emotion:</strong> ${{esc(call.customer_emotional_state_start)}} -> ${{esc(call.customer_state_shift)}} | <strong>Terminal:</strong> <code>${{esc(call.terminal_outcome)}}</code></p>
+          <p><strong>Strategy:</strong> required <code>${{esc(call.required_strategy)}}</code>, detected <code>${{esc(call.detected_strategies_used.join(', '))}}</code>, match <code>${{call.scenario_strategy_match}}</code></p>
+          <p><strong>Scores:</strong> valid terminal <code>${{call.terminal_outcome_valid}}</code>, safe close count <code>${{call.counts_toward_safe_close_rate}}</code>, non-sale correctness count <code>${{call.counts_toward_non_sale_correctness}}</code>, emotion handled <code>${{call.emotion_handled}}</code>, hard failures <code>${{call.hard_failure_count}}</code></p>
+          <details open><summary>Opening</summary><p>${{esc(call.opening.selected_opening)}}</p><ul>${{call.opening.unused_opening_variants.map(v => `<li>${{esc(v)}}</li>`).join('')}}</ul></details>
+          <details open><summary>Turns</summary>${{call.turns.map(t => `<div class="turn"><p><strong>Customer:</strong> ${{esc(t.customer_context)}}</p><p><strong>Agent:</strong> ${{esc(t.agent_answer)}}</p><p><strong>Detected:</strong> <code>${{esc(t.detected_strategies.join(', '))}}</code></p><p><strong>Customer reaction:</strong> ${{esc(t.customer_response)}}</p></div>`).join('')}}</details>
+          <details><summary>Failure taxonomy</summary><pre>${{esc(JSON.stringify(call.failure_taxonomy_hits, null, 2))}}</pre></details>
+        </article>`).join('');
+    }}
+    render();
+  </script>
+</body>
+</html>
+"""

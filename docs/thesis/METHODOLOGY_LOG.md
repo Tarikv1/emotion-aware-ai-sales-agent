@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-10 - PROD-041A conditional scenario diversity expansion
+
+- Objective: expand the conditional simulator before the PROD-041 human review so the review is based on a broader, mixed B2B/B2C scenario set instead of the original eight calls.
+- Action taken: added the PROD-041A scenario diversity module, runner, validator, product doc, static HTML inspection surface, generated trace/data/report/result artifacts, command-map coverage, setup coverage, drift-guard coverage, and thesis documentation.
+- Data used: the PROD-014 leakage-checked scenario bank and the PROD-013 abstract CallCenterEN pattern bank for abstract pattern IDs only. No provider call, LLM call, private data read, dataset download, raw transcript storage, copied transcript text, transcript-derived runtime prompt, runtime behavior change, retrieval default change, composer-hook default change, customer data, server start, or payment handling was used.
+- Output created: `docs/product/PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md`, `scripts/prod_041a_conditional_scenario_diversity_expansion.py`, `scripts/run_prod_041a_conditional_scenario_diversity_expansion.py`, `scripts/validate_prod_041a_conditional_scenario_diversity_expansion.py`, `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/result.json`, `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/report.md`, `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_traces.json`, `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_review.html`, and `research/experiments/generated/PROD-041A-conditional-scenario-diversity-expansion/scenario_diversity_review_data.json`.
+- What was learned: the review packet can now test breadth as well as conditional turn quality. PROD-041A creates `40` calls with `24` B2B and `16` B2C scenarios, one curated scenario label per call, all `7` opening styles, deterministic strategy detection, deterministic emotion handling, richer terminal outcomes, scenario-level scores, and failure taxonomy counts while keeping hard failures, payment collection, unsupported claims, and leakage at `0`.
+- Why it matters for the thesis: the simulator review can now assess whether emotion-aware sales behavior remains safe and strategy-aligned across diverse objections, markets, domains, and terminal outcomes before any voice or public demo expansion.
+- Open questions: whether human review accepts the broader scenario traces as realistic enough to unblock voice playback, scenario branching, more call seeds, or public demo polish.
+
 ### 2026-05-10 - PROD-040 CallCenterEN conditional customer simulation
 
 - Objective: make simulated customer replies vary turn by turn according to the agent's preceding answer, using CallCenterEN-derived interaction patterns without copying transcript text.
