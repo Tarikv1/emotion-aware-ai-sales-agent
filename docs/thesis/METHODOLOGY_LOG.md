@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-11 - PROD-043 sales playbook runtime adapter
+
+- Objective: create an offline adapter/evaluator that uses PROD-042 turn-level playbook artifacts to classify customer moves, retrieve playbook/evaluation rules, and score single-turn agent responses.
+- Action taken: added deterministic customer-move classification cases, playbook retrieval cases, generic good/bad agent-response evaluation cases, evaluation outputs, a static review surface, product documentation, and validator gates for accuracy, retrieval coverage, expected-result matching, and boundary preservation.
+- Data used: existing PROD-042 artifacts only plus synthetic generic test cases. No CallCenterEN transcript text, source transcript sequence, provider call, LLM call, private data read, dataset download, runtime behavior change, retrieval enablement, or runtime-agent modification was used.
+- Output created: `scripts/prod_043_sales_playbook_runtime_adapter.py`, runner/validator scripts, `docs/product/PROD_043_SALES_PLAYBOOK_RUNTIME_ADAPTER.md`, and generated artifacts under `research/experiments/generated/PROD-043-sales-playbook-runtime-adapter/`.
+- What was learned: the PROD-042 playbook can be consumed as an offline rule layer for move classification, playbook lookup, and deterministic single-turn response evaluation without creating another simulator or touching runtime behavior.
+- Why it matters for the thesis: PROD-043 bridges extracted sales intelligence toward future agent-policy work while preserving the no-runtime-promotion and no-transcript-copying boundaries.
+- Open questions: whether PROD-044 should update core sales policy based on the offline adapter results, and which failure cases should be prioritized first.
+
 ### 2026-05-10 - PROD-042 narrow quality fix pass
 
 - Objective: correct output-quality defects in PROD-042 without redesigning the checkpoint or changing runtime behavior.

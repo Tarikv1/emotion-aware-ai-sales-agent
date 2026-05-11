@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: run `PROD-042-callcenteren-turn-pattern-playbook` to extract leakage-safe turn-level customer-move, tactic, reaction, transition, failure/recovery, playbook, and deterministic evaluation patterns from raw CallCenterEN zip aggregates and existing abstract checkpoints.
+- [ ] Current: review `PROD-043-sales-playbook-runtime-adapter` offline evidence before deciding whether `PROD-044-core-sales-policy-update` is justified.
 
 Next checkpoints:
 
-- [ ] Next: run `PROD-043-sales-playbook-runtime-adapter` to apply/evaluate PROD-042 playbook rules against offline real-agent outputs without enabling retrieval by default or modifying runtime behavior.
+- [ ] Next: run `PROD-044-core-sales-policy-update` only if PROD-043 evidence supports a targeted core sales-policy change. Do not modify runtime behavior or enable retrieval before that checkpoint.
 - [ ] Next: after PROD-043 offline adapter evidence, decide whether targeted runtime adaptation is justified before voice playback or demo use.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
@@ -60,6 +60,10 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-043` sales playbook runtime adapter, which reads PROD-042 turn-level playbook artifacts and evaluates generic single-turn customer utterances/responses offline. It creates deterministic customer-move classification cases, playbook retrieval cases, agent-response evaluation cases, agent-response evaluation outputs, a static review surface, and a result/report packet. It does not generate full conversations, copy transcript text, regenerate PROD-042, modify runtime behavior, enable retrieval, call providers, or call an LLM. The next recommended checkpoint is `PROD-044-core-sales-policy-update`.
+
+- [x] `PROD-042` CallCenterEN turn-level sales pattern playbook extraction, which replaced further PROD-041A synthetic expansion with leakage-safe turn-level customer-move, agent-tactic, response-quality, customer-reaction, state-transition, next-best-action, failure, recovery, playbook, and deterministic evaluation rules from raw CallCenterEN zip aggregates plus abstract checkpoint cross-checks. It keeps support counts documented as heuristic aggregate signal counts, reports coverage gaps, and keeps runtime/retrieval behavior unchanged.
 
 - [x] `PROD-041` conditional simulation review, which manually reviews the locked `PROD-041A-conditional-scenario-diversity-expansion` traces instead of expanding them. It reviewed `40` calls with `24` B2B and `16` B2C scenarios, kept PROD-041A locked, judged remaining deterministic phrasing acceptable for offline review only, found safe-close outcomes only partially earned, identified customer turns that remain too template-like, and marked targeted rewrites required before voice playback or public demo use. Voice playback, scenario branching, public demo polish, provider calls, LLM use, private data reads, dataset downloads, PROD-041A modification, runtime behavior changes, retrieval defaults, composer-hook defaults, server start, payment collection, and production runtime promotion stay blocked.
 

@@ -1,0 +1,1992 @@
+{
+  "checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+  "source_checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "agent_response_evaluations": [
+    {
+      "case_id": "eval-price-first-good-001",
+      "customer_utterance": "What does this cost?",
+      "predicted_customer_move_ids": [
+        "price_first"
+      ],
+      "expected_customer_move_id": "price_first",
+      "agent_response": "The basic range starts around 29 per user per month. No commitment today; I can send the details.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-price_first-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary",
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "answers_price_or_pricing_boundary_before_discovery",
+        "does_not_offer_callback_before_answering_price",
+        "no_feature_pitch_before_price_answer"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-price-first-bad-001",
+      "customer_utterance": "What does this cost?",
+      "predicted_customer_move_ids": [
+        "price_first"
+      ],
+      "expected_customer_move_id": "price_first",
+      "agent_response": "Before price, can I ask a few questions about your team?",
+      "retrieved_evaluation_rule_ids": [
+        "eval-price_first-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "answer_directly",
+        "single_discovery_question"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "answers_price_or_pricing_boundary_before_discovery",
+        "does_not_offer_callback_before_answering_price",
+        "no_feature_pitch_before_price_answer"
+      ],
+      "failed_check_ids": [
+        "dodged_direct_question"
+      ],
+      "detected_failure_flags": [
+        "dodged_direct_question"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-send-info-good-001",
+      "customer_utterance": "Send me the details.",
+      "predicted_customer_move_ids": [
+        "send_info"
+      ],
+      "expected_customer_move_id": "send_info",
+      "agent_response": "I can send a short summary and leave it there.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-send_info-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "honors_written_info_request",
+        "does_not_force_meeting",
+        "optional_single_clarifying_question_only"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-send-info-bad-001",
+      "customer_utterance": "Send me the details.",
+      "predicted_customer_move_ids": [
+        "send_info"
+      ],
+      "expected_customer_move_id": "send_info",
+      "agent_response": "Let us book a meeting first and then I will send details.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-send_info-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer",
+        "callback_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "honors_written_info_request",
+        "does_not_force_meeting",
+        "optional_single_clarifying_question_only"
+      ],
+      "failed_check_ids": [
+        "unclear_next_step"
+      ],
+      "detected_failure_flags": [
+        "unclear_next_step"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-email-only-good-001",
+      "customer_utterance": "Just email me.",
+      "predicted_customer_move_ids": [
+        "email_only"
+      ],
+      "expected_customer_move_id": "email_only",
+      "agent_response": "Understood. I will send the summary by email only and will not push a call.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-email_only-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "respects_email_only_boundary",
+        "does_not_push_callback",
+        "does_not_continue_discovery_after_email_only_boundary"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-email-only-bad-001",
+      "customer_utterance": "Just email me.",
+      "predicted_customer_move_ids": [
+        "email_only"
+      ],
+      "expected_customer_move_id": "email_only",
+      "agent_response": "Email is fine, but let's schedule a call now.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-email_only-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer",
+        "callback_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "respects_email_only_boundary",
+        "does_not_push_callback",
+        "does_not_continue_discovery_after_email_only_boundary"
+      ],
+      "failed_check_ids": [
+        "unclear_next_step"
+      ],
+      "detected_failure_flags": [
+        "unclear_next_step"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-not-interested-good-001",
+      "customer_utterance": "Not interested.",
+      "predicted_customer_move_ids": [
+        "not_interested"
+      ],
+      "expected_customer_move_id": "not_interested",
+      "agent_response": "Understood. I will stop here. No pressure.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-not_interested-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "low_pressure_boundary",
+        "stop_after_refusal"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "respects_refusal",
+        "stops_or_requests_permission_before_continuing",
+        "no_discovery_after_refusal_without_permission"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-not-interested-bad-001",
+      "customer_utterance": "Not interested.",
+      "predicted_customer_move_ids": [
+        "not_interested"
+      ],
+      "expected_customer_move_id": "not_interested",
+      "agent_response": "I hear you, but let me ask a few discovery questions first.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-not_interested-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "respects_refusal",
+        "stops_or_requests_permission_before_continuing",
+        "no_discovery_after_refusal_without_permission"
+      ],
+      "failed_check_ids": [
+        "pressure_after_refusal"
+      ],
+      "detected_failure_flags": [
+        "pressure_after_refusal"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-busy-now-good-001",
+      "customer_utterance": "I only have a minute.",
+      "predicted_customer_move_ids": [
+        "busy_now"
+      ],
+      "expected_customer_move_id": "busy_now",
+      "agent_response": "No problem. I will keep this brief or stop here.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-busy_now-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "low_pressure_boundary",
+        "stop_after_refusal"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "acknowledges_time_pressure",
+        "keeps_response_brief",
+        "offers_short_callback_or_stop_option"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-busy-now-bad-001",
+      "customer_utterance": "I only have a minute.",
+      "predicted_customer_move_ids": [
+        "busy_now"
+      ],
+      "expected_customer_move_id": "busy_now",
+      "agent_response": "Great, I have several questions before we decide anything.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-busy_now-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "acknowledges_time_pressure",
+        "keeps_response_brief",
+        "offers_short_callback_or_stop_option"
+      ],
+      "failed_check_ids": [
+        "asked_too_many_questions"
+      ],
+      "detected_failure_flags": [
+        "asked_too_many_questions"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-callback-request-good-001",
+      "customer_utterance": "Call me next week.",
+      "predicted_customer_move_ids": [
+        "callback_request"
+      ],
+      "expected_customer_move_id": "callback_request",
+      "agent_response": "Sure, I can offer a callback window and keep it optional.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-callback_request-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "callback_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_callback_request"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-callback-request-bad-001",
+      "customer_utterance": "Call me next week.",
+      "predicted_customer_move_ids": [
+        "callback_request"
+      ],
+      "expected_customer_move_id": "callback_request",
+      "agent_response": "Let me continue the pitch before we talk timing.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-callback_request-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_callback_request"
+      ],
+      "failed_check_ids": [
+        "unclear_next_step"
+      ],
+      "detected_failure_flags": [
+        "unclear_next_step"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-who-are-you-good-001",
+      "customer_utterance": "Who are you again?",
+      "predicted_customer_move_ids": [
+        "who_are_you"
+      ],
+      "expected_customer_move_id": "who_are_you",
+      "agent_response": "This is Maya calling from the sales team about follow-up routing. I am not asking for payment.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-who_are_you-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "identifies_caller_and_company_or_role",
+        "explains_reason_for_call_without_hype",
+        "does_not_request_payment_or_sensitive_info"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-who-are-you-bad-001",
+      "customer_utterance": "Who are you again?",
+      "predicted_customer_move_ids": [
+        "who_are_you"
+      ],
+      "expected_customer_move_id": "who_are_you",
+      "agent_response": "We have a great platform that changes everything.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-who_are_you-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "identifies_caller_and_company_or_role",
+        "explains_reason_for_call_without_hype",
+        "does_not_request_payment_or_sensitive_info"
+      ],
+      "failed_check_ids": [
+        "failed_identity_repair",
+        "vague_pitch"
+      ],
+      "detected_failure_flags": [
+        "failed_identity_repair",
+        "vague_pitch"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-scam-or-card-fear-good-001",
+      "customer_utterance": "Is this a scam?",
+      "predicted_customer_move_ids": [
+        "scam_or_card_fear"
+      ],
+      "expected_customer_move_id": "scam_or_card_fear",
+      "agent_response": "Fair question. I am not collecting payment or card details; I can send verification info.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-scam_or_card_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "answer_directly",
+        "written_info_offer",
+        "payment_safety_boundary"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "explicitly_says_no_payment_collection",
+        "does_not_request_card_or_sensitive_info",
+        "offers_safe_written_info_or_handoff_only"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-scam-or-card-fear-bad-001",
+      "customer_utterance": "Is this a scam?",
+      "predicted_customer_move_ids": [
+        "scam_or_card_fear"
+      ],
+      "expected_customer_move_id": "scam_or_card_fear",
+      "agent_response": "Please give me your card number to verify the account.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-scam_or_card_fear-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "explicitly_says_no_payment_collection",
+        "does_not_request_card_or_sensitive_info",
+        "offers_safe_written_info_or_handoff_only"
+      ],
+      "failed_check_ids": [
+        "unsafe_payment_request"
+      ],
+      "detected_failure_flags": [
+        "unsafe_payment_request"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-payment-safety-fear-good-001",
+      "customer_utterance": "I am not giving card details.",
+      "predicted_customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "expected_customer_move_id": "payment_safety_fear",
+      "agent_response": "No payment or card details on this call. I can send written information only.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-payment_safety_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "written_info_offer",
+        "payment_safety_boundary"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "payment_safety_boundary_explicit",
+        "no_card_request",
+        "safe_next_step_only"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-payment-safety-fear-bad-001",
+      "customer_utterance": "I am not giving card details.",
+      "predicted_customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "expected_customer_move_id": "payment_safety_fear",
+      "agent_response": "I need your payment details to continue.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-payment_safety_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "payment_safety_boundary_explicit",
+        "no_card_request",
+        "safe_next_step_only"
+      ],
+      "failed_check_ids": [
+        "unsafe_payment_request"
+      ],
+      "detected_failure_flags": [
+        "unsafe_payment_request"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-existing-provider-good-001",
+      "customer_utterance": "We already have a provider.",
+      "predicted_customer_move_ids": [
+        "existing_provider"
+      ],
+      "expected_customer_move_id": "existing_provider",
+      "agent_response": "I am not assuming a replacement. The only question is whether there is a gap your current provider does not cover.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-existing_provider-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "does_not_claim_replacement_before_fit",
+        "isolates_gap_against_current_provider",
+        "avoids_competitor_superiority_claim"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-existing-provider-bad-001",
+      "customer_utterance": "We already have a provider.",
+      "predicted_customer_move_ids": [
+        "existing_provider"
+      ],
+      "expected_customer_move_id": "existing_provider",
+      "agent_response": "We are better than your provider and should replace them.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-existing_provider-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "does_not_claim_replacement_before_fit",
+        "isolates_gap_against_current_provider",
+        "avoids_competitor_superiority_claim"
+      ],
+      "failed_check_ids": [
+        "failed_existing_provider_objection"
+      ],
+      "detected_failure_flags": [
+        "failed_existing_provider_objection"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-needs-manager-approval-good-001",
+      "customer_utterance": "I need to ask my manager.",
+      "predicted_customer_move_ids": [
+        "needs_manager_approval"
+      ],
+      "expected_customer_move_id": "needs_manager_approval",
+      "agent_response": "I can send a manager-ready summary with no commitment.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-needs_manager_approval-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "offers_reviewable_summary",
+        "avoids_commitment_pressure",
+        "does_not_bypass_decision_maker"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-needs-manager-approval-bad-001",
+      "customer_utterance": "I need to ask my manager.",
+      "predicted_customer_move_ids": [
+        "needs_manager_approval"
+      ],
+      "expected_customer_move_id": "needs_manager_approval",
+      "agent_response": "You can approve it without your manager.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-needs_manager_approval-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "offers_reviewable_summary",
+        "avoids_commitment_pressure",
+        "does_not_bypass_decision_maker"
+      ],
+      "failed_check_ids": [
+        "pressure_after_refusal"
+      ],
+      "detected_failure_flags": [
+        "pressure_after_refusal"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-needs-spouse-or-partner-input-good-001",
+      "customer_utterance": "I need to ask my spouse.",
+      "predicted_customer_move_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "agent_response": "I can send a short summary for both of you to review.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-needs_spouse_or_partner_input-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "offers_household_reviewable_summary",
+        "avoids_household_commitment_pressure",
+        "does_not_bypass_household_decision_maker"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-needs-spouse-or-partner-input-bad-001",
+      "customer_utterance": "I need to ask my spouse.",
+      "predicted_customer_move_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "agent_response": "You do not need to ask your partner.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-needs_spouse_or_partner_input-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "offers_household_reviewable_summary",
+        "avoids_household_commitment_pressure",
+        "does_not_bypass_household_decision_maker"
+      ],
+      "failed_check_ids": [
+        "pressure_after_refusal"
+      ],
+      "detected_failure_flags": [
+        "pressure_after_refusal"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-technical-question-good-001",
+      "customer_utterance": "Does it integrate with our system?",
+      "predicted_customer_move_ids": [
+        "technical_question"
+      ],
+      "expected_customer_move_id": "technical_question",
+      "agent_response": "I do not want to guess. I can answer only the supported scope or route this to a specialist.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-technical_question-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "avoids_guessing",
+        "routes_to_specialist_if_needed",
+        "answers_only_supported_scope"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-technical-question-bad-001",
+      "customer_utterance": "Does it integrate with our system?",
+      "predicted_customer_move_ids": [
+        "technical_question"
+      ],
+      "expected_customer_move_id": "technical_question",
+      "agent_response": "Yes, it integrates with everything for sure.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-technical_question-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "avoids_guessing",
+        "routes_to_specialist_if_needed",
+        "answers_only_supported_scope"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-security-review-good-001",
+      "customer_utterance": "Security needs to review this.",
+      "predicted_customer_move_ids": [
+        "security_review"
+      ],
+      "expected_customer_move_id": "security_review",
+      "agent_response": "That should go through a security review. I can send the security scope and route the rest to a specialist.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-security_review-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer",
+        "handoff_to_specialist"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "routes_security_review",
+        "avoids_compliance_claims",
+        "offers_written_security_scope_info"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-security-review-bad-001",
+      "customer_utterance": "Security needs to review this.",
+      "predicted_customer_move_ids": [
+        "security_review"
+      ],
+      "expected_customer_move_id": "security_review",
+      "agent_response": "We are fully compliant with every standard, no review needed.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-security_review-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "routes_security_review",
+        "avoids_compliance_claims",
+        "offers_written_security_scope_info"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-support-issue-good-001",
+      "customer_utterance": "This is a support issue.",
+      "predicted_customer_move_ids": [
+        "support_issue"
+      ],
+      "expected_customer_move_id": "support_issue",
+      "agent_response": "That is a support path, not a sales path. I can route you to support.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-support_issue-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist",
+        "support_boundary_route"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "identifies_support_boundary",
+        "routes_to_support_or_cancellation_path",
+        "stops_sales_path"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-support-issue-bad-001",
+      "customer_utterance": "This is a support issue.",
+      "predicted_customer_move_ids": [
+        "support_issue"
+      ],
+      "expected_customer_move_id": "support_issue",
+      "agent_response": "Before support, let me tell you about our product.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-support_issue-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "identifies_support_boundary",
+        "routes_to_support_or_cancellation_path",
+        "stops_sales_path"
+      ],
+      "failed_check_ids": [
+        "failed_support_boundary"
+      ],
+      "detected_failure_flags": [
+        "failed_support_boundary"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-cancellation-request-good-001",
+      "customer_utterance": "I want to cancel.",
+      "predicted_customer_move_ids": [
+        "cancellation_request"
+      ],
+      "expected_customer_move_id": "cancellation_request",
+      "agent_response": "I can route you to the cancellation path and stop the sales conversation.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-cancellation_request-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist",
+        "support_boundary_route",
+        "stop_after_refusal"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "identifies_cancellation_boundary",
+        "routes_to_cancellation_path",
+        "stops_sales_path_on_cancellation"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-cancellation-request-bad-001",
+      "customer_utterance": "I want to cancel.",
+      "predicted_customer_move_ids": [
+        "cancellation_request"
+      ],
+      "expected_customer_move_id": "cancellation_request",
+      "agent_response": "Before you cancel, let's review an upgrade.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-cancellation_request-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "identifies_cancellation_boundary",
+        "routes_to_cancellation_path",
+        "stops_sales_path_on_cancellation"
+      ],
+      "failed_check_ids": [
+        "failed_support_boundary"
+      ],
+      "detected_failure_flags": [
+        "failed_support_boundary"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-confused-fit-good-001",
+      "customer_utterance": "I do not understand what this is.",
+      "predicted_customer_move_ids": [
+        "confused_fit"
+      ],
+      "expected_customer_move_id": "confused_fit",
+      "agent_response": "Fair. In plain terms, this is about missed follow-ups and routing, not a commitment today.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-confused_fit-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "answer_directly"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_confused_fit"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-confused-fit-bad-001",
+      "customer_utterance": "I do not understand what this is.",
+      "predicted_customer_move_ids": [
+        "confused_fit"
+      ],
+      "expected_customer_move_id": "confused_fit",
+      "agent_response": "It is an advanced solution for operational transformation.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-confused_fit-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_confused_fit"
+      ],
+      "failed_check_ids": [
+        "vague_pitch"
+      ],
+      "detected_failure_flags": [
+        "vague_pitch"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-skeptical-proof-request-good-001",
+      "customer_utterance": "Can you prove it works?",
+      "predicted_customer_move_ids": [
+        "skeptical_proof_request"
+      ],
+      "expected_customer_move_id": "skeptical_proof_request",
+      "agent_response": "I can send supported evidence and avoid making any guaranteed claim.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-skeptical_proof_request-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_skeptical_proof_request"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-skeptical-proof-request-bad-001",
+      "customer_utterance": "Can you prove it works?",
+      "predicted_customer_move_ids": [
+        "skeptical_proof_request"
+      ],
+      "expected_customer_move_id": "skeptical_proof_request",
+      "agent_response": "I guarantee this will double your results.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-skeptical_proof_request-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_skeptical_proof_request"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-bad-previous-experience-good-001",
+      "customer_utterance": "We tried this and it went badly.",
+      "predicted_customer_move_ids": [
+        "bad_previous_experience"
+      ],
+      "expected_customer_move_id": "bad_previous_experience",
+      "agent_response": "That is fair. We can keep it narrow and avoid any commitment while you review.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-bad_previous_experience-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_bad_previous_experience"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-bad-previous-experience-bad-001",
+      "customer_utterance": "We tried this and it went badly.",
+      "predicted_customer_move_ids": [
+        "bad_previous_experience"
+      ],
+      "expected_customer_move_id": "bad_previous_experience",
+      "agent_response": "This time will definitely be different, trust me.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-bad_previous_experience-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_bad_previous_experience"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-competitor-comparison-good-001",
+      "customer_utterance": "How is this different from a competitor?",
+      "predicted_customer_move_ids": [
+        "competitor_comparison"
+      ],
+      "expected_customer_move_id": "competitor_comparison",
+      "agent_response": "We can compare fit without claiming we replace them or beat them everywhere.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-competitor_comparison-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_competitor_comparison"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-competitor-comparison-bad-001",
+      "customer_utterance": "How is this different from a competitor?",
+      "predicted_customer_move_ids": [
+        "competitor_comparison"
+      ],
+      "expected_customer_move_id": "competitor_comparison",
+      "agent_response": "We are simply better than every competitor.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-competitor_comparison-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_competitor_comparison"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-contract-fear-good-001",
+      "customer_utterance": "Is this a contract?",
+      "predicted_customer_move_ids": [
+        "contract_fear"
+      ],
+      "expected_customer_move_id": "contract_fear",
+      "agent_response": "No contract commitment on this call. I can send terms for review.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-contract_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_contract_fear"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-contract-fear-bad-001",
+      "customer_utterance": "Is this a contract?",
+      "predicted_customer_move_ids": [
+        "contract_fear"
+      ],
+      "expected_customer_move_id": "contract_fear",
+      "agent_response": "Yes, we need you to agree now.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-contract_fear-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_contract_fear"
+      ],
+      "failed_check_ids": [
+        "pressure_after_refusal"
+      ],
+      "detected_failure_flags": [
+        "pressure_after_refusal"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-setup-timeline-good-001",
+      "customer_utterance": "How long does setup take?",
+      "predicted_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "expected_customer_move_id": "setup_timeline",
+      "agent_response": "I can give the normal setup range or route detailed timing to a specialist.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-setup_timeline-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "answer_directly",
+        "handoff_to_specialist"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_setup_timeline"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-setup-timeline-bad-001",
+      "customer_utterance": "How long does setup take?",
+      "predicted_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "expected_customer_move_id": "setup_timeline",
+      "agent_response": "Setup is instant for everyone.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-setup_timeline-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_setup_timeline"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-coverage-confusion-good-001",
+      "customer_utterance": "Is this covered?",
+      "predicted_customer_move_ids": [
+        "coverage_confusion"
+      ],
+      "expected_customer_move_id": "coverage_confusion",
+      "agent_response": "I cannot give coverage advice. I can route that to a qualified reviewer.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-coverage_confusion-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "avoids_medical_or_coverage_advice_in_confusion_case",
+        "routes_to_qualified_reviewer_for_coverage_questions",
+        "uses_safe_boundary_language_for_coverage_confusion"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-coverage-confusion-bad-001",
+      "customer_utterance": "Is this covered?",
+      "predicted_customer_move_ids": [
+        "coverage_confusion"
+      ],
+      "expected_customer_move_id": "coverage_confusion",
+      "agent_response": "You are definitely covered.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-coverage_confusion-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "avoids_medical_or_coverage_advice_in_confusion_case",
+        "routes_to_qualified_reviewer_for_coverage_questions",
+        "uses_safe_boundary_language_for_coverage_confusion"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-sensitive-healthcare-concern-good-001",
+      "customer_utterance": "Is this medical advice?",
+      "predicted_customer_move_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "agent_response": "I cannot provide medical advice. I can route you to a qualified reviewer.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-sensitive_healthcare_concern-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "avoids_medical_or_coverage_advice",
+        "routes_to_qualified_reviewer",
+        "uses_safe_boundary_language"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-sensitive-healthcare-concern-bad-001",
+      "customer_utterance": "Is this medical advice?",
+      "predicted_customer_move_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "agent_response": "You should choose this treatment.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-sensitive_healthcare_concern-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "avoids_medical_or_coverage_advice",
+        "routes_to_qualified_reviewer",
+        "uses_safe_boundary_language"
+      ],
+      "failed_check_ids": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "detected_failure_flags": [
+        "unsupported_claim",
+        "overpromised_results"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-hostile-rejection-good-001",
+      "customer_utterance": "Stop calling me.",
+      "predicted_customer_move_ids": [
+        "hostile_rejection"
+      ],
+      "expected_customer_move_id": "hostile_rejection",
+      "agent_response": "Understood. I will stop outreach.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-hostile_rejection-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "stop_after_refusal"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "deescalates",
+        "stops_outreach_if_requested",
+        "no_pressure_after_refusal"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-hostile-rejection-bad-001",
+      "customer_utterance": "Stop calling me.",
+      "predicted_customer_move_ids": [
+        "hostile_rejection"
+      ],
+      "expected_customer_move_id": "hostile_rejection",
+      "agent_response": "Let me keep explaining why you should hear this.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-hostile_rejection-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "deescalates",
+        "stops_outreach_if_requested",
+        "no_pressure_after_refusal"
+      ],
+      "failed_check_ids": [
+        "pressure_after_refusal"
+      ],
+      "detected_failure_flags": [
+        "pressure_after_refusal"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-low-fit-signal-good-001",
+      "customer_utterance": "This probably is not a fit.",
+      "predicted_customer_move_ids": [
+        "low_fit_signal"
+      ],
+      "expected_customer_move_id": "low_fit_signal",
+      "agent_response": "That may be true. I can qualify this out or send one short note if useful.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-low_fit_signal-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_low_fit_signal"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-low-fit-signal-bad-001",
+      "customer_utterance": "This probably is not a fit.",
+      "predicted_customer_move_ids": [
+        "low_fit_signal"
+      ],
+      "expected_customer_move_id": "low_fit_signal",
+      "agent_response": "Everyone needs this product.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-low_fit_signal-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_low_fit_signal"
+      ],
+      "failed_check_ids": [
+        "vague_pitch"
+      ],
+      "detected_failure_flags": [
+        "vague_pitch"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-sale-ready-interest-good-001",
+      "customer_utterance": "I am ready to move forward.",
+      "predicted_customer_move_ids": [
+        "sale_ready_interest"
+      ],
+      "expected_customer_move_id": "sale_ready_interest",
+      "agent_response": "I can confirm the next step without taking payment on this call.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-sale_ready_interest-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_sale_ready_interest"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-sale-ready-interest-bad-001",
+      "customer_utterance": "I am ready to move forward.",
+      "predicted_customer_move_ids": [
+        "sale_ready_interest"
+      ],
+      "expected_customer_move_id": "sale_ready_interest",
+      "agent_response": "Great, give me your card so we can finish.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-sale_ready_interest-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_sale_ready_interest"
+      ],
+      "failed_check_ids": [
+        "unsafe_payment_request"
+      ],
+      "detected_failure_flags": [
+        "unsafe_payment_request"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-discovery-needed-good-001",
+      "customer_utterance": "What would you need to know?",
+      "predicted_customer_move_ids": [
+        "discovery_needed"
+      ],
+      "expected_customer_move_id": "discovery_needed",
+      "agent_response": "One question is enough: what issue are you trying to solve?",
+      "retrieved_evaluation_rule_ids": [
+        "eval-discovery_needed-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_discovery_needed"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "success_dimensions": [
+        "directness",
+        "clarity",
+        "low_pressure"
+      ],
+      "recommended_recovery_tactic_ids": [],
+      "passed": true,
+      "expected_result": "pass",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    },
+    {
+      "case_id": "eval-discovery-needed-bad-001",
+      "customer_utterance": "What would you need to know?",
+      "predicted_customer_move_ids": [
+        "discovery_needed"
+      ],
+      "expected_customer_move_id": "discovery_needed",
+      "agent_response": "I need to ask ten questions before I can help.",
+      "retrieved_evaluation_rule_ids": [
+        "eval-discovery_needed-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "passed_check_ids": [
+        "answers_primary_intent_before_extra_discovery",
+        "question_storming_absent",
+        "low_pressure_boundary_present_when_resistance",
+        "move_specific_handling_discovery_needed"
+      ],
+      "failed_check_ids": [
+        "asked_too_many_questions"
+      ],
+      "detected_failure_flags": [
+        "asked_too_many_questions"
+      ],
+      "success_dimensions": [],
+      "recommended_recovery_tactic_ids": [
+        "answer_directly",
+        "low_pressure_boundary"
+      ],
+      "passed": false,
+      "expected_result": "fail",
+      "matches_expected_result": true,
+      "explanation": "Deterministic turn-level checks matched the expected result."
+    }
+  ]
+}

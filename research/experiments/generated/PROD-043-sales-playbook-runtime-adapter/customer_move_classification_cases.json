@@ -1,0 +1,2284 @@
+{
+  "checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+  "source_checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "customer_move_classification_cases": [
+    {
+      "case_id": "case-price-first-001",
+      "customer_utterance": "What does this cost?",
+      "expected_customer_move_id": "price_first",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-price-first-002",
+      "customer_utterance": "How much is it per month?",
+      "expected_customer_move_id": "price_first",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-price-first-003",
+      "customer_utterance": "Is this in my budget?",
+      "expected_customer_move_id": "price_first",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-send-info-001",
+      "customer_utterance": "Send me the details.",
+      "expected_customer_move_id": "send_info",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-send-info-002",
+      "customer_utterance": "Can you send information first?",
+      "expected_customer_move_id": "send_info",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-send-info-003",
+      "customer_utterance": "Please send a short summary.",
+      "expected_customer_move_id": "send_info",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-email-only-001",
+      "customer_utterance": "Just email me.",
+      "expected_customer_move_id": "email_only",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-email-only-002",
+      "customer_utterance": "Email only, please.",
+      "expected_customer_move_id": "email_only",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-email-only-003",
+      "customer_utterance": "Only by email please.",
+      "expected_customer_move_id": "email_only",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-not-interested-001",
+      "customer_utterance": "Not interested.",
+      "expected_customer_move_id": "not_interested",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-not-interested-002",
+      "customer_utterance": "No thanks, I am not looking.",
+      "expected_customer_move_id": "not_interested",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-not-interested-003",
+      "customer_utterance": "We are not interested right now.",
+      "expected_customer_move_id": "not_interested",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-busy-now-001",
+      "customer_utterance": "I only have a minute.",
+      "expected_customer_move_id": "busy_now",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-busy-now-002",
+      "customer_utterance": "I cannot talk right now.",
+      "expected_customer_move_id": "busy_now",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-busy-now-003",
+      "customer_utterance": "I am busy.",
+      "expected_customer_move_id": "busy_now",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-callback-request-001",
+      "customer_utterance": "Call me next week.",
+      "expected_customer_move_id": "callback_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-callback-request-002",
+      "customer_utterance": "Can you call back later?",
+      "expected_customer_move_id": "callback_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-callback-request-003",
+      "customer_utterance": "Schedule a callback for tomorrow.",
+      "expected_customer_move_id": "callback_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-who-are-you-001",
+      "customer_utterance": "Who are you again?",
+      "expected_customer_move_id": "who_are_you",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-who-are-you-002",
+      "customer_utterance": "What company are you with?",
+      "expected_customer_move_id": "who_are_you",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-who-are-you-003",
+      "customer_utterance": "Who exactly is calling?",
+      "expected_customer_move_id": "who_are_you",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-scam-or-card-fear-001",
+      "customer_utterance": "Is this a scam?",
+      "expected_customer_move_id": "scam_or_card_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-scam-or-card-fear-002",
+      "customer_utterance": "This sounds like a scam.",
+      "expected_customer_move_id": "scam_or_card_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-scam-or-card-fear-003",
+      "customer_utterance": "How do I know this is legitimate?",
+      "expected_customer_move_id": "scam_or_card_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-payment-safety-fear-001",
+      "customer_utterance": "I am not giving card details.",
+      "expected_customer_move_id": "payment_safety_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-payment-safety-fear-002",
+      "customer_utterance": "Are you asking for payment now?",
+      "expected_customer_move_id": "payment_safety_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-payment-safety-fear-003",
+      "customer_utterance": "I do not share payment info by phone.",
+      "expected_customer_move_id": "payment_safety_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-existing-provider-001",
+      "customer_utterance": "We already have a provider.",
+      "expected_customer_move_id": "existing_provider",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-existing-provider-002",
+      "customer_utterance": "We use someone for this already.",
+      "expected_customer_move_id": "existing_provider",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-existing-provider-003",
+      "customer_utterance": "Our current vendor handles that.",
+      "expected_customer_move_id": "existing_provider",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-needs-manager-approval-001",
+      "customer_utterance": "I need to ask my manager.",
+      "expected_customer_move_id": "needs_manager_approval",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-needs-manager-approval-002",
+      "customer_utterance": "My boss has to review this.",
+      "expected_customer_move_id": "needs_manager_approval",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-needs-manager-approval-003",
+      "customer_utterance": "Our manager decides that.",
+      "expected_customer_move_id": "needs_manager_approval",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-needs-spouse-or-partner-input-001",
+      "customer_utterance": "I need to ask my spouse.",
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-needs-spouse-or-partner-input-002",
+      "customer_utterance": "My partner has to look at this.",
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-needs-spouse-or-partner-input-003",
+      "customer_utterance": "I cannot decide without my partner.",
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-technical-question-001",
+      "customer_utterance": "Does it integrate with our system?",
+      "expected_customer_move_id": "technical_question",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-technical-question-002",
+      "customer_utterance": "What API do you support?",
+      "expected_customer_move_id": "technical_question",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-technical-question-003",
+      "customer_utterance": "Can it connect to our CRM?",
+      "expected_customer_move_id": "technical_question",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-security-review-001",
+      "customer_utterance": "Security needs to review this.",
+      "expected_customer_move_id": "security_review",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-security-review-002",
+      "customer_utterance": "Do you have security docs?",
+      "expected_customer_move_id": "security_review",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-security-review-003",
+      "customer_utterance": "What about compliance review?",
+      "expected_customer_move_id": "security_review",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-support-issue-001",
+      "customer_utterance": "This is a support issue.",
+      "expected_customer_move_id": "support_issue",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-support-issue-002",
+      "customer_utterance": "I need help with my account.",
+      "expected_customer_move_id": "support_issue",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-support-issue-003",
+      "customer_utterance": "Can support fix this?",
+      "expected_customer_move_id": "support_issue",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-cancellation-request-001",
+      "customer_utterance": "I want to cancel.",
+      "expected_customer_move_id": "cancellation_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-cancellation-request-002",
+      "customer_utterance": "Help me cancel my account.",
+      "expected_customer_move_id": "cancellation_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-cancellation-request-003",
+      "customer_utterance": "This is about cancellation.",
+      "expected_customer_move_id": "cancellation_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-confused-fit-001",
+      "customer_utterance": "I do not understand what this is.",
+      "expected_customer_move_id": "confused_fit",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-confused-fit-002",
+      "customer_utterance": "I am not sure I follow.",
+      "expected_customer_move_id": "confused_fit",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-confused-fit-003",
+      "customer_utterance": "What are you actually offering?",
+      "expected_customer_move_id": "confused_fit",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-skeptical-proof-request-001",
+      "customer_utterance": "Can you prove it works?",
+      "expected_customer_move_id": "skeptical_proof_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-skeptical-proof-request-002",
+      "customer_utterance": "Do you have proof?",
+      "expected_customer_move_id": "skeptical_proof_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-skeptical-proof-request-003",
+      "customer_utterance": "Can you show evidence?",
+      "expected_customer_move_id": "skeptical_proof_request",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-bad-previous-experience-001",
+      "customer_utterance": "We tried this and it went badly.",
+      "expected_customer_move_id": "bad_previous_experience",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-bad-previous-experience-002",
+      "customer_utterance": "Last vendor burned us.",
+      "expected_customer_move_id": "bad_previous_experience",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-bad-previous-experience-003",
+      "customer_utterance": "We had a bad experience before.",
+      "expected_customer_move_id": "bad_previous_experience",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-competitor-comparison-001",
+      "customer_utterance": "How is this different from a competitor?",
+      "expected_customer_move_id": "competitor_comparison",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-competitor-comparison-002",
+      "customer_utterance": "Compare this against our provider.",
+      "expected_customer_move_id": "competitor_comparison",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-competitor-comparison-003",
+      "customer_utterance": "Why would this beat another option?",
+      "expected_customer_move_id": "competitor_comparison",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-contract-fear-001",
+      "customer_utterance": "Is this a contract?",
+      "expected_customer_move_id": "contract_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-contract-fear-002",
+      "customer_utterance": "I do not want a long commitment.",
+      "expected_customer_move_id": "contract_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-contract-fear-003",
+      "customer_utterance": "Are you locking me in?",
+      "expected_customer_move_id": "contract_fear",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-setup-timeline-001",
+      "customer_utterance": "How long does setup take?",
+      "expected_customer_move_id": "setup_timeline",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-setup-timeline-002",
+      "customer_utterance": "What is the implementation timeline?",
+      "expected_customer_move_id": "setup_timeline",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-setup-timeline-003",
+      "customer_utterance": "How fast can this start?",
+      "expected_customer_move_id": "setup_timeline",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-coverage-confusion-001",
+      "customer_utterance": "Is this covered?",
+      "expected_customer_move_id": "coverage_confusion",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-coverage-confusion-002",
+      "customer_utterance": "What does coverage include?",
+      "expected_customer_move_id": "coverage_confusion",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-coverage-confusion-003",
+      "customer_utterance": "I do not understand the coverage.",
+      "expected_customer_move_id": "coverage_confusion",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-sensitive-healthcare-concern-001",
+      "customer_utterance": "Is this medical advice?",
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-sensitive-healthcare-concern-002",
+      "customer_utterance": "I have a health concern.",
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-sensitive-healthcare-concern-003",
+      "customer_utterance": "Can you tell me what treatment is covered?",
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-hostile-rejection-001",
+      "customer_utterance": "Stop calling me.",
+      "expected_customer_move_id": "hostile_rejection",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-hostile-rejection-002",
+      "customer_utterance": "Do not call me again.",
+      "expected_customer_move_id": "hostile_rejection",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-hostile-rejection-003",
+      "customer_utterance": "No, remove my number.",
+      "expected_customer_move_id": "hostile_rejection",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-low-fit-signal-001",
+      "customer_utterance": "This probably is not a fit.",
+      "expected_customer_move_id": "low_fit_signal",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-low-fit-signal-002",
+      "customer_utterance": "We are too small for that.",
+      "expected_customer_move_id": "low_fit_signal",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-low-fit-signal-003",
+      "customer_utterance": "I do not think we need this.",
+      "expected_customer_move_id": "low_fit_signal",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-sale-ready-interest-001",
+      "customer_utterance": "I am ready to move forward.",
+      "expected_customer_move_id": "sale_ready_interest",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-sale-ready-interest-002",
+      "customer_utterance": "What do I sign?",
+      "expected_customer_move_id": "sale_ready_interest",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-sale-ready-interest-003",
+      "customer_utterance": "I want to get started.",
+      "expected_customer_move_id": "sale_ready_interest",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-discovery-needed-001",
+      "customer_utterance": "What would you need to know?",
+      "expected_customer_move_id": "discovery_needed",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-discovery-needed-002",
+      "customer_utterance": "What details do you need?",
+      "expected_customer_move_id": "discovery_needed",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "case-discovery-needed-003",
+      "customer_utterance": "What should I tell you first?",
+      "expected_customer_move_id": "discovery_needed",
+      "context": {
+        "stage": "early_call",
+        "market_scope": "mixed",
+        "offer_context": "callback ownership and follow-up routing"
+      },
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    }
+  ],
+  "classifier_outputs": [
+    {
+      "case_id": "case-price-first-001",
+      "predicted_customer_move_ids": [
+        "price_first"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "cost"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "price_first"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-price-first-002",
+      "predicted_customer_move_ids": [
+        "price_first"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "how much",
+        "per month"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "price_first"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-price-first-003",
+      "predicted_customer_move_ids": [
+        "price_first"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "budget"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "price_first"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-send-info-001",
+      "predicted_customer_move_ids": [
+        "send_info"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "details",
+        "send"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "send_info"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-send-info-002",
+      "predicted_customer_move_ids": [
+        "send_info"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "information",
+        "send"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "send_info"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-send-info-003",
+      "predicted_customer_move_ids": [
+        "send_info"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "send",
+        "summary"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "send_info"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-email-only-001",
+      "predicted_customer_move_ids": [
+        "email_only"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "just email"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "email_only"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-email-only-002",
+      "predicted_customer_move_ids": [
+        "email_only"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "email only"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "email_only"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-email-only-003",
+      "predicted_customer_move_ids": [
+        "email_only"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "only by email"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "email_only"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-not-interested-001",
+      "predicted_customer_move_ids": [
+        "not_interested"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "not interested"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "not_interested"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-not-interested-002",
+      "predicted_customer_move_ids": [
+        "not_interested"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "no thanks",
+        "not looking"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "not_interested"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-not-interested-003",
+      "predicted_customer_move_ids": [
+        "not_interested"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "not interested"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "not_interested"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-busy-now-001",
+      "predicted_customer_move_ids": [
+        "busy_now"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "minute"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "busy_now"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-busy-now-002",
+      "predicted_customer_move_ids": [
+        "busy_now"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "cannot talk"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "busy_now"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-busy-now-003",
+      "predicted_customer_move_ids": [
+        "busy_now"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "busy"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "busy_now"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-callback-request-001",
+      "predicted_customer_move_ids": [
+        "callback_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "call me"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "callback_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-callback-request-002",
+      "predicted_customer_move_ids": [
+        "callback_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "call back"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "callback_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-callback-request-003",
+      "predicted_customer_move_ids": [
+        "callback_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "callback",
+        "schedule a callback"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "callback_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-who-are-you-001",
+      "predicted_customer_move_ids": [
+        "who_are_you"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "who are you"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "who_are_you"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-who-are-you-002",
+      "predicted_customer_move_ids": [
+        "who_are_you"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "what company"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "who_are_you"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-who-are-you-003",
+      "predicted_customer_move_ids": [
+        "who_are_you"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "who exactly"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "who_are_you"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-scam-or-card-fear-001",
+      "predicted_customer_move_ids": [
+        "scam_or_card_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "scam"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "scam_or_card_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-scam-or-card-fear-002",
+      "predicted_customer_move_ids": [
+        "scam_or_card_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "scam"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "scam_or_card_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-scam-or-card-fear-003",
+      "predicted_customer_move_ids": [
+        "scam_or_card_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "legitimate"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "scam_or_card_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-payment-safety-fear-001",
+      "predicted_customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "card details"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "payment_safety_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-payment-safety-fear-002",
+      "predicted_customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "payment now"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "payment_safety_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-payment-safety-fear-003",
+      "predicted_customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "payment info"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "payment_safety_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-existing-provider-001",
+      "predicted_customer_move_ids": [
+        "existing_provider"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "provider"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "existing_provider"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-existing-provider-002",
+      "predicted_customer_move_ids": [
+        "existing_provider"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "someone for this"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "existing_provider"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-existing-provider-003",
+      "predicted_customer_move_ids": [
+        "existing_provider"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "vendor"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "existing_provider"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-needs-manager-approval-001",
+      "predicted_customer_move_ids": [
+        "needs_manager_approval"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "manager"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "needs_manager_approval"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-needs-manager-approval-002",
+      "predicted_customer_move_ids": [
+        "needs_manager_approval"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "boss"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "needs_manager_approval"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-needs-manager-approval-003",
+      "predicted_customer_move_ids": [
+        "needs_manager_approval"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "manager"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "needs_manager_approval"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-needs-spouse-or-partner-input-001",
+      "predicted_customer_move_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "spouse"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-needs-spouse-or-partner-input-002",
+      "predicted_customer_move_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "partner"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-needs-spouse-or-partner-input-003",
+      "predicted_customer_move_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "partner"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "needs_spouse_or_partner_input"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-technical-question-001",
+      "predicted_customer_move_ids": [
+        "technical_question"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "integrate"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "technical_question"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-technical-question-002",
+      "predicted_customer_move_ids": [
+        "technical_question"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "api"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "technical_question"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-technical-question-003",
+      "predicted_customer_move_ids": [
+        "technical_question"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "connect"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "technical_question"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-security-review-001",
+      "predicted_customer_move_ids": [
+        "security_review"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "security"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "security_review"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-security-review-002",
+      "predicted_customer_move_ids": [
+        "security_review"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "security"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "security_review"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-security-review-003",
+      "predicted_customer_move_ids": [
+        "security_review"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "compliance"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "security_review"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-support-issue-001",
+      "predicted_customer_move_ids": [
+        "support_issue"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "support issue"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "support_issue"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-support-issue-002",
+      "predicted_customer_move_ids": [
+        "support_issue"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "help with my account"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "support_issue"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-support-issue-003",
+      "predicted_customer_move_ids": [
+        "support_issue"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "support fix"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "support_issue"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-cancellation-request-001",
+      "predicted_customer_move_ids": [
+        "cancellation_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "cancel"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "cancellation_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-cancellation-request-002",
+      "predicted_customer_move_ids": [
+        "cancellation_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "cancel"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "cancellation_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-cancellation-request-003",
+      "predicted_customer_move_ids": [
+        "cancellation_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "cancel",
+        "cancellation"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "cancellation_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-confused-fit-001",
+      "predicted_customer_move_ids": [
+        "confused_fit"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "understand"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "confused_fit"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-confused-fit-002",
+      "predicted_customer_move_ids": [
+        "confused_fit"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "not sure i follow"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "confused_fit"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-confused-fit-003",
+      "predicted_customer_move_ids": [
+        "confused_fit"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "actually offering"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "confused_fit"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-skeptical-proof-request-001",
+      "predicted_customer_move_ids": [
+        "skeptical_proof_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "prove"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "skeptical_proof_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-skeptical-proof-request-002",
+      "predicted_customer_move_ids": [
+        "skeptical_proof_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "proof"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "skeptical_proof_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-skeptical-proof-request-003",
+      "predicted_customer_move_ids": [
+        "skeptical_proof_request"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "evidence"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "skeptical_proof_request"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-bad-previous-experience-001",
+      "predicted_customer_move_ids": [
+        "bad_previous_experience"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "went badly"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "bad_previous_experience"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-bad-previous-experience-002",
+      "predicted_customer_move_ids": [
+        "existing_provider"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "vendor"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "existing_provider"
+      ],
+      "classifier_passed": false
+    },
+    {
+      "case_id": "case-bad-previous-experience-003",
+      "predicted_customer_move_ids": [
+        "bad_previous_experience"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "bad experience"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "bad_previous_experience"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-competitor-comparison-001",
+      "predicted_customer_move_ids": [
+        "competitor_comparison"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "competitor"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "competitor_comparison"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-competitor-comparison-002",
+      "predicted_customer_move_ids": [
+        "competitor_comparison"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "compare"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "competitor_comparison"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-competitor-comparison-003",
+      "predicted_customer_move_ids": [
+        "competitor_comparison"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "beat another option"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "competitor_comparison"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-contract-fear-001",
+      "predicted_customer_move_ids": [
+        "contract_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "contract"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "contract_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-contract-fear-002",
+      "predicted_customer_move_ids": [
+        "contract_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "commitment"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "contract_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-contract-fear-003",
+      "predicted_customer_move_ids": [
+        "contract_fear"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "locking me in"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "contract_fear"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-setup-timeline-001",
+      "predicted_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "setup"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "setup_timeline"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-setup-timeline-002",
+      "predicted_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "implementation"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "setup_timeline"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-setup-timeline-003",
+      "predicted_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "start"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "setup_timeline"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-coverage-confusion-001",
+      "predicted_customer_move_ids": [
+        "coverage_confusion"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "covered"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "coverage_confusion"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-coverage-confusion-002",
+      "predicted_customer_move_ids": [
+        "coverage_confusion"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "coverage"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "coverage_confusion"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-coverage-confusion-003",
+      "predicted_customer_move_ids": [
+        "coverage_confusion"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "coverage"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "coverage_confusion"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-sensitive-healthcare-concern-001",
+      "predicted_customer_move_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "medical advice"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-sensitive-healthcare-concern-002",
+      "predicted_customer_move_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "health concern"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-sensitive-healthcare-concern-003",
+      "predicted_customer_move_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "treatment"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "sensitive_healthcare_concern"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-hostile-rejection-001",
+      "predicted_customer_move_ids": [
+        "hostile_rejection"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "stop calling"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "hostile_rejection"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-hostile-rejection-002",
+      "predicted_customer_move_ids": [
+        "hostile_rejection"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "do not call"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "hostile_rejection"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-hostile-rejection-003",
+      "predicted_customer_move_ids": [
+        "hostile_rejection"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "remove my number"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "hostile_rejection"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-low-fit-signal-001",
+      "predicted_customer_move_ids": [
+        "low_fit_signal"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "not a fit"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "low_fit_signal"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-low-fit-signal-002",
+      "predicted_customer_move_ids": [
+        "low_fit_signal"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "too small"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "low_fit_signal"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-low-fit-signal-003",
+      "predicted_customer_move_ids": [
+        "low_fit_signal"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "do not think we need"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "low_fit_signal"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-sale-ready-interest-001",
+      "predicted_customer_move_ids": [
+        "sale_ready_interest"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "ready to move"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "sale_ready_interest"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-sale-ready-interest-002",
+      "predicted_customer_move_ids": [
+        "sale_ready_interest"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "what do i sign"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "sale_ready_interest"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-sale-ready-interest-003",
+      "predicted_customer_move_ids": [
+        "setup_timeline"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "start"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "setup_timeline"
+      ],
+      "classifier_passed": false
+    },
+    {
+      "case_id": "case-discovery-needed-001",
+      "predicted_customer_move_ids": [
+        "discovery_needed"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "need to know"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "discovery_needed"
+      ],
+      "classifier_passed": true
+    },
+    {
+      "case_id": "case-discovery-needed-002",
+      "predicted_customer_move_ids": [
+        "send_info"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "details"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "send_info"
+      ],
+      "classifier_passed": false
+    },
+    {
+      "case_id": "case-discovery-needed-003",
+      "predicted_customer_move_ids": [
+        "discovery_needed"
+      ],
+      "confidence": "high",
+      "matched_abstract_signals": [
+        "tell you first"
+      ],
+      "matched_customer_move_pattern_ids": [
+        "discovery_needed"
+      ],
+      "classifier_passed": true
+    }
+  ],
+  "coverage_gaps": []
+}

@@ -46,9 +46,10 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_041A_CONDITIONAL_SCENARIO_DIVERSITY_EXPANSION.md`
 - `PROD_041_CONDITIONAL_SIMULATION_REVIEW.md`
 - `PROD_042_CALLCENTEREN_TURN_PATTERN_PLAYBOOK.md`
+- `PROD_043_SALES_PLAYBOOK_RUNTIME_ADAPTER.md`
 
 Current PROD-041A scope: interactive conditional customer simulation with `customer_reaction_policy_bank.json`, `interactive_scenario_profiles.json`, and `interaction_traces.json`; it is not a fixed scripted-dialogue generator. It now validates agent reactivity too: each agent turn must address the immediately previous customer intent, avoid repeated answers, avoid looping questions, and avoid false safe closes.
-Current forward layer: `PROD-042-callcenteren-turn-pattern-playbook`, which extracts abstract turn-level customer-move/tactic/reaction/state/failure/recovery rules from raw CallCenterEN zip aggregates and existing abstract checkpoints without generating new synthetic call scripts.
+Current forward layer: `PROD-043-sales-playbook-runtime-adapter`, which reads PROD-042 playbook artifacts and evaluates single-turn customer-move classification, playbook retrieval, and deterministic agent-response rule satisfaction offline without generating full conversations, modifying runtime behavior, or enabling retrieval.
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 

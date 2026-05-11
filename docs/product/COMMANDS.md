@@ -1119,6 +1119,18 @@ Validate the PROD-042 raw-zip parsing gates, turn-level pattern artifacts, cover
 python scripts\validate_prod_042_callcenteren_turn_pattern_playbook.py
 ```
 
+Run the PROD-043 sales playbook runtime adapter checkpoint:
+
+```powershell
+python scripts\run_prod_043_sales_playbook_runtime_adapter.py
+```
+
+Validate the PROD-043 offline customer-move classifier, playbook retrieval cases, deterministic single-turn agent response evaluator, safety boundaries, no-conversation-generation boundary, and no-runtime-modification boundary:
+
+```powershell
+python scripts\validate_prod_043_sales_playbook_runtime_adapter.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

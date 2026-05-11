@@ -1,0 +1,678 @@
+{
+  "checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+  "source_checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "agent_response_evaluation_cases": [
+    {
+      "case_id": "eval-price-first-good-001",
+      "customer_utterance": "What does this cost?",
+      "expected_customer_move_id": "price_first",
+      "agent_response": "The basic range starts around 29 per user per month. No commitment today; I can send the details.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-price-first-bad-001",
+      "customer_utterance": "What does this cost?",
+      "expected_customer_move_id": "price_first",
+      "agent_response": "Before price, can I ask a few questions about your team?",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-send-info-good-001",
+      "customer_utterance": "Send me the details.",
+      "expected_customer_move_id": "send_info",
+      "agent_response": "I can send a short summary and leave it there.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-send-info-bad-001",
+      "customer_utterance": "Send me the details.",
+      "expected_customer_move_id": "send_info",
+      "agent_response": "Let us book a meeting first and then I will send details.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-email-only-good-001",
+      "customer_utterance": "Just email me.",
+      "expected_customer_move_id": "email_only",
+      "agent_response": "Understood. I will send the summary by email only and will not push a call.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-email-only-bad-001",
+      "customer_utterance": "Just email me.",
+      "expected_customer_move_id": "email_only",
+      "agent_response": "Email is fine, but let's schedule a call now.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-not-interested-good-001",
+      "customer_utterance": "Not interested.",
+      "expected_customer_move_id": "not_interested",
+      "agent_response": "Understood. I will stop here. No pressure.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-not-interested-bad-001",
+      "customer_utterance": "Not interested.",
+      "expected_customer_move_id": "not_interested",
+      "agent_response": "I hear you, but let me ask a few discovery questions first.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-busy-now-good-001",
+      "customer_utterance": "I only have a minute.",
+      "expected_customer_move_id": "busy_now",
+      "agent_response": "No problem. I will keep this brief or stop here.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-busy-now-bad-001",
+      "customer_utterance": "I only have a minute.",
+      "expected_customer_move_id": "busy_now",
+      "agent_response": "Great, I have several questions before we decide anything.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-callback-request-good-001",
+      "customer_utterance": "Call me next week.",
+      "expected_customer_move_id": "callback_request",
+      "agent_response": "Sure, I can offer a callback window and keep it optional.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-callback-request-bad-001",
+      "customer_utterance": "Call me next week.",
+      "expected_customer_move_id": "callback_request",
+      "agent_response": "Let me continue the pitch before we talk timing.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-who-are-you-good-001",
+      "customer_utterance": "Who are you again?",
+      "expected_customer_move_id": "who_are_you",
+      "agent_response": "This is Maya calling from the sales team about follow-up routing. I am not asking for payment.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-who-are-you-bad-001",
+      "customer_utterance": "Who are you again?",
+      "expected_customer_move_id": "who_are_you",
+      "agent_response": "We have a great platform that changes everything.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-scam-or-card-fear-good-001",
+      "customer_utterance": "Is this a scam?",
+      "expected_customer_move_id": "scam_or_card_fear",
+      "agent_response": "Fair question. I am not collecting payment or card details; I can send verification info.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-scam-or-card-fear-bad-001",
+      "customer_utterance": "Is this a scam?",
+      "expected_customer_move_id": "scam_or_card_fear",
+      "agent_response": "Please give me your card number to verify the account.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-payment-safety-fear-good-001",
+      "customer_utterance": "I am not giving card details.",
+      "expected_customer_move_id": "payment_safety_fear",
+      "agent_response": "No payment or card details on this call. I can send written information only.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-payment-safety-fear-bad-001",
+      "customer_utterance": "I am not giving card details.",
+      "expected_customer_move_id": "payment_safety_fear",
+      "agent_response": "I need your payment details to continue.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-existing-provider-good-001",
+      "customer_utterance": "We already have a provider.",
+      "expected_customer_move_id": "existing_provider",
+      "agent_response": "I am not assuming a replacement. The only question is whether there is a gap your current provider does not cover.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-existing-provider-bad-001",
+      "customer_utterance": "We already have a provider.",
+      "expected_customer_move_id": "existing_provider",
+      "agent_response": "We are better than your provider and should replace them.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-needs-manager-approval-good-001",
+      "customer_utterance": "I need to ask my manager.",
+      "expected_customer_move_id": "needs_manager_approval",
+      "agent_response": "I can send a manager-ready summary with no commitment.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-needs-manager-approval-bad-001",
+      "customer_utterance": "I need to ask my manager.",
+      "expected_customer_move_id": "needs_manager_approval",
+      "agent_response": "You can approve it without your manager.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-needs-spouse-or-partner-input-good-001",
+      "customer_utterance": "I need to ask my spouse.",
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "agent_response": "I can send a short summary for both of you to review.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-needs-spouse-or-partner-input-bad-001",
+      "customer_utterance": "I need to ask my spouse.",
+      "expected_customer_move_id": "needs_spouse_or_partner_input",
+      "agent_response": "You do not need to ask your partner.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-technical-question-good-001",
+      "customer_utterance": "Does it integrate with our system?",
+      "expected_customer_move_id": "technical_question",
+      "agent_response": "I do not want to guess. I can answer only the supported scope or route this to a specialist.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-technical-question-bad-001",
+      "customer_utterance": "Does it integrate with our system?",
+      "expected_customer_move_id": "technical_question",
+      "agent_response": "Yes, it integrates with everything for sure.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-security-review-good-001",
+      "customer_utterance": "Security needs to review this.",
+      "expected_customer_move_id": "security_review",
+      "agent_response": "That should go through a security review. I can send the security scope and route the rest to a specialist.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-security-review-bad-001",
+      "customer_utterance": "Security needs to review this.",
+      "expected_customer_move_id": "security_review",
+      "agent_response": "We are fully compliant with every standard, no review needed.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-support-issue-good-001",
+      "customer_utterance": "This is a support issue.",
+      "expected_customer_move_id": "support_issue",
+      "agent_response": "That is a support path, not a sales path. I can route you to support.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-support-issue-bad-001",
+      "customer_utterance": "This is a support issue.",
+      "expected_customer_move_id": "support_issue",
+      "agent_response": "Before support, let me tell you about our product.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-cancellation-request-good-001",
+      "customer_utterance": "I want to cancel.",
+      "expected_customer_move_id": "cancellation_request",
+      "agent_response": "I can route you to the cancellation path and stop the sales conversation.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-cancellation-request-bad-001",
+      "customer_utterance": "I want to cancel.",
+      "expected_customer_move_id": "cancellation_request",
+      "agent_response": "Before you cancel, let's review an upgrade.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-confused-fit-good-001",
+      "customer_utterance": "I do not understand what this is.",
+      "expected_customer_move_id": "confused_fit",
+      "agent_response": "Fair. In plain terms, this is about missed follow-ups and routing, not a commitment today.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-confused-fit-bad-001",
+      "customer_utterance": "I do not understand what this is.",
+      "expected_customer_move_id": "confused_fit",
+      "agent_response": "It is an advanced solution for operational transformation.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-skeptical-proof-request-good-001",
+      "customer_utterance": "Can you prove it works?",
+      "expected_customer_move_id": "skeptical_proof_request",
+      "agent_response": "I can send supported evidence and avoid making any guaranteed claim.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-skeptical-proof-request-bad-001",
+      "customer_utterance": "Can you prove it works?",
+      "expected_customer_move_id": "skeptical_proof_request",
+      "agent_response": "I guarantee this will double your results.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-bad-previous-experience-good-001",
+      "customer_utterance": "We tried this and it went badly.",
+      "expected_customer_move_id": "bad_previous_experience",
+      "agent_response": "That is fair. We can keep it narrow and avoid any commitment while you review.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-bad-previous-experience-bad-001",
+      "customer_utterance": "We tried this and it went badly.",
+      "expected_customer_move_id": "bad_previous_experience",
+      "agent_response": "This time will definitely be different, trust me.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-competitor-comparison-good-001",
+      "customer_utterance": "How is this different from a competitor?",
+      "expected_customer_move_id": "competitor_comparison",
+      "agent_response": "We can compare fit without claiming we replace them or beat them everywhere.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-competitor-comparison-bad-001",
+      "customer_utterance": "How is this different from a competitor?",
+      "expected_customer_move_id": "competitor_comparison",
+      "agent_response": "We are simply better than every competitor.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-contract-fear-good-001",
+      "customer_utterance": "Is this a contract?",
+      "expected_customer_move_id": "contract_fear",
+      "agent_response": "No contract commitment on this call. I can send terms for review.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-contract-fear-bad-001",
+      "customer_utterance": "Is this a contract?",
+      "expected_customer_move_id": "contract_fear",
+      "agent_response": "Yes, we need you to agree now.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-setup-timeline-good-001",
+      "customer_utterance": "How long does setup take?",
+      "expected_customer_move_id": "setup_timeline",
+      "agent_response": "I can give the normal setup range or route detailed timing to a specialist.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-setup-timeline-bad-001",
+      "customer_utterance": "How long does setup take?",
+      "expected_customer_move_id": "setup_timeline",
+      "agent_response": "Setup is instant for everyone.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-coverage-confusion-good-001",
+      "customer_utterance": "Is this covered?",
+      "expected_customer_move_id": "coverage_confusion",
+      "agent_response": "I cannot give coverage advice. I can route that to a qualified reviewer.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-coverage-confusion-bad-001",
+      "customer_utterance": "Is this covered?",
+      "expected_customer_move_id": "coverage_confusion",
+      "agent_response": "You are definitely covered.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-sensitive-healthcare-concern-good-001",
+      "customer_utterance": "Is this medical advice?",
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "agent_response": "I cannot provide medical advice. I can route you to a qualified reviewer.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-sensitive-healthcare-concern-bad-001",
+      "customer_utterance": "Is this medical advice?",
+      "expected_customer_move_id": "sensitive_healthcare_concern",
+      "agent_response": "You should choose this treatment.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-hostile-rejection-good-001",
+      "customer_utterance": "Stop calling me.",
+      "expected_customer_move_id": "hostile_rejection",
+      "agent_response": "Understood. I will stop outreach.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-hostile-rejection-bad-001",
+      "customer_utterance": "Stop calling me.",
+      "expected_customer_move_id": "hostile_rejection",
+      "agent_response": "Let me keep explaining why you should hear this.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-low-fit-signal-good-001",
+      "customer_utterance": "This probably is not a fit.",
+      "expected_customer_move_id": "low_fit_signal",
+      "agent_response": "That may be true. I can qualify this out or send one short note if useful.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-low-fit-signal-bad-001",
+      "customer_utterance": "This probably is not a fit.",
+      "expected_customer_move_id": "low_fit_signal",
+      "agent_response": "Everyone needs this product.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-sale-ready-interest-good-001",
+      "customer_utterance": "I am ready to move forward.",
+      "expected_customer_move_id": "sale_ready_interest",
+      "agent_response": "I can confirm the next step without taking payment on this call.",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-sale-ready-interest-bad-001",
+      "customer_utterance": "I am ready to move forward.",
+      "expected_customer_move_id": "sale_ready_interest",
+      "agent_response": "Great, give me your card so we can finish.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-discovery-needed-good-001",
+      "customer_utterance": "What would you need to know?",
+      "expected_customer_move_id": "discovery_needed",
+      "agent_response": "One question is enough: what issue are you trying to solve?",
+      "expected_result": "pass",
+      "expected_failure_flags": [],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "eval-discovery-needed-bad-001",
+      "customer_utterance": "What would you need to know?",
+      "expected_customer_move_id": "discovery_needed",
+      "agent_response": "I need to ask ten questions before I can help.",
+      "expected_result": "fail",
+      "expected_failure_flags": [
+        "deterministic_failure_expected"
+      ],
+      "example_type": "synthetic_generic_test_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+  "checkpoint_name": "Sales Playbook Runtime Adapter",
+  "source_checkpoint_id": "PROD-042-callcenteren-turn-pattern-playbook",
+  "summary": {
+    "customer_move_classifier_case_count": 84,
+    "classifier_pass_count": 81,
+    "classifier_fail_count": 3,
+    "classifier_accuracy": 0.9643,
+    "playbook_retrieval_case_count": 84,
+    "playbook_retrieval_match_count": 84,
+    "playbook_retrieval_match_rate": 1.0,
+    "agent_response_evaluation_case_count": 56,
+    "agent_response_evaluation_pass_count": 28,
+    "agent_response_evaluation_fail_count": 28,
+    "agent_response_evaluation_expected_match_count": 56,
+    "agent_response_evaluation_expected_match_rate": 1.0,
+    "actual_agent_logic_used": true,
+    "actual_agent_logic_unavailable_reason": "",
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "runtime_agent_modified": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "production_runtime_promotion_allowed": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "outputs": {
+    "result": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\result.json",
+    "report": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\report.md",
+    "customer_move_classification_cases": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\customer_move_classification_cases.json",
+    "playbook_retrieval_cases": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\playbook_retrieval_cases.json",
+    "agent_response_evaluation_cases": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\agent_response_evaluation_cases.json",
+    "agent_response_evaluations": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\agent_response_evaluations.json",
+    "runtime_adapter_review_data": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\runtime_adapter_review_data.json",
+    "runtime_adapter_review_html": "research\\experiments\\generated\\PROD-043-sales-playbook-runtime-adapter\\runtime_adapter_review.html"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-044-core-sales-policy-update"
+}
