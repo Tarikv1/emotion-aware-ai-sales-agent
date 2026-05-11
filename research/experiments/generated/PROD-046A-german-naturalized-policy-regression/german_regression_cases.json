@@ -13,6 +13,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -38,8 +40,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "price-first-direct",
@@ -64,6 +66,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -89,8 +93,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "price-first-direct",
@@ -115,6 +119,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -140,8 +146,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "price-first-direct",
@@ -166,6 +172,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -191,8 +199,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "identity-repair",
@@ -217,6 +225,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -242,8 +252,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "identity-repair",
@@ -268,6 +278,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -293,8 +305,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "identity-repair",
@@ -319,6 +331,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -344,8 +358,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "written-info-request",
@@ -370,6 +384,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -395,8 +411,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "written-info-request",
@@ -421,6 +437,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -446,8 +464,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "written-info-request",
@@ -472,6 +490,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -497,8 +517,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "email-only-boundary",
@@ -523,6 +543,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -548,8 +570,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "email-only-boundary",
@@ -574,6 +596,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -599,8 +623,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "email-only-boundary",
@@ -625,6 +649,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -650,8 +676,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "scam-safety-boundary",
@@ -676,6 +702,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -701,8 +729,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "scam-safety-boundary",
@@ -727,6 +755,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -752,8 +782,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "scam-safety-boundary",
@@ -778,6 +808,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -803,8 +835,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "payment-safety-boundary",
@@ -829,6 +861,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -854,8 +888,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "payment-safety-boundary",
@@ -880,6 +914,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -905,8 +941,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "payment-safety-boundary",
@@ -931,6 +967,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -956,8 +994,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "support-route",
@@ -982,6 +1020,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1007,8 +1047,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "support-route",
@@ -1033,6 +1073,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1058,8 +1100,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "support-route",
@@ -1084,6 +1126,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1109,8 +1153,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "cancellation-route",
@@ -1135,6 +1179,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1160,8 +1206,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "cancellation-route",
@@ -1186,6 +1232,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1211,8 +1259,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "cancellation-route",
@@ -1237,6 +1285,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1262,8 +1312,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "technical-specialist-route",
@@ -1288,6 +1338,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1313,8 +1365,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "technical-specialist-route",
@@ -1339,6 +1391,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1364,8 +1418,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "technical-specialist-route",
@@ -1390,6 +1444,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1415,8 +1471,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "security-review-route",
@@ -1441,6 +1497,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1466,8 +1524,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "security-review-route",
@@ -1492,6 +1550,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1517,8 +1577,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "security-review-route",
@@ -1543,6 +1603,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1568,8 +1630,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "coverage-boundary-route",
@@ -1594,6 +1656,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1619,8 +1683,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "coverage-boundary-route",
@@ -1645,6 +1709,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1670,8 +1736,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "coverage-boundary-route",
@@ -1696,6 +1762,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1721,8 +1789,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "healthcare-boundary-route",
@@ -1747,6 +1815,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1772,8 +1842,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "healthcare-boundary-route",
@@ -1798,6 +1868,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1823,8 +1895,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "healthcare-boundary-route",
@@ -1849,6 +1921,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1874,8 +1948,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "existing-provider-gap",
@@ -1900,6 +1974,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1925,8 +2001,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "existing-provider-gap",
@@ -1951,6 +2027,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -1976,8 +2054,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "existing-provider-gap",
@@ -2002,6 +2080,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2027,8 +2107,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "stakeholder-review",
@@ -2053,6 +2133,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2078,8 +2160,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "stakeholder-review",
@@ -2104,6 +2186,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2129,8 +2213,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "stakeholder-review",
@@ -2155,6 +2239,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2180,8 +2266,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "partner-review",
@@ -2206,6 +2292,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2231,8 +2319,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "partner-review",
@@ -2257,6 +2345,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2282,8 +2372,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "partner-review",
@@ -2308,6 +2398,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2333,8 +2425,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "sale-ready-commitment",
@@ -2359,6 +2451,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2384,8 +2478,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "sale-ready-commitment",
@@ -2410,6 +2504,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2435,8 +2531,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "sale-ready-commitment",
@@ -2461,6 +2557,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2486,8 +2584,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "do-not-call",
@@ -2512,6 +2610,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2537,8 +2637,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "do-not-call",
@@ -2563,6 +2663,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2588,8 +2690,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "do-not-call",
@@ -2614,6 +2716,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2639,8 +2743,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "do-not-call",
@@ -2665,6 +2769,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2690,8 +2796,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "do-not-call",
@@ -2716,6 +2822,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2741,8 +2849,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "do-not-call",
@@ -2767,6 +2875,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2792,8 +2902,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "callback-request",
@@ -2818,6 +2928,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2843,8 +2955,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "callback-request",
@@ -2869,6 +2981,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2894,8 +3008,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "callback-request",
@@ -2920,6 +3034,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2945,8 +3061,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "claim-boundary",
@@ -2971,6 +3087,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -2996,8 +3114,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "claim-boundary",
@@ -3022,6 +3140,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3047,8 +3167,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "claim-boundary",
@@ -3073,6 +3193,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3098,8 +3220,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "product-detail-lookup",
@@ -3124,6 +3246,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3149,8 +3273,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "product-detail-lookup",
@@ -3175,6 +3299,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3200,8 +3326,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "product-detail-lookup",
@@ -3226,6 +3352,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3251,8 +3379,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "scheduling-confirmation",
@@ -3277,6 +3405,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3302,8 +3432,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "scheduling-confirmation",
@@ -3328,6 +3458,8 @@
       "caller_identity": "Maya von RouteSignal",
       "company_or_campaign_name": "RouteSignal",
       "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
       "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
       "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
       "callback_offer_allowed_after_direct_answer": true,
@@ -3353,8 +3485,8 @@
       "decision_maker_bypass_forbidden": true,
       "close_criteria_satisfied": true,
       "sale_ready_close_allowed": true,
-      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-      "approved_next_step": "den nächsten freigegebenen Schritt"
+      "approved_sale_ready_next_step": "den nächsten Schritt",
+      "approved_next_step": "den nächsten Schritt"
     },
     "expected": {
       "sales_difficulty": "scheduling-confirmation",

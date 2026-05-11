@@ -1179,6 +1179,18 @@ Validate that PROD-046B removes internal-policy wording from German customer-fac
 python scripts\validate_prod_046b_german_response_wording_quality_pass.py
 ```
 
+Run the PROD-046C German campaign-field interpolation guard:
+
+```powershell
+python scripts\run_prod_046c_german_campaign_field_interpolation_guard.py
+```
+
+Validate that PROD-046C blocks malformed German interpolation such as `bei beim` and `um ein kurzer`, while keeping PROD-045, PROD-046A, and PROD-046B regressions passing:
+
+```powershell
+python scripts\validate_prod_046c_german_campaign_field_interpolation_guard.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

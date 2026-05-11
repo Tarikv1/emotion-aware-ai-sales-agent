@@ -15,6 +15,25 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-101 - Add German interpolation guard before human policy review
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: create `PROD-046C-german-campaign-field-interpolation-guard` before PROD-046 human review to block malformed German campaign-field interpolation while preserving the PROD-045/046A/046B regression surface.
+- Why:
+  - PROD-046B removed banned internal terms, but actual generated German runtime outputs still included malformed strings such as `Preisrahmen bei beim Starter-Paket` and `Ich rufe kurz an, um ein kurzer Abgleich`
+  - the root cause is campaign fields being inserted into fixed German templates without field-shape awareness
+  - these deterministic grammar failures should be removed before asking a human reviewer to judge broader German wording quality
+- Alternatives considered:
+  - proceed directly to human review and let the reviewer catch the interpolation bugs
+  - broaden German response realism or add new customer utterance data
+  - use an LLM or provider to rewrite German responses
+- Consequences:
+  - only German interpolation/template handling and German campaign fixture field shapes are changed
+  - PROD-046C adds guard cases and validator checks for known malformed German interpolation classes
+  - false-positive unknown/generic counts are reported separately from positive required-boundary counts
+  - retrieval, providers, LLMs, private data, payment collection, contract signing, voice playback, public demo polish, and production runtime promotion remain blocked
+
 ### DEC-100 - Add German wording-quality gate before human policy review
 
 - Date: 2026-05-11

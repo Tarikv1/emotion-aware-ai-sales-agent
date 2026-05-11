@@ -70,7 +70,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -115,7 +115,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -250,7 +250,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {

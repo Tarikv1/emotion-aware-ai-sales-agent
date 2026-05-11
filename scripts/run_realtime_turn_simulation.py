@@ -146,6 +146,64 @@ def campaign_flag(campaign: dict | None, *keys: str) -> bool:
     return any((campaign or {}).get(key) is True for key in keys)
 
 
+def ensure_terminal_period(text: str) -> str:
+    stripped = text.strip()
+    if not stripped:
+        return stripped
+    if stripped[-1] in ".!?":
+        return stripped
+    return f"{stripped}."
+
+
+def german_pricing_response(campaign: dict | None) -> str | None:
+    approved_sentence = campaign_text(campaign, "approved_pricing_response")
+    if approved_sentence:
+        return (
+            f"{ensure_terminal_period(approved_sentence)} "
+            "In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung."
+        )
+    pricing = campaign_text(campaign, "pricing_summary", "pricing_boundary_text")
+    if not pricing:
+        return None
+    cleaned = pricing.strip()
+    lower = cleaned.lower()
+    if lower.startswith(("beim ", "bei ")):
+        pricing_sentence = f"Nach den freigegebenen Informationen liegt der Preisrahmen {cleaned}"
+    elif "preisrahmen" in lower or lower.startswith("exakte preise"):
+        pricing_sentence = cleaned
+    else:
+        pricing_sentence = f"Nach den freigegebenen Informationen: {cleaned}"
+    pricing_sentence = pricing_sentence.replace(
+        "; die genauen Bedingungen kommen schriftlich.",
+        ". Die genauen Bedingungen erhalten Sie schriftlich.",
+    )
+    return (
+        f"{ensure_terminal_period(pricing_sentence)} "
+        "In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung."
+    )
+
+
+def german_identity_response(campaign: dict | None) -> str | None:
+    identity = campaign_text(campaign, "caller_identity", "company_or_campaign_name")
+    if not identity:
+        return None
+    sentence = campaign_text(campaign, "approved_identity_reason_sentence")
+    if sentence:
+        reason_sentence = ensure_terminal_period(sentence)
+    else:
+        reason = campaign_text(campaign, "approved_reason_for_call")
+        if not reason:
+            return None
+        if reason.lower().startswith("zu "):
+            reason_sentence = ensure_terminal_period(f"Ich rufe kurz an, um {reason}")
+        else:
+            reason_sentence = ensure_terminal_period(f"Der Grund für den Anruf ist {reason}")
+    return (
+        f"Hier ist {identity}. {reason_sentence} "
+        "Wenn das für Sie nicht relevant ist, beende ich den Anruf."
+    )
+
+
 def localized_response(language: str, sales_difficulty: str, campaign: dict | None = None) -> str:
     language_key = normalize_response_language(language)
     if language_key == "en":
@@ -213,9 +271,9 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
                 return f"Confirmed. I will log this as sale-ready for {next_step}. No payment or contract signing happens on this call."
     else:
         if sales_difficulty == "price-first-direct":
-            pricing = campaign_text(campaign, "pricing_summary", "pricing_boundary_text")
-            if pricing:
-                return f"Nach den freigegebenen Informationen liegt der Preisrahmen bei {pricing} In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung."
+            pricing_response = german_pricing_response(campaign)
+            if pricing_response:
+                return pricing_response
             return "Ich habe keinen freigegebenen exakten Preis in dieser Kampagne und erfinde keinen. Ich kann freigegebene Preisinformationen senden und es dabei belassen."
         if sales_difficulty == "written-info-request":
             summary = campaign_text(campaign, "approved_written_summary", "approved_email_followup_scope")
@@ -226,10 +284,9 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
             if summary:
                 return f"Verstanden. Ich halte es bei E-Mail, sende Ihnen {summary} und dränge nicht auf ein Telefonat."
         if sales_difficulty == "identity-repair":
-            identity = campaign_text(campaign, "caller_identity", "company_or_campaign_name")
-            reason = campaign_text(campaign, "approved_reason_for_call")
-            if identity and reason:
-                return f"Hier ist {identity}. Ich rufe kurz an, um {reason}. Wenn das für Sie nicht relevant ist, beende ich den Anruf."
+            identity_response = german_identity_response(campaign)
+            if identity_response:
+                return identity_response
         if sales_difficulty == "scam-safety-boundary":
             verification = campaign_text(campaign, "approved_verification_path", "approved_written_summary")
             if verification:
@@ -256,7 +313,7 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
         if sales_difficulty == "security-review-route":
             route = campaign_text(campaign, "specialist_handoff_route", "approved_written_summary")
             if route:
-                return f"Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an {route} weiterleiten und mache hier keine pauschalen Compliance-Zusagen."
+                return "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen."
         if sales_difficulty in {"coverage-boundary-route", "healthcare-boundary-route"}:
             boundary = campaign_text(campaign, "regulated_advice_boundary_text")
             route = campaign_text(campaign, "specialist_handoff_route")

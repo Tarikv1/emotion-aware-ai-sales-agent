@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-12 - PROD-046C German campaign-field interpolation guard
+
+- Objective: fix the malformed German campaign-field interpolation left after PROD-046B, especially `bei beim` in price-first responses and `um ein kurzer Abgleich` in identity repair.
+- Action taken: added a PROD-046C runner, validator, product doc, generated interpolation guard cases/results, before/after evidence, review HTML, and report. Updated only the German localized response assembly and German campaign fixture fields needed to avoid fragment-sensitive interpolation errors.
+- Data used: existing PROD-045/PROD-046A/PROD-046B generated regression evidence and synthetic project-owned German regression cases only. No raw transcript text, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_046c_german_campaign_field_interpolation_guard.py`, runner/validator scripts, `docs/product/PROD_046C_GERMAN_CAMPAIGN_FIELD_INTERPOLATION_GUARD.md`, generated artifacts under `research/experiments/generated/PROD-046C-german-campaign-field-interpolation-guard/`, and narrow German interpolation fixes in `scripts/run_realtime_turn_simulation.py` and `scripts/prod_046a_german_naturalized_policy_regression.py`.
+- What was learned: removing banned internal terms is not enough; campaign fields need grammar-compatible shapes or full customer-facing sentence fields in German.
+- Why it matters for the thesis: PROD-046C records a concrete multilingual guardrail lesson for deterministic sales-agent policy: safety and routing can pass while localized string assembly still fails.
+- Open questions: whether the now-guarded German wording is acceptable to a German-speaking human/product reviewer before voice playback, demo use, or runtime promotion.
+
 ### 2026-05-11 - PROD-046B German response wording-quality pass
 
 - Objective: improve German customer-facing runtime response wording after PROD-046A proved German routing but still exposed internal-policy-sounding terms.

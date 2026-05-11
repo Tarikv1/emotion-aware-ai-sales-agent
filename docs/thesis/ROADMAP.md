@@ -33,7 +33,7 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: review `PROD-046B-german-response-wording-quality-pass` output before any broader runtime promotion, retrieval default change, voice playback unlock, or demo-readiness claim.
+- [ ] Current: review `PROD-046C-german-campaign-field-interpolation-guard` output before any broader runtime promotion, retrieval default change, voice playback unlock, or demo-readiness claim.
 
 Next checkpoints:
 
@@ -60,6 +60,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-046C` German campaign-field interpolation guard, which fixes the narrow German customer-facing interpolation bugs left after PROD-046B, including `bei beim` in price-first responses and `um ein kurzer Abgleich` in identity repair. It adds deterministic interpolation guard cases, before/after evidence, and separate positive versus false-positive unknown/generic metrics while keeping PROD-045 English, PROD-046A German, and PROD-046B wording regressions passing. Retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion remain blocked.
 
 - [x] `PROD-046B` German response wording-quality pass, which keeps the PROD-046A German intent routing and false-positive regression intact while rewriting German customer-facing runtime responses and campaign fixture wording that sounded like internal policy text. It removes customer-facing terms such as `sale-ready`, `freigegebener Spezialistenweg`, `Support-Warteschlange`, `Kündigungs-Warteschlange`, `sichere Passungsfrage`, `Überlegenheitsaussage`, and `freigegebene Übergabe zum nächsten Schritt`. The pass records before/after wording examples, reruns the German regression surface, confirms English PROD-045 remains passing, and keeps retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion blocked.
 

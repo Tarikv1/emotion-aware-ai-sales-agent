@@ -3,7 +3,7 @@
     {
       "sales_difficulty": "price-first-direct",
       "before_response": "Der freigegebene Preisrahmen liegt beim Starter-Paket bei 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. Keine Zahlung und keine Verpflichtung in diesem Anruf.",
-      "after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+      "after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -14,7 +14,7 @@
     {
       "sales_difficulty": "identity-repair",
       "before_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das nicht relevant ist, höre ich hier auf.",
-      "after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -108,7 +108,7 @@
     {
       "sales_difficulty": "security-review-route",
       "before_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder einen Spezialisten. Ich kann das an den freigegebenen Spezialistenweg weiterleiten und mache hier keine breiten Compliance-Zusagen.",
-      "after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an eine zuständige Fachperson weiterleiten und mache hier keine pauschalen Compliance-Zusagen.",
+      "after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
       "changed": true,
       "banned_terms_before": [
         "freigegebenen spezialistenweg"
@@ -182,7 +182,7 @@
     {
       "sales_difficulty": "sale-ready-commitment",
       "before_response": "Bestätigt. Ich markiere das als sale-ready für die freigegebene Übergabe zum nächsten Schritt. Keine Zahlung und keine Vertragsunterzeichnung in diesem Anruf.",
-      "after_response": "Gut, ich halte fest, dass Sie den nächsten freigegebenen Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "after_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
       "changed": true,
       "banned_terms_before": [
         "sale-ready",

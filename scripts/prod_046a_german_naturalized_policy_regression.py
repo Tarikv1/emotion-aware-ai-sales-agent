@@ -25,6 +25,8 @@ GERMAN_CAMPAIGN = {
     "caller_identity": "Maya von RouteSignal",
     "company_or_campaign_name": "RouteSignal",
     "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+    "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+    "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
     "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
     "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
     "callback_offer_allowed_after_direct_answer": True,
@@ -48,8 +50,8 @@ GERMAN_CAMPAIGN = {
     "decision_maker_bypass_forbidden": True,
     "close_criteria_satisfied": True,
     "sale_ready_close_allowed": True,
-    "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
-    "approved_next_step": "den nächsten freigegebenen Schritt",
+    "approved_sale_ready_next_step": "den nächsten Schritt",
+    "approved_next_step": "den nächsten Schritt",
 }
 
 GERMAN_CAMPAIGN_MISSING_CLOSE = {

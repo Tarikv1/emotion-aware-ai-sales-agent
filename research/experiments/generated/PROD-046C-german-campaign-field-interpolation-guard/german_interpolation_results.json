@@ -1,0 +1,1471 @@
+{
+  "items": [
+    {
+      "case_id": "interp-de-price_first-001",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Was kostet mich das denn?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-price_first-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-price_first-002",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Mit welchen Kosten muss ich da rechnen?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-price_first-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-price_first-003",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Was kommt da monatlich auf mich zu?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-price_first-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Wer ist denn da?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-who_are_you-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Von welcher Firma rufen Sie an?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-who_are_you-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Worum geht es hier überhaupt?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-who_are_you-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-technical_question-001",
+      "customer_move_id": "technical_question",
+      "customer_utterance": "Lässt sich das mit unserem System verbinden?",
+      "expected": {
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-technical_question-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "technical-specialist-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-technical_question-002",
+      "customer_move_id": "technical_question",
+      "customer_utterance": "Geht das technisch mit unserem CRM?",
+      "expected": {
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-technical_question-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "technical-specialist-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-technical_question-003",
+      "customer_move_id": "technical_question",
+      "customer_utterance": "Da hätte ich eine technische Frage.",
+      "expected": {
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-technical_question-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "technical-specialist-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-security_review-001",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Das muss unsere IT-Sicherheit prüfen.",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-security_review-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-security_review-002",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Unsere Security muss da erst drüberschauen.",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-security_review-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-security_review-003",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-security_review-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-coverage_confusion-001",
+      "customer_move_id": "coverage_confusion",
+      "customer_utterance": "Ist das in meinem Tarif überhaupt enthalten?",
+      "expected": {
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-coverage_confusion-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-coverage_confusion-002",
+      "customer_move_id": "coverage_confusion",
+      "customer_utterance": "Was genau ist da abgedeckt?",
+      "expected": {
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-coverage_confusion-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-coverage_confusion-003",
+      "customer_move_id": "coverage_confusion",
+      "customer_utterance": "Gilt das auch für meinen Fall?",
+      "expected": {
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-coverage_confusion-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-sensitive_healthcare_concern-001",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "customer_utterance": "Geht es hier um medizinische Beratung?",
+      "expected": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-sensitive_healthcare_concern-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-sensitive_healthcare_concern-002",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "customer_utterance": "Das ist ein gesundheitliches Thema.",
+      "expected": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-sensitive_healthcare_concern-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-sensitive_healthcare_concern-003",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "customer_utterance": "Ich will keine Gesundheitsberatung am Telefon.",
+      "expected": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-sensitive_healthcare_concern-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-existing_provider-001",
+      "customer_move_id": "existing_provider",
+      "customer_utterance": "Wir haben schon einen Anbieter.",
+      "expected": {
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-existing_provider-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-existing_provider-002",
+      "customer_move_id": "existing_provider",
+      "customer_utterance": "Das läuft bei uns bereits über jemand anderen.",
+      "expected": {
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-existing_provider-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-existing_provider-003",
+      "customer_move_id": "existing_provider",
+      "customer_utterance": "Unser aktueller Anbieter kümmert sich darum.",
+      "expected": {
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-existing_provider-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-sale_ready_interest-001",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "Okay, dann machen wir das so.",
+      "expected": {
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-sale_ready_interest-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "sale-ready-outcome-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "bridge_response": null,
+        "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-sale_ready_interest-002",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "Das klingt gut, was ist der nächste Schritt?",
+      "expected": {
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-sale_ready_interest-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "sale-ready-outcome-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "bridge_response": null,
+        "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-de-sale_ready_interest-003",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "Von mir aus können wir weitermachen.",
+      "expected": {
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready"
+      },
+      "runtime_decision": {
+        "case_id": "interp-de-sale_ready_interest-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "sale-ready-outcome-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "bridge_response": null,
+        "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-price_first-001",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Was kostet mich das denn?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-price_first-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-price_first-002",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Mit welchen Kosten muss ich da rechnen?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-price_first-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-price_first-003",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Was kommt da monatlich auf mich zu?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-price_first-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Wer ist denn da?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-who_are_you-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Von welcher Firma rufen Sie an?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-who_are_you-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Worum geht es hier überhaupt?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-who_are_you-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-security_review-001",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Das muss unsere IT-Sicherheit prüfen.",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-security_review-001",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-security_review-002",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Unsere Security muss da erst drüberschauen.",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-security_review-002",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "interp-legacy-de-security_review-003",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "interp-legacy-de-security_review-003",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_interpolation_guard_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    }
+  ]
+}

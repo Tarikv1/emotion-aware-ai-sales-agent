@@ -1,0 +1,49 @@
+{
+  "items": [
+    {
+      "sales_difficulty": "price-first-direct",
+      "prod_046b_after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+      "prod_046c_after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+      "changed": true,
+      "prod_046b_malformed_hits": [
+        "bei beim",
+        "bei bei"
+      ],
+      "prod_046c_malformed_hits": [],
+      "duplicate_specialist_before": false,
+      "duplicate_specialist_after": false
+    },
+    {
+      "sales_difficulty": "identity-repair",
+      "prod_046b_after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "prod_046c_after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "changed": true,
+      "prod_046b_malformed_hits": [
+        "um ein kurzer"
+      ],
+      "prod_046c_malformed_hits": [],
+      "duplicate_specialist_before": false,
+      "duplicate_specialist_after": false
+    },
+    {
+      "sales_difficulty": "security-review-route",
+      "prod_046b_after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an eine zuständige Fachperson weiterleiten und mache hier keine pauschalen Compliance-Zusagen.",
+      "prod_046c_after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+      "changed": true,
+      "prod_046b_malformed_hits": [],
+      "prod_046c_malformed_hits": [],
+      "duplicate_specialist_before": false,
+      "duplicate_specialist_after": false
+    },
+    {
+      "sales_difficulty": "sale-ready-commitment",
+      "prod_046b_after_response": "Gut, ich halte fest, dass Sie den nächsten freigegebenen Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "prod_046c_after_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "changed": true,
+      "prod_046b_malformed_hits": [],
+      "prod_046c_malformed_hits": [],
+      "duplicate_specialist_before": false,
+      "duplicate_specialist_after": false
+    }
+  ]
+}
