@@ -1,0 +1,201 @@
+{
+  "generic_clarification_results": [
+    {
+      "case_id": "generic-clarification-must-fail-price_first",
+      "customer_move_id": "price_first",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_pricing_fact_or_boundary",
+        "no_question_before_pricing"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-who_are_you",
+      "customer_move_id": "who_are_you",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_identity_or_role",
+        "requires_reason_for_call"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-send_info",
+      "customer_move_id": "send_info",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_written_info_offer",
+        "no_question_before_send_info"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-email_only",
+      "customer_move_id": "email_only",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_email_only_boundary"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-scam_or_card_fear",
+      "customer_move_id": "scam_or_card_fear",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_no_payment_card_sensitive",
+        "requires_verification_path"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-payment_safety_fear",
+      "customer_move_id": "payment_safety_fear",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_no_card_or_payment",
+        "requires_safe_next_step"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-support_issue",
+      "customer_move_id": "support_issue",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_support_route",
+        "requires_support_transfer"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-cancellation_request",
+      "customer_move_id": "cancellation_request",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_cancellation_route",
+        "requires_cancellation_transfer"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-technical_question",
+      "customer_move_id": "technical_question",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_technical_scope_or_specialist"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-security_review",
+      "customer_move_id": "security_review",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_security_route"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-coverage_confusion",
+      "customer_move_id": "coverage_confusion",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_coverage_boundary"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-sensitive_healthcare_concern",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_healthcare_boundary"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-existing_provider",
+      "customer_move_id": "existing_provider",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_provider_gap_boundary"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-needs_manager_approval",
+      "customer_move_id": "needs_manager_approval",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_reviewable_summary"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-needs_spouse_or_partner_input",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_reviewable_summary"
+      ]
+    },
+    {
+      "case_id": "generic-clarification-must-fail-sale_ready_interest",
+      "customer_move_id": "sale_ready_interest",
+      "agent_response": "Thanks. May I ask one quick clarifying question?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_guarded_sale_ready_path"
+      ]
+    },
+    {
+      "case_id": "price-concern-question-must-fail",
+      "customer_move_id": "price_first",
+      "agent_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+      "expected_pass": false,
+      "passed": false,
+      "failed_check_ids": [
+        "generic_clarification_not_allowed",
+        "requires_pricing_fact_or_boundary",
+        "no_question_before_pricing"
+      ]
+    }
+  ],
+  "generic_clarification_fail_count": 17,
+  "generic_clarification_unexpected_pass_count": 0
+}

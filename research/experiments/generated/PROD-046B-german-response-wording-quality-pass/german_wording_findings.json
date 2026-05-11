@@ -1,0 +1,29 @@
+{
+  "checkpoint_id": "PROD-046B-german-response-wording-quality-pass",
+  "banned_internal_terms": [
+    "sale-ready",
+    "freigegebener spezialistenweg",
+    "freigegebenen spezialistenweg",
+    "support-warteschlange",
+    "kündigungs-warteschlange",
+    "sichere passungsfrage",
+    "überlegenheitsaussage",
+    "freigegebene übergabe zum nächsten schritt"
+  ],
+  "before_after_count": 16,
+  "response_findings": [],
+  "remaining_wording_risks": [
+    "German wording is improved deterministically but still needs human/product review by a German speaker.",
+    "The response surface remains single-turn and campaign-field-driven; this checkpoint does not validate full live conversation naturalness.",
+    "The borrowed German term Support remains allowed because the preferred wording explicitly uses zuständiger Support."
+  ],
+  "boundaries": {
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "checkpoint_id": "PROD-046A-german-naturalized-policy-regression",
+  "checkpoint_name": "German Naturalized Policy Regression",
+  "source_checkpoint_id": "PROD-045-core-sales-policy-regression-rerun",
+  "summary": {
+    "german_positive_case_count": 66,
+    "german_positive_pass_count": 66,
+    "german_positive_fail_count": 0,
+    "german_false_positive_case_count": 6,
+    "german_false_positive_pass_count": 6,
+    "german_false_positive_fail_count": 0,
+    "german_unknown_runtime_signal_count": 0,
+    "german_generic_clarification_count": 0,
+    "german_response_language_mismatch_count": 0,
+    "german_english_operational_wording_hit_count": 0,
+    "german_ascii_limitation_hit_count": 0,
+    "english_prod_045_regression_still_passed": true,
+    "runtime_behavior_changed": true,
+    "german_phrase_triggers_added": true,
+    "german_localized_responses_changed": true,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "outputs": {
+    "report": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/report.md",
+    "german_regression_cases": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/german_regression_cases.json",
+    "german_regression_results": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/german_regression_results.json",
+    "german_false_positive_cases": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/german_false_positive_cases.json",
+    "german_false_positive_results": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/german_false_positive_results.json",
+    "review_data": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/german_policy_review_data.json",
+    "review_html": "research/experiments/generated/PROD-046A-german-naturalized-policy-regression/german_policy_review.html"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-046-core-sales-policy-human-review"
+}

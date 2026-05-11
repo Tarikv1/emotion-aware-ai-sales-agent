@@ -1,0 +1,272 @@
+{
+  "results": [
+    {
+      "case_id": "de-false-no-cancel",
+      "customer_move_id": null,
+      "customer_utterance": "Ich will nicht kündigen, ich habe nur eine Frage.",
+      "expected": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "de-false-no-cancel",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Danke. Darf ich kurz eine klärende Frage stellen?",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": false,
+        "failed_check_ids": [
+          "generic_german_clarification_not_allowed"
+        ]
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": true,
+      "generic_german_clarification": true,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_false_positive_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "de-false-identity-over-scam",
+      "customer_move_id": null,
+      "customer_utterance": "Ich sage nicht, dass das Betrug ist, ich will nur wissen, wer anruft.",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "de-false-identity-over-scam",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_false_positive_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "de-false-price-over-support",
+      "customer_move_id": null,
+      "customer_utterance": "Ich brauche keinen Support, ich möchte nur den Preis wissen.",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "de-false-price-over-support",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_false_positive_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "de-false-security-negated",
+      "customer_move_id": null,
+      "customer_utterance": "Security ist bei uns kein Thema.",
+      "expected": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "de-false-security-negated",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Danke. Darf ich kurz eine klärende Frage stellen?",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": false,
+        "failed_check_ids": [
+          "generic_german_clarification_not_allowed"
+        ]
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": true,
+      "generic_german_clarification": true,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_false_positive_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "de-false-payment-safe-boundary",
+      "customer_move_id": null,
+      "customer_utterance": "Ich gebe keine Bankdaten an, weil Sie ja auch keine brauchen.",
+      "expected": {
+        "sales_difficulty": "payment-safety-boundary",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "de-false-payment-safe-boundary",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_false_positive_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    },
+    {
+      "case_id": "de-false-price-over-provider",
+      "customer_move_id": null,
+      "customer_utterance": "Ich habe schon einen Anbieter, aber ich will trotzdem den Preis wissen.",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "de-false-price-over-provider",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "response_language_mismatch": false,
+      "unknown_runtime_signal": false,
+      "generic_german_clarification": false,
+      "english_operational_wording_hits": [],
+      "ascii_german_limitation_hits": [],
+      "passed": true,
+      "example_type": "synthetic_naturalized_de_false_positive_case",
+      "source_quote": false,
+      "from_single_transcript": false,
+      "translation_mode": "intent_equivalent_not_literal"
+    }
+  ]
+}

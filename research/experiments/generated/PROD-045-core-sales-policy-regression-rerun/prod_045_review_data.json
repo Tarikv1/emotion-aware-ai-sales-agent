@@ -1,0 +1,2421 @@
+{
+  "checkpoint_id": "PROD-045-core-sales-policy-regression-rerun",
+  "summary": {
+    "source_checkpoint_id": "PROD-044-core-sales-policy-update",
+    "prod_043_validator_passed": true,
+    "prod_044_validator_passed": true,
+    "regression_case_count": 23,
+    "regression_pass_count": 23,
+    "regression_fail_count": 0,
+    "generic_runtime_response_count": 0,
+    "generic_clarification_fail_count": 17,
+    "generic_clarification_unexpected_pass_count": 0,
+    "applied_runtime_policy_update_count": 9,
+    "runtime_behavior_changed": true,
+    "runtime_agent_modified": true,
+    "payment_collection_violation_count": 0,
+    "contract_signing_violation_count": 0,
+    "unsupported_claim_violation_count": 0,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "regression_cases": [
+    {
+      "case_id": "prod-045-price-first",
+      "customer_move_id": "price_first",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "What does this cost?"
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-who-are-you",
+      "customer_move_id": "who_are_you",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Who exactly are you?"
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-send-info",
+      "customer_move_id": "send_info",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Send me the details."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "written-info-request",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-email-only",
+      "customer_move_id": "email_only",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Just email me."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "email-only-boundary",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-scam-fear",
+      "customer_move_id": "scam_or_card_fear",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Is this a scam?"
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "scam-safety-boundary",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-payment-fear",
+      "customer_move_id": "payment_safety_fear",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I am not giving card details."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "payment-safety-boundary",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-support",
+      "customer_move_id": "support_issue",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "This is a support issue."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "support-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-cancellation",
+      "customer_move_id": "cancellation_request",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I want to cancel."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "cancellation-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-technical",
+      "customer_move_id": "technical_question",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I have a technical integration question."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-security",
+      "customer_move_id": "security_review",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Our security team needs a review."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-coverage",
+      "customer_move_id": "coverage_confusion",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I am confused about what is covered."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-healthcare",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "This is a healthcare concern."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-existing-provider",
+      "customer_move_id": "existing_provider",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "We already have a provider."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-manager",
+      "customer_move_id": "needs_manager_approval",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I need to ask my manager."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "stakeholder-review",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I need to ask my spouse."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "partner-review",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-sale-ready-ok",
+      "customer_move_id": "sale_ready_interest",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I am ready to move forward."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-sale-ready-missing",
+      "customer_move_id": "sale_ready_interest",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "I am ready to move forward."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-missing-close-criteria-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": false,
+        "sale_ready_close_allowed": false,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "call_control": "continue-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-not-interested",
+      "customer_move_id": "not_interested",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "No thanks, not interested."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-hostile",
+      "customer_move_id": "hostile_rejection",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Do not call me again."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-callback",
+      "customer_move_id": "callback_request",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Call me back next week."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "callback-request",
+        "call_control": "end-call"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-claim-boundary",
+      "customer_move_id": "skeptical_proof_request",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "relevance-check",
+        "transcript": "Can you guarantee it works?"
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "claim-boundary",
+        "call_control": "transfer-or-escalate"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-product-detail",
+      "customer_move_id": "product_detail_lookup",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "product-detail-check",
+        "transcript": "Which exact plan is included?"
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "product-detail-lookup",
+        "call_control": "bridge-then-continue",
+        "stage": "product-detail-check"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-scheduling",
+      "customer_move_id": "callback_request",
+      "customer_input": {
+        "input_type": "speech",
+        "stage": "scheduling",
+        "transcript": "Wednesday at 10 works."
+      },
+      "campaign": {
+        "campaign_id": "campaign-prod-045-guarded-policy-test",
+        "language": "en",
+        "caller_identity": "Maya from RouteSignal",
+        "company_or_campaign_name": "RouteSignal",
+        "approved_reason_for_call": "a short check on callback ownership and follow-up routing",
+        "pricing_summary": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing.",
+        "pricing_boundary_text": "Exact pricing must come from approved written pricing.",
+        "callback_offer_allowed_after_direct_answer": true,
+        "approved_written_summary": "the approved one-page summary",
+        "approved_email_followup_scope": "the approved email summary",
+        "allowed_contact_channels": [
+          "email"
+        ],
+        "respect_email_only_boundary": true,
+        "payment_collection_allowed": false,
+        "approved_verification_path": "the public verification page and written summary",
+        "support_route": "support queue",
+        "support_boundary_text": "the support queue",
+        "cancellation_route": "cancellation support queue",
+        "cancellation_boundary_text": "the cancellation support queue",
+        "approved_technical_scope": "the system can route follow-up ownership notes, but implementation details require review",
+        "unknown_technical_answer_boundary": "unknown technical details require specialist review",
+        "specialist_handoff_route": "the approved specialist route",
+        "regulated_advice_boundary_text": "I cannot give medical, health, or coverage advice on this call.",
+        "competitor_comparison_boundary_text": "No replacement or competitor-superiority claim is approved.",
+        "approved_gap_isolation_question": "The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "approved_review_summary": "the approved review summary",
+        "decision_maker_bypass_forbidden": true,
+        "close_criteria_satisfied": true,
+        "sale_ready_close_allowed": true,
+        "approved_sale_ready_next_step": "the approved follow-up handoff",
+        "approved_next_step": "the approved follow-up handoff"
+      },
+      "expected": {
+        "sales_difficulty": "scheduling-confirmation",
+        "call_control": "schedule-and-end",
+        "stage": "scheduling"
+      },
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    }
+  ],
+  "regression_results": [
+    {
+      "case_id": "prod-045-price-first",
+      "customer_move_id": "price_first",
+      "customer_utterance": "What does this cost?",
+      "expected": {
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-price-first",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing. No payment or commitment on this call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "price_first",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-who-are-you",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Who exactly are you?",
+      "expected": {
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-who-are-you",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "This is Maya from RouteSignal. The reason for the call is a short check on callback ownership and follow-up routing. I can stop if this is not relevant.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "who_are_you",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-send-info",
+      "customer_move_id": "send_info",
+      "customer_utterance": "Send me the details.",
+      "expected": {
+        "sales_difficulty": "written-info-request",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-send-info",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "written-info-request",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "I can send the approved one-page summary and leave it there.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "send_info",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-email-only",
+      "customer_move_id": "email_only",
+      "customer_utterance": "Just email me.",
+      "expected": {
+        "sales_difficulty": "email-only-boundary",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-email-only",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "email-only-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Understood. Email only. I can send the approved email summary and will not push for a call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "email_only",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-scam-fear",
+      "customer_move_id": "scam_or_card_fear",
+      "customer_utterance": "Is this a scam?",
+      "expected": {
+        "sales_difficulty": "scam-safety-boundary",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-scam-fear",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "scam-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "No payment, card, or sensitive details are collected on this call. I can send the public verification page and written summary for verification.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "scam_or_card_fear",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-payment-fear",
+      "customer_move_id": "payment_safety_fear",
+      "customer_utterance": "I am not giving card details.",
+      "expected": {
+        "sales_difficulty": "payment-safety-boundary",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-payment-fear",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information: the approved one-page summary.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "payment_safety_fear",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-support",
+      "customer_move_id": "support_issue",
+      "customer_utterance": "This is a support issue.",
+      "expected": {
+        "sales_difficulty": "support-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-support",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "support-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "That is a support issue, so I will stop the sales path and route this to the support queue.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "support_issue",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-cancellation",
+      "customer_move_id": "cancellation_request",
+      "customer_utterance": "I want to cancel.",
+      "expected": {
+        "sales_difficulty": "cancellation-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-cancellation",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "cancellation-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "I will stop the sales path and route this to the cancellation support queue.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "cancellation_request",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-technical",
+      "customer_move_id": "technical_question",
+      "customer_utterance": "I have a technical integration question.",
+      "expected": {
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-technical",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "technical-specialist-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Within the approved scope: the system can route follow-up ownership notes, but implementation details require review. If you need more detail, I can route this to the specialist path.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "technical_question",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-security",
+      "customer_move_id": "security_review",
+      "customer_utterance": "Our security team needs a review.",
+      "expected": {
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-security",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Security review needs approved material or a specialist. I can route this to the approved specialist route and will not make broad compliance claims.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "security_review",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-coverage",
+      "customer_move_id": "coverage_confusion",
+      "customer_utterance": "I am confused about what is covered.",
+      "expected": {
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-coverage",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "I cannot give medical, health, or coverage advice on this call. I can route this to the approved specialist route.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "coverage_confusion",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-healthcare",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "customer_utterance": "This is a healthcare concern.",
+      "expected": {
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-healthcare",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "I cannot give medical, health, or coverage advice on this call. I can route this to the approved specialist route.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "sensitive_healthcare_concern",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-existing-provider",
+      "customer_move_id": "existing_provider",
+      "customer_utterance": "We already have a provider.",
+      "expected": {
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-existing-provider",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "I will not claim this replaces your provider. The safe fit-gap question is whether missed follow-ups still happen with your current provider.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "existing_provider",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-manager",
+      "customer_move_id": "needs_manager_approval",
+      "customer_utterance": "I need to ask my manager.",
+      "expected": {
+        "sales_difficulty": "stakeholder-review",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-manager",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "stakeholder-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "I can send the approved review summary for review. No decision or commitment from you today.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "needs_manager_approval",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "customer_utterance": "I need to ask my spouse.",
+      "expected": {
+        "sales_difficulty": "partner-review",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-spouse",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "partner-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "I can send the approved review summary for review. No decision or commitment from you today.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "needs_spouse_or_partner_input",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-sale-ready-ok",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "I am ready to move forward.",
+      "expected": {
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-sale-ready-ok",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "sale-ready-outcome-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "bridge_response": null,
+        "agent_response": "Confirmed. I will log this as sale-ready for the approved follow-up handoff. No payment or contract signing happens on this call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "sale_ready_interest",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-sale-ready-missing",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "I am ready to move forward.",
+      "expected": {
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "call_control": "continue-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-sale-ready-missing",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "bridge_response": null,
+        "agent_response": "Before I mark this sale-ready, I need the approved close criteria confirmed. No payment or contract signing happens on this call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "sale_ready_interest",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-not-interested",
+      "customer_move_id": "not_interested",
+      "customer_utterance": "No thanks, not interested.",
+      "expected": {
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-not-interested",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "crm-suppression-update"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "not_interested",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-hostile",
+      "customer_move_id": "hostile_rejection",
+      "customer_utterance": "Do not call me again.",
+      "expected": {
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-hostile",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "crm-suppression-update"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "hostile_rejection",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-callback",
+      "customer_move_id": "callback_request",
+      "customer_utterance": "Call me back next week.",
+      "expected": {
+        "sales_difficulty": "callback-request",
+        "call_control": "end-call"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-callback",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "callback-request",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "callback_request",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-claim-boundary",
+      "customer_move_id": "skeptical_proof_request",
+      "customer_utterance": "Can you guarantee it works?",
+      "expected": {
+        "sales_difficulty": "claim-boundary",
+        "call_control": "transfer-or-escalate"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-claim-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "claim-boundary",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "I do not want to guarantee something that depends on the details. I can route this to a specialist.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "skeptical_proof_request",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-product-detail",
+      "customer_move_id": "product_detail_lookup",
+      "customer_utterance": "Which exact plan is included?",
+      "expected": {
+        "sales_difficulty": "product-detail-lookup",
+        "call_control": "bridge-then-continue",
+        "stage": "product-detail-check"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-product-detail",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "bridge-then-background",
+        "first_response_latency_budget_ms": 600,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": 3500,
+        "background_modules": [
+          "campaign-knowledge-lookup"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "bridge_response": "One moment, I want to check the approved product information.",
+        "agent_response": "One moment, I want to check the approved product information.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "product_detail_lookup",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "case_id": "prod-045-scheduling",
+      "customer_move_id": "callback_request",
+      "customer_utterance": "Wednesday at 10 works.",
+      "expected": {
+        "sales_difficulty": "scheduling-confirmation",
+        "call_control": "schedule-and-end",
+        "stage": "scheduling"
+      },
+      "runtime_decision": {
+        "case_id": "prod-045-scheduling",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "calendar-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "scheduling-confirmation",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "bridge_response": null,
+        "agent_response": "Confirmed. I will record that time for the specialist callback. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_action_evaluation": {
+        "customer_move_id": "callback_request",
+        "passed": true,
+        "failed_check_ids": []
+      },
+      "generic_response_used": false,
+      "passed": true,
+      "example_type": "synthetic_generic_regression_case",
+      "source_quote": false,
+      "from_single_transcript": false
+    }
+  ],
+  "evaluator_hardening_results": {
+    "generic_clarification_results": [
+      {
+        "case_id": "generic-clarification-must-fail-price_first",
+        "customer_move_id": "price_first",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_pricing_fact_or_boundary",
+          "no_question_before_pricing"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-who_are_you",
+        "customer_move_id": "who_are_you",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_identity_or_role",
+          "requires_reason_for_call"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-send_info",
+        "customer_move_id": "send_info",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_written_info_offer",
+          "no_question_before_send_info"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-email_only",
+        "customer_move_id": "email_only",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_email_only_boundary"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-scam_or_card_fear",
+        "customer_move_id": "scam_or_card_fear",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_no_payment_card_sensitive",
+          "requires_verification_path"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-payment_safety_fear",
+        "customer_move_id": "payment_safety_fear",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_no_card_or_payment",
+          "requires_safe_next_step"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-support_issue",
+        "customer_move_id": "support_issue",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_support_route",
+          "requires_support_transfer"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-cancellation_request",
+        "customer_move_id": "cancellation_request",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_cancellation_route",
+          "requires_cancellation_transfer"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-technical_question",
+        "customer_move_id": "technical_question",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_technical_scope_or_specialist"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-security_review",
+        "customer_move_id": "security_review",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_security_route"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-coverage_confusion",
+        "customer_move_id": "coverage_confusion",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_coverage_boundary"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-sensitive_healthcare_concern",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_healthcare_boundary"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-existing_provider",
+        "customer_move_id": "existing_provider",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_provider_gap_boundary"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-needs_manager_approval",
+        "customer_move_id": "needs_manager_approval",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_reviewable_summary"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-needs_spouse_or_partner_input",
+        "customer_move_id": "needs_spouse_or_partner_input",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_reviewable_summary"
+        ]
+      },
+      {
+        "case_id": "generic-clarification-must-fail-sale_ready_interest",
+        "customer_move_id": "sale_ready_interest",
+        "agent_response": "Thanks. May I ask one quick clarifying question?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_guarded_sale_ready_path"
+        ]
+      },
+      {
+        "case_id": "price-concern-question-must-fail",
+        "customer_move_id": "price_first",
+        "agent_response": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
+        "expected_pass": false,
+        "passed": false,
+        "failed_check_ids": [
+          "generic_clarification_not_allowed",
+          "requires_pricing_fact_or_boundary",
+          "no_question_before_pricing"
+        ]
+      }
+    ],
+    "generic_clarification_fail_count": 17,
+    "generic_clarification_unexpected_pass_count": 0
+  },
+  "runtime_policy_change_summary": {
+    "checkpoint_id": "PROD-045-core-sales-policy-regression-rerun",
+    "runtime_behavior_changed": true,
+    "runtime_policy_update_count": 9,
+    "applied_runtime_policy_updates": [
+      {
+        "policy_update_id": "policy-price-first-direct-answer",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-written-info-and-email-boundary",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-identity-repair-before-discovery",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-payment-and-scam-safety-boundary",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-support-and-cancellation-routing",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-specialist-handoff-for-technical-security-healthcare",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-existing-provider-gap-isolation",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-decision-maker-review-path",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      },
+      {
+        "policy_update_id": "policy-sale-ready-interest-guarded-next-step",
+        "runtime_change_performed": true,
+        "change_type": "deterministic_campaign_guarded_runtime_policy",
+        "evaluator_regression_passed": true
+      }
+    ],
+    "evaluator_only_hardening": [
+      "strict_required_action_checks_per_customer_move",
+      "generic_clarification_negative_controls",
+      "sale_ready_interest_guarded_next_step_checks"
+    ],
+    "blocked_updates": [
+      "retrieval_default_enablement",
+      "provider_or_llm_calling",
+      "voice_playback_unblock",
+      "public_demo_polish",
+      "payment_collection",
+      "contract_signing",
+      "unsupported_claim_expansion"
+    ],
+    "regression_pass_count": 23,
+    "regression_fail_count": 0
+  },
+  "boundaries": {
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  }
+}

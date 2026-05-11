@@ -15,6 +15,80 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-100 - Add German wording-quality gate before human policy review
+
+- Date: 2026-05-11
+- Status: accepted
+- Decision: create `PROD-046B-german-response-wording-quality-pass` before PROD-046 human review to remove internal-policy-sounding German customer-facing response text while keeping PROD-046A routing intact.
+- Why:
+  - PROD-046A proved German intent routing and false-positive behavior, but routing correctness does not prove that the German agent wording is customer-facing
+  - terms such as `sale-ready`, `Support-Warteschlange`, `Kündigungs-Warteschlange`, `freigegebener Spezialistenweg`, and `sichere Passungsfrage` expose implementation language to customers
+  - Tarik cannot personally judge final German wording quality, so the project needs a deterministic wording-risk pass before human/product review
+- Alternatives considered:
+  - proceed directly to human review with the PROD-046A wording
+  - broaden German phrase triggers or call-control behavior
+  - use an LLM or provider to rewrite German responses
+- Consequences:
+  - only German localized responses and German campaign fixture wording are changed
+  - PROD-046B records before/after examples and banned-term counts
+  - English PROD-045 and German PROD-046A regressions must keep passing
+  - retrieval, providers, LLMs, private data, payment collection, contract signing, voice playback, public demo polish, and production runtime promotion remain blocked
+
+### DEC-099 - Add German naturalized regression before human policy review
+
+- Date: 2026-05-11
+- Status: accepted
+- Decision: create `PROD-046A-german-naturalized-policy-regression` as a sub-checkpoint before human review to prove the PROD-045 runtime-policy surface on natural German de-DE utterances.
+- Why:
+  - PROD-045 passed English regression, but German runtime behavior was not proven
+  - literal translations would not test real German phone-call phrasing
+  - German false-positive cases are needed so phrase matching does not over-trigger cancellation, scam, support, security, provider, or payment routes
+- Alternatives considered:
+  - proceed directly to PROD-046 human review
+  - translate the English PROD-045 cases literally
+  - defer German until voice playback work
+- Consequences:
+  - narrow German phrase triggers and localized responses are added to the deterministic runtime policy surface
+  - English PROD-045 regression must keep passing
+  - retrieval, provider calls, LLMs, private data, payment collection, contract signing, voice playback, public demo polish, and production runtime promotion remain blocked
+
+### DEC-098 - Apply targeted core sales-policy changes only after evaluator hardening
+
+- Date: 2026-05-11
+- Status: accepted
+- Decision: create `PROD-045-core-sales-policy-regression-rerun` to harden required-action evaluation and apply the PROD-044 justified runtime-policy updates behind deterministic regression cases.
+- Why:
+  - PROD-044 exposed that generic clarification could incorrectly pass required-boundary moves
+  - direct-answer, channel-boundary, payment-safety, support/cancellation, specialist-handoff, provider-gap, review-summary, and sale-ready cases need explicit deterministic checks
+  - reusable sales-agent behavior must still be driven by campaign-approved facts rather than hard-coded product claims
+- Alternatives considered:
+  - accept the PROD-044 evaluator as sufficient
+  - make broader runtime rewrites
+  - enable retrieval or playbook lookup by default
+- Consequences:
+  - runtime policy behavior changes only in the deterministic realtime turn classifier/response map
+  - retrieval, providers, LLMs, private data, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion remain blocked
+  - the next checkpoint should be human review of the targeted policy change evidence before broader promotion
+
+### DEC-097 - Prepare PROD-044 as review/design before runtime sales-policy edits
+
+- Date: 2026-05-11
+- Status: accepted
+- Decision: create `PROD-044-core-sales-policy-update` as an offline review/design packet that identifies evidence-backed candidate core sales-policy updates from PROD-043 without applying runtime changes.
+- Why:
+  - PROD-043 showed the playbook/evaluator can classify customer moves and evaluate single-turn responses, but runtime edits should be gated by deterministic regressions
+  - current runtime probes expose targeted gaps such as price-first directness, written-info/email-only boundaries, identity repair, payment/scam safety, support/cancellation routing, specialist handoff boundaries, existing-provider gap isolation, and decision-maker review paths
+  - campaign-approved facts are required before the reusable core can safely answer price, identity, support, cancellation, technical, security, coverage, healthcare, or review-summary turns
+- Alternatives considered:
+  - directly edit `scripts/run_realtime_turn_simulation.py`
+  - enable retrieval-backed playbook guidance by default
+  - resume synthetic conversation generation
+- Consequences:
+  - runtime behavior remains unchanged in PROD-044
+  - candidate policy updates are explicitly marked `candidate_not_applied`
+  - blocked updates and required campaign-fact guards are now visible in generated review artifacts
+  - next checkpoint should apply only selected policy changes behind deterministic regression tests
+
 ### DEC-096 - Add offline PROD-043 playbook adapter before runtime policy changes
 
 - Date: 2026-05-11

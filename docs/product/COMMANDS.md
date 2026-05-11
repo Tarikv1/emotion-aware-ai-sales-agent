@@ -1131,6 +1131,54 @@ Validate the PROD-043 offline customer-move classifier, playbook retrieval cases
 python scripts\validate_prod_043_sales_playbook_runtime_adapter.py
 ```
 
+Run the PROD-044 core sales-policy update review packet:
+
+```powershell
+python scripts\run_prod_044_core_sales_policy_update.py
+```
+
+Validate that PROD-044 lists only evidence-backed candidate policy updates, blocked updates, required campaign-fact guards, and unchanged runtime/retrieval/provider/private-data boundaries:
+
+```powershell
+python scripts\validate_prod_044_core_sales_policy_update.py
+```
+
+Run the PROD-045 core sales-policy regression rerun:
+
+```powershell
+python scripts\run_prod_045_core_sales_policy_regression_rerun.py
+```
+
+Validate that PROD-045 hardens required-action evaluation, rejects generic clarification for required-boundary moves, and applies only deterministic campaign-guarded runtime policy updates while keeping retrieval/provider/LLM/private-data boundaries blocked:
+
+```powershell
+python scripts\validate_prod_045_core_sales_policy_regression_rerun.py
+```
+
+Run the PROD-046A German naturalized policy regression checkpoint:
+
+```powershell
+python scripts\run_prod_046a_german_naturalized_policy_regression.py
+```
+
+Validate that PROD-046A covers naturalized de-DE intent-equivalent variants, German false-positive priority behavior, German localized policy responses, and the unchanged retrieval/provider/LLM/private-data boundaries:
+
+```powershell
+python scripts\validate_prod_046a_german_naturalized_policy_regression.py
+```
+
+Run the PROD-046B German response wording-quality pass:
+
+```powershell
+python scripts\run_prod_046b_german_response_wording_quality_pass.py
+```
+
+Validate that PROD-046B removes internal-policy wording from German customer-facing responses while keeping PROD-046A German and PROD-045 English regressions passing:
+
+```powershell
+python scripts\validate_prod_046b_german_response_wording_quality_pass.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

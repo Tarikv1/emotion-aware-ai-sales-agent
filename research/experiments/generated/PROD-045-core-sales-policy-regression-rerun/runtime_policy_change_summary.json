@@ -1,0 +1,77 @@
+{
+  "checkpoint_id": "PROD-045-core-sales-policy-regression-rerun",
+  "runtime_behavior_changed": true,
+  "runtime_policy_update_count": 9,
+  "applied_runtime_policy_updates": [
+    {
+      "policy_update_id": "policy-price-first-direct-answer",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-written-info-and-email-boundary",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-identity-repair-before-discovery",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-payment-and-scam-safety-boundary",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-support-and-cancellation-routing",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-specialist-handoff-for-technical-security-healthcare",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-existing-provider-gap-isolation",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-decision-maker-review-path",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    },
+    {
+      "policy_update_id": "policy-sale-ready-interest-guarded-next-step",
+      "runtime_change_performed": true,
+      "change_type": "deterministic_campaign_guarded_runtime_policy",
+      "evaluator_regression_passed": true
+    }
+  ],
+  "evaluator_only_hardening": [
+    "strict_required_action_checks_per_customer_move",
+    "generic_clarification_negative_controls",
+    "sale_ready_interest_guarded_next_step_checks"
+  ],
+  "blocked_updates": [
+    "retrieval_default_enablement",
+    "provider_or_llm_calling",
+    "voice_playback_unblock",
+    "public_demo_polish",
+    "payment_collection",
+    "contract_signing",
+    "unsupported_claim_expansion"
+  ],
+  "regression_pass_count": 23,
+  "regression_fail_count": 0
+}

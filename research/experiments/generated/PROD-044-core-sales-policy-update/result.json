@@ -1,0 +1,41 @@
+{
+  "checkpoint_id": "PROD-044-core-sales-policy-update",
+  "checkpoint_name": "Core Sales Policy Update Review Packet",
+  "source_checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+  "summary": {
+    "source_checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+    "prod_043_validator_passed": true,
+    "prod_043_classifier_accuracy": 0.9643,
+    "prod_043_playbook_retrieval_match_rate": 1.0,
+    "prod_043_agent_response_evaluation_expected_match_rate": 1.0,
+    "current_runtime_probe_count": 28,
+    "current_runtime_probe_pass_count": 26,
+    "current_runtime_probe_fail_count": 2,
+    "candidate_policy_update_count": 4,
+    "blocked_update_count": 6,
+    "required_campaign_fact_guard_count": 16,
+    "runtime_policy_update_justified": true,
+    "runtime_changes_performed": false,
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "runtime_agent_modified": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-044-core-sales-policy-update/result.json",
+    "report": "research/experiments/generated/PROD-044-core-sales-policy-update/report.md",
+    "core_sales_policy_review_packet": "research/experiments/generated/PROD-044-core-sales-policy-update/core_sales_policy_review_packet.json",
+    "prod_044_review_data": "research/experiments/generated/PROD-044-core-sales-policy-update/prod_044_review_data.json",
+    "prod_044_review_html": "research/experiments/generated/PROD-044-core-sales-policy-update/prod_044_review.html"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-045-core-sales-policy-regression-rerun"
+}

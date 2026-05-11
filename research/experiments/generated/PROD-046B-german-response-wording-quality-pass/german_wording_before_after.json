@@ -1,0 +1,197 @@
+{
+  "items": [
+    {
+      "sales_difficulty": "price-first-direct",
+      "before_response": "Der freigegebene Preisrahmen liegt beim Starter-Paket bei 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. Keine Zahlung und keine Verpflichtung in diesem Anruf.",
+      "after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "identity-repair",
+      "before_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das nicht relevant ist, höre ich hier auf.",
+      "after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "written-info-request",
+      "before_response": "Ich kann die freigegebene schriftliche Zusammenfassung senden und es dabei belassen.",
+      "after_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "email-only-boundary",
+      "before_response": "Verstanden. Nur per E-Mail. Ich kann die freigegebene E-Mail-Zusammenfassung senden und dränge nicht auf einen Anruf.",
+      "after_response": "Verstanden. Ich halte es bei E-Mail, sende Ihnen eine kurze freigegebene E-Mail-Zusammenfassung und dränge nicht auf ein Telefonat.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "scam-safety-boundary",
+      "before_response": "In diesem Anruf werden keine Zahlungs-, Karten- oder sensiblen Daten aufgenommen. Ich kann die öffentliche Verifizierungsseite und die schriftliche Zusammenfassung zur Verifizierung senden.",
+      "after_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "payment-safety-boundary",
+      "before_response": "Hier werden keine Karten- oder Zahlungsdaten benötigt. Ich halte den nächsten Schritt nur bei sicheren schriftlichen Informationen: die freigegebene einseitige Zusammenfassung.",
+      "after_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "support-route",
+      "before_response": "Das ist ein Support-Thema. Ich stoppe den Verkaufspfad und leite das an die Support-Warteschlange weiter.",
+      "after_response": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
+      "changed": true,
+      "banned_terms_before": [
+        "support-warteschlange"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "cancellation-route",
+      "before_response": "Ich stoppe den Verkaufspfad und leite das an die Kündigungs-Warteschlange weiter.",
+      "after_response": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "changed": true,
+      "banned_terms_before": [
+        "kündigungs-warteschlange"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "technical-specialist-route",
+      "before_response": "Im freigegebenen Rahmen: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an den freigegebenen Spezialistenweg weiterleiten.",
+      "after_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+      "changed": true,
+      "banned_terms_before": [
+        "freigegebenen spezialistenweg"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "security-review-route",
+      "before_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder einen Spezialisten. Ich kann das an den freigegebenen Spezialistenweg weiterleiten und mache hier keine breiten Compliance-Zusagen.",
+      "after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an eine zuständige Fachperson weiterleiten und mache hier keine pauschalen Compliance-Zusagen.",
+      "changed": true,
+      "banned_terms_before": [
+        "freigegebenen spezialistenweg"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "coverage-boundary-route",
+      "before_response": "Ich darf in diesem Anruf keine medizinische, gesundheitliche oder Deckungsberatung geben. Ich kann das an den freigegebenen Spezialistenweg weiterleiten.",
+      "after_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "changed": true,
+      "banned_terms_before": [
+        "freigegebenen spezialistenweg"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "healthcare-boundary-route",
+      "before_response": "Ich darf in diesem Anruf keine medizinische, gesundheitliche oder Deckungsberatung geben. Ich kann das an den freigegebenen Spezialistenweg weiterleiten.",
+      "after_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "changed": true,
+      "banned_terms_before": [
+        "freigegebenen spezialistenweg"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "existing-provider-gap",
+      "before_response": "Ich behaupte nicht, dass dies Ihren Anbieter ersetzt. Die sichere Passungsfrage ist, ob trotz Ihres aktuellen Anbieters noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "after_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "changed": true,
+      "banned_terms_before": [
+        "sichere passungsfrage"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "stakeholder-review",
+      "before_response": "Ich kann die freigegebene Zusammenfassung zur Prüfung senden. Keine Entscheidung und keine Verpflichtung heute.",
+      "after_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "partner-review",
+      "before_response": "Ich kann die freigegebene Zusammenfassung zur Prüfung senden. Keine Entscheidung und keine Verpflichtung heute.",
+      "after_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+      "changed": true,
+      "banned_terms_before": [],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "sale-ready-commitment",
+      "before_response": "Bestätigt. Ich markiere das als sale-ready für die freigegebene Übergabe zum nächsten Schritt. Keine Zahlung und keine Vertragsunterzeichnung in diesem Anruf.",
+      "after_response": "Gut, ich halte fest, dass Sie den nächsten freigegebenen Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "changed": true,
+      "banned_terms_before": [
+        "sale-ready",
+        "freigegebene übergabe zum nächsten schritt"
+      ],
+      "banned_terms_after": [],
+      "example_type": "synthetic_wording_quality_review_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    }
+  ]
+}

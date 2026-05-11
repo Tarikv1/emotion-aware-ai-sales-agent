@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-045 Core Sales Policy Regression Rerun</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #202124; }
+    .summary, .card { border: 1px solid #d7dce2; border-radius: 8px; padding: 14px; margin: 12px 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+    th, td { border: 1px solid #d7dce2; padding: 8px; text-align: left; vertical-align: top; }
+    code { background: #f4f6f8; padding: 2px 4px; }
+  </style>
+</head>
+<body>
+  <h1>PROD-045 Core Sales Policy Regression Rerun</h1>
+  <section class="summary">
+    <h2>Boundary Summary</h2>
+    <p>Runtime behavior changed: <code>true</code></p>
+    <p>Retrieval enabled: <code>false</code> | Provider calls: <code>false</code> | LLM used: <code>false</code></p>
+    <p>Generic clarification unexpected passes: <code>0</code></p>
+    <p>Regression pass rate: <code>23 / 23</code></p>
+  </section>
+  <section>
+    <h2>Evaluator Hardening</h2>
+    <p>Generic clarification must fail all required-boundary moves.</p>
+    <table>
+      <tr><th>Customer move</th><th>Passed</th><th>Failed checks</th></tr>
+      <tr><td>price_first</td><td>false</td><td>generic_clarification_not_allowed, requires_pricing_fact_or_boundary, no_question_before_pricing</td></tr><tr><td>who_are_you</td><td>false</td><td>generic_clarification_not_allowed, requires_identity_or_role, requires_reason_for_call</td></tr><tr><td>send_info</td><td>false</td><td>generic_clarification_not_allowed, requires_written_info_offer, no_question_before_send_info</td></tr><tr><td>email_only</td><td>false</td><td>generic_clarification_not_allowed, requires_email_only_boundary</td></tr><tr><td>scam_or_card_fear</td><td>false</td><td>generic_clarification_not_allowed, requires_no_payment_card_sensitive, requires_verification_path</td></tr><tr><td>payment_safety_fear</td><td>false</td><td>generic_clarification_not_allowed, requires_no_card_or_payment, requires_safe_next_step</td></tr><tr><td>support_issue</td><td>false</td><td>generic_clarification_not_allowed, requires_support_route, requires_support_transfer</td></tr><tr><td>cancellation_request</td><td>false</td><td>generic_clarification_not_allowed, requires_cancellation_route, requires_cancellation_transfer</td></tr><tr><td>technical_question</td><td>false</td><td>generic_clarification_not_allowed, requires_technical_scope_or_specialist</td></tr><tr><td>security_review</td><td>false</td><td>generic_clarification_not_allowed, requires_security_route</td></tr><tr><td>coverage_confusion</td><td>false</td><td>generic_clarification_not_allowed, requires_coverage_boundary</td></tr><tr><td>sensitive_healthcare_concern</td><td>false</td><td>generic_clarification_not_allowed, requires_healthcare_boundary</td></tr><tr><td>existing_provider</td><td>false</td><td>generic_clarification_not_allowed, requires_provider_gap_boundary</td></tr><tr><td>needs_manager_approval</td><td>false</td><td>generic_clarification_not_allowed, requires_reviewable_summary</td></tr><tr><td>needs_spouse_or_partner_input</td><td>false</td><td>generic_clarification_not_allowed, requires_reviewable_summary</td></tr><tr><td>sale_ready_interest</td><td>false</td><td>generic_clarification_not_allowed, requires_guarded_sale_ready_path</td></tr><tr><td>price_first</td><td>false</td><td>generic_clarification_not_allowed, requires_pricing_fact_or_boundary, no_question_before_pricing</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>Runtime Regression Cases</h2>
+    <div class="grid">
+            <article class="card">
+              <h3>prod-045-price-first</h3>
+              <p><b>Move:</b> price_first | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> What does this cost?</p>
+              <p><b>Agent:</b> The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing. No payment or commitment on this call.</p>
+              <p><b>Sales difficulty:</b> price-first-direct | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-who-are-you</h3>
+              <p><b>Move:</b> who_are_you | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Who exactly are you?</p>
+              <p><b>Agent:</b> This is Maya from RouteSignal. The reason for the call is a short check on callback ownership and follow-up routing. I can stop if this is not relevant.</p>
+              <p><b>Sales difficulty:</b> identity-repair | <b>Call control:</b> continue-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-send-info</h3>
+              <p><b>Move:</b> send_info | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Send me the details.</p>
+              <p><b>Agent:</b> I can send the approved one-page summary and leave it there.</p>
+              <p><b>Sales difficulty:</b> written-info-request | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-email-only</h3>
+              <p><b>Move:</b> email_only | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Just email me.</p>
+              <p><b>Agent:</b> Understood. Email only. I can send the approved email summary and will not push for a call.</p>
+              <p><b>Sales difficulty:</b> email-only-boundary | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-scam-fear</h3>
+              <p><b>Move:</b> scam_or_card_fear | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Is this a scam?</p>
+              <p><b>Agent:</b> No payment, card, or sensitive details are collected on this call. I can send the public verification page and written summary for verification.</p>
+              <p><b>Sales difficulty:</b> scam-safety-boundary | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-payment-fear</h3>
+              <p><b>Move:</b> payment_safety_fear | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I am not giving card details.</p>
+              <p><b>Agent:</b> No card or payment details are needed here. I can keep the next step to safe written information: the approved one-page summary.</p>
+              <p><b>Sales difficulty:</b> payment-safety-boundary | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-support</h3>
+              <p><b>Move:</b> support_issue | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> This is a support issue.</p>
+              <p><b>Agent:</b> That is a support issue, so I will stop the sales path and route this to the support queue.</p>
+              <p><b>Sales difficulty:</b> support-route | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-cancellation</h3>
+              <p><b>Move:</b> cancellation_request | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I want to cancel.</p>
+              <p><b>Agent:</b> I will stop the sales path and route this to the cancellation support queue.</p>
+              <p><b>Sales difficulty:</b> cancellation-route | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-technical</h3>
+              <p><b>Move:</b> technical_question | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I have a technical integration question.</p>
+              <p><b>Agent:</b> Within the approved scope: the system can route follow-up ownership notes, but implementation details require review. If you need more detail, I can route this to the specialist path.</p>
+              <p><b>Sales difficulty:</b> technical-specialist-route | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-security</h3>
+              <p><b>Move:</b> security_review | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Our security team needs a review.</p>
+              <p><b>Agent:</b> Security review needs approved material or a specialist. I can route this to the approved specialist route and will not make broad compliance claims.</p>
+              <p><b>Sales difficulty:</b> security-review-route | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-coverage</h3>
+              <p><b>Move:</b> coverage_confusion | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I am confused about what is covered.</p>
+              <p><b>Agent:</b> I cannot give medical, health, or coverage advice on this call. I can route this to the approved specialist route.</p>
+              <p><b>Sales difficulty:</b> coverage-boundary-route | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-healthcare</h3>
+              <p><b>Move:</b> sensitive_healthcare_concern | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> This is a healthcare concern.</p>
+              <p><b>Agent:</b> I cannot give medical, health, or coverage advice on this call. I can route this to the approved specialist route.</p>
+              <p><b>Sales difficulty:</b> healthcare-boundary-route | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-existing-provider</h3>
+              <p><b>Move:</b> existing_provider | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> We already have a provider.</p>
+              <p><b>Agent:</b> I will not claim this replaces your provider. The safe fit-gap question is whether missed follow-ups still happen with your current provider.</p>
+              <p><b>Sales difficulty:</b> existing-provider-gap | <b>Call control:</b> continue-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-manager</h3>
+              <p><b>Move:</b> needs_manager_approval | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I need to ask my manager.</p>
+              <p><b>Agent:</b> I can send the approved review summary for review. No decision or commitment from you today.</p>
+              <p><b>Sales difficulty:</b> stakeholder-review | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-spouse</h3>
+              <p><b>Move:</b> needs_spouse_or_partner_input | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I need to ask my spouse.</p>
+              <p><b>Agent:</b> I can send the approved review summary for review. No decision or commitment from you today.</p>
+              <p><b>Sales difficulty:</b> partner-review | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-sale-ready-ok</h3>
+              <p><b>Move:</b> sale_ready_interest | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I am ready to move forward.</p>
+              <p><b>Agent:</b> Confirmed. I will log this as sale-ready for the approved follow-up handoff. No payment or contract signing happens on this call.</p>
+              <p><b>Sales difficulty:</b> sale-ready-commitment | <b>Call control:</b> close-and-log-sale-ready</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-sale-ready-missing</h3>
+              <p><b>Move:</b> sale_ready_interest | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> I am ready to move forward.</p>
+              <p><b>Agent:</b> Before I mark this sale-ready, I need the approved close criteria confirmed. No payment or contract signing happens on this call.</p>
+              <p><b>Sales difficulty:</b> sale-ready-missing-criteria | <b>Call control:</b> continue-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-not-interested</h3>
+              <p><b>Move:</b> not_interested | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> No thanks, not interested.</p>
+              <p><b>Agent:</b> Understood. I will make sure this contact is marked so you are not called again. Goodbye.</p>
+              <p><b>Sales difficulty:</b> do-not-call | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-hostile</h3>
+              <p><b>Move:</b> hostile_rejection | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Do not call me again.</p>
+              <p><b>Agent:</b> Understood. I will make sure this contact is marked so you are not called again. Goodbye.</p>
+              <p><b>Sales difficulty:</b> do-not-call | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-callback</h3>
+              <p><b>Move:</b> callback_request | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Call me back next week.</p>
+              <p><b>Agent:</b> I can log a callback request and keep it optional. No forced appointment or commitment on this call.</p>
+              <p><b>Sales difficulty:</b> callback-request | <b>Call control:</b> end-call</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-claim-boundary</h3>
+              <p><b>Move:</b> skeptical_proof_request | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Can you guarantee it works?</p>
+              <p><b>Agent:</b> I do not want to guarantee something that depends on the details. I can route this to a specialist.</p>
+              <p><b>Sales difficulty:</b> claim-boundary | <b>Call control:</b> transfer-or-escalate</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-product-detail</h3>
+              <p><b>Move:</b> product_detail_lookup | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Which exact plan is included?</p>
+              <p><b>Agent:</b> One moment, I want to check the approved product information.</p>
+              <p><b>Sales difficulty:</b> product-detail-lookup | <b>Call control:</b> bridge-then-continue</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            
+            <article class="card">
+              <h3>prod-045-scheduling</h3>
+              <p><b>Move:</b> callback_request | <b>Passed:</b> true</p>
+              <p><b>Customer:</b> Wednesday at 10 works.</p>
+              <p><b>Agent:</b> Confirmed. I will record that time for the specialist callback. Goodbye.</p>
+              <p><b>Sales difficulty:</b> scheduling-confirmation | <b>Call control:</b> schedule-and-end</p>
+              <p><b>Required-action failed checks:</b> none</p>
+            </article>
+            </div>
+  </section>
+  <section>
+    <h2>Applied Runtime Policy Updates</h2>
+    <ul><li>policy-price-first-direct-answer</li><li>policy-written-info-and-email-boundary</li><li>policy-identity-repair-before-discovery</li><li>policy-payment-and-scam-safety-boundary</li><li>policy-support-and-cancellation-routing</li><li>policy-specialist-handoff-for-technical-security-healthcare</li><li>policy-existing-provider-gap-isolation</li><li>policy-decision-maker-review-path</li><li>policy-sale-ready-interest-guarded-next-step</li></ul>
+  </section>
+</body>
+</html>

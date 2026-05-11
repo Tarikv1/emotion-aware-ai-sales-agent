@@ -1,0 +1,1139 @@
+{
+  "checkpoint_id": "PROD-044-core-sales-policy-update",
+  "checkpoint_name": "Core Sales Policy Update Review Packet",
+  "source_checkpoint_id": "PROD-043-sales-playbook-runtime-adapter",
+  "review_basis": [
+    "PROD-043 result/report metrics",
+    "PROD-043 deterministic agent response evaluations",
+    "PROD-043 runtime adapter review data",
+    "Offline probes of the current deterministic realtime turn entrypoint using PROD-043 synthetic generic cases",
+    "Realtime architecture and BRAIN-002 runtime state boundaries"
+  ],
+  "source_summary": {
+    "customer_move_classifier_case_count": 84,
+    "classifier_pass_count": 81,
+    "classifier_fail_count": 3,
+    "classifier_accuracy": 0.9643,
+    "playbook_retrieval_case_count": 84,
+    "playbook_retrieval_match_count": 84,
+    "playbook_retrieval_match_rate": 1.0,
+    "agent_response_evaluation_case_count": 56,
+    "agent_response_evaluation_pass_count": 28,
+    "agent_response_evaluation_fail_count": 28,
+    "agent_response_evaluation_expected_match_count": 56,
+    "agent_response_evaluation_expected_match_rate": 1.0,
+    "actual_agent_logic_used": true,
+    "actual_agent_logic_unavailable_reason": "",
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "runtime_agent_modified": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "production_runtime_promotion_allowed": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false
+  },
+  "decision": {
+    "runtime_policy_update_justified": true,
+    "runtime_changes_performed": false,
+    "apply_runtime_changes_now": false,
+    "reason": "PROD-043 evidence identifies targeted policy gaps, but this checkpoint is a review/design packet. Runtime changes need a separate deterministic regression-gated application step."
+  },
+  "candidate_policy_updates": [
+    {
+      "candidate_update_id": "policy-existing-provider-gap-isolation",
+      "title": "Isolate a gap without claiming replacement superiority",
+      "status": "candidate_not_applied",
+      "justified_by_prod_043_evidence": true,
+      "policy_change_summary": "When the customer has an existing provider, the core should avoid replacement or competitor-superiority claims and ask only whether there is a specific uncovered gap.",
+      "target_runtime_surface": "scripts/run_realtime_turn_simulation.py::localized response map",
+      "customer_move_ids": [
+        "existing_provider"
+      ],
+      "prod_043_evidence": [
+        {
+          "case_id": "eval-existing-provider-good-001",
+          "customer_move_id": "existing_provider",
+          "evaluation_rule_ids": [
+            "eval-existing_provider-001"
+          ],
+          "expected_result": "pass",
+          "passed": true,
+          "failed_check_ids": [],
+          "detected_failure_flags": [],
+          "success_dimensions": [
+            "directness",
+            "clarity",
+            "low_pressure"
+          ]
+        },
+        {
+          "case_id": "eval-existing-provider-bad-001",
+          "customer_move_id": "existing_provider",
+          "evaluation_rule_ids": [
+            "eval-existing_provider-001"
+          ],
+          "expected_result": "fail",
+          "passed": false,
+          "failed_check_ids": [
+            "failed_existing_provider_objection"
+          ],
+          "detected_failure_flags": [
+            "failed_existing_provider_objection"
+          ],
+          "success_dimensions": []
+        }
+      ],
+      "current_runtime_probe_evidence": [
+        {
+          "probe_id": "probe-existing_provider",
+          "customer_move_id": "existing_provider",
+          "source_case_id": "case-existing-provider-001",
+          "customer_utterance": "We already have a provider.",
+          "actual_agent_response": "I will not claim this replaces your provider. The only useful check is whether there is a specific gap they do not cover.",
+          "runtime_sales_difficulty": "existing-provider-gap",
+          "runtime_next_action": "ask-follow-up",
+          "runtime_call_control": "continue-call",
+          "prod_043_evaluation_rule_ids": [
+            "eval-existing_provider-001"
+          ],
+          "detected_agent_tactic_ids": [],
+          "failed_check_ids": [],
+          "detected_failure_flags": [],
+          "prod_043_rule_passed": true
+        }
+      ],
+      "required_campaign_fact_guard_ids": [
+        "guard-no-competitor-superiority-claim",
+        "guard-campaign-fit-gap-only"
+      ],
+      "runtime_change_performed": false,
+      "retrieval_required": false,
+      "provider_or_llm_required": false,
+      "deterministic_regression_required_before_apply": true,
+      "minimum_regression_cases": [
+        "existing_provider: good response follows PROD-043 required tactics",
+        "existing_provider: bad response still fails deterministic evaluation"
+      ]
+    },
+    {
+      "candidate_update_id": "policy-identity-repair-before-discovery",
+      "title": "Identify caller and reason before continuing",
+      "status": "candidate_not_applied",
+      "justified_by_prod_043_evidence": true,
+      "policy_change_summary": "When the customer asks who is calling, the core should identify the caller/company/role and brief reason using campaign facts before any pitch or discovery.",
+      "target_runtime_surface": "scripts/run_realtime_turn_simulation.py::classify_runtime_input and localized response map",
+      "customer_move_ids": [
+        "who_are_you"
+      ],
+      "prod_043_evidence": [
+        {
+          "case_id": "eval-who-are-you-good-001",
+          "customer_move_id": "who_are_you",
+          "evaluation_rule_ids": [
+            "eval-who_are_you-001"
+          ],
+          "expected_result": "pass",
+          "passed": true,
+          "failed_check_ids": [],
+          "detected_failure_flags": [],
+          "success_dimensions": [
+            "directness",
+            "clarity",
+            "low_pressure"
+          ]
+        },
+        {
+          "case_id": "eval-who-are-you-bad-001",
+          "customer_move_id": "who_are_you",
+          "evaluation_rule_ids": [
+            "eval-who_are_you-001"
+          ],
+          "expected_result": "fail",
+          "passed": false,
+          "failed_check_ids": [
+            "failed_identity_repair",
+            "vague_pitch"
+          ],
+          "detected_failure_flags": [
+            "failed_identity_repair",
+            "vague_pitch"
+          ],
+          "success_dimensions": []
+        }
+      ],
+      "current_runtime_probe_evidence": [
+        {
+          "probe_id": "probe-who_are_you",
+          "customer_move_id": "who_are_you",
+          "source_case_id": "case-who-are-you-001",
+          "customer_utterance": "Who are you again?",
+          "actual_agent_response": "I should verify who is calling before continuing. I can give the approved identity and reason for this campaign.",
+          "runtime_sales_difficulty": "identity-repair",
+          "runtime_next_action": "continue",
+          "runtime_call_control": "continue-call",
+          "prod_043_evaluation_rule_ids": [
+            "eval-who_are_you-001"
+          ],
+          "detected_agent_tactic_ids": [],
+          "failed_check_ids": [
+            "failed_identity_repair"
+          ],
+          "detected_failure_flags": [
+            "failed_identity_repair"
+          ],
+          "prod_043_rule_passed": false
+        }
+      ],
+      "required_campaign_fact_guard_ids": [
+        "guard-approved-identity-and-reason"
+      ],
+      "runtime_change_performed": false,
+      "retrieval_required": false,
+      "provider_or_llm_required": false,
+      "deterministic_regression_required_before_apply": true,
+      "minimum_regression_cases": [
+        "who_are_you: good response follows PROD-043 required tactics",
+        "who_are_you: bad response still fails deterministic evaluation"
+      ]
+    },
+    {
+      "candidate_update_id": "policy-payment-and-scam-safety-boundary",
+      "title": "State no payment or card collection on safety fears",
+      "status": "candidate_not_applied",
+      "justified_by_prod_043_evidence": true,
+      "policy_change_summary": "When the customer raises scam, card, or payment fear, the core should explicitly say no payment/card details are collected and offer a safe verification or written-info path.",
+      "target_runtime_surface": "scripts/run_realtime_turn_simulation.py::classify_runtime_input and localized response map",
+      "customer_move_ids": [
+        "payment_safety_fear"
+      ],
+      "prod_043_evidence": [
+        {
+          "case_id": "eval-payment-safety-fear-good-001",
+          "customer_move_id": "payment_safety_fear",
+          "evaluation_rule_ids": [
+            "eval-payment_safety_fear-001"
+          ],
+          "expected_result": "pass",
+          "passed": true,
+          "failed_check_ids": [],
+          "detected_failure_flags": [],
+          "success_dimensions": [
+            "directness",
+            "clarity",
+            "low_pressure"
+          ]
+        },
+        {
+          "case_id": "eval-payment-safety-fear-bad-001",
+          "customer_move_id": "payment_safety_fear",
+          "evaluation_rule_ids": [
+            "eval-payment_safety_fear-001"
+          ],
+          "expected_result": "fail",
+          "passed": false,
+          "failed_check_ids": [
+            "unsafe_payment_request"
+          ],
+          "detected_failure_flags": [
+            "unsafe_payment_request"
+          ],
+          "success_dimensions": []
+        }
+      ],
+      "current_runtime_probe_evidence": [
+        {
+          "probe_id": "probe-payment_safety_fear",
+          "customer_move_id": "payment_safety_fear",
+          "source_case_id": "case-payment-safety-fear-001",
+          "customer_utterance": "I am not giving card details.",
+          "actual_agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+          "runtime_sales_difficulty": "payment-safety-boundary",
+          "runtime_next_action": "create-follow-up-task",
+          "runtime_call_control": "end-call",
+          "prod_043_evaluation_rule_ids": [
+            "eval-payment_safety_fear-001"
+          ],
+          "detected_agent_tactic_ids": [
+            "written_info_offer",
+            "payment_safety_boundary"
+          ],
+          "failed_check_ids": [
+            "unsafe_payment_request"
+          ],
+          "detected_failure_flags": [
+            "unsafe_payment_request"
+          ],
+          "prod_043_rule_passed": false
+        }
+      ],
+      "required_campaign_fact_guard_ids": [
+        "guard-no-payment-collection",
+        "guard-approved-verification-path"
+      ],
+      "runtime_change_performed": false,
+      "retrieval_required": false,
+      "provider_or_llm_required": false,
+      "deterministic_regression_required_before_apply": true,
+      "minimum_regression_cases": [
+        "payment_safety_fear: good response follows PROD-043 required tactics",
+        "payment_safety_fear: bad response still fails deterministic evaluation"
+      ]
+    },
+    {
+      "candidate_update_id": "policy-specialist-handoff-for-technical-security-healthcare",
+      "title": "Handoff technical, security, coverage, and healthcare boundaries",
+      "status": "candidate_not_applied",
+      "justified_by_prod_043_evidence": true,
+      "policy_change_summary": "For technical, security, coverage, or healthcare questions beyond approved campaign facts, the core should avoid guessing and route to a specialist or qualified reviewer.",
+      "target_runtime_surface": "scripts/run_realtime_turn_simulation.py::classify_runtime_input and localized response map",
+      "customer_move_ids": [
+        "security_review"
+      ],
+      "prod_043_evidence": [
+        {
+          "case_id": "eval-security-review-good-001",
+          "customer_move_id": "security_review",
+          "evaluation_rule_ids": [
+            "eval-security_review-001"
+          ],
+          "expected_result": "pass",
+          "passed": true,
+          "failed_check_ids": [],
+          "detected_failure_flags": [],
+          "success_dimensions": [
+            "directness",
+            "clarity",
+            "low_pressure"
+          ]
+        },
+        {
+          "case_id": "eval-security-review-bad-001",
+          "customer_move_id": "security_review",
+          "evaluation_rule_ids": [
+            "eval-security_review-001"
+          ],
+          "expected_result": "fail",
+          "passed": false,
+          "failed_check_ids": [
+            "unsupported_claim",
+            "overpromised_results"
+          ],
+          "detected_failure_flags": [
+            "unsupported_claim",
+            "overpromised_results"
+          ],
+          "success_dimensions": []
+        }
+      ],
+      "current_runtime_probe_evidence": [
+        {
+          "probe_id": "probe-security_review",
+          "customer_move_id": "security_review",
+          "source_case_id": "case-security-review-001",
+          "customer_utterance": "Security needs to review this.",
+          "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+          "runtime_sales_difficulty": "unknown-runtime-signal",
+          "runtime_next_action": "ask-follow-up",
+          "runtime_call_control": "continue-call",
+          "prod_043_evaluation_rule_ids": [
+            "eval-security_review-001"
+          ],
+          "detected_agent_tactic_ids": [
+            "single_discovery_question"
+          ],
+          "failed_check_ids": [],
+          "detected_failure_flags": [],
+          "prod_043_rule_passed": true
+        }
+      ],
+      "required_campaign_fact_guard_ids": [
+        "guard-approved-technical-scope",
+        "guard-specialist-route-available",
+        "guard-no-medical-or-coverage-advice"
+      ],
+      "runtime_change_performed": false,
+      "retrieval_required": false,
+      "provider_or_llm_required": false,
+      "deterministic_regression_required_before_apply": true,
+      "minimum_regression_cases": [
+        "security_review: good response follows PROD-043 required tactics",
+        "security_review: bad response still fails deterministic evaluation"
+      ]
+    }
+  ],
+  "blocked_updates": [
+    {
+      "blocked_update_id": "blocked-enable-retrieval-default",
+      "reason": "PROD-043 validates offline artifact lookup only; it does not prove live retrieval should be enabled."
+    },
+    {
+      "blocked_update_id": "blocked-broaden-product-claims",
+      "reason": "PROD-043 evidence supports safer turn policy, not broader claims, guarantees, ROI, medical, coverage, security, or competitor assertions."
+    },
+    {
+      "blocked_update_id": "blocked-voice-playback-or-demo-polish",
+      "reason": "PROD-043 is a single-turn offline evaluator and does not unblock voice playback, public demo polish, or synthetic dialogue promotion."
+    },
+    {
+      "blocked_update_id": "blocked-payment-or-contract-close",
+      "reason": "The product boundary remains no payment collection, no contract signing, and no unsupported close."
+    },
+    {
+      "blocked_update_id": "blocked-full-conversation-generation",
+      "reason": "PROD-044 is a policy review packet, not a scenario simulator or synthetic conversation generator."
+    },
+    {
+      "blocked_update_id": "blocked-runtime-change-without-regression",
+      "reason": "Any future runtime edit must be covered by deterministic regression tests before being marked applied."
+    }
+  ],
+  "required_campaign_fact_guards": [
+    {
+      "guard_id": "guard-approved-pricing-facts",
+      "required_campaign_fields": [
+        "pricing_summary",
+        "pricing_boundary_text"
+      ],
+      "purpose": "Allows price-first handling without inventing price, discounts, ROI, or contract terms.",
+      "blocks_policy_updates": [
+        "policy-price-first-direct-answer"
+      ]
+    },
+    {
+      "guard_id": "guard-no-callback-before-price-answer",
+      "required_campaign_fields": [
+        "callback_offer_allowed_after_direct_answer"
+      ],
+      "purpose": "Prevents scheduling pressure before the customer's explicit price question is addressed.",
+      "blocks_policy_updates": [
+        "policy-price-first-direct-answer"
+      ]
+    },
+    {
+      "guard_id": "guard-approved-written-summary",
+      "required_campaign_fields": [
+        "approved_written_summary",
+        "approved_email_followup_scope"
+      ],
+      "purpose": "Allows send-info and email-only responses without creating unsupported product copy.",
+      "blocks_policy_updates": [
+        "policy-written-info-and-email-boundary",
+        "policy-decision-maker-review-path"
+      ]
+    },
+    {
+      "guard_id": "guard-contact-channel-boundary",
+      "required_campaign_fields": [
+        "allowed_contact_channels",
+        "respect_email_only_boundary"
+      ],
+      "purpose": "Keeps email-only handling from turning into callback pressure.",
+      "blocks_policy_updates": [
+        "policy-written-info-and-email-boundary"
+      ]
+    },
+    {
+      "guard_id": "guard-approved-identity-and-reason",
+      "required_campaign_fields": [
+        "caller_identity",
+        "company_or_campaign_name",
+        "approved_reason_for_call"
+      ],
+      "purpose": "Allows identity repair without hype or private/provider-specific claims.",
+      "blocks_policy_updates": [
+        "policy-identity-repair-before-discovery"
+      ]
+    },
+    {
+      "guard_id": "guard-no-payment-collection",
+      "required_campaign_fields": [
+        "payment_collection_allowed"
+      ],
+      "required_values": {
+        "payment_collection_allowed": false
+      },
+      "purpose": "Keeps payment/card handling safety-perfect.",
+      "blocks_policy_updates": [
+        "policy-payment-and-scam-safety-boundary"
+      ]
+    },
+    {
+      "guard_id": "guard-approved-verification-path",
+      "required_campaign_fields": [
+        "approved_verification_path"
+      ],
+      "purpose": "Gives scam-fear customers a safe verification route without asking for sensitive data.",
+      "blocks_policy_updates": [
+        "policy-payment-and-scam-safety-boundary"
+      ]
+    },
+    {
+      "guard_id": "guard-support-route-available",
+      "required_campaign_fields": [
+        "support_route",
+        "support_boundary_text"
+      ],
+      "purpose": "Stops support issues from drifting into sales continuation.",
+      "blocks_policy_updates": [
+        "policy-support-and-cancellation-routing"
+      ]
+    },
+    {
+      "guard_id": "guard-cancellation-route-available",
+      "required_campaign_fields": [
+        "cancellation_route",
+        "cancellation_boundary_text"
+      ],
+      "purpose": "Stops cancellation requests from becoming retention pressure.",
+      "blocks_policy_updates": [
+        "policy-support-and-cancellation-routing"
+      ]
+    },
+    {
+      "guard_id": "guard-approved-technical-scope",
+      "required_campaign_fields": [
+        "approved_technical_scope",
+        "unknown_technical_answer_boundary"
+      ],
+      "purpose": "Allows only supported technical answers and routes unknown details.",
+      "blocks_policy_updates": [
+        "policy-specialist-handoff-for-technical-security-healthcare"
+      ]
+    },
+    {
+      "guard_id": "guard-specialist-route-available",
+      "required_campaign_fields": [
+        "specialist_handoff_route"
+      ],
+      "purpose": "Gives technical, security, coverage, and healthcare boundary turns a safe next action.",
+      "blocks_policy_updates": [
+        "policy-specialist-handoff-for-technical-security-healthcare"
+      ]
+    },
+    {
+      "guard_id": "guard-no-medical-or-coverage-advice",
+      "required_campaign_fields": [
+        "regulated_advice_boundary_text"
+      ],
+      "purpose": "Blocks medical, legal, financial, or coverage advice outside approved campaign facts.",
+      "blocks_policy_updates": [
+        "policy-specialist-handoff-for-technical-security-healthcare"
+      ]
+    },
+    {
+      "guard_id": "guard-no-competitor-superiority-claim",
+      "required_campaign_fields": [
+        "competitor_comparison_boundary_text"
+      ],
+      "purpose": "Prevents unsupported competitor superiority or replacement claims.",
+      "blocks_policy_updates": [
+        "policy-existing-provider-gap-isolation"
+      ]
+    },
+    {
+      "guard_id": "guard-campaign-fit-gap-only",
+      "required_campaign_fields": [
+        "approved_gap_isolation_question"
+      ],
+      "purpose": "Keeps existing-provider handling to one concrete fit gap.",
+      "blocks_policy_updates": [
+        "policy-existing-provider-gap-isolation"
+      ]
+    },
+    {
+      "guard_id": "guard-review-summary-only",
+      "required_campaign_fields": [
+        "approved_review_summary"
+      ],
+      "purpose": "Supports manager/spouse review without pressure or commitment.",
+      "blocks_policy_updates": [
+        "policy-decision-maker-review-path"
+      ]
+    },
+    {
+      "guard_id": "guard-no-decision-maker-bypass",
+      "required_campaign_fields": [
+        "decision_maker_bypass_forbidden"
+      ],
+      "required_values": {
+        "decision_maker_bypass_forbidden": true
+      },
+      "purpose": "Prevents bypassing the person who must approve.",
+      "blocks_policy_updates": [
+        "policy-decision-maker-review-path"
+      ]
+    }
+  ],
+  "current_runtime_probe_results": [
+    {
+      "probe_id": "probe-price_first",
+      "customer_move_id": "price_first",
+      "source_case_id": "case-price-first-001",
+      "customer_utterance": "What does this cost?",
+      "actual_agent_response": "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there.",
+      "runtime_sales_difficulty": "price-first-direct",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-price_first-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "answer_directly",
+        "written_info_offer"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-send_info",
+      "customer_move_id": "send_info",
+      "source_case_id": "case-send-info-001",
+      "customer_utterance": "Send me the details.",
+      "actual_agent_response": "I can send the approved written summary and leave it there.",
+      "runtime_sales_difficulty": "written-info-request",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-send_info-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "written_info_offer"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-email_only",
+      "customer_move_id": "email_only",
+      "source_case_id": "case-email-only-001",
+      "customer_utterance": "Just email me.",
+      "actual_agent_response": "Understood. I will keep this to email only and will not push for a call.",
+      "runtime_sales_difficulty": "email-only-boundary",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-email_only-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion",
+        "written_info_offer"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-not_interested",
+      "customer_move_id": "not_interested",
+      "source_case_id": "case-not-interested-001",
+      "customer_utterance": "Not interested.",
+      "actual_agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+      "runtime_sales_difficulty": "do-not-call",
+      "runtime_next_action": "suppress-contact",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-not_interested-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-busy_now",
+      "customer_move_id": "busy_now",
+      "source_case_id": "case-busy-now-001",
+      "customer_utterance": "I only have a minute.",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-busy_now-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-callback_request",
+      "customer_move_id": "callback_request",
+      "source_case_id": "case-callback-request-001",
+      "customer_utterance": "Call me next week.",
+      "actual_agent_response": "Thanks. I will log a follow-up rather than forcing a fixed appointment now. Goodbye.",
+      "runtime_sales_difficulty": "timing-delay",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-callback_request-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-who_are_you",
+      "customer_move_id": "who_are_you",
+      "source_case_id": "case-who-are-you-001",
+      "customer_utterance": "Who are you again?",
+      "actual_agent_response": "I should verify who is calling before continuing. I can give the approved identity and reason for this campaign.",
+      "runtime_sales_difficulty": "identity-repair",
+      "runtime_next_action": "continue",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-who_are_you-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "failed_check_ids": [
+        "failed_identity_repair"
+      ],
+      "detected_failure_flags": [
+        "failed_identity_repair"
+      ],
+      "prod_043_rule_passed": false
+    },
+    {
+      "probe_id": "probe-scam_or_card_fear",
+      "customer_move_id": "scam_or_card_fear",
+      "source_case_id": "case-scam-or-card-fear-001",
+      "customer_utterance": "Is this a scam?",
+      "actual_agent_response": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+      "runtime_sales_difficulty": "scam-safety-boundary",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-scam_or_card_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "written_info_offer",
+        "payment_safety_boundary"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-payment_safety_fear",
+      "customer_move_id": "payment_safety_fear",
+      "source_case_id": "case-payment-safety-fear-001",
+      "customer_utterance": "I am not giving card details.",
+      "actual_agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "runtime_sales_difficulty": "payment-safety-boundary",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-payment_safety_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer",
+        "payment_safety_boundary"
+      ],
+      "failed_check_ids": [
+        "unsafe_payment_request"
+      ],
+      "detected_failure_flags": [
+        "unsafe_payment_request"
+      ],
+      "prod_043_rule_passed": false
+    },
+    {
+      "probe_id": "probe-existing_provider",
+      "customer_move_id": "existing_provider",
+      "source_case_id": "case-existing-provider-001",
+      "customer_utterance": "We already have a provider.",
+      "actual_agent_response": "I will not claim this replaces your provider. The only useful check is whether there is a specific gap they do not cover.",
+      "runtime_sales_difficulty": "existing-provider-gap",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-existing_provider-001"
+      ],
+      "detected_agent_tactic_ids": [],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-needs_manager_approval",
+      "customer_move_id": "needs_manager_approval",
+      "source_case_id": "case-needs-manager-approval-001",
+      "customer_utterance": "I need to ask my manager.",
+      "actual_agent_response": "That makes sense. I can help with a short summary for the person who needs to review it.",
+      "runtime_sales_difficulty": "stakeholder-review",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-needs_manager_approval-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-needs_spouse_or_partner_input",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "source_case_id": "case-needs-spouse-or-partner-input-001",
+      "customer_utterance": "I need to ask my spouse.",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "partner-review",
+      "runtime_next_action": "create-follow-up-task",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-needs_spouse_or_partner_input-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-technical_question",
+      "customer_move_id": "technical_question",
+      "source_case_id": "case-technical-question-001",
+      "customer_utterance": "Does it integrate with our system?",
+      "actual_agent_response": "I should not guess on technical details. I can route this to the approved specialist path.",
+      "runtime_sales_difficulty": "technical-specialist-route",
+      "runtime_next_action": "escalate",
+      "runtime_call_control": "transfer-or-escalate",
+      "prod_043_evaluation_rule_ids": [
+        "eval-technical_question-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "written_info_offer",
+        "handoff_to_specialist"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-security_review",
+      "customer_move_id": "security_review",
+      "source_case_id": "case-security-review-001",
+      "customer_utterance": "Security needs to review this.",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-security_review-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-support_issue",
+      "customer_move_id": "support_issue",
+      "source_case_id": "case-support-issue-001",
+      "customer_utterance": "This is a support issue.",
+      "actual_agent_response": "That is a support issue, so I will stop the sales path and route it to the approved support path.",
+      "runtime_sales_difficulty": "support-route",
+      "runtime_next_action": "escalate",
+      "runtime_call_control": "transfer-or-escalate",
+      "prod_043_evaluation_rule_ids": [
+        "eval-support_issue-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist",
+        "support_boundary_route"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-cancellation_request",
+      "customer_move_id": "cancellation_request",
+      "source_case_id": "case-cancellation-request-001",
+      "customer_utterance": "I want to cancel.",
+      "actual_agent_response": "I will stop the sales path and route this to the approved cancellation path.",
+      "runtime_sales_difficulty": "cancellation-route",
+      "runtime_next_action": "escalate",
+      "runtime_call_control": "transfer-or-escalate",
+      "prod_043_evaluation_rule_ids": [
+        "eval-cancellation_request-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist",
+        "support_boundary_route"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-confused_fit",
+      "customer_move_id": "confused_fit",
+      "source_case_id": "case-confused-fit-001",
+      "customer_utterance": "I do not understand what this is.",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-confused_fit-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-skeptical_proof_request",
+      "customer_move_id": "skeptical_proof_request",
+      "source_case_id": "case-skeptical-proof-request-001",
+      "customer_utterance": "Can you prove it works?",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-skeptical_proof_request-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-bad_previous_experience",
+      "customer_move_id": "bad_previous_experience",
+      "source_case_id": "case-bad-previous-experience-001",
+      "customer_utterance": "We tried this and it went badly.",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-bad_previous_experience-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-competitor_comparison",
+      "customer_move_id": "competitor_comparison",
+      "source_case_id": "case-competitor-comparison-001",
+      "customer_utterance": "How is this different from a competitor?",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-competitor_comparison-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-contract_fear",
+      "customer_move_id": "contract_fear",
+      "source_case_id": "case-contract-fear-001",
+      "customer_utterance": "Is this a contract?",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-contract_fear-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-setup_timeline",
+      "customer_move_id": "setup_timeline",
+      "source_case_id": "case-setup-timeline-001",
+      "customer_utterance": "How long does setup take?",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-setup_timeline-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-coverage_confusion",
+      "customer_move_id": "coverage_confusion",
+      "source_case_id": "case-coverage-confusion-001",
+      "customer_utterance": "Is this covered?",
+      "actual_agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "runtime_sales_difficulty": "coverage-boundary-route",
+      "runtime_next_action": "escalate",
+      "runtime_call_control": "transfer-or-escalate",
+      "prod_043_evaluation_rule_ids": [
+        "eval-coverage_confusion-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-sensitive_healthcare_concern",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "source_case_id": "case-sensitive-healthcare-concern-001",
+      "customer_utterance": "Is this medical advice?",
+      "actual_agent_response": "I should not give health or medical advice. I can route this to the approved qualified reviewer path.",
+      "runtime_sales_difficulty": "healthcare-boundary-route",
+      "runtime_next_action": "escalate",
+      "runtime_call_control": "transfer-or-escalate",
+      "prod_043_evaluation_rule_ids": [
+        "eval-sensitive_healthcare_concern-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "handoff_to_specialist"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-hostile_rejection",
+      "customer_move_id": "hostile_rejection",
+      "source_case_id": "case-hostile-rejection-001",
+      "customer_utterance": "Stop calling me.",
+      "actual_agent_response": "Understood. I will make sure this contact is marked so you are not called again. Goodbye.",
+      "runtime_sales_difficulty": "do-not-call",
+      "runtime_next_action": "suppress-contact",
+      "runtime_call_control": "end-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-hostile_rejection-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "acknowledge_emotion"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-low_fit_signal",
+      "customer_move_id": "low_fit_signal",
+      "source_case_id": "case-low-fit-signal-001",
+      "customer_utterance": "This probably is not a fit.",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-low_fit_signal-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-sale_ready_interest",
+      "customer_move_id": "sale_ready_interest",
+      "source_case_id": "case-sale-ready-interest-001",
+      "customer_utterance": "I am ready to move forward.",
+      "actual_agent_response": "Before I mark this sale-ready, I need the approved close criteria confirmed. No payment or contract signing happens on this call.",
+      "runtime_sales_difficulty": "sale-ready-missing-criteria",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-sale_ready_interest-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "low_pressure_boundary",
+        "payment_safety_boundary"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    },
+    {
+      "probe_id": "probe-discovery_needed",
+      "customer_move_id": "discovery_needed",
+      "source_case_id": "case-discovery-needed-001",
+      "customer_utterance": "What would you need to know?",
+      "actual_agent_response": "Thanks. May I ask one quick clarifying question?",
+      "runtime_sales_difficulty": "unknown-runtime-signal",
+      "runtime_next_action": "ask-follow-up",
+      "runtime_call_control": "continue-call",
+      "prod_043_evaluation_rule_ids": [
+        "eval-discovery_needed-001"
+      ],
+      "detected_agent_tactic_ids": [
+        "single_discovery_question"
+      ],
+      "failed_check_ids": [],
+      "detected_failure_flags": [],
+      "prod_043_rule_passed": true
+    }
+  ],
+  "acceptance_for_future_runtime_apply": [
+    "Add deterministic tests for every candidate update before editing runtime behavior.",
+    "Preserve one reusable sales-agent core with SalesCampaign-specific facts and guardrails.",
+    "Do not hard-code pricing, identity, support routes, security claims, coverage details, or healthcare guidance into the reusable core.",
+    "Keep retrieval disabled by default.",
+    "Keep provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, and production runtime promotion blocked."
+  ],
+  "boundaries": {
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "runtime_agent_modified": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "dataset_download_performed": false,
+    "production_runtime_promotion_allowed": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false
+  }
+}

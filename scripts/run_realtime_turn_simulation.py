@@ -20,6 +20,13 @@ STOP_OR_REFUSAL_RUNTIME_PHRASES = [
     "not interested",
     "no thanks",
     "no thank you",
+    "rufen sie mich nicht mehr an",
+    "keine weiteren anrufe",
+    "nummer aus der liste",
+    "löschen sie meine nummer",
+    "brauche ich nicht",
+    "nichts für mich",
+    "möchte das nicht",
 ]
 HUMAN_REQUEST_RUNTIME_PHRASES = [
     "real person",
@@ -47,30 +54,58 @@ LOCALIZED_RESPONSES = {
         "timing-delay": "Thanks. I will log a follow-up rather than forcing a fixed appointment now. Goodbye.",
         "price-objection": "That makes sense. Is the main concern the price itself, or whether the review is worth the effort?",
         "provider-comparison": "That is fair. We can compare fit and terms without pressure before you decide whether this is worth reviewing.",
+        "existing-provider-gap": "I will not claim this replaces your provider. The only useful check is whether there is a specific gap they do not cover.",
         "autonomy-check": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
         "stakeholder-review": "That makes sense. I can help with a short summary for the person who needs to review it.",
         "procurement-review": "Understood. I can keep this to written review information and avoid asking for anything firm today.",
         "trust-gap": "Fair question. I can give you a verification path before we discuss any next step.",
         "sale-ready-commitment": "Confirmed. I will mark this as sale-ready for the next step, with no payment handled on this call.",
+        "sale-ready-missing-criteria": "Before I mark this sale-ready, I need the approved close criteria confirmed. No payment or contract signing happens on this call.",
+        "callback-request": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+        "written-info-request": "I can send the approved written summary and leave it there.",
+        "email-only-boundary": "Understood. I will keep this to email only and will not push for a call.",
+        "identity-repair": "I should verify who is calling before continuing. I can give the approved identity and reason for this campaign.",
+        "scam-safety-boundary": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+        "payment-safety-boundary": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+        "support-route": "That is a support issue, so I will stop the sales path and route it to the approved support path.",
+        "cancellation-route": "I will stop the sales path and route this to the approved cancellation path.",
+        "technical-specialist-route": "I should not guess on technical details. I can route this to the approved specialist path.",
+        "security-review-route": "Security review needs approved material or a specialist. I will not make broad compliance claims here.",
+        "coverage-boundary-route": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+        "healthcare-boundary-route": "I should not give health or medical advice. I can route this to the approved qualified reviewer path.",
         "unknown-runtime-signal": "Thanks. May I ask one quick clarifying question?",
     },
     "de": {
         "voicemail": "Ich habe die Mailbox erreicht und dokumentiere einen Follow-up nach den Kampagnenregeln.",
-        "repeated-silence": "Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.",
-        "do-not-call": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.",
-        "human-request": "Natuerlich. Ich leite das an einen menschlichen Spezialisten weiter, statt automatisch fortzufahren.",
-        "claim-boundary": "Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.",
-        "product-detail-lookup": "Einen Moment, ich pruefe die freigegebenen Produktinformationen.",
-        "scheduling-confirmation": "Bestaetigt. Ich notiere den Rueckruf fuer den Spezialisten. Auf Wiederhoeren.",
-        "timing-delay": "Danke. Ich dokumentiere einen Rueckruf, statt jetzt einen festen Termin zu erzwingen. Auf Wiederhoeren.",
+        "repeated-silence": "Ich beende den Anruf für jetzt. Auf Wiederhören.",
+        "do-not-call": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "human-request": "Natürlich. Ich leite das an eine zuständige Fachperson weiter, statt automatisch fortzufahren.",
+        "claim-boundary": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "product-detail-lookup": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
+        "scheduling-confirmation": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+        "timing-delay": "Danke. Ich dokumentiere einen Rückruf, statt jetzt einen festen Termin zu erzwingen. Auf Wiederhören.",
         "price-objection": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
-        "provider-comparison": "Das ist fair. Wir koennen Passung und Bedingungen ohne Druck vergleichen, bevor Sie etwas entscheiden.",
-        "autonomy-check": "Das verstehe ich. Wir koennen das ohne Druck klaeren, bevor es irgendeinen naechsten Schritt gibt.",
-        "stakeholder-review": "Das verstehe ich. Ich kann eine kurze Zusammenfassung fuer die pruefende Person vorbereiten.",
-        "procurement-review": "Verstanden. Ich halte es bei schriftlichen Pruefinformationen und frage heute nach nichts Festem.",
-        "trust-gap": "Faire Frage. Ich kann zuerst einen Weg zur Verifizierung nennen, bevor wir ueber einen naechsten Schritt sprechen.",
-        "sale-ready-commitment": "Bestaetigt. Ich markiere das als sale-ready fuer den naechsten Schritt, ohne Zahlung in diesem Anruf.",
-        "unknown-runtime-signal": "Danke. Darf ich kurz eine klaerende Frage stellen?",
+        "provider-comparison": "Das ist fair. Wir können Passung und Bedingungen ohne Druck vergleichen, bevor Sie etwas entscheiden.",
+        "existing-provider-gap": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+        "autonomy-check": "Das verstehe ich. Wir können das ohne Druck klären, bevor es irgendeinen nächsten Schritt gibt.",
+        "stakeholder-review": "Das verstehe ich. Ich kann eine kurze Zusammenfassung für die prüfende Person vorbereiten.",
+        "procurement-review": "Verstanden. Ich halte es bei schriftlichen Prüfinformationen und frage heute nach nichts Festem.",
+        "trust-gap": "Faire Frage. Ich kann zuerst einen Weg zur Verifizierung nennen, bevor wir über einen nächsten Schritt sprechen.",
+        "sale-ready-commitment": "Gut, ich halte fest, dass Sie den nächsten freigegebenen Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+        "sale-ready-missing-criteria": "Bevor ich das als nächsten Schritt festhalte, brauche ich noch die freigegebene Klärung. In diesem Gespräch gibt es keine Zahlung und keine Vertragsunterzeichnung.",
+        "callback-request": "Ich kann einen Rückrufwunsch dokumentieren und halte ihn optional. Keine feste Verpflichtung in diesem Anruf.",
+        "written-info-request": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+        "email-only-boundary": "Verstanden. Ich halte es bei E-Mail und dränge nicht auf ein Telefonat.",
+        "identity-repair": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "scam-safety-boundary": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+        "payment-safety-boundary": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+        "support-route": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
+        "cancellation-route": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+        "technical-specialist-route": "Bei technischen Details sollte ich nicht raten. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "security-review-route": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "coverage-boundary-route": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "healthcare-boundary-route": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+        "unknown-runtime-signal": "Danke. Darf ich kurz eine klärende Frage stellen?",
     },
 }
 
@@ -99,8 +134,147 @@ def normalize_response_language(language: str | None) -> str:
     return "en"
 
 
-def localized_response(language: str, sales_difficulty: str) -> str:
+def campaign_text(campaign: dict | None, *keys: str) -> str | None:
+    for key in keys:
+        value = (campaign or {}).get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def campaign_flag(campaign: dict | None, *keys: str) -> bool:
+    return any((campaign or {}).get(key) is True for key in keys)
+
+
+def localized_response(language: str, sales_difficulty: str, campaign: dict | None = None) -> str:
     language_key = normalize_response_language(language)
+    if language_key == "en":
+        if sales_difficulty == "price-first-direct":
+            pricing = campaign_text(campaign, "pricing_summary", "pricing_boundary_text")
+            if pricing:
+                return f"{pricing} No payment or commitment on this call."
+            return "I do not have an approved exact price in this campaign, so I should not invent one. I can send approved pricing information and stop there."
+        if sales_difficulty == "written-info-request":
+            summary = campaign_text(campaign, "approved_written_summary", "approved_email_followup_scope")
+            if summary:
+                return f"I can send {summary} and leave it there."
+        if sales_difficulty == "email-only-boundary":
+            summary = campaign_text(campaign, "approved_email_followup_scope", "approved_written_summary")
+            if summary:
+                return f"Understood. Email only. I can send {summary} and will not push for a call."
+        if sales_difficulty == "identity-repair":
+            identity = campaign_text(campaign, "caller_identity", "company_or_campaign_name")
+            reason = campaign_text(campaign, "approved_reason_for_call")
+            if identity and reason:
+                return f"This is {identity}. The reason for the call is {reason}. I can stop if this is not relevant."
+        if sales_difficulty == "scam-safety-boundary":
+            verification = campaign_text(campaign, "approved_verification_path", "approved_written_summary")
+            if verification:
+                return f"No payment, card, or sensitive details are collected on this call. I can send {verification} for verification."
+        if sales_difficulty == "payment-safety-boundary":
+            safe_path = campaign_text(campaign, "approved_written_summary", "approved_verification_path")
+            if safe_path:
+                return f"No card or payment details are needed here. I can keep the next step to safe written information: {safe_path}."
+        if sales_difficulty == "support-route":
+            route = campaign_text(campaign, "support_boundary_text", "support_route")
+            if route:
+                return f"That is a support issue, so I will stop the sales path and route this to {route}."
+        if sales_difficulty == "cancellation-route":
+            route = campaign_text(campaign, "cancellation_boundary_text", "cancellation_route")
+            if route:
+                return f"I will stop the sales path and route this to {route}."
+        if sales_difficulty == "technical-specialist-route":
+            scope = campaign_text(campaign, "approved_technical_scope")
+            route = campaign_text(campaign, "specialist_handoff_route")
+            if scope:
+                return f"Within the approved scope: {scope}. If you need more detail, I can route this to the specialist path."
+            if route:
+                return f"I should not guess on technical details. I can route this to {route}."
+        if sales_difficulty == "security-review-route":
+            route = campaign_text(campaign, "specialist_handoff_route", "approved_written_summary")
+            if route:
+                return f"Security review needs approved material or a specialist. I can route this to {route} and will not make broad compliance claims."
+        if sales_difficulty in {"coverage-boundary-route", "healthcare-boundary-route"}:
+            boundary = campaign_text(campaign, "regulated_advice_boundary_text")
+            route = campaign_text(campaign, "specialist_handoff_route")
+            if boundary and route:
+                return f"{boundary} I can route this to {route}."
+        if sales_difficulty == "existing-provider-gap":
+            gap = campaign_text(campaign, "approved_gap_isolation_question")
+            if gap:
+                return f"I will not claim this replaces your provider. {gap}"
+        if sales_difficulty in {"stakeholder-review", "partner-review"}:
+            summary = campaign_text(campaign, "approved_review_summary", "approved_written_summary")
+            if summary:
+                return f"I can send {summary} for review. No decision or commitment from you today."
+        if sales_difficulty == "sale-ready-commitment":
+            next_step = campaign_text(campaign, "approved_sale_ready_next_step", "approved_next_step")
+            if next_step:
+                return f"Confirmed. I will log this as sale-ready for {next_step}. No payment or contract signing happens on this call."
+    else:
+        if sales_difficulty == "price-first-direct":
+            pricing = campaign_text(campaign, "pricing_summary", "pricing_boundary_text")
+            if pricing:
+                return f"Nach den freigegebenen Informationen liegt der Preisrahmen bei {pricing} In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung."
+            return "Ich habe keinen freigegebenen exakten Preis in dieser Kampagne und erfinde keinen. Ich kann freigegebene Preisinformationen senden und es dabei belassen."
+        if sales_difficulty == "written-info-request":
+            summary = campaign_text(campaign, "approved_written_summary", "approved_email_followup_scope")
+            if summary:
+                return f"Ich kann Ihnen {summary} zusenden und es dabei belassen."
+        if sales_difficulty == "email-only-boundary":
+            summary = campaign_text(campaign, "approved_email_followup_scope", "approved_written_summary")
+            if summary:
+                return f"Verstanden. Ich halte es bei E-Mail, sende Ihnen {summary} und dränge nicht auf ein Telefonat."
+        if sales_difficulty == "identity-repair":
+            identity = campaign_text(campaign, "caller_identity", "company_or_campaign_name")
+            reason = campaign_text(campaign, "approved_reason_for_call")
+            if identity and reason:
+                return f"Hier ist {identity}. Ich rufe kurz an, um {reason}. Wenn das für Sie nicht relevant ist, beende ich den Anruf."
+        if sales_difficulty == "scam-safety-boundary":
+            verification = campaign_text(campaign, "approved_verification_path", "approved_written_summary")
+            if verification:
+                return f"Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen {verification} zusenden."
+        if sales_difficulty == "payment-safety-boundary":
+            safe_path = campaign_text(campaign, "approved_written_summary", "approved_verification_path")
+            if safe_path:
+                return f"Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen {safe_path} zusenden."
+        if sales_difficulty == "support-route":
+            route = campaign_text(campaign, "support_boundary_text", "support_route")
+            if route:
+                return f"Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an {route} weiter."
+        if sales_difficulty == "cancellation-route":
+            route = campaign_text(campaign, "cancellation_boundary_text", "cancellation_route")
+            if route:
+                return f"Dann stoppe ich den Vertriebsteil hier und leite Sie an {route} weiter."
+        if sales_difficulty == "technical-specialist-route":
+            scope = campaign_text(campaign, "approved_technical_scope")
+            route = campaign_text(campaign, "specialist_handoff_route")
+            if scope:
+                return f"Was ich sicher sagen kann: {scope}. Für weitere Details kann ich das an {route or 'eine zuständige Fachperson'} weiterleiten."
+            if route:
+                return f"Bei technischen Details sollte ich nicht raten. Ich kann das an {route} weiterleiten."
+        if sales_difficulty == "security-review-route":
+            route = campaign_text(campaign, "specialist_handoff_route", "approved_written_summary")
+            if route:
+                return f"Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an {route} weiterleiten und mache hier keine pauschalen Compliance-Zusagen."
+        if sales_difficulty in {"coverage-boundary-route", "healthcare-boundary-route"}:
+            boundary = campaign_text(campaign, "regulated_advice_boundary_text")
+            route = campaign_text(campaign, "specialist_handoff_route")
+            if boundary and route:
+                return f"{boundary} Ich kann das an {route} weiterleiten."
+        if sales_difficulty == "existing-provider-gap":
+            gap = campaign_text(campaign, "approved_gap_isolation_question")
+            if gap:
+                return f"Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. {gap}"
+        if sales_difficulty in {"stakeholder-review", "partner-review"}:
+            summary = campaign_text(campaign, "approved_review_summary", "approved_written_summary")
+            if summary:
+                return f"Ich kann Ihnen {summary} schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein."
+        if sales_difficulty == "sale-ready-commitment":
+            next_step = campaign_text(campaign, "approved_sale_ready_next_step", "approved_next_step")
+            if next_step:
+                return f"Gut, ich halte fest, dass Sie {next_step} möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt."
+
     return LOCALIZED_RESPONSES[language_key].get(
         sales_difficulty,
         LOCALIZED_RESPONSES[language_key]["unknown-runtime-signal"],
@@ -141,7 +315,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "rapport",
             "next_action": "create-follow-up-task",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if input_type == "silence-timeout" and customer_input.get("silence_count", 0) >= 2:
@@ -153,7 +327,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "not-interested",
             "selected_strategy": "rapport",
             "next_action": "close-politely",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if contains_any(transcript, STOP_OR_REFUSAL_RUNTIME_PHRASES):
@@ -165,7 +339,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "do-not-call",
             "selected_strategy": "rapport",
             "next_action": "suppress-contact",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if contains_any(transcript, HUMAN_REQUEST_RUNTIME_PHRASES):
@@ -177,10 +351,298 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "needs-human",
             "selected_strategy": "rapport",
             "next_action": "escalate",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["garantieren", "guarantee", "stabil", "coverage", "geschwindigkeit"]):
+    if contains_any(transcript, ["was kostet", "welchen kosten", "welche kosten", "monatlich", "preis reden", "preis wissen", "ist das teuer"]):
+        sales_difficulty = "price-first-direct"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["wer ist denn da", "wer genau sind sie", "wer anruft", "von welcher firma", "worum geht es hier", "warum rufen sie"]):
+        sales_difficulty = "identity-repair"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "continue",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["sicherheitsprüfung", "it-sicherheit", "security muss", "security ist", "compliance"]) and not contains_any(transcript, ["kein thema", "nicht nötig"]):
+        sales_difficulty = "security-review-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["medizinische beratung", "gesundheitliches thema", "gesundheitsberatung", "medizinisch sinnvoll", "medizinisches sagen"]):
+        sales_difficulty = "healthcare-boundary-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["bankdaten", "kartendaten", "karte gebe", "zahlungsdaten"]):
+        sales_difficulty = "payment-safety-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["seriös", "unseriös", "betrug", "solchen anrufen vorsichtig", "wirklich von ihrer firma"]) and not contains_any(transcript, ["nicht, dass das betrug", "nicht dass das betrug"]):
+        sales_difficulty = "scam-safety-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["support-thema", "mit dem support", "hilfe mit meinem konto", "bestehendes problem", "problem mit meinem vertrag"]) and not contains_any(transcript, ["keinen support"]):
+        sales_difficulty = "support-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["kündigen", "kündigung", "vertrag beenden", "ganze stoppen"]) and not contains_any(transcript, ["nicht kündigen"]):
+        sales_difficulty = "cancellation-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["bitte nur per e-mail", "nur per e-mail", "nur per mail", "wenn überhaupt", "telefonier", "nicht an, schicken"]):
+        sales_difficulty = "email-only-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["schriftlich", "unterlagen", "infos zu", "zusammenfassung"]) and not contains_any(transcript, ["sicherheitsprüfung"]):
+        sales_difficulty = "written-info-request"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["technisch", "crm", "integration", "schnittstelle", "system verbinden"]):
+        sales_difficulty = "technical-specialist-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["tarif überhaupt enthalten", "abgedeckt", "versicherung", "gedeckt", "für meinen fall"]):
+        sales_difficulty = "coverage-boundary-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["is this a scam", "scam", "legitimate", "verify this is legitimate", "do not trust", "don't trust"]):
+        sales_difficulty = "scam-safety-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["card details", "card number", "credit card", "payment details", "pay over the phone", "giving card", "giving payment", "not giving card", "not giving payment"]):
+        sales_difficulty = "payment-safety-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["support issue", "support problem", "need support", "customer support", "billing issue", "help with my account"]):
+        sales_difficulty = "support-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["cancel", "cancellation", "terminate", "end my account", "stop my service"]):
+        sales_difficulty = "cancellation-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["who are you", "who is this", "who exactly are you", "what company", "why are you calling", "who are you again"]):
+        sales_difficulty = "identity-repair"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "rapport",
+            "next_action": "continue",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["what does this cost", "how much", "per month", "what is the price", "what's the price", "pricing", "in my budget", "cost?"]):
+        sales_difficulty = "price-first-direct"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["email only", "just email me", "only email", "send email", "email me"]):
+        sales_difficulty = "email-only-boundary"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["send me the details", "send details", "send information", "send info", "send me information", "written summary"]):
+        sales_difficulty = "written-info-request"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["technical question", "integrate", "integration", "api", "technical detail", "implementation detail"]):
+        sales_difficulty = "technical-specialist-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["security review", "security team", "compliance", "data security", "soc 2", "hipaa"]):
+        sales_difficulty = "security-review-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["coverage", "covered", "insurance cover", "coverage confusion"]):
+        sales_difficulty = "coverage-boundary-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["health", "medical", "doctor", "diagnosis", "treatment", "healthcare"]):
+        sales_difficulty = "healthcare-boundary-route"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "skeptical-or-negative",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "needs-human",
+            "selected_strategy": "rapport",
+            "next_action": "escalate",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["garantieren", "nachweis", "belegen", "wirklich etwas bringt", "nicht klappt", "guarantee", "stabil", "geschwindigkeit"]):
         sales_difficulty = "claim-boundary"
         return {
             "response_language": response_language,
@@ -189,10 +651,10 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "needs-human",
             "selected_strategy": "inquiry",
             "next_action": "escalate",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["welcher genaue tarif", "welche genauen details", "was ist enthalten", "datenvolumen", "exact plan", "which plan", "which exact", "service details", "included"]):
+    if contains_any(transcript, ["welcher genaue tarif", "welcher tarif", "welche genauen details", "was ist enthalten", "paket enthalten", "was bekomme ich", "welche leistungen", "datenvolumen", "exact plan", "which plan", "which exact", "service details", "included"]):
         sales_difficulty = "product-detail-lookup"
         return {
             "response_language": response_language,
@@ -201,10 +663,10 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "evidence-or-benefit",
             "next_action": "continue",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if stage == "scheduling" and contains_any(transcript, ["mittwoch", "wednesday", "10 uhr", "10 works"]):
+    if stage == "scheduling" and contains_any(transcript, ["mittwoch", "donnerstag", "freitag", "dienstag", "morgen um", "10 uhr", "14 uhr", "wednesday", "10 works"]):
         sales_difficulty = "scheduling-confirmation"
         return {
             "response_language": response_language,
@@ -213,19 +675,23 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "interested",
             "selected_strategy": "direct-ask-or-commitment",
             "next_action": "confirm-scheduling",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["ready to agree", "agree to the next step", "sale ready", "sale-ready", "verbal commitment"]):
-        sales_difficulty = "sale-ready-commitment"
+    if contains_any(transcript, ["ready to move forward", "ready to agree", "agree to the next step", "sale ready", "sale-ready", "verbal commitment", "machen wir das so", "nächste schritt", "weitermachen", "so festhalten", "dann starten"]):
+        sales_difficulty = "sale-ready-commitment" if campaign_flag(
+            campaign,
+            "close_criteria_satisfied",
+            "sale_ready_close_allowed",
+        ) else "sale-ready-missing-criteria"
         return {
             "response_language": response_language,
             "detected_emotion": "positive",
             "sales_difficulty": sales_difficulty,
             "interest_state": "interested",
             "selected_strategy": "direct-ask-or-commitment",
-            "next_action": "sale-ready-log",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "next_action": "sale-ready-log" if sales_difficulty == "sale-ready-commitment" else "ask-follow-up",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if stage_is(stage, "procurement-review") or contains_any(transcript, ["procurement", "written information", "written info"]):
@@ -237,23 +703,35 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "inquiry",
             "next_action": "ask-follow-up",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if stage_is(stage, "authority-check") or contains_any(transcript, ["my boss", "boss has to review", "manager has to review", "decision maker"]):
+    if contains_any(transcript, ["my spouse", "my partner", "ask my spouse", "ask my partner", "meinem mann", "meiner frau", "mein partner", "nicht alleine", "zu hause"]):
+        sales_difficulty = "partner-review"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if stage_is(stage, "authority-check") or contains_any(transcript, ["my boss", "boss has to review", "manager has to review", "decision maker", "ask my manager", "need manager approval", "meinem chef", "vorgesetzter", "nicht nur ich", "interne freigabe", "durch die leitung"]):
         sales_difficulty = "stakeholder-review"
         return {
             "response_language": response_language,
             "detected_emotion": "neutral",
             "sales_difficulty": sales_difficulty,
             "interest_state": "maybe-interested",
-            "selected_strategy": "inquiry",
-            "next_action": "ask-follow-up",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "selected_strategy": "evidence-or-benefit",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["already use another provider", "another provider", "current provider", "compare this fairly", "compare fairly"]):
-        sales_difficulty = "provider-comparison"
+    if contains_any(transcript, ["already use another provider", "already have a provider", "have a provider", "another provider", "current provider", "compare this fairly", "compare fairly", "schon einen anbieter", "über jemand anderen", "schon eine lösung", "versorgt", "aktueller anbieter"]):
+        sales_difficulty = "existing-provider-gap"
         return {
             "response_language": response_language,
             "detected_emotion": "neutral",
@@ -261,10 +739,22 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "inquiry",
             "next_action": "ask-follow-up",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
-    if contains_any(transcript, ["time to think", "do not rush", "don't rush", "call back later", "callback later", "short summary and call back"]):
+    if contains_any(transcript, ["call back later", "callback later", "call me back", "callback", "short summary and call back", "nächste woche nochmal", "später noch mal", "morgen zurückrufen", "anderen zeitpunkt"]):
+        sales_difficulty = "callback-request"
+        return {
+            "response_language": response_language,
+            "detected_emotion": "neutral",
+            "sales_difficulty": sales_difficulty,
+            "interest_state": "maybe-interested",
+            "selected_strategy": "direct-ask-or-commitment",
+            "next_action": "create-follow-up-task",
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
+        }
+
+    if contains_any(transcript, ["time to think", "do not rush", "don't rush"]):
         sales_difficulty = "autonomy-check"
         return {
             "response_language": response_language,
@@ -273,7 +763,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "inquiry",
             "next_action": "ask-follow-up",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if contains_any(transcript, ["do not know your company", "don't know your company", "verify this is legitimate", "legitimate", "trust"]):
@@ -285,7 +775,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "rapport",
             "next_action": "ask-follow-up",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if contains_any(transcript, ["vielleicht irgendwann", "vielleicht naechste woche", "naechste woche", "nothing firm", "next week", "cannot commit", "nichts fest"]):
@@ -297,7 +787,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "direct-ask-or-commitment",
             "next_action": "create-follow-up-task",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     if contains_any(transcript, ["guenstiger", "zu teuer", "too expensive", "lohnt sich", "aufwand", "worth the effort", "cost sounds high", "cost", "price", "worth my time"]):
@@ -309,7 +799,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "interest_state": "maybe-interested",
             "selected_strategy": "inquiry",
             "next_action": "ask-follow-up",
-            "agent_response": localized_response(response_language, sales_difficulty),
+            "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 
     sales_difficulty = "unknown-runtime-signal"
@@ -320,7 +810,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
         "interest_state": "maybe-interested",
         "selected_strategy": "inquiry",
         "next_action": "ask-follow-up",
-        "agent_response": localized_response(response_language, sales_difficulty),
+        "agent_response": localized_response(response_language, sales_difficulty, campaign),
     }
 
 

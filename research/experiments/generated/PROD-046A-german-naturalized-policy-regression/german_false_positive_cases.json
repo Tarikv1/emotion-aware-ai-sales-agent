@@ -1,0 +1,308 @@
+[
+  {
+    "case_id": "de-false-no-cancel",
+    "customer_input": {
+      "input_type": "speech",
+      "stage": "relevance-check",
+      "transcript": "Ich will nicht kündigen, ich habe nur eine Frage."
+    },
+    "campaign": {
+      "campaign_id": "campaign-prod-046a-de-guarded-policy-test",
+      "language": "de",
+      "caller_identity": "Maya von RouteSignal",
+      "company_or_campaign_name": "RouteSignal",
+      "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
+      "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+      "callback_offer_allowed_after_direct_answer": true,
+      "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
+      "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+      "allowed_contact_channels": [
+        "email"
+      ],
+      "respect_email_only_boundary": true,
+      "payment_collection_allowed": false,
+      "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+      "support_route": "den zuständigen Support",
+      "support_boundary_text": "den zuständigen Support",
+      "cancellation_route": "die zuständige Stelle für Kündigungen",
+      "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
+      "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+      "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
+      "specialist_handoff_route": "eine zuständige Fachperson",
+      "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
+      "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
+      "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+      "decision_maker_bypass_forbidden": true,
+      "close_criteria_satisfied": true,
+      "sale_ready_close_allowed": true,
+      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
+      "approved_next_step": "den nächsten freigegebenen Schritt"
+    },
+    "expected": {
+      "sales_difficulty": "unknown-runtime-signal",
+      "call_control": "continue-call"
+    },
+    "priority_note": "negated cancellation should not route as cancellation",
+    "example_type": "synthetic_naturalized_de_false_positive_case",
+    "source_quote": false,
+    "from_single_transcript": false,
+    "translation_mode": "intent_equivalent_not_literal"
+  },
+  {
+    "case_id": "de-false-identity-over-scam",
+    "customer_input": {
+      "input_type": "speech",
+      "stage": "relevance-check",
+      "transcript": "Ich sage nicht, dass das Betrug ist, ich will nur wissen, wer anruft."
+    },
+    "campaign": {
+      "campaign_id": "campaign-prod-046a-de-guarded-policy-test",
+      "language": "de",
+      "caller_identity": "Maya von RouteSignal",
+      "company_or_campaign_name": "RouteSignal",
+      "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
+      "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+      "callback_offer_allowed_after_direct_answer": true,
+      "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
+      "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+      "allowed_contact_channels": [
+        "email"
+      ],
+      "respect_email_only_boundary": true,
+      "payment_collection_allowed": false,
+      "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+      "support_route": "den zuständigen Support",
+      "support_boundary_text": "den zuständigen Support",
+      "cancellation_route": "die zuständige Stelle für Kündigungen",
+      "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
+      "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+      "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
+      "specialist_handoff_route": "eine zuständige Fachperson",
+      "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
+      "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
+      "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+      "decision_maker_bypass_forbidden": true,
+      "close_criteria_satisfied": true,
+      "sale_ready_close_allowed": true,
+      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
+      "approved_next_step": "den nächsten freigegebenen Schritt"
+    },
+    "expected": {
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call"
+    },
+    "priority_note": "identity should outrank negated scam wording",
+    "example_type": "synthetic_naturalized_de_false_positive_case",
+    "source_quote": false,
+    "from_single_transcript": false,
+    "translation_mode": "intent_equivalent_not_literal"
+  },
+  {
+    "case_id": "de-false-price-over-support",
+    "customer_input": {
+      "input_type": "speech",
+      "stage": "relevance-check",
+      "transcript": "Ich brauche keinen Support, ich möchte nur den Preis wissen."
+    },
+    "campaign": {
+      "campaign_id": "campaign-prod-046a-de-guarded-policy-test",
+      "language": "de",
+      "caller_identity": "Maya von RouteSignal",
+      "company_or_campaign_name": "RouteSignal",
+      "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
+      "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+      "callback_offer_allowed_after_direct_answer": true,
+      "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
+      "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+      "allowed_contact_channels": [
+        "email"
+      ],
+      "respect_email_only_boundary": true,
+      "payment_collection_allowed": false,
+      "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+      "support_route": "den zuständigen Support",
+      "support_boundary_text": "den zuständigen Support",
+      "cancellation_route": "die zuständige Stelle für Kündigungen",
+      "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
+      "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+      "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
+      "specialist_handoff_route": "eine zuständige Fachperson",
+      "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
+      "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
+      "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+      "decision_maker_bypass_forbidden": true,
+      "close_criteria_satisfied": true,
+      "sale_ready_close_allowed": true,
+      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
+      "approved_next_step": "den nächsten freigegebenen Schritt"
+    },
+    "expected": {
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call"
+    },
+    "priority_note": "price should outrank negated support wording",
+    "example_type": "synthetic_naturalized_de_false_positive_case",
+    "source_quote": false,
+    "from_single_transcript": false,
+    "translation_mode": "intent_equivalent_not_literal"
+  },
+  {
+    "case_id": "de-false-security-negated",
+    "customer_input": {
+      "input_type": "speech",
+      "stage": "relevance-check",
+      "transcript": "Security ist bei uns kein Thema."
+    },
+    "campaign": {
+      "campaign_id": "campaign-prod-046a-de-guarded-policy-test",
+      "language": "de",
+      "caller_identity": "Maya von RouteSignal",
+      "company_or_campaign_name": "RouteSignal",
+      "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
+      "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+      "callback_offer_allowed_after_direct_answer": true,
+      "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
+      "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+      "allowed_contact_channels": [
+        "email"
+      ],
+      "respect_email_only_boundary": true,
+      "payment_collection_allowed": false,
+      "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+      "support_route": "den zuständigen Support",
+      "support_boundary_text": "den zuständigen Support",
+      "cancellation_route": "die zuständige Stelle für Kündigungen",
+      "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
+      "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+      "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
+      "specialist_handoff_route": "eine zuständige Fachperson",
+      "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
+      "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
+      "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+      "decision_maker_bypass_forbidden": true,
+      "close_criteria_satisfied": true,
+      "sale_ready_close_allowed": true,
+      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
+      "approved_next_step": "den nächsten freigegebenen Schritt"
+    },
+    "expected": {
+      "sales_difficulty": "unknown-runtime-signal",
+      "call_control": "continue-call"
+    },
+    "priority_note": "negated security should not route to security review",
+    "example_type": "synthetic_naturalized_de_false_positive_case",
+    "source_quote": false,
+    "from_single_transcript": false,
+    "translation_mode": "intent_equivalent_not_literal"
+  },
+  {
+    "case_id": "de-false-payment-safe-boundary",
+    "customer_input": {
+      "input_type": "speech",
+      "stage": "relevance-check",
+      "transcript": "Ich gebe keine Bankdaten an, weil Sie ja auch keine brauchen."
+    },
+    "campaign": {
+      "campaign_id": "campaign-prod-046a-de-guarded-policy-test",
+      "language": "de",
+      "caller_identity": "Maya von RouteSignal",
+      "company_or_campaign_name": "RouteSignal",
+      "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
+      "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+      "callback_offer_allowed_after_direct_answer": true,
+      "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
+      "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+      "allowed_contact_channels": [
+        "email"
+      ],
+      "respect_email_only_boundary": true,
+      "payment_collection_allowed": false,
+      "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+      "support_route": "den zuständigen Support",
+      "support_boundary_text": "den zuständigen Support",
+      "cancellation_route": "die zuständige Stelle für Kündigungen",
+      "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
+      "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+      "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
+      "specialist_handoff_route": "eine zuständige Fachperson",
+      "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
+      "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
+      "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+      "decision_maker_bypass_forbidden": true,
+      "close_criteria_satisfied": true,
+      "sale_ready_close_allowed": true,
+      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
+      "approved_next_step": "den nächsten freigegebenen Schritt"
+    },
+    "expected": {
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call"
+    },
+    "priority_note": "payment safety boundary remains safe",
+    "example_type": "synthetic_naturalized_de_false_positive_case",
+    "source_quote": false,
+    "from_single_transcript": false,
+    "translation_mode": "intent_equivalent_not_literal"
+  },
+  {
+    "case_id": "de-false-price-over-provider",
+    "customer_input": {
+      "input_type": "speech",
+      "stage": "relevance-check",
+      "transcript": "Ich habe schon einen Anbieter, aber ich will trotzdem den Preis wissen."
+    },
+    "campaign": {
+      "campaign_id": "campaign-prod-046a-de-guarded-policy-test",
+      "language": "de",
+      "caller_identity": "Maya von RouteSignal",
+      "company_or_campaign_name": "RouteSignal",
+      "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
+      "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
+      "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+      "callback_offer_allowed_after_direct_answer": true,
+      "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
+      "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+      "allowed_contact_channels": [
+        "email"
+      ],
+      "respect_email_only_boundary": true,
+      "payment_collection_allowed": false,
+      "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+      "support_route": "den zuständigen Support",
+      "support_boundary_text": "den zuständigen Support",
+      "cancellation_route": "die zuständige Stelle für Kündigungen",
+      "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
+      "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+      "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
+      "specialist_handoff_route": "eine zuständige Fachperson",
+      "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
+      "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
+      "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+      "decision_maker_bypass_forbidden": true,
+      "close_criteria_satisfied": true,
+      "sale_ready_close_allowed": true,
+      "approved_sale_ready_next_step": "den nächsten freigegebenen Schritt",
+      "approved_next_step": "den nächsten freigegebenen Schritt"
+    },
+    "expected": {
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call"
+    },
+    "priority_note": "price has priority over existing provider when explicit",
+    "example_type": "synthetic_naturalized_de_false_positive_case",
+    "source_quote": false,
+    "from_single_transcript": false,
+    "translation_mode": "intent_equivalent_not_literal"
+  }
+]

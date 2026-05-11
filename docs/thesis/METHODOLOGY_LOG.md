@@ -16,6 +16,46 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-11 - PROD-046B German response wording-quality pass
+
+- Objective: improve German customer-facing runtime response wording after PROD-046A proved German routing but still exposed internal-policy-sounding terms.
+- Action taken: added a PROD-046B runner, validator, product doc, generated before/after wording evidence, findings, regression rerun results, review HTML, and report. Rewrote only German localized responses and German campaign fixture wording needed to remove internal route/policy terms while preserving call-control and routing behavior.
+- Data used: existing PROD-046A/PROD-045 generated regression evidence and synthetic project-owned German cases only. No raw transcript text, external German sales scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_046b_german_response_wording_quality_pass.py`, runner/validator scripts, `docs/product/PROD_046B_GERMAN_RESPONSE_WORDING_QUALITY_PASS.md`, generated artifacts under `research/experiments/generated/PROD-046B-german-response-wording-quality-pass/`, and narrow German response wording edits in `scripts/run_realtime_turn_simulation.py`.
+- What was learned: deterministic routing can pass while response wording still sounds like internal implementation language; the German path needs a wording-quality gate before human/product review.
+- Why it matters for the thesis: PROD-046B records a practical limitation of rule-based multilingual policy work: safety semantics and natural customer-facing language must be validated separately.
+- Open questions: whether German-speaking human review accepts the improved wording before any broader demo, voice playback, or runtime-promotion claim.
+
+### 2026-05-11 - PROD-046A German naturalized policy regression
+
+- Objective: prove the PROD-045 runtime-policy surface on natural German de-DE customer utterances, not literal English translations.
+- Action taken: added a PROD-046A runner, validator, product doc, generated German regression cases/results, false-positive cases/results, review data, review HTML, and report. Added narrow German phrase triggers and improved German localized responses in the realtime turn classifier.
+- Data used: synthetic project-owned German de-DE regression utterances only, plus existing PROD-045 generated evidence. No raw transcript text, external German sales scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_046a_german_naturalized_policy_regression.py`, runner/validator scripts, `docs/product/PROD_046A_GERMAN_NATURALIZED_POLICY_REGRESSION.md`, generated artifacts under `research/experiments/generated/PROD-046A-german-naturalized-policy-regression/`, and narrow German runtime policy edits in `scripts/run_realtime_turn_simulation.py`.
+- What was learned: the English PROD-045 surface was not enough evidence for German; without German-specific phrase triggers, most natural German customer moves fell into the generic clarification path.
+- Why it matters for the thesis: PROD-046A separates multilingual intent-equivalence testing from translation and keeps policy safety measurable across language paths.
+- Open questions: whether PROD-046 human review accepts the German and English runtime-policy evidence before any broader demo or voice unlock.
+
+### 2026-05-11 - PROD-045 core sales-policy regression rerun
+
+- Objective: harden the deterministic evaluator exposed by PROD-044, then apply only the justified core sales-policy updates behind regression gates.
+- Action taken: added PROD-045 runner, validator, product doc, generated regression cases/results, evaluator hardening results, runtime policy change summary, review data, review HTML, and report. Updated the realtime turn classifier with narrow campaign-guarded policies for price-first, written-info/email-only, identity repair, payment/scam safety, support/cancellation, specialist handoff, existing-provider gap isolation, decision-maker review, and sale-ready guarded next steps.
+- Data used: PROD-043/PROD-044 generated evidence plus synthetic generic regression cases only. No raw transcript text, provider call, LLM call, private data read, dataset download, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_045_core_sales_policy_regression_rerun.py`, runner/validator scripts, `docs/product/PROD_045_CORE_SALES_POLICY_REGRESSION_RERUN.md`, generated artifacts under `research/experiments/generated/PROD-045-core-sales-policy-regression-rerun/`, and narrow runtime policy edits in `scripts/run_realtime_turn_simulation.py`.
+- What was learned: generic clarification must be treated as a negative control for required-boundary moves; a response is not safe enough just because it avoids an obvious failure flag.
+- Why it matters for the thesis: PROD-045 closes the gap between offline playbook evidence and guarded runtime behavior while preserving reusable SalesCampaign fact boundaries.
+- Open questions: whether PROD-046 human review should accept these targeted runtime-policy changes before any broader runtime promotion, demo claim, voice playback unlock, or retrieval default change.
+
+### 2026-05-11 - PROD-044 core sales-policy update review packet
+
+- Objective: review PROD-043 evidence and identify exactly which core sales-policy changes are justified before modifying runtime behavior.
+- Action taken: added an offline PROD-044 runner, validator, product doc, generated review packet, review data, review HTML, and report. The runner reads PROD-043 evidence, probes the current deterministic realtime turn entrypoint with PROD-043 synthetic generic cases, groups justified candidate policy updates, lists blocked updates, and records required campaign-fact guards.
+- Data used: existing PROD-043 artifacts and synthetic generic single-turn probes only. No raw transcript text, provider call, LLM call, private data read, dataset download, retrieval enablement, runtime behavior change, voice playback, public demo polish, or production runtime promotion was used.
+- Output created: `scripts/prod_044_core_sales_policy_update.py`, runner/validator scripts, `docs/product/PROD_044_CORE_SALES_POLICY_UPDATE.md`, and generated artifacts under `research/experiments/generated/PROD-044-core-sales-policy-update/`.
+- What was learned: PROD-043 evidence justifies targeted runtime-policy candidates, but the reusable core must receive campaign-approved facts for pricing, identity, written summaries, support/cancellation routes, specialist handoff, and claim boundaries before any runtime edit is applied.
+- Why it matters for the thesis: PROD-044 separates evidence-backed policy design from runtime modification, preserving the project boundary between offline sales-intelligence evaluation and production behavior change.
+- Open questions: whether the next checkpoint should apply all eight candidate policy groups at once or stage them by highest-risk customer moves such as price-first, email-only, support/cancellation, and payment fear.
+
 ### 2026-05-11 - PROD-043 sales playbook runtime adapter
 
 - Objective: create an offline adapter/evaluator that uses PROD-042 turn-level playbook artifacts to classify customer moves, retrieve playbook/evaluation rules, and score single-turn agent responses.

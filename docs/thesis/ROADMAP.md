@@ -33,12 +33,12 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: review `PROD-043-sales-playbook-runtime-adapter` offline evidence before deciding whether `PROD-044-core-sales-policy-update` is justified.
+- [ ] Current: review `PROD-046B-german-response-wording-quality-pass` output before any broader runtime promotion, retrieval default change, voice playback unlock, or demo-readiness claim.
 
 Next checkpoints:
 
-- [ ] Next: run `PROD-044-core-sales-policy-update` only if PROD-043 evidence supports a targeted core sales-policy change. Do not modify runtime behavior or enable retrieval before that checkpoint.
-- [ ] Next: after PROD-043 offline adapter evidence, decide whether targeted runtime adaptation is justified before voice playback or demo use.
+- [ ] Next: run `PROD-046-core-sales-policy-human-review` to inspect the regression-gated runtime policy changes before broader promotion.
+- [ ] Next: after targeted policy regression evidence, decide whether voice playback or demo use is still blocked by dialogue realism and customer-turn quality.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
 - [ ] Next: after the runtime-policy fix rerun, decide whether the `PROD-020` opt-in hooks should be kept as-is, revised, discarded, or moved into a bounded demo-only integration. Do not make retrieval or composer hooks default unless multi-turn policy, protected contexts, non-sale correctness, safe-close correctness, and leakage gates stay clean.
@@ -60,6 +60,14 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-046B` German response wording-quality pass, which keeps the PROD-046A German intent routing and false-positive regression intact while rewriting German customer-facing runtime responses and campaign fixture wording that sounded like internal policy text. It removes customer-facing terms such as `sale-ready`, `freigegebener Spezialistenweg`, `Support-Warteschlange`, `Kündigungs-Warteschlange`, `sichere Passungsfrage`, `Überlegenheitsaussage`, and `freigegebene Übergabe zum nächsten Schritt`. The pass records before/after wording examples, reruns the German regression surface, confirms English PROD-045 remains passing, and keeps retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion blocked.
+
+- [x] `PROD-046A` German naturalized policy regression, which reruns the PROD-045 runtime-policy surface with synthetic intent-equivalent German de-DE customer utterances instead of literal translations. It covers `22` customer-move groups with `66` positive German cases plus German false-positive priority cases for negated cancellation, negated scam, price-over-support, negated security, payment safety, and price-over-existing-provider. It adds narrow German phrase triggers and improves German localized responses while preserving English PROD-045 regression behavior. Retrieval defaults, provider calls, LLM calls, private-data reads, dataset downloads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion remain blocked.
+
+- [x] `PROD-045` core sales-policy regression rerun, which hardens the deterministic evaluator so the generic clarification response cannot pass required-boundary customer moves. It applies the PROD-044 justified targeted runtime-policy updates for price-first answers, written-info/email-only boundaries, identity repair, payment/scam safety, support/cancellation routing, specialist handoff boundaries, existing-provider gap isolation, decision-maker review paths, and sale-ready guarded next steps. The checkpoint keeps the reusable core campaign-guarded: pricing, identity, written summary, verification, support/cancellation, technical/security/healthcare, provider-gap, review-summary, and sale-ready facts must come from campaign/profile fields or fall back to safe boundary routing. Retrieval defaults, provider calls, LLM calls, private-data reads, dataset downloads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion remain blocked.
+
+- [x] `PROD-044` core sales-policy update review packet, which reads PROD-043 offline adapter evidence, probes the current deterministic realtime turn entrypoint with PROD-043 synthetic generic single-turn cases, and lists evidence-backed candidate policy updates without applying runtime behavior changes. It identifies targeted candidate groups for price-first direct answers, written-info/email-only boundaries, identity repair, payment/scam safety, support/cancellation routing, specialist handoff boundaries, existing-provider gap isolation, and decision-maker review paths. It also lists blocked updates and required campaign-fact guards. Retrieval defaults, runtime behavior, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, and production runtime promotion remain blocked.
 
 - [x] `PROD-043` sales playbook runtime adapter, which reads PROD-042 turn-level playbook artifacts and evaluates generic single-turn customer utterances/responses offline. It creates deterministic customer-move classification cases, playbook retrieval cases, agent-response evaluation cases, agent-response evaluation outputs, a static review surface, and a result/report packet. It does not generate full conversations, copy transcript text, regenerate PROD-042, modify runtime behavior, enable retrieval, call providers, or call an LLM. The next recommended checkpoint is `PROD-044-core-sales-policy-update`.
 
