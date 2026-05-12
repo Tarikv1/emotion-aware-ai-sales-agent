@@ -54,7 +54,7 @@
     {
       "sales_difficulty": "price-first-direct",
       "prod_046b_after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
-      "prod_046c_after_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+      "prod_046c_after_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
       "changed": true,
       "prod_046b_malformed_hits": [
         "bei beim",
@@ -67,7 +67,7 @@
     {
       "sales_difficulty": "identity-repair",
       "prod_046b_after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
-      "prod_046c_after_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "prod_046c_after_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
       "changed": true,
       "prod_046b_malformed_hits": [
         "um ein kurzer"
@@ -79,7 +79,7 @@
     {
       "sales_difficulty": "security-review-route",
       "prod_046b_after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an eine zuständige Fachperson weiterleiten und mache hier keine pauschalen Compliance-Zusagen.",
-      "prod_046c_after_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+      "prod_046c_after_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
       "changed": true,
       "prod_046b_malformed_hits": [],
       "prod_046c_malformed_hits": [],
@@ -126,7 +126,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -171,7 +171,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -216,7 +216,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -259,7 +259,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -302,7 +302,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -345,7 +345,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -390,7 +390,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -435,7 +435,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -480,7 +480,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -525,7 +525,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich halte es bei E-Mail, sende Ihnen eine kurze freigegebene E-Mail-Zusammenfassung und dränge nicht auf ein Telefonat.",
+        "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -570,7 +570,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich halte es bei E-Mail, sende Ihnen eine kurze freigegebene E-Mail-Zusammenfassung und dränge nicht auf ein Telefonat.",
+        "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -615,7 +615,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich halte es bei E-Mail, sende Ihnen eine kurze freigegebene E-Mail-Zusammenfassung und dränge nicht auf ein Telefonat.",
+        "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -660,7 +660,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -705,7 +705,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -750,7 +750,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -795,7 +795,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -840,7 +840,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -885,7 +885,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -930,7 +930,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
+        "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -975,7 +975,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
+        "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1020,7 +1020,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
+        "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1065,7 +1065,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+        "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1110,7 +1110,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+        "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1155,7 +1155,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+        "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1200,7 +1200,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1245,7 +1245,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1290,7 +1290,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1335,7 +1335,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1380,7 +1380,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1425,7 +1425,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1869,7 +1869,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1914,7 +1914,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1959,7 +1959,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2004,7 +2004,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2049,7 +2049,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2094,7 +2094,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2274,7 +2274,7 @@
         "next_action": "suppress-contact",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2319,7 +2319,7 @@
         "next_action": "suppress-contact",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2364,7 +2364,7 @@
         "next_action": "suppress-contact",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2409,7 +2409,7 @@
         "next_action": "suppress-contact",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2454,7 +2454,7 @@
         "next_action": "suppress-contact",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2499,7 +2499,7 @@
         "next_action": "suppress-contact",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2544,7 +2544,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann einen Rückrufwunsch dokumentieren und halte ihn optional. Keine feste Verpflichtung in diesem Anruf.",
+        "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2589,7 +2589,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann einen Rückrufwunsch dokumentieren und halte ihn optional. Keine feste Verpflichtung in diesem Anruf.",
+        "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2634,7 +2634,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich kann einen Rückrufwunsch dokumentieren und halte ihn optional. Keine feste Verpflichtung in diesem Anruf.",
+        "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2813,8 +2813,8 @@
         "selected_strategy": "evidence-or-benefit",
         "next_action": "continue",
         "call_control": "bridge-then-continue",
-        "bridge_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
-        "agent_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
+        "bridge_response": "Einen Moment, ich prüfe die Produktinformationen.",
+        "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2858,8 +2858,8 @@
         "selected_strategy": "evidence-or-benefit",
         "next_action": "continue",
         "call_control": "bridge-then-continue",
-        "bridge_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
-        "agent_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
+        "bridge_response": "Einen Moment, ich prüfe die Produktinformationen.",
+        "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2903,8 +2903,8 @@
         "selected_strategy": "evidence-or-benefit",
         "next_action": "continue",
         "call_control": "bridge-then-continue",
-        "bridge_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
-        "agent_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
+        "bridge_response": "Einen Moment, ich prüfe die Produktinformationen.",
+        "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3129,7 +3129,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3174,7 +3174,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3264,7 +3264,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3309,7 +3309,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3356,7 +3356,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3401,7 +3401,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3446,7 +3446,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3489,7 +3489,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3532,7 +3532,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3575,7 +3575,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3620,7 +3620,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3665,7 +3665,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3710,7 +3710,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+        "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3755,7 +3755,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3800,7 +3800,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3845,7 +3845,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4424,7 +4424,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4469,7 +4469,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4514,7 +4514,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4557,7 +4557,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4600,7 +4600,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4643,7 +4643,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4688,7 +4688,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4733,7 +4733,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -4778,7 +4778,7 @@
         "next_action": "escalate",
         "call_control": "transfer-or-escalate",
         "bridge_response": null,
-        "agent_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {

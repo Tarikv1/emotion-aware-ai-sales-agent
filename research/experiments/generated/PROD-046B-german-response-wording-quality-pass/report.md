@@ -20,42 +20,42 @@ This is not final German human review. It is a deterministic wording pass over s
 ### price-first-direct
 
 - Before: Der freigegebene Preisrahmen liegt beim Starter-Paket bei 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. Keine Zahlung und keine Verpflichtung in diesem Anruf.
-- After: Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.
+- After: Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.
 
 ### identity-repair
 
 - Before: Hier ist Maya von RouteSignal. Der Grund für den Anruf ist ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das nicht relevant ist, höre ich hier auf.
-- After: Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.
+- After: Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.
 
 ### written-info-request
 
 - Before: Ich kann die freigegebene schriftliche Zusammenfassung senden und es dabei belassen.
-- After: Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.
+- After: Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.
 
 ### email-only-boundary
 
 - Before: Verstanden. Nur per E-Mail. Ich kann die freigegebene E-Mail-Zusammenfassung senden und dränge nicht auf einen Anruf.
-- After: Verstanden. Ich halte es bei E-Mail, sende Ihnen eine kurze freigegebene E-Mail-Zusammenfassung und dränge nicht auf ein Telefonat.
+- After: Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.
 
 ### scam-safety-boundary
 
 - Before: In diesem Anruf werden keine Zahlungs-, Karten- oder sensiblen Daten aufgenommen. Ich kann die öffentliche Verifizierungsseite und die schriftliche Zusammenfassung zur Verifizierung senden.
-- After: Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.
+- After: Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.
 
 ### payment-safety-boundary
 
 - Before: Hier werden keine Karten- oder Zahlungsdaten benötigt. Ich halte den nächsten Schritt nur bei sicheren schriftlichen Informationen: die freigegebene einseitige Zusammenfassung.
-- After: Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.
+- After: Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.
 
 ### support-route
 
 - Before: Das ist ein Support-Thema. Ich stoppe den Verkaufspfad und leite das an die Support-Warteschlange weiter.
-- After: Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.
+- After: Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.
 
 ### cancellation-route
 
 - Before: Ich stoppe den Verkaufspfad und leite das an die Kündigungs-Warteschlange weiter.
-- After: Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.
+- After: Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.
 
 ## Remaining German Wording Risks
 

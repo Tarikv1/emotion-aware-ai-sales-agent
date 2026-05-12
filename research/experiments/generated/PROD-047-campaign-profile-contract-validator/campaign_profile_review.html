@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-047 Campaign Profile Contract Validator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #202124; }
+    .summary { border: 1px solid #d7dce2; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 24px; }
+    th, td { border: 1px solid #d7dce2; padding: 8px; text-align: left; vertical-align: top; }
+    code { background: #f4f6f8; padding: 2px 4px; }
+  </style>
+</head>
+<body>
+  <h1>PROD-047 Campaign Profile Contract Validator</h1>
+  <section class="summary">
+    <h2>Summary</h2>
+    <p>This campaign-profile contract keeps campaign fields blocked from promotion until their shape, source boundary, review status, and safety defaults are valid.</p>
+    <p>Validation cases: <code>10</code></p>
+    <p>Valid campaigns: <code>2</code></p>
+    <p>Invalid campaigns: <code>8</code></p>
+    <p>Policy group coverage: <code>12</code></p>
+    <p>Default readiness: <code>blocked_for_voice</code>, <code>blocked_for_public_demo</code>, and <code>blocked_for_customer_use</code> until explicit review statuses are present.</p>
+    <p>Runtime behavior changed: <code>false</code></p>
+  </section>
+  <h2>Validation Results</h2>
+  <table><tr><th>Case</th><th>Campaign</th><th>Language</th><th>Valid</th><th>Expected</th><th>Missing</th><th>Internal terms</th><th>Shape errors</th><th>Safety errors</th><th>Recommended fix</th></tr><tr><td>valid-en-internal-review</td><td>campaign-prod-047-valid-en-internal-review</td><td>en</td><td>True</td><td>True</td><td>0</td><td>0</td><td>0</td><td>0</td><td>No deterministic contract fix required for offline/internal review.</td></tr><tr><td>valid-de-source-informed</td><td>campaign-prod-047-valid-de-source-informed</td><td>de</td><td>True</td><td>True</td><td>0</td><td>0</td><td>0</td><td>0</td><td>No deterministic contract fix required for offline/internal review.</td></tr><tr><td>invalid-de-fragment-interpolation</td><td>campaign-prod-047-invalid-de-fragment-interpolation</td><td>de</td><td>False</td><td>True</td><td>0</td><td>2</td><td>2</td><td>0</td><td>Rewrite customer-facing fields to remove internal, queue, approval, or malformed language.; Correct field shapes or split full-sentence fields from noun-phrase/route-label fields.</td></tr><tr><td>invalid-en-internal-copy</td><td>campaign-prod-047-invalid-en-internal-copy</td><td>en</td><td>False</td><td>True</td><td>0</td><td>3</td><td>0</td><td>0</td><td>Rewrite customer-facing fields to remove internal, queue, approval, or malformed language.</td></tr><tr><td>invalid-payment-enabled</td><td>campaign-prod-047-invalid-payment-enabled</td><td>en</td><td>False</td><td>True</td><td>0</td><td>0</td><td>0</td><td>1</td><td>Restore hard safety defaults and close criteria.</td></tr><tr><td>invalid-missing-regulated-boundary</td><td>campaign-prod-047-invalid-missing-regulated-boundary</td><td>en</td><td>False</td><td>True</td><td>1</td><td>0</td><td>0</td><td>0</td><td>Add missing required policy fields with explicit shape, source boundary, and review status.</td></tr><tr><td>invalid-missing-native-review-status</td><td>campaign-prod-047-invalid-missing-native-review-status</td><td>de</td><td>False</td><td>True</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Add required language-specific review statuses before promotion.</td></tr><tr><td>invalid-sale-ready-without-close-criteria</td><td>campaign-prod-047-invalid-sale-ready-without-close-criteria</td><td>en</td><td>False</td><td>True</td><td>0</td><td>0</td><td>0</td><td>1</td><td>Restore hard safety defaults and close criteria.</td></tr><tr><td>invalid-support-cancellation-route-label</td><td>campaign-prod-047-invalid-support-cancellation-route-label</td><td>de</td><td>False</td><td>True</td><td>0</td><td>2</td><td>0</td><td>0</td><td>Rewrite customer-facing fields to remove internal, queue, approval, or malformed language.</td></tr><tr><td>incomplete-identity-reason</td><td>campaign-prod-047-incomplete-identity-reason</td><td>en</td><td>False</td><td>True</td><td>1</td><td>0</td><td>0</td><td>0</td><td>Add missing required policy fields with explicit shape, source boundary, and review status.</td></tr></table>
+  <h2>Boundaries</h2>
+  <p>Retrieval, providers, LLMs, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production promotion remain blocked.</p>
+</body>
+</html>

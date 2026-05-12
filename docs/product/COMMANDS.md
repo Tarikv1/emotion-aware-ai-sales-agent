@@ -1191,6 +1191,42 @@ Validate that PROD-046C blocks malformed German interpolation such as `bei beim`
 python scripts\validate_prod_046c_german_campaign_field_interpolation_guard.py
 ```
 
+Run the PROD-046D German source-informed wording-quality guard:
+
+```powershell
+python scripts\run_prod_046d_german_source_informed_wording_quality_guard.py
+```
+
+Validate that PROD-046D removes remaining internal-sounding German customer-facing wording while keeping PROD-045, PROD-046A, PROD-046B, and PROD-046C regressions passing:
+
+```powershell
+python scripts\validate_prod_046d_german_source_informed_wording_quality_guard.py
+```
+
+Run the PROD-046 core sales-policy human/product review checkpoint:
+
+```powershell
+python scripts\run_prod_046_core_sales_policy_human_review.py
+```
+
+Validate that PROD-046 accepts the deterministic policy surface for offline regression evidence, keeps it blocked from voice/demo/customer use, records German human-review risk, and recommends the next campaign-profile validator:
+
+```powershell
+python scripts\validate_prod_046_core_sales_policy_human_review.py
+```
+
+Run the PROD-047 campaign-profile contract validator checkpoint:
+
+```powershell
+python scripts\run_prod_047_campaign_profile_contract_validator.py
+```
+
+Validate that PROD-047 blocks malformed, internal-sounding, unsafe, or under-reviewed campaign/profile fields before voice, demo, customer use, or runtime promotion:
+
+```powershell
+python scripts\validate_prod_047_campaign_profile_contract_validator.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

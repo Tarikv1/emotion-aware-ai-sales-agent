@@ -16,6 +16,37 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-12 - PROD-047 campaign-profile contract validator
+
+- Objective: create a reusable deterministic campaign-profile contract so future campaign fields cannot enter guarded runtime policies without explicit language, field shape, source boundary, review status, and hard safety defaults.
+- Action taken: added `campaign_profile_contract.py`, PROD-047 runner/validator scripts, product documentation, example valid and invalid campaign profiles, generated schema, guard matrix, validation cases/results, report, and review HTML. Runtime behavior was not changed.
+- Data used: existing PROD-046 review findings plus synthetic project-owned campaign-profile fixtures only. No raw transcript text, German sales scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/campaign_profile_contract.py`, `scripts/run_prod_047_campaign_profile_contract_validator.py`, `scripts/validate_prod_047_campaign_profile_contract_validator.py`, `docs/product/PROD_047_CAMPAIGN_PROFILE_CONTRACT_VALIDATOR.md`, example campaigns under `campaigns/examples/`, and generated artifacts under `research/experiments/generated/PROD-047-campaign-profile-contract-validator/`.
+- What was learned: campaign/profile quality is now enforceable as a deterministic contract instead of a runtime-template assumption. Valid English and German profiles can pass for offline/internal review while still being blocked from voice/demo/customer use.
+- Why it matters for the thesis: PROD-047 turns the campaign-field bottleneck found by PROD-046 into an auditable guardrail layer, separating campaign configuration readiness from runtime-policy behavior.
+- Open questions: whether the next native German wording review should annotate these campaign profiles directly, and whether later customer/demo promotion needs a stricter legal-review status contract.
+
+### 2026-05-12 - PROD-046 core sales-policy human/product review
+
+- Objective: review the English and German deterministic runtime-policy surface from PROD-045 through PROD-046D before broader promotion.
+- Action taken: added a review-only PROD-046 runner, validator, product doc, human review packet, English/German response-quality findings, call-control findings, campaign-field findings, recommended next actions, review HTML, and report. No runtime behavior was changed.
+- Data used: existing generated PROD-045, PROD-046A, PROD-046B, PROD-046C, and PROD-046D evidence only. No raw transcript text, external scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_046_core_sales_policy_human_review.py`, runner/validator scripts, `docs/product/PROD_046_CORE_SALES_POLICY_HUMAN_REVIEW.md`, and generated artifacts under `research/experiments/generated/PROD-046-core-sales-policy-human-review/`.
+- What was learned: the current policy surface is strong enough for offline regression evidence and internal product review, but not for voice/demo/customer use. German still needs native-speaker review, some safe end-call decisions may feel abrupt, and campaign-field contracts are the strongest next deterministic product-quality gate.
+- Why it matters for the thesis: PROD-046 separates deterministic regression success from product-readiness claims, showing that multilingual policy safety, wording quality, campaign profile shape, and customer-facing promotion are distinct validation layers.
+- Open questions: whether the campaign-profile validator should precede native German review for all future campaigns, and which call-control paths should receive bridge-quality tests later.
+
+### 2026-05-12 - PROD-046D German source-informed wording-quality guard
+
+- Objective: reduce remaining internal-sounding German customer-facing runtime wording after PROD-046C using GER-001 source-informed guidance.
+- Action taken: added a PROD-046D runner, validator, product doc, source traceability map, before/after wording evidence, review HTML, generated report, and targeted German response/campaign-field wording updates. The changes removed overused customer-facing `freigegeben`, `Vertriebsteil`, log-centric callback wording, and bureaucratic security phrasing while preserving routing and call-control behavior.
+- Data used: existing PROD-045/PROD-046A/PROD-046B/PROD-046C generated evidence, synthetic project-owned German regression cases, and accepted GER-001 source URLs from regulator, consumer-protection, public-service, and plain-language sources. The sources were used as wording guidance only, not legal-compliance evidence. No raw transcript text, German sales scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Source-selection rationale: German runtime wording should be informed by consumer-protection and plain-language sources because the active German B2C path involves phone-call trust, written-info, refusal, scam/payment, support/cancellation, and regulated-advice boundaries. Sales scripts, sales guru blogs, aggressive close scripts, affiliate SEO pages, and copied competitor wording were rejected because they optimize persuasion rather than safe customer-facing clarity.
+- Output created: `scripts/prod_046d_german_source_informed_wording_quality_guard.py`, runner/validator scripts, `docs/product/PROD_046D_GERMAN_SOURCE_INFORMED_WORDING_QUALITY_GUARD.md`, generated artifacts under `research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/`, thesis reference updates, and narrow German wording edits in `scripts/run_realtime_turn_simulation.py` and `scripts/prod_046a_german_naturalized_policy_regression.py`.
+- What was learned: deterministic multilingual safety can still sound too internal even after grammar/interpolation fixes. German campaign fields need customer-facing sentence/object shapes, and source-informed wording gates should check for internal metadata terms before human review.
+- Why it matters for the thesis: PROD-046D adds a traceable methodology step between deterministic regression and human review: source-informed wording QA can improve customer-facing language without relying on LLM rewriting, sales scripts, provider calls, or legal-compliance claims.
+- Open questions: whether a German-speaking human/product reviewer accepts the source-informed wording before voice playback, demo use, retrieval changes, or runtime promotion.
+
 ### 2026-05-12 - PROD-046C German campaign-field interpolation guard
 
 - Objective: fix the malformed German campaign-field interpolation left after PROD-046B, especially `bei beim` in price-first responses and `um ein kurzer Abgleich` in identity repair.

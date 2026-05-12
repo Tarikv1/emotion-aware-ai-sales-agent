@@ -76,33 +76,33 @@ LOCALIZED_RESPONSES = {
         "unknown-runtime-signal": "Thanks. May I ask one quick clarifying question?",
     },
     "de": {
-        "voicemail": "Ich habe die Mailbox erreicht und dokumentiere einen Follow-up nach den Kampagnenregeln.",
+        "voicemail": "Ich habe die Mailbox erreicht. Ich beende den Anruf für jetzt.",
         "repeated-silence": "Ich beende den Anruf für jetzt. Auf Wiederhören.",
-        "do-not-call": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+        "do-not-call": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
         "human-request": "Natürlich. Ich leite das an eine zuständige Fachperson weiter, statt automatisch fortzufahren.",
         "claim-boundary": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
-        "product-detail-lookup": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
+        "product-detail-lookup": "Einen Moment, ich prüfe die Produktinformationen.",
         "scheduling-confirmation": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
-        "timing-delay": "Danke. Ich dokumentiere einen Rückruf, statt jetzt einen festen Termin zu erzwingen. Auf Wiederhören.",
+        "timing-delay": "Danke. Ich merke einen Rückruf vor, statt jetzt einen festen Termin zu erzwingen. Auf Wiederhören.",
         "price-objection": "Das verstehe ich. Geht es eher um den Preis selbst oder darum, ob sich der Aufwand lohnt?",
         "provider-comparison": "Das ist fair. Wir können Passung und Bedingungen ohne Druck vergleichen, bevor Sie etwas entscheiden.",
         "existing-provider-gap": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
         "autonomy-check": "Das verstehe ich. Wir können das ohne Druck klären, bevor es irgendeinen nächsten Schritt gibt.",
         "stakeholder-review": "Das verstehe ich. Ich kann eine kurze Zusammenfassung für die prüfende Person vorbereiten.",
-        "procurement-review": "Verstanden. Ich halte es bei schriftlichen Prüfinformationen und frage heute nach nichts Festem.",
+        "procurement-review": "Verstanden. Ich halte es bei schriftlichen Informationen und frage heute nach nichts Festem.",
         "trust-gap": "Faire Frage. Ich kann zuerst einen Weg zur Verifizierung nennen, bevor wir über einen nächsten Schritt sprechen.",
-        "sale-ready-commitment": "Gut, ich halte fest, dass Sie den nächsten freigegebenen Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
-        "sale-ready-missing-criteria": "Bevor ich das als nächsten Schritt festhalte, brauche ich noch die freigegebene Klärung. In diesem Gespräch gibt es keine Zahlung und keine Vertragsunterzeichnung.",
-        "callback-request": "Ich kann einen Rückrufwunsch dokumentieren und halte ihn optional. Keine feste Verpflichtung in diesem Anruf.",
-        "written-info-request": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+        "sale-ready-commitment": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+        "sale-ready-missing-criteria": "Bevor ich das als nächsten Schritt festhalte, brauche ich noch eine kurze Klärung. In diesem Gespräch gibt es keine Zahlung und keine Vertragsunterzeichnung.",
+        "callback-request": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+        "written-info-request": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
         "email-only-boundary": "Verstanden. Ich halte es bei E-Mail und dränge nicht auf ein Telefonat.",
         "identity-repair": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "scam-safety-boundary": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
         "payment-safety-boundary": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
-        "support-route": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
-        "cancellation-route": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+        "support-route": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+        "cancellation-route": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
         "technical-specialist-route": "Bei technischen Details sollte ich nicht raten. Ich kann das an eine zuständige Fachperson weiterleiten.",
-        "security-review-route": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+        "security-review-route": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
         "coverage-boundary-route": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
         "healthcare-boundary-route": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
         "unknown-runtime-signal": "Danke. Darf ich kurz eine klärende Frage stellen?",
@@ -160,26 +160,29 @@ def german_pricing_response(campaign: dict | None) -> str | None:
     if approved_sentence:
         return (
             f"{ensure_terminal_period(approved_sentence)} "
-            "In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung."
+            "In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss."
         )
     pricing = campaign_text(campaign, "pricing_summary", "pricing_boundary_text")
     if not pricing:
         return None
     cleaned = pricing.strip()
+    cleaned = cleaned.replace("freigegebenen ", "").replace("freigegebene ", "")
     lower = cleaned.lower()
     if lower.startswith(("beim ", "bei ")):
-        pricing_sentence = f"Nach den freigegebenen Informationen liegt der Preisrahmen {cleaned}"
+        normalized = cleaned.replace("beim ", "das ", 1).replace("bei ", "das ", 1)
+        normalized = normalized.replace("Starter-Paket 29", "Starter-Paket bei 29")
+        pricing_sentence = f"Nach den vorliegenden Informationen liegt {normalized}"
     elif "preisrahmen" in lower or lower.startswith("exakte preise"):
         pricing_sentence = cleaned
     else:
-        pricing_sentence = f"Nach den freigegebenen Informationen: {cleaned}"
+        pricing_sentence = f"Nach den vorliegenden Informationen: {cleaned}"
     pricing_sentence = pricing_sentence.replace(
         "; die genauen Bedingungen kommen schriftlich.",
-        ". Die genauen Bedingungen erhalten Sie schriftlich.",
+        ". Die genauen Bedingungen sende ich Ihnen schriftlich.",
     )
     return (
         f"{ensure_terminal_period(pricing_sentence)} "
-        "In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung."
+        "In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss."
     )
 
 
@@ -196,6 +199,10 @@ def german_identity_response(campaign: dict | None) -> str | None:
             return None
         if reason.lower().startswith("zu "):
             reason_sentence = ensure_terminal_period(f"Ich rufe kurz an, um {reason}")
+        elif reason.lower().startswith("ein kurzer abgleich zur zuständigkeit"):
+            reason_sentence = "Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist."
+        elif reason.lower().startswith("wir "):
+            reason_sentence = ensure_terminal_period(f"Ich rufe an, weil {reason}")
         else:
             reason_sentence = ensure_terminal_period(f"Der Grund für den Anruf ist {reason}")
     return (
@@ -274,46 +281,52 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
             pricing_response = german_pricing_response(campaign)
             if pricing_response:
                 return pricing_response
-            return "Ich habe keinen freigegebenen exakten Preis in dieser Kampagne und erfinde keinen. Ich kann freigegebene Preisinformationen senden und es dabei belassen."
+            return "Ich habe keinen genauen Preis vorliegen und erfinde keinen. Ich kann Ihnen Preisinformationen schriftlich senden und es dabei belassen."
         if sales_difficulty == "written-info-request":
             summary = campaign_text(campaign, "approved_written_summary", "approved_email_followup_scope")
             if summary:
-                return f"Ich kann Ihnen {summary} zusenden und es dabei belassen."
+                return f"Ich sende Ihnen gern {summary} und belasse es dabei."
         if sales_difficulty == "email-only-boundary":
             summary = campaign_text(campaign, "approved_email_followup_scope", "approved_written_summary")
             if summary:
-                return f"Verstanden. Ich halte es bei E-Mail, sende Ihnen {summary} und dränge nicht auf ein Telefonat."
+                return f"Verstanden. Ich sende Ihnen {summary} und dränge nicht auf ein Telefonat."
         if sales_difficulty == "identity-repair":
             identity_response = german_identity_response(campaign)
             if identity_response:
                 return identity_response
         if sales_difficulty == "scam-safety-boundary":
+            verification_response = campaign_text(campaign, "approved_verification_response")
+            if verification_response:
+                return f"Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. {ensure_terminal_period(verification_response)}"
             verification = campaign_text(campaign, "approved_verification_path", "approved_written_summary")
             if verification:
                 return f"Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen {verification} zusenden."
         if sales_difficulty == "payment-safety-boundary":
+            verification_response = campaign_text(campaign, "approved_verification_response")
+            if verification_response:
+                return f"Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. {ensure_terminal_period(verification_response)}"
             safe_path = campaign_text(campaign, "approved_written_summary", "approved_verification_path")
             if safe_path:
                 return f"Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen {safe_path} zusenden."
         if sales_difficulty == "support-route":
             route = campaign_text(campaign, "support_boundary_text", "support_route")
             if route:
-                return f"Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an {route} weiter."
+                return f"Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an {route} weiter."
         if sales_difficulty == "cancellation-route":
             route = campaign_text(campaign, "cancellation_boundary_text", "cancellation_route")
             if route:
-                return f"Dann stoppe ich den Vertriebsteil hier und leite Sie an {route} weiter."
+                return f"Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an {route} weiter."
         if sales_difficulty == "technical-specialist-route":
             scope = campaign_text(campaign, "approved_technical_scope")
             route = campaign_text(campaign, "specialist_handoff_route")
             if scope:
-                return f"Was ich sicher sagen kann: {scope}. Für weitere Details kann ich das an {route or 'eine zuständige Fachperson'} weiterleiten."
+                return f"Nach den vorliegenden Informationen kann {scope}. Integrationsdetails sollte {route or 'eine zuständige Fachperson'} prüfen."
             if route:
                 return f"Bei technischen Details sollte ich nicht raten. Ich kann das an {route} weiterleiten."
         if sales_difficulty == "security-review-route":
             route = campaign_text(campaign, "specialist_handoff_route", "approved_written_summary")
             if route:
-                return "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen."
+                return "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen."
         if sales_difficulty in {"coverage-boundary-route", "healthcare-boundary-route"}:
             boundary = campaign_text(campaign, "regulated_advice_boundary_text")
             route = campaign_text(campaign, "specialist_handoff_route")
@@ -326,7 +339,7 @@ def localized_response(language: str, sales_difficulty: str, campaign: dict | No
         if sales_difficulty in {"stakeholder-review", "partner-review"}:
             summary = campaign_text(campaign, "approved_review_summary", "approved_written_summary")
             if summary:
-                return f"Ich kann Ihnen {summary} schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein."
+                return f"Ich sende Ihnen {summary}. Heute müssen Sie nichts entscheiden."
         if sales_difficulty == "sale-ready-commitment":
             next_step = campaign_text(campaign, "approved_sale_ready_next_step", "approved_next_step")
             if next_step:

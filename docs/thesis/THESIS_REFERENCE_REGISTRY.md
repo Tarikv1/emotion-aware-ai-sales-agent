@@ -134,7 +134,19 @@ Use the source categories carefully:
   - German UWG Section 7: https://www.gesetze-im-internet.de/uwg_2004/__7.html
   - German UWG Section 7a: https://www.gesetze-im-internet.de/uwg_2004/__7a.html
   - IHK Ulm telephone advertising overview: https://www.ihk.de/ulm/recht-und-steuern/wettbewerbsrecht/wettbewerbsrecht/telefon-werbung-4239498
+- GER-001 / PROD-046D German customer-facing wording sources:
+  - Verbraucherzentrale ungewollte Werbeanrufe: https://www.verbraucherzentrale.de/wissen/vertraege-reklamation/werbung/ungewollte-werbeanrufe-hilfe-gegen-telefonwerbung-13857
+  - Verbraucherzentrale phone-scam caution about not being pressured into saying yes: https://www.verbraucherzentrale.de/wissen/digitale-welt/mobilfunk-und-festnetz/abzocke-am-telefon-moeglichst-nicht-ja-sagen-13496
+  - Verbraucherzentrale unexpected-call scam warning: https://www.verbraucherzentrale.de/wissen/vertraege-reklamation/abzocke/unerwarteter-anruf-von-der-verbraucherzentrale-vorsicht-falle-11112
+  - Polizeiliche Kriminalprävention fake customer-service/support scams: https://www.polizei-beratung.de/themen-und-tipps/sicher-handeln/onlinebetrug-maschen/fake-kundenservice-support-scams/
+  - Polizeiliche Kriminalprävention false-police fraud background safety tone: https://www.polizei-beratung.de/themen-und-tipps/betrug/betrug-durch-falsche-polizisten/
+  - Service Standard understandable writing with simple language: https://servicestandard.gov.de/handbuch/anleitungen/verstaendlich-schreiben-mit-einfacher-sprache/
+  - AFZ Bremen verständliche Sprache: https://www.afz.bremen.de/verwaltung-nbspentwickeln/buerger-innenservice-und-kommunikation/kommunikation/verstaendliche-sprache-25926
+  - Berlin standards for understandable language: https://www.berlin.de/lb/digitale-barrierefreiheit/anforderungen/berliner-standards/fuer-verstaendliche-sprache-1463990.php
+  - Verbraucherzentrale unwanted energy contracts by phone, background pattern for written confirmation and phone-contract anxiety: https://www.verbraucherzentrale.de/wissen/energie/achtung-unerwuenschte-energievertraege-am-telefon-58483
+  - Verbraucherzentrale plain-language help for advertising calls: https://www.verbraucherzentrale.de/vertraege-reklamation/hilfe-bei-werbeanrufen-100996
 - Project use: source-backed paraphrased advisory rules for RAG-019 covering cold calling, objections, closing, consultative discovery, persuasion, negotiation, voice delivery, conversation design, call-center behavior, German formal sales communication, real-call review boundaries, and compliance.
+- PROD-046D use: source-informed wording guidance for German customer-facing runtime responses only. The checkpoint does not claim legal compliance, does not copy source text, and rejects sales scripts as wording sources.
 - Current project status: extracted into `research/experiments/cases/rag-019-sales-communication-source-expansion.json` as project-owned paraphrases with source URLs, hard limits, and no runtime eligibility by default.
 - Thesis caution: practitioner sales pages are product-grounding inputs, not peer-reviewed effectiveness evidence. Legal/compliance pages guide system boundaries and are not legal advice. No copied sales scripts, article passages, or call transcripts are stored in the RAG.
 

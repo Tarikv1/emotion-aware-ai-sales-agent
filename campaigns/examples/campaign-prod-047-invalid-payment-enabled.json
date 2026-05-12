@@ -1,0 +1,214 @@
+{
+  "campaign_id": "campaign-prod-047-invalid-payment-enabled",
+  "contract_version": "prod-047.v1",
+  "language": "en",
+  "review_statuses": [
+    "machine_validated"
+  ],
+  "safety_defaults": {
+    "payment_collection_allowed": true,
+    "contract_signing_allowed": false,
+    "decision_maker_bypass_forbidden": true,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false
+  },
+  "regulated_context": {
+    "coverage_or_healthcare_sensitive": true
+  },
+  "close_criteria": {
+    "sale_ready_allowed": true,
+    "criteria_satisfied": true,
+    "criteria": [
+      "customer explicitly asks for next step",
+      "no payment collection",
+      "no contract signing"
+    ]
+  },
+  "fields": {
+    "pricing_summary": {
+      "value": "The starter plan is 29 per user per month.",
+      "shape": "pricing_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "pricing_boundary_text": {
+      "value": "Exact terms are sent in writing.",
+      "shape": "boundary_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "caller_identity": {
+      "value": "Maya from RouteSignal",
+      "shape": "noun_phrase",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_identity_reason_sentence": {
+      "value": "I am calling to check who handles callback ownership and follow-up routing.",
+      "shape": "identity_reason_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_written_summary": {
+      "value": "a one-page summary",
+      "shape": "written_info_object",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_email_followup_scope": {
+      "value": "the email summary",
+      "shape": "written_info_object",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "no_payment_boundary": {
+      "value": "This call does not collect payment, card, or sensitive details.",
+      "shape": "boundary_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_verification_response": {
+      "value": "You can verify the information through the official page.",
+      "shape": "verification_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "support_route": {
+      "value": "the support team",
+      "shape": "route_label",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "cancellation_route": {
+      "value": "the cancellation team",
+      "shape": "route_label",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_technical_scope": {
+      "value": "The system can track callback ownership and follow-up routing.",
+      "shape": "full_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "security_review_boundary": {
+      "value": "Technical or security details should be checked by the right specialist.",
+      "shape": "boundary_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "regulated_advice_boundary_text": {
+      "value": "This call does not provide medical, health, or coverage advice.",
+      "shape": "boundary_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_gap_isolation_question": {
+      "value": "The only fit question is whether callbacks or follow-ups still fall through with the current setup.",
+      "shape": "full_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_review_summary": {
+      "value": "a short review summary",
+      "shape": "written_info_object",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_sale_ready_next_step": {
+      "value": "the next step",
+      "shape": "next_step_label",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "callback_boundary": {
+      "value": "I can note a callback request without creating a commitment today.",
+      "shape": "boundary_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "do_not_call_boundary": {
+      "value": "You should not be called about this again.",
+      "shape": "boundary_sentence",
+      "source_boundary": "synthetic_test_fixture",
+      "review_statuses": [
+        "machine_validated"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    }
+  }
+}

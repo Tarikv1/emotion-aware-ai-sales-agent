@@ -1,0 +1,85 @@
+{
+  "schema_id": "campaign-profile-contract-prod-047-v1",
+  "allowed_languages": [
+    "en",
+    "de"
+  ],
+  "allowed_field_shapes": [
+    "full_sentence",
+    "noun_phrase",
+    "route_label",
+    "written_info_object",
+    "boundary_sentence",
+    "pricing_sentence",
+    "identity_reason_sentence",
+    "verification_sentence",
+    "next_step_label"
+  ],
+  "allowed_source_boundaries": [
+    "synthetic_test_fixture",
+    "company_approved",
+    "public_source_informed",
+    "human_reviewed",
+    "legal_review_required",
+    "blocked"
+  ],
+  "allowed_review_statuses": [
+    "machine_validated",
+    "source_informed",
+    "native_speaker_review_required",
+    "native_speaker_reviewed",
+    "legal_review_required",
+    "approved_for_internal_demo",
+    "approved_for_voice",
+    "approved_for_customer_use"
+  ],
+  "required_safety_defaults": {
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "decision_maker_bypass_forbidden": true,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false
+  },
+  "field_contracts": {
+    "pricing_summary": "pricing_sentence",
+    "pricing_boundary_text": "boundary_sentence",
+    "caller_identity": "noun_phrase",
+    "approved_identity_reason_sentence": "identity_reason_sentence",
+    "approved_written_summary": "written_info_object",
+    "approved_email_followup_scope": "written_info_object",
+    "no_payment_boundary": "boundary_sentence",
+    "approved_verification_response": "verification_sentence",
+    "support_route": "route_label",
+    "cancellation_route": "route_label",
+    "approved_technical_scope": "full_sentence",
+    "security_review_boundary": "boundary_sentence",
+    "regulated_advice_boundary_text": "boundary_sentence",
+    "approved_gap_isolation_question": "full_sentence",
+    "approved_review_summary": "written_info_object",
+    "approved_sale_ready_next_step": "next_step_label",
+    "callback_boundary": "boundary_sentence",
+    "do_not_call_boundary": "boundary_sentence"
+  },
+  "profile_required_keys": [
+    "campaign_id",
+    "contract_version",
+    "language",
+    "review_statuses",
+    "safety_defaults",
+    "regulated_context",
+    "close_criteria",
+    "fields"
+  ],
+  "customer_facing_field_required_keys": [
+    "value",
+    "shape",
+    "source_boundary",
+    "review_statuses",
+    "customer_facing"
+  ]
+}

@@ -24,17 +24,17 @@ This is not a runtime-policy expansion checkpoint and not a German realism pass.
 ### price-first-direct
 
 - PROD-046B: Nach den freigegebenen Informationen liegt der Preisrahmen bei beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.
-- PROD-046C: Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.
+- PROD-046C: Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.
 
 ### identity-repair
 
 - PROD-046B: Hier ist Maya von RouteSignal. Ich rufe kurz an, um ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung. Wenn das für Sie nicht relevant ist, beende ich den Anruf.
-- PROD-046C: Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.
+- PROD-046C: Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.
 
 ### security-review-route
 
 - PROD-046B: Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich kann das an eine zuständige Fachperson weiterleiten und mache hier keine pauschalen Compliance-Zusagen.
-- PROD-046C: Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.
+- PROD-046C: Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.
 
 ### sale-ready-commitment
 

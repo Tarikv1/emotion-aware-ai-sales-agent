@@ -1,0 +1,41 @@
+{
+  "items": [
+    {
+      "action_id": "next-campaign-profile-contract-validator",
+      "priority": 1,
+      "recommended_checkpoint": "PROD-047-campaign-profile-contract-validator",
+      "rationale": "Campaign-field shape is the strongest deterministic blocker found by PROD-046C and PROD-046D; it can be guarded without provider calls or runtime promotion.",
+      "must_not_unlock": [
+        "retrieval",
+        "providers",
+        "voice playback",
+        "public demo",
+        "payment collection",
+        "contract signing",
+        "production promotion"
+      ]
+    },
+    {
+      "action_id": "native-german-review-required",
+      "priority": 2,
+      "recommended_checkpoint": "PROD-048-native-german-wording-review",
+      "rationale": "German is regression-passing and source-informed but not approved by a native German reviewer.",
+      "must_not_unlock": [
+        "voice playback",
+        "public demo",
+        "real customer use"
+      ]
+    },
+    {
+      "action_id": "future-call-control-softening",
+      "priority": 3,
+      "recommended_checkpoint": "PROD-049-call-control-bridge-quality-review",
+      "rationale": "Several end-call decisions are safe but may feel abrupt in spoken interaction. This should be reviewed after campaign-field contracts are stable.",
+      "must_not_unlock": [
+        "pressure after refusal",
+        "sales continuation after support/cancellation",
+        "demo promotion"
+      ]
+    }
+  ]
+}

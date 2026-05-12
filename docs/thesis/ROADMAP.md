@@ -33,11 +33,12 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: review `PROD-046C-german-campaign-field-interpolation-guard` output before any broader runtime promotion, retrieval default change, voice playback unlock, or demo-readiness claim.
+- [ ] Current: prepare native German wording review after `PROD-047-campaign-profile-contract-validator`, without unlocking voice playback, public demo use, or real customer use.
 
 Next checkpoints:
 
-- [ ] Next: run `PROD-046-core-sales-policy-human-review` to inspect the regression-gated runtime policy changes before broader promotion.
+- [ ] Next: run a native German wording review checkpoint before voice playback, public demo use, real customer use, or German product-quality claims.
+- [ ] Next: review whether safe end-call behavior should become bridge-then-continue in selected non-refusal cases without weakening support, cancellation, do-not-call, or pressure boundaries.
 - [ ] Next: after targeted policy regression evidence, decide whether voice playback or demo use is still blocked by dialogue realism and customer-turn quality.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
 - [ ] Deferred: fix the `10` static PROD-030 route gaps only after PROD-031 shows which route/action gaps still matter in reactive conversations.
@@ -60,6 +61,12 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-047-campaign-profile-contract-validator`, which defines a reusable campaign/profile contract and deterministic validator for language, field shape, source boundary, review status, policy-group coverage, and hard safety defaults. It creates valid English and German internal-review/source-informed examples plus invalid examples for German interpolation, English internal copy, payment enablement, missing regulated boundary, missing native review status, sale-ready without close criteria, internal route labels, and incomplete identity/reason fields. Valid campaigns remain offline/internal-review only by default; voice playback, public demo use, real customer use, retrieval defaults, provider calls, LLM calls, private-data reads, payment collection, contract signing, and production runtime promotion remain blocked. The next recommended checkpoint is `PROD-048-native-german-wording-review`.
+
+- [x] `PROD-046-core-sales-policy-human-review` core sales-policy human/product review, which reviews PROD-045 through PROD-046D as a review-only checkpoint. It accepts the deterministic English/German policy surface for offline regression evidence and internal product review, but blocks voice playback, public demo use, real customer use, retrieval defaults, provider calls, LLM calls, private-data reads, payment collection, contract signing, and production runtime promotion. The review records that German still needs native-speaker review, `Verkaufsteil` may remain too internal, some safe end-call paths may feel abrupt, and campaign fields are now the main product bottleneck. The next recommended checkpoint is `PROD-047-campaign-profile-contract-validator`.
+
+- [x] `PROD-046D` German source-informed wording-quality guard, which uses GER-001 accepted German regulator, consumer-protection, public-service, and plain-language sources as wording guidance only, not legal-compliance evidence. It removes remaining internal-sounding German customer-facing terms such as overused `freigegeben`, `Vertriebsteil`, log-centric callback wording, and bureaucratic security phrasing while keeping PROD-045 English, PROD-046A German, PROD-046B wording, and PROD-046C interpolation regressions passing. It records source traceability, rejects sales scripts as wording sources, and keeps retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion blocked.
 
 - [x] `PROD-046C` German campaign-field interpolation guard, which fixes the narrow German customer-facing interpolation bugs left after PROD-046B, including `bei beim` in price-first responses and `um ein kurzer Abgleich` in identity repair. It adds deterministic interpolation guard cases, before/after evidence, and separate positive versus false-positive unknown/generic metrics while keeping PROD-045 English, PROD-046A German, and PROD-046B wording regressions passing. Retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion remain blocked.
 

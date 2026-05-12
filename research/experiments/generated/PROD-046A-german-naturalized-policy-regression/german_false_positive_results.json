@@ -70,7 +70,7 @@
         "next_action": "continue",
         "call_control": "continue-call",
         "bridge_response": null,
-        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+        "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -115,7 +115,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -205,7 +205,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -250,7 +250,7 @@
         "next_action": "create-follow-up-task",
         "call_control": "end-call",
         "bridge_response": null,
-        "agent_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {

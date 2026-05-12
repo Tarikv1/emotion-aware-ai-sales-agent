@@ -1,0 +1,55 @@
+{
+  "checkpoint_id": "PROD-046D-german-source-informed-wording-quality-guard",
+  "checkpoint_name": "German Source-Informed Wording Quality Guard",
+  "source_checkpoint_ids": [
+    "GER-001-german-customer-facing-wording-source-audit",
+    "PROD-045-core-sales-policy-regression-rerun",
+    "PROD-046A-german-naturalized-policy-regression",
+    "PROD-046B-german-response-wording-quality-pass",
+    "PROD-046C-german-campaign-field-interpolation-guard"
+  ],
+  "summary": {
+    "german_source_informed_case_count": 99,
+    "german_source_informed_pass_count": 99,
+    "german_source_informed_fail_count": 0,
+    "source_informed_wording_rewrite_count": 15,
+    "source_informed_internal_hit_count_before": 14,
+    "source_informed_internal_hit_count_after": 0,
+    "malformed_german_response_count": 0,
+    "english_operational_wording_hit_count": 0,
+    "utf8_german_marker_hit_count": 0,
+    "customer_facing_freigegeben_hit_count": 0,
+    "german_positive_unknown_runtime_signal_count": 0,
+    "german_positive_response_language_mismatch_count": 0,
+    "source_traceability_source_count": 11,
+    "source_traceability_map_complete": true,
+    "sales_script_sources_used": false,
+    "legal_compliance_claim_made": false,
+    "english_prod_045_regression_still_passed": true,
+    "german_prod_046a_regression_still_passed": true,
+    "german_prod_046b_wording_regression_still_passed": true,
+    "german_prod_046c_interpolation_guard_still_passed": true,
+    "runtime_behavior_changed": true,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "outputs": {
+    "report": "research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/report.md",
+    "german_source_informed_before_after": "research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/german_source_informed_before_after.json",
+    "german_source_informed_results": "research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/german_source_informed_results.json",
+    "german_source_informed_review_data": "research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/german_source_informed_review_data.json",
+    "german_source_informed_review_html": "research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/german_source_informed_review.html",
+    "source_traceability_map": "research/experiments/generated/PROD-046D-german-source-informed-wording-quality-guard/source_traceability_map.json"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-046-core-sales-policy-human-review"
+}

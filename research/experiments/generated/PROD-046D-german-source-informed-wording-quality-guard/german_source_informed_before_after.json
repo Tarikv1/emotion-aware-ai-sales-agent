@@ -1,0 +1,282 @@
+{
+  "items": [
+    {
+      "sales_difficulty": "price-first-direct",
+      "prod_046c_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsunterzeichnung.",
+      "prod_046d_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "identity-repair",
+      "prod_046c_response": "Hier ist Maya von RouteSignal. Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "prod_046d_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "changed": true,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "written-info-request",
+      "prod_046c_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zusenden und es dabei belassen.",
+      "prod_046d_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "email-only-boundary",
+      "prod_046c_response": "Verstanden. Ich halte es bei E-Mail, sende Ihnen eine kurze freigegebene E-Mail-Zusammenfassung und dränge nicht auf ein Telefonat.",
+      "prod_046d_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "scam-safety-boundary",
+      "prod_046c_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen den offiziellen Verifizierungsweg und die schriftlichen Informationen zusenden.",
+      "prod_046d_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "verifizierungsweg"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "payment-safety-boundary",
+      "prod_046c_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten oder Kartendaten. Ich kann Ihnen stattdessen eine kurze freigegebene Zusammenfassung zusenden.",
+      "prod_046d_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "support-route",
+      "prod_046c_response": "Das ist ein Support-Thema. Ich stoppe den Vertriebsteil hier und leite Sie an den zuständigen Support weiter.",
+      "prod_046d_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "vertriebsteil"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "cancellation-route",
+      "prod_046c_response": "Dann stoppe ich den Vertriebsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "prod_046d_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "vertriebsteil"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "technical-specialist-route",
+      "prod_046c_response": "Was ich sicher sagen kann: das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden. Für weitere Details kann ich das an eine zuständige Fachperson weiterleiten.",
+      "prod_046d_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "changed": true,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "security-review-route",
+      "prod_046c_response": "Für eine Sicherheitsprüfung braucht es freigegebene Unterlagen oder eine zuständige Fachperson. Ich mache hier keine pauschalen Compliance-Zusagen.",
+      "prod_046d_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben",
+        "compliance-zusagen",
+        "pauschalen compliance"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "coverage-boundary-route",
+      "prod_046c_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "prod_046d_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "changed": false,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "healthcare-boundary-route",
+      "prod_046c_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "prod_046d_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "changed": false,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "existing-provider-gap",
+      "prod_046c_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "prod_046d_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "changed": false,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "stakeholder-review",
+      "prod_046c_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+      "prod_046d_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "partner-review",
+      "prod_046c_response": "Ich kann Ihnen eine kurze freigegebene Zusammenfassung zur Prüfung schicken. Heute müssen Sie nichts entscheiden und gehen keine Verpflichtung ein.",
+      "prod_046d_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "sale-ready-commitment",
+      "prod_046c_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "prod_046d_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "changed": false,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "do-not-call",
+      "prod_046c_response": "Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhören.",
+      "prod_046d_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "changed": true,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "callback-request",
+      "prod_046c_response": "Ich kann einen Rückrufwunsch dokumentieren und halte ihn optional. Keine feste Verpflichtung in diesem Anruf.",
+      "prod_046d_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "rückrufwunsch dokumentieren"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "claim-boundary",
+      "prod_046c_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "prod_046d_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "changed": false,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "product-detail-lookup",
+      "prod_046c_response": "Einen Moment, ich prüfe die freigegebenen Produktinformationen.",
+      "prod_046d_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "changed": true,
+      "source_informed_internal_hits_before": [
+        "freigegeben"
+      ],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    },
+    {
+      "sales_difficulty": "scheduling-confirmation",
+      "prod_046c_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "prod_046d_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "changed": false,
+      "source_informed_internal_hits_before": [],
+      "source_informed_internal_hits_after": [],
+      "malformed_hits_after": [],
+      "example_type": "synthetic_source_informed_before_after_example",
+      "source_quote": false,
+      "from_single_transcript": false
+    }
+  ]
+}

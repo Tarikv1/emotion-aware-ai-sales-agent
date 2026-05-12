@@ -1,0 +1,724 @@
+{
+  "items": [
+    {
+      "finding_id": "call-control-en-001",
+      "language": "en",
+      "case_id": "prod-045-price-first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-002",
+      "language": "en",
+      "case_id": "prod-045-send-info",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-003",
+      "language": "en",
+      "case_id": "prod-045-email-only",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-004",
+      "language": "en",
+      "case_id": "prod-045-scam-fear",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-005",
+      "language": "en",
+      "case_id": "prod-045-payment-fear",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-006",
+      "language": "en",
+      "case_id": "prod-045-manager",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-007",
+      "language": "en",
+      "case_id": "prod-045-spouse",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-008",
+      "language": "en",
+      "case_id": "prod-045-sale-ready-ok",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-en-009",
+      "language": "en",
+      "case_id": "prod-045-callback",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-010",
+      "language": "de",
+      "case_id": "source-informed-de-price_first-001",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-011",
+      "language": "de",
+      "case_id": "source-informed-de-price_first-002",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-012",
+      "language": "de",
+      "case_id": "source-informed-de-price_first-003",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-013",
+      "language": "de",
+      "case_id": "source-informed-de-send_info-001",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-014",
+      "language": "de",
+      "case_id": "source-informed-de-send_info-002",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-015",
+      "language": "de",
+      "case_id": "source-informed-de-send_info-003",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-016",
+      "language": "de",
+      "case_id": "source-informed-de-email_only-001",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-017",
+      "language": "de",
+      "case_id": "source-informed-de-email_only-002",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-018",
+      "language": "de",
+      "case_id": "source-informed-de-email_only-003",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-019",
+      "language": "de",
+      "case_id": "source-informed-de-scam_or_card_fear-001",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-020",
+      "language": "de",
+      "case_id": "source-informed-de-scam_or_card_fear-002",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-021",
+      "language": "de",
+      "case_id": "source-informed-de-scam_or_card_fear-003",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-022",
+      "language": "de",
+      "case_id": "source-informed-de-payment_safety_fear-001",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-023",
+      "language": "de",
+      "case_id": "source-informed-de-payment_safety_fear-002",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-024",
+      "language": "de",
+      "case_id": "source-informed-de-payment_safety_fear-003",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-025",
+      "language": "de",
+      "case_id": "source-informed-de-needs_manager_approval-001",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-026",
+      "language": "de",
+      "case_id": "source-informed-de-needs_manager_approval-002",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-027",
+      "language": "de",
+      "case_id": "source-informed-de-needs_manager_approval-003",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-028",
+      "language": "de",
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-001",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-029",
+      "language": "de",
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-002",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-030",
+      "language": "de",
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-003",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-031",
+      "language": "de",
+      "case_id": "source-informed-de-sale_ready_interest-001",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-032",
+      "language": "de",
+      "case_id": "source-informed-de-sale_ready_interest-002",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-033",
+      "language": "de",
+      "case_id": "source-informed-de-sale_ready_interest-003",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-034",
+      "language": "de",
+      "case_id": "source-informed-de-callback_request-001",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-035",
+      "language": "de",
+      "case_id": "source-informed-de-callback_request-002",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-036",
+      "language": "de",
+      "case_id": "source-informed-de-callback_request-003",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-037",
+      "language": "de",
+      "case_id": "source-informed-interp-de-price_first-001",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-038",
+      "language": "de",
+      "case_id": "source-informed-interp-de-price_first-002",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-039",
+      "language": "de",
+      "case_id": "source-informed-interp-de-price_first-003",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-040",
+      "language": "de",
+      "case_id": "source-informed-interp-de-sale_ready_interest-001",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-041",
+      "language": "de",
+      "case_id": "source-informed-interp-de-sale_ready_interest-002",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-042",
+      "language": "de",
+      "case_id": "source-informed-interp-de-sale_ready_interest-003",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-043",
+      "language": "de",
+      "case_id": "source-informed-interp-legacy-de-price_first-001",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-044",
+      "language": "de",
+      "case_id": "source-informed-interp-legacy-de-price_first-002",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "call-control-de-045",
+      "language": "de",
+      "case_id": "source-informed-interp-legacy-de-price_first-003",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+      "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+      "classifications": {
+        "accepted_for_regression": true,
+        "revise_call_control_later": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    }
+  ]
+}

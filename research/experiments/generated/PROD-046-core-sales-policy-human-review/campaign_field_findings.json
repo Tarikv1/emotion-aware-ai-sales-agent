@@ -1,0 +1,36 @@
+{
+  "items": [
+    {
+      "finding_id": "campaign-field-contract-001",
+      "finding": "Campaign fields are now the main deterministic product bottleneck because runtime templates depend on whether a field is a full customer-facing sentence, noun phrase, route label, written-info object, or boundary sentence.",
+      "evidence": [
+        "PROD-046C fixed malformed German interpolation caused by unsafe fragment insertion.",
+        "PROD-046D reduced internal German wording by reshaping campaign text and response templates.",
+        "68 reviewed responses depend on campaign-field quality."
+      ],
+      "required_future_guard": "Create a campaign-profile contract validator before adding new campaigns or promoting voice/demo use.",
+      "classifications": {
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    },
+    {
+      "finding_id": "campaign-field-language-002",
+      "finding": "German campaign fields need explicit language-specific shape rules and native review status, not only translated strings.",
+      "evidence": [
+        "PROD-046A proved routing with synthetic naturalized German cases.",
+        "PROD-046B through PROD-046D improved wording, but none claims native-speaker approval."
+      ],
+      "required_future_guard": "Require per-language customer-facing examples, source boundary notes, and native-review status in campaign profiles.",
+      "classifications": {
+        "accepted_with_human_review_needed": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      }
+    }
+  ]
+}

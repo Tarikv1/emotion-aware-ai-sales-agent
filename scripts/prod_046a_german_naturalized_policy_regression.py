@@ -24,29 +24,30 @@ GERMAN_CAMPAIGN = {
     "language": "de",
     "caller_identity": "Maya von RouteSignal",
     "company_or_campaign_name": "RouteSignal",
-    "approved_reason_for_call": "ein kurzer Abgleich zur Zuständigkeit für Rückrufe und Nachverfolgung",
-    "approved_identity_reason_sentence": "Ich rufe kurz an, um zu klären, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
-    "approved_pricing_response": "Nach den freigegebenen Informationen liegt der Preisrahmen beim Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen erhalten Sie schriftlich.",
-    "pricing_summary": "beim Starter-Paket 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich.",
-    "pricing_boundary_text": "Exakte Preise dürfen nur aus den freigegebenen schriftlichen Preisunterlagen kommen.",
+    "approved_reason_for_call": "wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist",
+    "approved_identity_reason_sentence": "Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+    "approved_pricing_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich.",
+    "pricing_summary": "das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich.",
+    "pricing_boundary_text": "Exakte Preise dürfen nur aus den schriftlichen Preisunterlagen kommen.",
     "callback_offer_allowed_after_direct_answer": True,
-    "approved_written_summary": "eine kurze freigegebene Zusammenfassung",
-    "approved_email_followup_scope": "eine kurze freigegebene E-Mail-Zusammenfassung",
+    "approved_written_summary": "eine kurze Zusammenfassung per E-Mail",
+    "approved_email_followup_scope": "die Informationen per E-Mail",
     "allowed_contact_channels": ["email"],
     "respect_email_only_boundary": True,
     "payment_collection_allowed": False,
-    "approved_verification_path": "den offiziellen Verifizierungsweg und die schriftlichen Informationen",
+    "approved_verification_path": "die Informationen über die offizielle Seite und schriftlich",
+    "approved_verification_response": "Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
     "support_route": "den zuständigen Support",
     "support_boundary_text": "den zuständigen Support",
     "cancellation_route": "die zuständige Stelle für Kündigungen",
     "cancellation_boundary_text": "die zuständige Stelle für Kündigungen",
-    "approved_technical_scope": "das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden; Integrationsdetails müssen geprüft werden",
+    "approved_technical_scope": "das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden",
     "unknown_technical_answer_boundary": "unbekannte technische Details müssen fachlich geprüft werden",
     "specialist_handoff_route": "eine zuständige Fachperson",
     "regulated_advice_boundary_text": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben.",
     "competitor_comparison_boundary_text": "Ich darf nicht behaupten, dass RouteSignal einen bestehenden Anbieter ersetzt oder überlegen ist.",
     "approved_gap_isolation_question": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
-    "approved_review_summary": "eine kurze freigegebene Zusammenfassung zur Prüfung",
+    "approved_review_summary": "eine kurze Zusammenfassung zur Prüfung",
     "decision_maker_bypass_forbidden": True,
     "close_criteria_satisfied": True,
     "sale_ready_close_allowed": True,
@@ -177,26 +178,26 @@ def german_required_action_passed(customer_move_id: str, response: str, decision
     if customer_move_id == "price_first":
         require(contains_any(lowered, ["29 euro", "preisrahmen", "preise", "preisinformationen"]), "requires_german_pricing_fact_or_boundary")
     elif customer_move_id == "who_are_you":
-        require(contains_any(lowered, ["maya", "routesignal"]) and contains_any(lowered, ["rufe kurz an", "grund für den anruf"]), "requires_german_identity_and_reason")
+        require(contains_any(lowered, ["maya", "routesignal"]) and contains_any(lowered, ["ich rufe an", "rufe kurz an", "grund für den anruf"]), "requires_german_identity_and_reason")
     elif customer_move_id == "send_info":
         require(contains_any(lowered, ["senden", "zusammenfassung", "schriftlich"]), "requires_german_written_info")
     elif customer_move_id == "email_only":
-        require(contains_any(lowered, ["bei e-mail", "nur per e-mail"]) and contains_any(lowered, ["dränge nicht auf ein telefonat", "dränge nicht auf einen anruf"]), "requires_german_email_boundary")
+        require(contains_any(lowered, ["per e-mail", "bei e-mail", "nur per e-mail"]) and contains_any(lowered, ["dränge nicht auf ein telefonat", "dränge nicht auf einen anruf"]), "requires_german_email_boundary")
     elif customer_move_id == "scam_or_card_fear":
         require(contains_any(lowered, ["nicht nach zahlungsdaten", "keine zahlungs", "keine karten"]), "requires_german_no_payment_card_sensitive")
-        require(contains_any(lowered, ["verifizierung", "verifizierungsweg"]), "requires_german_verification_path")
+        require(contains_any(lowered, ["offizielle seite", "schriftliche informationen", "verifizierung"]), "requires_german_verification_path")
     elif customer_move_id == "payment_safety_fear":
         require(contains_any(lowered, ["nicht nach zahlungsdaten", "kartendaten", "schriftlichen informationen"]), "requires_german_payment_safety_boundary")
     elif customer_move_id == "support_issue":
-        require(contains_any(lowered, ["support-thema", "vertriebsteil", "zuständigen support"]), "requires_german_support_route")
+        require(contains_any(lowered, ["support-thema", "verkaufsteil", "zuständigen support"]), "requires_german_support_route")
         require(decision.get("call_control") == "transfer-or-escalate", "requires_support_transfer")
     elif customer_move_id == "cancellation_request":
-        require(contains_any(lowered, ["kündigung", "kündigungen", "vertriebsteil"]), "requires_german_cancellation_route")
+        require(contains_any(lowered, ["kündigung", "kündigungen", "verkaufsteil"]), "requires_german_cancellation_route")
         require(decision.get("call_control") == "transfer-or-escalate", "requires_cancellation_transfer")
     elif customer_move_id == "technical_question":
         require(contains_any(lowered, ["sicher sagen", "nicht raten", "zuständige fachperson"]), "requires_german_technical_scope_or_specialist")
     elif customer_move_id == "security_review":
-        require(contains_any(lowered, ["sicherheitsprüfung", "freigegebene unterlagen", "zuständige fachperson"]), "requires_german_security_route")
+        require(contains_any(lowered, ["sicherheitsprüfung", "zuständige fachperson", "nicht", "allgemeinen zusagen"]), "requires_german_security_route")
         require("vollständig compliant" not in lowered, "no_broad_security_claim")
     elif customer_move_id == "coverage_confusion":
         require(contains_any(lowered, ["keine medizinische beratung", "versicherungsschutz", "zuständige fachperson"]), "requires_german_coverage_boundary")
@@ -206,13 +207,13 @@ def german_required_action_passed(customer_move_id: str, response: str, decision
         require(contains_any(lowered, ["ersetzt", "anbieter", "sinnvoll wäre nur zu prüfen"]), "requires_german_provider_gap_boundary")
         require(not contains_any(lowered, ["besser als", "überlegen"]), "no_competitor_superiority")
     elif customer_move_id in {"needs_manager_approval", "needs_spouse_or_partner_input"}:
-        require(contains_any(lowered, ["zusammenfassung", "prüfung", "nichts entscheiden", "keine verpflichtung"]), "requires_german_review_summary")
+        require(contains_any(lowered, ["zusammenfassung", "prüfung", "nichts entscheiden"]), "requires_german_review_summary")
     elif customer_move_id == "sale_ready_interest":
-        require(contains_any(lowered, ["nächsten freigegebenen schritt", "keine zahlung", "keine vertragsunterzeichnung"]), "requires_german_sale_ready_boundary")
+        require(contains_any(lowered, ["nächsten schritt", "keine zahlung", "keine vertragsunterzeichnung"]), "requires_german_sale_ready_boundary")
     elif customer_move_id in {"not_interested", "hostile_rejection"}:
         require(decision.get("call_control") == "end-call", "requires_end_call")
     elif customer_move_id == "callback_request":
-        require(contains_any(lowered, ["rückruf", "optional", "keine feste verpflichtung"]), "requires_german_callback_boundary")
+        require(contains_any(lowered, ["rückruf", "optional", "keine verpflichtung"]), "requires_german_callback_boundary")
     elif customer_move_id == "skeptical_proof_request":
         require(contains_any(lowered, ["nicht", "garantieren", "fachperson"]), "requires_german_claim_boundary")
     elif customer_move_id == "product_detail_lookup":

@@ -1,0 +1,2935 @@
+{
+  "items": [
+    {
+      "case_id": "source-informed-de-price_first-001",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-price_first-002",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-price_first-003",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-send_info-001",
+      "customer_move_id": "send_info",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-send_info-002",
+      "customer_move_id": "send_info",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-send_info-003",
+      "customer_move_id": "send_info",
+      "sales_difficulty": "written-info-request",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-email_only-001",
+      "customer_move_id": "email_only",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-email_only-002",
+      "customer_move_id": "email_only",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-email_only-003",
+      "customer_move_id": "email_only",
+      "sales_difficulty": "email-only-boundary",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-scam_or_card_fear-001",
+      "customer_move_id": "scam_or_card_fear",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-scam_or_card_fear-002",
+      "customer_move_id": "scam_or_card_fear",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-scam_or_card_fear-003",
+      "customer_move_id": "scam_or_card_fear",
+      "sales_difficulty": "scam-safety-boundary",
+      "call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-payment_safety_fear-001",
+      "customer_move_id": "payment_safety_fear",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-payment_safety_fear-002",
+      "customer_move_id": "payment_safety_fear",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-payment_safety_fear-003",
+      "customer_move_id": "payment_safety_fear",
+      "sales_difficulty": "payment-safety-boundary",
+      "call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-support_issue-001",
+      "customer_move_id": "support_issue",
+      "sales_difficulty": "support-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [
+        "verkaufsteil"
+      ],
+      "quality_risks": {
+        "internal_sounding": true,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": true,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "German response still contains a phrase that may sound internal or operational.",
+        "Support/cancellation wording should likely avoid `Verkaufsteil` in a later wording pass."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-support_issue-002",
+      "customer_move_id": "support_issue",
+      "sales_difficulty": "support-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [
+        "verkaufsteil"
+      ],
+      "quality_risks": {
+        "internal_sounding": true,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": true,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "German response still contains a phrase that may sound internal or operational.",
+        "Support/cancellation wording should likely avoid `Verkaufsteil` in a later wording pass."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-support_issue-003",
+      "customer_move_id": "support_issue",
+      "sales_difficulty": "support-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [
+        "verkaufsteil"
+      ],
+      "quality_risks": {
+        "internal_sounding": true,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": true,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "German response still contains a phrase that may sound internal or operational.",
+        "Support/cancellation wording should likely avoid `Verkaufsteil` in a later wording pass."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-cancellation_request-001",
+      "customer_move_id": "cancellation_request",
+      "sales_difficulty": "cancellation-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [
+        "verkaufsteil"
+      ],
+      "quality_risks": {
+        "internal_sounding": true,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": true,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "German response still contains a phrase that may sound internal or operational.",
+        "Support/cancellation wording should likely avoid `Verkaufsteil` in a later wording pass."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-cancellation_request-002",
+      "customer_move_id": "cancellation_request",
+      "sales_difficulty": "cancellation-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [
+        "verkaufsteil"
+      ],
+      "quality_risks": {
+        "internal_sounding": true,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": true,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "German response still contains a phrase that may sound internal or operational.",
+        "Support/cancellation wording should likely avoid `Verkaufsteil` in a later wording pass."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-cancellation_request-003",
+      "customer_move_id": "cancellation_request",
+      "sales_difficulty": "cancellation-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [
+        "verkaufsteil"
+      ],
+      "quality_risks": {
+        "internal_sounding": true,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": true,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "German response still contains a phrase that may sound internal or operational.",
+        "Support/cancellation wording should likely avoid `Verkaufsteil` in a later wording pass."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-technical_question-001",
+      "customer_move_id": "technical_question",
+      "sales_difficulty": "technical-specialist-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-technical_question-002",
+      "customer_move_id": "technical_question",
+      "sales_difficulty": "technical-specialist-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-technical_question-003",
+      "customer_move_id": "technical_question",
+      "sales_difficulty": "technical-specialist-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-security_review-001",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-security_review-002",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-security_review-003",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-coverage_confusion-001",
+      "customer_move_id": "coverage_confusion",
+      "sales_difficulty": "coverage-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-coverage_confusion-002",
+      "customer_move_id": "coverage_confusion",
+      "sales_difficulty": "coverage-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-coverage_confusion-003",
+      "customer_move_id": "coverage_confusion",
+      "sales_difficulty": "coverage-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-sensitive_healthcare_concern-001",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "sales_difficulty": "healthcare-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-sensitive_healthcare_concern-002",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "sales_difficulty": "healthcare-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-sensitive_healthcare_concern-003",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "sales_difficulty": "healthcare-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-existing_provider-001",
+      "customer_move_id": "existing_provider",
+      "sales_difficulty": "existing-provider-gap",
+      "call_control": "continue-call",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-existing_provider-002",
+      "customer_move_id": "existing_provider",
+      "sales_difficulty": "existing-provider-gap",
+      "call_control": "continue-call",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-existing_provider-003",
+      "customer_move_id": "existing_provider",
+      "sales_difficulty": "existing-provider-gap",
+      "call_control": "continue-call",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-needs_manager_approval-001",
+      "customer_move_id": "needs_manager_approval",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-needs_manager_approval-002",
+      "customer_move_id": "needs_manager_approval",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-needs_manager_approval-003",
+      "customer_move_id": "needs_manager_approval",
+      "sales_difficulty": "stakeholder-review",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-001",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-002",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-003",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "sales_difficulty": "partner-review",
+      "call_control": "end-call",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-sale_ready_interest-001",
+      "customer_move_id": "sale_ready_interest",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-sale_ready_interest-002",
+      "customer_move_id": "sale_ready_interest",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-sale_ready_interest-003",
+      "customer_move_id": "sale_ready_interest",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-not_interested-001",
+      "customer_move_id": "not_interested",
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-not_interested-002",
+      "customer_move_id": "not_interested",
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-not_interested-003",
+      "customer_move_id": "not_interested",
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-hostile_rejection-001",
+      "customer_move_id": "hostile_rejection",
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-hostile_rejection-002",
+      "customer_move_id": "hostile_rejection",
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-hostile_rejection-003",
+      "customer_move_id": "hostile_rejection",
+      "sales_difficulty": "do-not-call",
+      "call_control": "end-call",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-callback_request-001",
+      "customer_move_id": "callback_request",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-callback_request-002",
+      "customer_move_id": "callback_request",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-callback_request-003",
+      "customer_move_id": "callback_request",
+      "sales_difficulty": "callback-request",
+      "call_control": "end-call",
+      "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-skeptical_proof_request-001",
+      "customer_move_id": "skeptical_proof_request",
+      "sales_difficulty": "claim-boundary",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-skeptical_proof_request-002",
+      "customer_move_id": "skeptical_proof_request",
+      "sales_difficulty": "claim-boundary",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-skeptical_proof_request-003",
+      "customer_move_id": "skeptical_proof_request",
+      "sales_difficulty": "claim-boundary",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-product_detail_lookup-001",
+      "customer_move_id": "product_detail_lookup",
+      "sales_difficulty": "product-detail-lookup",
+      "call_control": "bridge-then-continue",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-product_detail_lookup-002",
+      "customer_move_id": "product_detail_lookup",
+      "sales_difficulty": "product-detail-lookup",
+      "call_control": "bridge-then-continue",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-product_detail_lookup-003",
+      "customer_move_id": "product_detail_lookup",
+      "sales_difficulty": "product-detail-lookup",
+      "call_control": "bridge-then-continue",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-scheduling_confirmation-001",
+      "customer_move_id": "scheduling_confirmation",
+      "sales_difficulty": "scheduling-confirmation",
+      "call_control": "schedule-and-end",
+      "agent_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-scheduling_confirmation-002",
+      "customer_move_id": "scheduling_confirmation",
+      "sales_difficulty": "scheduling-confirmation",
+      "call_control": "schedule-and-end",
+      "agent_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-de-scheduling_confirmation-003",
+      "customer_move_id": "scheduling_confirmation",
+      "sales_difficulty": "scheduling-confirmation",
+      "call_control": "schedule-and-end",
+      "agent_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-price_first-001",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-price_first-002",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-price_first-003",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-technical_question-001",
+      "customer_move_id": "technical_question",
+      "sales_difficulty": "technical-specialist-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-technical_question-002",
+      "customer_move_id": "technical_question",
+      "sales_difficulty": "technical-specialist-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-technical_question-003",
+      "customer_move_id": "technical_question",
+      "sales_difficulty": "technical-specialist-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-security_review-001",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-security_review-002",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-security_review-003",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-coverage_confusion-001",
+      "customer_move_id": "coverage_confusion",
+      "sales_difficulty": "coverage-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-coverage_confusion-002",
+      "customer_move_id": "coverage_confusion",
+      "sales_difficulty": "coverage-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-coverage_confusion-003",
+      "customer_move_id": "coverage_confusion",
+      "sales_difficulty": "coverage-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-sensitive_healthcare_concern-001",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "sales_difficulty": "healthcare-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-sensitive_healthcare_concern-002",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "sales_difficulty": "healthcare-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-sensitive_healthcare_concern-003",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "sales_difficulty": "healthcare-boundary-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-existing_provider-001",
+      "customer_move_id": "existing_provider",
+      "sales_difficulty": "existing-provider-gap",
+      "call_control": "continue-call",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-existing_provider-002",
+      "customer_move_id": "existing_provider",
+      "sales_difficulty": "existing-provider-gap",
+      "call_control": "continue-call",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-existing_provider-003",
+      "customer_move_id": "existing_provider",
+      "sales_difficulty": "existing-provider-gap",
+      "call_control": "continue-call",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-sale_ready_interest-001",
+      "customer_move_id": "sale_ready_interest",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-sale_ready_interest-002",
+      "customer_move_id": "sale_ready_interest",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-de-sale_ready_interest-003",
+      "customer_move_id": "sale_ready_interest",
+      "sales_difficulty": "sale-ready-commitment",
+      "call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": false,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-price_first-001",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-price_first-002",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-price_first-003",
+      "customer_move_id": "price_first",
+      "sales_difficulty": "price-first-direct",
+      "call_control": "end-call",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": true,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": true,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required.",
+        "Safe deterministic end-call, but the turn may feel abrupt before voice/demo use."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "sales_difficulty": "identity-repair",
+      "call_control": "continue-call",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": false,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-security_review-001",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-security_review-002",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-security_review-003",
+      "customer_move_id": "security_review",
+      "sales_difficulty": "security-review-route",
+      "call_control": "transfer-or-escalate",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "required_action_passed": true,
+      "internal_or_policy_marker_hits": [],
+      "quality_risks": {
+        "internal_sounding": false,
+        "robotic_or_legalistic": true,
+        "too_abrupt": false,
+        "native_speaker_review_required": true,
+        "unsupported_claim_risk": false
+      },
+      "classifications": {
+        "accepted_for_regression": true,
+        "accepted_with_human_review_needed": true,
+        "revise_wording_later": false,
+        "revise_call_control_later": false,
+        "needs_campaign_field_validator": true,
+        "blocked_for_voice": true,
+        "blocked_for_public_demo": true,
+        "blocked_for_real_customer_use": true
+      },
+      "review_notes": [
+        "German is accepted for synthetic regression evidence only; native-speaker review is still required."
+      ]
+    }
+  ]
+}

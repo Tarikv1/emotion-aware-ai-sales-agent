@@ -52,9 +52,12 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_046A_GERMAN_NATURALIZED_POLICY_REGRESSION.md`
 - `PROD_046B_GERMAN_RESPONSE_WORDING_QUALITY_PASS.md`
 - `PROD_046C_GERMAN_CAMPAIGN_FIELD_INTERPOLATION_GUARD.md`
+- `PROD_046D_GERMAN_SOURCE_INFORMED_WORDING_QUALITY_GUARD.md`
+- `PROD_046_CORE_SALES_POLICY_HUMAN_REVIEW.md`
+- `PROD_047_CAMPAIGN_PROFILE_CONTRACT_VALIDATOR.md`
 
 Current PROD-041A scope: interactive conditional customer simulation with `customer_reaction_policy_bank.json`, `interactive_scenario_profiles.json`, and `interaction_traces.json`; it is not a fixed scripted-dialogue generator. It now validates agent reactivity too: each agent turn must address the immediately previous customer intent, avoid repeated answers, avoid looping questions, and avoid false safe closes.
-Current forward layer: `PROD-046C-german-campaign-field-interpolation-guard`, which keeps the PROD-046A/046B German regression surface intact while blocking malformed German campaign-field interpolation before human review. Retrieval, provider calls, LLM calls, private-data reads, voice playback, public demo polish, payment collection, contract signing, and production runtime promotion remain blocked.
+Current forward layer: `PROD-047-campaign-profile-contract-validator`, which defines a reusable campaign/profile field contract for language, field shape, source boundary, review status, and hard safety defaults. It validates English and German example campaigns, keeps valid campaigns limited to offline/internal review by default, and blocks voice playback, public demo use, real customer use, retrieval defaults, provider calls, LLM calls, private-data reads, payment collection, contract signing, and production runtime promotion.
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 

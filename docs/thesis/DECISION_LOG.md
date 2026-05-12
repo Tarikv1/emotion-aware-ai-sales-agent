@@ -15,6 +15,64 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-104 - Require campaign-profile contracts before voice/demo/customer use
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: require deterministic campaign-profile contracts for language, field shape, source boundary, review status, policy-group coverage, and hard safety defaults before any campaign field can support voice/demo/customer-facing promotion.
+- Why:
+  - PROD-046 found campaign fields are the main product bottleneck after the deterministic policy surface passed regression
+  - malformed German interpolation and internal-sounding English/German wording came from treating campaign fields as interchangeable strings
+  - voice/demo/customer use needs stronger profile contracts than offline regression evidence
+- Alternatives considered:
+  - proceed directly to native German wording review without a reusable campaign contract
+  - rely on runtime templates to sanitize campaign fields dynamically
+  - allow valid profiles to unlock voice/demo/customer use immediately
+- Consequences:
+  - valid profiles remain offline/internal-review only by default
+  - malformed, internal, unsafe, or under-reviewed profile fields fail deterministically
+  - `blocked_for_voice`, `blocked_for_public_demo`, and `blocked_for_customer_use` remain the default readiness state
+  - retrieval, providers, LLMs, private data, payment collection, contract signing, public demo, voice playback, and production runtime promotion remain blocked
+
+### DEC-103 - Accept core sales-policy surface for offline regression only
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: accept the PROD-045 through PROD-046D core sales-policy surface for offline regression evidence and internal product review, but keep it blocked from voice playback, public demo use, real customer use, retrieval defaults, provider calls, LLM calls, private-data reads, payment collection, contract signing, and production runtime promotion.
+- Why:
+  - PROD-045 through PROD-046D validators pass and show deterministic handling of English and German required-boundary moves
+  - review evidence still finds product-readiness risks: English internal policy wording, German native-review need, possible `Verkaufsteil` awkwardness, abrupt end-call behavior, and campaign-field shape dependency
+  - a regression-passing deterministic surface is not the same as customer-facing readiness
+- Alternatives considered:
+  - promote the current policy surface to voice/demo use after PROD-046D
+  - run native German review before adding campaign-profile contracts
+  - continue German wording rewrites without first formalizing campaign-field shape rules
+- Consequences:
+  - PROD-046 remains review-only and does not change runtime behavior
+  - the next implementation checkpoint should be `PROD-047-campaign-profile-contract-validator`
+  - native German review remains required before German voice, demo, or real customer use
+  - future call-control softening should be tested separately so safety boundaries remain intact
+
+### DEC-102 - Source-inform German runtime wording without using sales scripts
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: use regulator, consumer-protection, public-service, and plain-language sources as source-informed wording guidance for German runtime responses, and reject cold-call scripts, sales guru blogs, aggressive closing scripts, affiliate SEO pages, and copied competitor wording as German wording sources.
+- Why:
+  - PROD-046C fixed malformed interpolation, but German customer-facing output still contained internal-sounding language such as overused `freigegeben`, `Vertriebsteil`, and log-centric callback wording
+  - the German B2C path includes trust, refusal, written-info, scam/payment, support/cancellation, and regulated-advice boundaries where pressure-oriented sales scripts are the wrong source model
+  - source-informed plain-language and consumer-protection guidance can improve wording without claiming legal compliance or copying external scripts
+- Alternatives considered:
+  - proceed directly to human review after PROD-046C
+  - use German cold-call or sales scripts for more natural sales phrasing
+  - call an LLM or provider to rewrite German responses
+  - broaden product/legal/insurance claims during the wording pass
+- Consequences:
+  - PROD-046D narrows German customer-facing wording and campaign-field shape only
+  - accepted external source URLs are recorded in the thesis reference registry and generated source traceability map
+  - no legal-compliance claim is made
+  - retrieval, providers, LLMs, private data, payment collection, contract signing, voice playback, public demo polish, and production runtime promotion remain blocked
+
 ### DEC-101 - Add German interpolation guard before human policy review
 
 - Date: 2026-05-12

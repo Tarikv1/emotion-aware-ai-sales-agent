@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "PROD-047-campaign-profile-contract-validator",
+  "checkpoint_name": "Campaign Profile Contract Validator",
+  "summary": {
+    "source_checkpoint_id": "PROD-046-core-sales-policy-human-review",
+    "prod_046_result_validation_passed": true,
+    "validation_case_count": 10,
+    "valid_campaign_count": 2,
+    "invalid_campaign_count": 8,
+    "unexpected_result_count": 0,
+    "policy_group_coverage_count": 12,
+    "valid_en_internal_review_passed": true,
+    "valid_de_source_informed_passed": true,
+    "invalid_de_fragment_interpolation_failed": true,
+    "invalid_en_internal_copy_failed": true,
+    "payment_enabled_campaign_failed": true,
+    "missing_regulated_boundary_campaign_failed": true,
+    "missing_native_review_status_campaign_failed": true,
+    "sale_ready_without_close_criteria_failed": true,
+    "support_cancellation_route_label_campaign_failed": true,
+    "incomplete_identity_reason_campaign_failed": true,
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "outputs": {
+    "report": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/report.md",
+    "campaign_contract_schema": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/campaign_contract_schema.json",
+    "campaign_guard_matrix": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/campaign_guard_matrix.json",
+    "validation_cases": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/validation_cases.json",
+    "validation_results": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/validation_results.json",
+    "campaign_profile_review": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/campaign_profile_review.html"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-048-native-german-wording-review"
+}

@@ -1,0 +1,252 @@
+{
+  "campaign_id": "campaign-prod-047-invalid-support-cancellation-route-label",
+  "contract_version": "prod-047.v1",
+  "language": "de",
+  "review_statuses": [
+    "machine_validated",
+    "source_informed",
+    "native_speaker_review_required"
+  ],
+  "safety_defaults": {
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "decision_maker_bypass_forbidden": true,
+    "production_runtime_promotion_allowed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false
+  },
+  "regulated_context": {
+    "coverage_or_healthcare_sensitive": true
+  },
+  "close_criteria": {
+    "sale_ready_allowed": true,
+    "criteria_satisfied": true,
+    "criteria": [
+      "customer explicitly asks for next step",
+      "no payment collection",
+      "no contract signing"
+    ]
+  },
+  "fields": {
+    "pricing_summary": {
+      "value": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat.",
+      "shape": "pricing_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "pricing_boundary_text": {
+      "value": "Die genauen Bedingungen werden schriftlich geprüft.",
+      "shape": "boundary_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "caller_identity": {
+      "value": "Maya von RouteSignal",
+      "shape": "noun_phrase",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_identity_reason_sentence": {
+      "value": "Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
+      "shape": "identity_reason_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_written_summary": {
+      "value": "eine kurze Zusammenfassung per E-Mail",
+      "shape": "written_info_object",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_email_followup_scope": {
+      "value": "die Informationen per E-Mail",
+      "shape": "written_info_object",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "no_payment_boundary": {
+      "value": "In diesem Gespräch frage ich nicht nach Zahlungsdaten, Kartendaten oder Passwörtern.",
+      "shape": "boundary_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_verification_response": {
+      "value": "Sie können die Informationen über die offizielle Seite prüfen.",
+      "shape": "verification_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "support_route": {
+      "value": "Support-Warteschlange",
+      "shape": "route_label",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "cancellation_route": {
+      "value": "Kündigungs-Warteschlange",
+      "shape": "route_label",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_technical_scope": {
+      "value": "Das System kann Zuständigkeiten für Rückrufe und Nachverfolgung abbilden.",
+      "shape": "full_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "security_review_boundary": {
+      "value": "Technische oder Sicherheitsdetails sollte eine zuständige Fachperson prüfen.",
+      "shape": "boundary_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "regulated_advice_boundary_text": {
+      "value": "Ich gebe in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz.",
+      "shape": "boundary_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_gap_isolation_question": {
+      "value": "Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "shape": "full_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_review_summary": {
+      "value": "eine kurze Zusammenfassung zur Prüfung",
+      "shape": "written_info_object",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "approved_sale_ready_next_step": {
+      "value": "den nächsten Schritt",
+      "shape": "next_step_label",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "callback_boundary": {
+      "value": "Ich kann einen Rückruf vormerken; heute entsteht keine Verpflichtung.",
+      "shape": "boundary_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    },
+    "do_not_call_boundary": {
+      "value": "Sie sollen hierzu nicht mehr angerufen werden.",
+      "shape": "boundary_sentence",
+      "source_boundary": "public_source_informed",
+      "review_statuses": [
+        "machine_validated",
+        "source_informed",
+        "native_speaker_review_required"
+      ],
+      "customer_facing": true,
+      "source_note": "Synthetic fixture text for deterministic campaign-profile contract validation."
+    }
+  }
+}

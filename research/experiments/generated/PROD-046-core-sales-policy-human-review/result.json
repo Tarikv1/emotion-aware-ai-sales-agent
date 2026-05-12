@@ -1,0 +1,72 @@
+{
+  "checkpoint_id": "PROD-046-core-sales-policy-human-review",
+  "checkpoint_name": "Core Sales Policy Human Review",
+  "source_checkpoint_ids": [
+    "PROD-045",
+    "PROD-046A",
+    "PROD-046B",
+    "PROD-046C",
+    "PROD-046D"
+  ],
+  "summary": {
+    "source_checkpoints_reviewed": [
+      "PROD-045",
+      "PROD-046A",
+      "PROD-046B",
+      "PROD-046C",
+      "PROD-046D"
+    ],
+    "prod_045_result_validation_passed": true,
+    "prod_046a_result_validation_passed": true,
+    "prod_046b_result_validation_passed": true,
+    "prod_046c_result_validation_passed": true,
+    "prod_046d_result_validation_passed": true,
+    "english_reviewed_response_count": 23,
+    "german_reviewed_response_count": 99,
+    "accepted_for_regression_count": 122,
+    "accepted_with_human_review_needed_count": 99,
+    "revise_wording_later_count": 22,
+    "revise_call_control_later_count": 45,
+    "needs_campaign_field_validator_count": 68,
+    "blocked_for_voice_count": 122,
+    "blocked_for_public_demo_count": 122,
+    "blocked_for_real_customer_use_count": 122,
+    "call_control_finding_count": 45,
+    "campaign_field_finding_count": 2,
+    "recommended_next_action_count": 3,
+    "policy_surface_accepted_for_offline_regression_evidence": true,
+    "policy_surface_accepted_for_internal_product_review": true,
+    "policy_surface_blocked_from_voice_demo_customer_use": true,
+    "ready_for_campaign_profile_validator_next": true,
+    "final_native_german_approval_claimed": false,
+    "review_only_checkpoint": true,
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "uses_exact_transcript_text": false,
+    "uses_source_transcript_sequence": false,
+    "uses_dataset_specific_phrasing": false,
+    "generated_synthetic_conversations": false
+  },
+  "outputs": {
+    "report": "research/experiments/generated/PROD-046-core-sales-policy-human-review/report.md",
+    "human_review_packet": "research/experiments/generated/PROD-046-core-sales-policy-human-review/human_review_packet.json",
+    "english_response_quality_findings": "research/experiments/generated/PROD-046-core-sales-policy-human-review/english_response_quality_findings.json",
+    "german_response_quality_findings": "research/experiments/generated/PROD-046-core-sales-policy-human-review/german_response_quality_findings.json",
+    "call_control_findings": "research/experiments/generated/PROD-046-core-sales-policy-human-review/call_control_findings.json",
+    "campaign_field_findings": "research/experiments/generated/PROD-046-core-sales-policy-human-review/campaign_field_findings.json",
+    "recommended_next_actions": "research/experiments/generated/PROD-046-core-sales-policy-human-review/recommended_next_actions.json",
+    "review_html": "research/experiments/generated/PROD-046-core-sales-policy-human-review/prod_046_review.html"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-047-campaign-profile-contract-validator"
+}
