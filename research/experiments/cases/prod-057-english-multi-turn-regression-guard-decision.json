@@ -1,0 +1,55 @@
+{
+  "checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+  "checkpoint_name": "English Multi-Turn Regression Guard Decision",
+  "source_checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "candidate_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+  "decision_criteria": [
+    {
+      "criterion_id": "prod_056_regression_gate_passed",
+      "requirement": "The source PROD-056 checkpoint must pass its regression gate."
+    },
+    {
+      "criterion_id": "full_promoted_english_surface_covered",
+      "requirement": "The guard must cover the 26 promoted English surfaces from PROD-056."
+    },
+    {
+      "criterion_id": "zero_blocking_findings",
+      "requirement": "The source regression must have zero blocking findings."
+    },
+    {
+      "criterion_id": "stable_guard_command_exists",
+      "requirement": "A stable non-checkpoint validator command must exist for future runtime work."
+    },
+    {
+      "criterion_id": "stable_guard_command_passes",
+      "requirement": "The stable guard command must execute successfully offline."
+    },
+    {
+      "criterion_id": "setup_checker_requires_guard",
+      "requirement": "The setup checker must treat the stable guard as project infrastructure."
+    },
+    {
+      "criterion_id": "runtime_and_response_text_unchanged",
+      "requirement": "This decision checkpoint must not change runtime behavior or response text."
+    },
+    {
+      "criterion_id": "promotion_boundaries_remain_blocked",
+      "requirement": "German, voice, retrieval, public demo, real customer, payment, contract, legal, provider, and private-data promotion must remain blocked."
+    },
+    {
+      "criterion_id": "guard_scope_limited_to_english_deterministic_runtime",
+      "requirement": "The accepted guard must be limited to English deterministic realtime-turn behavior."
+    }
+  ],
+  "promotion_blocks_remaining": [
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "legal_compliance_review",
+    "private_data_or_provider_use"
+  ]
+}

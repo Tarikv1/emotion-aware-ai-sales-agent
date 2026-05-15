@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: `PROD-057-english-multi-turn-regression-guard-decision`, which should decide whether the `PROD-056` post-patch English multi-turn regression becomes a permanent guard before broader runtime promotion.
+- [ ] Current: `PROD-058-english-runtime-promotion-blocker-inventory`, which should inventory remaining English runtime promotion blockers and separate evidence gaps from product-policy gates and German/voice/retrieval/legal gates.
 
 Next checkpoints:
 
-- [ ] Next after `PROD-057`: decide whether remaining English-only runtime promotion blockers are evidence gaps, product-policy blockers, or separate German/voice/retrieval gates.
+- [ ] Next after `PROD-058`: decide whether to run a final English-only runtime promotion readiness review, return to German review import, or reopen voice/retrieval only through their separate gates.
 - [ ] Parked until reviewer input exists: `PROD-048D-native-german-followup-review-import`, which imports the corrected follow-up review export and decides whether the patched price-first answer and remaining grouped answers are accepted, still unreviewed, or need another narrow wording patch.
 - [ ] Next: after targeted policy regression evidence, decide whether voice playback or demo use is still blocked by dialogue realism and customer-turn quality.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
@@ -61,6 +61,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-057-english-multi-turn-regression-guard-decision`, which adopts `PROD-056` as the stable English multi-turn regression guard through `python scripts\validate_english_multi_turn_regression_guard.py` and registers the guard in `check_setup.py`. It records `9` readiness checks, `0` readiness failures, and keeps runtime behavior, response text, retrieval defaults, providers, LLM calls, private data, German exact-phrase promotion, voice playback, public demo use, real customer use, payment collection, contract signing, legal readiness, and production promotion blocked.
 
 - [x] `PROD-056-english-post-patch-multi-turn-regression`, which reruns all `26` promoted English surfaces after the `PROD-055` patch: `10` runtime second-turn cases, `1` callback scheduling flow, and `15` terminal-boundary cases. It passes with `0` blocking findings, changes no runtime behavior or response text, and recommends making the post-patch regression a permanent English multi-turn guard before broader runtime promotion. Provider calls, LLM calls, private data, retrieval defaults, German exact-phrase promotion, voice playback, public demo use, real customer use, payment collection, contract signing, and production promotion remain blocked.
 
@@ -528,20 +530,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Use `PROD-057` to decide whether `PROD-056` should become the permanent English multi-turn regression guard.
+Use `PROD-058` to inventory what still blocks English runtime promotion now that the English multi-turn regression guard exists.
 
 Purpose:
 
-- preserve the `PROD-053E` English single-turn wording gains, the `PROD-055` multi-turn patch, and the passing `PROD-056` regression without overclaiming production readiness
-- decide whether the `26`-case post-patch set is sufficient as a permanent guard or whether it needs more English variations first
-- separate English regression evidence from still-blocked German, voice, retrieval, legal, and production decisions
-- keep `PROD-057` offline, deterministic, and decision-focused
+- preserve the `PROD-053E` English single-turn wording gains, the `PROD-055` multi-turn patch, the passing `PROD-056` regression, and the `PROD-057` stable guard without overclaiming production readiness
+- separate remaining English-only evidence gaps from product-policy blockers
+- explicitly keep German, voice, retrieval, provider/private-data, legal, public-demo, real-customer, payment, contract, and production decisions outside English-only promotion evidence
+- keep `PROD-058` offline, deterministic, and inventory-focused
 - keep provider calls, customer data, payment handling, retrieval defaults, German exact-phrase promotion, voice playback, and production runtime promotion blocked
 
-Immediate product artifact after `PROD-057`:
+Immediate product artifact after `PROD-058`:
 
-- permanent-guard decision for the English multi-turn regression
-- explicit list of what still blocks runtime promotion after the English guard is stable
+- blocker inventory for English runtime promotion readiness
+- recommendation on whether a final English-only readiness review is justified or premature
 - no German or voice promotion unless separate review gates reopen those tracks
 
 Next voice checkpoint:

@@ -1425,6 +1425,24 @@ Validate that PROD-056 reruns all 26 promoted English surfaces after the PROD-05
 python scripts\validate_prod_056_english_post_patch_multi_turn_regression.py
 ```
 
+Run the stable English multi-turn regression guard:
+
+```powershell
+python scripts\validate_english_multi_turn_regression_guard.py
+```
+
+Run the PROD-057 English multi-turn regression guard decision:
+
+```powershell
+python scripts\run_prod_057_english_multi_turn_regression_guard_decision.py
+```
+
+Validate that PROD-057 adopts PROD-056 as the stable English multi-turn regression guard, registers the guard in setup checks, and keeps runtime, provider, private-data, German, voice, payment, contract, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_057_english_multi_turn_regression_guard_decision.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

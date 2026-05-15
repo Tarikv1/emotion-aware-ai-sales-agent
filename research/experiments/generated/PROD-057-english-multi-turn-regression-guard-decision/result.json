@@ -1,0 +1,46 @@
+{
+  "checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+  "checkpoint_name": "English Multi-Turn Regression Guard Decision",
+  "source_checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "validation": {
+    "passed": true,
+    "guard_decision_passed": true
+  },
+  "summary": {
+    "guard_status": "adopted",
+    "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+    "source_promoted_response_count": 26,
+    "source_blocking_finding_count": 0,
+    "readiness_check_count": 9,
+    "readiness_failure_count": 0,
+    "readiness_failed_criteria": [],
+    "english_multi_turn_guard_adopted": true,
+    "runtime_promotion_allowed": false,
+    "promotion_blocks_remaining": [
+      "native_german_review",
+      "voice_playback_quality",
+      "retrieval_default",
+      "public_demo_use",
+      "real_customer_use",
+      "payment_collection",
+      "contract_signing",
+      "legal_compliance_review",
+      "private_data_or_provider_use"
+    ],
+    "next_checkpoint": "PROD-058-english-runtime-promotion-blocker-inventory",
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false
+  }
+}

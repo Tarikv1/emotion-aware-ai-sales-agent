@@ -3911,3 +3911,39 @@ Interpretation:
   - it records a clean positive regression after a negative stress review and narrow patch
   - it keeps the evidence chain reproducible: accepted wording, stress failure, targeted patch, post-patch regression
   - it prevents a passing patch from being confused with production readiness
+
+### 2026-05-16 - PROD-057 English multi-turn regression guard decision
+
+- Objective: decide whether the passing `PROD-056` post-patch regression should become a stable guard for future English runtime work
+- Action taken:
+  - added `scripts/validate_english_multi_turn_regression_guard.py` as the stable guard command
+  - added `scripts/run_prod_057_english_multi_turn_regression_guard_decision.py`
+  - added `scripts/validate_prod_057_english_multi_turn_regression_guard_decision.py`
+  - added `docs/product/ENGLISH_MULTI_TURN_REGRESSION_GUARD.md`
+  - documented `PROD_057_ENGLISH_MULTI_TURN_REGRESSION_GUARD_DECISION.md`
+  - registered the stable guard in `scripts/check_setup.py`
+  - generated `PROD-057-english-multi-turn-regression-guard-decision` evidence artifacts
+- Method:
+  - required the `PROD-056` regression gate to pass with `26` promoted English surfaces and `0` blocking findings
+  - required a stable non-checkpoint guard command to exist and execute
+  - required setup checks to treat the guard as project infrastructure
+  - kept the guard scope limited to English deterministic realtime-turn behavior
+- Result:
+  - guard status: `adopted`
+  - readiness checks: `9`
+  - readiness failures: `0`
+  - stable guard command: `python scripts\validate_english_multi_turn_regression_guard.py`
+  - next checkpoint: `PROD-058-english-runtime-promotion-blocker-inventory`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no runtime behavior change
+  - no response text behavior change
+  - no German exact-phrase promotion or German naturalness claim
+  - no payment, contract, public demo, real customer, voice playback, legal, or production promotion
+- Why it matters for the thesis:
+  - it turns a passing regression into repeatable project infrastructure
+  - it prevents future runtime changes from bypassing the strongest English multi-turn evidence
+  - it keeps positive English evidence separate from still-open German, voice, retrieval, legal, and deployment gates

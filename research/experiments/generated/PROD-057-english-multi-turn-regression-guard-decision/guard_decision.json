@@ -1,0 +1,31 @@
+{
+  "checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+  "source_checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "decision": "adopt_prod_056_as_permanent_english_multi_turn_guard",
+  "guard_status": "adopted",
+  "stable_guard_command": "python scripts\\validate_english_multi_turn_regression_guard.py",
+  "requires_before_runtime_changes": true,
+  "scope": {
+    "language": "en",
+    "runtime_path": "deterministic_realtime_turns",
+    "covers": [
+      "promoted English runtime responses",
+      "runtime second-turn follow-up coherence",
+      "callback scheduling follow-up coherence",
+      "terminal boundary same-loop stop conditions"
+    ]
+  },
+  "not_sufficient_for": [
+    "native_german_review",
+    "voice_playback_quality",
+    "retrieval_default",
+    "public_demo_use",
+    "real_customer_use",
+    "payment_collection",
+    "contract_signing",
+    "legal_compliance_review",
+    "private_data_or_provider_use"
+  ],
+  "failed_criteria": [],
+  "next_checkpoint": "PROD-058-english-runtime-promotion-blocker-inventory"
+}

@@ -1,0 +1,52 @@
+{
+  "checkpoint_id": "PROD-057-english-multi-turn-regression-guard-decision",
+  "items": [
+    {
+      "criterion_id": "prod_056_regression_gate_passed",
+      "passed": true,
+      "evidence": "PROD-056 validation.regression_gate_passed is true."
+    },
+    {
+      "criterion_id": "full_promoted_english_surface_covered",
+      "passed": true,
+      "evidence": "PROD-056 covers 26 promoted English surfaces: 10 second-turn, 1 callback scheduling, 15 terminal boundary."
+    },
+    {
+      "criterion_id": "zero_blocking_findings",
+      "passed": true,
+      "evidence": "PROD-056 records zero blocking findings."
+    },
+    {
+      "criterion_id": "stable_guard_command_exists",
+      "passed": true,
+      "evidence": "python scripts\\validate_english_multi_turn_regression_guard.py"
+    },
+    {
+      "criterion_id": "stable_guard_command_passes",
+      "passed": true,
+      "evidence": [
+        "PROD-056-english-post-patch-multi-turn-regression validation passed"
+      ]
+    },
+    {
+      "criterion_id": "setup_checker_requires_guard",
+      "passed": true,
+      "evidence": "check_setup.py contains the stable guard doc and validator file checks."
+    },
+    {
+      "criterion_id": "runtime_and_response_text_unchanged",
+      "passed": true,
+      "evidence": "PROD-057 is a decision/guard wiring checkpoint only."
+    },
+    {
+      "criterion_id": "promotion_boundaries_remain_blocked",
+      "passed": true,
+      "evidence": "All runtime/provider/private-data/German/voice/payment/contract/production boundary flags remain false."
+    },
+    {
+      "criterion_id": "guard_scope_limited_to_english_deterministic_runtime",
+      "passed": true,
+      "evidence": "Stable guard wraps the deterministic English PROD-056 regression only."
+    }
+  ]
+}
