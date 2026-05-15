@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "case_id": "prod-048c-price-first",
+      "customer_move_id": "price_first",
+      "reviewer_issue": "Ich finde der letzte satz lenkt zu sehr auf das thema Zahlung",
+      "before_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "after_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
+      "reviewed_revision_candidate": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
+      "payment_contract_sentence_removed": true,
+      "runtime_change_allowed_scope": "german_plain_price_first_wording_only"
+    }
+  ]
+}

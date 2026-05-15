@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "tactic_id": "prod053a-reject-001",
+      "name": "False scarcity or fake urgency",
+      "decision": "reject",
+      "reason": "It can increase pressure and reactance, and it violates the project's low-pressure sales boundary."
+    },
+    {
+      "tactic_id": "prod053a-reject-002",
+      "name": "Hidden emotion diagnosis",
+      "decision": "reject",
+      "reason": "Emotion signals are weak context; hidden-state certainty is already blocked by existing project policy."
+    },
+    {
+      "tactic_id": "prod053a-reject-003",
+      "name": "Commitment traps",
+      "decision": "reject",
+      "reason": "Turning a soft yes into obligation conflicts with autonomy, trust, and no-commitment relief."
+    },
+    {
+      "tactic_id": "prod053a-reject-004",
+      "name": "Full customer-category echoing",
+      "decision": "reject",
+      "reason": "Repeating boss, spouse, manager, or partner every time sounds scripted and does not add useful listening evidence."
+    },
+    {
+      "tactic_id": "prod053a-reject-005",
+      "name": "Large live psychology planner",
+      "decision": "defer",
+      "reason": "A heavy reasoning layer can add latency. Research should be compressed into deterministic, reviewed rules first."
+    },
+    {
+      "tactic_id": "prod053a-reject-006",
+      "name": "General persuasion principles without source mapping",
+      "decision": "reject",
+      "reason": "Generic tricks such as reciprocity, liking, and social proof are too easy to misuse unless tied to a safe, source-backed response rule."
+    }
+  ]
+}

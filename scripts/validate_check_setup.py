@@ -56,6 +56,7 @@ def main() -> None:
     for required_check in [
         "python.version",
         "dir.scripts",
+        "dir.runtime",
         "dir.docs_product",
         "dir.docs_brain",
         "dir.research_experiments_generated",
@@ -63,6 +64,8 @@ def main() -> None:
         "dir.data_external",
         "dir.config_local",
         "file.agents",
+        "file.runtime_readme",
+        "file.runtime_manifest",
         "file.docs_third_party_inspirations",
         "file.docs_thesis_speech_realism_references",
         "file.docs_thesis_reference_registry",

@@ -324,7 +324,7 @@ def main() -> None:
     parser.add_argument("--cases", required=True, help="Path to the JSON simulation case file.")
     parser.add_argument("--out", required=True, help="Path to write detailed JSON results.")
     parser.add_argument("--report-out", required=True, help="Path to write markdown summary report.")
-    parser.add_argument("--prompt", default="packages/prompts/product-qualification-agent.txt")
+    parser.add_argument("--prompt", default="runtime/prompts/product-qualification-agent.txt")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
     parser.add_argument("--api-key-env", default="OPENAI_API_KEY")

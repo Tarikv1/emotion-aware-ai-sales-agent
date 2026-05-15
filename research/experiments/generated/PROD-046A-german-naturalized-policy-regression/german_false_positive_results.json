@@ -94,7 +94,7 @@
       "customer_utterance": "Ich brauche keinen Support, ich möchte nur den Preis wissen.",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-false-price-over-support",
@@ -112,10 +112,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -229,7 +229,7 @@
       "customer_utterance": "Ich habe schon einen Anbieter, aber ich will trotzdem den Preis wissen.",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-false-price-over-provider",
@@ -247,10 +247,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {

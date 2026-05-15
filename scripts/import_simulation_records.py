@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_SCHEMA = ROOT / "db" / "sqlite_schema.sql"
+DEFAULT_SCHEMA = ROOT / "runtime" / "persistence" / "sqlite_schema.sql"
 
 
 def load_json(path: Path) -> dict:

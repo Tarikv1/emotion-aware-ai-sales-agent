@@ -1,0 +1,1006 @@
+{
+  "checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "source_checkpoint_id": "PROD-053B-compact-english-psychology-layer-review",
+  "items": [
+    {
+      "case_id": "prod-045-manager",
+      "language": "en",
+      "sales_difficulty": "stakeholder-review",
+      "source_scope": "flagged_prod_053b_rewrite",
+      "current_word_count": 17,
+      "proposed_word_count": 17,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_003_mirror_only_for_repair",
+          "name": "Mirror only for repair.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "language": "en",
+      "sales_difficulty": "partner-review",
+      "source_scope": "flagged_prod_053b_rewrite",
+      "current_word_count": 17,
+      "proposed_word_count": 17,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_003_mirror_only_for_repair",
+          "name": "Mirror only for repair.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-voicemail",
+      "language": "en",
+      "sales_difficulty": "voicemail",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 14,
+      "proposed_word_count": 10,
+      "policy_issues": [
+        "internal_runtime_jargon"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-repeated-silence",
+      "language": "en",
+      "sales_difficulty": "repeated-silence",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 8,
+      "proposed_word_count": 8,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-do-not-call",
+      "language": "en",
+      "sales_difficulty": "do-not-call",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 12,
+      "proposed_word_count": 12,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-human-request",
+      "language": "en",
+      "sales_difficulty": "human-request",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 10,
+      "proposed_word_count": 10,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-identity-repair",
+      "language": "en",
+      "sales_difficulty": "identity-repair",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 20,
+      "proposed_word_count": 16,
+      "policy_issues": [
+        "internal_runtime_jargon"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_007_trust_gap_specific",
+          "name": "Answer the specific trust gap.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-scam-safety-boundary",
+      "language": "en",
+      "sales_difficulty": "scam-safety-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 18,
+      "proposed_word_count": 18,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_007_trust_gap_specific",
+          "name": "Answer the specific trust gap.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-payment-safety-boundary",
+      "language": "en",
+      "sales_difficulty": "payment-safety-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 15,
+      "proposed_word_count": 15,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-support-route",
+      "language": "en",
+      "sales_difficulty": "support-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 13,
+      "proposed_word_count": 13,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-cancellation-route",
+      "language": "en",
+      "sales_difficulty": "cancellation-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 10,
+      "proposed_word_count": 12,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-email-only-boundary",
+      "language": "en",
+      "sales_difficulty": "email-only-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 14,
+      "proposed_word_count": 14,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-technical-specialist-route",
+      "language": "en",
+      "sales_difficulty": "technical-specialist-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 14,
+      "proposed_word_count": 14,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-security-review-route",
+      "language": "en",
+      "sales_difficulty": "security-review-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 16,
+      "proposed_word_count": 16,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_007_trust_gap_specific",
+          "name": "Answer the specific trust gap.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-coverage-boundary-route",
+      "language": "en",
+      "sales_difficulty": "coverage-boundary-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 15,
+      "proposed_word_count": 14,
+      "policy_issues": [
+        "internal_runtime_jargon"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-healthcare-boundary-route",
+      "language": "en",
+      "sales_difficulty": "healthcare-boundary-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 13,
+      "proposed_word_count": 16,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-claim-boundary",
+      "language": "en",
+      "sales_difficulty": "claim-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 14,
+      "proposed_word_count": 17,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-product-detail-lookup",
+      "language": "en",
+      "sales_difficulty": "product-detail-lookup",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 11,
+      "proposed_word_count": 11,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-scheduling-confirmation",
+      "language": "en",
+      "sales_difficulty": "scheduling-confirmation",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 11,
+      "proposed_word_count": 11,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-sale-ready-missing-criteria",
+      "language": "en",
+      "sales_difficulty": "sale-ready-missing-criteria",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 20,
+      "proposed_word_count": 20,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-sale-ready-commitment",
+      "language": "en",
+      "sales_difficulty": "sale-ready-commitment",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 17,
+      "proposed_word_count": 17,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-procurement-review",
+      "language": "en",
+      "sales_difficulty": "procurement-review",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 12,
+      "proposed_word_count": 12,
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": true,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-existing-provider-gap",
+      "language": "en",
+      "sales_difficulty": "existing-provider-gap",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 20,
+      "proposed_word_count": 21,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_005_friction_not_personality",
+          "name": "Diagnose friction, not personality.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-callback-request",
+      "language": "en",
+      "sales_difficulty": "callback-request",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 9,
+      "proposed_word_count": 13,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-autonomy-check",
+      "language": "en",
+      "sales_difficulty": "autonomy-check",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 19,
+      "proposed_word_count": 14,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_005_friction_not_personality",
+          "name": "Diagnose friction, not personality.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-trust-gap",
+      "language": "en",
+      "sales_difficulty": "trust-gap",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 14,
+      "proposed_word_count": 14,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_007_trust_gap_specific",
+          "name": "Answer the specific trust gap.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-timing-delay",
+      "language": "en",
+      "sales_difficulty": "timing-delay",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 15,
+      "proposed_word_count": 15,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_002_plain_relief",
+          "name": "Keep relief plain.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_006_autonomy_visible",
+          "name": "Make autonomy visible.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-price-objection",
+      "language": "en",
+      "sales_difficulty": "price-objection",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 15,
+      "proposed_word_count": 15,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_005_friction_not_personality",
+          "name": "Diagnose friction, not personality.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_008_stop_after_question",
+          "name": "Ask, then stop.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-053c-unknown-runtime-signal",
+      "language": "en",
+      "sales_difficulty": "unknown-runtime-signal",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "current_word_count": 8,
+      "proposed_word_count": 8,
+      "policy_issues": [],
+      "policy_rule_results": [
+        {
+          "policy_rule_id": "en_response_001_answer_then_continue",
+          "name": "Answer, then continue.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_004_one_small_decision",
+          "name": "One small decision.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_005_friction_not_personality",
+          "name": "Diagnose friction, not personality.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        },
+        {
+          "policy_rule_id": "en_response_008_stop_after_question",
+          "name": "Ask, then stop.",
+          "applied": true,
+          "current_response_needs_review": false,
+          "runtime_promoted": false
+        }
+      ],
+      "runtime_response_changed": false
+    }
+  ],
+  "runtime_behavior_changed": false,
+  "response_text_behavior_changed": false
+}

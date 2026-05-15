@@ -26,8 +26,8 @@ GERMAN_CAMPAIGN = {
     "company_or_campaign_name": "RouteSignal",
     "approved_reason_for_call": "wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist",
     "approved_identity_reason_sentence": "Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
-    "approved_pricing_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich.",
-    "pricing_summary": "das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich.",
+    "approved_pricing_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
+    "pricing_summary": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
     "pricing_boundary_text": "Exakte Preise dürfen nur aus den schriftlichen Preisunterlagen kommen.",
     "callback_offer_allowed_after_direct_answer": True,
     "approved_written_summary": "eine kurze Zusammenfassung per E-Mail",
@@ -63,9 +63,9 @@ GERMAN_CAMPAIGN_MISSING_CLOSE = {
 }
 
 EXPECTED_BY_MOVE = {
-    "price_first": ("price-first-direct", "end-call"),
+    "price_first": ("price-first-direct", "bridge-then-continue"),
     "who_are_you": ("identity-repair", "continue-call"),
-    "send_info": ("written-info-request", "end-call"),
+    "send_info": ("written-info-request", "bridge-then-continue"),
     "email_only": ("email-only-boundary", "end-call"),
     "scam_or_card_fear": ("scam-safety-boundary", "end-call"),
     "payment_safety_fear": ("payment-safety-boundary", "end-call"),
@@ -76,8 +76,8 @@ EXPECTED_BY_MOVE = {
     "coverage_confusion": ("coverage-boundary-route", "transfer-or-escalate"),
     "sensitive_healthcare_concern": ("healthcare-boundary-route", "transfer-or-escalate"),
     "existing_provider": ("existing-provider-gap", "continue-call"),
-    "needs_manager_approval": ("stakeholder-review", "end-call"),
-    "needs_spouse_or_partner_input": ("partner-review", "end-call"),
+    "needs_manager_approval": ("stakeholder-review", "bridge-then-continue"),
+    "needs_spouse_or_partner_input": ("partner-review", "bridge-then-continue"),
     "sale_ready_interest": ("sale-ready-commitment", "close-and-log-sale-ready"),
     "not_interested": ("do-not-call", "end-call"),
     "hostile_rejection": ("do-not-call", "end-call"),
@@ -115,10 +115,10 @@ GERMAN_VARIANTS = {
 FALSE_POSITIVE_CASES = [
     ("de-false-no-cancel", "Ich will nicht kündigen, ich habe nur eine Frage.", "unknown-runtime-signal", "continue-call", "negated cancellation should not route as cancellation"),
     ("de-false-identity-over-scam", "Ich sage nicht, dass das Betrug ist, ich will nur wissen, wer anruft.", "identity-repair", "continue-call", "identity should outrank negated scam wording"),
-    ("de-false-price-over-support", "Ich brauche keinen Support, ich möchte nur den Preis wissen.", "price-first-direct", "end-call", "price should outrank negated support wording"),
+    ("de-false-price-over-support", "Ich brauche keinen Support, ich möchte nur den Preis wissen.", "price-first-direct", "bridge-then-continue", "price should outrank negated support wording"),
     ("de-false-security-negated", "Security ist bei uns kein Thema.", "unknown-runtime-signal", "continue-call", "negated security should not route to security review"),
     ("de-false-payment-safe-boundary", "Ich gebe keine Bankdaten an, weil Sie ja auch keine brauchen.", "payment-safety-boundary", "end-call", "payment safety boundary remains safe"),
-    ("de-false-price-over-provider", "Ich habe schon einen Anbieter, aber ich will trotzdem den Preis wissen.", "price-first-direct", "end-call", "price has priority over existing provider when explicit"),
+    ("de-false-price-over-provider", "Ich habe schon einen Anbieter, aber ich will trotzdem den Preis wissen.", "price-first-direct", "bridge-then-continue", "price has priority over existing provider when explicit"),
 ]
 
 STRICT_REQUIRED_MOVES = {

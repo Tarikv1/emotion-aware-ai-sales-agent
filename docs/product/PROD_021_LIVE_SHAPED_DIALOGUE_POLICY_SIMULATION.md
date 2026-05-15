@@ -35,14 +35,14 @@ research/experiments/generated/PROD-021-live-shaped-dialogue-policy-simulation/r
 - Calls: `7`
 - Customer turns: `19`
 - Protected turns: `9`
-- Retrieval-only total score: `98`
-- Opt-in total score: `112`
-- Opt-in score delta vs retrieval-only: `14`
-- Opt-in wins vs retrieval-only: `4`
+- Retrieval-only total score: `107`
+- Opt-in total score: `107`
+- Opt-in score delta vs retrieval-only: `0`
+- Opt-in wins vs retrieval-only: `0`
 - Retrieval-only wins vs opt-in: `0`
-- Opt-in hooked answers: `4`
-- Policy action correctness: `0.4737`
-- Call-control correctness: `0.8421`
+- Opt-in hooked answers: `0`
+- Policy action correctness: `0.7368`
+- Call-control correctness: `0.7895`
 - Protected context preservation: `1.0`
 - State reference completeness: `1.0`
 - Non-sale correctness: `1.0`
@@ -55,7 +55,7 @@ research/experiments/generated/PROD-021-live-shaped-dialogue-policy-simulation/r
 
 ## Interpretation
 
-The opt-in hooks still improved specific live-shaped turns, and protected/non-sale boundaries stayed clean. That supports keeping the hooks as an opt-in candidate.
+The current opt-in hook path did not improve the live-shaped turns, and protected/non-sale boundaries stayed clean. That supports keeping the hooks opt-in only, not promoting them.
 
 The gate does not pass because the current runtime policy layer does not fully match the hardened multi-turn dialogue policy. The biggest remaining gaps are policy-action coverage and call-control alignment, not hook safety.
 

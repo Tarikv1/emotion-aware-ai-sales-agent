@@ -1,0 +1,54 @@
+{
+  "checkpoint_id": "PROD-048A-german-review-html-and-brevity-packet",
+  "checkpoint_name": "German Review HTML And Brevity Packet",
+  "summary": {
+    "source_result_validation_passed": {
+      "prod_045": true,
+      "prod_046a": true,
+      "prod_046b": true,
+      "prod_046c": true,
+      "prod_046d": true,
+      "prod_046": true,
+      "prod_047": true
+    },
+    "original_german_case_count": 99,
+    "grouped_review_card_count": 22,
+    "repeated_answer_group_count": 22,
+    "average_german_response_character_count_before": 140.03030303030303,
+    "average_german_response_character_count_after": 84.84848484848484,
+    "shortened_response_count": 96,
+    "html_self_contained": true,
+    "all_visible_main_labels_german": true,
+    "reviewer_export_json_enabled": true,
+    "reviewer_export_csv_enabled": true,
+    "local_storage_enabled": true,
+    "print_friendly_mode_enabled": true,
+    "native_german_approval_claimed": false,
+    "legal_compliance_claimed": false,
+    "runtime_policy_changed": false,
+    "call_control_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "outputs": {
+    "report": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/report.md",
+    "native_german_grouped_review_packet": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/native_german_grouped_review_packet.json",
+    "native_german_review_html": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/native_german_review.html",
+    "native_german_review_export_schema": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/native_german_review_export_schema.json",
+    "native_german_review_readme_de": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/native_german_review_readme_de.md",
+    "native_german_review_table_csv": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/native_german_review_table.csv",
+    "german_brevity_before_after": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/german_brevity_before_after.json",
+    "german_duplicate_answer_groups": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/german_duplicate_answer_groups.json"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-048B-native-german-review-import"
+}

@@ -75,6 +75,7 @@ def main() -> None:
 
     language_counts = {"de": 0, "en": 0}
     observed_scenarios = {"de": set(), "en": set()}
+    normalize_marker_text = getattr(module, "normalize_marker_text", lambda text: text.lower())
     for result in results:
         decision = result["runtime_decision"]
         expected = result["expected_runtime"]
@@ -83,8 +84,8 @@ def main() -> None:
         observed_scenarios[language].add(result["runtime_scenario"])
         assert_condition(decision["response_language"] == language, f"{result['case_id']} response language mismatch.")
         assert_condition(decision["campaign_language"] == language, f"{result['case_id']} campaign language mismatch.")
-        response_text = decision["agent_response"].lower()
-        expected_markers = [marker.lower() for marker in expected["response_must_include_any"]]
+        response_text = normalize_marker_text(decision["agent_response"])
+        expected_markers = [normalize_marker_text(marker) for marker in expected["response_must_include_any"]]
         assert_condition(
             any(marker in response_text for marker in expected_markers),
             f"{result['case_id']} response text lacks expected language markers: {decision['agent_response']}",

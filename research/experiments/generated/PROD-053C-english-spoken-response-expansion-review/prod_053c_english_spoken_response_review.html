@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-053C English Spoken Response Review</title>
+  <style>
+    body { margin: 24px; font-family: Arial, sans-serif; color: #172026; background: #f5f7fa; line-height: 1.45; }
+    header, .controls, .item { background: #fff; border: 1px solid #d9e2ec; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    .meta { color: #52606d; margin: 0; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .stat { border: 1px solid #bcccdc; border-radius: 6px; padding: 6px 8px; background: #f8fafc; }
+    .controls { display: grid; gap: 10px; }
+    button { width: fit-content; border: 1px solid #334e68; background: #243b53; color: #fff; border-radius: 6px; padding: 8px 10px; cursor: pointer; }
+    textarea, select { width: 100%; box-sizing: border-box; margin-top: 4px; border: 1px solid #bcccdc; border-radius: 6px; padding: 8px; font: inherit; background: #fff; }
+    .item-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; border-bottom: 1px solid #e6edf3; margin-bottom: 8px; }
+    .item h2 { font-size: 18px; margin: 0 0 8px; }
+    .item-head span, .scope { color: #52606d; }
+    label { display: block; margin-top: 10px; font-weight: 700; }
+    #exportBox, #importBox { min-height: 120px; font-family: Consolas, monospace; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PROD-053C English Spoken Response Review</h1>
+    <p class="meta">English-only exact phrase review. No runtime behavior change, no German exact phrase promotion, no LLM, no provider call.</p>
+    <div class="stats">
+      <span class="stat">Review items: 29</span>
+      <span class="stat">Carry-forward excluded: 2</span>
+      <span class="stat">Flagged rewrites: 2</span>
+      <span class="stat">Unreviewed runtime items: 27</span>
+    </div>
+  </header>
+
+  <section class="controls">
+    <strong>Local review state</strong>
+    <span>Selections and notes save to localStorage in this browser.</span>
+    <button type="button" id="exportBtn">Export JSON</button>
+    <textarea id="exportBox" readonly></textarea>
+    <textarea id="importBox" placeholder="Paste review JSON here to import"></textarea>
+    <button type="button" id="importBtn">Import JSON</button>
+  </section>
+
+  <script id="reviewData" type="application/json">{
+  "checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "items": [
+    {
+      "case_id": "prod-045-manager",
+      "case_title": "PROD-053B flagged rewrite",
+      "language": "en",
+      "source_scope": "flagged_prod_053b_rewrite",
+      "sales_difficulty": "stakeholder-review",
+      "customer_utterance": "I need to ask my manager.",
+      "current_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "stakeholder-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know."
+      },
+      "proposed_review_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_003_mirror_only_for_repair",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because PROD-053B flagged the already-visible English response for rewrite review.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "case_title": "PROD-053B flagged rewrite",
+      "language": "en",
+      "source_scope": "flagged_prod_053b_rewrite",
+      "sales_difficulty": "partner-review",
+      "customer_utterance": "I need to ask my spouse.",
+      "current_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "partner-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know."
+      },
+      "proposed_review_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_003_mirror_only_for_repair",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because PROD-053B flagged the already-visible English response for rewrite review.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-voicemail",
+      "case_title": "Voicemail detected",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "voicemail",
+      "customer_utterance": "[voicemail detected]",
+      "current_agent_response": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "voicemail",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "I reached voicemail, so I will log this for follow-up according to campaign rules."
+      },
+      "proposed_review_response": "I reached voicemail, so I will note it for follow-up.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [
+        "internal_runtime_jargon"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-repeated-silence",
+      "case_title": "Repeated silence",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "repeated-silence",
+      "customer_utterance": "[customer silent twice]",
+      "current_agent_response": "I will end the call for now. Goodbye.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "repeated-silence",
+        "interest_state": "not-interested",
+        "selected_strategy": "rapport",
+        "next_action": "close-politely",
+        "call_control": "end-call",
+        "agent_response": "I will end the call for now. Goodbye."
+      },
+      "proposed_review_response": "I will end the call for now. Goodbye.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-do-not-call",
+      "case_title": "Do not call",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "do-not-call",
+      "customer_utterance": "Do not call me again.",
+      "current_agent_response": "Understood. I will mark this so you are not called again. Goodbye.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "agent_response": "Understood. I will mark this so you are not called again. Goodbye."
+      },
+      "proposed_review_response": "Understood. I will mark this so you are not called again. Goodbye.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-human-request",
+      "case_title": "Human request",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "human-request",
+      "customer_utterance": "I want to speak with a human.",
+      "current_agent_response": "Of course. I will pass this to a human specialist.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Of course. I will pass this to a human specialist."
+      },
+      "proposed_review_response": "Of course. I will pass this to a human specialist.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-identity-repair",
+      "case_title": "Identity repair",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "identity-repair",
+      "customer_utterance": "Who are you?",
+      "current_agent_response": "This is Maya from RouteSignal. I'm calling because we're checking whether missed callbacks and follow-up work are still an issue.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "identity-repair",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "continue",
+        "call_control": "continue-call",
+        "agent_response": "This is Maya from RouteSignal. I'm calling because we're checking whether missed callbacks and follow-up work are still an issue."
+      },
+      "proposed_review_response": "Of course. I can confirm who I am and why I am calling before we continue.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_007_trust_gap_specific"
+      ],
+      "policy_issues": [
+        "internal_runtime_jargon"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-scam-safety-boundary",
+      "case_title": "Scam safety boundary",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "scam-safety-boundary",
+      "customer_utterance": "Is this a scam?",
+      "current_agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "scam-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead."
+      },
+      "proposed_review_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_007_trust_gap_specific"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-payment-safety-boundary",
+      "case_title": "Payment safety boundary",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "payment-safety-boundary",
+      "customer_utterance": "I am not giving card details.",
+      "current_agent_response": "No card or payment details are needed here. I can keep this to written information.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No card or payment details are needed here. I can keep this to written information."
+      },
+      "proposed_review_response": "No card or payment details are needed here. I can keep this to written information.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-support-route",
+      "case_title": "Support route",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "support-route",
+      "customer_utterance": "I need support with my account.",
+      "current_agent_response": "Of course. I'll send this to support right away. Have a good day.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "support-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Of course. I'll send this to support right away. Have a good day."
+      },
+      "proposed_review_response": "That sounds like support. I will stop here and send this to support.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-cancellation-route",
+      "case_title": "Cancellation route",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "cancellation-route",
+      "customer_utterance": "I want to cancel.",
+      "current_agent_response": "Sure, I'll stop and connect you to the cancellation team.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "cancellation-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Sure, I'll stop and connect you to the cancellation team."
+      },
+      "proposed_review_response": "Understood. I will stop here and send this to the cancellation team.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-email-only-boundary",
+      "case_title": "Email-only boundary",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "email-only-boundary",
+      "customer_utterance": "Just email me.",
+      "current_agent_response": "Understood. I will keep this to email and will not push for a call.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "email-only-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "Understood. I will keep this to email and will not push for a call."
+      },
+      "proposed_review_response": "Understood. I will keep this to email and will not push for a call.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-technical-specialist-route",
+      "case_title": "Technical specialist route",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "technical-specialist-route",
+      "customer_utterance": "I have a technical question about the API.",
+      "current_agent_response": "I should not guess on technical details. I can send this to a specialist.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "technical-specialist-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not guess on technical details. I can send this to a specialist."
+      },
+      "proposed_review_response": "I should not guess on technical details. I can send this to a specialist.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-security-review-route",
+      "case_title": "Security review route",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "security-review-route",
+      "customer_utterance": "Our security team needs SOC 2.",
+      "current_agent_response": "Security review needs verified material or a specialist. I should not make broad compliance claims here.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "security-review-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Security review needs verified material or a specialist. I should not make broad compliance claims here."
+      },
+      "proposed_review_response": "Security review needs verified material or a specialist. I will not make broad compliance claims here.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_007_trust_gap_specific"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-coverage-boundary-route",
+      "case_title": "Coverage boundary route",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "coverage-boundary-route",
+      "customer_utterance": "Is this covered?",
+      "current_agent_response": "I should not give coverage or medical advice. I can route this to a specialist.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "coverage-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I should not give coverage or medical advice. I can route this to a specialist."
+      },
+      "proposed_review_response": "I should not give coverage advice. I can send this to a qualified reviewer.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [
+        "internal_runtime_jargon"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-healthcare-boundary-route",
+      "case_title": "Healthcare boundary route",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "healthcare-boundary-route",
+      "customer_utterance": "Can you give medical advice?",
+      "current_agent_response": "I can't give medical advice, but I can send you to someone qualified.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "healthcare-boundary-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't give medical advice, but I can send you to someone qualified."
+      },
+      "proposed_review_response": "I should not give health or medical advice. I can send this to a qualified reviewer.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-claim-boundary",
+      "case_title": "Claim boundary",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "claim-boundary",
+      "customer_utterance": "Can you guarantee this works?",
+      "current_agent_response": "I can't guarantee something that depends on the details. A specialist can check that.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "claim-boundary",
+        "interest_state": "needs-human",
+        "selected_strategy": "inquiry",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "I can't guarantee something that depends on the details. A specialist can check that."
+      },
+      "proposed_review_response": "I do not want to guarantee something that depends on the details. A specialist can check that.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-product-detail-lookup",
+      "case_title": "Product detail lookup",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "product-detail-lookup",
+      "customer_utterance": "Which exact plan is included?",
+      "current_agent_response": "One moment. I will check the product details before I answer.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "bridge-then-background",
+        "sales_difficulty": "product-detail-lookup",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "One moment. I will check the product details before I answer."
+      },
+      "proposed_review_response": "One moment. I will check the product details before I answer.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-scheduling-confirmation",
+      "case_title": "Scheduling confirmation",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "scheduling-confirmation",
+      "customer_utterance": "Wednesday at 10 works.",
+      "current_agent_response": "All right. I'll note that time for the specialist callback. Goodbye.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "scheduling-confirmation",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "agent_response": "All right. I'll note that time for the specialist callback. Goodbye."
+      },
+      "proposed_review_response": "Confirmed. I will note that time for the specialist callback. Goodbye.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-sale-ready-missing-criteria",
+      "case_title": "Sale-ready missing criteria",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "sale-ready-missing-criteria",
+      "customer_utterance": "I am ready to move forward.",
+      "current_agent_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "sale-ready-missing-criteria",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call."
+      },
+      "proposed_review_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-sale-ready-commitment",
+      "case_title": "Sale-ready commitment",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "sale-ready-commitment",
+      "customer_utterance": "I am ready to move forward.",
+      "current_agent_response": "All right. I'll mark that you want the next step. No payment is handled on this call.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "agent_response": "All right. I'll mark that you want the next step. No payment is handled on this call."
+      },
+      "proposed_review_response": "Confirmed. I will mark that you want the next step. No payment is handled on this call.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-procurement-review",
+      "case_title": "Procurement review",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "procurement-review",
+      "customer_utterance": "We need written information for procurement.",
+      "current_agent_response": "Sure. I can keep this to written review information. Nothing firm today.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "procurement-review",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Sure. I can keep this to written review information. Nothing firm today."
+      },
+      "proposed_review_response": "Understood. I can keep this to written review information. Nothing firm today.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-existing-provider-gap",
+      "case_title": "Existing provider gap",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "existing-provider-gap",
+      "customer_utterance": "We already use another provider.",
+      "current_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "existing-provider-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover."
+      },
+      "proposed_review_response": "I will not claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-callback-request",
+      "case_title": "Callback request",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "callback-request",
+      "customer_utterance": "Can you call back later?",
+      "current_agent_response": "Of course. Do you have a time in mind?",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "callback-request",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "Of course. Do you have a time in mind?"
+      },
+      "proposed_review_response": "I can set a callback as optional. No forced appointment or commitment today.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-autonomy-check",
+      "case_title": "Autonomy check",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "autonomy-check",
+      "customer_utterance": "I need time to think. Do not rush.",
+      "current_agent_response": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "autonomy-check",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "That makes sense. We can keep this low pressure and clarify only what you need before any next step."
+      },
+      "proposed_review_response": "That makes sense. We can keep this low-pressure and only clarify what you need.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-trust-gap",
+      "case_title": "Trust gap",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "trust-gap",
+      "customer_utterance": "I do not know your company.",
+      "current_agent_response": "Fair question. I can send the verification path before we discuss any next step.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "trust-gap",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Fair question. I can send the verification path before we discuss any next step."
+      },
+      "proposed_review_response": "Fair question. I can send the verification path before we discuss any next step.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_007_trust_gap_specific"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-timing-delay",
+      "case_title": "Timing delay",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "timing-delay",
+      "customer_utterance": "Nothing firm. Maybe next week.",
+      "current_agent_response": "No problem. I will leave it open for now instead of forcing a time today.",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "timing-delay",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No problem. I will leave it open for now instead of forcing a time today."
+      },
+      "proposed_review_response": "No problem. I will leave it open for now instead of forcing a time today.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-price-objection",
+      "case_title": "Price objection",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "price-objection",
+      "customer_utterance": "This is too expensive.",
+      "current_agent_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "price-objection",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "That makes sense. Is the main concern price, or whether it is worth the effort?"
+      },
+      "proposed_review_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality",
+        "en_response_008_stop_after_question"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-unknown-runtime-signal",
+      "case_title": "Unknown runtime signal",
+      "language": "en",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "sales_difficulty": "unknown-runtime-signal",
+      "customer_utterance": "I am not sure yet.",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "current_runtime_decision": {
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "sales_difficulty": "unknown-runtime-signal",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "inquiry",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Thanks. Can I ask one quick clarifying question?"
+      },
+      "proposed_review_response": "Thanks. Can I ask one quick clarifying question?",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality",
+        "en_response_008_stop_after_question"
+      ],
+      "policy_issues": [],
+      "policy_note": "Included because this English deterministic runtime response was not part of the PROD-052 exact phrase review lane.",
+      "review_status": "ready_for_tarik_english_review",
+      "requires_tarik_review": true,
+      "exact_phrase_review_allowed": true,
+      "german_exact_phrase_review_allowed": false,
+      "runtime_response_changed": false,
+      "runtime_promoted": false
+    }
+  ]
+}</script>
+  <section class='item' data-case-id='prod-045-manager'><div class='item-head'><h2>prod-045-manager</h2><span>stakeholder-review</span></div><p class='scope'>flagged_prod_053b_rewrite</p><p><strong>Customer</strong><br>I need to ask my manager.</p><p><strong>Current runtime response</strong><br>Of course. I can send it over. No commitment today. Take a look and let me know.</p><p><strong>Proposed review response</strong><br>Of course. I can send it over. No commitment today. Take a look and let me know.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-045-spouse'><div class='item-head'><h2>prod-045-spouse</h2><span>partner-review</span></div><p class='scope'>flagged_prod_053b_rewrite</p><p><strong>Customer</strong><br>I need to ask my spouse.</p><p><strong>Current runtime response</strong><br>Of course. I can send it over. No commitment today. Take a look and let me know.</p><p><strong>Proposed review response</strong><br>Of course. I can send it over. No commitment today. Take a look and let me know.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-voicemail'><div class='item-head'><h2>prod-053c-voicemail</h2><span>voicemail</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>[voicemail detected]</p><p><strong>Current runtime response</strong><br>I reached voicemail, so I will log this for follow-up according to campaign rules.</p><p><strong>Proposed review response</strong><br>I reached voicemail, so I will note it for follow-up.</p><p><strong>Policy issues</strong><br>internal_runtime_jargon</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-repeated-silence'><div class='item-head'><h2>prod-053c-repeated-silence</h2><span>repeated-silence</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>[customer silent twice]</p><p><strong>Current runtime response</strong><br>I will end the call for now. Goodbye.</p><p><strong>Proposed review response</strong><br>I will end the call for now. Goodbye.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-do-not-call'><div class='item-head'><h2>prod-053c-do-not-call</h2><span>do-not-call</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Do not call me again.</p><p><strong>Current runtime response</strong><br>Understood. I will mark this so you are not called again. Goodbye.</p><p><strong>Proposed review response</strong><br>Understood. I will mark this so you are not called again. Goodbye.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-human-request'><div class='item-head'><h2>prod-053c-human-request</h2><span>human-request</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I want to speak with a human.</p><p><strong>Current runtime response</strong><br>Of course. I will pass this to a human specialist.</p><p><strong>Proposed review response</strong><br>Of course. I will pass this to a human specialist.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-identity-repair'><div class='item-head'><h2>prod-053c-identity-repair</h2><span>identity-repair</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Who are you?</p><p><strong>Current runtime response</strong><br>This is Maya from RouteSignal. I&#x27;m calling because we&#x27;re checking whether missed callbacks and follow-up work are still an issue.</p><p><strong>Proposed review response</strong><br>Of course. I can confirm who I am and why I am calling before we continue.</p><p><strong>Policy issues</strong><br>internal_runtime_jargon</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-scam-safety-boundary'><div class='item-head'><h2>prod-053c-scam-safety-boundary</h2><span>scam-safety-boundary</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Is this a scam?</p><p><strong>Current runtime response</strong><br>No payment, card, or sensitive details are collected on this call. I can send the verification path instead.</p><p><strong>Proposed review response</strong><br>No payment, card, or sensitive details are collected on this call. I can send the verification path instead.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-payment-safety-boundary'><div class='item-head'><h2>prod-053c-payment-safety-boundary</h2><span>payment-safety-boundary</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I am not giving card details.</p><p><strong>Current runtime response</strong><br>No card or payment details are needed here. I can keep this to written information.</p><p><strong>Proposed review response</strong><br>No card or payment details are needed here. I can keep this to written information.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-support-route'><div class='item-head'><h2>prod-053c-support-route</h2><span>support-route</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I need support with my account.</p><p><strong>Current runtime response</strong><br>Of course. I&#x27;ll send this to support right away. Have a good day.</p><p><strong>Proposed review response</strong><br>That sounds like support. I will stop here and send this to support.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-cancellation-route'><div class='item-head'><h2>prod-053c-cancellation-route</h2><span>cancellation-route</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I want to cancel.</p><p><strong>Current runtime response</strong><br>Sure, I&#x27;ll stop and connect you to the cancellation team.</p><p><strong>Proposed review response</strong><br>Understood. I will stop here and send this to the cancellation team.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-email-only-boundary'><div class='item-head'><h2>prod-053c-email-only-boundary</h2><span>email-only-boundary</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Just email me.</p><p><strong>Current runtime response</strong><br>Understood. I will keep this to email and will not push for a call.</p><p><strong>Proposed review response</strong><br>Understood. I will keep this to email and will not push for a call.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-technical-specialist-route'><div class='item-head'><h2>prod-053c-technical-specialist-route</h2><span>technical-specialist-route</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I have a technical question about the API.</p><p><strong>Current runtime response</strong><br>I should not guess on technical details. I can send this to a specialist.</p><p><strong>Proposed review response</strong><br>I should not guess on technical details. I can send this to a specialist.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-security-review-route'><div class='item-head'><h2>prod-053c-security-review-route</h2><span>security-review-route</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Our security team needs SOC 2.</p><p><strong>Current runtime response</strong><br>Security review needs verified material or a specialist. I should not make broad compliance claims here.</p><p><strong>Proposed review response</strong><br>Security review needs verified material or a specialist. I will not make broad compliance claims here.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-coverage-boundary-route'><div class='item-head'><h2>prod-053c-coverage-boundary-route</h2><span>coverage-boundary-route</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Is this covered?</p><p><strong>Current runtime response</strong><br>I should not give coverage or medical advice. I can route this to a specialist.</p><p><strong>Proposed review response</strong><br>I should not give coverage advice. I can send this to a qualified reviewer.</p><p><strong>Policy issues</strong><br>internal_runtime_jargon</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-healthcare-boundary-route'><div class='item-head'><h2>prod-053c-healthcare-boundary-route</h2><span>healthcare-boundary-route</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Can you give medical advice?</p><p><strong>Current runtime response</strong><br>I can&#x27;t give medical advice, but I can send you to someone qualified.</p><p><strong>Proposed review response</strong><br>I should not give health or medical advice. I can send this to a qualified reviewer.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-claim-boundary'><div class='item-head'><h2>prod-053c-claim-boundary</h2><span>claim-boundary</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Can you guarantee this works?</p><p><strong>Current runtime response</strong><br>I can&#x27;t guarantee something that depends on the details. A specialist can check that.</p><p><strong>Proposed review response</strong><br>I do not want to guarantee something that depends on the details. A specialist can check that.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-product-detail-lookup'><div class='item-head'><h2>prod-053c-product-detail-lookup</h2><span>product-detail-lookup</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Which exact plan is included?</p><p><strong>Current runtime response</strong><br>One moment. I will check the product details before I answer.</p><p><strong>Proposed review response</strong><br>One moment. I will check the product details before I answer.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-scheduling-confirmation'><div class='item-head'><h2>prod-053c-scheduling-confirmation</h2><span>scheduling-confirmation</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Wednesday at 10 works.</p><p><strong>Current runtime response</strong><br>All right. I&#x27;ll note that time for the specialist callback. Goodbye.</p><p><strong>Proposed review response</strong><br>Confirmed. I will note that time for the specialist callback. Goodbye.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-sale-ready-missing-criteria'><div class='item-head'><h2>prod-053c-sale-ready-missing-criteria</h2><span>sale-ready-missing-criteria</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I am ready to move forward.</p><p><strong>Current runtime response</strong><br>Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.</p><p><strong>Proposed review response</strong><br>Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-sale-ready-commitment'><div class='item-head'><h2>prod-053c-sale-ready-commitment</h2><span>sale-ready-commitment</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I am ready to move forward.</p><p><strong>Current runtime response</strong><br>All right. I&#x27;ll mark that you want the next step. No payment is handled on this call.</p><p><strong>Proposed review response</strong><br>Confirmed. I will mark that you want the next step. No payment is handled on this call.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-procurement-review'><div class='item-head'><h2>prod-053c-procurement-review</h2><span>procurement-review</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>We need written information for procurement.</p><p><strong>Current runtime response</strong><br>Sure. I can keep this to written review information. Nothing firm today.</p><p><strong>Proposed review response</strong><br>Understood. I can keep this to written review information. Nothing firm today.</p><p><strong>Policy issues</strong><br>live_turn_too_long</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-existing-provider-gap'><div class='item-head'><h2>prod-053c-existing-provider-gap</h2><span>existing-provider-gap</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>We already use another provider.</p><p><strong>Current runtime response</strong><br>I won&#x27;t claim this replaces your provider. The useful check is whether there is a gap it does not cover.</p><p><strong>Proposed review response</strong><br>I will not claim this replaces your provider. The useful check is whether there is a gap it does not cover.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-callback-request'><div class='item-head'><h2>prod-053c-callback-request</h2><span>callback-request</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Can you call back later?</p><p><strong>Current runtime response</strong><br>Of course. Do you have a time in mind?</p><p><strong>Proposed review response</strong><br>I can set a callback as optional. No forced appointment or commitment today.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-autonomy-check'><div class='item-head'><h2>prod-053c-autonomy-check</h2><span>autonomy-check</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I need time to think. Do not rush.</p><p><strong>Current runtime response</strong><br>That makes sense. We can keep this low pressure and clarify only what you need before any next step.</p><p><strong>Proposed review response</strong><br>That makes sense. We can keep this low-pressure and only clarify what you need.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-trust-gap'><div class='item-head'><h2>prod-053c-trust-gap</h2><span>trust-gap</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I do not know your company.</p><p><strong>Current runtime response</strong><br>Fair question. I can send the verification path before we discuss any next step.</p><p><strong>Proposed review response</strong><br>Fair question. I can send the verification path before we discuss any next step.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-timing-delay'><div class='item-head'><h2>prod-053c-timing-delay</h2><span>timing-delay</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>Nothing firm. Maybe next week.</p><p><strong>Current runtime response</strong><br>No problem. I will leave it open for now instead of forcing a time today.</p><p><strong>Proposed review response</strong><br>No problem. I will leave it open for now instead of forcing a time today.</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-price-objection'><div class='item-head'><h2>prod-053c-price-objection</h2><span>price-objection</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>This is too expensive.</p><p><strong>Current runtime response</strong><br>That makes sense. Is the main concern price, or whether it is worth the effort?</p><p><strong>Proposed review response</strong><br>That makes sense. Is the main concern price, or whether it is worth the effort?</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+  <section class='item' data-case-id='prod-053c-unknown-runtime-signal'><div class='item-head'><h2>prod-053c-unknown-runtime-signal</h2><span>unknown-runtime-signal</span></div><p class='scope'>unreviewed_runtime_response_surface</p><p><strong>Customer</strong><br>I am not sure yet.</p><p><strong>Current runtime response</strong><br>Thanks. Can I ask one quick clarifying question?</p><p><strong>Proposed review response</strong><br>Thanks. Can I ask one quick clarifying question?</p><p><strong>Policy issues</strong><br>none</p><label>Status<select data-field='status'><option value='pending'>Pending</option><option value='approved'>Approved</option><option value='needs_rework'>Needs rework</option></select></label><label>Reviewer notes<textarea data-field='notes' rows='3'></textarea></label></section>
+
+  <script>
+    const storageKey = "PROD-053C-english-spoken-response-expansion-review";
+    const rows = Array.from(document.querySelectorAll("[data-case-id]"));
+
+    function readState() {
+      const state = { checkpoint_id: storageKey, items: [] };
+      for (const row of rows) {
+        state.items.push({
+          case_id: row.dataset.caseId,
+          status: row.querySelector("[data-field='status']").value,
+          notes: row.querySelector("[data-field='notes']").value
+        });
+      }
+      return state;
+    }
+
+    function writeState(state) {
+      const byId = new Map((state.items || []).map((item) => [item.case_id, item]));
+      for (const row of rows) {
+        const item = byId.get(row.dataset.caseId);
+        if (!item) continue;
+        row.querySelector("[data-field='status']").value = item.status || "pending";
+        row.querySelector("[data-field='notes']").value = item.notes || "";
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(readState(), null, 2));
+    }
+
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try { writeState(JSON.parse(saved)); } catch (error) { console.warn(error); }
+    }
+
+    for (const row of rows) {
+      row.addEventListener("change", saveState);
+      row.addEventListener("input", saveState);
+    }
+
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      const text = JSON.stringify(readState(), null, 2);
+      document.getElementById("exportBox").value = text;
+      localStorage.setItem(storageKey, text);
+    });
+
+    document.getElementById("importBtn").addEventListener("click", () => {
+      const text = document.getElementById("importBox").value;
+      const parsed = JSON.parse(text);
+      writeState(parsed);
+      saveState();
+    });
+  </script>
+</body>
+</html>

@@ -12,15 +12,15 @@ It records exact customer turns, exact agent answers, retrieval status, hook dec
 - Calls: `7`
 - Customer turns: `19`
 - Protected turns: `9`
-- Retrieval-only total score: `98`
-- Opt-in total score: `112`
-- Opt-in score delta vs retrieval-only: `14`
-- Opt-in wins vs retrieval-only: `4`
+- Retrieval-only total score: `107`
+- Opt-in total score: `107`
+- Opt-in score delta vs retrieval-only: `0`
+- Opt-in wins vs retrieval-only: `0`
 - Retrieval-only wins vs opt-in: `0`
-- Opt-in hooked answers: `4`
-- Hooked without evaluation labels: `4`
-- Policy action correctness: `0.4737`
-- Call-control correctness: `0.8421`
+- Opt-in hooked answers: `0`
+- Hooked without evaluation labels: `0`
+- Policy action correctness: `0.7368`
+- Call-control correctness: `0.7895`
 - Protected context preservation: `1.0`
 - State reference completeness: `1.0`
 - Non-sale correctness: `1.0`
@@ -40,12 +40,12 @@ No provider calls were made. No private data was read. No dataset download was p
 | Label | Turns | Protected | Hooked | Retrieval-Only Score | Opt-In Score | Opt-In Wins | Control Correctness | Hard Failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | home_service_support_handoff | 2 | 2 | 0 | 12 | 12 | 0 | 1.0 | 0 |
-| insurance_claim_privacy_escalation | 3 | 3 | 0 | 19 | 19 | 0 | 1.0 | 0 |
+| insurance_claim_privacy_escalation | 3 | 3 | 0 | 18 | 18 | 0 | 1.0 | 0 |
 | medical_technical_safety_escalation | 2 | 2 | 0 | 12 | 12 | 0 | 1.0 | 0 |
 | membership_refusal_end_call | 2 | 2 | 0 | 10 | 10 | 0 | 1.0 | 0 |
-| software_multi_objection_sale | 4 | 0 | 2 | 17 | 24 | 2 | 0.75 | 0 |
-| software_procurement_authority_delay | 3 | 0 | 0 | 13 | 13 | 0 | 0.3333 | 0 |
-| trust_price_callback | 3 | 0 | 2 | 15 | 22 | 2 | 1.0 | 0 |
+| software_multi_objection_sale | 4 | 0 | 0 | 24 | 24 | 0 | 0.75 | 0 |
+| software_procurement_authority_delay | 3 | 0 | 0 | 16 | 16 | 0 | 0.6667 | 0 |
+| trust_price_callback | 3 | 0 | 0 | 15 | 15 | 0 | 0.3333 | 0 |
 
 ## Exact Customer Turns And Agent Answers
 
@@ -54,13 +54,13 @@ No provider calls were made. No private data was read. No dataset download was p
 - Call: `PROD-021-C01`
 - Scenario label for reporting only: `software_multi_objection_sale`
 - Expected policy action: `value-clarify`
-- Observed opt-in policy action: `clarify-fit`
+- Observed opt-in policy action: `value-clarify`
 - Expected call control: `continue-call`
 - Observed opt-in call control: `continue-call`
 - Protected context: `False`
-- Hook applied: `True`
-- Hook ID: `price_objection_clarifier`
-- Retrieval-only score: `5`
+- Hook applied: `False`
+- Hook ID: `none`
+- Retrieval-only score: `8`
 - Opt-in score: `8`
 
 Customer turn:
@@ -72,19 +72,19 @@ The cost sounds high, and I need to know whether reviewing this is worth my time
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?
+That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
 ```
 
 ### PROD-021-C01-T02
@@ -130,13 +130,13 @@ Thanks. To make this useful, is your main question about price, fit, timing, or 
 - Call: `PROD-021-C01`
 - Scenario label for reporting only: `software_multi_objection_sale`
 - Expected policy action: `autonomy-check`
-- Observed opt-in policy action: `clarify-fit`
+- Observed opt-in policy action: `autonomy-check`
 - Expected call control: `continue-call`
 - Observed opt-in call control: `continue-call`
 - Protected context: `False`
-- Hook applied: `True`
-- Hook ID: `callback_request_low_commitment`
-- Retrieval-only score: `4`
+- Hook applied: `False`
+- Hook ID: `none`
+- Retrieval-only score: `8`
 - Opt-in score: `8`
 
 Customer turn:
@@ -148,19 +148,19 @@ I need time to think; do not rush me into a commitment today.
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?
+That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?
 ```
 
 ### PROD-021-C01-T04
@@ -206,9 +206,9 @@ Thanks. To check fit without wasting time, is your main concern whether this is 
 - Call: `PROD-021-C02`
 - Scenario label for reporting only: `software_procurement_authority_delay`
 - Expected policy action: `stakeholder-review`
-- Observed opt-in policy action: `clarify-fit`
+- Observed opt-in policy action: `stakeholder-review`
 - Expected call control: `continue-call`
-- Observed opt-in call control: `continue-call`
+- Observed opt-in call control: `bridge-then-continue`
 - Protected context: `False`
 - Hook applied: `False`
 - Hook ID: `none`
@@ -224,19 +224,19 @@ My boss has to review this before I can decide.
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 Retrieval-only answer:
 
 ```text
-That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 ### PROD-021-C02-T02
@@ -244,14 +244,14 @@ That makes sense. Should I send a short summary you can share with your boss, or
 - Call: `PROD-021-C02`
 - Scenario label for reporting only: `software_procurement_authority_delay`
 - Expected policy action: `procurement-review`
-- Observed opt-in policy action: `autonomy-check`
+- Observed opt-in policy action: `procurement-review`
 - Expected call control: `continue-call`
-- Observed opt-in call control: `end-call`
+- Observed opt-in call control: `continue-call`
 - Protected context: `False`
 - Hook applied: `False`
 - Hook ID: `none`
-- Retrieval-only score: `2`
-- Opt-in score: `2`
+- Retrieval-only score: `4`
+- Opt-in score: `4`
 
 Customer turn:
 
@@ -262,19 +262,19 @@ Procurement needs written information and nothing firm from me today.
 Default-off answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+Understood. What written information would help procurement review this without asking you for anything firm today?
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+Understood. What written information would help procurement review this without asking you for anything firm today?
 ```
 
 Opt-in hook answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+Understood. What written information would help procurement review this without asking you for anything firm today?
 ```
 
 ### PROD-021-C02-T03
@@ -282,14 +282,14 @@ Thanks, I understand the timing is not firm. I will log a follow-up instead of f
 - Call: `PROD-021-C02`
 - Scenario label for reporting only: `software_procurement_authority_delay`
 - Expected policy action: `procurement-review`
-- Observed opt-in policy action: `autonomy-check`
+- Observed opt-in policy action: `procurement-review`
 - Expected call control: `continue-call`
-- Observed opt-in call control: `end-call`
+- Observed opt-in call control: `continue-call`
 - Protected context: `False`
 - Hook applied: `False`
 - Hook ID: `none`
-- Retrieval-only score: `4`
-- Opt-in score: `4`
+- Retrieval-only score: `5`
+- Opt-in score: `5`
 
 Customer turn:
 
@@ -300,19 +300,19 @@ Next week might work for review, but I cannot commit to anything firm now.
 Default-off answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+Understood. What written information would help procurement review this without asking you for anything firm today?
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+Understood. What written information would help procurement review this without asking you for anything firm today?
 ```
 
 Opt-in hook answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+Understood. What written information would help procurement review this without asking you for anything firm today?
 ```
 
 ### PROD-021-C03-T01
@@ -320,14 +320,14 @@ Thanks, I understand the timing is not firm. I will log a follow-up instead of f
 - Call: `PROD-021-C03`
 - Scenario label for reporting only: `insurance_claim_privacy_escalation`
 - Expected policy action: `claim-boundary-escalation`
-- Observed opt-in policy action: `claim-boundary-escalation`
+- Observed opt-in policy action: `clarify-fit`
 - Expected call control: `transfer-or-escalate`
 - Observed opt-in call control: `transfer-or-escalate`
 - Protected context: `True`
 - Hook applied: `False`
 - Hook ID: `none`
-- Retrieval-only score: `6`
-- Opt-in score: `6`
+- Retrieval-only score: `5`
+- Opt-in score: `5`
 
 Customer turn:
 
@@ -338,19 +338,19 @@ Can you guarantee this coverage before I share details?
 Default-off answer:
 
 ```text
-I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.
+I should not give coverage advice. I can route this to the approved qualified reviewer path.
 ```
 
 Retrieval-only answer:
 
 ```text
-I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.
+I should not give coverage advice. I can route this to the approved qualified reviewer path.
 ```
 
 Opt-in hook answer:
 
 ```text
-I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.
+I should not give coverage advice. I can route this to the approved qualified reviewer path.
 ```
 
 ### PROD-021-C03-T02
@@ -664,12 +664,12 @@ Of course. I will route this to a solutions specialist instead of continuing aut
 - Expected policy action: `trust-repair`
 - Observed opt-in policy action: `clarify-fit`
 - Expected call control: `continue-call`
-- Observed opt-in call control: `continue-call`
+- Observed opt-in call control: `end-call`
 - Protected context: `False`
 - Hook applied: `False`
 - Hook ID: `none`
-- Retrieval-only score: `7`
-- Opt-in score: `7`
+- Retrieval-only score: `2`
+- Opt-in score: `2`
 
 Customer turn:
 
@@ -680,19 +680,19 @@ I do not know your company. How can I verify this is legitimate?
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 Retrieval-only answer:
 
 ```text
-Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 Opt-in hook answer:
 
 ```text
-Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 ### PROD-021-C07-T02
@@ -700,13 +700,13 @@ Fair. Trust matters on a cold call. To make this useful, should I send company c
 - Call: `PROD-021-C07`
 - Scenario label for reporting only: `trust_price_callback`
 - Expected policy action: `value-clarify`
-- Observed opt-in policy action: `clarify-fit`
+- Observed opt-in policy action: `value-clarify`
 - Expected call control: `continue-call`
 - Observed opt-in call control: `continue-call`
 - Protected context: `False`
-- Hook applied: `True`
-- Hook ID: `price_objection_clarifier`
-- Retrieval-only score: `5`
+- Hook applied: `False`
+- Hook ID: `none`
+- Retrieval-only score: `8`
 - Opt-in score: `8`
 
 Customer turn:
@@ -718,19 +718,19 @@ The cost sounds high; is this worth my time?
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?
+That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?
 ```
 
 ### PROD-021-C07-T03
@@ -740,12 +740,12 @@ That makes sense. Is the bigger concern the price, the terms, or whether the val
 - Expected policy action: `autonomy-check`
 - Observed opt-in policy action: `clarify-fit`
 - Expected call control: `continue-call`
-- Observed opt-in call control: `continue-call`
+- Observed opt-in call control: `end-call`
 - Protected context: `False`
-- Hook applied: `True`
-- Hook ID: `callback_request_low_commitment`
-- Retrieval-only score: `3`
-- Opt-in score: `7`
+- Hook applied: `False`
+- Hook ID: `none`
+- Retrieval-only score: `5`
+- Opt-in score: `5`
 
 Customer turn:
 
@@ -756,19 +756,19 @@ Send me a short summary and call back later; I need time to think.
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+I can log a callback request and keep it optional. No forced appointment or commitment on this call.
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+I can log a callback request and keep it optional. No forced appointment or commitment on this call.
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?
+I can log a callback request and keep it optional. No forced appointment or commitment on this call.
 ```
 
 ## Interpretation

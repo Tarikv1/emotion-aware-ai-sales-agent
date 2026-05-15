@@ -44,7 +44,7 @@ Live provider calls require:
 - explicit `--live`
 - provider-specific environment variables
 - timeout no higher than 10 seconds
-- local provider boundary review in `VOICE_PROVIDER_RUN_BOUNDARY.md`
+- local provider boundary review in `runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
 - generated-audio asset logging in the result packet
 
 ## Text Selection

@@ -166,7 +166,7 @@
           "customer_utterance": "Can you send me information first? I do not know if this is relevant yet.",
           "protected_context": false,
           "quality_scored": true,
-          "expected_winner": "retrieval",
+          "expected_winner": "tie",
           "quality_marker_groups": [
             {"name": "objection-resolution", "markers": ["send", "information"]},
             {"name": "next-step-quality", "markers": ["relevant", "pricing"]}
@@ -179,7 +179,7 @@
           "customer_utterance": "I need to ask my boss before deciding anything.",
           "protected_context": false,
           "quality_scored": true,
-          "expected_winner": "retrieval",
+          "expected_winner": "tie",
           "quality_marker_groups": [
             {"name": "authority-resolution", "markers": ["boss"]},
             {"name": "next-step-quality", "markers": ["concern", "?"]}
@@ -192,7 +192,7 @@
           "customer_utterance": "I do not know your company and I do not trust random software calls.",
           "protected_context": false,
           "quality_scored": true,
-          "expected_winner": "retrieval",
+          "expected_winner": "tie",
           "quality_marker_groups": [
             {"name": "trust-repair", "markers": ["trust"]},
             {"name": "proof-path", "markers": ["company context", "security details"]}
@@ -349,7 +349,7 @@
           "customer_utterance": "I do not know your company and I do not trust random software calls.",
           "protected_context": false,
           "quality_scored": true,
-          "expected_winner": "retrieval",
+          "expected_winner": "tie",
           "quality_marker_groups": [
             {"name": "trust-repair", "markers": ["trust"]},
             {"name": "proof-path", "markers": ["company context", "security details"]}

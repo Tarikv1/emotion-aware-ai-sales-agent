@@ -642,7 +642,7 @@ def main():
     parser.add_argument("--out", required=True, help="Path to the markdown output file.")
     parser.add_argument(
         "--prompt",
-        default="packages/prompts/product-qualification-agent.txt",
+        default="runtime/prompts/product-qualification-agent.txt",
         help="Path to the product qualification agent prompt template.",
     )
     parser.add_argument(

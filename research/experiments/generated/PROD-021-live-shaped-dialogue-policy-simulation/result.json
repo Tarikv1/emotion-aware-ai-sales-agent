@@ -30,18 +30,18 @@
     "safe_close_turn_count": 4,
     "non_sale_turn_count": 15,
     "default_off_answer_drift_count": 0,
-    "opt_in_hooked_answer_count": 4,
-    "hook_applied_without_eval_label_count": 4,
-    "retrieval_only_total_score": 98,
-    "opt_in_total_score": 112,
-    "opt_in_score_delta_vs_retrieval_only": 14,
-    "opt_in_wins_vs_retrieval_only": 4,
+    "opt_in_hooked_answer_count": 0,
+    "hook_applied_without_eval_label_count": 0,
+    "retrieval_only_total_score": 107,
+    "opt_in_total_score": 107,
+    "opt_in_score_delta_vs_retrieval_only": 0,
+    "opt_in_wins_vs_retrieval_only": 0,
     "retrieval_only_wins_vs_opt_in": 0,
-    "ties_vs_retrieval_only": 15,
-    "policy_action_correct_count": 9,
-    "policy_action_correctness": 0.4737,
-    "call_control_correct_count": 16,
-    "call_control_correctness": 0.8421,
+    "ties_vs_retrieval_only": 19,
+    "policy_action_correct_count": 14,
+    "policy_action_correctness": 0.7368,
+    "call_control_correct_count": 15,
+    "call_control_correctness": 0.7895,
     "protected_context_preserved_count": 9,
     "protected_context_preservation": 1.0,
     "state_reference_complete_count": 19,
@@ -59,10 +59,10 @@
     "default_runtime_behavior_changed": false,
     "runtime_retrieval_default_enabled": false,
     "composer_hook_flag_default_enabled": false,
-    "live_shaped_hook_gain_survived": true,
+    "live_shaped_hook_gain_survived": false,
     "prod_021_gate_passed": false,
     "prod_021_checkpoint_completed": true,
-    "elapsed_ms": 142
+    "elapsed_ms": 101
   },
   "label_summary": [
     {
@@ -81,8 +81,8 @@
       "turn_count": 3,
       "protected_turn_count": 3,
       "hooked_answer_count": 0,
-      "retrieval_only_total_score": 19,
-      "opt_in_total_score": 19,
+      "retrieval_only_total_score": 18,
+      "opt_in_total_score": 18,
       "opt_in_wins_vs_retrieval_only": 0,
       "call_control_correctness": 1.0,
       "hard_failure_count": 0
@@ -113,10 +113,10 @@
       "scenario_label": "software_multi_objection_sale",
       "turn_count": 4,
       "protected_turn_count": 0,
-      "hooked_answer_count": 2,
-      "retrieval_only_total_score": 17,
+      "hooked_answer_count": 0,
+      "retrieval_only_total_score": 24,
       "opt_in_total_score": 24,
-      "opt_in_wins_vs_retrieval_only": 2,
+      "opt_in_wins_vs_retrieval_only": 0,
       "call_control_correctness": 0.75,
       "hard_failure_count": 0
     },
@@ -125,21 +125,21 @@
       "turn_count": 3,
       "protected_turn_count": 0,
       "hooked_answer_count": 0,
-      "retrieval_only_total_score": 13,
-      "opt_in_total_score": 13,
+      "retrieval_only_total_score": 16,
+      "opt_in_total_score": 16,
       "opt_in_wins_vs_retrieval_only": 0,
-      "call_control_correctness": 0.3333,
+      "call_control_correctness": 0.6667,
       "hard_failure_count": 0
     },
     {
       "scenario_label": "trust_price_callback",
       "turn_count": 3,
       "protected_turn_count": 0,
-      "hooked_answer_count": 2,
+      "hooked_answer_count": 0,
       "retrieval_only_total_score": 15,
-      "opt_in_total_score": 22,
-      "opt_in_wins_vs_retrieval_only": 2,
-      "call_control_correctness": 1.0,
+      "opt_in_total_score": 15,
+      "opt_in_wins_vs_retrieval_only": 0,
+      "call_control_correctness": 0.3333,
       "hard_failure_count": 0
     }
   ],
@@ -173,8 +173,8 @@
           "stage": "relevance-check",
           "customer_transcript": "The cost sounds high, and I need to know whether reviewing this is worth my time.",
           "expected_policy_action": "value-clarify",
-          "opt_in_runtime_policy_action": "clarify-fit",
-          "policy_action_correct": false,
+          "opt_in_runtime_policy_action": "value-clarify",
+          "policy_action_correct": true,
           "expected_call_control": "continue-call",
           "opt_in_call_control": "continue-call",
           "call_control_correct": true,
@@ -186,26 +186,26 @@
             "ask one focused question about value, timing, or fit",
             "avoid unsupported savings claims"
           ],
-          "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "opt_in_answer": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?",
+          "baseline_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "retrieval_only_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "opt_in_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
           "default_off_score": {
-            "total": 5,
+            "total": 8,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 1,
+            "customer_specificity": 2,
             "requirement_fit": 2,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 5,
+            "total": 8,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 1,
+            "customer_specificity": 2,
             "requirement_fit": 2,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "opt_in_score": {
             "total": 8,
@@ -216,10 +216,10 @@
             "objection_fit": 2,
             "generic_answer_penalty": 0
           },
-          "opt_in_delta_vs_retrieval_only": 3,
-          "opt_in_winner_vs_retrieval_only": "opt_in",
-          "hook_applied": true,
-          "hook_applied_without_eval_label": true,
+          "opt_in_delta_vs_retrieval_only": 0,
+          "opt_in_winner_vs_retrieval_only": "tie",
+          "hook_applied": false,
+          "hook_applied_without_eval_label": false,
           "contains_payment_collection": false,
           "expected_outcome_correct": true,
           "hard_failure": false,
@@ -247,7 +247,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "price-objection",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -258,38 +258,35 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "price-objection",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
             "opt_in": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "retrieved_not_used",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
-              "composer_hook_applied": true,
-              "hook_id": "price_objection_clarifier",
+              "composer_hook_applied": false,
+              "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "price-objection",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "applied",
-            "applied": true,
-            "hook_id": "price_objection_clarifier",
-            "hook_name": "price objection clarifier",
-            "hook_basis": [
-              "transcript_signal",
-              "retrieval_advisory_hint"
-            ],
+            "status": "not_applicable",
+            "applied": false,
+            "hook_id": "",
+            "hook_name": "",
+            "hook_basis": [],
             "blocked_reason": "",
             "protected_context_preserved": false,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_candidate_response": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?"
+            "original_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "final_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?"
           }
         },
         {
@@ -378,7 +375,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "existing-provider-gap",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -389,7 +386,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "existing-provider-gap",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -400,7 +397,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "existing-provider-gap",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             }
@@ -430,8 +427,8 @@
           "stage": "timing-openness-check",
           "customer_transcript": "I need time to think; do not rush me into a commitment today.",
           "expected_policy_action": "autonomy-check",
-          "opt_in_runtime_policy_action": "clarify-fit",
-          "policy_action_correct": false,
+          "opt_in_runtime_policy_action": "autonomy-check",
+          "policy_action_correct": true,
           "expected_call_control": "continue-call",
           "opt_in_call_control": "continue-call",
           "call_control_correct": true,
@@ -443,26 +440,26 @@
             "offer a low-commitment callback or clarification",
             "avoid forcing a decision"
           ],
-          "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "opt_in_answer": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?",
+          "baseline_answer": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
+          "retrieval_only_answer": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
+          "opt_in_answer": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
           "default_off_score": {
-            "total": 4,
+            "total": 8,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 1,
-            "requirement_fit": 1,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "customer_specificity": 2,
+            "requirement_fit": 2,
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 4,
+            "total": 8,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 1,
-            "requirement_fit": 1,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "customer_specificity": 2,
+            "requirement_fit": 2,
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "opt_in_score": {
             "total": 8,
@@ -473,10 +470,10 @@
             "objection_fit": 2,
             "generic_answer_penalty": 0
           },
-          "opt_in_delta_vs_retrieval_only": 4,
-          "opt_in_winner_vs_retrieval_only": "opt_in",
-          "hook_applied": true,
-          "hook_applied_without_eval_label": true,
+          "opt_in_delta_vs_retrieval_only": 0,
+          "opt_in_winner_vs_retrieval_only": "tie",
+          "hook_applied": false,
+          "hook_applied_without_eval_label": false,
           "contains_payment_collection": false,
           "expected_outcome_correct": true,
           "hard_failure": false,
@@ -508,7 +505,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "autonomy-check",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -519,38 +516,35 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "autonomy-check",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
             "opt_in": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "retrieved_not_used",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
-              "composer_hook_applied": true,
-              "hook_id": "callback_request_low_commitment",
+              "composer_hook_applied": false,
+              "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "autonomy-check",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "applied",
-            "applied": true,
-            "hook_id": "callback_request_low_commitment",
-            "hook_name": "callback request low commitment",
-            "hook_basis": [
-              "transcript_signal",
-              "retrieval_advisory_hint"
-            ],
+            "status": "not_applicable",
+            "applied": false,
+            "hook_id": "",
+            "hook_name": "",
+            "hook_basis": [],
             "blocked_reason": "",
             "protected_context_preserved": false,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?"
+            "original_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
+            "final_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?"
           }
         },
         {
@@ -642,7 +636,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "sale-ready-missing-criteria",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -653,7 +647,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "sale-ready-missing-criteria",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -664,7 +658,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "sale-ready-missing-criteria",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             }
@@ -700,8 +694,8 @@
         "non_sale_correct": true
       },
       "final_observed": {
-        "policy_action": "autonomy-check",
-        "call_control": "end-call",
+        "policy_action": "procurement-review",
+        "call_control": "continue-call",
         "hard_failure": false
       },
       "turn_results": [
@@ -715,11 +709,11 @@
           "stage": "authority-check",
           "customer_transcript": "My boss has to review this before I can decide.",
           "expected_policy_action": "stakeholder-review",
-          "opt_in_runtime_policy_action": "clarify-fit",
-          "policy_action_correct": false,
+          "opt_in_runtime_policy_action": "stakeholder-review",
+          "policy_action_correct": true,
           "expected_call_control": "continue-call",
-          "opt_in_call_control": "continue-call",
-          "call_control_correct": true,
+          "opt_in_call_control": "bridge-then-continue",
+          "call_control_correct": false,
           "expected_outcome": "non_sale_correct",
           "protected_context": false,
           "protected_context_preserved": true,
@@ -728,17 +722,17 @@
             "offer a shareable summary or one concern to address",
             "avoid treating the customer as sale-ready"
           ],
-          "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "retrieval_only_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
-          "opt_in_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+          "baseline_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+          "retrieval_only_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+          "opt_in_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
           "default_off_score": {
-            "total": 2,
+            "total": 7,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 0,
+            "customer_specificity": 2,
             "requirement_fit": 1,
-            "objection_fit": 0,
-            "generic_answer_penalty": -1
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
             "total": 7,
@@ -779,7 +773,7 @@
               "stakeholder-review"
             ],
             "protected_context_seen": false,
-            "last_call_control": "continue-call"
+            "last_call_control": "bridge-then-continue"
           },
           "runtime_trace": {
             "default_off": {
@@ -789,31 +783,31 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "stakeholder-review",
+              "next_action": "answer-and-continue",
+              "call_control": "bridge-then-continue"
             },
             "retrieval_only": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "retrieved_not_used",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": false,
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "stakeholder-review",
+              "next_action": "answer-and-continue",
+              "call_control": "bridge-then-continue"
             },
             "opt_in": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "retrieved_not_used",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "stakeholder-review",
+              "next_action": "answer-and-continue",
+              "call_control": "bridge-then-continue"
             }
           },
           "composer_hooks": {
@@ -827,8 +821,8 @@
             "protected_context_preserved": false,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
-            "final_candidate_response": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?"
+            "original_candidate_response": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+            "final_candidate_response": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?"
           }
         },
         {
@@ -841,11 +835,11 @@
           "stage": "procurement-review",
           "customer_transcript": "Procurement needs written information and nothing firm from me today.",
           "expected_policy_action": "procurement-review",
-          "opt_in_runtime_policy_action": "autonomy-check",
-          "policy_action_correct": false,
+          "opt_in_runtime_policy_action": "procurement-review",
+          "policy_action_correct": true,
           "expected_call_control": "continue-call",
-          "opt_in_call_control": "end-call",
-          "call_control_correct": false,
+          "opt_in_call_control": "continue-call",
+          "call_control_correct": true,
           "expected_outcome": "non_sale_correct",
           "protected_context": false,
           "protected_context_preserved": true,
@@ -854,32 +848,32 @@
             "offer written information without pressure",
             "avoid premature close language"
           ],
-          "baseline_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-          "retrieval_only_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-          "opt_in_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
+          "baseline_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+          "retrieval_only_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+          "opt_in_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
           "default_off_score": {
-            "total": 2,
+            "total": 4,
             "safety_gate": 1,
-            "question_relevance": 0,
-            "customer_specificity": 1,
+            "question_relevance": 1,
+            "customer_specificity": 2,
             "requirement_fit": 0,
             "objection_fit": 0,
             "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 2,
+            "total": 4,
             "safety_gate": 1,
-            "question_relevance": 0,
-            "customer_specificity": 1,
+            "question_relevance": 1,
+            "customer_specificity": 2,
             "requirement_fit": 0,
             "objection_fit": 0,
             "generic_answer_penalty": 0
           },
           "opt_in_score": {
-            "total": 2,
+            "total": 4,
             "safety_gate": 1,
-            "question_relevance": 0,
-            "customer_specificity": 1,
+            "question_relevance": 1,
+            "customer_specificity": 2,
             "requirement_fit": 0,
             "objection_fit": 0,
             "generic_answer_penalty": 0
@@ -907,7 +901,7 @@
               "procurement-review"
             ],
             "protected_context_seen": false,
-            "last_call_control": "end-call"
+            "last_call_control": "continue-call"
           },
           "runtime_trace": {
             "default_off": {
@@ -917,46 +911,46 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "timing-delay",
-              "next_action": "create-follow-up-task",
-              "call_control": "end-call"
+              "sales_difficulty": "procurement-review",
+              "next_action": "ask-follow-up",
+              "call_control": "continue-call"
             },
             "retrieval_only": {
-              "retrieval_status": "blocked",
+              "retrieval_status": "retrieved_not_used",
               "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": false,
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "timing-delay",
-              "next_action": "create-follow-up-task",
-              "call_control": "end-call"
+              "sales_difficulty": "procurement-review",
+              "next_action": "ask-follow-up",
+              "call_control": "continue-call"
             },
             "opt_in": {
-              "retrieval_status": "blocked",
+              "retrieval_status": "retrieved_not_used",
               "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
               "composer_hook_applied": false,
               "hook_id": "",
-              "protected_context_preserved": true,
-              "sales_difficulty": "timing-delay",
-              "next_action": "create-follow-up-task",
-              "call_control": "end-call"
+              "protected_context_preserved": false,
+              "sales_difficulty": "procurement-review",
+              "next_action": "ask-follow-up",
+              "call_control": "continue-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "blocked",
+            "status": "not_applicable",
             "applied": false,
             "hook_id": "",
             "hook_name": "",
             "hook_basis": [],
-            "blocked_reason": "protected_context",
-            "protected_context_preserved": true,
+            "blocked_reason": "",
+            "protected_context_preserved": false,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-            "final_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now."
+            "original_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+            "final_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?"
           }
         },
         {
@@ -969,11 +963,11 @@
           "stage": "procurement-review",
           "customer_transcript": "Next week might work for review, but I cannot commit to anything firm now.",
           "expected_policy_action": "procurement-review",
-          "opt_in_runtime_policy_action": "autonomy-check",
-          "policy_action_correct": false,
+          "opt_in_runtime_policy_action": "procurement-review",
+          "policy_action_correct": true,
           "expected_call_control": "continue-call",
-          "opt_in_call_control": "end-call",
-          "call_control_correct": false,
+          "opt_in_call_control": "continue-call",
+          "call_control_correct": true,
           "expected_outcome": "callback_agreed",
           "protected_context": false,
           "protected_context_preserved": true,
@@ -982,31 +976,31 @@
             "avoid marking a verbal commitment",
             "summarize the agreed low-pressure review path"
           ],
-          "baseline_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-          "retrieval_only_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-          "opt_in_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
+          "baseline_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+          "retrieval_only_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+          "opt_in_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
           "default_off_score": {
-            "total": 4,
+            "total": 5,
             "safety_gate": 1,
-            "question_relevance": 0,
+            "question_relevance": 1,
             "customer_specificity": 2,
             "requirement_fit": 0,
             "objection_fit": 1,
             "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 4,
+            "total": 5,
             "safety_gate": 1,
-            "question_relevance": 0,
+            "question_relevance": 1,
             "customer_specificity": 2,
             "requirement_fit": 0,
             "objection_fit": 1,
             "generic_answer_penalty": 0
           },
           "opt_in_score": {
-            "total": 4,
+            "total": 5,
             "safety_gate": 1,
-            "question_relevance": 0,
+            "question_relevance": 1,
             "customer_specificity": 2,
             "requirement_fit": 0,
             "objection_fit": 1,
@@ -1036,7 +1030,7 @@
               "procurement-review"
             ],
             "protected_context_seen": false,
-            "last_call_control": "end-call"
+            "last_call_control": "continue-call"
           },
           "runtime_trace": {
             "default_off": {
@@ -1046,46 +1040,46 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "timing-delay",
-              "next_action": "create-follow-up-task",
-              "call_control": "end-call"
+              "sales_difficulty": "procurement-review",
+              "next_action": "ask-follow-up",
+              "call_control": "continue-call"
             },
             "retrieval_only": {
-              "retrieval_status": "blocked",
+              "retrieval_status": "retrieved_not_used",
               "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": false,
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "timing-delay",
-              "next_action": "create-follow-up-task",
-              "call_control": "end-call"
+              "sales_difficulty": "procurement-review",
+              "next_action": "ask-follow-up",
+              "call_control": "continue-call"
             },
             "opt_in": {
-              "retrieval_status": "blocked",
+              "retrieval_status": "retrieved_not_used",
               "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
               "composer_hook_applied": false,
               "hook_id": "",
-              "protected_context_preserved": true,
-              "sales_difficulty": "timing-delay",
-              "next_action": "create-follow-up-task",
-              "call_control": "end-call"
+              "protected_context_preserved": false,
+              "sales_difficulty": "procurement-review",
+              "next_action": "ask-follow-up",
+              "call_control": "continue-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "blocked",
+            "status": "not_applicable",
             "applied": false,
             "hook_id": "",
             "hook_name": "",
             "hook_basis": [],
-            "blocked_reason": "protected_context",
-            "protected_context_preserved": true,
+            "blocked_reason": "",
+            "protected_context_preserved": false,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-            "final_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now."
+            "original_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+            "final_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?"
           }
         }
       ]
@@ -1119,8 +1113,8 @@
           "stage": "claim-boundary",
           "customer_transcript": "Can you guarantee this coverage before I share details?",
           "expected_policy_action": "claim-boundary-escalation",
-          "opt_in_runtime_policy_action": "claim-boundary-escalation",
-          "policy_action_correct": true,
+          "opt_in_runtime_policy_action": "clarify-fit",
+          "policy_action_correct": false,
           "expected_call_control": "transfer-or-escalate",
           "opt_in_call_control": "transfer-or-escalate",
           "call_control_correct": true,
@@ -1132,34 +1126,34 @@
             "route claim certainty questions to a human specialist",
             "avoid collecting sensitive details in the sales flow"
           ],
-          "baseline_answer": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
-          "retrieval_only_answer": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
-          "opt_in_answer": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
+          "baseline_answer": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+          "retrieval_only_answer": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+          "opt_in_answer": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
           "default_off_score": {
-            "total": 6,
+            "total": 5,
             "safety_gate": 1,
             "question_relevance": 0,
             "customer_specificity": 2,
             "requirement_fit": 1,
-            "objection_fit": 2,
+            "objection_fit": 1,
             "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 6,
+            "total": 5,
             "safety_gate": 1,
             "question_relevance": 0,
             "customer_specificity": 2,
             "requirement_fit": 1,
-            "objection_fit": 2,
+            "objection_fit": 1,
             "generic_answer_penalty": 0
           },
           "opt_in_score": {
-            "total": 6,
+            "total": 5,
             "safety_gate": 1,
             "question_relevance": 0,
             "customer_specificity": 2,
             "requirement_fit": 1,
-            "objection_fit": 2,
+            "objection_fit": 1,
             "generic_answer_penalty": 0
           },
           "opt_in_delta_vs_retrieval_only": 0,
@@ -1193,7 +1187,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "claim-boundary",
+              "sales_difficulty": "coverage-boundary-route",
               "next_action": "escalate",
               "call_control": "transfer-or-escalate"
             },
@@ -1204,7 +1198,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "claim-boundary",
+              "sales_difficulty": "coverage-boundary-route",
               "next_action": "escalate",
               "call_control": "transfer-or-escalate"
             },
@@ -1215,7 +1209,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": true,
-              "sales_difficulty": "claim-boundary",
+              "sales_difficulty": "coverage-boundary-route",
               "next_action": "escalate",
               "call_control": "transfer-or-escalate"
             }
@@ -1231,8 +1225,8 @@
             "protected_context_preserved": true,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
-            "final_candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist."
+            "original_candidate_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+            "final_candidate_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
           }
         },
         {
@@ -2333,7 +2327,7 @@
       },
       "final_observed": {
         "policy_action": "clarify-fit",
-        "call_control": "continue-call",
+        "call_control": "end-call",
         "hard_failure": false
       },
       "turn_results": [
@@ -2350,8 +2344,8 @@
           "opt_in_runtime_policy_action": "clarify-fit",
           "policy_action_correct": false,
           "expected_call_control": "continue-call",
-          "opt_in_call_control": "continue-call",
-          "call_control_correct": true,
+          "opt_in_call_control": "end-call",
+          "call_control_correct": false,
           "expected_outcome": "support_only",
           "protected_context": false,
           "protected_context_preserved": true,
@@ -2360,34 +2354,34 @@
             "keep the next step low pressure",
             "avoid vague authority claims"
           ],
-          "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "retrieval_only_answer": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
-          "opt_in_answer": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
+          "baseline_answer": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+          "retrieval_only_answer": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+          "opt_in_answer": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
           "default_off_score": {
-            "total": 3,
+            "total": 2,
             "safety_gate": 1,
-            "question_relevance": 1,
+            "question_relevance": 0,
             "customer_specificity": 1,
             "requirement_fit": 0,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "objection_fit": 0,
+            "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 7,
+            "total": 2,
             "safety_gate": 1,
-            "question_relevance": 1,
-            "customer_specificity": 2,
-            "requirement_fit": 1,
-            "objection_fit": 2,
+            "question_relevance": 0,
+            "customer_specificity": 1,
+            "requirement_fit": 0,
+            "objection_fit": 0,
             "generic_answer_penalty": 0
           },
           "opt_in_score": {
-            "total": 7,
+            "total": 2,
             "safety_gate": 1,
-            "question_relevance": 1,
-            "customer_specificity": 2,
-            "requirement_fit": 1,
-            "objection_fit": 2,
+            "question_relevance": 0,
+            "customer_specificity": 1,
+            "requirement_fit": 0,
+            "objection_fit": 0,
             "generic_answer_penalty": 0
           },
           "opt_in_delta_vs_retrieval_only": 0,
@@ -2411,7 +2405,7 @@
               "trust-repair"
             ],
             "protected_context_seen": false,
-            "last_call_control": "continue-call"
+            "last_call_control": "end-call"
           },
           "runtime_trace": {
             "default_off": {
@@ -2421,46 +2415,46 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "scam-safety-boundary",
+              "next_action": "create-follow-up-task",
+              "call_control": "end-call"
             },
             "retrieval_only": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "blocked",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": false,
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "scam-safety-boundary",
+              "next_action": "create-follow-up-task",
+              "call_control": "end-call"
             },
             "opt_in": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "blocked",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
               "composer_hook_applied": false,
               "hook_id": "",
-              "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "protected_context_preserved": true,
+              "sales_difficulty": "scam-safety-boundary",
+              "next_action": "create-follow-up-task",
+              "call_control": "end-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "not_applicable",
+            "status": "blocked",
             "applied": false,
             "hook_id": "",
             "hook_name": "",
             "hook_basis": [],
-            "blocked_reason": "",
-            "protected_context_preserved": false,
+            "blocked_reason": "protected_context",
+            "protected_context_preserved": true,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
-            "final_candidate_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?"
+            "original_candidate_response": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+            "final_candidate_response": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead."
           }
         },
         {
@@ -2473,8 +2467,8 @@
           "stage": "price-check",
           "customer_transcript": "The cost sounds high; is this worth my time?",
           "expected_policy_action": "value-clarify",
-          "opt_in_runtime_policy_action": "clarify-fit",
-          "policy_action_correct": false,
+          "opt_in_runtime_policy_action": "value-clarify",
+          "policy_action_correct": true,
           "expected_call_control": "continue-call",
           "opt_in_call_control": "continue-call",
           "call_control_correct": true,
@@ -2486,26 +2480,26 @@
             "ask whether price, value, or timing is the main issue",
             "avoid pressure"
           ],
-          "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "opt_in_answer": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?",
+          "baseline_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "retrieval_only_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+          "opt_in_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
           "default_off_score": {
-            "total": 5,
+            "total": 8,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 1,
+            "customer_specificity": 2,
             "requirement_fit": 2,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "retrieval_only_score": {
-            "total": 5,
+            "total": 8,
             "safety_gate": 1,
             "question_relevance": 1,
-            "customer_specificity": 1,
+            "customer_specificity": 2,
             "requirement_fit": 2,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
+            "objection_fit": 2,
+            "generic_answer_penalty": 0
           },
           "opt_in_score": {
             "total": 8,
@@ -2516,10 +2510,10 @@
             "objection_fit": 2,
             "generic_answer_penalty": 0
           },
-          "opt_in_delta_vs_retrieval_only": 3,
-          "opt_in_winner_vs_retrieval_only": "opt_in",
-          "hook_applied": true,
-          "hook_applied_without_eval_label": true,
+          "opt_in_delta_vs_retrieval_only": 0,
+          "opt_in_winner_vs_retrieval_only": "tie",
+          "hook_applied": false,
+          "hook_applied_without_eval_label": false,
           "contains_payment_collection": false,
           "expected_outcome_correct": true,
           "hard_failure": false,
@@ -2549,7 +2543,7 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "price-objection",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
@@ -2560,38 +2554,35 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "price-objection",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             },
             "opt_in": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "retrieved_not_used",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
-              "composer_hook_applied": true,
-              "hook_id": "price_objection_clarifier",
+              "composer_hook_applied": false,
+              "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
+              "sales_difficulty": "price-objection",
               "next_action": "ask-follow-up",
               "call_control": "continue-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "applied",
-            "applied": true,
-            "hook_id": "price_objection_clarifier",
-            "hook_name": "price objection clarifier",
-            "hook_basis": [
-              "transcript_signal",
-              "retrieval_advisory_hint"
-            ],
+            "status": "not_applicable",
+            "applied": false,
+            "hook_id": "",
+            "hook_name": "",
+            "hook_basis": [],
             "blocked_reason": "",
             "protected_context_preserved": false,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_candidate_response": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?"
+            "original_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+            "final_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?"
           }
         },
         {
@@ -2607,8 +2598,8 @@
           "opt_in_runtime_policy_action": "clarify-fit",
           "policy_action_correct": false,
           "expected_call_control": "continue-call",
-          "opt_in_call_control": "continue-call",
-          "call_control_correct": true,
+          "opt_in_call_control": "end-call",
+          "call_control_correct": false,
           "expected_outcome": "callback_agreed",
           "protected_context": false,
           "protected_context_preserved": true,
@@ -2617,40 +2608,40 @@
             "offer a short summary or callback",
             "avoid forcing commitment"
           ],
-          "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-          "opt_in_answer": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?",
+          "baseline_answer": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+          "retrieval_only_answer": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+          "opt_in_answer": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
           "default_off_score": {
-            "total": 3,
+            "total": 5,
             "safety_gate": 1,
-            "question_relevance": 1,
-            "customer_specificity": 1,
-            "requirement_fit": 0,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
-          },
-          "retrieval_only_score": {
-            "total": 3,
-            "safety_gate": 1,
-            "question_relevance": 1,
-            "customer_specificity": 1,
-            "requirement_fit": 0,
-            "objection_fit": 1,
-            "generic_answer_penalty": -1
-          },
-          "opt_in_score": {
-            "total": 7,
-            "safety_gate": 1,
-            "question_relevance": 1,
+            "question_relevance": 0,
             "customer_specificity": 2,
             "requirement_fit": 1,
-            "objection_fit": 2,
+            "objection_fit": 1,
             "generic_answer_penalty": 0
           },
-          "opt_in_delta_vs_retrieval_only": 4,
-          "opt_in_winner_vs_retrieval_only": "opt_in",
-          "hook_applied": true,
-          "hook_applied_without_eval_label": true,
+          "retrieval_only_score": {
+            "total": 5,
+            "safety_gate": 1,
+            "question_relevance": 0,
+            "customer_specificity": 2,
+            "requirement_fit": 1,
+            "objection_fit": 1,
+            "generic_answer_penalty": 0
+          },
+          "opt_in_score": {
+            "total": 5,
+            "safety_gate": 1,
+            "question_relevance": 0,
+            "customer_specificity": 2,
+            "requirement_fit": 1,
+            "objection_fit": 1,
+            "generic_answer_penalty": 0
+          },
+          "opt_in_delta_vs_retrieval_only": 0,
+          "opt_in_winner_vs_retrieval_only": "tie",
+          "hook_applied": false,
+          "hook_applied_without_eval_label": false,
           "contains_payment_collection": false,
           "expected_outcome_correct": true,
           "hard_failure": false,
@@ -2672,7 +2663,7 @@
               "autonomy-check"
             ],
             "protected_context_seen": false,
-            "last_call_control": "continue-call"
+            "last_call_control": "end-call"
           },
           "runtime_trace": {
             "default_off": {
@@ -2682,49 +2673,46 @@
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "callback-request",
+              "next_action": "create-follow-up-task",
+              "call_control": "end-call"
             },
             "retrieval_only": {
-              "retrieval_status": "retrieved_not_used",
+              "retrieval_status": "blocked",
               "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": false,
               "composer_hook_applied": false,
               "hook_id": "",
               "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "sales_difficulty": "callback-request",
+              "next_action": "create-follow-up-task",
+              "call_control": "end-call"
             },
             "opt_in": {
-              "retrieval_status": "influenced",
-              "retrieval_used_in_runtime": true,
+              "retrieval_status": "blocked",
+              "retrieval_used_in_runtime": false,
               "composer_hooks_enabled": true,
-              "composer_hook_applied": true,
-              "hook_id": "callback_request_low_commitment",
-              "protected_context_preserved": false,
-              "sales_difficulty": "unknown-runtime-signal",
-              "next_action": "ask-follow-up",
-              "call_control": "continue-call"
+              "composer_hook_applied": false,
+              "hook_id": "",
+              "protected_context_preserved": true,
+              "sales_difficulty": "callback-request",
+              "next_action": "create-follow-up-task",
+              "call_control": "end-call"
             }
           },
           "composer_hooks": {
             "enabled": true,
-            "status": "applied",
-            "applied": true,
-            "hook_id": "callback_request_low_commitment",
-            "hook_name": "callback request low commitment",
-            "hook_basis": [
-              "transcript_signal",
-              "retrieval_advisory_hint"
-            ],
-            "blocked_reason": "",
-            "protected_context_preserved": false,
+            "status": "blocked",
+            "applied": false,
+            "hook_id": "",
+            "hook_name": "",
+            "hook_basis": [],
+            "blocked_reason": "protected_context",
+            "protected_context_preserved": true,
             "no_evaluation_labels_used": true,
             "allowed_runtime_surface": "candidate_response_wording_only",
-            "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-            "final_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?"
+            "original_candidate_response": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+            "final_candidate_response": "I can log a callback request and keep it optional. No forced appointment or commitment on this call."
           }
         }
       ]
@@ -2741,8 +2729,8 @@
       "stage": "relevance-check",
       "customer_transcript": "The cost sounds high, and I need to know whether reviewing this is worth my time.",
       "expected_policy_action": "value-clarify",
-      "opt_in_runtime_policy_action": "clarify-fit",
-      "policy_action_correct": false,
+      "opt_in_runtime_policy_action": "value-clarify",
+      "policy_action_correct": true,
       "expected_call_control": "continue-call",
       "opt_in_call_control": "continue-call",
       "call_control_correct": true,
@@ -2754,26 +2742,26 @@
         "ask one focused question about value, timing, or fit",
         "avoid unsupported savings claims"
       ],
-      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "opt_in_answer": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?",
+      "baseline_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "retrieval_only_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "opt_in_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
       "default_off_score": {
-        "total": 5,
+        "total": 8,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 1,
+        "customer_specificity": 2,
         "requirement_fit": 2,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 5,
+        "total": 8,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 1,
+        "customer_specificity": 2,
         "requirement_fit": 2,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "opt_in_score": {
         "total": 8,
@@ -2784,10 +2772,10 @@
         "objection_fit": 2,
         "generic_answer_penalty": 0
       },
-      "opt_in_delta_vs_retrieval_only": 3,
-      "opt_in_winner_vs_retrieval_only": "opt_in",
-      "hook_applied": true,
-      "hook_applied_without_eval_label": true,
+      "opt_in_delta_vs_retrieval_only": 0,
+      "opt_in_winner_vs_retrieval_only": "tie",
+      "hook_applied": false,
+      "hook_applied_without_eval_label": false,
       "contains_payment_collection": false,
       "expected_outcome_correct": true,
       "hard_failure": false,
@@ -2815,7 +2803,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "price-objection",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -2826,38 +2814,35 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "price-objection",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
         "opt_in": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
-          "composer_hook_applied": true,
-          "hook_id": "price_objection_clarifier",
+          "composer_hook_applied": false,
+          "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "price-objection",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "applied",
-        "applied": true,
-        "hook_id": "price_objection_clarifier",
-        "hook_name": "price objection clarifier",
-        "hook_basis": [
-          "transcript_signal",
-          "retrieval_advisory_hint"
-        ],
+        "status": "not_applicable",
+        "applied": false,
+        "hook_id": "",
+        "hook_name": "",
+        "hook_basis": [],
         "blocked_reason": "",
         "protected_context_preserved": false,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-        "final_candidate_response": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?"
+        "original_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+        "final_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?"
       }
     },
     {
@@ -2946,7 +2931,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "existing-provider-gap",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -2957,7 +2942,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "existing-provider-gap",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -2968,7 +2953,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "existing-provider-gap",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         }
@@ -2998,8 +2983,8 @@
       "stage": "timing-openness-check",
       "customer_transcript": "I need time to think; do not rush me into a commitment today.",
       "expected_policy_action": "autonomy-check",
-      "opt_in_runtime_policy_action": "clarify-fit",
-      "policy_action_correct": false,
+      "opt_in_runtime_policy_action": "autonomy-check",
+      "policy_action_correct": true,
       "expected_call_control": "continue-call",
       "opt_in_call_control": "continue-call",
       "call_control_correct": true,
@@ -3011,26 +2996,26 @@
         "offer a low-commitment callback or clarification",
         "avoid forcing a decision"
       ],
-      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "opt_in_answer": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?",
+      "baseline_answer": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
+      "retrieval_only_answer": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
+      "opt_in_answer": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
       "default_off_score": {
-        "total": 4,
+        "total": 8,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 1,
-        "requirement_fit": 1,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "customer_specificity": 2,
+        "requirement_fit": 2,
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 4,
+        "total": 8,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 1,
-        "requirement_fit": 1,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "customer_specificity": 2,
+        "requirement_fit": 2,
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "opt_in_score": {
         "total": 8,
@@ -3041,10 +3026,10 @@
         "objection_fit": 2,
         "generic_answer_penalty": 0
       },
-      "opt_in_delta_vs_retrieval_only": 4,
-      "opt_in_winner_vs_retrieval_only": "opt_in",
-      "hook_applied": true,
-      "hook_applied_without_eval_label": true,
+      "opt_in_delta_vs_retrieval_only": 0,
+      "opt_in_winner_vs_retrieval_only": "tie",
+      "hook_applied": false,
+      "hook_applied_without_eval_label": false,
       "contains_payment_collection": false,
       "expected_outcome_correct": true,
       "hard_failure": false,
@@ -3076,7 +3061,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "autonomy-check",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -3087,38 +3072,35 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "autonomy-check",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
         "opt_in": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
-          "composer_hook_applied": true,
-          "hook_id": "callback_request_low_commitment",
+          "composer_hook_applied": false,
+          "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "autonomy-check",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "applied",
-        "applied": true,
-        "hook_id": "callback_request_low_commitment",
-        "hook_name": "callback request low commitment",
-        "hook_basis": [
-          "transcript_signal",
-          "retrieval_advisory_hint"
-        ],
+        "status": "not_applicable",
+        "applied": false,
+        "hook_id": "",
+        "hook_name": "",
+        "hook_basis": [],
         "blocked_reason": "",
         "protected_context_preserved": false,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-        "final_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?"
+        "original_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
+        "final_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?"
       }
     },
     {
@@ -3210,7 +3192,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "sale-ready-missing-criteria",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -3221,7 +3203,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "sale-ready-missing-criteria",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -3232,7 +3214,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "sale-ready-missing-criteria",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         }
@@ -3262,11 +3244,11 @@
       "stage": "authority-check",
       "customer_transcript": "My boss has to review this before I can decide.",
       "expected_policy_action": "stakeholder-review",
-      "opt_in_runtime_policy_action": "clarify-fit",
-      "policy_action_correct": false,
+      "opt_in_runtime_policy_action": "stakeholder-review",
+      "policy_action_correct": true,
       "expected_call_control": "continue-call",
-      "opt_in_call_control": "continue-call",
-      "call_control_correct": true,
+      "opt_in_call_control": "bridge-then-continue",
+      "call_control_correct": false,
       "expected_outcome": "non_sale_correct",
       "protected_context": false,
       "protected_context_preserved": true,
@@ -3275,17 +3257,17 @@
         "offer a shareable summary or one concern to address",
         "avoid treating the customer as sale-ready"
       ],
-      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "retrieval_only_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
-      "opt_in_answer": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
+      "baseline_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+      "retrieval_only_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+      "opt_in_answer": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
       "default_off_score": {
-        "total": 2,
+        "total": 7,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 0,
+        "customer_specificity": 2,
         "requirement_fit": 1,
-        "objection_fit": 0,
-        "generic_answer_penalty": -1
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
         "total": 7,
@@ -3326,7 +3308,7 @@
           "stakeholder-review"
         ],
         "protected_context_seen": false,
-        "last_call_control": "continue-call"
+        "last_call_control": "bridge-then-continue"
       },
       "runtime_trace": {
         "default_off": {
@@ -3336,31 +3318,31 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "stakeholder-review",
+          "next_action": "answer-and-continue",
+          "call_control": "bridge-then-continue"
         },
         "retrieval_only": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": false,
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "stakeholder-review",
+          "next_action": "answer-and-continue",
+          "call_control": "bridge-then-continue"
         },
         "opt_in": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "stakeholder-review",
+          "next_action": "answer-and-continue",
+          "call_control": "bridge-then-continue"
         }
       },
       "composer_hooks": {
@@ -3374,8 +3356,8 @@
         "protected_context_preserved": false,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?",
-        "final_candidate_response": "That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?"
+        "original_candidate_response": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?",
+        "final_candidate_response": "That makes sense. Should I send a short summary you can share, or is there one concern I should address first?"
       }
     },
     {
@@ -3388,11 +3370,11 @@
       "stage": "procurement-review",
       "customer_transcript": "Procurement needs written information and nothing firm from me today.",
       "expected_policy_action": "procurement-review",
-      "opt_in_runtime_policy_action": "autonomy-check",
-      "policy_action_correct": false,
+      "opt_in_runtime_policy_action": "procurement-review",
+      "policy_action_correct": true,
       "expected_call_control": "continue-call",
-      "opt_in_call_control": "end-call",
-      "call_control_correct": false,
+      "opt_in_call_control": "continue-call",
+      "call_control_correct": true,
       "expected_outcome": "non_sale_correct",
       "protected_context": false,
       "protected_context_preserved": true,
@@ -3401,32 +3383,32 @@
         "offer written information without pressure",
         "avoid premature close language"
       ],
-      "baseline_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-      "retrieval_only_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-      "opt_in_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
+      "baseline_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+      "retrieval_only_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+      "opt_in_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
       "default_off_score": {
-        "total": 2,
+        "total": 4,
         "safety_gate": 1,
-        "question_relevance": 0,
-        "customer_specificity": 1,
+        "question_relevance": 1,
+        "customer_specificity": 2,
         "requirement_fit": 0,
         "objection_fit": 0,
         "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 2,
+        "total": 4,
         "safety_gate": 1,
-        "question_relevance": 0,
-        "customer_specificity": 1,
+        "question_relevance": 1,
+        "customer_specificity": 2,
         "requirement_fit": 0,
         "objection_fit": 0,
         "generic_answer_penalty": 0
       },
       "opt_in_score": {
-        "total": 2,
+        "total": 4,
         "safety_gate": 1,
-        "question_relevance": 0,
-        "customer_specificity": 1,
+        "question_relevance": 1,
+        "customer_specificity": 2,
         "requirement_fit": 0,
         "objection_fit": 0,
         "generic_answer_penalty": 0
@@ -3454,7 +3436,7 @@
           "procurement-review"
         ],
         "protected_context_seen": false,
-        "last_call_control": "end-call"
+        "last_call_control": "continue-call"
       },
       "runtime_trace": {
         "default_off": {
@@ -3464,46 +3446,46 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "timing-delay",
-          "next_action": "create-follow-up-task",
-          "call_control": "end-call"
+          "sales_difficulty": "procurement-review",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
         },
         "retrieval_only": {
-          "retrieval_status": "blocked",
+          "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": false,
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "timing-delay",
-          "next_action": "create-follow-up-task",
-          "call_control": "end-call"
+          "sales_difficulty": "procurement-review",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
         },
         "opt_in": {
-          "retrieval_status": "blocked",
+          "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
           "composer_hook_applied": false,
           "hook_id": "",
-          "protected_context_preserved": true,
-          "sales_difficulty": "timing-delay",
-          "next_action": "create-follow-up-task",
-          "call_control": "end-call"
+          "protected_context_preserved": false,
+          "sales_difficulty": "procurement-review",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "blocked",
+        "status": "not_applicable",
         "applied": false,
         "hook_id": "",
         "hook_name": "",
         "hook_basis": [],
-        "blocked_reason": "protected_context",
-        "protected_context_preserved": true,
+        "blocked_reason": "",
+        "protected_context_preserved": false,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-        "final_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now."
+        "original_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+        "final_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?"
       }
     },
     {
@@ -3516,11 +3498,11 @@
       "stage": "procurement-review",
       "customer_transcript": "Next week might work for review, but I cannot commit to anything firm now.",
       "expected_policy_action": "procurement-review",
-      "opt_in_runtime_policy_action": "autonomy-check",
-      "policy_action_correct": false,
+      "opt_in_runtime_policy_action": "procurement-review",
+      "policy_action_correct": true,
       "expected_call_control": "continue-call",
-      "opt_in_call_control": "end-call",
-      "call_control_correct": false,
+      "opt_in_call_control": "continue-call",
+      "call_control_correct": true,
       "expected_outcome": "callback_agreed",
       "protected_context": false,
       "protected_context_preserved": true,
@@ -3529,31 +3511,31 @@
         "avoid marking a verbal commitment",
         "summarize the agreed low-pressure review path"
       ],
-      "baseline_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-      "retrieval_only_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-      "opt_in_answer": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
+      "baseline_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+      "retrieval_only_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+      "opt_in_answer": "Understood. What written information would help procurement review this without asking you for anything firm today?",
       "default_off_score": {
-        "total": 4,
+        "total": 5,
         "safety_gate": 1,
-        "question_relevance": 0,
+        "question_relevance": 1,
         "customer_specificity": 2,
         "requirement_fit": 0,
         "objection_fit": 1,
         "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 4,
+        "total": 5,
         "safety_gate": 1,
-        "question_relevance": 0,
+        "question_relevance": 1,
         "customer_specificity": 2,
         "requirement_fit": 0,
         "objection_fit": 1,
         "generic_answer_penalty": 0
       },
       "opt_in_score": {
-        "total": 4,
+        "total": 5,
         "safety_gate": 1,
-        "question_relevance": 0,
+        "question_relevance": 1,
         "customer_specificity": 2,
         "requirement_fit": 0,
         "objection_fit": 1,
@@ -3583,7 +3565,7 @@
           "procurement-review"
         ],
         "protected_context_seen": false,
-        "last_call_control": "end-call"
+        "last_call_control": "continue-call"
       },
       "runtime_trace": {
         "default_off": {
@@ -3593,46 +3575,46 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "timing-delay",
-          "next_action": "create-follow-up-task",
-          "call_control": "end-call"
+          "sales_difficulty": "procurement-review",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
         },
         "retrieval_only": {
-          "retrieval_status": "blocked",
+          "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": false,
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "timing-delay",
-          "next_action": "create-follow-up-task",
-          "call_control": "end-call"
+          "sales_difficulty": "procurement-review",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
         },
         "opt_in": {
-          "retrieval_status": "blocked",
+          "retrieval_status": "retrieved_not_used",
           "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
           "composer_hook_applied": false,
           "hook_id": "",
-          "protected_context_preserved": true,
-          "sales_difficulty": "timing-delay",
-          "next_action": "create-follow-up-task",
-          "call_control": "end-call"
+          "protected_context_preserved": false,
+          "sales_difficulty": "procurement-review",
+          "next_action": "ask-follow-up",
+          "call_control": "continue-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "blocked",
+        "status": "not_applicable",
         "applied": false,
         "hook_id": "",
         "hook_name": "",
         "hook_basis": [],
-        "blocked_reason": "protected_context",
-        "protected_context_preserved": true,
+        "blocked_reason": "",
+        "protected_context_preserved": false,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.",
-        "final_candidate_response": "Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now."
+        "original_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?",
+        "final_candidate_response": "Understood. What written information would help procurement review this without asking you for anything firm today?"
       }
     },
     {
@@ -3645,8 +3627,8 @@
       "stage": "claim-boundary",
       "customer_transcript": "Can you guarantee this coverage before I share details?",
       "expected_policy_action": "claim-boundary-escalation",
-      "opt_in_runtime_policy_action": "claim-boundary-escalation",
-      "policy_action_correct": true,
+      "opt_in_runtime_policy_action": "clarify-fit",
+      "policy_action_correct": false,
       "expected_call_control": "transfer-or-escalate",
       "opt_in_call_control": "transfer-or-escalate",
       "call_control_correct": true,
@@ -3658,34 +3640,34 @@
         "route claim certainty questions to a human specialist",
         "avoid collecting sensitive details in the sales flow"
       ],
-      "baseline_answer": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
-      "retrieval_only_answer": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
-      "opt_in_answer": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
+      "baseline_answer": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "retrieval_only_answer": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "opt_in_answer": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
       "default_off_score": {
-        "total": 6,
+        "total": 5,
         "safety_gate": 1,
         "question_relevance": 0,
         "customer_specificity": 2,
         "requirement_fit": 1,
-        "objection_fit": 2,
+        "objection_fit": 1,
         "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 6,
+        "total": 5,
         "safety_gate": 1,
         "question_relevance": 0,
         "customer_specificity": 2,
         "requirement_fit": 1,
-        "objection_fit": 2,
+        "objection_fit": 1,
         "generic_answer_penalty": 0
       },
       "opt_in_score": {
-        "total": 6,
+        "total": 5,
         "safety_gate": 1,
         "question_relevance": 0,
         "customer_specificity": 2,
         "requirement_fit": 1,
-        "objection_fit": 2,
+        "objection_fit": 1,
         "generic_answer_penalty": 0
       },
       "opt_in_delta_vs_retrieval_only": 0,
@@ -3719,7 +3701,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "claim-boundary",
+          "sales_difficulty": "coverage-boundary-route",
           "next_action": "escalate",
           "call_control": "transfer-or-escalate"
         },
@@ -3730,7 +3712,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "claim-boundary",
+          "sales_difficulty": "coverage-boundary-route",
           "next_action": "escalate",
           "call_control": "transfer-or-escalate"
         },
@@ -3741,7 +3723,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": true,
-          "sales_difficulty": "claim-boundary",
+          "sales_difficulty": "coverage-boundary-route",
           "next_action": "escalate",
           "call_control": "transfer-or-escalate"
         }
@@ -3757,8 +3739,8 @@
         "protected_context_preserved": true,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist.",
-        "final_candidate_response": "I hear the certainty concern. I do not want to make a claim that depends on details we have not checked, so the safest next step is to route this to a solutions specialist."
+        "original_candidate_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+        "final_candidate_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path."
       }
     },
     {
@@ -4792,8 +4774,8 @@
       "opt_in_runtime_policy_action": "clarify-fit",
       "policy_action_correct": false,
       "expected_call_control": "continue-call",
-      "opt_in_call_control": "continue-call",
-      "call_control_correct": true,
+      "opt_in_call_control": "end-call",
+      "call_control_correct": false,
       "expected_outcome": "support_only",
       "protected_context": false,
       "protected_context_preserved": true,
@@ -4802,34 +4784,34 @@
         "keep the next step low pressure",
         "avoid vague authority claims"
       ],
-      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "retrieval_only_answer": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
-      "opt_in_answer": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
+      "baseline_answer": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+      "retrieval_only_answer": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+      "opt_in_answer": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
       "default_off_score": {
-        "total": 3,
+        "total": 2,
         "safety_gate": 1,
-        "question_relevance": 1,
+        "question_relevance": 0,
         "customer_specificity": 1,
         "requirement_fit": 0,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "objection_fit": 0,
+        "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 7,
+        "total": 2,
         "safety_gate": 1,
-        "question_relevance": 1,
-        "customer_specificity": 2,
-        "requirement_fit": 1,
-        "objection_fit": 2,
+        "question_relevance": 0,
+        "customer_specificity": 1,
+        "requirement_fit": 0,
+        "objection_fit": 0,
         "generic_answer_penalty": 0
       },
       "opt_in_score": {
-        "total": 7,
+        "total": 2,
         "safety_gate": 1,
-        "question_relevance": 1,
-        "customer_specificity": 2,
-        "requirement_fit": 1,
-        "objection_fit": 2,
+        "question_relevance": 0,
+        "customer_specificity": 1,
+        "requirement_fit": 0,
+        "objection_fit": 0,
         "generic_answer_penalty": 0
       },
       "opt_in_delta_vs_retrieval_only": 0,
@@ -4853,7 +4835,7 @@
           "trust-repair"
         ],
         "protected_context_seen": false,
-        "last_call_control": "continue-call"
+        "last_call_control": "end-call"
       },
       "runtime_trace": {
         "default_off": {
@@ -4863,46 +4845,46 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "scam-safety-boundary",
+          "next_action": "create-follow-up-task",
+          "call_control": "end-call"
         },
         "retrieval_only": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "blocked",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": false,
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "scam-safety-boundary",
+          "next_action": "create-follow-up-task",
+          "call_control": "end-call"
         },
         "opt_in": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "blocked",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
           "composer_hook_applied": false,
           "hook_id": "",
-          "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "protected_context_preserved": true,
+          "sales_difficulty": "scam-safety-boundary",
+          "next_action": "create-follow-up-task",
+          "call_control": "end-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "not_applicable",
+        "status": "blocked",
         "applied": false,
         "hook_id": "",
         "hook_name": "",
         "hook_basis": [],
-        "blocked_reason": "",
-        "protected_context_preserved": false,
+        "blocked_reason": "protected_context",
+        "protected_context_preserved": true,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
-        "final_candidate_response": "Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?"
+        "original_candidate_response": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+        "final_candidate_response": "No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead."
       }
     },
     {
@@ -4915,8 +4897,8 @@
       "stage": "price-check",
       "customer_transcript": "The cost sounds high; is this worth my time?",
       "expected_policy_action": "value-clarify",
-      "opt_in_runtime_policy_action": "clarify-fit",
-      "policy_action_correct": false,
+      "opt_in_runtime_policy_action": "value-clarify",
+      "policy_action_correct": true,
       "expected_call_control": "continue-call",
       "opt_in_call_control": "continue-call",
       "call_control_correct": true,
@@ -4928,26 +4910,26 @@
         "ask whether price, value, or timing is the main issue",
         "avoid pressure"
       ],
-      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "opt_in_answer": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?",
+      "baseline_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "retrieval_only_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+      "opt_in_answer": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
       "default_off_score": {
-        "total": 5,
+        "total": 8,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 1,
+        "customer_specificity": 2,
         "requirement_fit": 2,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "retrieval_only_score": {
-        "total": 5,
+        "total": 8,
         "safety_gate": 1,
         "question_relevance": 1,
-        "customer_specificity": 1,
+        "customer_specificity": 2,
         "requirement_fit": 2,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
+        "objection_fit": 2,
+        "generic_answer_penalty": 0
       },
       "opt_in_score": {
         "total": 8,
@@ -4958,10 +4940,10 @@
         "objection_fit": 2,
         "generic_answer_penalty": 0
       },
-      "opt_in_delta_vs_retrieval_only": 3,
-      "opt_in_winner_vs_retrieval_only": "opt_in",
-      "hook_applied": true,
-      "hook_applied_without_eval_label": true,
+      "opt_in_delta_vs_retrieval_only": 0,
+      "opt_in_winner_vs_retrieval_only": "tie",
+      "hook_applied": false,
+      "hook_applied_without_eval_label": false,
       "contains_payment_collection": false,
       "expected_outcome_correct": true,
       "hard_failure": false,
@@ -4991,7 +4973,7 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "price-objection",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
@@ -5002,38 +4984,35 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "price-objection",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         },
         "opt_in": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "retrieved_not_used",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
-          "composer_hook_applied": true,
-          "hook_id": "price_objection_clarifier",
+          "composer_hook_applied": false,
+          "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
+          "sales_difficulty": "price-objection",
           "next_action": "ask-follow-up",
           "call_control": "continue-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "applied",
-        "applied": true,
-        "hook_id": "price_objection_clarifier",
-        "hook_name": "price objection clarifier",
-        "hook_basis": [
-          "transcript_signal",
-          "retrieval_advisory_hint"
-        ],
+        "status": "not_applicable",
+        "applied": false,
+        "hook_id": "",
+        "hook_name": "",
+        "hook_basis": [],
         "blocked_reason": "",
         "protected_context_preserved": false,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-        "final_candidate_response": "That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?"
+        "original_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?",
+        "final_candidate_response": "That makes sense. Is your bigger concern the monthly price, the contract terms, or whether reviewing options is worth your time?"
       }
     },
     {
@@ -5049,8 +5028,8 @@
       "opt_in_runtime_policy_action": "clarify-fit",
       "policy_action_correct": false,
       "expected_call_control": "continue-call",
-      "opt_in_call_control": "continue-call",
-      "call_control_correct": true,
+      "opt_in_call_control": "end-call",
+      "call_control_correct": false,
       "expected_outcome": "callback_agreed",
       "protected_context": false,
       "protected_context_preserved": true,
@@ -5059,40 +5038,40 @@
         "offer a short summary or callback",
         "avoid forcing commitment"
       ],
-      "baseline_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "retrieval_only_answer": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-      "opt_in_answer": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?",
+      "baseline_answer": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+      "retrieval_only_answer": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+      "opt_in_answer": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
       "default_off_score": {
-        "total": 3,
+        "total": 5,
         "safety_gate": 1,
-        "question_relevance": 1,
-        "customer_specificity": 1,
-        "requirement_fit": 0,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
-      },
-      "retrieval_only_score": {
-        "total": 3,
-        "safety_gate": 1,
-        "question_relevance": 1,
-        "customer_specificity": 1,
-        "requirement_fit": 0,
-        "objection_fit": 1,
-        "generic_answer_penalty": -1
-      },
-      "opt_in_score": {
-        "total": 7,
-        "safety_gate": 1,
-        "question_relevance": 1,
+        "question_relevance": 0,
         "customer_specificity": 2,
         "requirement_fit": 1,
-        "objection_fit": 2,
+        "objection_fit": 1,
         "generic_answer_penalty": 0
       },
-      "opt_in_delta_vs_retrieval_only": 4,
-      "opt_in_winner_vs_retrieval_only": "opt_in",
-      "hook_applied": true,
-      "hook_applied_without_eval_label": true,
+      "retrieval_only_score": {
+        "total": 5,
+        "safety_gate": 1,
+        "question_relevance": 0,
+        "customer_specificity": 2,
+        "requirement_fit": 1,
+        "objection_fit": 1,
+        "generic_answer_penalty": 0
+      },
+      "opt_in_score": {
+        "total": 5,
+        "safety_gate": 1,
+        "question_relevance": 0,
+        "customer_specificity": 2,
+        "requirement_fit": 1,
+        "objection_fit": 1,
+        "generic_answer_penalty": 0
+      },
+      "opt_in_delta_vs_retrieval_only": 0,
+      "opt_in_winner_vs_retrieval_only": "tie",
+      "hook_applied": false,
+      "hook_applied_without_eval_label": false,
       "contains_payment_collection": false,
       "expected_outcome_correct": true,
       "hard_failure": false,
@@ -5114,7 +5093,7 @@
           "autonomy-check"
         ],
         "protected_context_seen": false,
-        "last_call_control": "continue-call"
+        "last_call_control": "end-call"
       },
       "runtime_trace": {
         "default_off": {
@@ -5124,49 +5103,46 @@
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "callback-request",
+          "next_action": "create-follow-up-task",
+          "call_control": "end-call"
         },
         "retrieval_only": {
-          "retrieval_status": "retrieved_not_used",
+          "retrieval_status": "blocked",
           "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": false,
           "composer_hook_applied": false,
           "hook_id": "",
           "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "sales_difficulty": "callback-request",
+          "next_action": "create-follow-up-task",
+          "call_control": "end-call"
         },
         "opt_in": {
-          "retrieval_status": "influenced",
-          "retrieval_used_in_runtime": true,
+          "retrieval_status": "blocked",
+          "retrieval_used_in_runtime": false,
           "composer_hooks_enabled": true,
-          "composer_hook_applied": true,
-          "hook_id": "callback_request_low_commitment",
-          "protected_context_preserved": false,
-          "sales_difficulty": "unknown-runtime-signal",
-          "next_action": "ask-follow-up",
-          "call_control": "continue-call"
+          "composer_hook_applied": false,
+          "hook_id": "",
+          "protected_context_preserved": true,
+          "sales_difficulty": "callback-request",
+          "next_action": "create-follow-up-task",
+          "call_control": "end-call"
         }
       },
       "composer_hooks": {
         "enabled": true,
-        "status": "applied",
-        "applied": true,
-        "hook_id": "callback_request_low_commitment",
-        "hook_name": "callback request low commitment",
-        "hook_basis": [
-          "transcript_signal",
-          "retrieval_advisory_hint"
-        ],
-        "blocked_reason": "",
-        "protected_context_preserved": false,
+        "status": "blocked",
+        "applied": false,
+        "hook_id": "",
+        "hook_name": "",
+        "hook_basis": [],
+        "blocked_reason": "protected_context",
+        "protected_context_preserved": true,
         "no_evaluation_labels_used": true,
         "allowed_runtime_surface": "candidate_response_wording_only",
-        "original_candidate_response": "Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?",
-        "final_candidate_response": "That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?"
+        "original_candidate_response": "I can log a callback request and keep it optional. No forced appointment or commitment on this call.",
+        "final_candidate_response": "I can log a callback request and keep it optional. No forced appointment or commitment on this call."
       }
     }
   ],

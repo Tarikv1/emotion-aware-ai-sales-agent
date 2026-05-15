@@ -1,0 +1,54 @@
+{
+  "schema_name": "native_german_followup_review_export",
+  "checkpoint_id": "PROD-048C-german-wording-feedback-patch",
+  "exported_by": "native_german_followup_review.html",
+  "can_be_loaded_by": "native_german_followup_review.html",
+  "import_formats_supported": [
+    "items",
+    "groups"
+  ],
+  "reviewer": {
+    "name_or_initials": "string",
+    "native_german": "ja|nein",
+    "region_optional": "string",
+    "date": "YYYY-MM-DD",
+    "general_notes": "string"
+  },
+  "items": [
+    {
+      "group_id": "string",
+      "status_de": "Erneut prüfen|Bereits teilweise geprüft|Noch nicht geprüft",
+      "topic": "string",
+      "original_case_ids": [
+        "string"
+      ],
+      "ratings": {
+        "passt_zu_allen": "string",
+        "natuerlich": "string",
+        "klar_verstaendlich": "string",
+        "freundlich": "string",
+        "gesprochene_sprache": "string",
+        "zu_abrupt": "string",
+        "intern_buerokratisch_technisch": "string",
+        "telefonisch_akzeptabel": "string",
+        "ueberarbeitung_noetig": "string"
+      },
+      "safety_flags": [
+        "zu_draengend",
+        "verkaufsdruck",
+        "rechtlich_unsicher",
+        "medizinische_beratung",
+        "versicherungsschutz_beratung",
+        "zahlungsaufforderung",
+        "vertragsabschluss",
+        "unhoeflich",
+        "unklar",
+        "passt_nicht_zu_allen",
+        "sonstiges"
+      ],
+      "different_case_notes": "string",
+      "rewrite_suggestion": "string",
+      "comment": "string"
+    }
+  ]
+}

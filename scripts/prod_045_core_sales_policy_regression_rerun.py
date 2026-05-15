@@ -245,9 +245,9 @@ def make_case(case_id: str, customer_move_id: str, transcript: str, expected: di
 
 def build_regression_cases() -> list[dict[str, Any]]:
     return [
-        make_case("prod-045-price-first", "price_first", "What does this cost?", {"sales_difficulty": "price-first-direct", "call_control": "end-call"}),
+        make_case("prod-045-price-first", "price_first", "What does this cost?", {"sales_difficulty": "price-first-direct", "call_control": "bridge-then-continue"}),
         make_case("prod-045-who-are-you", "who_are_you", "Who exactly are you?", {"sales_difficulty": "identity-repair", "call_control": "continue-call"}),
-        make_case("prod-045-send-info", "send_info", "Send me the details.", {"sales_difficulty": "written-info-request", "call_control": "end-call"}),
+        make_case("prod-045-send-info", "send_info", "Send me the details.", {"sales_difficulty": "written-info-request", "call_control": "bridge-then-continue"}),
         make_case("prod-045-email-only", "email_only", "Just email me.", {"sales_difficulty": "email-only-boundary", "call_control": "end-call"}),
         make_case("prod-045-scam-fear", "scam_or_card_fear", "Is this a scam?", {"sales_difficulty": "scam-safety-boundary", "call_control": "end-call"}),
         make_case("prod-045-payment-fear", "payment_safety_fear", "I am not giving card details.", {"sales_difficulty": "payment-safety-boundary", "call_control": "end-call"}),
@@ -258,8 +258,8 @@ def build_regression_cases() -> list[dict[str, Any]]:
         make_case("prod-045-coverage", "coverage_confusion", "I am confused about what is covered.", {"sales_difficulty": "coverage-boundary-route", "call_control": "transfer-or-escalate"}),
         make_case("prod-045-healthcare", "sensitive_healthcare_concern", "This is a healthcare concern.", {"sales_difficulty": "healthcare-boundary-route", "call_control": "transfer-or-escalate"}),
         make_case("prod-045-existing-provider", "existing_provider", "We already have a provider.", {"sales_difficulty": "existing-provider-gap", "call_control": "continue-call"}),
-        make_case("prod-045-manager", "needs_manager_approval", "I need to ask my manager.", {"sales_difficulty": "stakeholder-review", "call_control": "end-call"}),
-        make_case("prod-045-spouse", "needs_spouse_or_partner_input", "I need to ask my spouse.", {"sales_difficulty": "partner-review", "call_control": "end-call"}),
+        make_case("prod-045-manager", "needs_manager_approval", "I need to ask my manager.", {"sales_difficulty": "stakeholder-review", "call_control": "bridge-then-continue"}),
+        make_case("prod-045-spouse", "needs_spouse_or_partner_input", "I need to ask my spouse.", {"sales_difficulty": "partner-review", "call_control": "bridge-then-continue"}),
         make_case("prod-045-sale-ready-ok", "sale_ready_interest", "I am ready to move forward.", {"sales_difficulty": "sale-ready-commitment", "call_control": "close-and-log-sale-ready"}),
         make_case("prod-045-sale-ready-missing", "sale_ready_interest", "I am ready to move forward.", {"sales_difficulty": "sale-ready-missing-criteria", "call_control": "continue-call"}, TEST_CAMPAIGN_MISSING_CLOSE),
         make_case("prod-045-not-interested", "not_interested", "No thanks, not interested.", {"sales_difficulty": "do-not-call", "call_control": "end-call"}),

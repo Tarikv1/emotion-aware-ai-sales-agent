@@ -147,7 +147,7 @@ python scripts\validate_voice_020_elevenlabs_voice_design.py
 Optional local voice IDs for later live tests:
 
 ```powershell
-Copy-Item config\local\voice_ids.example.json config\local\voice_ids.json
+Copy-Item runtime\config\local\voice_ids.example.json runtime\config\local\voice_ids.json
 ```
 
 Then put the selected English and German ElevenLabs voice IDs into `config\local\voice_ids.json`. This file is ignored by Git.

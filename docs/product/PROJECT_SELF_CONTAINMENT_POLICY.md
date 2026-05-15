@@ -48,8 +48,8 @@ The project can be moved, copied, reviewed, or handed to a client without carryi
 ## Current Local Policy Files
 
 - `docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md`
-- `docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md`
-- `docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+- `runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
+- `runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
 
 ## Validation
 

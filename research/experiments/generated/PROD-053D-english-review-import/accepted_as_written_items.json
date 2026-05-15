@@ -1,0 +1,296 @@
+{
+  "items": [
+    {
+      "case_id": "prod-045-manager",
+      "language": "en",
+      "sales_difficulty": "stakeholder-review",
+      "source_scope": "flagged_prod_053b_rewrite",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "proposed_review_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_003_mirror_only_for_repair",
+        "en_response_006_autonomy_visible"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "language": "en",
+      "sales_difficulty": "partner-review",
+      "source_scope": "flagged_prod_053b_rewrite",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "proposed_review_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_003_mirror_only_for_repair",
+        "en_response_006_autonomy_visible"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-repeated-silence",
+      "language": "en",
+      "sales_difficulty": "repeated-silence",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "I will end the call for now. Goodbye.",
+      "proposed_review_response": "I will end the call for now. Goodbye.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-do-not-call",
+      "language": "en",
+      "sales_difficulty": "do-not-call",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Understood. I will mark this so you are not called again. Goodbye.",
+      "proposed_review_response": "Understood. I will mark this so you are not called again. Goodbye.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-human-request",
+      "language": "en",
+      "sales_difficulty": "human-request",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Of course. I will pass this to a human specialist.",
+      "proposed_review_response": "Of course. I will pass this to a human specialist.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_006_autonomy_visible"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-scam-safety-boundary",
+      "language": "en",
+      "sales_difficulty": "scam-safety-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+      "proposed_review_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_007_trust_gap_specific"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-payment-safety-boundary",
+      "language": "en",
+      "sales_difficulty": "payment-safety-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "No card or payment details are needed here. I can keep this to written information.",
+      "proposed_review_response": "No card or payment details are needed here. I can keep this to written information.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-email-only-boundary",
+      "language": "en",
+      "sales_difficulty": "email-only-boundary",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Understood. I will keep this to email and will not push for a call.",
+      "proposed_review_response": "Understood. I will keep this to email and will not push for a call.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-technical-specialist-route",
+      "language": "en",
+      "sales_difficulty": "technical-specialist-route",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "I should not guess on technical details. I can send this to a specialist.",
+      "proposed_review_response": "I should not guess on technical details. I can send this to a specialist.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-product-detail-lookup",
+      "language": "en",
+      "sales_difficulty": "product-detail-lookup",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "One moment. I will check the product details before I answer.",
+      "proposed_review_response": "One moment. I will check the product details before I answer.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-sale-ready-missing-criteria",
+      "language": "en",
+      "sales_difficulty": "sale-ready-missing-criteria",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.",
+      "proposed_review_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-trust-gap",
+      "language": "en",
+      "sales_difficulty": "trust-gap",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Fair question. I can send the verification path before we discuss any next step.",
+      "proposed_review_response": "Fair question. I can send the verification path before we discuss any next step.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_007_trust_gap_specific"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-timing-delay",
+      "language": "en",
+      "sales_difficulty": "timing-delay",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "No problem. I will leave it open for now instead of forcing a time today.",
+      "proposed_review_response": "No problem. I will leave it open for now instead of forcing a time today.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_002_plain_relief",
+        "en_response_006_autonomy_visible"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-price-objection",
+      "language": "en",
+      "sales_difficulty": "price-objection",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "proposed_review_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality",
+        "en_response_008_stop_after_question"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    },
+    {
+      "case_id": "prod-053c-unknown-runtime-signal",
+      "language": "en",
+      "sales_difficulty": "unknown-runtime-signal",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "although the current runtime response is fine too",
+      "final_review_bucket": "approved_as_written",
+      "current_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "proposed_review_response": "Thanks. Can I ask one quick clarifying question?",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality",
+        "en_response_008_stop_after_question"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    }
+  ]
+}

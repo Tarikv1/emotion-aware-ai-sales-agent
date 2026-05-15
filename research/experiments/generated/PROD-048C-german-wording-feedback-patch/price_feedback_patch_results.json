@@ -1,0 +1,35 @@
+{
+  "items": [
+    {
+      "case_id": "prod-048c-price-first",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Was kostet mich das denn?",
+      "expected_sales_difficulty": "price-first-direct",
+      "expected_call_control": "end-call",
+      "runtime_decision": {
+        "case_id": "prod-048c-price-first",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "price-first-direct",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true,
+      "failed_check_ids": []
+    }
+  ]
+}

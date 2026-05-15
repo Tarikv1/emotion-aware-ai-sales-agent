@@ -1,0 +1,49 @@
+{
+  "checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "source_checkpoint_id": "PROD-053B-compact-english-psychology-layer-review",
+  "language_lane_checkpoint_id": "PROD-052-language-lane-review-separation",
+  "english_only_review": true,
+  "german_exact_phrase_review_allowed": false,
+  "runtime_behavior_changed": false,
+  "response_text_behavior_changed": false,
+  "excluded_already_approved_items": [
+    {
+      "case_id": "prod-045-price-first",
+      "sales_difficulty": "price-first-direct",
+      "reason": "Already reviewed and carried forward by PROD-053B; excluding avoids duplicate owner review.",
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-045-send-info",
+      "sales_difficulty": "written-info-request",
+      "reason": "Already reviewed and carried forward by PROD-053B; excluding avoids duplicate owner review.",
+      "runtime_response_changed": false
+    }
+  ],
+  "included_flagged_rewrite_items": [
+    {
+      "case_id": "prod-045-manager",
+      "sales_difficulty": "stakeholder-review",
+      "reason": "PROD-053B flagged this response for English rewrite review.",
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "sales_difficulty": "partner-review",
+      "reason": "PROD-053B flagged this response for English rewrite review.",
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "runtime_response_changed": false
+    }
+  ],
+  "excluded_unreachable_or_deferred_items": [
+    {
+      "sales_difficulty": "provider-comparison",
+      "reason": "Localized response text exists, but the current deterministic classifier has no distinct reachable English provider-comparison branch. Keep out of exact phrase review until runtime reachability is clarified."
+    }
+  ]
+}

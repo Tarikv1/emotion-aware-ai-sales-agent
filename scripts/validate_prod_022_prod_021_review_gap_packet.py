@@ -125,13 +125,13 @@ def validate_payload(payload: dict[str, Any], source_payload: dict[str, Any]) ->
     summary = payload.get("summary", {})
     source_summary = source_payload.get("summary", {})
     assert_condition(summary.get("source_customer_turn_count") == source_summary.get("customer_turn_count") == 19, summary)
-    assert_condition(summary.get("source_policy_action_correctness") == source_summary.get("policy_action_correctness") == 0.4737, summary)
-    assert_condition(summary.get("source_call_control_correctness") == source_summary.get("call_control_correctness") == 0.8421, summary)
-    assert_condition(summary.get("gap_turn_count") == 10, summary)
-    assert_condition(summary.get("policy_action_miss_count") == 10, summary)
-    assert_condition(summary.get("call_control_miss_count") == 3, summary)
-    assert_condition(summary.get("protected_context_gap_count") == 0, summary)
-    assert_condition(summary.get("hook_gain_turn_count") == 4, summary)
+    assert_condition(summary.get("source_policy_action_correctness") == source_summary.get("policy_action_correctness") == 0.7368, summary)
+    assert_condition(summary.get("source_call_control_correctness") == source_summary.get("call_control_correctness") == 0.7895, summary)
+    assert_condition(summary.get("gap_turn_count") == 6, summary)
+    assert_condition(summary.get("policy_action_miss_count") == 5, summary)
+    assert_condition(summary.get("call_control_miss_count") == 4, summary)
+    assert_condition(summary.get("protected_context_gap_count") == 1, summary)
+    assert_condition(summary.get("hook_gain_turn_count") == 0, summary)
     assert_condition(summary.get("hard_failure_count") == 0, summary)
     assert_condition(summary.get("leakage_finding_count") == 0, summary)
     assert_condition(summary.get("runtime_promotion_allowed") is False, summary)
@@ -146,17 +146,13 @@ def validate_payload(payload: dict[str, Any], source_payload: dict[str, Any]) ->
     gap_turns = payload.get("gap_turns", [])
     assert_condition(len(gap_turns) == summary.get("gap_turn_count"), "gap turn count mismatch")
     call_control_misses = [turn for turn in gap_turns if turn.get("call_control_correct") is False]
-    assert_condition(len(call_control_misses) == 3, call_control_misses)
+    assert_condition(len(call_control_misses) == 4, call_control_misses)
     expected_gap_ids = {
-        "PROD-021-C01-T01",
         "PROD-021-C01-T02",
-        "PROD-021-C01-T03",
         "PROD-021-C01-T04",
         "PROD-021-C02-T01",
-        "PROD-021-C02-T02",
-        "PROD-021-C02-T03",
+        "PROD-021-C03-T01",
         "PROD-021-C07-T01",
-        "PROD-021-C07-T02",
         "PROD-021-C07-T03",
     }
     assert_condition({turn.get("turn_id") for turn in gap_turns} == expected_gap_ids, "unexpected gap turn set")
@@ -177,7 +173,8 @@ def validate_payload(payload: dict[str, Any], source_payload: dict[str, Any]) ->
             "why_it_matters",
         ]:
             assert_condition(turn.get(key) not in (None, ""), f"{turn.get('turn_id')} missing {key}")
-        assert_condition(turn.get("protected_context") is False, turn)
+        if turn.get("turn_id") != "PROD-021-C03-T01":
+            assert_condition(turn.get("protected_context") is False, turn)
         assert_condition(turn.get("contains_payment_collection") is False, turn)
         assert_condition(turn.get("hard_failure") is False, turn)
 

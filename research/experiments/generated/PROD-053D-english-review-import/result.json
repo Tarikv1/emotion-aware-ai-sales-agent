@@ -1,0 +1,76 @@
+{
+  "checkpoint_id": "PROD-053D-english-review-import",
+  "checkpoint_name": "English Review Import",
+  "source_checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "summary": {
+    "source_checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+    "import_path": "research/experiments/imports/PROD-053C-english-spoken-response-expansion-review/prod_053c_review_export.json.json",
+    "import_item_count": 29,
+    "approved_count": 16,
+    "needs_rework_count": 13,
+    "pending_count": 0,
+    "approved_as_written_count": 15,
+    "approved_with_edit_note_count": 1,
+    "runtime_patch_candidate_count": 14,
+    "owner_feedback_theme_count": 8,
+    "rework_case_ids": [
+      "prod-053c-autonomy-check",
+      "prod-053c-callback-request",
+      "prod-053c-cancellation-route",
+      "prod-053c-claim-boundary",
+      "prod-053c-coverage-boundary-route",
+      "prod-053c-healthcare-boundary-route",
+      "prod-053c-identity-repair",
+      "prod-053c-procurement-review",
+      "prod-053c-sale-ready-commitment",
+      "prod-053c-scheduling-confirmation",
+      "prod-053c-security-review-route",
+      "prod-053c-support-route",
+      "prod-053c-voicemail"
+    ],
+    "approved_with_edit_note_case_ids": [
+      "prod-053c-existing-provider-gap"
+    ],
+    "rework_category_counts": {
+      "wording_only": 11,
+      "action_or_behavior_change": 1,
+      "policy_knowledge_decision": 1,
+      "context_sensitive_wording": 1
+    },
+    "voicemail_requires_action_only_change": true,
+    "coverage_requires_policy_knowledge_decision": true,
+    "autonomy_requires_context_sensitive_response": true,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-053D-english-review-import/result.json",
+    "report": "research/experiments/generated/PROD-053D-english-review-import/report.md",
+    "import_summary": "research/experiments/generated/PROD-053D-english-review-import/imported_review_summary.json",
+    "accepted_as_written": "research/experiments/generated/PROD-053D-english-review-import/accepted_as_written_items.json",
+    "approved_with_edit_note": "research/experiments/generated/PROD-053D-english-review-import/approved_with_edit_note_items.json",
+    "needs_rework": "research/experiments/generated/PROD-053D-english-review-import/needs_rework_items.json",
+    "owner_feedback_themes": "research/experiments/generated/PROD-053D-english-review-import/owner_feedback_themes.json",
+    "runtime_patch_candidates": "research/experiments/generated/PROD-053D-english-review-import/runtime_patch_candidates.json"
+  },
+  "validation": {
+    "passed": true,
+    "notes": [
+      "Review import only; no runtime behavior or response text was changed.",
+      "Approved items with material notes are separated from exact as-written approvals.",
+      "Voicemail and coverage feedback require separate behavior/design checks before runtime changes."
+    ]
+  }
+}

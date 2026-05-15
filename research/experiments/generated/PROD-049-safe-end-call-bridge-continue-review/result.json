@@ -1,0 +1,53 @@
+{
+  "checkpoint_id": "PROD-049-safe-end-call-bridge-continue-review",
+  "title": "Safe End-Call Bridge Continue Review",
+  "source_checkpoint_id": "PROD-046-core-sales-policy-human-review",
+  "next_checkpoint_id": "PROD-050-safe-call-control-softening-regression",
+  "validation": {
+    "passed": true
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/result.json",
+    "report": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/report.md",
+    "candidate_matrix": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/bridge_continue_candidate_matrix.json",
+    "boundary_results": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/protected_boundary_results.json",
+    "review_packet": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/safe_end_call_review_packet.json",
+    "review_html": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/prod_049_review.html"
+  },
+  "summary": {
+    "source_checkpoint_id": "PROD-046-core-sales-policy-human-review",
+    "source_result_statuses": {
+      "prod_048c": true,
+      "prod_047": true,
+      "prod_046": true,
+      "prod_045": true
+    },
+    "source_call_control_finding_count": 45,
+    "bridge_then_continue_candidate_count": 22,
+    "protected_end_or_escalation_count": 23,
+    "candidate_language_counts": {
+      "en": 4,
+      "de": 18
+    },
+    "selected_sales_difficulty_count": 4,
+    "protected_sales_difficulty_count": 5,
+    "protected_boundary_probe_count": 8,
+    "protected_boundary_pass_count": 8,
+    "support_cancellation_do_not_call_softened": false,
+    "email_only_softened": false,
+    "payment_or_scam_softened": false,
+    "sale_ready_softened": false,
+    "recommended_next_checkpoint": "PROD-050-safe-call-control-softening-regression",
+    "runtime_behavior_changed": false,
+    "call_control_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

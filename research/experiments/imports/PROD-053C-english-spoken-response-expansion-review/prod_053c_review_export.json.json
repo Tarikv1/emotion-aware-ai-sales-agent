@@ -1,0 +1,150 @@
+{
+  "checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "items": [
+    {
+      "case_id": "prod-045-manager",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-voicemail",
+      "status": "needs_rework",
+      "notes": "if we reach a voicemail the agent should log this for another time and try again. The agent doesn't need to say anything to the voicemail"
+    },
+    {
+      "case_id": "prod-053c-repeated-silence",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-do-not-call",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-human-request",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-identity-repair",
+      "status": "needs_rework",
+      "notes": "Instead of that response the agent should say something like:\nThis is Maya(or whatever the agent's name is) from RouteSignal(or whatever the company is). \nAnd briefly explain the reason for the call and whatnot"
+    },
+    {
+      "case_id": "prod-053c-scam-safety-boundary",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-payment-safety-boundary",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-support-route",
+      "status": "needs_rework",
+      "notes": "this is a bit of a long response to an issue which does not need that much explanation. Maybe just say like: of course I'll send this to support right away. And then maybe wish them good or something"
+    },
+    {
+      "case_id": "prod-053c-cancellation-route",
+      "status": "needs_rework",
+      "notes": "we talked about this for the voice work but we should use I'll instead of I will. And again there are too many words that are unnecessary. The agent could just say:\nSure, I'll stop and connect you to the cancellation team."
+    },
+    {
+      "case_id": "prod-053c-email-only-boundary",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-technical-specialist-route",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-security-review-route",
+      "status": "needs_rework",
+      "notes": "agent is using words that are creating too much certainty so instead of 'I will' agent should use 'I should'"
+    },
+    {
+      "case_id": "prod-053c-coverage-boundary-route",
+      "status": "needs_rework",
+      "notes": "if the agent has the policy document it should be able to tell the person what is covered and what is not\nthis is not advice, it's just knowledge"
+    },
+    {
+      "case_id": "prod-053c-healthcare-boundary-route",
+      "status": "needs_rework",
+      "notes": "Instead of saying I should not give health or medical advice, I can send this to a qualified reviewer. The agent should probably say, or it could probably be better if the agent say I cannot instead of I should not, because I should, if the agent says I should, that kind of states that the agent is capable, but it can't, or it should not because it's not legal or something like that. But instead of that, so these small words are important. So instead of I should, the agent says I cannot give any medical advice, but I can send you to a qualified specialist or qualified reviewer or someone. I can send you to someone, you know what I mean?"
+    },
+    {
+      "case_id": "prod-053c-claim-boundary",
+      "status": "needs_rework",
+      "notes": "All right, again, this is like we talked about this before, too. So instead of saying, I do not, the agent can say, I don't want to, or I can't. It's shorter versions. We should use the shorter versions of words instead of separating I do not, we should say, I don't.\nAlso, instead of this response, the agent should say, I can't guarantee something that depends on the details, ......"
+    },
+    {
+      "case_id": "prod-053c-product-detail-lookup",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-scheduling-confirmation",
+      "status": "needs_rework",
+      "notes": "Confirmed sounds too formal and too, it kind of makes it obvious that the answer is AI or the speaker is AI because not a lot of people talk like that if you're not in the military or something like that. So instead of confirmed, the agent can say, all right, or sure, or something like that"
+    },
+    {
+      "case_id": "prod-053c-sale-ready-missing-criteria",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-sale-ready-commitment",
+      "status": "needs_rework",
+      "notes": "I told this in prod-053c-scheduling-confirmation 'confirmed' is too formal"
+    },
+    {
+      "case_id": "prod-053c-procurement-review",
+      "status": "needs_rework",
+      "notes": "Understood is also too formal. So maybe something like 'sure, of course' so assurance words"
+    },
+    {
+      "case_id": "prod-053c-existing-provider-gap",
+      "status": "approved",
+      "notes": "use won't instead of will not"
+    },
+    {
+      "case_id": "prod-053c-callback-request",
+      "status": "needs_rework",
+      "notes": "The customer is asking if we can call back, and we should answer as shortly as possible because if the customer is asking for us to call back, that means that you probably don't have time. So we should keep it short and say, of course, do you have a time in mind or something like that. Or, sure, I can set a call or I can set an appointment for this date if you want to, or you can tell me a date, or something like that"
+    },
+    {
+      "case_id": "prod-053c-autonomy-check",
+      "status": "needs_rework",
+      "notes": "This is one of those places where we can actually use the customer's last two words, two or three words, to our advantage. We can just start with, okay, no rush. Of course, there's no rush. We can keep this low pressure and only clarify what you need, or we can keep this low pressure and see what you think. Or we can say, I can explain what it is, and this is no commitment call, or something like that. This is one of those places where a bit of a lengthy answer could be all right. but it all depends on the context as well. So the previous context, if the agent already explained what everything is, the response to I need time to think should be a little shorter. If the agent didn't talk to the customer before about what is the product and whatnot, the response could be a little longer."
+    },
+    {
+      "case_id": "prod-053c-trust-gap",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-timing-delay",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-price-objection",
+      "status": "approved",
+      "notes": ""
+    },
+    {
+      "case_id": "prod-053c-unknown-runtime-signal",
+      "status": "approved",
+      "notes": "although the current runtime response is fine too"
+    }
+  ]
+}

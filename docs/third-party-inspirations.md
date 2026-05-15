@@ -399,8 +399,8 @@ one reusable sales-agent core
 - Directly copied material: none. The Emotion Aware docs were rewritten locally for this product.
 - Where it affected the Emotion Aware project:
   - `docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md`
-  - `docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md`
-  - `docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+  - `runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
+  - `runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
   - `scripts/validate_self_contained_project_policy.py`
 - Product/runtime boundary:
   - These docs are now project-local.

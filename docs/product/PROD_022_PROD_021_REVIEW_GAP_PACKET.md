@@ -29,13 +29,13 @@ research/experiments/generated/PROD-022-prod-021-review-gap-packet/report.md
 ## Current Result
 
 - Source customer turns: `19`
-- Source policy action correctness: `0.4737`
-- Source call-control correctness: `0.8421`
-- Gap turns: `10`
-- Policy action misses: `10`
-- Call-control misses: `3`
-- Protected context gaps: `0`
-- Hook gain turns: `4`
+- Source policy action correctness: `0.7368`
+- Source call-control correctness: `0.7895`
+- Gap turns: `6`
+- Policy action misses: `5`
+- Call-control misses: `4`
+- Protected context gaps: `1`
+- Hook gain turns: `0`
 - Hard failures: `0`
 - Leakage findings: `0`
 - Runtime promotion allowed: `false`
@@ -43,7 +43,7 @@ research/experiments/generated/PROD-022-prod-021-review-gap-packet/report.md
 
 ## Interpretation
 
-The PROD-021 failure is not a hook-safety failure. The hooks improved four turns and did not create hard failures, leakage findings, protected-context regressions, or payment collection.
+The PROD-021 failure is not a provider, leakage, or payment-collection failure. The current hooks did not improve the live-shaped turns, and the remaining blocker is runtime policy routing plus call-control alignment.
 
 The remaining blocker is narrower: the runtime policy layer collapses too many states into generic clarification or autonomy moves, and call control misses sale-ready and procurement-delay cases.
 

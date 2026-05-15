@@ -1,0 +1,279 @@
+{
+  "items": [
+    {
+      "group_id": "de-review-group-001",
+      "topic_title_de": "Preisfrage",
+      "case_count": 9,
+      "original_case_ids": [
+        "source-informed-de-price_first-001",
+        "source-informed-de-price_first-002",
+        "source-informed-de-price_first-003",
+        "source-informed-interp-de-price_first-001",
+        "source-informed-interp-de-price_first-002",
+        "source-informed-interp-de-price_first-003",
+        "source-informed-interp-legacy-de-price_first-001",
+        "source-informed-interp-legacy-de-price_first-002",
+        "source-informed-interp-legacy-de-price_first-003"
+      ],
+      "short_agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich."
+    },
+    {
+      "group_id": "de-review-group-002",
+      "topic_title_de": "Wer ruft an?",
+      "case_count": 9,
+      "original_case_ids": [
+        "source-informed-de-who_are_you-001",
+        "source-informed-de-who_are_you-002",
+        "source-informed-de-who_are_you-003",
+        "source-informed-interp-de-who_are_you-001",
+        "source-informed-interp-de-who_are_you-002",
+        "source-informed-interp-de-who_are_you-003",
+        "source-informed-interp-legacy-de-who_are_you-001",
+        "source-informed-interp-legacy-de-who_are_you-002",
+        "source-informed-interp-legacy-de-who_are_you-003"
+      ],
+      "short_agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz die Zuständigkeit für Rückrufe klären möchten."
+    },
+    {
+      "group_id": "de-review-group-003",
+      "topic_title_de": "Schriftliche Informationen",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-send_info-001",
+        "source-informed-de-send_info-002",
+        "source-informed-de-send_info-003"
+      ],
+      "short_agent_response": "Ja, ich schicke Ihnen die kurze Zusammenfassung per E-Mail."
+    },
+    {
+      "group_id": "de-review-group-004",
+      "topic_title_de": "Nur E-Mail",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-email_only-001",
+        "source-informed-de-email_only-002",
+        "source-informed-de-email_only-003"
+      ],
+      "short_agent_response": "Verstanden, dann nur per E-Mail."
+    },
+    {
+      "group_id": "de-review-group-005",
+      "topic_title_de": "Betrugs- oder Zahlungsangst",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-payment_safety_fear-001",
+        "source-informed-de-payment_safety_fear-002",
+        "source-informed-de-payment_safety_fear-003"
+      ],
+      "short_agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich."
+    },
+    {
+      "group_id": "de-review-group-006",
+      "topic_title_de": "Betrugs- oder Zahlungsangst",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-scam_or_card_fear-001",
+        "source-informed-de-scam_or_card_fear-002",
+        "source-informed-de-scam_or_card_fear-003"
+      ],
+      "short_agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich."
+    },
+    {
+      "group_id": "de-review-group-007",
+      "topic_title_de": "Support",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-support_issue-001",
+        "source-informed-de-support_issue-002",
+        "source-informed-de-support_issue-003"
+      ],
+      "short_agent_response": "Verstanden, das ist ein Fall für den Support. Ich leite Sie dorthin weiter."
+    },
+    {
+      "group_id": "de-review-group-008",
+      "topic_title_de": "Kündigung",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-cancellation_request-001",
+        "source-informed-de-cancellation_request-002",
+        "source-informed-de-cancellation_request-003"
+      ],
+      "short_agent_response": "Verstanden, dann leite ich Sie an die zuständige Stelle für Kündigungen weiter."
+    },
+    {
+      "group_id": "de-review-group-009",
+      "topic_title_de": "Technische Frage",
+      "case_count": 6,
+      "original_case_ids": [
+        "source-informed-de-technical_question-001",
+        "source-informed-de-technical_question-002",
+        "source-informed-de-technical_question-003",
+        "source-informed-interp-de-technical_question-001",
+        "source-informed-interp-de-technical_question-002",
+        "source-informed-interp-de-technical_question-003"
+      ],
+      "short_agent_response": "Das sollte eine Fachperson prüfen. Ich leite es entsprechend weiter."
+    },
+    {
+      "group_id": "de-review-group-010",
+      "topic_title_de": "Sicherheitsprüfung",
+      "case_count": 9,
+      "original_case_ids": [
+        "source-informed-de-security_review-001",
+        "source-informed-de-security_review-002",
+        "source-informed-de-security_review-003",
+        "source-informed-interp-de-security_review-001",
+        "source-informed-interp-de-security_review-002",
+        "source-informed-interp-de-security_review-003",
+        "source-informed-interp-legacy-de-security_review-001",
+        "source-informed-interp-legacy-de-security_review-002",
+        "source-informed-interp-legacy-de-security_review-003"
+      ],
+      "short_agent_response": "Das sollte eine Fachperson prüfen. Ich mache dazu keine allgemeinen Zusagen."
+    },
+    {
+      "group_id": "de-review-group-011",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "case_count": 6,
+      "original_case_ids": [
+        "source-informed-de-coverage_confusion-001",
+        "source-informed-de-coverage_confusion-002",
+        "source-informed-de-coverage_confusion-003",
+        "source-informed-interp-de-coverage_confusion-001",
+        "source-informed-interp-de-coverage_confusion-002",
+        "source-informed-interp-de-coverage_confusion-003"
+      ],
+      "short_agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter."
+    },
+    {
+      "group_id": "de-review-group-012",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "case_count": 6,
+      "original_case_ids": [
+        "source-informed-de-sensitive_healthcare_concern-001",
+        "source-informed-de-sensitive_healthcare_concern-002",
+        "source-informed-de-sensitive_healthcare_concern-003",
+        "source-informed-interp-de-sensitive_healthcare_concern-001",
+        "source-informed-interp-de-sensitive_healthcare_concern-002",
+        "source-informed-interp-de-sensitive_healthcare_concern-003"
+      ],
+      "short_agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter."
+    },
+    {
+      "group_id": "de-review-group-013",
+      "topic_title_de": "Bestehender Anbieter",
+      "case_count": 6,
+      "original_case_ids": [
+        "source-informed-de-existing_provider-001",
+        "source-informed-de-existing_provider-002",
+        "source-informed-de-existing_provider-003",
+        "source-informed-interp-de-existing_provider-001",
+        "source-informed-interp-de-existing_provider-002",
+        "source-informed-interp-de-existing_provider-003"
+      ],
+      "short_agent_response": "Verstehe. Es geht nicht darum, Ihren Anbieter zu ersetzen, sondern nur darum, ob noch Rückrufe oder Nachverfolgungen offen bleiben."
+    },
+    {
+      "group_id": "de-review-group-014",
+      "topic_title_de": "Entscheidung mit Chef oder Partner",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-needs_spouse_or_partner_input-001",
+        "source-informed-de-needs_spouse_or_partner_input-002",
+        "source-informed-de-needs_spouse_or_partner_input-003"
+      ],
+      "short_agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung."
+    },
+    {
+      "group_id": "de-review-group-015",
+      "topic_title_de": "Entscheidung mit Chef oder Partner",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-needs_manager_approval-001",
+        "source-informed-de-needs_manager_approval-002",
+        "source-informed-de-needs_manager_approval-003"
+      ],
+      "short_agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung."
+    },
+    {
+      "group_id": "de-review-group-016",
+      "topic_title_de": "Nächster Schritt",
+      "case_count": 6,
+      "original_case_ids": [
+        "source-informed-de-sale_ready_interest-001",
+        "source-informed-de-sale_ready_interest-002",
+        "source-informed-de-sale_ready_interest-003",
+        "source-informed-interp-de-sale_ready_interest-001",
+        "source-informed-interp-de-sale_ready_interest-002",
+        "source-informed-interp-de-sale_ready_interest-003"
+      ],
+      "short_agent_response": "Gut, dann halte ich den nächsten Schritt fest. Bezahlt oder unterschrieben wird hier am Telefon nichts."
+    },
+    {
+      "group_id": "de-review-group-017",
+      "topic_title_de": "Rückruf",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-callback_request-001",
+        "source-informed-de-callback_request-002",
+        "source-informed-de-callback_request-003"
+      ],
+      "short_agent_response": "Ja, ich merke einen Rückruf vor."
+    },
+    {
+      "group_id": "de-review-group-018",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-not_interested-001",
+        "source-informed-de-not_interested-002",
+        "source-informed-de-not_interested-003"
+      ],
+      "short_agent_response": "Verstanden, dann belasse ich es dabei. Auf Wiederhören."
+    },
+    {
+      "group_id": "de-review-group-019",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-hostile_rejection-001",
+        "source-informed-de-hostile_rejection-002",
+        "source-informed-de-hostile_rejection-003"
+      ],
+      "short_agent_response": "Verstanden. Sie werden hierzu nicht mehr angerufen. Auf Wiederhören."
+    },
+    {
+      "group_id": "de-review-group-020",
+      "topic_title_de": "Terminbestätigung",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-scheduling_confirmation-001",
+        "source-informed-de-scheduling_confirmation-002",
+        "source-informed-de-scheduling_confirmation-003"
+      ],
+      "short_agent_response": "Bestätigt, ich notiere den Rückruf so. Auf Wiederhören."
+    },
+    {
+      "group_id": "de-review-group-021",
+      "topic_title_de": "Sonstiges",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-skeptical_proof_request-001",
+        "source-informed-de-skeptical_proof_request-002",
+        "source-informed-de-skeptical_proof_request-003"
+      ],
+      "short_agent_response": "Garantieren möchte ich nichts, was von Details abhängt. Ich leite es zur Prüfung weiter."
+    },
+    {
+      "group_id": "de-review-group-022",
+      "topic_title_de": "Sonstiges",
+      "case_count": 3,
+      "original_case_ids": [
+        "source-informed-de-product_detail_lookup-001",
+        "source-informed-de-product_detail_lookup-002",
+        "source-informed-de-product_detail_lookup-003"
+      ],
+      "short_agent_response": "Einen Moment, ich prüfe die Produktinformationen."
+    }
+  ]
+}

@@ -50,16 +50,16 @@ Artifacts:
 
 Example profiles:
 
-- `campaigns/examples/campaign-prod-047-valid-en-internal-review.json`
-- `campaigns/examples/campaign-prod-047-valid-de-source-informed.json`
-- `campaigns/examples/campaign-prod-047-invalid-de-fragment-interpolation.json`
-- `campaigns/examples/campaign-prod-047-invalid-en-internal-copy.json`
-- `campaigns/examples/campaign-prod-047-invalid-payment-enabled.json`
-- `campaigns/examples/campaign-prod-047-invalid-missing-regulated-boundary.json`
-- `campaigns/examples/campaign-prod-047-invalid-missing-native-review-status.json`
-- `campaigns/examples/campaign-prod-047-invalid-sale-ready-without-close-criteria.json`
-- `campaigns/examples/campaign-prod-047-invalid-support-cancellation-route-label.json`
-- `campaigns/examples/campaign-prod-047-incomplete-identity-reason.json`
+- `runtime/campaigns/examples/campaign-prod-047-valid-en-internal-review.json`
+- `runtime/campaigns/examples/campaign-prod-047-valid-de-source-informed.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-de-fragment-interpolation.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-en-internal-copy.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-payment-enabled.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-missing-regulated-boundary.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-missing-native-review-status.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-sale-ready-without-close-criteria.json`
+- `runtime/campaigns/examples/campaign-prod-047-invalid-support-cancellation-route-label.json`
+- `runtime/campaigns/examples/campaign-prod-047-incomplete-identity-reason.json`
 
 ## Contract Rules
 

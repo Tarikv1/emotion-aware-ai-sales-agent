@@ -1,0 +1,83 @@
+{
+  "checkpoint_id": "PROD-053D-english-review-import",
+  "source_checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "source_review_export_checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "summary": {
+    "source_checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+    "import_path": "research/experiments/imports/PROD-053C-english-spoken-response-expansion-review/prod_053c_review_export.json.json",
+    "import_item_count": 29,
+    "approved_count": 16,
+    "needs_rework_count": 13,
+    "pending_count": 0,
+    "approved_as_written_count": 15,
+    "approved_with_edit_note_count": 1,
+    "runtime_patch_candidate_count": 14,
+    "owner_feedback_theme_count": 8,
+    "rework_case_ids": [
+      "prod-053c-autonomy-check",
+      "prod-053c-callback-request",
+      "prod-053c-cancellation-route",
+      "prod-053c-claim-boundary",
+      "prod-053c-coverage-boundary-route",
+      "prod-053c-healthcare-boundary-route",
+      "prod-053c-identity-repair",
+      "prod-053c-procurement-review",
+      "prod-053c-sale-ready-commitment",
+      "prod-053c-scheduling-confirmation",
+      "prod-053c-security-review-route",
+      "prod-053c-support-route",
+      "prod-053c-voicemail"
+    ],
+    "approved_with_edit_note_case_ids": [
+      "prod-053c-existing-provider-gap"
+    ],
+    "rework_category_counts": {
+      "wording_only": 11,
+      "action_or_behavior_change": 1,
+      "policy_knowledge_decision": 1,
+      "context_sensitive_wording": 1
+    },
+    "voicemail_requires_action_only_change": true,
+    "coverage_requires_policy_knowledge_decision": true,
+    "autonomy_requires_context_sensitive_response": true,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "unused_rework_categories_internal": {
+      "prod-053c-voicemail": 1,
+      "prod-053c-identity-repair": 1,
+      "prod-053c-support-route": 1,
+      "prod-053c-cancellation-route": 1,
+      "prod-053c-security-review-route": 1,
+      "prod-053c-coverage-boundary-route": 1,
+      "prod-053c-healthcare-boundary-route": 1,
+      "prod-053c-claim-boundary": 1,
+      "prod-053c-scheduling-confirmation": 1,
+      "prod-053c-sale-ready-commitment": 1,
+      "prod-053c-procurement-review": 1,
+      "prod-053c-callback-request": 1,
+      "prod-053c-autonomy-check": 1
+    }
+  },
+  "status_counts": {
+    "approved": 16,
+    "needs_rework": 13
+  },
+  "bucket_counts": {
+    "approved_as_written": 15,
+    "needs_rework": 13,
+    "approved_with_edit_note": 1
+  },
+  "no_runtime_changes_applied": true
+}

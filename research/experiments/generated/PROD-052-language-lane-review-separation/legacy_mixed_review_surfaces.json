@@ -1,0 +1,37 @@
+{
+  "checkpoint_id": "PROD-052-language-lane-review-separation",
+  "items": [
+    {
+      "checkpoint_id": "PROD-046-core-sales-policy-human-review",
+      "path": "research/experiments/generated/PROD-046-core-sales-policy-human-review/prod_046_review.html",
+      "language_mix": "english_and_german",
+      "current_acceptance_surface": false,
+      "separation_action": "historical_evidence_only",
+      "note": "Historical internal product-review evidence; not the current exact spoken phrase acceptance page."
+    },
+    {
+      "checkpoint_id": "PROD-049-safe-end-call-bridge-continue-review",
+      "path": "research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/prod_049_review.html",
+      "language_mix": "english_and_german",
+      "current_acceptance_surface": false,
+      "separation_action": "historical_evidence_only",
+      "note": "Historical candidate-selection evidence; not an active phrase acceptance page."
+    },
+    {
+      "checkpoint_id": "PROD-050-safe-call-control-softening-regression",
+      "path": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/prod_050_review.html",
+      "language_mix": "english_and_german",
+      "current_acceptance_surface": false,
+      "separation_action": "historical_evidence_only",
+      "note": "Historical proposed-softening evidence; exact phrase review is superseded by PROD-052."
+    },
+    {
+      "checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+      "path": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/prod_051_review.html",
+      "language_mix": "english_and_german",
+      "current_acceptance_surface": false,
+      "separation_action": "superseded_by_prod_052",
+      "note": "Mixed source review surface. Use PROD-052 for separated English review and German pending lanes."
+    }
+  ]
+}

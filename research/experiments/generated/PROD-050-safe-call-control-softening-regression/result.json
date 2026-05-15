@@ -1,0 +1,68 @@
+{
+  "checkpoint_id": "PROD-050-safe-call-control-softening-regression",
+  "title": "Safe Call-Control Softening Regression",
+  "source_checkpoint_id": "PROD-049-safe-end-call-bridge-continue-review",
+  "next_checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+  "validation": {
+    "passed": true
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/result.json",
+    "report": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/report.md",
+    "cases": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/softening_regression_cases.json",
+    "results": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/softening_regression_results.json",
+    "boundary_results": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/protected_boundary_results.json",
+    "change_summary": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/proposed_runtime_change_summary.json",
+    "review_html": "research/experiments/generated/PROD-050-safe-call-control-softening-regression/prod_050_review.html"
+  },
+  "summary": {
+    "source_checkpoint_id": "PROD-049-safe-end-call-bridge-continue-review",
+    "source_result_statuses": {
+      "prod_049_result": true,
+      "prod_048c_result": true,
+      "prod_047_result": true,
+      "prod_046_result": true,
+      "prod_045_result": true
+    },
+    "source_bridge_candidate_count": 22,
+    "softening_regression_case_count": 22,
+    "softening_regression_pass_count": 22,
+    "softening_regression_fail_count": 0,
+    "selected_sales_difficulty_count": 4,
+    "selected_sales_difficulty_counts": {
+      "partner-review": 4,
+      "price-first-direct": 10,
+      "stakeholder-review": 4,
+      "written-info-request": 4
+    },
+    "protected_boundary_probe_count": 9,
+    "protected_boundary_pass_count": 9,
+    "current_runtime_unchanged_count": 22,
+    "proposed_bridge_then_continue_count": 22,
+    "current_safe_answer_preserved_count": 22,
+    "proposed_response_text_changed_count": 22,
+    "low_pressure_continuation_prompt_count": 22,
+    "terminal_closing_phrase_in_proposed_count": 0,
+    "pressure_violation_count": 0,
+    "unsupported_claim_violation_count": 0,
+    "payment_collection_violation_count": 0,
+    "contract_signing_violation_count": 0,
+    "support_cancellation_do_not_call_softened": false,
+    "runtime_change_recommended": true,
+    "runtime_change_applied_by_this_checkpoint": false,
+    "response_text_change_recommended": true,
+    "call_control_definition_update_required": true,
+    "recommended_next_checkpoint": "PROD-051-safe-call-control-runtime-update",
+    "runtime_behavior_changed": false,
+    "call_control_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

@@ -1,0 +1,570 @@
+{
+  "schema_version": 1,
+  "manifest_id": "runtime-boundary-001",
+  "updated_on": "2026-05-15",
+  "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
+  "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
+  "runtime_home_policy": {
+    "current_runtime_source_of_truth": "runtime/runtime_manifest.json",
+    "legacy_runtime_code_location": "runtime/ with compatibility wrappers in scripts/",
+    "physical_move_rule": "Runtime source modules now live under runtime/. Keep scripts/* wrappers unless command docs and historical validators are migrated together.",
+    "current_command_surface": "scripts/",
+    "generated_evidence_default": "research/experiments/generated/",
+    "temporary_files_default": ".tmp/"
+  },
+  "runtime_entries": [
+    {
+      "path": "runtime/core/realtime_turns.py",
+      "path_type": "file",
+      "tier": "core-runtime-behavior",
+      "runtime_role": "Deterministic single-turn decision path, localized response text, sales difficulty detection, call-control behavior, and latency buckets.",
+      "behavior_surface": [
+        "agent spoken text",
+        "language lane",
+        "call control",
+        "sales difficulty routing"
+      ],
+      "legacy_path": "scripts/run_realtime_turn_simulation.py"
+    },
+    {
+      "path": "runtime/entrypoints/realtime_turn_cli.py",
+      "path_type": "file",
+      "tier": "core-runtime-entrypoint",
+      "runtime_role": "Local CLI entrypoint for one realtime turn.",
+      "behavior_surface": [
+        "runtime input shape",
+        "turn output shape"
+      ],
+      "legacy_path": "scripts/realtime_turn_cli.py"
+    },
+    {
+      "path": "runtime/entrypoints/generate_guarded_response.py",
+      "path_type": "file",
+      "tier": "core-runtime-entrypoint",
+      "runtime_role": "Builds guarded response packets before speaking or logging agent decisions.",
+      "behavior_surface": [
+        "final response packet",
+        "retrieval gate",
+        "guardrails",
+        "composer hooks"
+      ],
+      "legacy_path": "scripts/generate_guarded_response.py"
+    },
+    {
+      "path": "runtime/contracts/product_agent_output_contract.py",
+      "path_type": "file",
+      "tier": "core-runtime-contract",
+      "runtime_role": "Defines strategy taxonomy, call-control values, output normalization, and runtime output contract checks.",
+      "behavior_surface": [
+        "call control",
+        "strategy labels",
+        "runtime output schema"
+      ],
+      "legacy_path": "scripts/product_agent_output_contract.py"
+    },
+    {
+      "path": "runtime/policy/core_sales_delivery_playbook.py",
+      "path_type": "file",
+      "tier": "core-runtime-policy",
+      "runtime_role": "Reusable sales delivery policy pack consumed by guarded response and voice delivery.",
+      "behavior_surface": [
+        "sales behavior rules",
+        "delivery rules",
+        "emotion boundary"
+      ],
+      "legacy_path": "scripts/core_sales_delivery_playbook.py"
+    },
+    {
+      "path": "runtime/policy/runtime_composer_hooks.py",
+      "path_type": "file",
+      "tier": "core-runtime-policy",
+      "runtime_role": "Optional runtime composer hook behavior, currently default-off.",
+      "behavior_surface": [
+        "optional response shaping"
+      ],
+      "legacy_path": "scripts/runtime_composer_hooks.py"
+    },
+    {
+      "path": "runtime/contracts/brain_runtime_state_schema.py",
+      "path_type": "file",
+      "tier": "core-runtime-contract",
+      "runtime_role": "Runtime state schema packet and state contract.",
+      "behavior_surface": [
+        "runtime state fields",
+        "brain state contract"
+      ],
+      "legacy_path": "scripts/brain_runtime_state_schema.py"
+    },
+    {
+      "path": "runtime/contracts/campaign_profile_contract.py",
+      "path_type": "file",
+      "tier": "campaign-runtime-contract",
+      "runtime_role": "SalesCampaign profile validation rules and language/source boundary constraints.",
+      "behavior_surface": [
+        "campaign profile validation",
+        "language review status",
+        "source boundary"
+      ],
+      "legacy_path": "scripts/campaign_profile_contract.py"
+    },
+    {
+      "path": "runtime/campaigns/examples",
+      "path_type": "directory",
+      "tier": "campaign-runtime-profile-examples",
+      "runtime_role": "Example SalesCampaign profiles, including valid and invalid profile fixtures.",
+      "behavior_surface": [
+        "campaign profile shape",
+        "approved field boundary"
+      ]
+    },
+    {
+      "path": "runtime/prompts/product-qualification-agent.txt",
+      "path_type": "file",
+      "tier": "runtime-prompt",
+      "runtime_role": "Product qualification agent prompt template used by simulation and LLM runner paths.",
+      "behavior_surface": [
+        "prompt instructions",
+        "qualification behavior"
+      ]
+    },
+    {
+      "path": "runtime/retrieval/guarded_retrieval_policy.py",
+      "path_type": "file",
+      "tier": "opt-in-runtime-retrieval",
+      "runtime_role": "Guarded retrieval candidate selection and hard-block handling for runtime response generation.",
+      "behavior_surface": [
+        "retrieval candidate use",
+        "blocked context handling"
+      ],
+      "legacy_path": "scripts/rag_guarded_retrieval_policy.py"
+    },
+    {
+      "path": "runtime/retrieval/runtime_knowledge_registry.py",
+      "path_type": "file",
+      "tier": "opt-in-runtime-retrieval",
+      "runtime_role": "Builds the runtime knowledge registry artifact. Retrieval remains default-off unless separately promoted.",
+      "behavior_surface": [
+        "runtime knowledge registry"
+      ],
+      "legacy_path": "scripts/rag_runtime_knowledge_registry.py"
+    },
+    {
+      "path": "runtime/retrieval/knowledge_base.py",
+      "path_type": "file",
+      "tier": "opt-in-runtime-retrieval",
+      "runtime_role": "Source-tracked knowledge base helpers for RAG artifacts.",
+      "behavior_surface": [
+        "knowledge chunk structure",
+        "source mapping"
+      ],
+      "legacy_path": "scripts/rag_knowledge_base.py"
+    },
+    {
+      "path": "runtime/voice/runtime_voice_delivery.py",
+      "path_type": "file",
+      "tier": "voice-runtime-behavior",
+      "runtime_role": "Attaches runtime voice delivery metadata and provider rendering previews to response packets.",
+      "behavior_surface": [
+        "spoken text segmentation",
+        "voice delivery packet",
+        "provider rendering preview"
+      ],
+      "legacy_path": "scripts/runtime_voice_delivery.py"
+    },
+    {
+      "path": "runtime/entrypoints/generate_runtime_voice_delivery.py",
+      "path_type": "file",
+      "tier": "voice-runtime-entrypoint",
+      "runtime_role": "CLI entrypoint for RESP-002 runtime voice delivery packets.",
+      "behavior_surface": [
+        "voice delivery command output"
+      ],
+      "legacy_path": "scripts/generate_runtime_voice_delivery.py"
+    },
+    {
+      "path": "runtime/voice/runtime_tts_delivery.py",
+      "path_type": "file",
+      "tier": "voice-runtime-provider-boundary",
+      "runtime_role": "Runtime TTS provider delivery and dry-run/live boundary handling.",
+      "behavior_surface": [
+        "provider request shape",
+        "audio filename",
+        "live provider boundary"
+      ],
+      "legacy_path": "scripts/runtime_tts_delivery.py"
+    },
+    {
+      "path": "runtime/entrypoints/generate_runtime_tts_delivery.py",
+      "path_type": "file",
+      "tier": "voice-runtime-entrypoint",
+      "runtime_role": "CLI entrypoint for RESP-003 runtime TTS delivery.",
+      "behavior_surface": [
+        "TTS command output",
+        "dry-run/live flags"
+      ],
+      "legacy_path": "scripts/generate_runtime_tts_delivery.py"
+    },
+    {
+      "path": "runtime/providers/tts_provider_clients.py",
+      "path_type": "file",
+      "tier": "voice-runtime-provider-boundary",
+      "runtime_role": "Provider client helpers for Cartesia and ElevenLabs, including redaction and fallback behavior.",
+      "behavior_surface": [
+        "provider calls",
+        "voice id resolution",
+        "redacted previews"
+      ],
+      "legacy_path": "scripts/tts_provider_clients.py"
+    },
+    {
+      "path": "runtime/config/local_voice_config.py",
+      "path_type": "file",
+      "tier": "voice-runtime-config",
+      "runtime_role": "Local ignored voice-ID config loading and BOM-tolerant JSON handling.",
+      "behavior_surface": [
+        "voice id config resolution"
+      ],
+      "legacy_path": "scripts/local_voice_config.py"
+    },
+    {
+      "path": "runtime/config/local/voice_ids.example.json",
+      "path_type": "file",
+      "tier": "voice-runtime-config-example",
+      "runtime_role": "Tracked example for local ignored voice ID config. Real IDs stay ignored and local-only.",
+      "behavior_surface": [
+        "voice id config shape"
+      ]
+    },
+    {
+      "path": "runtime/speech/spoken_text_normalization.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Normalizes text for spoken delivery.",
+      "behavior_surface": [
+        "spoken text"
+      ],
+      "legacy_path": "scripts/spoken_text_normalization.py"
+    },
+    {
+      "path": "runtime/speech/prosody_naturalness.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Applies prosody naturalness rules for spoken output.",
+      "behavior_surface": [
+        "prosody cues",
+        "spoken text"
+      ],
+      "legacy_path": "scripts/prosody_naturalness.py"
+    },
+    {
+      "path": "runtime/speech/provider_prosody_rendering.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Renders provider-specific prosody variants.",
+      "behavior_surface": [
+        "provider markup",
+        "prosody cue support"
+      ],
+      "legacy_path": "scripts/provider_prosody_rendering.py"
+    },
+    {
+      "path": "runtime/speech/speech_realism.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Applies speech realism constraints and spoken delivery shaping.",
+      "behavior_surface": [
+        "spoken text",
+        "delivery metadata"
+      ],
+      "legacy_path": "scripts/speech_realism.py"
+    },
+    {
+      "path": "runtime/speech/speech_interaction.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Applies interaction prosody and listening feedback shaping.",
+      "behavior_surface": [
+        "backchannels",
+        "interaction cues"
+      ],
+      "legacy_path": "scripts/speech_interaction.py"
+    },
+    {
+      "path": "runtime/speech/speech_imperfections.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Applies controlled spoken imperfections.",
+      "behavior_surface": [
+        "spoken text",
+        "delivery imperfection cues"
+      ],
+      "legacy_path": "scripts/speech_imperfections.py"
+    },
+    {
+      "path": "runtime/voice/voice_baseline_delivery_polish.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Current accepted baseline delivery polish layer.",
+      "behavior_surface": [
+        "spoken text",
+        "delivery metadata"
+      ],
+      "legacy_path": "scripts/voice_baseline_delivery_polish.py"
+    },
+    {
+      "path": "runtime/voice/voice_connected_speech.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Connected-speech phrase-flow layer.",
+      "behavior_surface": [
+        "spoken text",
+        "phrase flow"
+      ],
+      "legacy_path": "scripts/voice_connected_speech.py"
+    },
+    {
+      "path": "runtime/voice/voice_pacing_calibration.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Pacing calibration layer.",
+      "behavior_surface": [
+        "speech pace",
+        "delivery cues"
+      ],
+      "legacy_path": "scripts/voice_pacing_calibration.py"
+    },
+    {
+      "path": "runtime/voice/voice_low_pressure_focus.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Low-pressure focus layer for spoken response delivery.",
+      "behavior_surface": [
+        "spoken text",
+        "pressure reduction"
+      ],
+      "legacy_path": "scripts/voice_low_pressure_focus.py"
+    },
+    {
+      "path": "runtime/voice/voice_semantic_emphasis.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Semantic emphasis layer for spoken response delivery.",
+      "behavior_surface": [
+        "semantic emphasis",
+        "spoken text"
+      ],
+      "legacy_path": "scripts/voice_semantic_emphasis.py"
+    },
+    {
+      "path": "runtime/voice/voice_listening_calibration.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Listening-feedback calibration and emphasis guard.",
+      "behavior_surface": [
+        "spoken delivery",
+        "emphasis guard"
+      ],
+      "legacy_path": "scripts/voice_listening_calibration.py"
+    },
+    {
+      "path": "runtime/voice/voice_emotion_smoothing.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Emotion-transition smoothing layer for delivery metadata.",
+      "behavior_surface": [
+        "emotion transition",
+        "delivery metadata"
+      ],
+      "legacy_path": "scripts/voice_emotion_smoothing.py"
+    },
+    {
+      "path": "runtime/voice/voice_private_pattern_profile.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-experimental-off-by-default",
+      "runtime_role": "Private-pattern profile layer. It remains off by default unless future evidence beats the baseline.",
+      "behavior_surface": [
+        "experimental provider settings",
+        "private-pattern proposal"
+      ],
+      "legacy_path": "scripts/voice_private_pattern_profile.py"
+    },
+    {
+      "path": "runtime/voice/voice_feature_runtime_mapping.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-proposal-only",
+      "runtime_role": "Maps reviewed speech features to proposal-only runtime settings.",
+      "behavior_surface": [
+        "proposed voice settings"
+      ],
+      "legacy_path": "scripts/voice_feature_runtime_mapping.py"
+    },
+    {
+      "path": "runtime/voice/sales_voice_tuning.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Sales voice tuning layer.",
+      "behavior_surface": [
+        "sales voice tone",
+        "delivery metadata"
+      ],
+      "legacy_path": "scripts/sales_voice_tuning.py"
+    },
+    {
+      "path": "runtime/persistence/sqlite_schema.sql",
+      "path_type": "file",
+      "tier": "runtime-persistence-prototype",
+      "runtime_role": "Prototype persistence schema for MVP entities.",
+      "behavior_surface": [
+        "stored runtime entities"
+      ]
+    },
+    {
+      "path": "runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md",
+      "path_type": "file",
+      "tier": "runtime-architecture-doc",
+      "runtime_role": "Canonical runtime architecture guidance for latency, bridge responses, background modules, and live critical path boundaries.",
+      "behavior_surface": [
+        "live critical path",
+        "latency budget",
+        "bridge response policy"
+      ]
+    },
+    {
+      "path": "runtime/entrypoints/REALTIME_TURN_CLI.md",
+      "path_type": "file",
+      "tier": "runtime-entrypoint-doc",
+      "runtime_role": "Canonical documentation for the realtime turn command surface and expected runtime decision output fields.",
+      "behavior_surface": [
+        "runtime command surface",
+        "turn output shape"
+      ]
+    },
+    {
+      "path": "runtime/policy/CALL_TERMINATION_POLICY.md",
+      "path_type": "file",
+      "tier": "runtime-policy-doc",
+      "runtime_role": "Canonical call-control and termination policy for continue, bridge, transfer, end, schedule, and sale-ready decisions.",
+      "behavior_surface": [
+        "call control",
+        "termination policy",
+        "safe close behavior"
+      ]
+    },
+    {
+      "path": "runtime/policy/BILINGUAL_REALTIME_CORE.md",
+      "path_type": "file",
+      "tier": "runtime-policy-doc",
+      "runtime_role": "Canonical bilingual runtime policy for shared decision labels and campaign-language response boundaries.",
+      "behavior_surface": [
+        "language lane",
+        "response language",
+        "call control parity"
+      ]
+    },
+    {
+      "path": "runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md",
+      "path_type": "file",
+      "tier": "runtime-provider-boundary-doc",
+      "runtime_role": "Canonical provider run boundary for live TTS, ASR, voice generation, opt-in flags, secrets, consent, and fallback behavior.",
+      "behavior_surface": [
+        "provider calls",
+        "secret handling",
+        "live opt-in boundary"
+      ]
+    },
+    {
+      "path": "runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
+      "path_type": "file",
+      "tier": "runtime-provider-boundary-doc",
+      "runtime_role": "Canonical generated-audio asset log shape for runtime voice tests and provider-backed audio artifacts.",
+      "behavior_surface": [
+        "generated audio metadata",
+        "provider audit fields",
+        "listening review state"
+      ]
+    },
+    {
+      "path": "runtime/persistence/SQLITE_PROTOTYPE.md",
+      "path_type": "file",
+      "tier": "runtime-persistence-doc",
+      "runtime_role": "Canonical local SQLite prototype documentation for runtime persistence schema and synthetic import workflow.",
+      "behavior_surface": [
+        "persistence prototype",
+        "stored runtime entities"
+      ]
+    },
+    {
+      "path": "runtime/speech/speech_naturalness.py",
+      "path_type": "file",
+      "tier": "spoken-runtime-behavior",
+      "runtime_role": "Shared speech naturalness helpers used by spoken text, prosody, interaction, and speech realism layers.",
+      "behavior_surface": [
+        "spoken text",
+        "naturalness rules"
+      ],
+      "legacy_path": "scripts/speech_naturalness.py"
+    }
+  ],
+  "non_runtime_defaults": [
+    {
+      "pattern": "research/experiments/generated/**",
+      "reason": "Generated evidence and review artifacts. Preserve when cited, but do not treat as runtime source unless a checkpoint explicitly promotes it."
+    },
+    {
+      "pattern": "research/experiments/cases/**",
+      "reason": "Fixed case inputs for validators and experiments, not live runtime behavior by default."
+    },
+    {
+      "pattern": "scripts/prod_*.py",
+      "reason": "Checkpoint packet builders. They can describe or test runtime behavior but are not live runtime modules by default."
+    },
+    {
+      "pattern": "scripts/run_prod_*.py",
+      "reason": "Checkpoint runners. They create evidence artifacts."
+    },
+    {
+      "pattern": "scripts/validate_*.py",
+      "reason": "Validators and guards. They protect behavior but do not speak to customers."
+    },
+    {
+      "pattern": "docs/product/PROD_*.md",
+      "reason": "Checkpoint documentation."
+    },
+    {
+      "pattern": "docs/thesis/**",
+      "reason": "Thesis traceability and decisions."
+    },
+    {
+      "pattern": ".tmp/**",
+      "reason": "Transient validation and local scratch files."
+    },
+    {
+      "pattern": "data/private/**",
+      "reason": "Ignored private/local material. Never treat as runtime source or move into tracked runtime folders."
+    }
+  ],
+  "move_readiness": {
+    "safe_now": "Edit runtime-affecting source under runtime/ and keep legacy scripts wrappers thin.",
+    "not_safe_yet": "Deleting scripts compatibility wrappers or moving private ignored local config without explicit review.",
+    "required_before_move": [
+      "keep legacy scripts entrypoints or wrappers working",
+      "update docs/product/COMMANDS.md",
+      "update scripts/check_setup.py and check_project_drift.py",
+      "update validators that import exact script paths",
+      "run setup, runtime manifest, drift, thesis gate, and affected runtime validators"
+    ]
+  },
+  "boundary_flags": {
+    "runtime_behavior_changed": false,
+    "response_text_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

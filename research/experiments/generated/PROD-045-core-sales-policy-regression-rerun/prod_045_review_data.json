@@ -75,7 +75,7 @@
       },
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "example_type": "synthetic_generic_regression_case",
       "source_quote": false,
@@ -175,7 +175,7 @@
       },
       "expected": {
         "sales_difficulty": "written-info-request",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "example_type": "synthetic_generic_regression_case",
       "source_quote": false,
@@ -725,7 +725,7 @@
       },
       "expected": {
         "sales_difficulty": "stakeholder-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "example_type": "synthetic_generic_regression_case",
       "source_quote": false,
@@ -775,7 +775,7 @@
       },
       "expected": {
         "sales_difficulty": "partner-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "example_type": "synthetic_generic_regression_case",
       "source_quote": false,
@@ -1191,7 +1191,7 @@
       "customer_utterance": "What does this cost?",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "prod-045-price-first",
@@ -1209,10 +1209,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "The approved pricing summary is 29 per user per month for the starter plan, with exact terms sent in writing. No payment or commitment on this call.",
+        "agent_response": "The starter plan is 29 per user per month, and I can send the exact terms in writing. If useful, I can briefly explain what is included before I send them. No payment or commitment on this call.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1271,7 +1271,7 @@
       "customer_utterance": "Send me the details.",
       "expected": {
         "sales_difficulty": "written-info-request",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "prod-045-send-info",
@@ -1289,10 +1289,10 @@
         "sales_difficulty": "written-info-request",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "I can send the approved one-page summary and leave it there.",
+        "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1720,7 +1720,7 @@
       "customer_utterance": "I need to ask my manager.",
       "expected": {
         "sales_difficulty": "stakeholder-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "prod-045-manager",
@@ -1738,10 +1738,10 @@
         "sales_difficulty": "stakeholder-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "I can send the approved review summary for review. No decision or commitment from you today.",
+        "agent_response": "Of course, I can send your manager a short summary with the key points. No decision today.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -1761,7 +1761,7 @@
       "customer_utterance": "I need to ask my spouse.",
       "expected": {
         "sales_difficulty": "partner-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "prod-045-spouse",
@@ -1779,10 +1779,10 @@
         "sales_difficulty": "partner-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "I can send the approved review summary for review. No decision or commitment from you today.",
+        "agent_response": "Of course, I can send your spouse a short summary with the key points. No decision today.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {

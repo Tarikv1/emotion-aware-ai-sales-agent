@@ -20,7 +20,7 @@ python scripts\validate_prod_044_core_sales_policy_update.py
 - `research/experiments/generated/PROD-043-sales-playbook-runtime-adapter/agent_response_evaluations.json`
 - `research/experiments/generated/PROD-043-sales-playbook-runtime-adapter/runtime_adapter_review_data.json`
 - Runtime architecture references:
-  - `docs/product/REALTIME_AGENT_ARCHITECTURE.md`
+  - `runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`
   - `docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md`
   - `scripts/run_realtime_turn_simulation.py`
   - `scripts/realtime_turn_cli.py`

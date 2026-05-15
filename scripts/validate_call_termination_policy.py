@@ -5,8 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "scripts" / "product_agent_output_contract.py"
-POLICY_DOC = ROOT / "docs" / "product" / "CALL_TERMINATION_POLICY.md"
-PROMPT_PATH = ROOT / "packages" / "prompts" / "product-qualification-agent.txt"
+POLICY_DOC = ROOT / "runtime" / "policy" / "CALL_TERMINATION_POLICY.md"
+PROMPT_PATH = ROOT / "runtime" / "prompts" / "product-qualification-agent.txt"
 
 
 def load_contract_module():
@@ -37,6 +37,7 @@ def main() -> None:
     assert module.call_control_for_next_action("confirm-scheduling", "interested") == "schedule-and-end"
     assert module.call_control_for_next_action("sale-ready-log", "interested") == "close-and-log-sale-ready"
     assert module.call_control_for_next_action("create-follow-up-task", "maybe-interested") == "end-call"
+    assert module.call_control_for_next_action("answer-and-continue", "maybe-interested") == "bridge-then-continue"
     assert module.call_control_for_next_action("ask-follow-up", "maybe-interested") == "continue-call"
 
     normalized_turn = module.normalize_turn_output(

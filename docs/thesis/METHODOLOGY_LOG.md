@@ -16,12 +16,172 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-15 - PROD-053E English runtime wording patch
+
+- Objective: promote Tarik-approved English single-turn wording into the deterministic realtime runtime without bundling unresolved behavior decisions.
+- Action taken: added a failing `PROD-053E` validator first, promoted accepted and safe English wording in `runtime/core/realtime_turns.py`, added a checkpoint runner, product doc, generated promoted/skipped evidence files, and updated the command/checkpoint navigation.
+- Data used: `research/experiments/generated/PROD-053D-english-review-import/accepted_as_written_items.json` and `runtime_patch_candidates.json`. No provider calls, LLM judging, private data reads, retrieval, voice playback, German phrase promotion, or German naturalness claims were used.
+- Output created: `scripts/prod_053e_english_runtime_wording_patch.py`, `scripts/run_prod_053e_english_runtime_wording_patch.py`, `scripts/validate_prod_053e_english_runtime_wording_patch.py`, `docs/product/PROD_053E_ENGLISH_RUNTIME_WORDING_PATCH.md`, and generated artifacts under `research/experiments/generated/PROD-053E-english-runtime-wording-patch/`.
+- What was learned: `26` English responses are safe to promote now: `15` accepted as-written, `10` wording-only rework candidates, and `1` approved-with-edit-note item. Voicemail action-only behavior, coverage knowledge-policy behavior, and context-sensitive autonomy wording remain separate runtime/design questions.
+- Why it matters for the thesis: this converts human review evidence into a bounded runtime change while preserving the distinction between phrase-level quality improvements and behavioral policy changes.
+- Open questions: whether the promoted single-turn wording stays natural after the customer answers, which is the purpose of the next `PROD-054` stress review.
+
+### 2026-05-15 - PROD-053D English review import
+
+- Objective: import Tarik's PROD-053C English review export and distinguish exact approvals from rework notes before changing runtime text.
+- Action taken: added a failing PROD-053D validator first, then added an importer, runner, product doc, imported review summary, accepted-as-written list, approved-with-edit-note list, needs-rework list, owner feedback themes, runtime patch candidates, report, and result artifact.
+- Data used: `research/experiments/imports/PROD-053C-english-spoken-response-expansion-review/prod_053c_review_export.json.json` and `research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/english_spoken_response_review_items.json`. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, or German phrase promotion were used.
+- Output created: `scripts/prod_053d_english_review_import.py`, `scripts/run_prod_053d_english_review_import.py`, `scripts/validate_prod_053d_english_review_import.py`, `docs/product/PROD_053D_ENGLISH_REVIEW_IMPORT.md`, and generated artifacts under `research/experiments/generated/PROD-053D-english-review-import/`.
+- What was learned: the review contains `16` approved statuses and `13` needs-rework statuses, but only `15` items are approved as-written because `prod-053c-existing-provider-gap` has a material edit note. The owner feedback themes are contractions over formal expansions, less formal acknowledgements, voicemail action-only behavior, short transfer responses, modal precision, coverage knowledge vs advice, callback brevity, and useful small mirroring.
+- Why it matters for the thesis: this preserves human review as structured evidence instead of manually interpreting it from memory, and it prevents unreviewed runtime changes from being hidden inside a review import.
+- Open questions: which runtime patch candidates should be applied first, and whether voicemail, coverage, and context-sensitive autonomy should be separate checkpoints rather than part of a wording-only patch.
+
+### 2026-05-15 - PROD-053C English spoken-response expansion review
+
+- Objective: create a broader English exact phrase review packet without making Tarik re-review responses already carried forward by PROD-053B.
+- Action taken: added a failing PROD-053C validator first, then added a generator, runner, product doc, scope-decision artifact, policy-application audit, review item JSON, report, and local HTML review page with `localStorage`, `Export JSON`, and `Import JSON` controls.
+- Data used: `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/result.json`, `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/compact_english_policy_rules.json`, `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/current_english_case_policy_audit.json`, and deterministic probes against `runtime/core/realtime_turns.py`. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, or German phrase promotion were used.
+- Output created: `scripts/prod_053c_english_spoken_response_expansion_review.py`, `scripts/run_prod_053c_english_spoken_response_expansion_review.py`, `scripts/validate_prod_053c_english_spoken_response_expansion_review.py`, `docs/product/PROD_053C_ENGLISH_SPOKEN_RESPONSE_EXPANSION_REVIEW.md`, and generated artifacts under `research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/`.
+- What was learned: the reachable English deterministic runtime surface is larger than the previous review lane: PROD-053C produced `29` review items, made of `2` PROD-053B-flagged rewrites and `27` previously unreviewed reachable English response types. It excluded `2` already-approved carry-forward cases and deferred `provider-comparison` because the current classifier has no distinct reachable English branch for it.
+- Why it matters for the thesis: this turns the compact psychology rules into a concrete human-review surface without treating deterministic checks as proof of naturalness or importing unreviewed phrases into runtime.
+- Open questions: which proposed English responses Tarik accepts, which need wording changes, and whether accepted single-turn wording should be applied in a narrow runtime update before `PROD-054` multi-turn naturalness stress testing.
+
+### 2026-05-15 - PROD-053B compact English psychology layer review
+
+- Objective: compress the PROD-053A English sales psychology research into a reviewed, deterministic, English-only rule layer before expanding the English spoken-response surface.
+- Action taken: added a failing PROD-053B validator first, then added a generator, runner, product doc, compact policy rules, candidate-rule review, current English case audit, rejected/deferred tactic review, report, and local HTML review page.
+- Data used: `research/experiments/generated/PROD-053A-english-sales-psychology-deep-dive/compact_candidate_rules.json`, `research/experiments/generated/PROD-053A-english-sales-psychology-deep-dive/rejected_or_deferred_tactics.json`, and `research/experiments/generated/PROD-052-language-lane-review-separation/english_spoken_review_items.json`. No provider calls, LLM judging, private data reads, retrieval, voice playback, or German phrase promotion were used.
+- Output created: `scripts/prod_053b_compact_english_psychology_layer_review.py`, `scripts/run_prod_053b_compact_english_psychology_layer_review.py`, `scripts/validate_prod_053b_compact_english_psychology_layer_review.py`, `docs/product/PROD_053B_COMPACT_ENGLISH_PSYCHOLOGY_LAYER_REVIEW.md`, and generated artifacts under `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/`.
+- What was learned: the `8` candidate rules are useful enough to carry into PROD-053C, but `3` need constraints so mirroring does not become parroting, friction diagnosis does not become broad interrogation, and autonomy language does not become accidental terminal wording. The current stakeholder and partner English responses should be reopened in PROD-053C because they echo the customer category and should include clearer no-commitment relief.
+- Why it matters for the thesis: this shows the research-to-runtime discipline: deeper sales psychology is not copied into a large planner, but compressed into deterministic, reviewable rules before any runtime response text changes.
+- Open questions: which broader English response types should enter PROD-053C, and whether the rewrite packet should include only flagged already-reviewed cases plus previously unreviewed English surface area.
+
+### 2026-05-15 - Thesis path reference audit after runtime move
+
+- Objective: make sure thesis documents point to current project paths after runtime-affecting files moved under `runtime/`.
+- Action taken: scanned `14` thesis Markdown files for path-like references, patched stale moved paths in `METHODOLOGY_LOG.md`, updated command guidance for ignored local voice config, and confirmed intentionally ignored `runtime/config/local/voice_ids.json` is covered by `runtime/config/local/.gitignore`.
+- Data used: local thesis Markdown files, `runtime/` folder inventory, and `git check-ignore -v runtime/config/local/voice_ids.json`. No provider calls, LLM judging, private data reads, retrieval, or runtime behavior changes were used.
+- Output created: updated thesis references for `runtime/persistence/sqlite_schema.sql`, `runtime/persistence/SQLITE_PROTOTYPE.md`, `runtime/prompts/product-qualification-agent.txt`, `runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`, `runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`, `runtime/config/local/.gitignore`, and `runtime/config/local/voice_ids.example.json`.
+- What was learned: tracked thesis path references were mostly current; the remaining absent references were intentionally ignored local config files rather than moved tracked files.
+- Why it matters for the thesis: thesis writing can now point to the current runtime folder structure instead of stale pre-move locations.
+- Open questions: whether a permanent thesis path-reference validator is worth adding later, or whether the existing reference/update gates plus targeted path audits are enough.
+
+### 2026-05-15 - Runtime folder boundary map
+
+- Objective: reduce project-folder confusion before adding more English runtime behavior rules.
+- Action taken: added a top-level `runtime/` folder, moved runtime-affecting source modules, runtime assets, and canonical runtime-facing Markdown into it, kept thin `scripts/*` compatibility wrappers plus short product-doc stubs for historical paths, and tightened the manifest validator so runtime sources/docs must physically live under `runtime/`.
+- Data used: local project file inventory, command-map references, existing project navigation guidance, and static impact scan output. No provider calls, LLM judging, private data reads, or runtime execution were used.
+- Output created: `runtime/README.md`, `runtime/runtime_manifest.json`, runtime subfolders for architecture, core behavior, entrypoints, contracts, policy, retrieval, speech, voice, providers, campaigns, prompts, config, and persistence; canonical runtime Markdown under `runtime/architecture/`, `runtime/entrypoints/`, `runtime/policy/`, `runtime/providers/`, and `runtime/persistence/`; `scripts/validate_runtime_manifest.py`; compatibility wrappers under `scripts/`; and navigation/setup updates in `README.md`, `docs/PROJECT_NAVIGATION.md`, `scripts/README.md`, `docs/product/COMMANDS.md`, `scripts/check_setup.py`, and `scripts/check_project_drift.py`.
+- What was learned: the current runtime surface is real and can be separated without changing response text when legacy command compatibility is preserved. The manifest now tracks `45` runtime entries and `9` non-runtime defaults. Generated artifacts, checkpoint runners, validators, `.tmp`, and private data should remain outside the runtime boundary unless a future checkpoint promotes a specific file. Windows denied direct move/unlink operations, so the safe migration path was copy-to-runtime, hash verification, wrapper/stub replacement, and validated cleanup of old runtime asset copies.
+- Why it matters for the thesis: the project now distinguishes runtime-affecting implementation from research evidence and generated review artifacts, which reduces the chance of accidentally cleaning up or editing the wrong files.
+- Open questions: which legacy wrappers can eventually be removed after command docs, validators, and historical review workflows no longer depend on exact `scripts/*` paths.
+
+### 2026-05-15 - PROD-053A English sales psychology deep dive
+
+- Objective: research the useful sales psychology and adjacent human psychology needed for a compact English live-call psychology layer.
+- Action taken: added a PROD-053A generator, runner, validator, product doc, source register, topic findings, compact candidate rules, rejected/deferred tactic list, result summary, and report.
+- Data used: public source-backed research plus existing project direction from RAG-020/RAG-021. The packet uses paraphrased project-owned findings only and stores no source excerpts, copied scripts, private customer data, provider outputs, or LLM judgments.
+- Output created: `scripts/prod_053a_english_sales_psychology_deep_dive.py`, `scripts/run_prod_053a_english_sales_psychology_deep_dive.py`, `scripts/validate_prod_053a_english_sales_psychology_deep_dive.py`, `docs/product/PROD_053A_ENGLISH_SALES_PSYCHOLOGY_DEEP_DIVE.md`, and generated artifacts under `research/experiments/generated/PROD-053A-english-sales-psychology-deep-dive/`.
+- What was learned: the useful layer should emphasize adaptive selling, listening, buyer confidence, autonomy, friction diagnosis, trust repair, conversation repair, spoken brevity, and ethical insight. It should reject false scarcity, hidden emotion diagnosis, commitment traps, excessive customer-category echoing, and large live psychology planners.
+- Why it matters for the thesis: this records a disciplined research-to-compression step, showing how deeper psychology research can be transformed into a small reviewed runtime rule layer without adding live latency or manipulative behavior.
+- Open questions: which compact candidate rules should be accepted into PROD-053B, and which already-reviewed English phrases should be reopened by the new rules.
+
+### 2026-05-15 - English call-control phrase shortening
+
+- Objective: incorporate owner feedback that the English send-info, manager-review, and spouse-review responses should sound shorter and more natural for a live call.
+- Action taken: updated the English `written-info-request`, `stakeholder-review`, and `partner-review` low-pressure responses; updated the frozen PROD-050 proposal text; adjusted deterministic naturalness markers so shorter owner-approved low-pressure wording is accepted without requiring the old `If useful...` sentence shape; regenerated affected PROD-050 through PROD-052 artifacts.
+- Data used: Tarik's English wording feedback and existing PROD-050/051/052 generated evidence. No German wording acceptance, provider call, LLM judging, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: revised generated artifacts under `research/experiments/generated/PROD-050-safe-call-control-softening-regression/`, `research/experiments/generated/PROD-051-safe-call-control-runtime-update/`, and `research/experiments/generated/PROD-052-language-lane-review-separation/`.
+- What was learned: deterministic naturalness checks need to validate the conversational function of a phrase, not force one old sentence pattern. The send-info phrase still needs to name the item being sent, so the accepted shape became `tailor the summary... then send it over`.
+- Why it matters for the thesis: this is a concrete human-in-the-loop correction where project-owner language intuition improves the spoken-call surface after automated checks passed.
+- Open questions: how many additional English response types should enter the broader PROD-053 review packet before multi-turn testing.
+
+### 2026-05-15 - PROD-052 language-lane review separation
+
+- Objective: separate exact spoken-response acceptance by language so English can be reviewed now while German wording remains pending native/source-backed evidence.
+- Action taken: added a PROD-052 generator, runner, validator, product doc, separated English review items, German pending-review items, reusable multilingual policy rules, legacy mixed review-surface inventory, review HTML, report, and result summary.
+- Data used: PROD-051 runtime and naturalness artifacts only. No provider call, LLM judging, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_052_language_lane_review_separation.py`, `scripts/run_prod_052_language_lane_review_separation.py`, `scripts/validate_prod_052_language_lane_review_separation.py`, `docs/product/PROD_052_LANGUAGE_LANE_REVIEW_SEPARATION.md`, and generated artifacts under `research/experiments/generated/PROD-052-language-lane-review-separation/`.
+- What was learned: deterministic naturalness gates are useful for multilingual policy constraints, but exact phrase naturalness needs language-specific human or source-backed review. English can move faster because Tarik can judge it directly; German should stay separated and unaccepted until a stronger review source exists.
+- Why it matters for the thesis: this records a concrete limitation in AI-assisted language evaluation instead of overclaiming bilingual naturalness from automated checks.
+- Open questions: which older mixed review surfaces should be reopened as separated English/German packets, and whether the next immediate product step should stress-test only English multi-turn naturalness.
+
+### 2026-05-14 - PROD-051 safe call-control runtime update with naturalness audit
+
+- Objective: apply the selected call-control softening to the live deterministic runtime only if the response text also becomes natural enough for a spoken sales call.
+- Action taken: added a PROD-051 generator, runner, validator, product doc, runtime update evidence, naturalness audit, before/after naturalness comparison, protected-boundary probes, review HTML, report, and result summary. The live runtime now uses `answer-and-continue` for selected non-refusal cases and maps that to `bridge-then-continue`.
+- Data used: frozen PROD-050 cases and baseline/proposed evidence, existing PROD-049 through PROD-045 result packets, and deterministic live runtime probes. No raw transcript text, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_051_safe_call_control_runtime_update.py`, `scripts/run_prod_051_safe_call_control_runtime_update.py`, `scripts/validate_prod_051_safe_call_control_runtime_update.py`, `docs/product/PROD_051_SAFE_CALL_CONTROL_RUNTIME_UPDATE.md`, and generated artifacts under `research/experiments/generated/PROD-051-safe-call-control-runtime-update/`.
+- What was learned: the selected `22` non-refusal cases can be softened in live runtime only when call-control and response text move together. A deterministic naturalness rubric caught the earlier shallow flag-only implementation risk by requiring direct answer, optional continuation, no terminal close, no internal jargon, spoken sentence shape, customer-fit, language-fit, and no pressure/payment/contract/unsupported claim.
+- Why it matters for the thesis: the project now has a repeatable offline method for validating conversation naturalness beyond reviewing its own generated artifacts or relying on green regression counts.
+- Open questions: whether the answer-and-continue path remains natural in the second turn after the customer accepts, ignores, challenges, or refuses the optional continuation.
+
+### 2026-05-14 - PROD-050 safe call-control softening regression
+
+- Objective: prove the selected safe end-call softening candidates before editing the live deterministic runtime.
+- Action taken: added a PROD-050 proposed-softening generator, runner, validator, product doc, regression cases, regression results, protected-boundary probes, proposed runtime change summary, review HTML, report, and result summary. Runtime behavior and call-control behavior were not changed.
+- Data used: PROD-049 candidate matrix, PROD-045 English regression cases, PROD-046D German source-informed results, and passing PROD-049/048C/047/046/045 result packets. No raw transcript text, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_050_safe_call_control_softening_regression.py`, `scripts/run_prod_050_safe_call_control_softening_regression.py`, `scripts/validate_prod_050_safe_call_control_softening_regression.py`, `docs/product/PROD_050_SAFE_CALL_CONTROL_SOFTENING_REGRESSION.md`, and generated artifacts under `research/experiments/generated/PROD-050-safe-call-control-softening-regression/`.
+- What was learned: all `22` selected non-refusal cases can be proposed as `bridge-then-continue` only when the proposal also replaces terminal safe-close wording with low-pressure optional continuation text while preserving approved answer content. The tightened evidence records no pressure, unsupported-claim, payment-collection, or contract-signing violations. Protected boundaries stayed unchanged across `9` probes.
+- Why it matters for the thesis: the project now has an auditable method for improving conversational continuity without conflating proposed call-control quality evidence with live runtime promotion.
+- Open questions: whether `PROD-051` should apply both the call-control mapping and the response-text softening to the live deterministic runtime, update the bridge-then-continue definition for non-lookup answer-then-continue cases, and migrate affected historical expectations while keeping the older German review chain clear about what changed later.
+
+### 2026-05-14 - PROD-049 safe end-call bridge-continue review
+
+- Objective: move forward while the native German follow-up review is blocked, using existing call-control evidence to decide where safe end-call behavior should be tested as bridge-then-continue.
+- Action taken: added a PROD-049 review generator, runner, validator, product doc, candidate matrix, protected-boundary probes, review packet, review HTML, report, and result summary. Runtime behavior and call-control behavior were not changed.
+- Data used: existing PROD-046 call-control findings plus passing PROD-048C, PROD-047, PROD-046, and PROD-045 result packets. No raw transcript text, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_049_safe_end_call_bridge_continue_review.py`, `scripts/run_prod_049_safe_end_call_bridge_continue_review.py`, `scripts/validate_prod_049_safe_end_call_bridge_continue_review.py`, `docs/product/PROD_049_SAFE_END_CALL_BRIDGE_CONTINUE_REVIEW.md`, and generated artifacts under `research/experiments/generated/PROD-049-safe-end-call-bridge-continue-review/`.
+- What was learned: not all abrupt safe end-calls should be softened. `price-first-direct`, `written-info-request`, `stakeholder-review`, and `partner-review` are suitable future bridge-then-continue candidates, while email-only, payment/scam safety, sale-ready, callback, support, cancellation, do-not-call, and human-request boundaries should remain terminal or escalated.
+- Why it matters for the thesis: this separates safe regression success from spoken-call quality and creates an auditable path for improving conversational continuity without weakening consent, safety, or escalation boundaries.
+- Open questions: whether `PROD-050` can safely apply bridge-then-continue to the selected candidate groups without introducing pressure, looping questions, unsupported claims, or premature voice/demo promotion.
+
+### 2026-05-12 - PROD-048C German wording feedback patch
+
+- Objective: apply only the reviewed price-first German wording correction from PROD-048B and prepare a corrected grouped follow-up review packet.
+- Action taken: changed the German plain price-first runtime wording to remove the payment/contract sentence, added a PROD-048C generator, runner, validator, product doc, before/after evidence, safety-boundary preservation evidence, corrected German follow-up HTML, follow-up packet JSON, export schema, CSV, and German README. Customer-move classification, runtime policy, and call-control behavior were not changed.
+- Data used: PROD-048B imported reviewer feedback from Diro, the PROD-048A grouped packet, and deterministic runtime probes for price, payment safety, scam safety, and sale-ready contexts. No raw transcript text, German sales-call scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_048c_german_wording_feedback_patch.py`, `scripts/run_prod_048c_german_wording_feedback_patch.py`, `scripts/validate_prod_048c_german_wording_feedback_patch.py`, `docs/product/PROD_048C_GERMAN_WORDING_FEEDBACK_PATCH.md`, and generated artifacts under `research/experiments/generated/PROD-048C-german-wording-feedback-patch/`.
+- What was learned: a native reviewer can accept the price answer as phone-acceptable while still flagging a subtle sales-pressure effect, so the import-to-patch workflow must separate acceptance, small-change requests, and safety/impact flags.
+- Why it matters for the thesis: German wording quality is now improved through a traceable human-feedback loop without overclaiming full native approval or legal compliance.
+- Open questions: whether the reviewer accepts the shortened price-first answer and whether the remaining unreviewed grouped answers need additional wording patches.
+
+### 2026-05-12 - PROD-048B native German review import
+
+- Objective: import returned native German reviewer feedback as partial evidence without treating blank rows as rejection or approval.
+- Action taken: added a deterministic reviewer JSON importer, runner, validator, product doc, generated summary, reviewed/unreviewed item splits, revision candidates, follow-up review plan, and import HTML. Runtime policy and call-control behavior were not changed.
+- Data used: reviewer-exported JSON from `research/experiments/imports/PROD-048B-native-german-review-import/deutsche-telefonantworten-bewertung-1.json`, the grouped PROD-048A packet, and the earlier individual-row PROD-048A packet for traceability. No raw transcript text, German sales-call scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_048b_native_german_review_import.py`, `scripts/run_prod_048b_native_german_review_import.py`, `scripts/validate_prod_048b_native_german_review_import.py`, `docs/product/PROD_048B_NATIVE_GERMAN_REVIEW_IMPORT.md`, and generated artifacts under `research/experiments/generated/PROD-048B-native-german-review-import/`.
+- What was learned: the returned export had a broken checked-count summary and used `99` individual rows, so importer logic must recompute reviewed rows from filled fields and preserve the import-shape concern.
+- Why it matters for the thesis: native-language feedback is now evidence-imported as partial, auditable review data instead of being overclaimed as full German approval.
+- Open questions: whether the price-first wording revision should be applied in a targeted patch checkpoint, and whether the reviewer can continue with the grouped HTML for the remaining unreviewed answer groups.
+
+### 2026-05-12 - PROD-048A German review HTML and brevity packet
+
+- Objective: respond to native-reviewer feedback that the previous German review packet was too repetitive and that many answers sounded too long, forced, complete, or AI-like.
+- Action taken: added a grouped German review packet generator, runner, validator, product doc, grouped German-only HTML, German README, export schema, review table, brevity before/after evidence, and duplicate-answer group evidence. Runtime policy and call-control behavior were not changed.
+- Data used: existing PROD-046 German response-quality findings, PROD-046D German source-informed results, PROD-046 call-control findings, and the valid German PROD-047 campaign profile. No raw transcript text, German sales-call scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_048a_german_review_html_and_brevity_packet.py`, `scripts/run_prod_048a_german_review_html_and_brevity_packet.py`, `scripts/validate_prod_048a_german_review_html_and_brevity_packet.py`, `docs/product/PROD_048A_GERMAN_REVIEW_HTML_AND_BREVITY_PACKET.md`, and generated artifacts under `research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/`.
+- What was learned: the review surface should not ask a human reviewer to rate the same answer repeatedly; grouping repeated German answers keeps traceability while reducing review fatigue.
+- Why it matters for the thesis: the German review method now separates case-level traceability from human-review usability, and records brevity changes without claiming native German approval.
+- Open questions: whether the native reviewer accepts the shorter grouped answers, requests small wording edits, or finds that some grouped customer utterances need distinct responses.
+
+### 2026-05-12 - PROD-048A native German review HTML packet
+
+- Objective: prepare a German-only, non-technical, browser-openable review packet so a native German reviewer can judge wording quality without knowing the technical project.
+- Action taken: added a PROD-048A generator, runner, validator, product doc, German reviewer README, self-contained HTML review interface, packet JSON, export schema, and review table. Runtime behavior was not changed.
+- Data used: existing PROD-046 German response-quality findings, PROD-046D German source-informed results for customer utterances, PROD-046 call-control findings, and the valid German PROD-047 campaign-profile fixture. No raw transcript text, German sales-call scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
+- Output created: `scripts/prod_048a_native_german_review_html_packet.py`, `scripts/run_prod_048a_native_german_review_html_packet.py`, `scripts/validate_prod_048a_native_german_review_html_packet.py`, `docs/product/PROD_048A_NATIVE_GERMAN_REVIEW_HTML_PACKET.md`, and generated artifacts under `research/experiments/generated/PROD-048A-native-german-review-html-packet/`.
+- What was learned: native German review can now be collected as structured JSON/CSV evidence without server infrastructure and without claiming approval before reviewer feedback exists.
+- Why it matters for the thesis: PROD-048A separates source-informed machine validation from actual human language review, making the German wording-quality gate auditable.
+- Open questions: whether the returned native German review accepts the current wording, requests small wording edits, or reveals broader call-control/end-call issues.
+
 ### 2026-05-12 - PROD-047 campaign-profile contract validator
 
 - Objective: create a reusable deterministic campaign-profile contract so future campaign fields cannot enter guarded runtime policies without explicit language, field shape, source boundary, review status, and hard safety defaults.
 - Action taken: added `campaign_profile_contract.py`, PROD-047 runner/validator scripts, product documentation, example valid and invalid campaign profiles, generated schema, guard matrix, validation cases/results, report, and review HTML. Runtime behavior was not changed.
 - Data used: existing PROD-046 review findings plus synthetic project-owned campaign-profile fixtures only. No raw transcript text, German sales scripts, provider call, LLM call, private data read, retrieval enablement, voice playback, public demo polish, payment collection, contract signing, or production runtime promotion was used.
-- Output created: `scripts/campaign_profile_contract.py`, `scripts/run_prod_047_campaign_profile_contract_validator.py`, `scripts/validate_prod_047_campaign_profile_contract_validator.py`, `docs/product/PROD_047_CAMPAIGN_PROFILE_CONTRACT_VALIDATOR.md`, example campaigns under `campaigns/examples/`, and generated artifacts under `research/experiments/generated/PROD-047-campaign-profile-contract-validator/`.
+- Output created: `scripts/campaign_profile_contract.py`, `scripts/run_prod_047_campaign_profile_contract_validator.py`, `scripts/validate_prod_047_campaign_profile_contract_validator.py`, `docs/product/PROD_047_CAMPAIGN_PROFILE_CONTRACT_VALIDATOR.md`, example campaigns under `runtime/campaigns/examples/`, and generated artifacts under `research/experiments/generated/PROD-047-campaign-profile-contract-validator/`.
 - What was learned: campaign/profile quality is now enforceable as a deterministic contract instead of a runtime-template assumption. Valid English and German profiles can pass for offline/internal review while still being blocked from voice/demo/customer use.
 - Why it matters for the thesis: PROD-047 turns the campaign-field bottleneck found by PROD-046 into an auditable guardrail layer, separating campaign configuration readiness from runtime-policy behavior.
 - Open questions: whether the next native German wording review should annotate these campaign profiles directly, and whether later customer/demo promotion needs a stricter legal-review status contract.
@@ -1055,7 +1215,7 @@ Use this file as a chronological research journal for the thesis implementation.
 - Data used: synthetic English B2B software runtime text only. No customer/private audio, transcription, voice cloning, or raw provider secret logging was used.
 - Output created: generated RESP-003 live audio artifacts under the local generated experiment workspace, plus a local-only ignored voice-ID config update.
 - What was learned: changing the English voice candidate substantially reduced the obvious robotic voice quality. Tarik estimated that the roboticness was roughly 95% gone and that sales trust was good enough to keep working with this candidate. The remaining issue is narrower: the opening sounded slightly unclear, and the natural rhythm/emphasis broke around the clause "whether reviewing options is worth your time."
-- Error or correction preserved: updating `config/local/voice_ids.json` from Windows PowerShell wrote UTF-8 with a BOM. Python rejected the file during VOICE-027 with `JSONDecodeError: Unexpected UTF-8 BOM`. The local voice-config loader was hardened to accept `utf-8-sig`, and a regression check was added so ignored local voice config remains usable after PowerShell edits.
+- Error or correction preserved: updating `runtime/config/local/voice_ids.json` from Windows PowerShell wrote UTF-8 with a BOM. Python rejected the file during VOICE-027 with `JSONDecodeError: Unexpected UTF-8 BOM`. The local voice-config loader was hardened to accept `utf-8-sig`, and a regression check was added so ignored local voice config remains usable after PowerShell edits.
 - Why it matters for the thesis: this checkpoint separates provider/voice identity effects from local prosody-rule effects and preserves a practical engineering failure from the voice-evaluation workflow.
 - Open questions: whether this English candidate should become the preferred MVP voice, and whether a later semantic emphasis layer should choose important words or simplify fragile clauses before provider rendering.
 
@@ -1355,7 +1515,7 @@ Context:
 
 Action:
 
-- Stored the four raw voice IDs in ignored `config/local/voice_ids.json`.
+- Stored the four raw voice IDs in ignored `runtime/config/local/voice_ids.json`.
 - Extended the local voice config helper to resolve named voice candidates.
 - Added `research/experiments/cases/voice-021-elevenlabs-custom-voice-comparison.json`.
 - Added `scripts/run_voice_021_custom_voice_comparison.py`.
@@ -1626,9 +1786,9 @@ Interpretation:
   - `research/experiments/generated/PROD-001/PROD-001-db-records.json`
   - `docs/product/LEAD_DATABASE_DESIGN.md`
 - Output created:
-  - `db/sqlite_schema.sql`
+  - `runtime/persistence/sqlite_schema.sql`
   - `scripts/import_simulation_records.py`
-  - `docs/product/SQLITE_PROTOTYPE.md`
+  - `runtime/persistence/SQLITE_PROTOTYPE.md`
   - `research/experiments/generated/PROD-001/PROD-001.sqlite`
   - `research/experiments/generated/PROD-001/PROD-001-sqlite-report.md`
 - What was learned:
@@ -1672,7 +1832,7 @@ Interpretation:
   - regenerated the evaluation packet so later turns include prior questions, answers, states, strategies, appointment status, escalation flags, and suppression status
 - Data used:
   - `research/experiments/cases/prod-001-qualification-simulation.json`
-  - `packages/prompts/product-qualification-agent.txt`
+  - `runtime/prompts/product-qualification-agent.txt`
   - `docs/product/SIMULATION_CONTRACT.md`
 - Output created:
   - updated `scripts/run_product_simulation.py`
@@ -1748,7 +1908,7 @@ Interpretation:
   - `docs/product/QUALIFICATION_QUESTION_FLOW.md`
 - Output created:
   - `docs/product/SIMULATION_CONTRACT.md`
-  - `packages/prompts/product-qualification-agent.txt`
+  - `runtime/prompts/product-qualification-agent.txt`
   - `scripts/run_product_simulation.py`
   - `research/experiments/generated/PROD-001/PROD-001-evaluation-packet.md`
 - What was learned:
@@ -2807,8 +2967,8 @@ Interpretation:
   - user requirement that any dependency needed by Emotion Aware must live inside the Emotion Aware folder
 - Output created:
   - `docs/product/PROJECT_SELF_CONTAINMENT_POLICY.md`
-  - `docs/product/VOICE_PROVIDER_RUN_BOUNDARY.md`
-  - `docs/product/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+  - `runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
+  - `runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
   - `scripts/validate_self_contained_project_policy.py`
 - What was learned:
   - future client handoff requires the product repo to carry its own policies, templates, and review gates
@@ -3345,15 +3505,15 @@ Interpretation:
   - updated English and German prompts to explicitly request clean full-band quality and avoid telephone-filtered, muffled, distant, compressed, or low-bandwidth sound
   - increased the runtime speed candidates because current Voice Design previews sounded too slow for sales usefulness
   - added longer synthetic preview text inspired by the ElevenLabs generated example, while keeping it product-owned and campaign-safe
-  - added ignored local config support at `config/local/voice_ids.json`
+  - added ignored local config support at `runtime/config/local/voice_ids.json`
   - wired local voice-ID lookup into ElevenLabs live paths used by `VOICE-013`, `VOICE-017`/`VOICE-019`, and `RESP-003`
   - kept environment variables as the override path and kept API keys environment-only
 - Data used:
   - project-owner screenshot of ElevenLabs Voice Design showing `loudness`, `guidance_scale`, and generated preview text behavior
   - project-owner feedback that generated Voice Design voices sounded robotic, phone-like/muffled, and too slow
 - Output created:
-  - `config/local/.gitignore`
-  - `config/local/voice_ids.example.json`
+  - `runtime/config/local/.gitignore`
+  - `runtime/config/local/voice_ids.example.json`
   - `scripts/local_voice_config.py`
   - `scripts/validate_local_voice_config.py`
   - updates to `VOICE-020` config, docs, generated report, setup checks, and command map

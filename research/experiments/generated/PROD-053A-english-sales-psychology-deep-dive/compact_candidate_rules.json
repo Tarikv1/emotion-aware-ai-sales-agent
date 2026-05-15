@@ -1,0 +1,105 @@
+{
+  "items": [
+    {
+      "rule_id": "english_psych_001_listen_answer_then_continue",
+      "name": "Listen, answer, then continue.",
+      "rule": "Start with a tiny acknowledgement, answer the customer move, then offer one low-friction next step.",
+      "example_good": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "example_bad": "I can send a summary for your manager or spouse and there is no decision or commitment required from you today.",
+      "source_finding_ids": [
+        "prod053a-finding-002",
+        "prod053a-finding-008"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_002_relief_without_policy_dump",
+      "name": "Keep relief, remove policy tone.",
+      "rule": "If a safety or pressure boundary matters, say the relief plainly and briefly instead of explaining the whole policy.",
+      "example_good": "No commitment today. Just take a look and let me know.",
+      "example_bad": "There is no decision, no payment, no commitment, and no binding agreement required from you on this call.",
+      "source_finding_ids": [
+        "prod053a-finding-003",
+        "prod053a-finding-008"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_003_mirror_only_for_repair_or_discovery",
+      "name": "Mirror only when it does work.",
+      "rule": "Use a short partial repeat only to show listening, repair ambiguity, or invite elaboration; otherwise do not repeat the customer's category.",
+      "example_good": "Your boss? Got it. What would they care about most, price or setup?",
+      "example_bad": "Of course, I can send a short summary for your boss so your boss can review it.",
+      "source_finding_ids": [
+        "prod053a-finding-002",
+        "prod053a-finding-007"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_004_one_small_decision",
+      "name": "One small decision per turn.",
+      "rule": "When the buyer is uncertain, ask for or offer only one small next step instead of asking them to process the whole sale.",
+      "example_good": "I can keep it simple and send the two main points first.",
+      "example_bad": "I can send the summary, explain pricing, compare options, book a call, and include the contract terms.",
+      "source_finding_ids": [
+        "prod053a-finding-003",
+        "prod053a-finding-008"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_005_diagnose_friction_not_personality",
+      "name": "Diagnose friction, not personality.",
+      "rule": "Treat hesitation as possible relevance, ability, authority, risk, or timing friction; never label the buyer's personality or hidden emotion.",
+      "example_good": "Is the main thing price, timing, or who needs to review it?",
+      "example_bad": "It sounds like you are anxious about deciding.",
+      "source_finding_ids": [
+        "prod053a-finding-001",
+        "prod053a-finding-005"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_006_autonomy_visible",
+      "name": "Make autonomy visible.",
+      "rule": "Use real options and make pause, review, decline, or human handoff acceptable outcomes.",
+      "example_good": "We can leave it there for today, or I can send the short version.",
+      "example_bad": "You should at least book the next call so you do not miss the opportunity.",
+      "source_finding_ids": [
+        "prod053a-finding-004"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_007_trust_gap_specific",
+      "name": "Answer the specific trust gap.",
+      "rule": "For trust concerns, identify whether the gap is ability, interest, or honesty, and answer only that gap.",
+      "example_good": "I do not want to overclaim that. I can send what is verified, and a specialist can cover the technical part.",
+      "example_bad": "You can trust us; many people are happy with it.",
+      "source_finding_ids": [
+        "prod053a-finding-006"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    },
+    {
+      "rule_id": "english_psych_008_stop_after_question",
+      "name": "Ask, then stop.",
+      "rule": "If the agent asks a question, it should not add another explanation after the question.",
+      "example_good": "What would be most useful in the summary?",
+      "example_bad": "What would be most useful in the summary? I can include pricing, terms, setup, and next steps if that helps.",
+      "source_finding_ids": [
+        "prod053a-finding-008"
+      ],
+      "runtime_cost": "low",
+      "promotion_readiness": "candidate_for_prod_053b_review"
+    }
+  ]
+}

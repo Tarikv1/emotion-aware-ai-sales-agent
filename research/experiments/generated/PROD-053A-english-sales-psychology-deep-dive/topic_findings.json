@@ -1,0 +1,122 @@
+{
+  "items": [
+    {
+      "finding_id": "prod053a-finding-001",
+      "topic": "adaptive_selling",
+      "source_ids": [
+        "prod053a-source-001",
+        "prod053a-source-002"
+      ],
+      "finding": "Useful adaptation needs situation recognition, confidence to alter the approach, a strategy library, and feedback from the interaction.",
+      "agent_use": "Classify the customer move first, then pick one small response pattern. Do not use one universal objection script.",
+      "avoid": "Do not infer personality or hidden emotion to choose a strategy.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-002",
+      "topic": "listening_and_trust",
+      "source_ids": [
+        "prod053a-source-003",
+        "prod053a-source-004",
+        "prod053a-source-010",
+        "prod053a-source-011"
+      ],
+      "finding": "Listening and reflective responses are trust-building behaviors, but reflection is not the same as repeating everything the customer said.",
+      "agent_use": "Use a short acknowledgement or one targeted reflection before answering. Mirror only a short phrase when it helps repair or invites elaboration.",
+      "avoid": "Do not echo full customer categories such as boss, manager, spouse, and partner in every response.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-003",
+      "topic": "buyer_confidence",
+      "source_ids": [
+        "prod053a-source-006",
+        "prod053a-source-007",
+        "prod053a-source-024",
+        "prod053a-source-025"
+      ],
+      "finding": "Many stalled sales are not lost to a competitor; they stall because the buyer is overloaded, uncertain, or safer doing nothing.",
+      "agent_use": "Reduce decision load and risk. Preserve relief language, but say it like a person: no commitment today; take a look and let me know.",
+      "avoid": "Do not answer an uncertain buyer by adding more facts, more options, or a bigger commitment ask.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-004",
+      "topic": "autonomy_and_reactance",
+      "source_ids": [
+        "prod053a-source-012",
+        "prod053a-source-013",
+        "prod053a-source-014",
+        "prod053a-source-026"
+      ],
+      "finding": "People resist persuasive messages when they feel their freedom is being threatened or the next step is a hidden commitment.",
+      "agent_use": "Use real choices and explicit permission. Keep the buyer's ability to pause, compare, decline, or ask for a human visible.",
+      "avoid": "Do not use must, have to, obviously, last chance, or false-choice closes.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-005",
+      "topic": "behavior_friction",
+      "source_ids": [
+        "prod053a-source-015",
+        "prod053a-source-016"
+      ],
+      "finding": "A hesitation can come from missing motivation, ability/capability, opportunity/context, or timing.",
+      "agent_use": "When the customer hesitates, lower friction or ask a tiny clarifier before proposing the next step.",
+      "avoid": "Do not treat every hesitation as a closeable objection or pressure problem.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-006",
+      "topic": "trust_repair",
+      "source_ids": [
+        "prod053a-source-008",
+        "prod053a-source-009"
+      ],
+      "finding": "Trust concerns are not all the same: the buyer may question competence, whether the offer is in their interest, or whether the claim is honest.",
+      "agent_use": "Answer the trust gap that is actually present: proof for ability, low-pressure fit for benevolence, limits and verification for integrity.",
+      "avoid": "Do not use testimonials, confidence, or reassurance as a universal trust answer.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-007",
+      "topic": "conversation_repair",
+      "source_ids": [
+        "prod053a-source-017",
+        "prod053a-source-018"
+      ],
+      "finding": "Conversation repair should identify a specific trouble source instead of restarting the whole pitch.",
+      "agent_use": "Use short repair moves such as 'the setup part?' or 'what changed?' only when the customer meaning is unclear.",
+      "avoid": "Do not ask broad discovery questions after the customer already gave enough detail.",
+      "runtime_value": "medium"
+    },
+    {
+      "finding_id": "prod053a-finding-008",
+      "topic": "spoken_brevity",
+      "source_ids": [
+        "prod053a-source-019",
+        "prod053a-source-020",
+        "prod053a-source-021",
+        "prod053a-source-022",
+        "prod053a-source-023"
+      ],
+      "finding": "Live spoken agents should use short, active, simple turns with one idea per sentence and should stop after asking a question.",
+      "agent_use": "Keep most English sales turns to one or two breaths: acknowledgement, answer, relief or next step, stop.",
+      "avoid": "Do not stack policy explanations, product facts, social proof, and a question in one turn.",
+      "runtime_value": "high"
+    },
+    {
+      "finding_id": "prod053a-finding-009",
+      "topic": "ethical_insight",
+      "source_ids": [
+        "prod053a-source-005",
+        "prod053a-source-008",
+        "prod053a-source-026"
+      ],
+      "finding": "Insight-led selling is useful when it helps the buyer understand the situation, not when it manufactures urgency or pain.",
+      "agent_use": "Offer one campaign-supported reframe only after a direct factual answer or when the buyer asks why this matters.",
+      "avoid": "Do not use fear, scarcity, invented benchmark claims, or emotional manipulation.",
+      "runtime_value": "medium"
+    }
+  ]
+}

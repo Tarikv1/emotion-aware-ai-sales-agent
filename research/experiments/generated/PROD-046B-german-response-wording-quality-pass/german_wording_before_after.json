@@ -3,7 +3,7 @@
     {
       "sales_difficulty": "price-first-direct",
       "before_response": "Der freigegebene Preisrahmen liegt beim Starter-Paket bei 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. Keine Zahlung und keine Verpflichtung in diesem Anruf.",
-      "after_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "after_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -25,7 +25,7 @@
     {
       "sales_difficulty": "written-info-request",
       "before_response": "Ich kann die freigegebene schriftliche Zusammenfassung senden und es dabei belassen.",
-      "after_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "after_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -160,7 +160,7 @@
     {
       "sales_difficulty": "stakeholder-review",
       "before_response": "Ich kann die freigegebene Zusammenfassung zur Prüfung senden. Keine Entscheidung und keine Verpflichtung heute.",
-      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -171,7 +171,7 @@
     {
       "sales_difficulty": "partner-review",
       "before_response": "Ich kann die freigegebene Zusammenfassung zur Prüfung senden. Keine Entscheidung und keine Verpflichtung heute.",
-      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],

@@ -2,6 +2,8 @@
 
 This index groups checkpoint docs by work track. Runners, validators, cases, and generated reports stay in `scripts/`, `research/experiments/cases/`, and `research/experiments/generated/`.
 
+Runtime-affecting files now live under `runtime/` and are mapped in `runtime/runtime_manifest.json`; use it before editing spoken-text, call-control, campaign-contract, retrieval, or provider-delivery behavior. Legacy `scripts/*` runtime files are compatibility wrappers.
+
 ## Brain
 
 - `docs/brain/BRAIN_001_PROJECT_BRAIN_ARCHITECTURE.md`
@@ -55,9 +57,22 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 - `PROD_046D_GERMAN_SOURCE_INFORMED_WORDING_QUALITY_GUARD.md`
 - `PROD_046_CORE_SALES_POLICY_HUMAN_REVIEW.md`
 - `PROD_047_CAMPAIGN_PROFILE_CONTRACT_VALIDATOR.md`
+- `PROD_048A_NATIVE_GERMAN_REVIEW_HTML_PACKET.md`
+- `PROD_048A_GERMAN_REVIEW_HTML_AND_BREVITY_PACKET.md`
+- `PROD_048B_NATIVE_GERMAN_REVIEW_IMPORT.md`
+- `PROD_048C_GERMAN_WORDING_FEEDBACK_PATCH.md`
+- `PROD_049_SAFE_END_CALL_BRIDGE_CONTINUE_REVIEW.md`
+- `PROD_050_SAFE_CALL_CONTROL_SOFTENING_REGRESSION.md`
+- `PROD_051_SAFE_CALL_CONTROL_RUNTIME_UPDATE.md`
+- `PROD_052_LANGUAGE_LANE_REVIEW_SEPARATION.md`
+- `PROD_053A_ENGLISH_SALES_PSYCHOLOGY_DEEP_DIVE.md`
+- `PROD_053B_COMPACT_ENGLISH_PSYCHOLOGY_LAYER_REVIEW.md`
+- `PROD_053C_ENGLISH_SPOKEN_RESPONSE_EXPANSION_REVIEW.md`
+- `PROD_053D_ENGLISH_REVIEW_IMPORT.md`
+- `PROD_053E_ENGLISH_RUNTIME_WORDING_PATCH.md`
 
 Current PROD-041A scope: interactive conditional customer simulation with `customer_reaction_policy_bank.json`, `interactive_scenario_profiles.json`, and `interaction_traces.json`; it is not a fixed scripted-dialogue generator. It now validates agent reactivity too: each agent turn must address the immediately previous customer intent, avoid repeated answers, avoid looping questions, and avoid false safe closes.
-Current forward layer: `PROD-047-campaign-profile-contract-validator`, which defines a reusable campaign/profile field contract for language, field shape, source boundary, review status, and hard safety defaults. It validates English and German example campaigns, keeps valid campaigns limited to offline/internal review by default, and blocks voice playback, public demo use, real customer use, retrieval defaults, provider calls, LLM calls, private-data reads, payment collection, contract signing, and production runtime promotion.
+Current forward layer: `PROD-053E-english-runtime-wording-patch`, which promotes `26` reviewed English single-turn responses into `runtime/core/realtime_turns.py`: `15` approved as-written items, `10` safe wording-only rework candidates, and `1` approved-with-edit-note item. Voicemail action-only behavior, coverage knowledge-policy behavior, and context-sensitive autonomy wording remain separated from the wording patch. `PROD-054-english-multi-turn-naturalness-stress-review` should follow next to test the promoted single-turn wording after the customer's next turn. `PROD-048D-native-german-followup-review-import` remains parked until the corrected native German reviewer export exists. Full native German approval, legal compliance, German exact-phrase acceptance, runtime-policy changes not covered by PROD-051/PROD-053E, customer-move classification changes outside the selected non-refusal groups, voicemail action-only behavior, coverage knowledge-policy behavior, context-sensitive autonomy behavior, retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, public demo use, real customer use, payment collection, contract signing, and production runtime promotion remain blocked.
 
 Older product simulation notes live in `research/experiments/` as `PROD-001` through `PROD-005`, with product strategy docs in this folder.
 
@@ -85,8 +100,8 @@ Current voice blocker: record the `RESP-007` German pacing-stability listening d
 ## Voice
 
 - `VOICE_001_TTS_PROTOTYPE.md` through `VOICE_044_BASELINE_DELIVERY_POLISH.md`
-- Provider boundary: `VOICE_PROVIDER_RUN_BOUNDARY.md`
-- Generated audio log: `VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+- Provider boundary: `runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
+- Generated audio log: `runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
 
 Default rule: dry-run/offline unless a command explicitly uses `--live` and provider boundary review is complete.
 
@@ -95,9 +110,9 @@ Default rule: dry-run/offline unless a command explicitly uses `--live` and prov
 - `PRODUCT_BRIEF.md`
 - `FULL_SALE_MVP_STRATEGY.md`
 - `CLIENT_MVP_WORKFLOW.md`
-- `REALTIME_AGENT_ARCHITECTURE.md`
-- `REALTIME_TURN_CLI.md`
-- `CALL_TERMINATION_POLICY.md`
+- `runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`
+- `runtime/entrypoints/REALTIME_TURN_CLI.md`
+- `runtime/policy/CALL_TERMINATION_POLICY.md`
 - `SALES_DIFFICULTY_TAXONOMY.md`
 - `CORE_SALES_DELIVERY_PLAYBOOK.md`
 - `COMMANDS.md`

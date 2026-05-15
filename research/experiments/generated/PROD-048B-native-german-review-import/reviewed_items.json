@@ -1,0 +1,131 @@
+{
+  "items": [
+    {
+      "review_item_id": "de-review-001",
+      "topic": "Preisfrage",
+      "reviewed": true,
+      "ratings": {
+        "natuerlich": "teilweise",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "etwas",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "kleine_aenderung"
+      },
+      "safety_flags": [
+        "verkaufsdruck"
+      ],
+      "rewrite_suggestion": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen Ihnen schriftlich. Und um es klar zu stellen geht es in diesem Anruf nicht um Zahlung oder Vertragsabschluss.",
+      "comment": "Ich finde der letzte satz lenkt zu sehr auf das thema Zahlung",
+      "source_case_id": "source-informed-de-price_first-001",
+      "customer_move_id": "price_first",
+      "customer_utterance": "Was kostet mich das denn?",
+      "current_or_reviewed_answer": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "current_group_id": "de-review-group-001",
+      "current_group_topic": "Preisfrage",
+      "current_group_short_answer": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich."
+    },
+    {
+      "review_item_id": "de-review-010",
+      "topic": "Wer ruft an?",
+      "reviewed": true,
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "etwas",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": "",
+      "source_case_id": "source-informed-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "customer_utterance": "Wer ist denn da?",
+      "current_or_reviewed_answer": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "current_group_id": "de-review-group-002",
+      "current_group_topic": "Wer ruft an?",
+      "current_group_short_answer": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz die Zuständigkeit für Rückrufe klären möchten."
+    },
+    {
+      "review_item_id": "de-review-019",
+      "topic": "Schriftliche Informationen",
+      "reviewed": true,
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "nein",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "nein"
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": "",
+      "source_case_id": "source-informed-de-send_info-001",
+      "customer_move_id": "send_info",
+      "customer_utterance": "Schicken Sie mir das bitte schriftlich.",
+      "current_or_reviewed_answer": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "current_group_id": "de-review-group-003",
+      "current_group_topic": "Schriftliche Informationen",
+      "current_group_short_answer": "Ja, ich schicke Ihnen die kurze Zusammenfassung per E-Mail."
+    },
+    {
+      "review_item_id": "de-review-022",
+      "topic": "Nur E-Mail",
+      "reviewed": true,
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "nein",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "nein"
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": "",
+      "source_case_id": "source-informed-de-email_only-001",
+      "customer_move_id": "email_only",
+      "customer_utterance": "Bitte nur per E-Mail.",
+      "current_or_reviewed_answer": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "current_group_id": "de-review-group-004",
+      "current_group_topic": "Nur E-Mail",
+      "current_group_short_answer": "Verstanden, dann nur per E-Mail."
+    },
+    {
+      "review_item_id": "de-review-025",
+      "topic": "Betrugsangst",
+      "reviewed": true,
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "nein",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "nein"
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": "",
+      "source_case_id": "source-informed-de-scam_or_card_fear-001",
+      "customer_move_id": "scam_or_card_fear",
+      "customer_utterance": "Woher weiß ich, dass das seriös ist?",
+      "current_or_reviewed_answer": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "current_group_id": "de-review-group-006",
+      "current_group_topic": "Betrugs- oder Zahlungsangst",
+      "current_group_short_answer": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich."
+    }
+  ]
+}

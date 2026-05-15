@@ -85,7 +85,7 @@ Product/method documents:
 
 - `../product/PRODUCT_BRIEF.md`: product definition
 - `../product/VERTICAL_AGNOSTIC_PRODUCT_MODEL.md`: campaign-driven architecture
-- `../product/REALTIME_AGENT_ARCHITECTURE.md`: realtime layers and latency
+- `../../runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`: realtime layers and latency
 - `../product/SIMULATION_CONTRACT.md`: simulation schema and expected outputs
 - `../product/RESP_001_GUARDED_RESPONSE_GENERATION.md`: guarded response generation
 - `../product/RESP_002_RUNTIME_VOICE_DELIVERY.md`: voice delivery layer

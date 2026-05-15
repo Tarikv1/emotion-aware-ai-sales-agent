@@ -15,6 +15,317 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-120 - Promote only safe English wording in PROD-053E
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: promote the `PROD-053D` accepted-as-written, safe wording-only, and approved-with-edit-note English responses as `PROD-053E-english-runtime-wording-patch`.
+- Why:
+  - the reviewed phrase-level English responses are actionable evidence, while voicemail action-only behavior, coverage policy knowledge, and autonomy context sensitivity are different runtime/design problems
+  - promoting all `needs_rework` items would mix wording improvements with call-control and knowledge-policy behavior changes
+  - `PROD-054` needs a stable single-turn English runtime baseline before multi-turn naturalness stress testing
+- Alternatives considered:
+  - include voicemail action-only behavior in the same patch
+  - include coverage knowledge-policy behavior in the same patch
+  - wait for `PROD-054` before promoting any English wording
+- Consequences:
+  - `26` English responses are promoted in `runtime/core/realtime_turns.py`
+  - `prod-053c-voicemail`, `prod-053c-coverage-boundary-route`, and `prod-053c-autonomy-check` stay unpromoted
+  - retrieval, providers, LLM calls, private data, voice playback, demo use, payment collection, contract signing, German phrase promotion, German naturalness claims, and production runtime promotion remain blocked
+
+### DEC-119 - Import English review before runtime patch
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: import Tarik's `PROD-053C` English review export as `PROD-053D-english-review-import` before changing runtime text.
+- Why:
+  - the review contains both exact approvals and open rework notes, so treating every `approved` status as exact phrase acceptance would be unsafe
+  - one approved row, `prod-053c-existing-provider-gap`, includes a material wording note to use `won't` instead of `will not`
+  - several notes are not simple phrase edits: voicemail should become action-only, coverage needs a policy-knowledge vs advice decision, and autonomy wording depends on previous call context
+- Alternatives considered:
+  - patch all approved and rework items directly into runtime
+  - ignore notes attached to approved rows
+  - move immediately to multi-turn testing
+- Consequences:
+  - `15` items are accepted as-written
+  - `1` approved item is separated as approved-with-edit-note
+  - `13` items are marked needs-rework
+  - `14` patch candidates are recorded without runtime promotion
+  - the next patch should be narrow and should separate plain wording updates from voicemail action-only behavior, coverage policy-knowledge behavior, and context-sensitive autonomy wording
+  - runtime behavior, response text, German exact-phrase promotion, German naturalness claims, retrieval, providers, LLM calls, private data, voice playback, demo use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-118 - Build English response expansion without duplicate review
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: create `PROD-053C-english-spoken-response-expansion-review` as a broader English-only exact phrase review packet, while excluding already-approved carry-forward responses from `PROD-053B`.
+- Why:
+  - Tarik should not spend time re-reviewing English responses already accepted or carried forward
+  - the current runtime has more reachable English response types than the four English items separated in `PROD-052`
+  - the compact `PROD-053B` psychology rules are useful as review criteria, but not yet approved as runtime response text
+- Alternatives considered:
+  - reopen all four `PROD-052` English cases
+  - skip the broader single-turn review and go directly to multi-turn testing
+  - apply the compact policy directly to runtime responses
+- Consequences:
+  - `prod-045-price-first` and `prod-045-send-info` are excluded as already-approved carry-forward items
+  - `prod-045-manager` and `prod-045-spouse` are included because they were flagged for customer-category echoing and weak no-commitment relief
+  - `27` previously unreviewed reachable English deterministic runtime response types are added to the review packet
+  - `provider-comparison` remains out of exact phrase review because the current classifier has no distinct reachable English branch for it
+  - runtime behavior, response text, German exact-phrase promotion, German naturalness claims, retrieval, providers, LLM calls, private data, voice playback, demo use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-117 - Audit thesis paths after runtime move
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: after moving runtime-affecting files under `runtime/`, update thesis references to the current canonical paths and treat ignored local files such as `runtime/config/local/voice_ids.json` as valid location references even when the local file is not present.
+- Why:
+  - the thesis should be writable from current project artifacts, not stale historical paths
+  - old product-doc stubs and compatibility wrappers can keep commands working, but thesis evidence should point to canonical runtime locations where possible
+  - ignored local config paths may be correct even when absent from the working tree
+- Alternatives considered:
+  - leave old references because compatibility wrappers still exist
+  - update only command docs and leave thesis logs unchanged
+  - create a broad rewrite of historical methodology entries
+- Consequences:
+  - stale tracked references to moved SQLite schema, product prompt, provider boundary docs, generated-audio log, and local voice config examples are updated to `runtime/` paths
+  - historical checkpoint script paths remain valid when compatibility wrappers still exist
+  - the thesis reference registry and update gates remain the source checks, while path existence is reviewed as a separate hygiene step
+
+### DEC-116 - Review compact English psychology before expansion
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: use `PROD-053B-compact-english-psychology-layer-review` as the gate between the deep `PROD-053A` research packet and the broader `PROD-053C` English spoken-response expansion.
+- Why:
+  - adding more psychology research before testing the existing rules would increase complexity without proving better response quality
+  - the compact layer must stay deterministic, English-only, low-latency, and non-LLM-dependent
+  - some candidate rules are useful only with constraints, especially mirroring, friction questioning, and autonomy language
+- Alternatives considered:
+  - add more broad human psychology sources before implementation
+  - skip directly to the broader English response packet
+  - import the compact policy directly into runtime behavior
+- Consequences:
+  - all `8` PROD-053A candidate rules are accepted for PROD-053C review use, with `3` accepted only under constraints
+  - all rejected/deferred tactics remain blocked
+  - current English stakeholder/partner review responses are flagged for PROD-053C rewrite because they echo customer categories and need clearer no-commitment relief
+  - runtime behavior, response text, German exact-phrase promotion, German naturalness claims, retrieval, providers, LLM calls, private data, voice playback, demo use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-115 - Move runtime source under runtime with wrappers
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: move runtime-affecting source modules, runtime assets, and canonical runtime-facing Markdown under `runtime/`, keep thin `scripts/*` compatibility wrappers plus product-doc stubs for historical paths, and validate the boundary with `runtime/runtime_manifest.json` plus `scripts/validate_runtime_manifest.py`.
+- Why:
+  - Tarik needs to see which files affect actual runtime behavior before continuing response-layer work
+  - many historical command docs, checkpoint validators, and local scripts reference exact `scripts/*` paths
+  - a physical move without compatibility wrappers would break validators and confuse the evidence trail
+- Alternatives considered:
+  - keep only a manifest and defer the physical move
+  - leave the current folder structure and rely on memory
+  - only update README text without a machine-checkable manifest
+- Consequences:
+  - runtime-affecting files now have a real `runtime/` home instead of being mixed with checkpoint runners and validators
+  - existing commands keep working through `scripts/` wrappers
+  - moved local config examples, campaign examples, prompts, and persistence schema now live under `runtime/`
+  - canonical runtime Markdown for architecture, realtime CLI behavior, call termination, bilingual runtime behavior, provider run boundaries, generated-audio logging, and SQLite persistence now lives under `runtime/`
+  - historical generated artifacts may still mention old paths, but active docs, validators, and setup checks should use `runtime/` paths
+  - runtime behavior, response text, retrieval defaults, provider calls, LLM calls, private-data reads, voice playback, demo use, payment collection, contract signing, and production promotion remain unchanged or blocked
+
+### DEC-114 - Research deeply before compact English psychology layer
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: insert `PROD-053A-english-sales-psychology-deep-dive` before the compact English conversation psychology layer and broader English spoken-response expansion.
+- Why:
+  - the runtime layer must remain small for live-call latency, but the rule set should be distilled from deeper sales psychology and human communication research
+  - Tarik wants actually useful sales psychology, not generic tricks or a shallow rule list
+  - source-backed research can separate useful mechanisms from manipulative or risky tactics before any response wording changes
+- Alternatives considered:
+  - add a small psychology layer directly from intuition
+  - build a large live psychology planner
+  - continue to the broader English phrase review without researching the underlying conversation rules
+- Consequences:
+  - PROD-053A remains research-only and changes no runtime behavior or response text
+  - PROD-053B should review compact English rule candidates before any broad English response expansion
+  - PROD-053C should then create the broader English spoken-response review packet, excluding already-approved items unless explicitly reopened
+  - false scarcity, hidden emotion diagnosis, commitment traps, broad customer-category echoing, and generic unsourced persuasion tricks remain rejected or deferred
+  - providers, LLM judging, private data, retrieval defaults, voice/demo/customer use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-113 - Expand English review before multi-turn stress testing
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: keep a broader English spoken-response expansion before English multi-turn naturalness stress testing, now sequenced as `PROD-053C-english-spoken-response-expansion-review` after the compact psychology layer review.
+- Why:
+  - PROD-052 has only the four English cases inherited from the PROD-051 call-control update
+  - the broader English policy surface contains more answer types that should be reviewed before testing conversation continuation
+  - Tarik can judge English wording directly, so English should be the active phrase-quality lane while German remains pending native/source-backed review
+- Alternatives considered:
+  - keep `PROD-053` as multi-turn stress testing immediately
+  - add unrelated German wording into the active acceptance lane
+  - inflate PROD-052 with extra cases outside its source checkpoint
+- Consequences:
+  - PROD-052 remains a language-lane separation checkpoint, not the full English review packet
+  - PROD-053B should first review the compact English psychology layer from PROD-053A
+  - PROD-053C should build a broader English-only spoken-response review surface from existing English runtime cases
+  - multi-turn English testing moves to `PROD-054`
+  - German exact phrase acceptance remains blocked
+
+### DEC-112 - Separate phrase acceptance by language
+
+- Date: 2026-05-15
+- Status: accepted
+- Decision: create `PROD-052-language-lane-review-separation` and treat English exact spoken responses as the current owner-review lane while keeping German exact wording pending native German or source-backed wording review.
+- Why:
+  - deterministic checks can constrain style and safety, but they do not prove that a specific German phrase sounds natural to a native speaker
+  - Tarik can currently review English phrase naturalness directly, so near-term product learning should focus there
+  - older mixed English/German review pages can confuse acceptance status if they are reused as current human review surfaces
+- Alternatives considered:
+  - rewrite old German responses from memory
+  - delete or mutate historical mixed generated artifacts
+  - continue treating PROD-051 German exact wording as accepted because deterministic checks passed
+- Consequences:
+  - English exact responses can move into Tarik review and later English multi-turn stress testing
+  - German exact responses remain separated and unaccepted until fresh native/source-backed evidence exists
+  - shared multilingual rules remain valid only as policy constraints such as answer-first, low-pressure continuation, short spoken shape, and no internal jargon
+  - older mixed review pages are inventoried as historical evidence or superseded surfaces, not active exact phrase acceptance pages
+  - runtime behavior, response text, providers, LLM judging, private data, voice/demo/customer use, payment collection, contract signing, and production promotion remain unchanged or blocked
+
+### DEC-111 - Validate naturalness before accepting live call-control softening
+
+- Date: 2026-05-14
+- Status: accepted
+- Decision: apply `PROD-051-safe-call-control-runtime-update` only with a deterministic naturalness audit over the same fixed cases used for the runtime change.
+- Why:
+  - changing `call_control` alone can pass shallow validators while the spoken response still sounds terminal or internal
+  - naturalness needs baseline comparison on fixed cases, not visual inspection of generated artifacts
+  - selected non-refusal cases should continue only when the response answers first, stays optional, avoids pressure, and avoids customer-facing internal jargon
+- Alternatives considered:
+  - accept PROD-050 proposal evidence without live naturalness gates
+  - use LLM judging or provider calls for naturalness scoring
+  - wait for human/native review before any deterministic runtime update
+- Consequences:
+  - `PROD-051` updates live runtime only for `price-first-direct`, `written-info-request`, `stakeholder-review`, and `partner-review`
+  - `answer-and-continue` becomes the narrow runtime action that maps to `bridge-then-continue`
+  - the naturalness gate requires direct answer, optional low-pressure continuation, no terminal close, no internal jargon, spoken sentence shape, customer-fit, language-fit, and no pressure/payment/contract/unsupported claim
+  - provider calls, LLM judging, private data, voice/demo/customer use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-110 - Prove call-control softening before runtime migration
+
+- Date: 2026-05-14
+- Status: accepted
+- Decision: run `PROD-050-safe-call-control-softening-regression` as proposed-softening evidence before editing the live deterministic runtime.
+- Why:
+  - selected bridge-then-continue cases need regression evidence before historical runtime expectations are migrated
+  - bridge-then-continue cannot be applied as a control flag alone if the response text still sounds terminal
+  - older validators still encode the current `end-call` behavior for German price-first, written-info, and review paths
+  - separating proposed evidence from the runtime update keeps the product history auditable and prevents accidental broad softening
+- Alternatives considered:
+  - change live runtime call-control immediately after PROD-049
+  - leave safe-but-abrupt end-calls unchanged indefinitely
+  - bundle runtime behavior changes into the same checkpoint as the review decision
+- Consequences:
+  - `PROD-050` proves all `22` selected non-refusal candidates can be proposed as `bridge-then-continue` with low-pressure continuation text and without pressure, payment, contract, or unsupported-claim violations
+  - support, cancellation, do-not-call, human-request, email-only, payment/scam safety, sale-ready, and callback boundaries remain unchanged
+  - a separate `PROD-051` checkpoint is required before live runtime call-control or response-text behavior changes
+  - retrieval, providers, private data, voice/demo/customer use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-109 - Park German follow-up review and move to call-control softening evidence
+
+- Date: 2026-05-14
+- Status: accepted
+- Decision: park `PROD-048D` until a corrected native German reviewer export exists, and move the local product track to `PROD-049-safe-end-call-bridge-continue-review`.
+- Why:
+  - `PROD-048D` cannot be completed without external reviewer input
+  - PROD-046 already identified `45` safe-but-abrupt call-control findings that can be reviewed offline
+  - call-control softening is product-relevant and can move forward without provider calls, private data, voice listening, or native German approval
+- Alternatives considered:
+  - wait for the German reviewer export before doing more project work
+  - start a voice/personality selector while `RESP-007` listening remains unresolved
+  - resume RAG/source hygiene instead of product-runtime quality
+- Consequences:
+  - `PROD-049` selects only non-refusal candidate groups for future bridge-then-continue testing
+  - support, cancellation, do-not-call, human-request, email-only, payment/scam safety, sale-ready, and callback boundaries remain protected
+  - runtime behavior and call-control behavior are not changed until a future regression checkpoint proves the softening is safe
+  - voice/demo/customer use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-108 - Apply only reviewed German price wording before follow-up review
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: apply only the PROD-048B reviewed German price-first wording correction and send a corrected grouped follow-up packet before making any broader German wording claim.
+- Why:
+  - reviewer Diro marked the price answer phone-acceptable but only partially natural and flagged the final payment sentence as creating a sales-pressure effect
+  - payment/no-contract safety wording is still required in scam, payment, sale-ready, and explicit safety contexts, but it should not be repeated in a plain price-first answer
+  - only `5` rows were reviewed, so a broader native German approval claim would overstate the evidence
+- Alternatives considered:
+  - apply wording changes to all German answers
+  - remove no-payment/no-contract language globally
+  - treat the partial review as full native approval
+- Consequences:
+  - the German plain price-first answer is shortened
+  - payment, scam, and sale-ready boundary wording remains available and tested
+  - the corrected reviewer HTML marks `Preisfrage` for re-check and keeps unreviewed groups visible
+  - full native German approval, legal compliance, voice/demo/customer use, payment collection, contract signing, and production promotion remain blocked
+
+### DEC-107 - Treat partial native German feedback as partial evidence only
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: import reviewer feedback as partial evidence, recompute reviewed rows from filled fields, and keep blank rows classified as unreviewed rather than accepted or rejected.
+- Why:
+  - the returned reviewer JSON summary reported `0` checked rows even though `5` rows contained ratings, comments, or flags
+  - the returned file contained `99` individual rows while the current grouped PROD-048A packet has `22` visible groups
+  - overclaiming the blank rows would create false native German approval evidence
+- Alternatives considered:
+  - trust the exported summary blindly
+  - treat blank rows as rejection
+  - treat the `5` reviewed rows as full native German approval
+- Consequences:
+  - PROD-048B records partial native German evidence only
+  - the price-first row becomes a targeted revision candidate for a later patch checkpoint
+  - follow-up review should continue with the grouped HTML
+  - legal compliance, runtime promotion, voice playback, public demo use, and real customer use remain blocked
+
+### DEC-106 - Group repeated German answers before native review
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: group repeated German answers in the native review packet and review shorter customer-facing answer variants before asking for a native German wording decision.
+- Why:
+  - early human feedback said the previous packet made the German answers look too AI-like because they were long, forced, complete, and repetitive
+  - many different customer utterances received the exact same answer, making per-case review tiring without adding reviewer value
+  - grouping repeated German answers preserves traceability while giving the reviewer a realistic wording-quality task
+- Alternatives considered:
+  - keep one full card per original German case
+  - change runtime policy immediately before human review
+  - claim the source-informed German wording is already acceptable
+- Consequences:
+  - all original case IDs remain in the machine-readable packet and export
+  - the visible review HTML shows grouped answer cards
+  - runtime policy and call-control behavior remain unchanged
+  - native German approval and legal compliance remain unclaimed
+
+### DEC-105 - Collect native German wording review before German promotion claims
+
+- Date: 2026-05-12
+- Status: accepted
+- Decision: create a native German review packet before making any German wording-quality, voice/demo, public-demo, or customer-facing promotion claim.
+- Why:
+  - PROD-046 accepted German responses only for synthetic regression evidence and internal product review
+  - PROD-047 made German campaign fields contract-guarded but did not provide native speaker approval
+  - a native German review packet can collect structured human feedback without changing runtime behavior
+- Alternatives considered:
+  - claim German wording readiness from deterministic validators alone
+  - wait for voice/demo work before gathering human wording feedback
+  - ask a reviewer to inspect technical JSON artifacts directly
+- Consequences:
+  - the native German review packet becomes the next evidence gate
+  - reviewer feedback should be imported in a later checkpoint before any German wording approval claim
+  - legal compliance remains explicitly unclaimed
+  - voice/demo/customer use remains blocked until separate promotion gates pass
+
 ### DEC-104 - Require campaign-profile contracts before voice/demo/customer use
 
 - Date: 2026-05-12

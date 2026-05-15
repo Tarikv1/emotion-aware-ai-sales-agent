@@ -28,6 +28,12 @@ Validate the setup checker itself:
 python scripts\validate_check_setup.py
 ```
 
+Validate the runtime boundary map that separates runtime-affecting files from research, generated evidence, validators, temporary files, and private data:
+
+```powershell
+python scripts\validate_runtime_manifest.py
+```
+
 Validate that required project policies are local to Emotion Aware and scripts do not hard-depend on other `D:\Codex` workspace projects:
 
 ```powershell
@@ -115,7 +121,7 @@ python scripts\validate_local_voice_config.py
 Optional local ElevenLabs voice IDs can be stored in ignored config:
 
 ```powershell
-Copy-Item config\local\voice_ids.example.json config\local\voice_ids.json
+Copy-Item runtime\config\local\voice_ids.example.json runtime\config\local\voice_ids.json
 ```
 
 Then edit `config\local\voice_ids.json` locally. Do not put API keys in this file.
@@ -1227,6 +1233,162 @@ Validate that PROD-047 blocks malformed, internal-sounding, unsafe, or under-rev
 python scripts\validate_prod_047_campaign_profile_contract_validator.py
 ```
 
+Run the PROD-048A native German review HTML packet checkpoint:
+
+```powershell
+python scripts\run_prod_048a_native_german_review_html_packet.py
+```
+
+Validate that PROD-048A creates a self-contained German-only reviewer packet with JSON/CSV export while claiming no native German approval, no legal compliance, and no runtime/demo/voice promotion:
+
+```powershell
+python scripts\validate_prod_048a_native_german_review_html_packet.py
+```
+
+Run the PROD-048A grouped German review HTML and brevity packet checkpoint:
+
+```powershell
+python scripts\run_prod_048a_german_review_html_and_brevity_packet.py
+```
+
+Validate that the grouped PROD-048A packet keeps every German case internally, groups repeated answers, shortens review-facing German answers where safe, supports JSON/CSV export, and keeps approval/legal/runtime/demo/voice/promotion claims blocked:
+
+```powershell
+python scripts\validate_prod_048a_german_review_html_and_brevity_packet.py
+```
+
+Run the PROD-048B native German review import checkpoint:
+
+```powershell
+python scripts\run_prod_048b_native_german_review_import.py
+```
+
+Validate that PROD-048B imports the returned reviewer JSON as partial evidence, recomputes reviewed versus blank rows, records the price wording revision candidate, and keeps approval/legal/runtime/demo/voice/promotion claims blocked:
+
+```powershell
+python scripts\validate_prod_048b_native_german_review_import.py
+```
+
+Run the PROD-048C German wording feedback patch checkpoint:
+
+```powershell
+python scripts\run_prod_048c_german_wording_feedback_patch.py
+```
+
+Validate that PROD-048C applies only the reviewed German price-first wording correction, preserves payment/scam/sale-ready boundaries, creates the corrected grouped follow-up review HTML, and keeps approval/legal/runtime-policy/call-control/demo/voice/promotion claims blocked:
+
+```powershell
+python scripts\validate_prod_048c_german_wording_feedback_patch.py
+```
+
+Run the PROD-049 safe end-call bridge-continue review checkpoint:
+
+```powershell
+python scripts\run_prod_049_safe_end_call_bridge_continue_review.py
+```
+
+Validate that PROD-049 selects only non-refusal bridge-then-continue candidates, keeps support/cancellation/do-not-call/email-only/payment/scam/sale-ready/callback boundaries protected, and applies no runtime or provider change:
+
+```powershell
+python scripts\validate_prod_049_safe_end_call_bridge_continue_review.py
+```
+
+Run the PROD-050 safe call-control softening regression checkpoint:
+
+```powershell
+python scripts\run_prod_050_safe_call_control_softening_regression.py
+```
+
+Validate that PROD-050 proposed-softens all selected non-refusal candidates to bridge-then-continue with low-pressure continuation text, preserves protected boundaries, records no pressure/payment/contract/unsupported-claim violations, and applies no live runtime change:
+
+```powershell
+python scripts\validate_prod_050_safe_call_control_softening_regression.py
+```
+
+Run the PROD-051 live runtime update with deterministic naturalness audit:
+
+```powershell
+python scripts\run_prod_051_safe_call_control_runtime_update.py
+```
+
+Validate that PROD-051 applies only the selected answer-and-continue runtime path, preserves protected boundaries, and passes the deeper spoken-response naturalness rubric:
+
+```powershell
+python scripts\validate_prod_051_safe_call_control_runtime_update.py
+```
+
+Run the PROD-052 language-lane review separation checkpoint:
+
+```powershell
+python scripts\run_prod_052_language_lane_review_separation.py
+```
+
+Validate that PROD-052 separates English exact spoken-response review from German pending native/source-backed review, keeps multilingual rules policy-only, inventories older mixed review surfaces, and applies no runtime change:
+
+```powershell
+python scripts\validate_prod_052_language_lane_review_separation.py
+```
+
+Run the PROD-053A English sales psychology deep-dive research checkpoint:
+
+```powershell
+python scripts\run_prod_053a_english_sales_psychology_deep_dive.py
+```
+
+Validate that PROD-053A preserves source boundaries, stores no source excerpts or copied scripts, creates compact English rule candidates, rejects manipulative tactics, and applies no runtime change:
+
+```powershell
+python scripts\validate_prod_053a_english_sales_psychology_deep_dive.py
+```
+
+Run the PROD-053B compact English psychology layer review:
+
+```powershell
+python scripts\run_prod_053b_compact_english_psychology_layer_review.py
+```
+
+Validate that PROD-053B accepts only English deterministic response-shape rules for PROD-053C, flags current English rewrite candidates, keeps rejected tactics blocked, and applies no runtime change:
+
+```powershell
+python scripts\validate_prod_053b_compact_english_psychology_layer_review.py
+```
+
+Run the PROD-053C English spoken-response expansion review packet:
+
+```powershell
+python scripts\run_prod_053c_english_spoken_response_expansion_review.py
+```
+
+Validate that PROD-053C creates the English-only review surface, excludes already-approved carry-forward items, keeps German exact-phrase review blocked, and applies no runtime change:
+
+```powershell
+python scripts\validate_prod_053c_english_spoken_response_expansion_review.py
+```
+
+Run the PROD-053D English review import:
+
+```powershell
+python scripts\run_prod_053d_english_review_import.py
+```
+
+Validate that PROD-053D imports the owner review export, separates approved-as-written items from rework notes, identifies runtime patch candidates, and applies no runtime change:
+
+```powershell
+python scripts\validate_prod_053d_english_review_import.py
+```
+
+Run the PROD-053E English runtime wording patch:
+
+```powershell
+python scripts\run_prod_053e_english_runtime_wording_patch.py
+```
+
+Validate that PROD-053E promotes only accepted and safe English wording into the deterministic realtime runtime, while leaving voicemail action-only behavior, coverage knowledge-policy behavior, and context-sensitive autonomy wording unpromoted:
+
+```powershell
+python scripts\validate_prod_053e_english_runtime_wording_patch.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:
@@ -2254,7 +2416,7 @@ python scripts\run_resp_007_german_pacing_stability_follow_up.py --provider elev
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.
 - Default validation should not require `OPENAI_API_KEY`, `CARTESIA_API_KEY`, or `CARTESIA_VOICE_ID`.
-- Local voice IDs may be stored in ignored `config\local\voice_ids.json`; API keys remain environment-only.
+- Local voice IDs may be stored in ignored `runtime\config\local\voice_ids.json`; API keys remain environment-only.
 - Raw private call-center audio and raw transcripts must stay under ignored `data\private\` and must not be uploaded to providers by default.
 - Only redacted, minimized, human-reviewed sales-pattern notes may leave `data\private\`.
 - Use `--live` only when provider, consent, retention, and logging assumptions have been reviewed.

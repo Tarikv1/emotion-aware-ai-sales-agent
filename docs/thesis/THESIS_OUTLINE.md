@@ -69,7 +69,7 @@ Evidence sources:
 Evidence sources:
 
 - `THESIS_REFERENCE_REGISTRY.md`
-- `../product/REALTIME_AGENT_ARCHITECTURE.md`
+- `../../runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`
 - `../product/RESP_001_GUARDED_RESPONSE_GENERATION.md`
 
 ### 2.2 Speech Emotion Recognition
@@ -92,12 +92,22 @@ Evidence sources:
 - strategy selection
 - persuasive dialogue in non-sales contexts
 - ethical constraints around persuasion
+- sales psychology mechanisms that are useful for live calls: adaptive selling, listening, buyer confidence, autonomy, friction diagnosis, trust repair, conversation repair, and spoken brevity
+- rejected sales-psychology tactics: false scarcity, hidden emotion diagnosis, commitment traps, full customer-category echoing, and generic unsourced persuasion tricks
 
 Evidence sources:
 
 - `docs/data/PERSUASION_LABEL_MAPPING.md`
 - `BASELINE_SPEC.md`
 - `THESIS_REFERENCE_REGISTRY.md`
+- `../product/PROD_053A_ENGLISH_SALES_PSYCHOLOGY_DEEP_DIVE.md`
+- `../product/PROD_053B_COMPACT_ENGLISH_PSYCHOLOGY_LAYER_REVIEW.md`
+- `../product/PROD_053C_ENGLISH_SPOKEN_RESPONSE_EXPANSION_REVIEW.md`
+- `../product/PROD_053D_ENGLISH_REVIEW_IMPORT.md`
+- `research/experiments/generated/PROD-053A-english-sales-psychology-deep-dive/`
+- `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/`
+- `research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/`
+- `research/experiments/generated/PROD-053D-english-review-import/`
 
 ### 2.4 Voice Naturalness And Speech Realism
 
@@ -230,7 +240,7 @@ reusable sales-agent core
 
 Evidence sources:
 
-- `../product/REALTIME_AGENT_ARCHITECTURE.md`
+- `../../runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`
 - `../product/SIMULATION_CONTRACT.md`
 - `../product/VERTICAL_AGNOSTIC_PRODUCT_MODEL.md`
 - `../product/RESP_001_GUARDED_RESPONSE_GENERATION.md`
@@ -289,13 +299,23 @@ Discuss:
 - sub-agents as background helpers, not blocking response path
 - hang-up and call-control triggers
 - interruption handling
+- deterministic response-shaping constraints for live calls: answer first, keep turns short, preserve low-pressure relief, ask one question, and stop
+- language-lane separation: English exact phrase review can be owner-reviewed now, while German exact phrase acceptance requires native or source-backed wording review
 
 Evidence sources:
 
-- `../product/REALTIME_AGENT_ARCHITECTURE.md`
-- `../product/CALL_TERMINATION_POLICY.md`
+- `../../runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md`
+- `../../runtime/policy/CALL_TERMINATION_POLICY.md`
 - `research/experiments/PROD-005-realtime-latency-call-control.md`
 - `research/experiments/VOICE-006-safe-interruption.md`
+- `../product/PROD_052_LANGUAGE_LANE_REVIEW_SEPARATION.md`
+- `../product/PROD_053B_COMPACT_ENGLISH_PSYCHOLOGY_LAYER_REVIEW.md`
+- `../product/PROD_053C_ENGLISH_SPOKEN_RESPONSE_EXPANSION_REVIEW.md`
+- `../product/PROD_053D_ENGLISH_REVIEW_IMPORT.md`
+- `research/experiments/generated/PROD-052-language-lane-review-separation/`
+- `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/`
+- `research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/`
+- `research/experiments/generated/PROD-053D-english-review-import/`
 
 ### 4.5 Voice And Speech Delivery
 
@@ -337,7 +357,7 @@ Discuss:
 Evidence sources:
 
 - `../product/INSURANCE_CLIENT_CONTEXT.md`
-- `../product/VOICE_PROVIDER_RUN_BOUNDARY.md`
+- `../../runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md`
 - `../product/RESP_003_RUNTIME_LIVE_TTS.md`
 - `docs/data/PRIVATE_CALL_CENTER_DATA_POLICY.md`
 
@@ -375,6 +395,12 @@ Experiments:
 - sales difficulty gauntlet
 - SQLite export
 - realtime latency and call-control
+- safe call-control softening and runtime update from `PROD-049` through `PROD-051`
+- language-lane review separation in `PROD-052`
+- source-backed English sales psychology research in `PROD-053A`
+- compact English psychology layer review in `PROD-053B`
+- broader English spoken-response expansion review in `PROD-053C`
+- imported English owner review decisions in `PROD-053D`
 
 Evidence sources:
 
@@ -382,6 +408,14 @@ Evidence sources:
 - `research/experiments/PROD-004-rule-baseline.md`
 - `research/experiments/PROD-004-llm-vs-rule-comparison.md`
 - `research/experiments/generated/PROD-001/PROD-001-sqlite-report.md`
+- `../product/PROD_049_SAFE_END_CALL_BRIDGE_CONTINUE_REVIEW.md`
+- `../product/PROD_050_SAFE_CALL_CONTROL_SOFTENING_REGRESSION.md`
+- `../product/PROD_051_SAFE_CALL_CONTROL_RUNTIME_UPDATE.md`
+- `../product/PROD_052_LANGUAGE_LANE_REVIEW_SEPARATION.md`
+- `../product/PROD_053A_ENGLISH_SALES_PSYCHOLOGY_DEEP_DIVE.md`
+- `../product/PROD_053B_COMPACT_ENGLISH_PSYCHOLOGY_LAYER_REVIEW.md`
+- `../product/PROD_053C_ENGLISH_SPOKEN_RESPONSE_EXPANSION_REVIEW.md`
+- `../product/PROD_053D_ENGLISH_REVIEW_IMPORT.md`
 
 ### 5.3 Voice Experiments
 
@@ -421,7 +455,7 @@ Evidence sources:
 - `../product/COMMANDS.md`
 - `../product/PROJECT_DRIFT_GUARD.md`
 - `../product/PROJECT_SELF_CONTAINMENT_POLICY.md`
-- `../product/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
+- `../../runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md`
 
 ## 6. Results And Discussion
 

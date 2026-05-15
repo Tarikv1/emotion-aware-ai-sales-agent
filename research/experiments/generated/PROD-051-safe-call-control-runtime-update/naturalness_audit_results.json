@@ -1,0 +1,1105 @@
+{
+  "checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+  "items": [
+    {
+      "case_id": "prod-045-price-first",
+      "language": "en",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "The starter plan is 29 per user per month, and I can send the exact terms in writing. If useful, I can briefly explain what is included before I send them. No payment or commitment on this call.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "prod-045-send-info",
+      "language": "en",
+      "sales_difficulty": "written-info-request",
+      "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "prod-045-manager",
+      "language": "en",
+      "sales_difficulty": "stakeholder-review",
+      "agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "language": "en",
+      "sales_difficulty": "partner-review",
+      "agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-price_first-001",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-price_first-002",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-price_first-003",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-send_info-001",
+      "language": "de",
+      "sales_difficulty": "written-info-request",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-send_info-002",
+      "language": "de",
+      "sales_difficulty": "written-info-request",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-send_info-003",
+      "language": "de",
+      "sales_difficulty": "written-info-request",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-needs_manager_approval-001",
+      "language": "de",
+      "sales_difficulty": "stakeholder-review",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-needs_manager_approval-002",
+      "language": "de",
+      "sales_difficulty": "stakeholder-review",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-needs_manager_approval-003",
+      "language": "de",
+      "sales_difficulty": "stakeholder-review",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-001",
+      "language": "de",
+      "sales_difficulty": "partner-review",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-002",
+      "language": "de",
+      "sales_difficulty": "partner-review",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-de-needs_spouse_or_partner_input-003",
+      "language": "de",
+      "sales_difficulty": "partner-review",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-interp-de-price_first-001",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-interp-de-price_first-002",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-interp-de-price_first-003",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-price_first-001",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-price_first-002",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    },
+    {
+      "case_id": "source-informed-interp-legacy-de-price_first-003",
+      "language": "de",
+      "sales_difficulty": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
+      "score": 1.0,
+      "passed": true,
+      "checks": {
+        "direct_answer_or_acknowledgement": {
+          "name": "direct_answer_or_acknowledgement",
+          "passed": true,
+          "detail": "Response must answer the explicit customer move before continuing."
+        },
+        "optional_low_pressure_continuation": {
+          "name": "optional_low_pressure_continuation",
+          "passed": true,
+          "detail": "Continuation must be framed as optional help, not a pushed next step."
+        },
+        "no_terminal_closing_phrase": {
+          "name": "no_terminal_closing_phrase",
+          "passed": true,
+          "detail": "A continue-call response must not contain hang-up or final-close wording."
+        },
+        "no_internal_jargon": {
+          "name": "no_internal_jargon",
+          "passed": true,
+          "detail": "Customer-facing text must not expose internal approval, campaign, routing, or logging terms."
+        },
+        "spoken_sentence_shape": {
+          "name": "spoken_sentence_shape",
+          "passed": true,
+          "detail": "Speech response should be short, sentence-bounded, and not overloaded."
+        },
+        "customer_move_fit": {
+          "name": "customer_move_fit",
+          "passed": true,
+          "detail": "Continuation must be tied to the customer's actual reason for hesitating."
+        },
+        "language_specific_naturalness": {
+          "name": "language_specific_naturalness",
+          "passed": true,
+          "detail": "Language must be uncorrupted and not mix English/German fragments awkwardly."
+        },
+        "no_pressure_payment_contract_or_unsupported_claim": {
+          "name": "no_pressure_payment_contract_or_unsupported_claim",
+          "passed": true,
+          "detail": "Naturalness cannot come from pressure, payment handling, contract signing, or unsupported claims."
+        }
+      }
+    }
+  ]
+}

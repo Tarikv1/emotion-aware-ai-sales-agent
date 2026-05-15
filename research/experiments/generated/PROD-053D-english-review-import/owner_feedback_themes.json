@@ -1,0 +1,66 @@
+{
+  "items": [
+    {
+      "theme_id": "contractions_over_formal_expansions",
+      "summary": "Prefer spoken contractions such as I'll, don't, can't, and won't over I will, I do not, cannot, and will not when the boundary remains clear.",
+      "source_case_ids": [
+        "prod-053c-cancellation-route",
+        "prod-053c-claim-boundary",
+        "prod-053c-existing-provider-gap"
+      ]
+    },
+    {
+      "theme_id": "less_formal_acknowledgements",
+      "summary": "Use Sure, Of course, All right, or Okay instead of Confirmed and Understood when the customer-facing moment is not formal.",
+      "source_case_ids": [
+        "prod-053c-scheduling-confirmation",
+        "prod-053c-sale-ready-commitment",
+        "prod-053c-procurement-review"
+      ]
+    },
+    {
+      "theme_id": "voicemail_action_only",
+      "summary": "Voicemail should usually trigger logging and retry behavior, not spoken content to the mailbox.",
+      "source_case_ids": [
+        "prod-053c-voicemail"
+      ]
+    },
+    {
+      "theme_id": "short_transfer_responses",
+      "summary": "Support and cancellation routes should be short because the customer is no longer in a sales conversation.",
+      "source_case_ids": [
+        "prod-053c-support-route",
+        "prod-053c-cancellation-route"
+      ]
+    },
+    {
+      "theme_id": "modal_precision_matters",
+      "summary": "Small modal words change meaning. Use can't for medical advice inability, and avoid too much certainty in security/compliance routes.",
+      "source_case_ids": [
+        "prod-053c-security-review-route",
+        "prod-053c-healthcare-boundary-route"
+      ]
+    },
+    {
+      "theme_id": "policy_knowledge_is_not_advice",
+      "summary": "Coverage facts from an approved policy document may be answerable knowledge, while recommendations or advice still need a qualified reviewer.",
+      "source_case_ids": [
+        "prod-053c-coverage-boundary-route"
+      ]
+    },
+    {
+      "theme_id": "callback_brevity",
+      "summary": "When the customer asks for a callback, answer briefly and ask for a time instead of giving a reassurance paragraph.",
+      "source_case_ids": [
+        "prod-053c-callback-request"
+      ]
+    },
+    {
+      "theme_id": "use_small_mirror_when_it_helps",
+      "summary": "For autonomy concerns, a small mirror such as no rush can make the answer sound more human when it does useful work.",
+      "source_case_ids": [
+        "prod-053c-autonomy-check"
+      ]
+    }
+  ]
+}

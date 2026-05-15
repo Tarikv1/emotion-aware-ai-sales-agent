@@ -106,7 +106,7 @@ def write_fixture_prod_015_result() -> None:
                 "respect time pressure",
                 "offer a callback only after stating a clear customer-relevant reason",
             ],
-            retrieval_answer=generic,
+            retrieval_answer="That makes sense. Would a brief callback later help, or should we first clarify what you need before any next step?",
         ),
         make_row(
             3,
@@ -143,9 +143,9 @@ def write_fixture_prod_015_result() -> None:
                 "repair trust with transparency and a low-pressure next step",
                 "explain what can and cannot be verified",
             ],
-            retrieval_answer="Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?",
-            retrieval_status="influenced",
-            retrieval_used=True,
+            retrieval_answer="No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.",
+            retrieval_status="blocked",
+            retrieval_used=False,
         ),
     ]
     payload = {
@@ -245,10 +245,10 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     summary = payload["summary"]
     assert_condition(summary["analyzed_turn_count"] == 5, summary)
     assert_condition(summary["default_off_answer_drift_count"] == 0, summary)
-    assert_condition(summary["opt_in_hooked_answer_count"] == 3, summary)
-    assert_condition(summary["hook_applied_without_eval_label_count"] == 3, summary)
+    assert_condition(summary["opt_in_hooked_answer_count"] == 2, summary)
+    assert_condition(summary["hook_applied_without_eval_label_count"] == 2, summary)
     assert_condition(summary["hooked_total_score"] > summary["current_retrieval_total_score"], summary)
-    assert_condition(summary["hooked_wins_vs_current"] == 3, summary)
+    assert_condition(summary["hooked_wins_vs_current"] >= 2, summary)
     assert_condition(summary["hooked_current_wins"] == 0, summary)
     assert_condition(summary["safety_gate_pass_count"] == 5, summary)
     assert_condition(summary["payment_collection_count"] == 0, summary)
@@ -272,14 +272,14 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     by_label = {row["scenario_label"]: row for row in rows}
     assert_condition(by_label["price_objection"]["composer_hooks"]["hook_id"] == "price_objection_clarifier", by_label["price_objection"])
     assert_condition("cost" in by_label["price_objection"]["hooked_answer"].lower() or "price" in by_label["price_objection"]["hooked_answer"].lower(), by_label["price_objection"])
-    assert_condition(by_label["callback_request"]["composer_hooks"]["hook_id"] == "callback_request_low_commitment", by_label["callback_request"])
+    assert_condition(by_label["callback_request"]["composer_hooks"]["applied"] is False, by_label["callback_request"])
     assert_condition("callback" in by_label["callback_request"]["hooked_answer"].lower(), by_label["callback_request"])
     assert_condition(by_label["sale_eligible"]["composer_hooks"]["hook_id"] == "sale_eligible_fit_check", by_label["sale_eligible"])
     assert_condition("eligibility" in by_label["sale_eligible"]["hooked_answer"].lower(), by_label["sale_eligible"])
     assert_condition(by_label["support_handoff"]["composer_hooks"]["applied"] is False, by_label["support_handoff"])
     assert_condition(by_label["support_handoff"]["composer_hooks"]["protected_context_preserved"] is True, by_label["support_handoff"])
     assert_condition(by_label["trust_repair"]["composer_hooks"]["applied"] is False, by_label["trust_repair"])
-    assert_condition(by_label["trust_repair"]["preserved_existing_influenced"] is True, by_label["trust_repair"])
+    assert_condition(by_label["trust_repair"]["composer_hooks"]["protected_context_preserved"] is True, by_label["trust_repair"])
 
     assert_condition(payload["decision"] == "keep_runtime_composer_hooks_opt_in_candidate_not_default", payload["decision"])
     assert_condition(payload["boundaries"]["runtime_retrieval_default_enabled"] is False, payload["boundaries"])

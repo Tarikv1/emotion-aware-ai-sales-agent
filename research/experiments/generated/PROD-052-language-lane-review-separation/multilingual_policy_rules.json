@@ -1,0 +1,93 @@
+{
+  "checkpoint_id": "PROD-052-language-lane-review-separation",
+  "items": [
+    {
+      "rule_id": "answer_customer_move_first",
+      "name": "Answer or acknowledge the customer move before continuing.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "optional_low_pressure_continuation",
+      "name": "Frame continuation as optional help, not pressure.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "no_terminal_closing_phrase",
+      "name": "Do not use hang-up wording when the call should continue.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "no_internal_jargon",
+      "name": "Do not expose campaign, approval, routing, or logging terms to the customer.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "spoken_sentence_shape",
+      "name": "Keep spoken turns short, sentence-bounded, and not overloaded.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "customer_move_fit",
+      "name": "Tie the continuation to the customer's actual reason for hesitating.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "language_boundary",
+      "name": "Keep response language consistent and do not mix English/German fragments awkwardly.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    },
+    {
+      "rule_id": "no_pressure_payment_contract_or_unsupported_claim",
+      "name": "Do not create naturalness through pressure, payment handling, contract signing, or unsupported claims.",
+      "scope": "style_or_safety_policy",
+      "applies_to_languages": [
+        "en",
+        "de"
+      ],
+      "exact_phrase_acceptance_rule": "language_specific",
+      "passed": true
+    }
+  ]
+}

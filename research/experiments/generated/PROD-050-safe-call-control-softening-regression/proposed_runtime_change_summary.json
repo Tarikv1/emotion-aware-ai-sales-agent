@@ -1,0 +1,25 @@
+{
+  "checkpoint_id": "PROD-050-safe-call-control-softening-regression",
+  "source_checkpoint_id": "PROD-049-safe-end-call-bridge-continue-review",
+  "selected_sales_difficulties": [
+    "partner-review",
+    "price-first-direct",
+    "stakeholder-review",
+    "written-info-request"
+  ],
+  "proposed_runtime_change": "Map selected non-refusal safe end-call outcomes to bridge-then-continue and replace terminal safe-close phrasing with low-pressure optional continuation text while preserving approved answer content.",
+  "runtime_change_applied_by_this_checkpoint": false,
+  "response_text_change_recommended": true,
+  "call_control_definition_update_required": true,
+  "protected_boundaries_preserved": true,
+  "softening_regression_passed": true,
+  "recommended_next_checkpoint": "PROD-051-safe-call-control-runtime-update",
+  "implementation_requirements_for_next_checkpoint": [
+    "Change only selected price-first, written-info, stakeholder-review, and partner-review style outcomes.",
+    "Apply the low-pressure continuation text together with the call-control mapping; do not set bridge-then-continue on terminal wording.",
+    "Update the call-control definition if bridge-then-continue remains the chosen value for answer-then-continue cases rather than lookup-only cases.",
+    "Do not change customer-move classification, retrieval defaults, provider calls, voice playback, or production promotion.",
+    "Keep support, cancellation, do-not-call, human request, email-only, payment/scam safety, sale-ready, and callback request protections unchanged.",
+    "Re-run historical validators and update only expectations that intentionally move from end-call to bridge-then-continue."
+  ]
+}

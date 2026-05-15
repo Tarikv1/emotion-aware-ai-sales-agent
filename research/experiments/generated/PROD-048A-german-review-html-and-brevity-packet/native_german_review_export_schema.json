@@ -1,0 +1,57 @@
+{
+  "schema_id": "prod-048a.grouped_native_german_review_export.v1",
+  "required_top_level_fields": [
+    "reviewer",
+    "summary",
+    "groups"
+  ],
+  "required_reviewer_fields": [
+    "name_or_initials",
+    "native_german",
+    "region_optional",
+    "date",
+    "general_notes"
+  ],
+  "required_group_fields": [
+    "review_group_id",
+    "topic",
+    "case_ids",
+    "ratings",
+    "safety_flags",
+    "different_cases",
+    "rewrite_suggestion",
+    "comment"
+  ],
+  "required_rating_field_ids": [
+    "passt_zu_allen",
+    "natuerlich",
+    "klar_verstaendlich",
+    "freundlich",
+    "gesprochene_sprache",
+    "zu_abrupt",
+    "intern_buerokratisch_technisch",
+    "telefonisch_akzeptabel",
+    "ueberarbeitung_noetig"
+  ],
+  "required_safety_flag_ids": [
+    "zu_draengend",
+    "verkaufsdruck",
+    "rechtlich_unsicher",
+    "medizinische_beratung",
+    "versicherungsschutz_beratung",
+    "zahlungsaufforderung",
+    "vertragsabschluss",
+    "unhoeflich",
+    "unklar",
+    "passt_nicht_zu_allen",
+    "sonstiges"
+  ],
+  "keeps_original_case_ids": true,
+  "export_formats": [
+    "json",
+    "csv"
+  ],
+  "no_server_required": true,
+  "native_german_approval_claimed": false,
+  "legal_compliance_claimed": false
+}

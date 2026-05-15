@@ -1,0 +1,48 @@
+{
+  "checkpoint_id": "PROD-048A-native-german-review-html-packet",
+  "checkpoint_name": "Native German Review HTML Packet",
+  "source_checkpoint_ids": [
+    "PROD-046-core-sales-policy-human-review",
+    "PROD-047-campaign-profile-contract-validator"
+  ],
+  "summary": {
+    "source_checkpoint_ids": [
+      "PROD-046-core-sales-policy-human-review",
+      "PROD-047-campaign-profile-contract-validator"
+    ],
+    "prod_046_result_validation_passed": true,
+    "prod_047_result_validation_passed": true,
+    "review_item_count": 99,
+    "topic_count": 19,
+    "html_self_contained": true,
+    "all_visible_main_labels_german": true,
+    "reviewer_export_json_enabled": true,
+    "reviewer_export_csv_enabled": true,
+    "local_storage_enabled": true,
+    "print_friendly_mode_enabled": true,
+    "native_german_approval_claimed": false,
+    "legal_compliance_claimed": false,
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "outputs": {
+    "report": "research/experiments/generated/PROD-048A-native-german-review-html-packet/report.md",
+    "native_german_review_packet": "research/experiments/generated/PROD-048A-native-german-review-html-packet/native_german_review_packet.json",
+    "native_german_review_html": "research/experiments/generated/PROD-048A-native-german-review-html-packet/native_german_review.html",
+    "native_german_review_export_schema": "research/experiments/generated/PROD-048A-native-german-review-html-packet/native_german_review_export_schema.json",
+    "native_german_review_readme_de": "research/experiments/generated/PROD-048A-native-german-review-html-packet/native_german_review_readme_de.md",
+    "native_german_review_table_csv": "research/experiments/generated/PROD-048A-native-german-review-html-packet/native_german_review_table.csv"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-048B-native-german-review-import"
+}

@@ -1,0 +1,158 @@
+{
+  "groups_accepted_from_current_feedback": [
+    {
+      "topic": "Wer ruft an?",
+      "current_group_id": "de-review-group-002",
+      "review_item_id": "de-review-010",
+      "source_case_id": "source-informed-de-who_are_you-001",
+      "note": "Only one exported individual row was reviewed; grouped-card acceptance still needs confirmation."
+    },
+    {
+      "topic": "Schriftliche Informationen",
+      "current_group_id": "de-review-group-003",
+      "review_item_id": "de-review-019",
+      "source_case_id": "source-informed-de-send_info-001",
+      "note": "Only one exported individual row was reviewed; grouped-card acceptance still needs confirmation."
+    },
+    {
+      "topic": "Nur E-Mail",
+      "current_group_id": "de-review-group-004",
+      "review_item_id": "de-review-022",
+      "source_case_id": "source-informed-de-email_only-001",
+      "note": "Only one exported individual row was reviewed; grouped-card acceptance still needs confirmation."
+    },
+    {
+      "topic": "Betrugsangst",
+      "current_group_id": "de-review-group-006",
+      "review_item_id": "de-review-025",
+      "source_case_id": "source-informed-de-scam_or_card_fear-001",
+      "note": "Only one exported individual row was reviewed; grouped-card acceptance still needs confirmation."
+    }
+  ],
+  "groups_requiring_focused_followup": [
+    {
+      "topic": "Preisfrage",
+      "current_group_id": "de-review-group-001",
+      "review_item_id": "de-review-001",
+      "source_case_id": "source-informed-de-price_first-001",
+      "note": "Only one exported individual row was reviewed; grouped-card acceptance still needs confirmation.",
+      "reason": "Reviewer requested a small wording change or flagged a safety/impact concern."
+    }
+  ],
+  "groups_still_completely_unreviewed": [
+    {
+      "current_group_id": "de-review-group-005",
+      "topic": "Betrugs- oder Zahlungsangst",
+      "case_count": 3,
+      "short_agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich."
+    },
+    {
+      "current_group_id": "de-review-group-007",
+      "topic": "Support",
+      "case_count": 3,
+      "short_agent_response": "Verstanden, das ist ein Fall für den Support. Ich leite Sie dorthin weiter."
+    },
+    {
+      "current_group_id": "de-review-group-008",
+      "topic": "Kündigung",
+      "case_count": 3,
+      "short_agent_response": "Verstanden, dann leite ich Sie an die zuständige Stelle für Kündigungen weiter."
+    },
+    {
+      "current_group_id": "de-review-group-009",
+      "topic": "Technische Frage",
+      "case_count": 6,
+      "short_agent_response": "Das sollte eine Fachperson prüfen. Ich leite es entsprechend weiter."
+    },
+    {
+      "current_group_id": "de-review-group-010",
+      "topic": "Sicherheitsprüfung",
+      "case_count": 9,
+      "short_agent_response": "Das sollte eine Fachperson prüfen. Ich mache dazu keine allgemeinen Zusagen."
+    },
+    {
+      "current_group_id": "de-review-group-011",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "case_count": 6,
+      "short_agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter."
+    },
+    {
+      "current_group_id": "de-review-group-012",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "case_count": 6,
+      "short_agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter."
+    },
+    {
+      "current_group_id": "de-review-group-013",
+      "topic": "Bestehender Anbieter",
+      "case_count": 6,
+      "short_agent_response": "Verstehe. Es geht nicht darum, Ihren Anbieter zu ersetzen, sondern nur darum, ob noch Rückrufe oder Nachverfolgungen offen bleiben."
+    },
+    {
+      "current_group_id": "de-review-group-014",
+      "topic": "Entscheidung mit Chef oder Partner",
+      "case_count": 3,
+      "short_agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung."
+    },
+    {
+      "current_group_id": "de-review-group-015",
+      "topic": "Entscheidung mit Chef oder Partner",
+      "case_count": 3,
+      "short_agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung."
+    },
+    {
+      "current_group_id": "de-review-group-016",
+      "topic": "Nächster Schritt",
+      "case_count": 6,
+      "short_agent_response": "Gut, dann halte ich den nächsten Schritt fest. Bezahlt oder unterschrieben wird hier am Telefon nichts."
+    },
+    {
+      "current_group_id": "de-review-group-017",
+      "topic": "Rückruf",
+      "case_count": 3,
+      "short_agent_response": "Ja, ich merke einen Rückruf vor."
+    },
+    {
+      "current_group_id": "de-review-group-018",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "case_count": 3,
+      "short_agent_response": "Verstanden, dann belasse ich es dabei. Auf Wiederhören."
+    },
+    {
+      "current_group_id": "de-review-group-019",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "case_count": 3,
+      "short_agent_response": "Verstanden. Sie werden hierzu nicht mehr angerufen. Auf Wiederhören."
+    },
+    {
+      "current_group_id": "de-review-group-020",
+      "topic": "Terminbestätigung",
+      "case_count": 3,
+      "short_agent_response": "Bestätigt, ich notiere den Rückruf so. Auf Wiederhören."
+    },
+    {
+      "current_group_id": "de-review-group-021",
+      "topic": "Sonstiges",
+      "case_count": 3,
+      "short_agent_response": "Garantieren möchte ich nichts, was von Details abhängt. Ich leite es zur Prüfung weiter."
+    },
+    {
+      "current_group_id": "de-review-group-022",
+      "topic": "Sonstiges",
+      "case_count": 3,
+      "short_agent_response": "Einen Moment, ich prüfe die Produktinformationen."
+    }
+  ],
+  "revision_candidates": [
+    "Preisfrage"
+  ],
+  "review_coverage_gaps": {
+    "input_export_used_99_individual_rows": true,
+    "current_grouped_packet_group_count": 22,
+    "reviewed_group_count": 5,
+    "full_native_german_approval_claimed": false,
+    "blank_rows_are_not_rejections": true
+  },
+  "recommendation": "ask_reviewer_to_continue_with_grouped_html",
+  "recommendation_detail": "Ask the reviewer to continue with the grouped PROD-048A HTML so repeated answers are reviewed once per answer group. Do not treat the blank individual rows as approval or rejection."
+}

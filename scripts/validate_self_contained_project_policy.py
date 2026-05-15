@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_DOCS = [
     ROOT / "docs" / "product" / "PROJECT_SELF_CONTAINMENT_POLICY.md",
-    ROOT / "docs" / "product" / "VOICE_PROVIDER_RUN_BOUNDARY.md",
-    ROOT / "docs" / "product" / "VOICE_GENERATED_AUDIO_ASSET_LOG.md",
+    ROOT / "runtime" / "providers" / "VOICE_PROVIDER_RUN_BOUNDARY.md",
+    ROOT / "runtime" / "providers" / "VOICE_GENERATED_AUDIO_ASSET_LOG.md",
 ]
 
 
@@ -66,13 +66,13 @@ def validate_docs_exist() -> None:
 
 
 def validate_boundary_doc() -> None:
-    text = read_lower(ROOT / "docs" / "product" / "VOICE_PROVIDER_RUN_BOUNDARY.md")
+    text = read_lower(ROOT / "runtime" / "providers" / "VOICE_PROVIDER_RUN_BOUNDARY.md")
     for phrase in REQUIRED_BOUNDARY_PHRASES:
         assert_condition(phrase in text, f"Provider boundary doc must include phrase: {phrase}")
 
 
 def validate_asset_log_doc() -> None:
-    text = read_lower(ROOT / "docs" / "product" / "VOICE_GENERATED_AUDIO_ASSET_LOG.md")
+    text = read_lower(ROOT / "runtime" / "providers" / "VOICE_GENERATED_AUDIO_ASSET_LOG.md")
     for field in REQUIRED_ASSET_LOG_FIELDS:
         assert_condition(field in text, f"Generated audio asset log doc must include field: {field}")
 

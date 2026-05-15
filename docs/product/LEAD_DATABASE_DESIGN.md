@@ -477,4 +477,4 @@ Likely first options:
 Current choice:
 
 - SQLite is the first local prototype layer.
-- See `SQLITE_PROTOTYPE.md`.
+- See `runtime/persistence/SQLITE_PROTOTYPE.md`.

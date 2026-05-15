@@ -13,6 +13,21 @@ emotion-aware-ai-sales-agent/
   services/
     sales-agent-api/
     emotion-engine/
+  runtime/
+    architecture/
+    core/
+    entrypoints/
+    contracts/
+    policy/
+    retrieval/
+    speech/
+    voice/
+    providers/
+    campaigns/
+    prompts/
+    config/
+    persistence/
+    runtime_manifest.json
   packages/
     shared/
   data/
@@ -36,6 +51,7 @@ emotion-aware-ai-sales-agent/
 - `apps/`: user-facing demos or internal interfaces if the thesis grows into a demo app.
 - `program.md`: lightweight research instructions for running focused thesis experiments.
 - `services/`: implementation modules for the pipeline once architecture choices become concrete.
+- `runtime/`: runtime-affecting source modules, entrypoints, contracts, policy Markdown, prompts, campaign examples, voice config examples, provider boundaries, architecture docs, and persistence prototypes. Legacy `scripts/*` runtime files are compatibility wrappers.
 - `packages/shared/`: shared types, prompts, schemas, and helper code.
 - `data/public/`: public datasets and public-data metadata.
 - `data/private/`: local-only private call-center audio and raw private call assets. This folder is ignored by Git except for its local ignore rule.
@@ -47,7 +63,7 @@ emotion-aware-ai-sales-agent/
 - `docs/thesis/`: thesis framing, scope, and planning documents.
 - `docs/product/`: product positioning, MVP scope, client-facing assumptions, and launch considerations.
 - `docs/data/`: data policy, data readiness, and source documentation.
-- `scripts/`: setup, local dev, and automation scripts.
+- `scripts/`: setup, local dev, checkpoint runners, validators, safety checks, and compatibility wrappers for moved runtime modules.
 
 ## Current Focus
 
@@ -66,6 +82,7 @@ Use that folder to record decisions, methodology changes, and experiment rationa
 
 The main steering document is `docs/thesis/ROADMAP.md`.
 The main navigation map is `docs/PROJECT_NAVIGATION.md`.
+The runtime behavior boundary starts at `runtime/README.md`.
 The brain folder starts at `docs/brain/README.md`.
 Checkpoint docs are grouped in `docs/product/CHECKPOINT_INDEX.md`.
 The product-facing brief is `docs/product/PRODUCT_BRIEF.md`.

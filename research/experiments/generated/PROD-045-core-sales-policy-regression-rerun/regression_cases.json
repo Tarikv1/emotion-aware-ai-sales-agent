@@ -43,7 +43,7 @@
     },
     "expected": {
       "sales_difficulty": "price-first-direct",
-      "call_control": "end-call"
+      "call_control": "bridge-then-continue"
     },
     "example_type": "synthetic_generic_regression_case",
     "source_quote": false,
@@ -143,7 +143,7 @@
     },
     "expected": {
       "sales_difficulty": "written-info-request",
-      "call_control": "end-call"
+      "call_control": "bridge-then-continue"
     },
     "example_type": "synthetic_generic_regression_case",
     "source_quote": false,
@@ -693,7 +693,7 @@
     },
     "expected": {
       "sales_difficulty": "stakeholder-review",
-      "call_control": "end-call"
+      "call_control": "bridge-then-continue"
     },
     "example_type": "synthetic_generic_regression_case",
     "source_quote": false,
@@ -743,7 +743,7 @@
     },
     "expected": {
       "sales_difficulty": "partner-review",
-      "call_control": "end-call"
+      "call_control": "bridge-then-continue"
     },
     "example_type": "synthetic_generic_regression_case",
     "source_quote": false,

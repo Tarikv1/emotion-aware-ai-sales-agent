@@ -1,0 +1,73 @@
+{
+  "checkpoint_id": "PROD-052-language-lane-review-separation",
+  "items": [
+    {
+      "case_id": "prod-045-price-first",
+      "language": "en",
+      "sales_difficulty": "price-first-direct",
+      "customer_utterance": "What does this cost?",
+      "agent_response": "The starter plan is 29 per user per month, and I can send the exact terms in writing. If useful, I can briefly explain what is included before I send them. No payment or commitment on this call.",
+      "call_control": "bridge-then-continue",
+      "next_action": "answer-and-continue",
+      "spoken_phrase_review_lane": "english_owner_review",
+      "review_status": "ready_for_tarik_english_review",
+      "exact_phrase_acceptance_allowed": true,
+      "requires_tarik_review": true,
+      "requires_native_german_review": false,
+      "policy_level_only": false,
+      "source_policy_score": 1.0,
+      "source_policy_checks_passed": true
+    },
+    {
+      "case_id": "prod-045-send-info",
+      "language": "en",
+      "sales_difficulty": "written-info-request",
+      "customer_utterance": "Send me the details.",
+      "agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.",
+      "call_control": "bridge-then-continue",
+      "next_action": "answer-and-continue",
+      "spoken_phrase_review_lane": "english_owner_review",
+      "review_status": "ready_for_tarik_english_review",
+      "exact_phrase_acceptance_allowed": true,
+      "requires_tarik_review": true,
+      "requires_native_german_review": false,
+      "policy_level_only": false,
+      "source_policy_score": 1.0,
+      "source_policy_checks_passed": true
+    },
+    {
+      "case_id": "prod-045-manager",
+      "language": "en",
+      "sales_difficulty": "stakeholder-review",
+      "customer_utterance": "I need to ask my manager.",
+      "agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "call_control": "bridge-then-continue",
+      "next_action": "answer-and-continue",
+      "spoken_phrase_review_lane": "english_owner_review",
+      "review_status": "ready_for_tarik_english_review",
+      "exact_phrase_acceptance_allowed": true,
+      "requires_tarik_review": true,
+      "requires_native_german_review": false,
+      "policy_level_only": false,
+      "source_policy_score": 1.0,
+      "source_policy_checks_passed": true
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "language": "en",
+      "sales_difficulty": "partner-review",
+      "customer_utterance": "I need to ask my spouse.",
+      "agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "call_control": "bridge-then-continue",
+      "next_action": "answer-and-continue",
+      "spoken_phrase_review_lane": "english_owner_review",
+      "review_status": "ready_for_tarik_english_review",
+      "exact_phrase_acceptance_allowed": true,
+      "requires_tarik_review": true,
+      "requires_native_german_review": false,
+      "policy_level_only": false,
+      "source_policy_score": 1.0,
+      "source_policy_checks_passed": true
+    }
+  ]
+}

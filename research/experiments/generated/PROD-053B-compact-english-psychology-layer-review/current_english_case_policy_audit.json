@@ -1,0 +1,57 @@
+{
+  "language": "en",
+  "scope": "PROD-052 English items only; not the broader English response surface.",
+  "items": [
+    {
+      "case_id": "prod-045-price-first",
+      "language": "en",
+      "sales_difficulty": "price-first-direct",
+      "customer_utterance": "What does this cost?",
+      "current_agent_response": "The starter plan is 29 per user per month, and I can send the exact terms in writing. If useful, I can briefly explain what is included before I send them. No payment or commitment on this call.",
+      "policy_issues": [],
+      "policy_shape_suggestion": "The starter plan is 29 per user per month. I can send the exact terms in writing. No payment or commitment on this call.",
+      "prod_053c_rewrite_decision": "carry_forward",
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-045-send-info",
+      "language": "en",
+      "sales_difficulty": "written-info-request",
+      "customer_utterance": "Send me the details.",
+      "current_agent_response": "Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.",
+      "policy_issues": [],
+      "policy_shape_suggestion": "Of course. I can tailor it to your main point, then send it over.",
+      "prod_053c_rewrite_decision": "carry_forward",
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-045-manager",
+      "language": "en",
+      "sales_difficulty": "stakeholder-review",
+      "customer_utterance": "I need to ask my manager.",
+      "current_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_shape_suggestion": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "prod_053c_rewrite_decision": "rewrite_candidate",
+      "runtime_response_changed": false
+    },
+    {
+      "case_id": "prod-045-spouse",
+      "language": "en",
+      "sales_difficulty": "partner-review",
+      "customer_utterance": "I need to ask my spouse.",
+      "current_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "policy_issues": [
+        "live_turn_too_long"
+      ],
+      "policy_shape_suggestion": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "prod_053c_rewrite_decision": "rewrite_candidate",
+      "runtime_response_changed": false
+    }
+  ],
+  "rewrite_candidate_count": 2,
+  "runtime_behavior_changed": false,
+  "response_text_behavior_changed": false
+}

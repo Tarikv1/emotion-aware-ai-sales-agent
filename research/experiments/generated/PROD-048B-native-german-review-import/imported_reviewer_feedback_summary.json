@@ -1,0 +1,64 @@
+{
+  "checkpoint_id": "PROD-048B-native-german-review-import",
+  "source_checkpoint_id": "PROD-048A-german-review-html-and-brevity-packet",
+  "input_path": "research/experiments/imports/PROD-048B-native-german-review-import/deutsche-telefonantworten-bewertung-1.json",
+  "reviewer": {
+    "name_or_initials": "Diro",
+    "native_german": "Ja",
+    "region_optional": "Basel",
+    "date": "2026-05-12",
+    "general_notes": ""
+  },
+  "input_export_shape": {
+    "item_count": 99,
+    "current_grouped_packet_group_count": 22,
+    "import_concern": "The returned JSON contains 99 individual review rows while the current grouped PROD-048A packet has fewer visible grouped cards. This suggests the reviewer used the earlier individual-row packet or exported individual rows for traceability."
+  },
+  "reported_summary": {
+    "anzahl_gepruefter_antworten": 0,
+    "anzahl_akzeptiert": 5,
+    "anzahl_mit_kleinen_aenderungen": 1,
+    "anzahl_mit_grossen_aenderungen": 0,
+    "anzahl_abgelehnt": 0,
+    "anzahl_mit_sicherheits_oder_wirkungs_hinweisen": 1
+  },
+  "recomputed_counts": {
+    "source_item_count": 99,
+    "reported_checked_count": 0,
+    "reported_accepted_count": 5,
+    "reported_small_change_count": 1,
+    "reported_large_change_count": 0,
+    "reported_rejected_count": 0,
+    "reported_safety_or_impact_count": 1,
+    "reviewed_item_count": 5,
+    "unreviewed_item_count": 94,
+    "accepted_count": 4,
+    "small_change_count": 1,
+    "large_change_count": 0,
+    "rejected_count": 0,
+    "safety_or_impact_count": 1,
+    "blank_rows_counted_as_unreviewed": true
+  },
+  "reviewed_topics": [
+    "Betrugsangst",
+    "Nur E-Mail",
+    "Preisfrage",
+    "Schriftliche Informationen",
+    "Wer ruft an?"
+  ],
+  "accepted_topics": [
+    "Betrugsangst",
+    "Nur E-Mail",
+    "Schriftliche Informationen",
+    "Wer ruft an?"
+  ],
+  "revision_needed_topics": [
+    "Preisfrage"
+  ],
+  "safety_or_impact_flagged_topics": [
+    "Preisfrage"
+  ],
+  "price_feedback_captured": true,
+  "full_native_german_approval_claimed": false,
+  "legal_compliance_claimed": false
+}

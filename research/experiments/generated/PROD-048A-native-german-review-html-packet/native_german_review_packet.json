@@ -1,0 +1,3961 @@
+{
+  "checkpoint_id": "PROD-048A-native-german-review-html-packet",
+  "checkpoint_name": "Native German Review HTML Packet",
+  "packet_language": "de",
+  "reviewer_audience": "native_german_non_technical_reviewer",
+  "source_checkpoints": [
+    "PROD-046-core-sales-policy-human-review",
+    "PROD-047-campaign-profile-contract-validator"
+  ],
+  "review_purpose_de": "Prüfung deutscher Telefonantworten durch eine muttersprachliche Person.",
+  "review_scope_de": "Bitte nur die deutsche Formulierung prüfen. Keine Rechtsprüfung und keine Produktbewertung.",
+  "review_items": [
+    {
+      "review_item_number": 1,
+      "review_item_id": "de-review-001",
+      "source_case_id": "source-informed-de-price_first-001",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Was kostet mich das denn?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-price_first-001",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-010",
+          "language": "de",
+          "case_id": "source-informed-de-price_first-001",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 2,
+      "review_item_id": "de-review-002",
+      "source_case_id": "source-informed-de-price_first-002",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Mit welchen Kosten muss ich da rechnen?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-price_first-002",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-011",
+          "language": "de",
+          "case_id": "source-informed-de-price_first-002",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 3,
+      "review_item_id": "de-review-003",
+      "source_case_id": "source-informed-de-price_first-003",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Was kommt da monatlich auf mich zu?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-price_first-003",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-012",
+          "language": "de",
+          "case_id": "source-informed-de-price_first-003",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 4,
+      "review_item_id": "de-review-004",
+      "source_case_id": "source-informed-interp-de-price_first-001",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Was kostet mich das denn?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-price_first-001",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-037",
+          "language": "de",
+          "case_id": "source-informed-interp-de-price_first-001",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 5,
+      "review_item_id": "de-review-005",
+      "source_case_id": "source-informed-interp-de-price_first-002",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Mit welchen Kosten muss ich da rechnen?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-price_first-002",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-038",
+          "language": "de",
+          "case_id": "source-informed-interp-de-price_first-002",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 6,
+      "review_item_id": "de-review-006",
+      "source_case_id": "source-informed-interp-de-price_first-003",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Was kommt da monatlich auf mich zu?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-price_first-003",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-039",
+          "language": "de",
+          "case_id": "source-informed-interp-de-price_first-003",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 7,
+      "review_item_id": "de-review-007",
+      "source_case_id": "source-informed-interp-legacy-de-price_first-001",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Was kostet mich das denn?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-price_first-001",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-043",
+          "language": "de",
+          "case_id": "source-informed-interp-legacy-de-price_first-001",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 8,
+      "review_item_id": "de-review-008",
+      "source_case_id": "source-informed-interp-legacy-de-price_first-002",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Mit welchen Kosten muss ich da rechnen?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-price_first-002",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-044",
+          "language": "de",
+          "case_id": "source-informed-interp-legacy-de-price_first-002",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 9,
+      "review_item_id": "de-review-009",
+      "source_case_id": "source-informed-interp-legacy-de-price_first-003",
+      "customer_move_id": "price_first",
+      "topic_id": "preisfrage",
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "situation_de": "Der Kunde möchte zuerst wissen, was das Angebot kostet.",
+      "customer_utterance": "Was kommt da monatlich auf mich zu?",
+      "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken. Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-price_first-003",
+        "customer_move_id": "price_first",
+        "sales_difficulty": "price-first-direct",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-045",
+          "language": "de",
+          "case_id": "source-informed-interp-legacy-de-price_first-003",
+          "sales_difficulty": "price-first-direct",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 10,
+      "review_item_id": "de-review-010",
+      "source_case_id": "source-informed-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Wer ist denn da?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-who_are_you-001",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 11,
+      "review_item_id": "de-review-011",
+      "source_case_id": "source-informed-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Von welcher Firma rufen Sie an?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-who_are_you-002",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 12,
+      "review_item_id": "de-review-012",
+      "source_case_id": "source-informed-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Worum geht es hier überhaupt?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-who_are_you-003",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 13,
+      "review_item_id": "de-review-013",
+      "source_case_id": "source-informed-interp-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Wer ist denn da?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-who_are_you-001",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 14,
+      "review_item_id": "de-review-014",
+      "source_case_id": "source-informed-interp-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Von welcher Firma rufen Sie an?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-who_are_you-002",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 15,
+      "review_item_id": "de-review-015",
+      "source_case_id": "source-informed-interp-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Worum geht es hier überhaupt?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-who_are_you-003",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 16,
+      "review_item_id": "de-review-016",
+      "source_case_id": "source-informed-interp-legacy-de-who_are_you-001",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Wer ist denn da?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-who_are_you-001",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 17,
+      "review_item_id": "de-review-017",
+      "source_case_id": "source-informed-interp-legacy-de-who_are_you-002",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Von welcher Firma rufen Sie an?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-who_are_you-002",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 18,
+      "review_item_id": "de-review-018",
+      "source_case_id": "source-informed-interp-legacy-de-who_are_you-003",
+      "customer_move_id": "who_are_you",
+      "topic_id": "wer-ruft-an?",
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "situation_de": "Der Kunde ist unsicher, wer am Telefon ist.",
+      "customer_utterance": "Worum geht es hier überhaupt?",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist. Wenn das für Sie nicht relevant ist, beende ich den Anruf.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-who_are_you-003",
+        "customer_move_id": "who_are_you",
+        "sales_difficulty": "identity-repair",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 19,
+      "review_item_id": "de-review-019",
+      "source_case_id": "source-informed-de-send_info-001",
+      "customer_move_id": "send_info",
+      "topic_id": "schriftliche-informationen",
+      "topic_title_de": "Schriftliche Informationen",
+      "topic_description_de": "Der Kunde möchte die Informationen erst schriftlich sehen.",
+      "situation_de": "Der Kunde bittet um eine schriftliche Zusammenfassung.",
+      "customer_utterance": "Schicken Sie mir das bitte schriftlich.",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-send_info-001",
+        "customer_move_id": "send_info",
+        "sales_difficulty": "written-info-request",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-013",
+          "language": "de",
+          "case_id": "source-informed-de-send_info-001",
+          "sales_difficulty": "written-info-request",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 20,
+      "review_item_id": "de-review-020",
+      "source_case_id": "source-informed-de-send_info-002",
+      "customer_move_id": "send_info",
+      "topic_id": "schriftliche-informationen",
+      "topic_title_de": "Schriftliche Informationen",
+      "topic_description_de": "Der Kunde möchte die Informationen erst schriftlich sehen.",
+      "situation_de": "Der Kunde bittet um eine schriftliche Zusammenfassung.",
+      "customer_utterance": "Können Sie mir die Unterlagen per Mail senden?",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-send_info-002",
+        "customer_move_id": "send_info",
+        "sales_difficulty": "written-info-request",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-014",
+          "language": "de",
+          "case_id": "source-informed-de-send_info-002",
+          "sales_difficulty": "written-info-request",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 21,
+      "review_item_id": "de-review-021",
+      "source_case_id": "source-informed-de-send_info-003",
+      "customer_move_id": "send_info",
+      "topic_id": "schriftliche-informationen",
+      "topic_title_de": "Schriftliche Informationen",
+      "topic_description_de": "Der Kunde möchte die Informationen erst schriftlich sehen.",
+      "situation_de": "Der Kunde bittet um eine schriftliche Zusammenfassung.",
+      "customer_utterance": "Senden Sie mir erst mal die Infos zu.",
+      "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-send_info-003",
+        "customer_move_id": "send_info",
+        "sales_difficulty": "written-info-request",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-015",
+          "language": "de",
+          "case_id": "source-informed-de-send_info-003",
+          "sales_difficulty": "written-info-request",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 22,
+      "review_item_id": "de-review-022",
+      "source_case_id": "source-informed-de-email_only-001",
+      "customer_move_id": "email_only",
+      "topic_id": "nur-e-mail",
+      "topic_title_de": "Nur E-Mail",
+      "topic_description_de": "Der Kunde möchte nicht weiter telefonieren und bevorzugt E-Mail.",
+      "situation_de": "Der Kunde setzt eine klare E-Mail-Grenze.",
+      "customer_utterance": "Bitte nur per E-Mail.",
+      "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-email_only-001",
+        "customer_move_id": "email_only",
+        "sales_difficulty": "email-only-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-016",
+          "language": "de",
+          "case_id": "source-informed-de-email_only-001",
+          "sales_difficulty": "email-only-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 23,
+      "review_item_id": "de-review-023",
+      "source_case_id": "source-informed-de-email_only-002",
+      "customer_move_id": "email_only",
+      "topic_id": "nur-e-mail",
+      "topic_title_de": "Nur E-Mail",
+      "topic_description_de": "Der Kunde möchte nicht weiter telefonieren und bevorzugt E-Mail.",
+      "situation_de": "Der Kunde setzt eine klare E-Mail-Grenze.",
+      "customer_utterance": "Rufen Sie mich nicht an, schicken Sie es per Mail.",
+      "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-email_only-002",
+        "customer_move_id": "email_only",
+        "sales_difficulty": "email-only-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-017",
+          "language": "de",
+          "case_id": "source-informed-de-email_only-002",
+          "sales_difficulty": "email-only-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 24,
+      "review_item_id": "de-review-024",
+      "source_case_id": "source-informed-de-email_only-003",
+      "customer_move_id": "email_only",
+      "topic_id": "nur-e-mail",
+      "topic_title_de": "Nur E-Mail",
+      "topic_description_de": "Der Kunde möchte nicht weiter telefonieren und bevorzugt E-Mail.",
+      "situation_de": "Der Kunde setzt eine klare E-Mail-Grenze.",
+      "customer_utterance": "Wenn überhaupt, dann per Mail.",
+      "agent_response": "Verstanden. Ich sende Ihnen die Informationen per E-Mail und dränge nicht auf ein Telefonat.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-email_only-003",
+        "customer_move_id": "email_only",
+        "sales_difficulty": "email-only-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-018",
+          "language": "de",
+          "case_id": "source-informed-de-email_only-003",
+          "sales_difficulty": "email-only-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 25,
+      "review_item_id": "de-review-025",
+      "source_case_id": "source-informed-de-scam_or_card_fear-001",
+      "customer_move_id": "scam_or_card_fear",
+      "topic_id": "betrugsangst",
+      "topic_title_de": "Betrugsangst",
+      "topic_description_de": "Der Kunde fragt, ob der Anruf seriös ist.",
+      "situation_de": "Der Kunde ist bei dem Anruf vorsichtig und möchte Sicherheit.",
+      "customer_utterance": "Woher weiß ich, dass das seriös ist?",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-scam_or_card_fear-001",
+        "customer_move_id": "scam_or_card_fear",
+        "sales_difficulty": "scam-safety-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-019",
+          "language": "de",
+          "case_id": "source-informed-de-scam_or_card_fear-001",
+          "sales_difficulty": "scam-safety-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 26,
+      "review_item_id": "de-review-026",
+      "source_case_id": "source-informed-de-scam_or_card_fear-002",
+      "customer_move_id": "scam_or_card_fear",
+      "topic_id": "betrugsangst",
+      "topic_title_de": "Betrugsangst",
+      "topic_description_de": "Der Kunde fragt, ob der Anruf seriös ist.",
+      "situation_de": "Der Kunde ist bei dem Anruf vorsichtig und möchte Sicherheit.",
+      "customer_utterance": "Das klingt für mich ehrlich gesagt unseriös.",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-scam_or_card_fear-002",
+        "customer_move_id": "scam_or_card_fear",
+        "sales_difficulty": "scam-safety-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-020",
+          "language": "de",
+          "case_id": "source-informed-de-scam_or_card_fear-002",
+          "sales_difficulty": "scam-safety-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 27,
+      "review_item_id": "de-review-027",
+      "source_case_id": "source-informed-de-scam_or_card_fear-003",
+      "customer_move_id": "scam_or_card_fear",
+      "topic_id": "betrugsangst",
+      "topic_title_de": "Betrugsangst",
+      "topic_description_de": "Der Kunde fragt, ob der Anruf seriös ist.",
+      "situation_de": "Der Kunde ist bei dem Anruf vorsichtig und möchte Sicherheit.",
+      "customer_utterance": "Woran erkenne ich, dass das kein Betrug ist?",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-scam_or_card_fear-003",
+        "customer_move_id": "scam_or_card_fear",
+        "sales_difficulty": "scam-safety-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-021",
+          "language": "de",
+          "case_id": "source-informed-de-scam_or_card_fear-003",
+          "sales_difficulty": "scam-safety-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 28,
+      "review_item_id": "de-review-028",
+      "source_case_id": "source-informed-de-payment_safety_fear-001",
+      "customer_move_id": "payment_safety_fear",
+      "topic_id": "zahlungsangst",
+      "topic_title_de": "Zahlungsangst",
+      "topic_description_de": "Der Kunde will keine Zahlungs- oder Kartendaten nennen.",
+      "situation_de": "Der Kunde macht deutlich, dass am Telefon keine Zahlungsdaten genannt werden.",
+      "customer_utterance": "Ich gebe am Telefon keine Bankdaten raus.",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-payment_safety_fear-001",
+        "customer_move_id": "payment_safety_fear",
+        "sales_difficulty": "payment-safety-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-022",
+          "language": "de",
+          "case_id": "source-informed-de-payment_safety_fear-001",
+          "sales_difficulty": "payment-safety-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 29,
+      "review_item_id": "de-review-029",
+      "source_case_id": "source-informed-de-payment_safety_fear-002",
+      "customer_move_id": "payment_safety_fear",
+      "topic_id": "zahlungsangst",
+      "topic_title_de": "Zahlungsangst",
+      "topic_description_de": "Der Kunde will keine Zahlungs- oder Kartendaten nennen.",
+      "situation_de": "Der Kunde macht deutlich, dass am Telefon keine Zahlungsdaten genannt werden.",
+      "customer_utterance": "Meine Karte gebe ich nicht am Telefon durch.",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-payment_safety_fear-002",
+        "customer_move_id": "payment_safety_fear",
+        "sales_difficulty": "payment-safety-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-023",
+          "language": "de",
+          "case_id": "source-informed-de-payment_safety_fear-002",
+          "sales_difficulty": "payment-safety-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 30,
+      "review_item_id": "de-review-030",
+      "source_case_id": "source-informed-de-payment_safety_fear-003",
+      "customer_move_id": "payment_safety_fear",
+      "topic_id": "zahlungsangst",
+      "topic_title_de": "Zahlungsangst",
+      "topic_description_de": "Der Kunde will keine Zahlungs- oder Kartendaten nennen.",
+      "situation_de": "Der Kunde macht deutlich, dass am Telefon keine Zahlungsdaten genannt werden.",
+      "customer_utterance": "Zahlungsdaten nenne ich am Telefon grundsätzlich nicht.",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-payment_safety_fear-003",
+        "customer_move_id": "payment_safety_fear",
+        "sales_difficulty": "payment-safety-boundary",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-024",
+          "language": "de",
+          "case_id": "source-informed-de-payment_safety_fear-003",
+          "sales_difficulty": "payment-safety-boundary",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 31,
+      "review_item_id": "de-review-031",
+      "source_case_id": "source-informed-de-support_issue-001",
+      "customer_move_id": "support_issue",
+      "topic_id": "support",
+      "topic_title_de": "Support",
+      "topic_description_de": "Der Kunde hat ein bestehendes Problem und braucht Hilfe.",
+      "situation_de": "Der Kunde beschreibt ein Support-Thema statt Interesse an einem Angebot.",
+      "customer_utterance": "Ich habe eigentlich ein Problem mit meinem Vertrag.",
+      "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte intern oder bürokratisch klingen.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-support_issue-001",
+        "customer_move_id": "support_issue",
+        "sales_difficulty": "support-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": true,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 32,
+      "review_item_id": "de-review-032",
+      "source_case_id": "source-informed-de-support_issue-002",
+      "customer_move_id": "support_issue",
+      "topic_id": "support",
+      "topic_title_de": "Support",
+      "topic_description_de": "Der Kunde hat ein bestehendes Problem und braucht Hilfe.",
+      "situation_de": "Der Kunde beschreibt ein Support-Thema statt Interesse an einem Angebot.",
+      "customer_utterance": "Das ist eher ein Support-Thema.",
+      "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte intern oder bürokratisch klingen.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-support_issue-002",
+        "customer_move_id": "support_issue",
+        "sales_difficulty": "support-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": true,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 33,
+      "review_item_id": "de-review-033",
+      "source_case_id": "source-informed-de-support_issue-003",
+      "customer_move_id": "support_issue",
+      "topic_id": "support",
+      "topic_title_de": "Support",
+      "topic_description_de": "Der Kunde hat ein bestehendes Problem und braucht Hilfe.",
+      "situation_de": "Der Kunde beschreibt ein Support-Thema statt Interesse an einem Angebot.",
+      "customer_utterance": "Können Sie mich mit dem Support verbinden?",
+      "agent_response": "Dann ist das ein Support-Thema. Ich beende den Verkaufsteil hier und leite Sie an den zuständigen Support weiter.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte intern oder bürokratisch klingen.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-support_issue-003",
+        "customer_move_id": "support_issue",
+        "sales_difficulty": "support-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": true,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 34,
+      "review_item_id": "de-review-034",
+      "source_case_id": "source-informed-de-cancellation_request-001",
+      "customer_move_id": "cancellation_request",
+      "topic_id": "kündigung",
+      "topic_title_de": "Kündigung",
+      "topic_description_de": "Der Kunde möchte kündigen oder etwas beenden.",
+      "situation_de": "Der Kunde spricht eine Kündigung oder Beendigung an.",
+      "customer_utterance": "Ich möchte kündigen.",
+      "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte intern oder bürokratisch klingen.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-cancellation_request-001",
+        "customer_move_id": "cancellation_request",
+        "sales_difficulty": "cancellation-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": true,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 35,
+      "review_item_id": "de-review-035",
+      "source_case_id": "source-informed-de-cancellation_request-002",
+      "customer_move_id": "cancellation_request",
+      "topic_id": "kündigung",
+      "topic_title_de": "Kündigung",
+      "topic_description_de": "Der Kunde möchte kündigen oder etwas beenden.",
+      "situation_de": "Der Kunde spricht eine Kündigung oder Beendigung an.",
+      "customer_utterance": "Ich will meinen Vertrag beenden.",
+      "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte intern oder bürokratisch klingen.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-cancellation_request-002",
+        "customer_move_id": "cancellation_request",
+        "sales_difficulty": "cancellation-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": true,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 36,
+      "review_item_id": "de-review-036",
+      "source_case_id": "source-informed-de-cancellation_request-003",
+      "customer_move_id": "cancellation_request",
+      "topic_id": "kündigung",
+      "topic_title_de": "Kündigung",
+      "topic_description_de": "Der Kunde möchte kündigen oder etwas beenden.",
+      "situation_de": "Der Kunde spricht eine Kündigung oder Beendigung an.",
+      "customer_utterance": "Wie kann ich das kündigen?",
+      "agent_response": "Dann geht es um eine Kündigung. Ich beende den Verkaufsteil hier und leite Sie an die zuständige Stelle für Kündigungen weiter.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte intern oder bürokratisch klingen.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-cancellation_request-003",
+        "customer_move_id": "cancellation_request",
+        "sales_difficulty": "cancellation-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": true,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 37,
+      "review_item_id": "de-review-037",
+      "source_case_id": "source-informed-de-technical_question-001",
+      "customer_move_id": "technical_question",
+      "topic_id": "technische-frage",
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "situation_de": "Der Kunde stellt eine technische Frage, die nicht geraten werden sollte.",
+      "customer_utterance": "Lässt sich das mit unserem System verbinden?",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-technical_question-001",
+        "customer_move_id": "technical_question",
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 38,
+      "review_item_id": "de-review-038",
+      "source_case_id": "source-informed-de-technical_question-002",
+      "customer_move_id": "technical_question",
+      "topic_id": "technische-frage",
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "situation_de": "Der Kunde stellt eine technische Frage, die nicht geraten werden sollte.",
+      "customer_utterance": "Geht das technisch mit unserem CRM?",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-technical_question-002",
+        "customer_move_id": "technical_question",
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 39,
+      "review_item_id": "de-review-039",
+      "source_case_id": "source-informed-de-technical_question-003",
+      "customer_move_id": "technical_question",
+      "topic_id": "technische-frage",
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "situation_de": "Der Kunde stellt eine technische Frage, die nicht geraten werden sollte.",
+      "customer_utterance": "Da hätte ich eine technische Frage.",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-technical_question-003",
+        "customer_move_id": "technical_question",
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 40,
+      "review_item_id": "de-review-040",
+      "source_case_id": "source-informed-interp-de-technical_question-001",
+      "customer_move_id": "technical_question",
+      "topic_id": "technische-frage",
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "situation_de": "Der Kunde stellt eine technische Frage, die nicht geraten werden sollte.",
+      "customer_utterance": "Lässt sich das mit unserem System verbinden?",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-technical_question-001",
+        "customer_move_id": "technical_question",
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 41,
+      "review_item_id": "de-review-041",
+      "source_case_id": "source-informed-interp-de-technical_question-002",
+      "customer_move_id": "technical_question",
+      "topic_id": "technische-frage",
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "situation_de": "Der Kunde stellt eine technische Frage, die nicht geraten werden sollte.",
+      "customer_utterance": "Geht das technisch mit unserem CRM?",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-technical_question-002",
+        "customer_move_id": "technical_question",
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 42,
+      "review_item_id": "de-review-042",
+      "source_case_id": "source-informed-interp-de-technical_question-003",
+      "customer_move_id": "technical_question",
+      "topic_id": "technische-frage",
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "situation_de": "Der Kunde stellt eine technische Frage, die nicht geraten werden sollte.",
+      "customer_utterance": "Da hätte ich eine technische Frage.",
+      "agent_response": "Nach den vorliegenden Informationen kann das System Zuständigkeiten für Rückrufe und Nachverfolgung abbilden. Integrationsdetails sollte eine zuständige Fachperson prüfen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-technical_question-003",
+        "customer_move_id": "technical_question",
+        "sales_difficulty": "technical-specialist-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 43,
+      "review_item_id": "de-review-043",
+      "source_case_id": "source-informed-de-security_review-001",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Das muss unsere IT-Sicherheit prüfen.",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-security_review-001",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 44,
+      "review_item_id": "de-review-044",
+      "source_case_id": "source-informed-de-security_review-002",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Unsere Security muss da erst drüberschauen.",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-security_review-002",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 45,
+      "review_item_id": "de-review-045",
+      "source_case_id": "source-informed-de-security_review-003",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-security_review-003",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 46,
+      "review_item_id": "de-review-046",
+      "source_case_id": "source-informed-interp-de-security_review-001",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Das muss unsere IT-Sicherheit prüfen.",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-security_review-001",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 47,
+      "review_item_id": "de-review-047",
+      "source_case_id": "source-informed-interp-de-security_review-002",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Unsere Security muss da erst drüberschauen.",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-security_review-002",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 48,
+      "review_item_id": "de-review-048",
+      "source_case_id": "source-informed-interp-de-security_review-003",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-security_review-003",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 49,
+      "review_item_id": "de-review-049",
+      "source_case_id": "source-informed-interp-legacy-de-security_review-001",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Das muss unsere IT-Sicherheit prüfen.",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-security_review-001",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 50,
+      "review_item_id": "de-review-050",
+      "source_case_id": "source-informed-interp-legacy-de-security_review-002",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Unsere Security muss da erst drüberschauen.",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-security_review-002",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 51,
+      "review_item_id": "de-review-051",
+      "source_case_id": "source-informed-interp-legacy-de-security_review-003",
+      "customer_move_id": "security_review",
+      "topic_id": "sicherheitsprüfung",
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "situation_de": "Der Kunde möchte eine Sicherheitsprüfung oder Unterlagen dafür.",
+      "customer_utterance": "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+      "agent_response": "Das sollte eine zuständige Fachperson prüfen. Ich rate hier nicht und mache keine allgemeinen Zusagen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-legacy-de-security_review-003",
+        "customer_move_id": "security_review",
+        "sales_difficulty": "security-review-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 52,
+      "review_item_id": "de-review-052",
+      "source_case_id": "source-informed-de-coverage_confusion-001",
+      "customer_move_id": "coverage_confusion",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder einer ähnlichen fachlichen Grenze.",
+      "customer_utterance": "Ist das in meinem Tarif überhaupt enthalten?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-coverage_confusion-001",
+        "customer_move_id": "coverage_confusion",
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 53,
+      "review_item_id": "de-review-053",
+      "source_case_id": "source-informed-de-coverage_confusion-002",
+      "customer_move_id": "coverage_confusion",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder einer ähnlichen fachlichen Grenze.",
+      "customer_utterance": "Was genau ist da abgedeckt?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-coverage_confusion-002",
+        "customer_move_id": "coverage_confusion",
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 54,
+      "review_item_id": "de-review-054",
+      "source_case_id": "source-informed-de-coverage_confusion-003",
+      "customer_move_id": "coverage_confusion",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder einer ähnlichen fachlichen Grenze.",
+      "customer_utterance": "Gilt das auch für meinen Fall?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-coverage_confusion-003",
+        "customer_move_id": "coverage_confusion",
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 55,
+      "review_item_id": "de-review-055",
+      "source_case_id": "source-informed-interp-de-coverage_confusion-001",
+      "customer_move_id": "coverage_confusion",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder einer ähnlichen fachlichen Grenze.",
+      "customer_utterance": "Ist das in meinem Tarif überhaupt enthalten?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-coverage_confusion-001",
+        "customer_move_id": "coverage_confusion",
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 56,
+      "review_item_id": "de-review-056",
+      "source_case_id": "source-informed-interp-de-coverage_confusion-002",
+      "customer_move_id": "coverage_confusion",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder einer ähnlichen fachlichen Grenze.",
+      "customer_utterance": "Was genau ist da abgedeckt?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-coverage_confusion-002",
+        "customer_move_id": "coverage_confusion",
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 57,
+      "review_item_id": "de-review-057",
+      "source_case_id": "source-informed-interp-de-coverage_confusion-003",
+      "customer_move_id": "coverage_confusion",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder einer ähnlichen fachlichen Grenze.",
+      "customer_utterance": "Gilt das auch für meinen Fall?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-coverage_confusion-003",
+        "customer_move_id": "coverage_confusion",
+        "sales_difficulty": "coverage-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 58,
+      "review_item_id": "de-review-058",
+      "source_case_id": "source-informed-de-sensitive_healthcare_concern-001",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde spricht ein gesundheitliches oder medizinisches Thema an.",
+      "situation_de": "Der Kunde fragt nach medizinischer oder gesundheitlicher Einordnung.",
+      "customer_utterance": "Geht es hier um medizinische Beratung?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-sensitive_healthcare_concern-001",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 59,
+      "review_item_id": "de-review-059",
+      "source_case_id": "source-informed-de-sensitive_healthcare_concern-002",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde spricht ein gesundheitliches oder medizinisches Thema an.",
+      "situation_de": "Der Kunde fragt nach medizinischer oder gesundheitlicher Einordnung.",
+      "customer_utterance": "Das ist ein gesundheitliches Thema.",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-sensitive_healthcare_concern-002",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 60,
+      "review_item_id": "de-review-060",
+      "source_case_id": "source-informed-de-sensitive_healthcare_concern-003",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde spricht ein gesundheitliches oder medizinisches Thema an.",
+      "situation_de": "Der Kunde fragt nach medizinischer oder gesundheitlicher Einordnung.",
+      "customer_utterance": "Ich will keine Gesundheitsberatung am Telefon.",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-sensitive_healthcare_concern-003",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 61,
+      "review_item_id": "de-review-061",
+      "source_case_id": "source-informed-interp-de-sensitive_healthcare_concern-001",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde spricht ein gesundheitliches oder medizinisches Thema an.",
+      "situation_de": "Der Kunde fragt nach medizinischer oder gesundheitlicher Einordnung.",
+      "customer_utterance": "Geht es hier um medizinische Beratung?",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-sensitive_healthcare_concern-001",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 62,
+      "review_item_id": "de-review-062",
+      "source_case_id": "source-informed-interp-de-sensitive_healthcare_concern-002",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde spricht ein gesundheitliches oder medizinisches Thema an.",
+      "situation_de": "Der Kunde fragt nach medizinischer oder gesundheitlicher Einordnung.",
+      "customer_utterance": "Das ist ein gesundheitliches Thema.",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-sensitive_healthcare_concern-002",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 63,
+      "review_item_id": "de-review-063",
+      "source_case_id": "source-informed-interp-de-sensitive_healthcare_concern-003",
+      "customer_move_id": "sensitive_healthcare_concern",
+      "topic_id": "versicherungsschutz-/-gesundheit",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde spricht ein gesundheitliches oder medizinisches Thema an.",
+      "situation_de": "Der Kunde fragt nach medizinischer oder gesundheitlicher Einordnung.",
+      "customer_utterance": "Ich will keine Gesundheitsberatung am Telefon.",
+      "agent_response": "Ich darf in diesem Gespräch keine medizinische Beratung und keine Beratung zum Versicherungsschutz geben. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-sensitive_healthcare_concern-003",
+        "customer_move_id": "sensitive_healthcare_concern",
+        "sales_difficulty": "healthcare-boundary-route",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 64,
+      "review_item_id": "de-review-064",
+      "source_case_id": "source-informed-de-existing_provider-001",
+      "customer_move_id": "existing_provider",
+      "topic_id": "bestehender-anbieter",
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "situation_de": "Der Kunde verweist auf eine bestehende Lösung.",
+      "customer_utterance": "Wir haben schon einen Anbieter.",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-existing_provider-001",
+        "customer_move_id": "existing_provider",
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 65,
+      "review_item_id": "de-review-065",
+      "source_case_id": "source-informed-de-existing_provider-002",
+      "customer_move_id": "existing_provider",
+      "topic_id": "bestehender-anbieter",
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "situation_de": "Der Kunde verweist auf eine bestehende Lösung.",
+      "customer_utterance": "Das läuft bei uns bereits über jemand anderen.",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-existing_provider-002",
+        "customer_move_id": "existing_provider",
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 66,
+      "review_item_id": "de-review-066",
+      "source_case_id": "source-informed-de-existing_provider-003",
+      "customer_move_id": "existing_provider",
+      "topic_id": "bestehender-anbieter",
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "situation_de": "Der Kunde verweist auf eine bestehende Lösung.",
+      "customer_utterance": "Unser aktueller Anbieter kümmert sich darum.",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-existing_provider-003",
+        "customer_move_id": "existing_provider",
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 67,
+      "review_item_id": "de-review-067",
+      "source_case_id": "source-informed-interp-de-existing_provider-001",
+      "customer_move_id": "existing_provider",
+      "topic_id": "bestehender-anbieter",
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "situation_de": "Der Kunde verweist auf eine bestehende Lösung.",
+      "customer_utterance": "Wir haben schon einen Anbieter.",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-existing_provider-001",
+        "customer_move_id": "existing_provider",
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 68,
+      "review_item_id": "de-review-068",
+      "source_case_id": "source-informed-interp-de-existing_provider-002",
+      "customer_move_id": "existing_provider",
+      "topic_id": "bestehender-anbieter",
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "situation_de": "Der Kunde verweist auf eine bestehende Lösung.",
+      "customer_utterance": "Das läuft bei uns bereits über jemand anderen.",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-existing_provider-002",
+        "customer_move_id": "existing_provider",
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 69,
+      "review_item_id": "de-review-069",
+      "source_case_id": "source-informed-interp-de-existing_provider-003",
+      "customer_move_id": "existing_provider",
+      "topic_id": "bestehender-anbieter",
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "situation_de": "Der Kunde verweist auf eine bestehende Lösung.",
+      "customer_utterance": "Unser aktueller Anbieter kümmert sich darum.",
+      "agent_response": "Ich möchte nicht behaupten, dass das Ihren Anbieter ersetzt. Sinnvoll wäre nur zu prüfen, ob trotz Ihrer aktuellen Lösung noch Rückrufe oder Nachverfolgungen liegen bleiben.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-existing_provider-003",
+        "customer_move_id": "existing_provider",
+        "sales_difficulty": "existing-provider-gap",
+        "call_control": "continue-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 70,
+      "review_item_id": "de-review-070",
+      "source_case_id": "source-informed-de-needs_manager_approval-001",
+      "customer_move_id": "needs_manager_approval",
+      "topic_id": "entscheidung-mit-chef/partner",
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde muss intern eine weitere Person einbeziehen.",
+      "situation_de": "Der Kunde kann oder möchte nicht allein entscheiden.",
+      "customer_utterance": "Das muss ich mit meinem Chef abklären.",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-needs_manager_approval-001",
+        "customer_move_id": "needs_manager_approval",
+        "sales_difficulty": "stakeholder-review",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-025",
+          "language": "de",
+          "case_id": "source-informed-de-needs_manager_approval-001",
+          "sales_difficulty": "stakeholder-review",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 71,
+      "review_item_id": "de-review-071",
+      "source_case_id": "source-informed-de-needs_manager_approval-002",
+      "customer_move_id": "needs_manager_approval",
+      "topic_id": "entscheidung-mit-chef/partner",
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde muss intern eine weitere Person einbeziehen.",
+      "situation_de": "Der Kunde kann oder möchte nicht allein entscheiden.",
+      "customer_utterance": "Da muss mein Vorgesetzter draufschauen.",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-needs_manager_approval-002",
+        "customer_move_id": "needs_manager_approval",
+        "sales_difficulty": "stakeholder-review",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-026",
+          "language": "de",
+          "case_id": "source-informed-de-needs_manager_approval-002",
+          "sales_difficulty": "stakeholder-review",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 72,
+      "review_item_id": "de-review-072",
+      "source_case_id": "source-informed-de-needs_manager_approval-003",
+      "customer_move_id": "needs_manager_approval",
+      "topic_id": "entscheidung-mit-chef/partner",
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde muss intern eine weitere Person einbeziehen.",
+      "situation_de": "Der Kunde kann oder möchte nicht allein entscheiden.",
+      "customer_utterance": "Das entscheidet bei uns nicht nur ich.",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-needs_manager_approval-003",
+        "customer_move_id": "needs_manager_approval",
+        "sales_difficulty": "stakeholder-review",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-027",
+          "language": "de",
+          "case_id": "source-informed-de-needs_manager_approval-003",
+          "sales_difficulty": "stakeholder-review",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 73,
+      "review_item_id": "de-review-073",
+      "source_case_id": "source-informed-de-needs_spouse_or_partner_input-001",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "topic_id": "entscheidung-mit-chef/partner",
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde möchte zu Hause oder mit einer Partnerperson Rücksprache halten.",
+      "situation_de": "Der Kunde braucht eine Entscheidung mit einer weiteren Person.",
+      "customer_utterance": "Das muss ich mit meinem Mann besprechen.",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-needs_spouse_or_partner_input-001",
+        "customer_move_id": "needs_spouse_or_partner_input",
+        "sales_difficulty": "partner-review",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-028",
+          "language": "de",
+          "case_id": "source-informed-de-needs_spouse_or_partner_input-001",
+          "sales_difficulty": "partner-review",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 74,
+      "review_item_id": "de-review-074",
+      "source_case_id": "source-informed-de-needs_spouse_or_partner_input-002",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "topic_id": "entscheidung-mit-chef/partner",
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde möchte zu Hause oder mit einer Partnerperson Rücksprache halten.",
+      "situation_de": "Der Kunde braucht eine Entscheidung mit einer weiteren Person.",
+      "customer_utterance": "Das muss ich mit meiner Frau abklären.",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-needs_spouse_or_partner_input-002",
+        "customer_move_id": "needs_spouse_or_partner_input",
+        "sales_difficulty": "partner-review",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-029",
+          "language": "de",
+          "case_id": "source-informed-de-needs_spouse_or_partner_input-002",
+          "sales_difficulty": "partner-review",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 75,
+      "review_item_id": "de-review-075",
+      "source_case_id": "source-informed-de-needs_spouse_or_partner_input-003",
+      "customer_move_id": "needs_spouse_or_partner_input",
+      "topic_id": "entscheidung-mit-chef/partner",
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde möchte zu Hause oder mit einer Partnerperson Rücksprache halten.",
+      "situation_de": "Der Kunde braucht eine Entscheidung mit einer weiteren Person.",
+      "customer_utterance": "Ich entscheide das nicht alleine.",
+      "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-needs_spouse_or_partner_input-003",
+        "customer_move_id": "needs_spouse_or_partner_input",
+        "sales_difficulty": "partner-review",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-030",
+          "language": "de",
+          "case_id": "source-informed-de-needs_spouse_or_partner_input-003",
+          "sales_difficulty": "partner-review",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 76,
+      "review_item_id": "de-review-076",
+      "source_case_id": "source-informed-de-sale_ready_interest-001",
+      "customer_move_id": "sale_ready_interest",
+      "topic_id": "nächster-schritt",
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "situation_de": "Der Kunde signalisiert Interesse und fragt nach dem weiteren Vorgehen.",
+      "customer_utterance": "Okay, dann machen wir das so.",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-sale_ready_interest-001",
+        "customer_move_id": "sale_ready_interest",
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-031",
+          "language": "de",
+          "case_id": "source-informed-de-sale_ready_interest-001",
+          "sales_difficulty": "sale-ready-commitment",
+          "call_control": "close-and-log-sale-ready",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 77,
+      "review_item_id": "de-review-077",
+      "source_case_id": "source-informed-de-sale_ready_interest-002",
+      "customer_move_id": "sale_ready_interest",
+      "topic_id": "nächster-schritt",
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "situation_de": "Der Kunde signalisiert Interesse und fragt nach dem weiteren Vorgehen.",
+      "customer_utterance": "Das klingt gut, was ist der nächste Schritt?",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-sale_ready_interest-002",
+        "customer_move_id": "sale_ready_interest",
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-032",
+          "language": "de",
+          "case_id": "source-informed-de-sale_ready_interest-002",
+          "sales_difficulty": "sale-ready-commitment",
+          "call_control": "close-and-log-sale-ready",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 78,
+      "review_item_id": "de-review-078",
+      "source_case_id": "source-informed-de-sale_ready_interest-003",
+      "customer_move_id": "sale_ready_interest",
+      "topic_id": "nächster-schritt",
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "situation_de": "Der Kunde signalisiert Interesse und fragt nach dem weiteren Vorgehen.",
+      "customer_utterance": "Von mir aus können wir weitermachen.",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-sale_ready_interest-003",
+        "customer_move_id": "sale_ready_interest",
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-033",
+          "language": "de",
+          "case_id": "source-informed-de-sale_ready_interest-003",
+          "sales_difficulty": "sale-ready-commitment",
+          "call_control": "close-and-log-sale-ready",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 79,
+      "review_item_id": "de-review-079",
+      "source_case_id": "source-informed-interp-de-sale_ready_interest-001",
+      "customer_move_id": "sale_ready_interest",
+      "topic_id": "nächster-schritt",
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "situation_de": "Der Kunde signalisiert Interesse und fragt nach dem weiteren Vorgehen.",
+      "customer_utterance": "Okay, dann machen wir das so.",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-sale_ready_interest-001",
+        "customer_move_id": "sale_ready_interest",
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-040",
+          "language": "de",
+          "case_id": "source-informed-interp-de-sale_ready_interest-001",
+          "sales_difficulty": "sale-ready-commitment",
+          "call_control": "close-and-log-sale-ready",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 80,
+      "review_item_id": "de-review-080",
+      "source_case_id": "source-informed-interp-de-sale_ready_interest-002",
+      "customer_move_id": "sale_ready_interest",
+      "topic_id": "nächster-schritt",
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "situation_de": "Der Kunde signalisiert Interesse und fragt nach dem weiteren Vorgehen.",
+      "customer_utterance": "Das klingt gut, was ist der nächste Schritt?",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-sale_ready_interest-002",
+        "customer_move_id": "sale_ready_interest",
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-041",
+          "language": "de",
+          "case_id": "source-informed-interp-de-sale_ready_interest-002",
+          "sales_difficulty": "sale-ready-commitment",
+          "call_control": "close-and-log-sale-ready",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 81,
+      "review_item_id": "de-review-081",
+      "source_case_id": "source-informed-interp-de-sale_ready_interest-003",
+      "customer_move_id": "sale_ready_interest",
+      "topic_id": "nächster-schritt",
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "situation_de": "Der Kunde signalisiert Interesse und fragt nach dem weiteren Vorgehen.",
+      "customer_utterance": "Von mir aus können wir weitermachen.",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-interp-de-sale_ready_interest-003",
+        "customer_move_id": "sale_ready_interest",
+        "sales_difficulty": "sale-ready-commitment",
+        "call_control": "close-and-log-sale-ready",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-042",
+          "language": "de",
+          "case_id": "source-informed-interp-de-sale_ready_interest-003",
+          "sales_difficulty": "sale-ready-commitment",
+          "call_control": "close-and-log-sale-ready",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 82,
+      "review_item_id": "de-review-082",
+      "source_case_id": "source-informed-de-callback_request-001",
+      "customer_move_id": "callback_request",
+      "topic_id": "rückruf",
+      "topic_title_de": "Rückruf",
+      "topic_description_de": "Der Kunde bittet um einen späteren Rückruf.",
+      "situation_de": "Der Kunde möchte zu einem anderen Zeitpunkt sprechen.",
+      "customer_utterance": "Rufen Sie nächste Woche nochmal an.",
+      "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-callback_request-001",
+        "customer_move_id": "callback_request",
+        "sales_difficulty": "callback-request",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-034",
+          "language": "de",
+          "case_id": "source-informed-de-callback_request-001",
+          "sales_difficulty": "callback-request",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 83,
+      "review_item_id": "de-review-083",
+      "source_case_id": "source-informed-de-callback_request-002",
+      "customer_move_id": "callback_request",
+      "topic_id": "rückruf",
+      "topic_title_de": "Rückruf",
+      "topic_description_de": "Der Kunde bittet um einen späteren Rückruf.",
+      "situation_de": "Der Kunde möchte zu einem anderen Zeitpunkt sprechen.",
+      "customer_utterance": "Melden Sie sich später noch mal.",
+      "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-callback_request-002",
+        "customer_move_id": "callback_request",
+        "sales_difficulty": "callback-request",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-035",
+          "language": "de",
+          "case_id": "source-informed-de-callback_request-002",
+          "sales_difficulty": "callback-request",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 84,
+      "review_item_id": "de-review-084",
+      "source_case_id": "source-informed-de-callback_request-003",
+      "customer_move_id": "callback_request",
+      "topic_id": "rückruf",
+      "topic_title_de": "Rückruf",
+      "topic_description_de": "Der Kunde bittet um einen späteren Rückruf.",
+      "situation_de": "Der Kunde möchte zu einem anderen Zeitpunkt sprechen.",
+      "customer_utterance": "Können Sie mich morgen zurückrufen?",
+      "agent_response": "Ich kann einen Rückruf vormerken. Das bleibt optional; heute entsteht keine Verpflichtung.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte kurz oder abrupt wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-callback_request-003",
+        "customer_move_id": "callback_request",
+        "sales_difficulty": "callback-request",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": true,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": {
+          "finding_id": "call-control-de-036",
+          "language": "de",
+          "case_id": "source-informed-de-callback_request-003",
+          "sales_difficulty": "callback-request",
+          "call_control": "end-call",
+          "finding": "The deterministic action is safe, but the response may end the call too abruptly for a spoken customer experience.",
+          "recommended_future_change": "Evaluate a bridge-then-continue or bridge-then-offer-stop behavior in a later checkpoint without weakening refusal/support/cancellation safety.",
+          "classifications": {
+            "accepted_for_regression": true,
+            "revise_call_control_later": true,
+            "blocked_for_voice": true,
+            "blocked_for_public_demo": true,
+            "blocked_for_real_customer_use": true
+          }
+        }
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 85,
+      "review_item_id": "de-review-085",
+      "source_case_id": "source-informed-de-not_interested-001",
+      "customer_move_id": "not_interested",
+      "topic_id": "kein-interesse-/-nicht-mehr-anrufen",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde lehnt freundlich oder knapp ab.",
+      "situation_de": "Der Kunde sagt, dass kein Interesse besteht.",
+      "customer_utterance": "Nein danke, kein Interesse.",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-not_interested-001",
+        "customer_move_id": "not_interested",
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 86,
+      "review_item_id": "de-review-086",
+      "source_case_id": "source-informed-de-not_interested-002",
+      "customer_move_id": "not_interested",
+      "topic_id": "kein-interesse-/-nicht-mehr-anrufen",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde lehnt freundlich oder knapp ab.",
+      "situation_de": "Der Kunde sagt, dass kein Interesse besteht.",
+      "customer_utterance": "Das ist nichts für mich.",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-not_interested-002",
+        "customer_move_id": "not_interested",
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 87,
+      "review_item_id": "de-review-087",
+      "source_case_id": "source-informed-de-not_interested-003",
+      "customer_move_id": "not_interested",
+      "topic_id": "kein-interesse-/-nicht-mehr-anrufen",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde lehnt freundlich oder knapp ab.",
+      "situation_de": "Der Kunde sagt, dass kein Interesse besteht.",
+      "customer_utterance": "Brauche ich nicht.",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-not_interested-003",
+        "customer_move_id": "not_interested",
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 88,
+      "review_item_id": "de-review-088",
+      "source_case_id": "source-informed-de-hostile_rejection-001",
+      "customer_move_id": "hostile_rejection",
+      "topic_id": "kein-interesse-/-nicht-mehr-anrufen",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde verlangt, nicht mehr angerufen zu werden.",
+      "situation_de": "Der Kunde setzt eine klare Grenze gegen weitere Anrufe.",
+      "customer_utterance": "Rufen Sie mich nicht mehr an.",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-hostile_rejection-001",
+        "customer_move_id": "hostile_rejection",
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 89,
+      "review_item_id": "de-review-089",
+      "source_case_id": "source-informed-de-hostile_rejection-002",
+      "customer_move_id": "hostile_rejection",
+      "topic_id": "kein-interesse-/-nicht-mehr-anrufen",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde verlangt, nicht mehr angerufen zu werden.",
+      "situation_de": "Der Kunde setzt eine klare Grenze gegen weitere Anrufe.",
+      "customer_utterance": "Nehmen Sie meine Nummer aus der Liste.",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-hostile_rejection-002",
+        "customer_move_id": "hostile_rejection",
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 90,
+      "review_item_id": "de-review-090",
+      "source_case_id": "source-informed-de-hostile_rejection-003",
+      "customer_move_id": "hostile_rejection",
+      "topic_id": "kein-interesse-/-nicht-mehr-anrufen",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde verlangt, nicht mehr angerufen zu werden.",
+      "situation_de": "Der Kunde setzt eine klare Grenze gegen weitere Anrufe.",
+      "customer_utterance": "Ich will keine weiteren Anrufe.",
+      "agent_response": "Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-hostile_rejection-003",
+        "customer_move_id": "hostile_rejection",
+        "sales_difficulty": "do-not-call",
+        "call_control": "end-call",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 91,
+      "review_item_id": "de-review-091",
+      "source_case_id": "source-informed-de-skeptical_proof_request-001",
+      "customer_move_id": "skeptical_proof_request",
+      "topic_id": "nachweis-/-zweifel",
+      "topic_title_de": "Nachweis / Zweifel",
+      "topic_description_de": "Der Kunde fragt nach Beleg, Nachweis oder Garantie.",
+      "situation_de": "Der Kunde möchte wissen, ob eine Aussage belegt werden kann.",
+      "customer_utterance": "Können Sie mir garantieren, dass das funktioniert?",
+      "agent_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-skeptical_proof_request-001",
+        "customer_move_id": "skeptical_proof_request",
+        "sales_difficulty": "claim-boundary",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 92,
+      "review_item_id": "de-review-092",
+      "source_case_id": "source-informed-de-skeptical_proof_request-002",
+      "customer_move_id": "skeptical_proof_request",
+      "topic_id": "nachweis-/-zweifel",
+      "topic_title_de": "Nachweis / Zweifel",
+      "topic_description_de": "Der Kunde fragt nach Beleg, Nachweis oder Garantie.",
+      "situation_de": "Der Kunde möchte wissen, ob eine Aussage belegt werden kann.",
+      "customer_utterance": "Haben Sie dafür einen Nachweis?",
+      "agent_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-skeptical_proof_request-002",
+        "customer_move_id": "skeptical_proof_request",
+        "sales_difficulty": "claim-boundary",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 93,
+      "review_item_id": "de-review-093",
+      "source_case_id": "source-informed-de-skeptical_proof_request-003",
+      "customer_move_id": "skeptical_proof_request",
+      "topic_id": "nachweis-/-zweifel",
+      "topic_title_de": "Nachweis / Zweifel",
+      "topic_description_de": "Der Kunde fragt nach Beleg, Nachweis oder Garantie.",
+      "situation_de": "Der Kunde möchte wissen, ob eine Aussage belegt werden kann.",
+      "customer_utterance": "Können Sie das belegen?",
+      "agent_response": "Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Die Antwort könnte etwas steif wirken.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-skeptical_proof_request-003",
+        "customer_move_id": "skeptical_proof_request",
+        "sales_difficulty": "claim-boundary",
+        "call_control": "transfer-or-escalate",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": true,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 94,
+      "review_item_id": "de-review-094",
+      "source_case_id": "source-informed-de-product_detail_lookup-001",
+      "customer_move_id": "product_detail_lookup",
+      "topic_id": "produktdetails",
+      "topic_title_de": "Produktdetails",
+      "topic_description_de": "Der Kunde fragt nach konkreten Details des Angebots.",
+      "situation_de": "Der Kunde möchte wissen, was genau enthalten ist.",
+      "customer_utterance": "Welcher Tarif ist das genau?",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-product_detail_lookup-001",
+        "customer_move_id": "product_detail_lookup",
+        "sales_difficulty": "product-detail-lookup",
+        "call_control": "bridge-then-continue",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 95,
+      "review_item_id": "de-review-095",
+      "source_case_id": "source-informed-de-product_detail_lookup-002",
+      "customer_move_id": "product_detail_lookup",
+      "topic_id": "produktdetails",
+      "topic_title_de": "Produktdetails",
+      "topic_description_de": "Der Kunde fragt nach konkreten Details des Angebots.",
+      "situation_de": "Der Kunde möchte wissen, was genau enthalten ist.",
+      "customer_utterance": "Was ist in dem Paket enthalten?",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-product_detail_lookup-002",
+        "customer_move_id": "product_detail_lookup",
+        "sales_difficulty": "product-detail-lookup",
+        "call_control": "bridge-then-continue",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 96,
+      "review_item_id": "de-review-096",
+      "source_case_id": "source-informed-de-product_detail_lookup-003",
+      "customer_move_id": "product_detail_lookup",
+      "topic_id": "produktdetails",
+      "topic_title_de": "Produktdetails",
+      "topic_description_de": "Der Kunde fragt nach konkreten Details des Angebots.",
+      "situation_de": "Der Kunde möchte wissen, was genau enthalten ist.",
+      "customer_utterance": "Welche Leistungen sind genau drin?",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-product_detail_lookup-003",
+        "customer_move_id": "product_detail_lookup",
+        "sales_difficulty": "product-detail-lookup",
+        "call_control": "bridge-then-continue",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 97,
+      "review_item_id": "de-review-097",
+      "source_case_id": "source-informed-de-scheduling_confirmation-001",
+      "customer_move_id": "scheduling_confirmation",
+      "topic_id": "terminbestätigung",
+      "topic_title_de": "Terminbestätigung",
+      "topic_description_de": "Der Kunde bestätigt einen Zeitpunkt.",
+      "situation_de": "Der Kunde nennt oder bestätigt eine passende Zeit.",
+      "customer_utterance": "Mittwoch um zehn passt.",
+      "agent_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-scheduling_confirmation-001",
+        "customer_move_id": "scheduling_confirmation",
+        "sales_difficulty": "scheduling-confirmation",
+        "call_control": "schedule-and-end",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 98,
+      "review_item_id": "de-review-098",
+      "source_case_id": "source-informed-de-scheduling_confirmation-002",
+      "customer_move_id": "scheduling_confirmation",
+      "topic_id": "terminbestätigung",
+      "topic_title_de": "Terminbestätigung",
+      "topic_description_de": "Der Kunde bestätigt einen Zeitpunkt.",
+      "situation_de": "Der Kunde nennt oder bestätigt eine passende Zeit.",
+      "customer_utterance": "Freitag gegen 14 Uhr wäre okay.",
+      "agent_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-scheduling_confirmation-002",
+        "customer_move_id": "scheduling_confirmation",
+        "sales_difficulty": "scheduling-confirmation",
+        "call_control": "schedule-and-end",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "review_item_number": 99,
+      "review_item_id": "de-review-099",
+      "source_case_id": "source-informed-de-scheduling_confirmation-003",
+      "customer_move_id": "scheduling_confirmation",
+      "topic_id": "terminbestätigung",
+      "topic_title_de": "Terminbestätigung",
+      "topic_description_de": "Der Kunde bestätigt einen Zeitpunkt.",
+      "situation_de": "Der Kunde nennt oder bestätigt eine passende Zeit.",
+      "customer_utterance": "Dienstag nachmittags passt mir.",
+      "agent_response": "Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.",
+      "review_instruction_de": "Bitte bewerten Sie nur die Formulierung der Antwort.",
+      "prior_review_hint_de": "Keine besondere Vorbemerkung.",
+      "technical_details": {
+        "source_case_id": "source-informed-de-scheduling_confirmation-003",
+        "customer_move_id": "scheduling_confirmation",
+        "sales_difficulty": "scheduling-confirmation",
+        "call_control": "schedule-and-end",
+        "quality_risks": {
+          "internal_sounding": false,
+          "robotic_or_legalistic": false,
+          "too_abrupt": false,
+          "native_speaker_review_required": true,
+          "unsupported_claim_risk": false
+        },
+        "call_control_finding": null
+      },
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    }
+  ],
+  "topic_groups": [
+    {
+      "topic_title_de": "Preisfrage",
+      "topic_description_de": "Der Kunde fragt früh nach Kosten oder Preisrahmen.",
+      "item_count": 9
+    },
+    {
+      "topic_title_de": "Wer ruft an?",
+      "topic_description_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "item_count": 9
+    },
+    {
+      "topic_title_de": "Schriftliche Informationen",
+      "topic_description_de": "Der Kunde möchte die Informationen erst schriftlich sehen.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Nur E-Mail",
+      "topic_description_de": "Der Kunde möchte nicht weiter telefonieren und bevorzugt E-Mail.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Betrugsangst",
+      "topic_description_de": "Der Kunde fragt, ob der Anruf seriös ist.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Zahlungsangst",
+      "topic_description_de": "Der Kunde will keine Zahlungs- oder Kartendaten nennen.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Support",
+      "topic_description_de": "Der Kunde hat ein bestehendes Problem und braucht Hilfe.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Kündigung",
+      "topic_description_de": "Der Kunde möchte kündigen oder etwas beenden.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Technische Frage",
+      "topic_description_de": "Der Kunde fragt nach technischen Details.",
+      "item_count": 6
+    },
+    {
+      "topic_title_de": "Sicherheitsprüfung",
+      "topic_description_de": "Der Kunde braucht Prüfung durch IT, Security oder Compliance.",
+      "item_count": 9
+    },
+    {
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "topic_description_de": "Der Kunde fragt nach Abdeckung, Tarif, Versicherungsschutz oder Gesundheit.",
+      "item_count": 12
+    },
+    {
+      "topic_title_de": "Bestehender Anbieter",
+      "topic_description_de": "Der Kunde sagt, dass bereits ein Anbieter oder eine Lösung vorhanden ist.",
+      "item_count": 6
+    },
+    {
+      "topic_title_de": "Entscheidung mit Chef/Partner",
+      "topic_description_de": "Der Kunde muss intern eine weitere Person einbeziehen.",
+      "item_count": 6
+    },
+    {
+      "topic_title_de": "Nächster Schritt",
+      "topic_description_de": "Der Kunde zeigt Bereitschaft für den nächsten Schritt.",
+      "item_count": 6
+    },
+    {
+      "topic_title_de": "Rückruf",
+      "topic_description_de": "Der Kunde bittet um einen späteren Rückruf.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "topic_description_de": "Der Kunde lehnt freundlich oder knapp ab.",
+      "item_count": 6
+    },
+    {
+      "topic_title_de": "Nachweis / Zweifel",
+      "topic_description_de": "Der Kunde fragt nach Beleg, Nachweis oder Garantie.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Produktdetails",
+      "topic_description_de": "Der Kunde fragt nach konkreten Details des Angebots.",
+      "item_count": 3
+    },
+    {
+      "topic_title_de": "Terminbestätigung",
+      "topic_description_de": "Der Kunde bestätigt einen Zeitpunkt.",
+      "item_count": 3
+    }
+  ],
+  "rating_fields": [
+    {
+      "field_id": "natuerlich",
+      "label_de": "Klingt natürlich?",
+      "options": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "klar_verstaendlich",
+      "label_de": "Ist die Antwort klar verständlich?",
+      "options": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "freundlich",
+      "label_de": "Ist die Antwort freundlich?",
+      "options": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "gesprochene_sprache",
+      "label_de": "Klingt die Antwort wie echte gesprochene Sprache?",
+      "options": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "zu_abrupt",
+      "label_de": "Klingt die Antwort zu abrupt?",
+      "options": [
+        "Nein",
+        "Etwas",
+        "Ja"
+      ]
+    },
+    {
+      "field_id": "intern_buerokratisch_technisch",
+      "label_de": "Klingt die Antwort intern, bürokratisch oder technisch?",
+      "options": [
+        "Nein",
+        "Etwas",
+        "Ja"
+      ]
+    },
+    {
+      "field_id": "telefonisch_akzeptabel",
+      "label_de": "Würden Sie diese Antwort am Telefon akzeptieren?",
+      "options": [
+        "Ja",
+        "Nur mit Änderung",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "ueberarbeitung_noetig",
+      "label_de": "Muss die Antwort überarbeitet werden?",
+      "options": [
+        "Nein",
+        "Kleine Änderung",
+        "Große Änderung"
+      ]
+    }
+  ],
+  "safety_flags": [
+    {
+      "flag_id": "zu_draengend",
+      "label_de": "Klingt zu drängend"
+    },
+    {
+      "flag_id": "verkaufsdruck",
+      "label_de": "Klingt wie ein Verkaufsdruck"
+    },
+    {
+      "flag_id": "rechtlich_unsicher",
+      "label_de": "Klingt rechtlich unsicher"
+    },
+    {
+      "flag_id": "medizinische_beratung",
+      "label_de": "Klingt nach medizinischer Beratung"
+    },
+    {
+      "flag_id": "versicherungsschutz_beratung",
+      "label_de": "Klingt nach Beratung zum Versicherungsschutz"
+    },
+    {
+      "flag_id": "zahlungsaufforderung",
+      "label_de": "Klingt nach Zahlungsaufforderung"
+    },
+    {
+      "flag_id": "vertragsabschluss",
+      "label_de": "Klingt nach Vertragsabschluss"
+    },
+    {
+      "flag_id": "unhoeflich",
+      "label_de": "Klingt unhöflich"
+    },
+    {
+      "flag_id": "unklar",
+      "label_de": "Klingt unklar"
+    },
+    {
+      "flag_id": "sonstiges",
+      "label_de": "Sonstiges"
+    }
+  ],
+  "campaign_profile_summary": {
+    "campaign_id": "campaign-prod-047-valid-de-source-informed",
+    "language": "de",
+    "review_statuses": [
+      "machine_validated",
+      "source_informed",
+      "native_speaker_review_required"
+    ],
+    "field_count": 18,
+    "field_summary": {
+      "pricing_summary": {
+        "shape": "pricing_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "pricing_boundary_text": {
+        "shape": "boundary_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "caller_identity": {
+        "shape": "noun_phrase",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_identity_reason_sentence": {
+        "shape": "identity_reason_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_written_summary": {
+        "shape": "written_info_object",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_email_followup_scope": {
+        "shape": "written_info_object",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "no_payment_boundary": {
+        "shape": "boundary_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_verification_response": {
+        "shape": "verification_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "support_route": {
+        "shape": "route_label",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "cancellation_route": {
+        "shape": "route_label",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_technical_scope": {
+        "shape": "full_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "security_review_boundary": {
+        "shape": "boundary_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "regulated_advice_boundary_text": {
+        "shape": "boundary_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_gap_isolation_question": {
+        "shape": "full_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_review_summary": {
+        "shape": "written_info_object",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "approved_sale_ready_next_step": {
+        "shape": "next_step_label",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "callback_boundary": {
+        "shape": "boundary_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      },
+      "do_not_call_boundary": {
+        "shape": "boundary_sentence",
+        "source_boundary": "public_source_informed",
+        "review_statuses": [
+          "machine_validated",
+          "source_informed",
+          "native_speaker_review_required"
+        ],
+        "customer_facing": true
+      }
+    },
+    "safety_defaults": {
+      "payment_collection_allowed": false,
+      "contract_signing_allowed": false,
+      "decision_maker_bypass_forbidden": true,
+      "production_runtime_promotion_allowed": false,
+      "voice_playback_unblocked": false,
+      "public_demo_polish_unblocked": false,
+      "retrieval_enabled": false,
+      "provider_calls_made": false,
+      "llm_used": false,
+      "private_data_read": false
+    }
+  },
+  "export_schema_path": "research/experiments/generated/PROD-048A-native-german-review-html-packet/native_german_review_export_schema.json",
+  "review_boundary": {
+    "native_german_approval_claimed": false,
+    "legal_compliance_claimed": false,
+    "runtime_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "review_packet_only": true,
+    "visible_reviewer_language": "de",
+    "non_technical_reviewer_target": true,
+    "source_transcript_text_used": false,
+    "german_sales_call_scripts_created": false
+  }
+}

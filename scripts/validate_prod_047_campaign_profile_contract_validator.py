@@ -15,22 +15,24 @@ from campaign_profile_contract import (
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
+EXAMPLE_DIR = ROOT / "runtime" / "campaigns" / "examples"
 
 REQUIRED_FILES = {
     "module": ROOT / "scripts" / "campaign_profile_contract.py",
+    "runtime_module": ROOT / "runtime" / "contracts" / "campaign_profile_contract.py",
     "runner": ROOT / "scripts" / "run_prod_047_campaign_profile_contract_validator.py",
     "validator": ROOT / "scripts" / "validate_prod_047_campaign_profile_contract_validator.py",
     "doc": ROOT / "docs" / "product" / "PROD_047_CAMPAIGN_PROFILE_CONTRACT_VALIDATOR.md",
-    "valid_en": ROOT / "campaigns" / "examples" / "campaign-prod-047-valid-en-internal-review.json",
-    "valid_de": ROOT / "campaigns" / "examples" / "campaign-prod-047-valid-de-source-informed.json",
-    "invalid_de_fragment": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-de-fragment-interpolation.json",
-    "invalid_en_internal": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-en-internal-copy.json",
-    "invalid_payment": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-payment-enabled.json",
-    "invalid_regulated": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-missing-regulated-boundary.json",
-    "invalid_native": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-missing-native-review-status.json",
-    "invalid_sale_ready": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-sale-ready-without-close-criteria.json",
-    "invalid_routes": ROOT / "campaigns" / "examples" / "campaign-prod-047-invalid-support-cancellation-route-label.json",
-    "invalid_identity": ROOT / "campaigns" / "examples" / "campaign-prod-047-incomplete-identity-reason.json",
+    "valid_en": EXAMPLE_DIR / "campaign-prod-047-valid-en-internal-review.json",
+    "valid_de": EXAMPLE_DIR / "campaign-prod-047-valid-de-source-informed.json",
+    "invalid_de_fragment": EXAMPLE_DIR / "campaign-prod-047-invalid-de-fragment-interpolation.json",
+    "invalid_en_internal": EXAMPLE_DIR / "campaign-prod-047-invalid-en-internal-copy.json",
+    "invalid_payment": EXAMPLE_DIR / "campaign-prod-047-invalid-payment-enabled.json",
+    "invalid_regulated": EXAMPLE_DIR / "campaign-prod-047-invalid-missing-regulated-boundary.json",
+    "invalid_native": EXAMPLE_DIR / "campaign-prod-047-invalid-missing-native-review-status.json",
+    "invalid_sale_ready": EXAMPLE_DIR / "campaign-prod-047-invalid-sale-ready-without-close-criteria.json",
+    "invalid_routes": EXAMPLE_DIR / "campaign-prod-047-invalid-support-cancellation-route-label.json",
+    "invalid_identity": EXAMPLE_DIR / "campaign-prod-047-incomplete-identity-reason.json",
     "result": OUT_DIR / "result.json",
     "report": OUT_DIR / "report.md",
     "schema": OUT_DIR / "campaign_contract_schema.json",

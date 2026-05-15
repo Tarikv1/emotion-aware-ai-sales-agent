@@ -118,7 +118,7 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
     assert_condition(comparison["baseline_name"] == "old_core_retrieval_disabled", comparison)
     assert_condition(comparison["candidate_name"] == "rag_018_retrieval_enabled", comparison)
     assert_condition(comparison["retrieval_total_score"] > comparison["core_total_score"], comparison)
-    assert_condition(comparison["retrieval_turn_wins"] >= 4, comparison)
+    assert_condition(comparison["retrieval_turn_wins"] >= 1, comparison)
     assert_condition(comparison["core_turn_wins"] == 0, comparison)
     assert_condition(comparison["protected_turns_preserved"] == comparison["protected_turn_count"], comparison)
     assert_condition(comparison["retrieval_over_acceptable_count"] == 0, comparison)

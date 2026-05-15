@@ -1,0 +1,60 @@
+{
+  "checkpoint_id": "PROD-048C-german-wording-feedback-patch",
+  "checkpoint_name": "German Wording Feedback Patch",
+  "source_checkpoint_id": "PROD-048B-native-german-review-import",
+  "summary": {
+    "source_checkpoint_id": "PROD-048B-native-german-review-import",
+    "reviewer_name_or_initials": "Diro",
+    "reviewer_native_german": "Ja",
+    "reviewed_item_count_from_prod_048b": 5,
+    "unreviewed_item_count_from_prod_048b": 94,
+    "price_first_wording_patched": true,
+    "price_revision_candidate_count": 1,
+    "original_german_case_count": 99,
+    "followup_group_count": 22,
+    "erneut_pruefen_group_count": 1,
+    "bereits_teilweise_geprueft_group_count": 4,
+    "noch_nicht_geprueft_group_count": 17,
+    "safety_boundary_preservation_passed": true,
+    "json_import_enabled": true,
+    "runtime_behavior_changed": true,
+    "runtime_behavior_change_scope": "german_plain_price_first_wording_only",
+    "full_native_german_approval_claimed": false,
+    "legal_compliance_claimed": false,
+    "runtime_policy_changed": false,
+    "call_control_behavior_changed": false,
+    "customer_move_classification_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/result.json",
+    "report": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/report.md",
+    "before_after": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/price_feedback_patch_before_after.json",
+    "patch_results": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/price_feedback_patch_results.json",
+    "safety": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/safety_boundary_preservation_results.json",
+    "review_html": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/prod_048c_review.html",
+    "followup_html": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/native_german_followup_review.html",
+    "followup_packet": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/native_german_followup_review_packet.json",
+    "readme_de": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/native_german_followup_review_readme_de.md",
+    "table_csv": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/native_german_followup_review_table.csv",
+    "export_schema": "research/experiments/generated/PROD-048C-german-wording-feedback-patch/native_german_followup_review_export_schema.json"
+  },
+  "dependencies": {
+    "prod_048b": "research/experiments/generated/PROD-048B-native-german-review-import/result.json",
+    "prod_048a": "research/experiments/generated/PROD-048A-german-review-html-and-brevity-packet/result.json",
+    "prod_047": "research/experiments/generated/PROD-047-campaign-profile-contract-validator/result.json",
+    "prod_046": "research/experiments/generated/PROD-046-core-sales-policy-human-review/result.json"
+  },
+  "validation": {
+    "passed": true
+  },
+  "next_checkpoint_recommended": "PROD-048D-native-german-followup-review-import"
+}

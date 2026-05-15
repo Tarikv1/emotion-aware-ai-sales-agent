@@ -19,14 +19,14 @@ No dataset download, provider call, private customer data read, transcript body 
 - Non-sale correctness: `1.0`
 - Leakage failure rate: `0.0`
 - Scenario quality score: `1.0`
-- Sales/emotional handling score: `1.0`
-- Retrieval win rate: `0.7143`
+- Sales/emotional handling score: `0.5`
+- Retrieval win rate: `0.1429`
 
 ## Retrieval Version vs Old Core
 
-- Old core total score: `5`
-- Retrieval version total score: `14`
-- Retrieval version wins: `5`
+- Old core total score: `6`
+- Retrieval version total score: `7`
+- Retrieval version wins: `1`
 - Old core wins: `0`
 - Protected turns preserved: `5/5`
 - Decision: `keep_retrieval_opt_in_for_callcenteren_grounded_scenarios`
@@ -44,10 +44,10 @@ Interpretation: retrieval is better on these fixed CallCenterEN-grounded synthet
 
 | Scenario | Label | Expected | Turns | Retrieval Wins | Non-Sale Correct |
 | --- | --- | --- | ---: | ---: | --- |
-| PROD-012-CCEN-001 | sale_eligible | sale_ready | 3 | 3 | n/a |
+| PROD-012-CCEN-001 | sale_eligible | sale_ready | 3 | 0 | n/a |
 | PROD-012-CCEN-002 | non_sale_correct | non_sale_correct | 2 | 1 | True |
 | PROD-012-CCEN-003 | support_only | support_only | 2 | 0 | True |
-| PROD-012-CCEN-004 | trust_repair | non_sale_correct | 2 | 1 | True |
+| PROD-012-CCEN-004 | trust_repair | non_sale_correct | 2 | 0 | True |
 | PROD-012-CCEN-005 | human_handoff | human_handoff | 2 | 0 | True |
 | PROD-012-CCEN-006 | price_resistance | non_sale_correct | 1 | 0 | True |
 
@@ -57,8 +57,8 @@ Interpretation: retrieval is better on these fixed CallCenterEN-grounded synthet
 
 - Scenario: `PROD-012-CCEN-001` / `sale_eligible`
 - Stage: `relevance-check`
-- Winner: `retrieval`
-- Retrieval status: `influenced`
+- Winner: `tie`
+- Retrieval status: `retrieved_not_used`
 - Exact customer question/input:
 
 ```text
@@ -68,34 +68,34 @@ Can you send me information first? I do not know if this is relevant yet.
 - Exact old/core answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.
 ```
 
 - Exact retrieval/RAG answer:
 
 ```text
-I can send information. To make it relevant, should I send details about fit, pricing, or how a specialist would review this with you?
+Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.
 ```
 
 - Decision process:
 
-  1. Policy classified the turn as sales difficulty `unknown-runtime-signal`, emotion `neutral`, strategy `inquiry`, next action `ask-follow-up`, call control `continue-call`.
-  2. Old/core path used policy response `Thanks. May I ask one quick clarifying question?` and local composer candidate `Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?`. Validation passed: `True`. Fallback used: `False`.
-  3. Retrieval path status `influenced` with context flags `none` and retrieved item IDs `rag019-objection-diagnose-before-answering, rag019-objection-send-info-clarify, rag016a-response-autonomy-reminder, rag010-response-impact-bridge`.
+  1. Policy classified the turn as sales difficulty `written-info-request`, emotion `neutral`, strategy `evidence-or-benefit`, next action `answer-and-continue`, call control `bridge-then-continue`.
+  2. Old/core path used policy response `Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.` and local composer candidate `Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.`. Validation passed: `True`. Fallback used: `False`.
+  3. Retrieval path status `retrieved_not_used` with context flags `none` and retrieved item IDs `rag019-objection-send-info-clarify, rag016a-response-choice-clarity, rag012-voice-purposeful-pause, rag016a-response-autonomy-reminder`.
   4. Retrieved advisory hints:
-     - `rag019-objection-diagnose-before-answering` score `9`: Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.
-     - `rag019-objection-send-info-clarify` score `9`: When the customer says send me information, ask which decision question the information should answer and agree the smallest useful follow-up.
+     - `rag019-objection-send-info-clarify` score `10`: When the customer says send me information, ask which decision question the information should answer and agree the smallest useful follow-up.
+     - `rag016a-response-choice-clarity` score `9`: Present the smallest useful set of campaign-approved options first, then offer full details when the customer asks.
+     - `rag012-voice-purposeful-pause` score `8`: Use a brief pause around a high-value sentence only when it helps the customer process the point.
      - `rag016a-response-autonomy-reminder` score `8`: Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.
-     - `rag010-response-impact-bridge` score `7`: When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.
-  5. Retrieval composer candidate was `I can send information. To make it relevant, should I send details about fit, pricing, or how a specialist would review this with you?`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `True`.
-  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `retrieval` with score delta `2`.
+  5. Retrieval composer candidate was `Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
+  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `tie` with score delta `0`.
 
 ### PROD-012-CCEN-001-T02 - Needs boss before deciding
 
 - Scenario: `PROD-012-CCEN-001` / `sale_eligible`
 - Stage: `relevance-check`
-- Winner: `retrieval`
-- Retrieval status: `influenced`
+- Winner: `tie`
+- Retrieval status: `retrieved_not_used`
 - Exact customer question/input:
 
 ```text
@@ -105,34 +105,34 @@ I need to ask my boss before deciding anything.
 - Exact old/core answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 - Exact retrieval/RAG answer:
 
 ```text
-That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 - Decision process:
 
-  1. Policy classified the turn as sales difficulty `unknown-runtime-signal`, emotion `neutral`, strategy `inquiry`, next action `ask-follow-up`, call control `continue-call`.
-  2. Old/core path used policy response `Thanks. May I ask one quick clarifying question?` and local composer candidate `Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?`. Validation passed: `True`. Fallback used: `False`.
-  3. Retrieval path status `influenced` with context flags `none` and retrieved item IDs `rag019-objection-diagnose-before-answering, rag010-response-real-timing-check, rag014-response-consent-based-schedule-confirmation, rag016a-response-autonomy-reminder`.
+  1. Policy classified the turn as sales difficulty `stakeholder-review`, emotion `neutral`, strategy `evidence-or-benefit`, next action `answer-and-continue`, call control `bridge-then-continue`.
+  2. Old/core path used policy response `Of course, I can send your manager a short summary with the key points. No decision today.` and local composer candidate `That makes sense. Should I send a short summary you can share, or is there one concern I should address first?`. Validation passed: `True`. Fallback used: `False`.
+  3. Retrieval path status `retrieved_not_used` with context flags `none` and retrieved item IDs `rag010-response-real-timing-check, rag016a-response-autonomy-reminder, rag019-objection-send-info-clarify, rag010-response-so-what-clarifier`.
   4. Retrieved advisory hints:
-     - `rag019-objection-diagnose-before-answering` score `8`: Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.
      - `rag010-response-real-timing-check` score `7`: Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.
-     - `rag014-response-consent-based-schedule-confirmation` score `7`: After a customer voluntarily agrees to a meeting or callback, confirm the date, time, channel, and expected next step in one concise check.
      - `rag016a-response-autonomy-reminder` score `7`: Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.
-  5. Retrieval composer candidate was `That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `True`.
-  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `retrieval` with score delta `2`.
+     - `rag019-objection-send-info-clarify` score `7`: When the customer says send me information, ask which decision question the information should answer and agree the smallest useful follow-up.
+     - `rag010-response-so-what-clarifier` score `6`: After a customer names a problem, ask one respectful impact clarifier so the agent understands why the issue matters before proposing a next step.
+  5. Retrieval composer candidate was `That makes sense. Should I send a short summary you can share, or is there one concern I should address first?`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
+  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `tie` with score delta `0`.
 
 ### PROD-012-CCEN-001-T03 - Cold-call trust concern
 
 - Scenario: `PROD-012-CCEN-001` / `sale_eligible`
 - Stage: `relevance-check`
-- Winner: `retrieval`
-- Retrieval status: `influenced`
+- Winner: `tie`
+- Retrieval status: `blocked`
 - Exact customer question/input:
 
 ```text
@@ -142,27 +142,23 @@ I do not know your company and I do not trust random software calls.
 - Exact old/core answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 - Exact retrieval/RAG answer:
 
 ```text
-Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 - Decision process:
 
-  1. Policy classified the turn as sales difficulty `unknown-runtime-signal`, emotion `neutral`, strategy `inquiry`, next action `ask-follow-up`, call control `continue-call`.
-  2. Old/core path used policy response `Thanks. May I ask one quick clarifying question?` and local composer candidate `Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?`. Validation passed: `True`. Fallback used: `False`.
-  3. Retrieval path status `influenced` with context flags `none` and retrieved item IDs `rag019-objection-diagnose-before-answering, rag016a-response-autonomy-reminder, rag010-response-impact-bridge, rag010-response-real-timing-check`.
-  4. Retrieved advisory hints:
-     - `rag019-objection-diagnose-before-answering` score `9`: Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.
-     - `rag016a-response-autonomy-reminder` score `8`: Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.
-     - `rag010-response-impact-bridge` score `7`: When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.
-     - `rag010-response-real-timing-check` score `7`: Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.
-  5. Retrieval composer candidate was `Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `True`.
-  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `retrieval` with score delta `2`.
+  1. Policy classified the turn as sales difficulty `scam-safety-boundary`, emotion `skeptical-or-negative`, strategy `rapport`, next action `create-follow-up-task`, call control `end-call`.
+  2. Old/core path used policy response `No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.` and local composer candidate `No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.`. Validation passed: `True`. Fallback used: `False`.
+  3. Retrieval path status `blocked` with context flags `protected_script` and retrieved item IDs `none`.
+  4. Retrieved advisory hints: none
+  5. Retrieval composer candidate was `No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
+  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `tie` with score delta `0`.
 
 ### PROD-012-CCEN-002-T01 - German price concern
 
@@ -228,7 +224,7 @@ Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Detai
 - Decision process:
 
   1. Policy classified the turn as sales difficulty `claim-boundary`, emotion `skeptical-or-negative`, strategy `inquiry`, next action `escalate`, call control `transfer-or-escalate`.
-  2. Old/core path used policy response `Ich moechte nichts garantieren, was von den Details abhaengt. Ich kann das an einen Spezialisten weiterleiten.` and local composer candidate `Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.`. Validation passed: `True`. Fallback used: `False`.
+  2. Old/core path used policy response `Ich möchte nichts garantieren, was von den Details abhängt. Ich kann das an eine zuständige Fachperson weiterleiten.` and local composer candidate `Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.`. Validation passed: `True`. Fallback used: `False`.
   3. Retrieval path status `blocked` with context flags `human_escalation` and retrieved item IDs `none`.
   4. Retrieved advisory hints: none
   5. Retrieval composer candidate was `Ich verstehe die Sicherheitsfrage. Ich moechte nichts versprechen, was von Details abhaengt, deshalb leite ich das lieber an einen Spezialisten weiter.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
@@ -261,7 +257,7 @@ Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. A
 - Decision process:
 
   1. Policy classified the turn as sales difficulty `do-not-call`, emotion `skeptical-or-negative`, strategy `rapport`, next action `suppress-contact`, call control `end-call`.
-  2. Old/core path used policy response `Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.` and local composer candidate `Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`.
+  2. Old/core path used policy response `Verstanden. Sie sollen hierzu nicht mehr angerufen werden. Ich beende den Anruf hier. Auf Wiederhören.` and local composer candidate `Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`.
   3. Retrieval path status `blocked` with context flags `do_not_call, customer_refusal, protected_script` and retrieved item IDs `none`.
   4. Retrieved advisory hints: none
   5. Retrieval composer candidate was `Verstanden. Ich markiere den Kontakt so, dass Sie nicht mehr angerufen werden. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
@@ -294,7 +290,7 @@ Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.
 - Decision process:
 
   1. Policy classified the turn as sales difficulty `repeated-silence`, emotion `neutral`, strategy `rapport`, next action `close-politely`, call control `end-call`.
-  2. Old/core path used policy response `Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.` and local composer candidate `Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`.
+  2. Old/core path used policy response `Ich beende den Anruf für jetzt. Auf Wiederhören.` and local composer candidate `Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`.
   3. Retrieval path status `blocked` with context flags `protected_script` and retrieved item IDs `none`.
   4. Retrieved advisory hints: none
   5. Retrieval composer candidate was `Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
@@ -304,8 +300,8 @@ Ich beende den Anruf fuer jetzt. Auf Wiederhoeren.
 
 - Scenario: `PROD-012-CCEN-004` / `trust_repair`
 - Stage: `relevance-check`
-- Winner: `retrieval`
-- Retrieval status: `influenced`
+- Winner: `tie`
+- Retrieval status: `blocked`
 - Exact customer question/input:
 
 ```text
@@ -315,27 +311,23 @@ I do not know your company and I do not trust random software calls.
 - Exact old/core answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 - Exact retrieval/RAG answer:
 
 ```text
-Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 - Decision process:
 
-  1. Policy classified the turn as sales difficulty `unknown-runtime-signal`, emotion `neutral`, strategy `inquiry`, next action `ask-follow-up`, call control `continue-call`.
-  2. Old/core path used policy response `Thanks. May I ask one quick clarifying question?` and local composer candidate `Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?`. Validation passed: `True`. Fallback used: `False`.
-  3. Retrieval path status `influenced` with context flags `none` and retrieved item IDs `rag019-objection-diagnose-before-answering, rag016a-response-autonomy-reminder, rag010-response-impact-bridge, rag010-response-real-timing-check`.
-  4. Retrieved advisory hints:
-     - `rag019-objection-diagnose-before-answering` score `9`: Treat objections as diagnostic information gaps, then ask one clarifying question before giving evidence or a next step.
-     - `rag016a-response-autonomy-reminder` score `8`: Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.
-     - `rag010-response-impact-bridge` score `7`: When a customer describes an operational issue, ask one neutral question that connects the issue to business impact the customer can confirm.
-     - `rag010-response-real-timing-check` score `7`: Ask about the customer's real timing, decision window, or deadline to understand priority without creating urgency.
-  5. Retrieval composer candidate was `Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `True`.
-  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `retrieval` with score delta `2`.
+  1. Policy classified the turn as sales difficulty `scam-safety-boundary`, emotion `skeptical-or-negative`, strategy `rapport`, next action `create-follow-up-task`, call control `end-call`.
+  2. Old/core path used policy response `No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.` and local composer candidate `No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.`. Validation passed: `True`. Fallback used: `False`.
+  3. Retrieval path status `blocked` with context flags `protected_script` and retrieved item IDs `none`.
+  4. Retrieved advisory hints: none
+  5. Retrieval composer candidate was `No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.
+  6. Safety/selection kept campaign facts above RAG: `True`; protected text preserved: `True`; final winner: `tie` with score delta `0`.
 
 ### PROD-012-CCEN-004-T02 - Asks for a real person
 
@@ -397,7 +389,7 @@ Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, dam
 - Decision process:
 
   1. Policy classified the turn as sales difficulty `product-detail-lookup`, emotion `neutral`, strategy `evidence-or-benefit`, next action `continue`, call control `bridge-then-continue`.
-  2. Old/core path used policy response `Einen Moment, ich pruefe die freigegebenen Produktinformationen.` and local composer candidate `Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.`. Validation passed: `True`. Fallback used: `False`.
+  2. Old/core path used policy response `Einen Moment, ich prüfe die Produktinformationen.` and local composer candidate `Gute Frage. Ich pruefe lieber zuerst die freigegebenen Produktinformationen, damit ich bei Details nicht rate.`. Validation passed: `True`. Fallback used: `False`.
   3. Retrieval path status `retrieved_not_used` with context flags `none` and retrieved item IDs `rag016a-response-autonomy-reminder, rag007-response-yes-and-objection-framing, rag010-response-impact-bridge, rag010-response-real-timing-check`.
   4. Retrieved advisory hints:
      - `rag016a-response-autonomy-reminder` score `7`: Explicitly preserve the customer's freedom to say no, pause, compare alternatives, or choose no next step.
@@ -434,7 +426,7 @@ Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoer
 - Decision process:
 
   1. Policy classified the turn as sales difficulty `scheduling-confirmation`, emotion `positive`, strategy `direct-ask-or-commitment`, next action `confirm-scheduling`, call control `schedule-and-end`.
-  2. Old/core path used policy response `Bestaetigt. Ich notiere den Rueckruf fuer den Spezialisten. Auf Wiederhoeren.` and local composer candidate `Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`.
+  2. Old/core path used policy response `Bestätigt. Ich notiere den Rückruf so. Auf Wiederhören.` and local composer candidate `Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`.
   3. Retrieval path status `blocked` with context flags `protected_script` and retrieved item IDs `none`.
   4. Retrieved advisory hints: none
   5. Retrieval composer candidate was `Bestaetigt. Ich notiere den Rueckruftermin fuer den Spezialisten. Auf Wiederhoeren.`. Validation passed: `True`. Fallback used: `False`. Retrieval used in runtime: `False`.

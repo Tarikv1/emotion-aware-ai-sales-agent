@@ -9,13 +9,13 @@ No runtime behavior change is made. No provider calls were made. No private data
 - Source checkpoint: `PROD-021-live-shaped-dialogue-policy-simulation`
 - Source result: `research/experiments/generated/PROD-021-live-shaped-dialogue-policy-simulation/result.json`
 - Source customer turns: `19`
-- Source policy action correctness: `0.4737`
-- Source call-control correctness: `0.8421`
-- Gap turns: `10`
-- Policy action misses: `10`
-- Call-control misses: `3`
-- Protected context gaps: `0`
-- Hook gain turns: `4`
+- Source policy action correctness: `0.7368`
+- Source call-control correctness: `0.7895`
+- Gap turns: `6`
+- Policy action misses: `5`
+- Call-control misses: `4`
+- Protected context gaps: `1`
+- Hook gain turns: `0`
 - Hard failures: `0`
 - Leakage findings: `0`
 - Runtime promotion allowed: `false`
@@ -25,9 +25,9 @@ No runtime behavior change is made. No provider calls were made. No private data
 
 | Category | Turns | Fix Target |
 | --- | ---: | --- |
-| `policy_action_router_gap` | `10` | `runtime_policy_router_specialization` |
+| `policy_action_router_gap` | `5` | `runtime_policy_router_specialization` |
 | `call_control_sale_ready_gap` | `1` | `sale_ready_call_control_detector` |
-| `call_control_procurement_delay_gap` | `2` | `procurement_review_continuation_guard` |
+| `call_control_procurement_delay_gap` | `1` | `procurement_review_continuation_guard` |
 
 ## Prioritized Next Actions
 
@@ -48,42 +48,6 @@ No runtime behavior change is made. No provider calls were made. No private data
    Rationale: The hooks improved four turns and caused no safety regression, but runtime promotion remains blocked.
 
 ## Gap Turns
-
-### PROD-021-C01-T01
-
-- Scenario label: `software_multi_objection_sale`
-- Stage: `relevance-check`
-- Policy action miss: expected `value-clarify`, observed `clarify-fit`
-- Call-control miss: expected `continue-call`, observed `continue-call`
-- Hook applied: `true`
-- Recommended fix target: `runtime_policy_router_specialization`
-- Why it matters: The hook improved wording, but the runtime policy action still stayed generic, so hook gain should not be treated as policy correctness.
-
-Exact customer turn:
-
-```text
-The cost sounds high, and I need to know whether reviewing this is worth my time.
-```
-
-Exact agent answers:
-
-Default-off answer:
-
-```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-Retrieval-only answer:
-
-```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-Opt-in hook answer:
-
-```text
-That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?
-```
 
 ### PROD-021-C01-T02
 
@@ -119,42 +83,6 @@ Opt-in hook answer:
 
 ```text
 Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-### PROD-021-C01-T03
-
-- Scenario label: `software_multi_objection_sale`
-- Stage: `timing-openness-check`
-- Policy action miss: expected `autonomy-check`, observed `clarify-fit`
-- Call-control miss: expected `continue-call`, observed `continue-call`
-- Hook applied: `true`
-- Recommended fix target: `runtime_policy_router_specialization`
-- Why it matters: The hook improved wording, but the runtime policy action still stayed generic, so hook gain should not be treated as policy correctness.
-
-Exact customer turn:
-
-```text
-I need time to think; do not rush me into a commitment today.
-```
-
-Exact agent answers:
-
-Default-off answer:
-
-```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-Retrieval-only answer:
-
-```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-Opt-in hook answer:
-
-```text
-That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?
 ```
 
 ### PROD-021-C01-T04
@@ -197,11 +125,11 @@ Thanks. To check fit without wasting time, is your main concern whether this is 
 
 - Scenario label: `software_procurement_authority_delay`
 - Stage: `authority-check`
-- Policy action miss: expected `stakeholder-review`, observed `clarify-fit`
-- Call-control miss: expected `continue-call`, observed `continue-call`
+- Policy action miss: expected `stakeholder-review`, observed `stakeholder-review`
+- Call-control miss: expected `continue-call`, observed `bridge-then-continue`
 - Hook applied: `false`
-- Recommended fix target: `runtime_policy_router_specialization`
-- Why it matters: The answer remained safe, but the runtime policy action missed the specific sales state needed for a reliable next move.
+- Recommended fix target: `procurement_review_continuation_guard`
+- Why it matters: The customer asked for written review or delayed approval, which should stay in a low-pressure continuation path rather than end the call.
 
 Exact customer turn:
 
@@ -214,35 +142,35 @@ Exact agent answers:
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 Retrieval-only answer:
 
 ```text
-That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Should I send a short summary you can share with your boss, or is there one concern I should address first?
+That makes sense. Should I send a short summary you can share, or is there one concern I should address first?
 ```
 
-### PROD-021-C02-T02
+### PROD-021-C03-T01
 
-- Scenario label: `software_procurement_authority_delay`
-- Stage: `procurement-review`
-- Policy action miss: expected `procurement-review`, observed `autonomy-check`
-- Call-control miss: expected `continue-call`, observed `end-call`
+- Scenario label: `insurance_claim_privacy_escalation`
+- Stage: `claim-boundary`
+- Policy action miss: expected `claim-boundary-escalation`, observed `clarify-fit`
+- Call-control miss: expected `transfer-or-escalate`, observed `transfer-or-escalate`
 - Hook applied: `false`
-- Recommended fix target: `procurement_review_continuation_guard`
-- Why it matters: The customer asked for written review or delayed approval, which should stay in a low-pressure continuation path rather than end the call.
+- Recommended fix target: `runtime_policy_router_specialization`
+- Why it matters: The answer remained safe, but the runtime policy action missed the specific sales state needed for a reliable next move.
 
 Exact customer turn:
 
 ```text
-Procurement needs written information and nothing firm from me today.
+Can you guarantee this coverage before I share details?
 ```
 
 Exact agent answers:
@@ -250,55 +178,19 @@ Exact agent answers:
 Default-off answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+I should not give coverage advice. I can route this to the approved qualified reviewer path.
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+I should not give coverage advice. I can route this to the approved qualified reviewer path.
 ```
 
 Opt-in hook answer:
 
 ```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
-```
-
-### PROD-021-C02-T03
-
-- Scenario label: `software_procurement_authority_delay`
-- Stage: `procurement-review`
-- Policy action miss: expected `procurement-review`, observed `autonomy-check`
-- Call-control miss: expected `continue-call`, observed `end-call`
-- Hook applied: `false`
-- Recommended fix target: `procurement_review_continuation_guard`
-- Why it matters: The customer asked for written review or delayed approval, which should stay in a low-pressure continuation path rather than end the call.
-
-Exact customer turn:
-
-```text
-Next week might work for review, but I cannot commit to anything firm now.
-```
-
-Exact agent answers:
-
-Default-off answer:
-
-```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
-```
-
-Retrieval-only answer:
-
-```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
-```
-
-Opt-in hook answer:
-
-```text
-Thanks, I understand the timing is not firm. I will log a follow-up instead of forcing an appointment now.
+I should not give coverage advice. I can route this to the approved qualified reviewer path.
 ```
 
 ### PROD-021-C07-T01
@@ -306,7 +198,7 @@ Thanks, I understand the timing is not firm. I will log a follow-up instead of f
 - Scenario label: `trust_price_callback`
 - Stage: `trust-repair`
 - Policy action miss: expected `trust-repair`, observed `clarify-fit`
-- Call-control miss: expected `continue-call`, observed `continue-call`
+- Call-control miss: expected `continue-call`, observed `end-call`
 - Hook applied: `false`
 - Recommended fix target: `runtime_policy_router_specialization`
 - Why it matters: The answer remained safe, but the runtime policy action missed the specific sales state needed for a reliable next move.
@@ -322,55 +214,19 @@ Exact agent answers:
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 Retrieval-only answer:
 
 ```text
-Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 Opt-in hook answer:
 
 ```text
-Fair. Trust matters on a cold call. To make this useful, should I send company context, security details, or a specialist review path first?
-```
-
-### PROD-021-C07-T02
-
-- Scenario label: `trust_price_callback`
-- Stage: `price-check`
-- Policy action miss: expected `value-clarify`, observed `clarify-fit`
-- Call-control miss: expected `continue-call`, observed `continue-call`
-- Hook applied: `true`
-- Recommended fix target: `runtime_policy_router_specialization`
-- Why it matters: The hook improved wording, but the runtime policy action still stayed generic, so hook gain should not be treated as policy correctness.
-
-Exact customer turn:
-
-```text
-The cost sounds high; is this worth my time?
-```
-
-Exact agent answers:
-
-Default-off answer:
-
-```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-Retrieval-only answer:
-
-```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
-```
-
-Opt-in hook answer:
-
-```text
-That makes sense. Is the bigger concern the price, the terms, or whether the value is worth reviewing now?
+No payment, card, or sensitive details are collected on this call. I can send the approved verification path instead.
 ```
 
 ### PROD-021-C07-T03
@@ -378,10 +234,10 @@ That makes sense. Is the bigger concern the price, the terms, or whether the val
 - Scenario label: `trust_price_callback`
 - Stage: `callback`
 - Policy action miss: expected `autonomy-check`, observed `clarify-fit`
-- Call-control miss: expected `continue-call`, observed `continue-call`
-- Hook applied: `true`
+- Call-control miss: expected `continue-call`, observed `end-call`
+- Hook applied: `false`
 - Recommended fix target: `runtime_policy_router_specialization`
-- Why it matters: The hook improved wording, but the runtime policy action still stayed generic, so hook gain should not be treated as policy correctness.
+- Why it matters: The answer remained safe, but the runtime policy action missed the specific sales state needed for a reliable next move.
 
 Exact customer turn:
 
@@ -394,19 +250,19 @@ Exact agent answers:
 Default-off answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+I can log a callback request and keep it optional. No forced appointment or commitment on this call.
 ```
 
 Retrieval-only answer:
 
 ```text
-Thanks. To make this useful, is your main question about price, fit, timing, or exact product details?
+I can log a callback request and keep it optional. No forced appointment or commitment on this call.
 ```
 
 Opt-in hook answer:
 
 ```text
-That makes sense. Would a brief callback later help, or should we first clarify fit, timing, or anything you need verified before reviewing it?
+I can log a callback request and keep it optional. No forced appointment or commitment on this call.
 ```
 
 ## Decision

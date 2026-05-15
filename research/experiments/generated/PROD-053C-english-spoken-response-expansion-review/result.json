@@ -1,0 +1,54 @@
+{
+  "checkpoint_id": "PROD-053C-english-spoken-response-expansion-review",
+  "checkpoint_name": "English Spoken Response Expansion Review",
+  "source_checkpoint_id": "PROD-053B-compact-english-psychology-layer-review",
+  "language_lane_checkpoint_id": "PROD-052-language-lane-review-separation",
+  "source_validation_passed": true,
+  "summary": {
+    "source_checkpoint_id": "PROD-053B-compact-english-psychology-layer-review",
+    "language_lane_checkpoint_id": "PROD-052-language-lane-review-separation",
+    "english_only_review": true,
+    "source_compact_policy_rule_count": 8,
+    "carry_forward_excluded_count": 2,
+    "flagged_rewrite_included_count": 2,
+    "unreviewed_runtime_response_count": 27,
+    "review_item_count": 29,
+    "all_review_items_ready_for_tarik": true,
+    "approved_carry_forward_case_ids": [
+      "prod-045-price-first",
+      "prod-045-send-info"
+    ],
+    "runtime_response_source": "runtime/core/realtime_turns.py",
+    "review_artifact_only": true,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/result.json",
+    "report": "research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/report.md",
+    "review_items": "research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/english_spoken_response_review_items.json",
+    "scope_decisions": "research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/review_scope_decisions.json",
+    "policy_audit": "research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/policy_application_audit.json",
+    "review_html": "research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/prod_053c_english_spoken_response_review.html"
+  },
+  "validation": {
+    "passed": true,
+    "notes": [
+      "Review candidates only; no runtime behavior or response text was changed.",
+      "Already-approved English carry-forward items are excluded.",
+      "German exact phrase review remains blocked."
+    ]
+  }
+}

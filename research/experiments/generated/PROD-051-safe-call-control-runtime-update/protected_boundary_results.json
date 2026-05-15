@@ -1,0 +1,266 @@
+{
+  "checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+  "items": [
+    {
+      "case_id": "prod-050-support-boundary",
+      "customer_move_id": "support_issue",
+      "customer_utterance": "This is a support issue.",
+      "expected_call_control": "transfer-or-escalate",
+      "live_runtime_decision": {
+        "case_id": "prod-050-support-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "support-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Of course. I'll send this to the support queue right away. Have a good day.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-cancellation-boundary",
+      "customer_move_id": "cancellation_request",
+      "customer_utterance": "I want to cancel.",
+      "expected_call_control": "transfer-or-escalate",
+      "live_runtime_decision": {
+        "case_id": "prod-050-cancellation-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "cancellation-route",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Sure, I'll stop and connect you to the cancellation support queue.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-do-not-call-boundary",
+      "customer_move_id": "do_not_call",
+      "customer_utterance": "Do not call me again.",
+      "expected_call_control": "end-call",
+      "live_runtime_decision": {
+        "case_id": "prod-050-do-not-call-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "crm-suppression-update"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "do-not-call",
+        "interest_state": "do-not-call",
+        "selected_strategy": "rapport",
+        "next_action": "suppress-contact",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Understood. I will mark this so you are not called again. Goodbye.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-human-request-boundary",
+      "customer_move_id": "human_request",
+      "customer_utterance": "I want a human specialist.",
+      "expected_call_control": "transfer-or-escalate",
+      "live_runtime_decision": {
+        "case_id": "prod-050-human-request-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "human-handoff-prep"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "human-request",
+        "interest_state": "needs-human",
+        "selected_strategy": "rapport",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "bridge_response": null,
+        "agent_response": "Of course. I will pass this to a human specialist.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-email-only-boundary",
+      "customer_move_id": "email_only",
+      "customer_utterance": "Just email me.",
+      "expected_call_control": "end-call",
+      "live_runtime_decision": {
+        "case_id": "prod-050-email-only-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "email-only-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "evidence-or-benefit",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Understood. I will keep this to email and will not push for a call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-payment-safety-boundary",
+      "customer_move_id": "payment_safety_fear",
+      "customer_utterance": "I am not giving card details.",
+      "expected_call_control": "end-call",
+      "live_runtime_decision": {
+        "case_id": "prod-050-payment-safety-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "No card or payment details are needed here. I can keep this to written information.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-scam-safety-boundary",
+      "customer_move_id": "scam_or_card_fear",
+      "customer_utterance": "Is this a scam?",
+      "expected_call_control": "end-call",
+      "live_runtime_decision": {
+        "case_id": "prod-050-scam-safety-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "scam-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-sale-ready-boundary",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "I am ready to move forward.",
+      "expected_call_control": "close-and-log-sale-ready",
+      "live_runtime_decision": {
+        "case_id": "prod-050-sale-ready-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "sale-ready-outcome-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "bridge_response": null,
+        "agent_response": "All right. I'll mark that you want the next step. No payment is handled on this call.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-050-callback-boundary",
+      "customer_move_id": "callback_request",
+      "customer_utterance": "Call me back later.",
+      "expected_call_control": "end-call",
+      "live_runtime_decision": {
+        "case_id": "prod-050-callback-boundary",
+        "campaign_language": "en",
+        "response_language": "en",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "neutral",
+        "sales_difficulty": "callback-request",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Of course. Do you have a time in mind?",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "passed": true
+    }
+  ]
+}

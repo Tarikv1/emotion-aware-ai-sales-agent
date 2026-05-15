@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "case_id": "prod-053c-existing-provider-gap",
+      "language": "en",
+      "sales_difficulty": "existing-provider-gap",
+      "source_scope": "unreviewed_runtime_response_surface",
+      "owner_status": "approved",
+      "owner_notes": "use won't instead of will not",
+      "final_review_bucket": "approved_with_edit_note",
+      "current_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "proposed_review_response": "I will not claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "applied_policy_rule_ids": [
+        "en_response_001_answer_then_continue",
+        "en_response_004_one_small_decision",
+        "en_response_005_friction_not_personality"
+      ],
+      "runtime_response_changed": false,
+      "response_text_behavior_changed": false,
+      "runtime_promoted": false
+    }
+  ]
+}

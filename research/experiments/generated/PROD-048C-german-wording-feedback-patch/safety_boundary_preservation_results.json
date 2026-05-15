@@ -1,0 +1,123 @@
+{
+  "items": [
+    {
+      "case_id": "prod-048c-payment-safety",
+      "customer_move_id": "payment_safety_fear",
+      "customer_utterance": "Ich gebe am Telefon keine Bankdaten raus.",
+      "expected_sales_difficulty": "payment-safety-boundary",
+      "expected_call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "runtime_decision": {
+        "case_id": "prod-048c-payment-safety",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "payment-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_boundary_terms": [
+        "zahlungsdaten",
+        "kartendaten",
+        "passw"
+      ],
+      "missing_boundary_terms": [],
+      "payment_collection_introduced": false,
+      "contract_signing_introduced": false,
+      "unsupported_claim_introduced": false,
+      "passed": true
+    },
+    {
+      "case_id": "prod-048c-scam-safety",
+      "customer_move_id": "scam_or_card_fear",
+      "customer_utterance": "Woher weiß ich, dass das kein Betrug ist?",
+      "expected_sales_difficulty": "scam-safety-boundary",
+      "expected_call_control": "end-call",
+      "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+      "runtime_decision": {
+        "case_id": "prod-048c-scam-safety",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "follow-up-task-write"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "skeptical-or-negative",
+        "sales_difficulty": "scam-safety-boundary",
+        "interest_state": "maybe-interested",
+        "selected_strategy": "rapport",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "bridge_response": null,
+        "agent_response": "Ich frage in diesem Gespräch nicht nach Zahlungsdaten, Kartendaten oder Passwörtern. Sie können die Informationen über die offizielle Seite prüfen. Ich sende Ihnen dazu schriftliche Informationen.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_boundary_terms": [
+        "zahlungsdaten",
+        "kartendaten",
+        "passw"
+      ],
+      "missing_boundary_terms": [],
+      "payment_collection_introduced": false,
+      "contract_signing_introduced": false,
+      "unsupported_claim_introduced": false,
+      "passed": true
+    },
+    {
+      "case_id": "prod-048c-sale-ready",
+      "customer_move_id": "sale_ready_interest",
+      "customer_utterance": "Okay, dann machen wir das so.",
+      "expected_sales_difficulty": "sale-ready-commitment",
+      "expected_call_control": "close-and-log-sale-ready",
+      "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+      "runtime_decision": {
+        "case_id": "prod-048c-sale-ready",
+        "campaign_language": "de",
+        "response_language": "de",
+        "response_mode": "fast-response",
+        "first_response_latency_budget_ms": 700,
+        "first_response_latency_bucket": "under-1s",
+        "background_completion_budget_ms": null,
+        "background_modules": [
+          "sale-ready-outcome-log"
+        ],
+        "live_path_subagents": [],
+        "detected_emotion": "positive",
+        "sales_difficulty": "sale-ready-commitment",
+        "interest_state": "interested",
+        "selected_strategy": "direct-ask-or-commitment",
+        "next_action": "sale-ready-log",
+        "call_control": "close-and-log-sale-ready",
+        "bridge_response": null,
+        "agent_response": "Gut, ich halte fest, dass Sie den nächsten Schritt möchten. Es findet hier keine Zahlung und keine Vertragsunterzeichnung statt.",
+        "rationale": "Deterministic runtime policy selected the fastest safe response path."
+      },
+      "required_boundary_terms": [
+        "zahlung",
+        "vertragsunterzeichnung"
+      ],
+      "missing_boundary_terms": [],
+      "payment_collection_introduced": false,
+      "contract_signing_introduced": false,
+      "unsupported_claim_introduced": false,
+      "passed": true
+    }
+  ]
+}

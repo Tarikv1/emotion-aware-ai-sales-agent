@@ -30,8 +30,8 @@
     "company_or_campaign_name": "RouteSignal",
     "approved_reason_for_call": "wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist",
     "approved_identity_reason_sentence": "Ich rufe an, weil wir kurz klären möchten, wer bei Ihnen für Rückrufe und Nachverfolgung zuständig ist.",
-    "approved_pricing_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich.",
-    "pricing_summary": "das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich.",
+    "approved_pricing_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
+    "pricing_summary": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
     "pricing_boundary_text": "Exakte Preise dürfen nur aus den schriftlichen Preisunterlagen kommen.",
     "callback_offer_allowed_after_direct_answer": true,
     "approved_written_summary": "eine kurze Zusammenfassung per E-Mail",
@@ -63,7 +63,7 @@
   "expected_by_move": {
     "price_first": [
       "price-first-direct",
-      "end-call"
+      "bridge-then-continue"
     ],
     "who_are_you": [
       "identity-repair",
@@ -71,7 +71,7 @@
     ],
     "send_info": [
       "written-info-request",
-      "end-call"
+      "bridge-then-continue"
     ],
     "email_only": [
       "email-only-boundary",
@@ -115,11 +115,11 @@
     ],
     "needs_manager_approval": [
       "stakeholder-review",
-      "end-call"
+      "bridge-then-continue"
     ],
     "needs_spouse_or_partner_input": [
       "partner-review",
-      "end-call"
+      "bridge-then-continue"
     ],
     "sale_ready_interest": [
       "sale-ready-commitment",
@@ -154,7 +154,7 @@
     {
       "sales_difficulty": "price-first-direct",
       "before_response": "Der freigegebene Preisrahmen liegt beim Starter-Paket bei 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. Keine Zahlung und keine Verpflichtung in diesem Anruf.",
-      "after_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+      "after_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -176,7 +176,7 @@
     {
       "sales_difficulty": "written-info-request",
       "before_response": "Ich kann die freigegebene schriftliche Zusammenfassung senden und es dabei belassen.",
-      "after_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+      "after_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -311,7 +311,7 @@
     {
       "sales_difficulty": "stakeholder-review",
       "before_response": "Ich kann die freigegebene Zusammenfassung zur Prüfung senden. Keine Entscheidung und keine Verpflichtung heute.",
-      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -322,7 +322,7 @@
     {
       "sales_difficulty": "partner-review",
       "before_response": "Ich kann die freigegebene Zusammenfassung zur Prüfung senden. Keine Entscheidung und keine Verpflichtung heute.",
-      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+      "after_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
       "changed": true,
       "banned_terms_before": [],
       "banned_terms_after": [],
@@ -381,7 +381,7 @@
       "customer_utterance": "Was kostet mich das denn?",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-price_first-001",
@@ -399,10 +399,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -426,7 +426,7 @@
       "customer_utterance": "Mit welchen Kosten muss ich da rechnen?",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-price_first-002",
@@ -444,10 +444,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -471,7 +471,7 @@
       "customer_utterance": "Was kommt da monatlich auf mich zu?",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-price_first-003",
@@ -489,10 +489,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -645,7 +645,7 @@
       "customer_utterance": "Schicken Sie mir das bitte schriftlich.",
       "expected": {
         "sales_difficulty": "written-info-request",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-send_info-001",
@@ -663,10 +663,10 @@
         "sales_difficulty": "written-info-request",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -690,7 +690,7 @@
       "customer_utterance": "Können Sie mir die Unterlagen per Mail senden?",
       "expected": {
         "sales_difficulty": "written-info-request",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-send_info-002",
@@ -708,10 +708,10 @@
         "sales_difficulty": "written-info-request",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -735,7 +735,7 @@
       "customer_utterance": "Senden Sie mir erst mal die Infos zu.",
       "expected": {
         "sales_difficulty": "written-info-request",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-send_info-003",
@@ -753,10 +753,10 @@
         "sales_difficulty": "written-info-request",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.",
+        "agent_response": "Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2124,7 +2124,7 @@
       "customer_utterance": "Das muss ich mit meinem Chef abklären.",
       "expected": {
         "sales_difficulty": "stakeholder-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-needs_manager_approval-001",
@@ -2142,10 +2142,10 @@
         "sales_difficulty": "stakeholder-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2169,7 +2169,7 @@
       "customer_utterance": "Da muss mein Vorgesetzter draufschauen.",
       "expected": {
         "sales_difficulty": "stakeholder-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-needs_manager_approval-002",
@@ -2187,10 +2187,10 @@
         "sales_difficulty": "stakeholder-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2214,7 +2214,7 @@
       "customer_utterance": "Das entscheidet bei uns nicht nur ich.",
       "expected": {
         "sales_difficulty": "stakeholder-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-needs_manager_approval-003",
@@ -2232,10 +2232,10 @@
         "sales_difficulty": "stakeholder-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die prüfende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2259,7 +2259,7 @@
       "customer_utterance": "Das muss ich mit meinem Mann besprechen.",
       "expected": {
         "sales_difficulty": "partner-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-needs_spouse_or_partner_input-001",
@@ -2277,10 +2277,10 @@
         "sales_difficulty": "partner-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2304,7 +2304,7 @@
       "customer_utterance": "Das muss ich mit meiner Frau abklären.",
       "expected": {
         "sales_difficulty": "partner-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-needs_spouse_or_partner_input-002",
@@ -2322,10 +2322,10 @@
         "sales_difficulty": "partner-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -2349,7 +2349,7 @@
       "customer_utterance": "Ich entscheide das nicht alleine.",
       "expected": {
         "sales_difficulty": "partner-review",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-needs_spouse_or_partner_input-003",
@@ -2367,10 +2367,10 @@
         "sales_difficulty": "partner-review",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung zur Prüfung. Heute müssen Sie nichts entscheiden.",
+        "agent_response": "Ich sende Ihnen eine kurze Zusammenfassung für die mitentscheidende Person. Wenn es hilfreich ist, kann ich die zwei wichtigsten Punkte direkt mit aufnehmen. Heute müssen Sie nichts entscheiden.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3429,7 +3429,7 @@
       "customer_utterance": "Ich brauche keinen Support, ich möchte nur den Preis wissen.",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-false-price-over-support",
@@ -3447,10 +3447,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {
@@ -3564,7 +3564,7 @@
       "customer_utterance": "Ich habe schon einen Anbieter, aber ich will trotzdem den Preis wissen.",
       "expected": {
         "sales_difficulty": "price-first-direct",
-        "call_control": "end-call"
+        "call_control": "bridge-then-continue"
       },
       "runtime_decision": {
         "case_id": "de-false-price-over-provider",
@@ -3582,10 +3582,10 @@
         "sales_difficulty": "price-first-direct",
         "interest_state": "maybe-interested",
         "selected_strategy": "evidence-or-benefit",
-        "next_action": "create-follow-up-task",
-        "call_control": "end-call",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
         "bridge_response": null,
-        "agent_response": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.",
+        "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.",
         "rationale": "Deterministic runtime policy selected the fastest safe response path."
       },
       "required_action_evaluation": {

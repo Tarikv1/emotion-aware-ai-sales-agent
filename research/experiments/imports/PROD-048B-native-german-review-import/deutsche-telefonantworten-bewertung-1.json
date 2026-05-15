@@ -1,0 +1,1704 @@
+{
+  "reviewer": {
+    "name_or_initials": "Diro",
+    "native_german": "Ja",
+    "region_optional": "Basel",
+    "date": "2026-05-12",
+    "general_notes": ""
+  },
+  "summary": {
+    "anzahl_gepruefter_antworten": 0,
+    "anzahl_akzeptiert": 5,
+    "anzahl_mit_kleinen_aenderungen": 1,
+    "anzahl_mit_grossen_aenderungen": 0,
+    "anzahl_abgelehnt": 0,
+    "anzahl_mit_sicherheits_oder_wirkungs_hinweisen": 1
+  },
+  "items": [
+    {
+      "review_item_id": "de-review-001",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "teilweise",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "etwas",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "kleine_aenderung"
+      },
+      "safety_flags": [
+        "verkaufsdruck"
+      ],
+      "rewrite_suggestion": "Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen Ihnen schriftlich. Und um es klar zu stellen geht es in diesem Anruf nicht um Zahlung oder Vertragsabschluss.",
+      "comment": "Ich finde der letzte satz lenkt zu sehr auf das thema Zahlung"
+    },
+    {
+      "review_item_id": "de-review-002",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-003",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-004",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-005",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-006",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-007",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-008",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-009",
+      "topic": "Preisfrage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-010",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "etwas",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-011",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-012",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-013",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-014",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-015",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-016",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-017",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-018",
+      "topic": "Wer ruft an?",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-019",
+      "topic": "Schriftliche Informationen",
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "nein",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "nein"
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-020",
+      "topic": "Schriftliche Informationen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-021",
+      "topic": "Schriftliche Informationen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-022",
+      "topic": "Nur E-Mail",
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "nein",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "nein"
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-023",
+      "topic": "Nur E-Mail",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-024",
+      "topic": "Nur E-Mail",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-025",
+      "topic": "Betrugsangst",
+      "ratings": {
+        "natuerlich": "ja",
+        "klar_verstaendlich": "ja",
+        "freundlich": "ja",
+        "gesprochene_sprache": "ja",
+        "zu_abrupt": "nein",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "ja",
+        "ueberarbeitung_noetig": "nein"
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-026",
+      "topic": "Betrugsangst",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-027",
+      "topic": "Betrugsangst",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-028",
+      "topic": "Zahlungsangst",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-029",
+      "topic": "Zahlungsangst",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-030",
+      "topic": "Zahlungsangst",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-031",
+      "topic": "Support",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-032",
+      "topic": "Support",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-033",
+      "topic": "Support",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-034",
+      "topic": "Kündigung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-035",
+      "topic": "Kündigung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-036",
+      "topic": "Kündigung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-037",
+      "topic": "Technische Frage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-038",
+      "topic": "Technische Frage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-039",
+      "topic": "Technische Frage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-040",
+      "topic": "Technische Frage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-041",
+      "topic": "Technische Frage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-042",
+      "topic": "Technische Frage",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-043",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-044",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-045",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-046",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-047",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-048",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-049",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-050",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-051",
+      "topic": "Sicherheitsprüfung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-052",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-053",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-054",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-055",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-056",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-057",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-058",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-059",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-060",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-061",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-062",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-063",
+      "topic": "Versicherungsschutz / Gesundheit",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-064",
+      "topic": "Bestehender Anbieter",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-065",
+      "topic": "Bestehender Anbieter",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-066",
+      "topic": "Bestehender Anbieter",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-067",
+      "topic": "Bestehender Anbieter",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-068",
+      "topic": "Bestehender Anbieter",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-069",
+      "topic": "Bestehender Anbieter",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-070",
+      "topic": "Entscheidung mit Chef/Partner",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-071",
+      "topic": "Entscheidung mit Chef/Partner",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-072",
+      "topic": "Entscheidung mit Chef/Partner",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-073",
+      "topic": "Entscheidung mit Chef/Partner",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-074",
+      "topic": "Entscheidung mit Chef/Partner",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-075",
+      "topic": "Entscheidung mit Chef/Partner",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-076",
+      "topic": "Nächster Schritt",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-077",
+      "topic": "Nächster Schritt",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-078",
+      "topic": "Nächster Schritt",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-079",
+      "topic": "Nächster Schritt",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-080",
+      "topic": "Nächster Schritt",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-081",
+      "topic": "Nächster Schritt",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-082",
+      "topic": "Rückruf",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-083",
+      "topic": "Rückruf",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-084",
+      "topic": "Rückruf",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-085",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-086",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-087",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-088",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-089",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-090",
+      "topic": "Kein Interesse / nicht mehr anrufen",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-091",
+      "topic": "Nachweis / Zweifel",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-092",
+      "topic": "Nachweis / Zweifel",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-093",
+      "topic": "Nachweis / Zweifel",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-094",
+      "topic": "Produktdetails",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-095",
+      "topic": "Produktdetails",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-096",
+      "topic": "Produktdetails",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-097",
+      "topic": "Terminbestätigung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-098",
+      "topic": "Terminbestätigung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    },
+    {
+      "review_item_id": "de-review-099",
+      "topic": "Terminbestätigung",
+      "ratings": {
+        "natuerlich": "",
+        "klar_verstaendlich": "",
+        "freundlich": "",
+        "gesprochene_sprache": "",
+        "zu_abrupt": "",
+        "intern_buerokratisch_technisch": "",
+        "telefonisch_akzeptabel": "",
+        "ueberarbeitung_noetig": ""
+      },
+      "safety_flags": [],
+      "rewrite_suggestion": "",
+      "comment": ""
+    }
+  ]
+}

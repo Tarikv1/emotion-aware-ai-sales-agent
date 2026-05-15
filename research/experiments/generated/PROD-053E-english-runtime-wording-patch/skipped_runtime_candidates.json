@@ -1,0 +1,44 @@
+{
+  "checkpoint_id": "PROD-053E-english-runtime-wording-patch",
+  "items": [
+    {
+      "case_id": "prod-053c-voicemail",
+      "language": "en",
+      "sales_difficulty": "voicemail",
+      "candidate_type": "action_only_no_spoken_response",
+      "candidate_response": "",
+      "requires_design_decision": true,
+      "context_sensitive": false,
+      "runtime_promoted": false,
+      "skip_reason": "Voicemail action-only behavior needs a separate call-control checkpoint.",
+      "runtime_response": "I reached voicemail, so I will log this for follow-up according to campaign rules.",
+      "runtime_response_matches_candidate": false
+    },
+    {
+      "case_id": "prod-053c-coverage-boundary-route",
+      "language": "en",
+      "sales_difficulty": "coverage-boundary-route",
+      "candidate_type": "design_decision",
+      "candidate_response": "If approved coverage facts exist, answer from the policy document. If not, send it to a qualified reviewer.",
+      "requires_design_decision": true,
+      "context_sensitive": true,
+      "runtime_promoted": false,
+      "skip_reason": "Coverage policy knowledge behavior needs a separate design/runtime checkpoint.",
+      "runtime_response": "I should not give coverage or medical advice. I can route this to a specialist.",
+      "runtime_response_matches_candidate": false
+    },
+    {
+      "case_id": "prod-053c-autonomy-check",
+      "language": "en",
+      "sales_difficulty": "autonomy-check",
+      "candidate_type": "context_sensitive_wording",
+      "candidate_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+      "requires_design_decision": false,
+      "context_sensitive": true,
+      "runtime_promoted": false,
+      "skip_reason": "Context-sensitive autonomy wording needs a separate multi-turn check.",
+      "runtime_response": "That makes sense. We can keep this low pressure and clarify only what you need before any next step.",
+      "runtime_response_matches_candidate": false
+    }
+  ]
+}

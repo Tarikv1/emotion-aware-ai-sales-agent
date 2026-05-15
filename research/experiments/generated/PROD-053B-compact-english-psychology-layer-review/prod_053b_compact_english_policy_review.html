@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PROD-053B Compact English Policy Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #1f2933; background: #f7f8fa; }
+    h1 { margin-bottom: 4px; }
+    .meta { color: #52606d; margin-top: 0; }
+    .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .rule { background: #fff; border: 1px solid #d9e2ec; border-radius: 8px; padding: 14px; }
+    .blocked { color: #7b341e; }
+    table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 16px; }
+    th, td { border: 1px solid #d9e2ec; padding: 10px; vertical-align: top; }
+    th { background: #eef2f7; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>PROD-053B Compact English Policy Review</h1>
+  <p class="meta">English-only deterministic response-shape review. No runtime behavior, no German exact phrase promotion, no LLM, no provider call.</p>
+  <div class="rules"><section class='rule'><h2>en_response_001_answer_then_continue</h2><p><strong>Answer, then continue.</strong></p><p>Use a tiny acknowledgement, answer the customer move, then offer one low-friction next step.</p><p class='blocked'>Blocked: Do not open a menu of facts, explanations, and options before answering the customer.</p></section><section class='rule'><h2>en_response_002_plain_relief</h2><p><strong>Keep relief plain.</strong></p><p>When relief matters, say it briefly: no commitment today, take a look, let me know.</p><p class='blocked'>Blocked: Do not list every legal or commercial non-commitment as a policy dump.</p></section><section class='rule'><h2>en_response_003_mirror_only_for_repair</h2><p><strong>Mirror only for repair.</strong></p><p>Use a short partial repeat only when it repairs ambiguity or invites useful detail.</p><p class='blocked'>Blocked: Do not repeat the customer&#x27;s full category such as manager, spouse, boss, or partner in every answer.</p></section><section class='rule'><h2>en_response_004_one_small_decision</h2><p><strong>One small decision.</strong></p><p>Offer or ask for one small next step per turn.</p><p class='blocked'>Blocked: Do not ask the buyer to process summary, pricing, terms, booking, and contract details in one turn.</p></section><section class='rule'><h2>en_response_005_friction_not_personality</h2><p><strong>Diagnose friction, not personality.</strong></p><p>If hesitation is unclear, ask one small friction question about price, timing, authority, risk, or usefulness.</p><p class='blocked'>Blocked: Do not label hidden emotions or personality traits.</p></section><section class='rule'><h2>en_response_006_autonomy_visible</h2><p><strong>Make autonomy visible.</strong></p><p>Keep pause, review, decline, compare, or human handoff visible when the next step could feel like pressure.</p><p class='blocked'>Blocked: Do not turn a review step into a forced booking, hidden obligation, or scarcity close.</p></section><section class='rule'><h2>en_response_007_trust_gap_specific</h2><p><strong>Answer the specific trust gap.</strong></p><p>For trust concerns, answer ability, interest, or honesty gaps with only the relevant verified path.</p><p class='blocked'>Blocked: Do not use generic reassurance, testimonials, or confidence as a universal trust answer.</p></section><section class='rule'><h2>en_response_008_stop_after_question</h2><p><strong>Ask, then stop.</strong></p><p>If the turn asks a question, stop after the question.</p><p class='blocked'>Blocked: Do not ask a question and then continue explaining the answer options.</p></section></div>
+  <h2>Current English Case Audit</h2>
+  <table>
+    <thead>
+      <tr><th>Case</th><th>Difficulty</th><th>Current response</th><th>Policy issues</th><th>Policy-shape suggestion</th><th>Decision</th></tr>
+    </thead>
+    <tbody><tr><td>prod-045-price-first</td><td>price-first-direct</td><td>The starter plan is 29 per user per month, and I can send the exact terms in writing. If useful, I can briefly explain what is included before I send them. No payment or commitment on this call.</td><td>none</td><td>The starter plan is 29 per user per month. I can send the exact terms in writing. No payment or commitment on this call.</td><td>carry_forward</td></tr><tr><td>prod-045-send-info</td><td>written-info-request</td><td>Of course, I can tailor the summary to your main point. Then I can send it over, so it is more useful to you.</td><td>none</td><td>Of course. I can tailor it to your main point, then send it over.</td><td>carry_forward</td></tr><tr><td>prod-045-manager</td><td>stakeholder-review</td><td>Of course. I can send it over. No commitment today. Take a look and let me know.</td><td>live_turn_too_long</td><td>Of course. I can send it over. No commitment today. Take a look and let me know.</td><td>rewrite_candidate</td></tr><tr><td>prod-045-spouse</td><td>partner-review</td><td>Of course. I can send it over. No commitment today. Take a look and let me know.</td><td>live_turn_too_long</td><td>Of course. I can send it over. No commitment today. Take a look and let me know.</td><td>rewrite_candidate</td></tr></tbody>
+  </table>
+</body>
+</html>

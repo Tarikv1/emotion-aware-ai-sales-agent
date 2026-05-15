@@ -78,7 +78,7 @@ MVP capabilities:
 
 The live response path should not depend on chaining multiple sub-agents sequentially. Specialist modules can support compliance, product lookup, CRM updates, scheduling, and post-call evaluation, but the customer-facing turn should be handled by the fast real-time sales-agent core.
 
-The live response path also needs explicit call-control behavior. The agent should hang up politely after do-not-call requests, clear refusals, repeated silence, voicemail handling, or completed follow-up/scheduling actions. See `docs/product/CALL_TERMINATION_POLICY.md`.
+The live response path also needs explicit call-control behavior. The agent should hang up politely after do-not-call requests, clear refusals, repeated silence, voicemail handling, or completed follow-up/scheduling actions. See `runtime/policy/CALL_TERMINATION_POLICY.md`.
 
 Development and testing may use human review, but launch behavior should not require human approval for every normal response.
 
@@ -180,7 +180,7 @@ lead/contact details
   -> fallback or escalation when needed
 ```
 
-See `docs/product/REALTIME_AGENT_ARCHITECTURE.md` for the runtime layering, latency budget, bridge-response behavior, and sub-agent policy.
+See `runtime/architecture/REALTIME_AGENT_ARCHITECTURE.md` for the runtime layering, latency budget, bridge-response behavior, and sub-agent policy.
 
 ## Near-Term Product Step
 

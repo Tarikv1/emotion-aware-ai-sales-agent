@@ -1,0 +1,69 @@
+{
+  "checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+  "title": "Safe Call-Control Runtime Update",
+  "source_checkpoint_id": "PROD-050-safe-call-control-softening-regression",
+  "validation": {
+    "passed": true
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/result.json",
+    "report": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/report.md",
+    "runtime_results": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/runtime_update_results.json",
+    "naturalness_audit": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/naturalness_audit_results.json",
+    "protected_boundaries": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/protected_boundary_results.json",
+    "before_after": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/before_after_naturalness.json",
+    "review_html": "research/experiments/generated/PROD-051-safe-call-control-runtime-update/prod_051_review.html"
+  },
+  "summary": {
+    "source_checkpoint_id": "PROD-050-safe-call-control-softening-regression",
+    "source_result_statuses": {
+      "prod_050_result": true,
+      "prod_049_result": true,
+      "prod_048c_result": true,
+      "prod_047_result": true,
+      "prod_046_result": true,
+      "prod_045_result": true
+    },
+    "runtime_update_case_count": 22,
+    "runtime_update_pass_count": 22,
+    "runtime_update_fail_count": 0,
+    "selected_sales_difficulty_count": 4,
+    "selected_sales_difficulty_counts": {
+      "partner-review": 4,
+      "price-first-direct": 10,
+      "stakeholder-review": 4,
+      "written-info-request": 4
+    },
+    "live_bridge_then_continue_count": 22,
+    "live_answer_and_continue_action_count": 22,
+    "response_matches_prod_050_proposal_count": 20,
+    "response_matches_later_reviewed_runtime_text_count": 2,
+    "response_matches_prod_050_or_later_reviewed_count": 22,
+    "naturalness_case_count": 22,
+    "naturalness_pass_count": 22,
+    "naturalness_fail_count": 0,
+    "naturalness_improvement_count": 22,
+    "naturalness_average_score": 1.0,
+    "protected_boundary_probe_count": 9,
+    "protected_boundary_pass_count": 9,
+    "protected_boundary_softened_count": 0,
+    "pressure_violation_count": 0,
+    "unsupported_claim_violation_count": 0,
+    "payment_collection_violation_count": 0,
+    "contract_signing_violation_count": 0,
+    "internal_jargon_violation_count": 0,
+    "terminal_closing_phrase_count": 0,
+    "runtime_behavior_changed": true,
+    "call_control_behavior_changed": true,
+    "response_text_behavior_changed": true,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

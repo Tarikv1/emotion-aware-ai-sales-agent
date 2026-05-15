@@ -20,7 +20,7 @@ This is not final German human review. It is a deterministic wording pass over s
 ### price-first-direct
 
 - Before: Der freigegebene Preisrahmen liegt beim Starter-Paket bei 29 Euro pro Nutzer und Monat; die genauen Bedingungen kommen schriftlich. Keine Zahlung und keine Verpflichtung in diesem Anruf.
-- After: Nach den vorliegenden Informationen liegt das Starter-Paket bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen sende ich Ihnen schriftlich. In diesem Gespräch geht es nicht um Zahlung oder Vertragsabschluss.
+- After: Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich. Wenn es hilfreich ist, kann ich kurz einordnen, was darin enthalten ist.
 
 ### identity-repair
 
@@ -30,7 +30,7 @@ This is not final German human review. It is a deterministic wording pass over s
 ### written-info-request
 
 - Before: Ich kann die freigegebene schriftliche Zusammenfassung senden und es dabei belassen.
-- After: Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail und belasse es dabei.
+- After: Ich sende Ihnen gern eine kurze Zusammenfassung per E-Mail. Wenn es hilfreich ist, kann ich sie kurz auf den wichtigsten Punkt für Sie zuschneiden.
 
 ### email-only-boundary
 

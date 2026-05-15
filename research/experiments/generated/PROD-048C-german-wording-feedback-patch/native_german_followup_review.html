@@ -1,0 +1,1061 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prüfung deutscher Telefonantworten</title>
+  <style>
+    :root { color-scheme: light; --ink:#15202b; --muted:#5b6674; --line:#ccd6e0; --soft:#f5f7f9; --accent:#0f6b62; --warn:#9c5a00; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Verdana, Geneva, sans-serif; color:var(--ink); background:#fbfcfd; line-height:1.55; }
+    header { padding:32px clamp(18px,4vw,56px); background:#e9f2ef; border-bottom:1px solid var(--line); }
+    main { max-width:1180px; margin:0 auto; padding:24px clamp(16px,3vw,32px) 48px; }
+    h1 { margin:0 0 12px; font-size:clamp(28px,4vw,44px); }
+    h2 { margin:8px 0 6px; font-size:24px; }
+    h3 { margin:16px 0 8px; font-size:17px; }
+    p { margin:8px 0; }
+    .intro { max-width:900px; font-size:18px; }
+    .toolbar, .reviewer, .summary { background:white; border:1px solid var(--line); padding:16px; margin:18px 0; border-radius:8px; }
+    .toolbar button, .export button { margin:4px 6px 4px 0; padding:10px 12px; border:1px solid var(--line); background:white; border-radius:6px; cursor:pointer; }
+    .toolbar button.active { background:var(--accent); color:white; border-color:var(--accent); }
+    .reviewer-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    label { display:block; font-weight:600; }
+    input[type="text"], input[type="date"], textarea { width:100%; margin-top:5px; padding:10px; border:1px solid var(--line); border-radius:6px; font:inherit; }
+    .review-card { background:white; border:1px solid var(--line); border-radius:8px; padding:18px; margin:18px 0; box-shadow:0 1px 2px rgba(20,35,50,.05); }
+    .card-head { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .status { font-weight:700; color:white; background:var(--accent); padding:5px 9px; border-radius:999px; }
+    [data-status="Erneut prüfen"] .status { background:var(--warn); }
+    [data-status="Noch nicht geprüft"] .status { background:#4b5563; }
+    .progress { color:var(--muted); font-weight:700; }
+    .situation, .note, .hint { color:var(--muted); }
+    .answer { font-size:20px; padding:14px; background:var(--soft); border-left:4px solid var(--accent); }
+    .visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+    fieldset { border:1px solid var(--line); border-radius:8px; padding:10px; margin:10px 0; }
+    legend { font-weight:700; }
+    fieldset label, .flags label { display:inline-block; margin:5px 14px 5px 0; font-weight:500; }
+    .textarea-label { margin-top:12px; }
+    .hidden { display:none; }
+    .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; }
+    .metric { background:var(--soft); border:1px solid var(--line); padding:10px; border-radius:6px; }
+    @media print { .toolbar, .export, .reviewer { display:none; } body { background:white; } .review-card { break-inside:avoid; box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Prüfung deutscher Telefonantworten</h1>
+    <div class="intro">
+      <p>Die Antworten wurden nach der ersten Rückmeldung überarbeitet. Eine Preisantwort wurde gekürzt.</p>
+      <p>Einige Themen wurden bereits teilweise geprüft. Viele Themen sind noch nicht geprüft. Bitte bewerten Sie nur die deutsche Formulierung. Dies ist keine Rechtsprüfung.</p>
+      <p>Sie müssen keine technischen Begriffe verstehen. Manche Kundensätze teilen sich dieselbe Antwort. Bitte sagen Sie, ob die Antwort zu allen aufgeführten Kundensätzen passt.</p>
+    </div>
+  </header>
+  <main>
+    <section class="reviewer">
+      <h2>Angaben zur prüfenden Person</h2>
+      <div class="reviewer-grid">
+        <label>Name oder Kürzel<input id="reviewerName" type="text"></label>
+        <label>Muttersprache Deutsch? Ja/Nein<input id="nativeGerman" type="text"></label>
+        <label>Land/Region optional<input id="region" type="text"></label>
+        <label>Datum<input id="reviewDate" type="date"></label>
+      </div>
+      <label>Allgemeine Hinweise<textarea id="generalNotes"></textarea></label>
+    </section>
+    <section class="toolbar">
+      <h2>Filter</h2>
+      <button type="button" class="active" onclick="setFilter('Alle', this)">Alle</button>
+      <button type="button" onclick="setFilter('Erneut prüfen', this)">Erneut prüfen</button>
+      <button type="button" onclick="setFilter('Bereits teilweise geprüft', this)">Bereits teilweise geprüft</button>
+      <button type="button" onclick="setFilter('Noch nicht geprüft', this)">Noch nicht geprüft</button>
+      <button type="button" onclick="setFilter('Überarbeitung nötig', this)">Überarbeitung nötig</button>
+      <button type="button" onclick="setFilter('Abgelehnt', this)">Abgelehnt</button>
+      <button type="button" onclick="setFilter('Hinweise', this)">Sicherheits-/Wirkungs-Hinweise</button>
+    </section>
+    <section class="summary" id="summary">
+      <h2>Zusammenfassung</h2>
+      <div class="summary-grid">
+        <div class="metric">Antwortgruppen: <strong id="checkedGroups">0</strong></div>
+        <div class="metric">Einzelne Kundensätze: <strong>99</strong></div>
+        <div class="metric">Akzeptiert: <strong id="acceptedCount">0</strong></div>
+        <div class="metric">Kleine Änderungen: <strong id="smallChangeCount">0</strong></div>
+        <div class="metric">Große Änderungen: <strong id="largeChangeCount">0</strong></div>
+        <div class="metric">Abgelehnt: <strong id="rejectedCount">0</strong></div>
+        <div class="metric">Hinweise: <strong id="flaggedCount">0</strong></div>
+      </div>
+    </section>
+    <section class="export">
+      <button type="button" onclick="downloadJson()">Bewertung als JSON herunterladen</button>
+      <button type="button" onclick="downloadCsv()">Bewertung als CSV herunterladen</button>
+      <button type="button" onclick="document.getElementById('jsonImportFile').click()">Bewertung aus JSON laden</button>
+      <input id="jsonImportFile" class="visually-hidden" type="file" accept="application/json,.json" onchange="importJsonFile(event)">
+      <button type="button" onclick="saveProgress()">Zwischenstand im Browser speichern</button>
+      <button type="button" onclick="loadProgress()">Zwischenstand laden</button>
+      <button type="button" onclick="clearEntries()">Alle Eingaben löschen</button>
+      <button type="button" onclick="window.print()">Druckansicht</button>
+    </section>
+    <section id="cards">
+<article class="review-card" data-status="Erneut prüfen" data-group="de-review-group-001">
+  <div class="card-head">
+    <span class="status">Erneut prüfen</span>
+    <span class="progress">Antwortgruppe 1 von 22</span>
+  </div>
+  <h2>Preisfrage</h2>
+  <p class="situation">Der Kunde fragt zuerst nach Preis oder Kosten.</p>
+  <p class="note">Diese Antwort wurde nach der ersten Rückmeldung gekürzt. Bitte prüfen Sie, ob sie jetzt natürlicher klingt.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Was kostet mich das denn?</li><li>Mit welchen Kosten muss ich da rechnen?</li><li>Was kommt da monatlich auf mich zu?</li><li>Was kostet mich das denn?</li><li>Mit welchen Kosten muss ich da rechnen?</li><li>Was kommt da monatlich auf mich zu?</li><li>Was kostet mich das denn?</li><li>Mit welchen Kosten muss ich da rechnen?</li><li>Was kommt da monatlich auf mich zu?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-001-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-001-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-001-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-001-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-001-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-001-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-001-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-001-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-001-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-001-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-001-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-001-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-001-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-001-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-001-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-001-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-001-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-001-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-001-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-001-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-001-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-001-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-001-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-001-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-001-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-001-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-001-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-001-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-001-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-001-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-001-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-001-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-001-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-001-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-001-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-001-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-001-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-001-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-001-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-001-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-001-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Bereits teilweise geprüft" data-group="de-review-group-002">
+  <div class="card-head">
+    <span class="status">Bereits teilweise geprüft</span>
+    <span class="progress">Antwortgruppe 2 von 22</span>
+  </div>
+  <h2>Wer ruft an?</h2>
+  <p class="situation">Der Kunde möchte wissen, wer anruft und warum.</p>
+  <p class="note">Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Wer ist denn da?</li><li>Von welcher Firma rufen Sie an?</li><li>Worum geht es hier überhaupt?</li><li>Wer ist denn da?</li><li>Von welcher Firma rufen Sie an?</li><li>Worum geht es hier überhaupt?</li><li>Wer ist denn da?</li><li>Von welcher Firma rufen Sie an?</li><li>Worum geht es hier überhaupt?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz die Zuständigkeit für Rückrufe klären möchten.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-002-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-002-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-002-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-002-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-002-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-002-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-002-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-002-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-002-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-002-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-002-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-002-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-002-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-002-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-002-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-002-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-002-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-002-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-002-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-002-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-002-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-002-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-002-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-002-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-002-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-002-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-002-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-002-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-002-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-002-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-002-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-002-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-002-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-002-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-002-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-002-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-002-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-002-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-002-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-002-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-002-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Bereits teilweise geprüft" data-group="de-review-group-003">
+  <div class="card-head">
+    <span class="status">Bereits teilweise geprüft</span>
+    <span class="progress">Antwortgruppe 3 von 22</span>
+  </div>
+  <h2>Schriftliche Informationen</h2>
+  <p class="situation">Der Kunde möchte Informationen schriftlich bekommen.</p>
+  <p class="note">Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Schicken Sie mir das bitte schriftlich.</li><li>Können Sie mir die Unterlagen per Mail senden?</li><li>Senden Sie mir erst mal die Infos zu.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Ja, ich schicke Ihnen die kurze Zusammenfassung per E-Mail.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-003-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-003-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-003-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-003-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-003-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-003-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-003-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-003-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-003-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-003-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-003-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-003-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-003-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-003-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-003-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-003-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-003-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-003-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-003-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-003-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-003-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-003-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-003-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-003-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-003-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-003-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-003-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-003-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-003-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-003-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-003-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-003-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-003-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-003-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-003-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-003-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-003-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-003-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-003-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-003-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-003-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Bereits teilweise geprüft" data-group="de-review-group-004">
+  <div class="card-head">
+    <span class="status">Bereits teilweise geprüft</span>
+    <span class="progress">Antwortgruppe 4 von 22</span>
+  </div>
+  <h2>Nur E-Mail</h2>
+  <p class="situation">Der Kunde möchte nur per E-Mail kontaktiert werden.</p>
+  <p class="note">Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Bitte nur per E-Mail.</li><li>Rufen Sie mich nicht an, schicken Sie es per Mail.</li><li>Wenn überhaupt, dann per Mail.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verstanden, dann nur per E-Mail.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-004-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-004-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-004-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-004-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-004-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-004-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-004-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-004-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-004-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-004-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-004-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-004-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-004-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-004-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-004-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-004-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-004-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-004-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-004-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-004-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-004-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-004-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-004-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-004-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-004-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-004-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-004-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-004-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-004-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-004-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-004-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-004-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-004-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-004-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-004-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-004-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-004-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-004-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-004-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-004-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-004-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-005">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 5 von 22</span>
+  </div>
+  <h2>Betrugs- oder Zahlungsangst</h2>
+  <p class="situation">Der Kunde möchte keine Zahlungsdaten nennen.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Ich gebe am Telefon keine Bankdaten raus.</li><li>Meine Karte gebe ich nicht am Telefon durch.</li><li>Zahlungsdaten nenne ich am Telefon grundsätzlich nicht.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-005-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-005-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-005-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-005-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-005-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-005-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-005-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-005-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-005-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-005-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-005-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-005-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-005-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-005-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-005-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-005-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-005-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-005-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-005-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-005-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-005-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-005-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-005-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-005-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-005-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-005-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-005-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-005-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-005-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-005-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-005-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-005-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-005-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-005-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-005-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-005-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-005-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-005-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-005-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-005-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-005-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Bereits teilweise geprüft" data-group="de-review-group-006">
+  <div class="card-head">
+    <span class="status">Bereits teilweise geprüft</span>
+    <span class="progress">Antwortgruppe 6 von 22</span>
+  </div>
+  <h2>Betrugs- oder Zahlungsangst</h2>
+  <p class="situation">Der Kunde ist unsicher, ob der Anruf seriös ist.</p>
+  <p class="note">Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Woher weiß ich, dass das seriös ist?</li><li>Das klingt für mich ehrlich gesagt unseriös.</li><li>Woran erkenne ich, dass das kein Betrug ist?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-006-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-006-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-006-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-006-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-006-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-006-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-006-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-006-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-006-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-006-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-006-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-006-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-006-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-006-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-006-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-006-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-006-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-006-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-006-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-006-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-006-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-006-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-006-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-006-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-006-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-006-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-006-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-006-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-006-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-006-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-006-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-006-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-006-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-006-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-006-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-006-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-006-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-006-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-006-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-006-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-006-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-007">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 7 von 22</span>
+  </div>
+  <h2>Support</h2>
+  <p class="situation">Der Kunde hat ein bestehendes Problem und braucht Hilfe.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Ich habe eigentlich ein Problem mit meinem Vertrag.</li><li>Das ist eher ein Support-Thema.</li><li>Können Sie mich mit dem Support verbinden?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verstanden, das ist ein Fall für den Support. Ich leite Sie dorthin weiter.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-007-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-007-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-007-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-007-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-007-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-007-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-007-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-007-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-007-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-007-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-007-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-007-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-007-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-007-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-007-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-007-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-007-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-007-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-007-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-007-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-007-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-007-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-007-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-007-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-007-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-007-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-007-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-007-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-007-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-007-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-007-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-007-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-007-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-007-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-007-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-007-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-007-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-007-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-007-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-007-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-007-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-008">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 8 von 22</span>
+  </div>
+  <h2>Kündigung</h2>
+  <p class="situation">Der Kunde möchte etwas kündigen oder beenden.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Ich möchte kündigen.</li><li>Ich will meinen Vertrag beenden.</li><li>Wie kann ich das kündigen?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verstanden, dann leite ich Sie an die zuständige Stelle für Kündigungen weiter.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-008-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-008-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-008-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-008-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-008-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-008-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-008-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-008-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-008-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-008-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-008-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-008-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-008-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-008-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-008-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-008-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-008-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-008-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-008-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-008-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-008-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-008-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-008-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-008-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-008-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-008-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-008-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-008-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-008-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-008-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-008-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-008-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-008-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-008-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-008-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-008-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-008-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-008-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-008-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-008-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-008-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-009">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 9 von 22</span>
+  </div>
+  <h2>Technische Frage</h2>
+  <p class="situation">Der Kunde fragt nach technischen Details.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Lässt sich das mit unserem System verbinden?</li><li>Geht das technisch mit unserem CRM?</li><li>Da hätte ich eine technische Frage.</li><li>Lässt sich das mit unserem System verbinden?</li><li>Geht das technisch mit unserem CRM?</li><li>Da hätte ich eine technische Frage.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Das sollte eine Fachperson prüfen. Ich leite es entsprechend weiter.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-009-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-009-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-009-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-009-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-009-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-009-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-009-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-009-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-009-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-009-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-009-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-009-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-009-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-009-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-009-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-009-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-009-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-009-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-009-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-009-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-009-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-009-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-009-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-009-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-009-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-009-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-009-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-009-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-009-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-009-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-009-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-009-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-009-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-009-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-009-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-009-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-009-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-009-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-009-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-009-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-009-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-010">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 10 von 22</span>
+  </div>
+  <h2>Sicherheitsprüfung</h2>
+  <p class="situation">Der Kunde braucht eine Sicherheits- oder IT-Prüfung.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Das muss unsere IT-Sicherheit prüfen.</li><li>Unsere Security muss da erst drüberschauen.</li><li>Haben Sie Unterlagen für die Sicherheitsprüfung?</li><li>Das muss unsere IT-Sicherheit prüfen.</li><li>Unsere Security muss da erst drüberschauen.</li><li>Haben Sie Unterlagen für die Sicherheitsprüfung?</li><li>Das muss unsere IT-Sicherheit prüfen.</li><li>Unsere Security muss da erst drüberschauen.</li><li>Haben Sie Unterlagen für die Sicherheitsprüfung?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Das sollte eine Fachperson prüfen. Ich mache dazu keine allgemeinen Zusagen.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-010-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-010-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-010-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-010-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-010-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-010-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-010-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-010-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-010-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-010-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-010-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-010-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-010-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-010-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-010-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-010-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-010-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-010-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-010-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-010-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-010-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-010-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-010-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-010-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-010-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-010-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-010-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-010-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-010-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-010-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-010-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-010-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-010-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-010-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-010-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-010-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-010-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-010-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-010-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-010-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-010-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-011">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 11 von 22</span>
+  </div>
+  <h2>Versicherungsschutz / Gesundheit</h2>
+  <p class="situation">Der Kunde fragt nach Versicherungsschutz oder Abdeckung.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Ist das in meinem Tarif überhaupt enthalten?</li><li>Was genau ist da abgedeckt?</li><li>Gilt das auch für meinen Fall?</li><li>Ist das in meinem Tarif überhaupt enthalten?</li><li>Was genau ist da abgedeckt?</li><li>Gilt das auch für meinen Fall?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-011-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-011-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-011-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-011-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-011-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-011-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-011-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-011-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-011-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-011-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-011-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-011-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-011-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-011-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-011-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-011-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-011-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-011-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-011-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-011-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-011-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-011-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-011-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-011-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-011-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-011-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-011-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-011-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-011-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-011-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-011-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-011-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-011-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-011-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-011-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-011-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-011-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-011-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-011-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-011-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-011-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-012">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 12 von 22</span>
+  </div>
+  <h2>Versicherungsschutz / Gesundheit</h2>
+  <p class="situation">Der Kunde spricht ein medizinisches oder gesundheitliches Thema an.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Geht es hier um medizinische Beratung?</li><li>Das ist ein gesundheitliches Thema.</li><li>Ich will keine Gesundheitsberatung am Telefon.</li><li>Geht es hier um medizinische Beratung?</li><li>Das ist ein gesundheitliches Thema.</li><li>Ich will keine Gesundheitsberatung am Telefon.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-012-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-012-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-012-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-012-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-012-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-012-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-012-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-012-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-012-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-012-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-012-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-012-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-012-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-012-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-012-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-012-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-012-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-012-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-012-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-012-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-012-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-012-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-012-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-012-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-012-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-012-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-012-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-012-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-012-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-012-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-012-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-012-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-012-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-012-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-012-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-012-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-012-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-012-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-012-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-012-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-012-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-013">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 13 von 22</span>
+  </div>
+  <h2>Bestehender Anbieter</h2>
+  <p class="situation">Der Kunde hat schon einen Anbieter oder eine Lösung.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Wir haben schon einen Anbieter.</li><li>Das läuft bei uns bereits über jemand anderen.</li><li>Unser aktueller Anbieter kümmert sich darum.</li><li>Wir haben schon einen Anbieter.</li><li>Das läuft bei uns bereits über jemand anderen.</li><li>Unser aktueller Anbieter kümmert sich darum.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verstehe. Es geht nicht darum, Ihren Anbieter zu ersetzen, sondern nur darum, ob noch Rückrufe oder Nachverfolgungen offen bleiben.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-013-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-013-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-013-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-013-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-013-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-013-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-013-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-013-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-013-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-013-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-013-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-013-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-013-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-013-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-013-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-013-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-013-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-013-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-013-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-013-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-013-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-013-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-013-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-013-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-013-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-013-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-013-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-013-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-013-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-013-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-013-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-013-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-013-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-013-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-013-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-013-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-013-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-013-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-013-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-013-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-013-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-014">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 14 von 22</span>
+  </div>
+  <h2>Entscheidung mit Chef oder Partner</h2>
+  <p class="situation">Der Kunde möchte mit einer Partnerperson sprechen.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Das muss ich mit meinem Mann besprechen.</li><li>Das muss ich mit meiner Frau abklären.</li><li>Ich entscheide das nicht alleine.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-014-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-014-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-014-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-014-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-014-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-014-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-014-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-014-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-014-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-014-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-014-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-014-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-014-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-014-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-014-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-014-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-014-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-014-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-014-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-014-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-014-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-014-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-014-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-014-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-014-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-014-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-014-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-014-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-014-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-014-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-014-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-014-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-014-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-014-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-014-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-014-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-014-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-014-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-014-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-014-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-014-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-015">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 15 von 22</span>
+  </div>
+  <h2>Entscheidung mit Chef oder Partner</h2>
+  <p class="situation">Der Kunde muss eine andere Person einbeziehen.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Das muss ich mit meinem Chef abklären.</li><li>Da muss mein Vorgesetzter draufschauen.</li><li>Das entscheidet bei uns nicht nur ich.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-015-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-015-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-015-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-015-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-015-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-015-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-015-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-015-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-015-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-015-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-015-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-015-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-015-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-015-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-015-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-015-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-015-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-015-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-015-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-015-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-015-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-015-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-015-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-015-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-015-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-015-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-015-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-015-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-015-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-015-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-015-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-015-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-015-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-015-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-015-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-015-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-015-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-015-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-015-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-015-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-015-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-016">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 16 von 22</span>
+  </div>
+  <h2>Nächster Schritt</h2>
+  <p class="situation">Der Kunde möchte den nächsten Schritt wissen oder festhalten.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Okay, dann machen wir das so.</li><li>Das klingt gut, was ist der nächste Schritt?</li><li>Von mir aus können wir weitermachen.</li><li>Okay, dann machen wir das so.</li><li>Das klingt gut, was ist der nächste Schritt?</li><li>Von mir aus können wir weitermachen.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Gut, dann halte ich den nächsten Schritt fest. Bezahlt oder unterschrieben wird hier am Telefon nichts.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-016-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-016-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-016-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-016-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-016-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-016-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-016-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-016-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-016-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-016-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-016-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-016-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-016-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-016-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-016-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-016-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-016-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-016-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-016-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-016-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-016-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-016-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-016-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-016-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-016-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-016-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-016-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-016-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-016-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-016-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-016-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-016-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-016-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-016-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-016-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-016-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-016-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-016-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-016-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-016-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-016-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-017">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 17 von 22</span>
+  </div>
+  <h2>Rückruf</h2>
+  <p class="situation">Der Kunde bittet um einen späteren Rückruf.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Rufen Sie nächste Woche nochmal an.</li><li>Melden Sie sich später noch mal.</li><li>Können Sie mich morgen zurückrufen?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Ja, ich merke einen Rückruf vor.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-017-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-017-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-017-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-017-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-017-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-017-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-017-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-017-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-017-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-017-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-017-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-017-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-017-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-017-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-017-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-017-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-017-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-017-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-017-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-017-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-017-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-017-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-017-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-017-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-017-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-017-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-017-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-017-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-017-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-017-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-017-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-017-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-017-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-017-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-017-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-017-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-017-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-017-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-017-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-017-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-017-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-018">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 18 von 22</span>
+  </div>
+  <h2>Kein Interesse / nicht mehr anrufen</h2>
+  <p class="situation">Der Kunde lehnt ab.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Nein danke, kein Interesse.</li><li>Das ist nichts für mich.</li><li>Brauche ich nicht.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verstanden, dann belasse ich es dabei. Auf Wiederhören.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-018-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-018-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-018-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-018-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-018-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-018-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-018-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-018-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-018-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-018-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-018-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-018-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-018-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-018-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-018-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-018-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-018-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-018-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-018-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-018-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-018-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-018-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-018-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-018-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-018-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-018-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-018-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-018-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-018-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-018-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-018-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-018-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-018-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-018-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-018-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-018-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-018-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-018-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-018-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-018-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-018-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-019">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 19 von 22</span>
+  </div>
+  <h2>Kein Interesse / nicht mehr anrufen</h2>
+  <p class="situation">Der Kunde möchte nicht mehr angerufen werden.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Rufen Sie mich nicht mehr an.</li><li>Nehmen Sie meine Nummer aus der Liste.</li><li>Ich will keine weiteren Anrufe.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Verstanden. Sie werden hierzu nicht mehr angerufen. Auf Wiederhören.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-019-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-019-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-019-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-019-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-019-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-019-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-019-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-019-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-019-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-019-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-019-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-019-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-019-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-019-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-019-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-019-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-019-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-019-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-019-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-019-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-019-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-019-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-019-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-019-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-019-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-019-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-019-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-019-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-019-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-019-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-019-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-019-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-019-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-019-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-019-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-019-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-019-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-019-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-019-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-019-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-019-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-020">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 20 von 22</span>
+  </div>
+  <h2>Terminbestätigung</h2>
+  <p class="situation">Der Kunde bestätigt einen Termin oder Rückrufzeitpunkt.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Mittwoch um zehn passt.</li><li>Freitag gegen 14 Uhr wäre okay.</li><li>Dienstag nachmittags passt mir.</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Bestätigt, ich notiere den Rückruf so. Auf Wiederhören.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-020-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-020-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-020-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-020-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-020-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-020-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-020-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-020-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-020-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-020-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-020-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-020-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-020-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-020-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-020-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-020-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-020-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-020-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-020-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-020-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-020-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-020-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-020-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-020-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-020-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-020-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-020-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-020-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-020-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-020-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-020-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-020-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-020-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-020-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-020-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-020-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-020-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-020-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-020-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-020-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-020-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-021">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 21 von 22</span>
+  </div>
+  <h2>Sonstiges</h2>
+  <p class="situation">Der Kunde fragt nach Beleg, Nachweis oder Garantie.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Können Sie mir garantieren, dass das funktioniert?</li><li>Haben Sie dafür einen Nachweis?</li><li>Können Sie das belegen?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Garantieren möchte ich nichts, was von Details abhängt. Ich leite es zur Prüfung weiter.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-021-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-021-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-021-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-021-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-021-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-021-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-021-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-021-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-021-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-021-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-021-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-021-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-021-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-021-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-021-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-021-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-021-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-021-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-021-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-021-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-021-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-021-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-021-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-021-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-021-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-021-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-021-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-021-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-021-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-021-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-021-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-021-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-021-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-021-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-021-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-021-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-021-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-021-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-021-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-021-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-021-comment"></textarea>
+  </label>
+</article>
+
+
+<article class="review-card" data-status="Noch nicht geprüft" data-group="de-review-group-022">
+  <div class="card-head">
+    <span class="status">Noch nicht geprüft</span>
+    <span class="progress">Antwortgruppe 22 von 22</span>
+  </div>
+  <h2>Sonstiges</h2>
+  <p class="situation">Der Kunde fragt nach konkreten Produktdetails.</p>
+  <p class="note">Dieses Thema wurde noch nicht geprüft.</p>
+  <section>
+    <h3>Kundensätze</h3>
+    <ol><li>Welcher Tarif ist das genau?</li><li>Was ist in dem Paket enthalten?</li><li>Welche Leistungen sind genau drin?</li></ol>
+  </section>
+  <section>
+    <h3>Antwort des Assistenten</h3>
+    <p class="answer">Einen Moment, ich prüfe die Produktinformationen.</p>
+    <p class="hint">Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.</p>
+    <p class="hint"><strong>Passt diese Antwort zu allen Kundensätzen?</strong></p>
+  </section>
+  <section class="ratings"><fieldset><legend>Passt die Antwort zu allen Kundensätzen?</legend><label><input type="radio" name="de-review-group-022-passt_zu_allen" value="ja"> Ja</label><label><input type="radio" name="de-review-group-022-passt_zu_allen" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-022-passt_zu_allen" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt natürlich?</legend><label><input type="radio" name="de-review-group-022-natuerlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-022-natuerlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-022-natuerlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort klar verständlich?</legend><label><input type="radio" name="de-review-group-022-klar_verstaendlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-022-klar_verstaendlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-022-klar_verstaendlich" value="nein"> Nein</label></fieldset><fieldset><legend>Ist die Antwort freundlich?</legend><label><input type="radio" name="de-review-group-022-freundlich" value="ja"> Ja</label><label><input type="radio" name="de-review-group-022-freundlich" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-022-freundlich" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort wie echte gesprochene Sprache?</legend><label><input type="radio" name="de-review-group-022-gesprochene_sprache" value="ja"> Ja</label><label><input type="radio" name="de-review-group-022-gesprochene_sprache" value="teilweise"> Teilweise</label><label><input type="radio" name="de-review-group-022-gesprochene_sprache" value="nein"> Nein</label></fieldset><fieldset><legend>Klingt die Antwort zu abrupt?</legend><label><input type="radio" name="de-review-group-022-zu_abrupt" value="nein"> Nein</label><label><input type="radio" name="de-review-group-022-zu_abrupt" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-022-zu_abrupt" value="ja"> Ja</label></fieldset><fieldset><legend>Klingt die Antwort intern, bürokratisch oder technisch?</legend><label><input type="radio" name="de-review-group-022-intern_buerokratisch_technisch" value="nein"> Nein</label><label><input type="radio" name="de-review-group-022-intern_buerokratisch_technisch" value="etwas"> Etwas</label><label><input type="radio" name="de-review-group-022-intern_buerokratisch_technisch" value="ja"> Ja</label></fieldset><fieldset><legend>Würden Sie diese Antwort am Telefon akzeptieren?</legend><label><input type="radio" name="de-review-group-022-telefonisch_akzeptabel" value="ja"> Ja</label><label><input type="radio" name="de-review-group-022-telefonisch_akzeptabel" value="nur_mit_aenderung"> Nur mit Änderung</label><label><input type="radio" name="de-review-group-022-telefonisch_akzeptabel" value="nein"> Nein</label></fieldset><fieldset><legend>Muss die Antwort überarbeitet werden?</legend><label><input type="radio" name="de-review-group-022-ueberarbeitung_noetig" value="nein"> Nein</label><label><input type="radio" name="de-review-group-022-ueberarbeitung_noetig" value="kleine_aenderung"> Kleine Änderung</label><label><input type="radio" name="de-review-group-022-ueberarbeitung_noetig" value="grosse_aenderung"> Große Änderung</label></fieldset></section>
+  <section class="flags">
+    <h3>Bitte markieren, falls die Antwort eines dieser Probleme hat:</h3>
+    <div><label><input type="checkbox" name="de-review-group-022-flag" value="zu_draengend"> Klingt zu drängend</label><label><input type="checkbox" name="de-review-group-022-flag" value="verkaufsdruck"> Klingt wie Verkaufsdruck</label><label><input type="checkbox" name="de-review-group-022-flag" value="rechtlich_unsicher"> Klingt rechtlich unsicher</label><label><input type="checkbox" name="de-review-group-022-flag" value="medizinische_beratung"> Klingt nach medizinischer Beratung</label><label><input type="checkbox" name="de-review-group-022-flag" value="versicherungsschutz_beratung"> Klingt nach Beratung zum Versicherungsschutz</label><label><input type="checkbox" name="de-review-group-022-flag" value="zahlungsaufforderung"> Klingt nach Zahlungsaufforderung</label><label><input type="checkbox" name="de-review-group-022-flag" value="vertragsabschluss"> Klingt nach Vertragsabschluss</label><label><input type="checkbox" name="de-review-group-022-flag" value="unhoeflich"> Klingt unhöflich</label><label><input type="checkbox" name="de-review-group-022-flag" value="unklar"> Klingt unklar</label><label><input type="checkbox" name="de-review-group-022-flag" value="passt_nicht_zu_allen"> Passt nicht zu allen Kundensätzen</label><label><input type="checkbox" name="de-review-group-022-flag" value="sonstiges"> Sonstiges</label></div>
+  </section>
+  <label class="textarea-label">Falls die Antwort nicht zu allen Kundensätzen passt: Welche Kundensätze brauchen eine andere Antwort?
+    <textarea name="de-review-group-022-different-case-notes"></textarea>
+  </label>
+  <label class="textarea-label">Besserer Formulierungsvorschlag
+    <textarea name="de-review-group-022-rewrite"></textarea>
+  </label>
+  <label class="textarea-label">Kommentar
+    <textarea name="de-review-group-022-comment"></textarea>
+  </label>
+</article>
+</section>
+  </main>
+  <script>
+    const reviewGroups = [{"group_number": 1, "group_id": "de-review-group-001", "status_de": "Erneut prüfen", "topic_title_de": "Preisfrage", "situation_de": "Der Kunde fragt zuerst nach Preis oder Kosten.", "sales_intent_key": "price-first-direct", "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.", "customer_utterances": ["Was kostet mich das denn?", "Mit welchen Kosten muss ich da rechnen?", "Was kommt da monatlich auf mich zu?", "Was kostet mich das denn?", "Mit welchen Kosten muss ich da rechnen?", "Was kommt da monatlich auf mich zu?", "Was kostet mich das denn?", "Mit welchen Kosten muss ich da rechnen?", "Was kommt da monatlich auf mich zu?"], "original_case_ids": ["source-informed-de-price_first-001", "source-informed-de-price_first-002", "source-informed-de-price_first-003", "source-informed-interp-de-price_first-001", "source-informed-interp-de-price_first-002", "source-informed-interp-de-price_first-003", "source-informed-interp-legacy-de-price_first-001", "source-informed-interp-legacy-de-price_first-002", "source-informed-interp-legacy-de-price_first-003"], "followup_note_de": "Diese Antwort wurde nach der ersten Rückmeldung gekürzt. Bitte prüfen Sie, ob sie jetzt natürlicher klingt.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 2, "group_id": "de-review-group-002", "status_de": "Bereits teilweise geprüft", "topic_title_de": "Wer ruft an?", "situation_de": "Der Kunde möchte wissen, wer anruft und warum.", "sales_intent_key": "identity-repair", "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz die Zuständigkeit für Rückrufe klären möchten.", "customer_utterances": ["Wer ist denn da?", "Von welcher Firma rufen Sie an?", "Worum geht es hier überhaupt?", "Wer ist denn da?", "Von welcher Firma rufen Sie an?", "Worum geht es hier überhaupt?", "Wer ist denn da?", "Von welcher Firma rufen Sie an?", "Worum geht es hier überhaupt?"], "original_case_ids": ["source-informed-de-who_are_you-001", "source-informed-de-who_are_you-002", "source-informed-de-who_are_you-003", "source-informed-interp-de-who_are_you-001", "source-informed-interp-de-who_are_you-002", "source-informed-interp-de-who_are_you-003", "source-informed-interp-legacy-de-who_are_you-001", "source-informed-interp-legacy-de-who_are_you-002", "source-informed-interp-legacy-de-who_are_you-003"], "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 3, "group_id": "de-review-group-003", "status_de": "Bereits teilweise geprüft", "topic_title_de": "Schriftliche Informationen", "situation_de": "Der Kunde möchte Informationen schriftlich bekommen.", "sales_intent_key": "written-info-request", "agent_response": "Ja, ich schicke Ihnen die kurze Zusammenfassung per E-Mail.", "customer_utterances": ["Schicken Sie mir das bitte schriftlich.", "Können Sie mir die Unterlagen per Mail senden?", "Senden Sie mir erst mal die Infos zu."], "original_case_ids": ["source-informed-de-send_info-001", "source-informed-de-send_info-002", "source-informed-de-send_info-003"], "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 4, "group_id": "de-review-group-004", "status_de": "Bereits teilweise geprüft", "topic_title_de": "Nur E-Mail", "situation_de": "Der Kunde möchte nur per E-Mail kontaktiert werden.", "sales_intent_key": "email-only-boundary", "agent_response": "Verstanden, dann nur per E-Mail.", "customer_utterances": ["Bitte nur per E-Mail.", "Rufen Sie mich nicht an, schicken Sie es per Mail.", "Wenn überhaupt, dann per Mail."], "original_case_ids": ["source-informed-de-email_only-001", "source-informed-de-email_only-002", "source-informed-de-email_only-003"], "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 5, "group_id": "de-review-group-005", "status_de": "Noch nicht geprüft", "topic_title_de": "Betrugs- oder Zahlungsangst", "situation_de": "Der Kunde möchte keine Zahlungsdaten nennen.", "sales_intent_key": "payment-safety-boundary", "agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich.", "customer_utterances": ["Ich gebe am Telefon keine Bankdaten raus.", "Meine Karte gebe ich nicht am Telefon durch.", "Zahlungsdaten nenne ich am Telefon grundsätzlich nicht."], "original_case_ids": ["source-informed-de-payment_safety_fear-001", "source-informed-de-payment_safety_fear-002", "source-informed-de-payment_safety_fear-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 6, "group_id": "de-review-group-006", "status_de": "Bereits teilweise geprüft", "topic_title_de": "Betrugs- oder Zahlungsangst", "situation_de": "Der Kunde ist unsicher, ob der Anruf seriös ist.", "sales_intent_key": "scam-safety-boundary", "agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich.", "customer_utterances": ["Woher weiß ich, dass das seriös ist?", "Das klingt für mich ehrlich gesagt unseriös.", "Woran erkenne ich, dass das kein Betrug ist?"], "original_case_ids": ["source-informed-de-scam_or_card_fear-001", "source-informed-de-scam_or_card_fear-002", "source-informed-de-scam_or_card_fear-003"], "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 7, "group_id": "de-review-group-007", "status_de": "Noch nicht geprüft", "topic_title_de": "Support", "situation_de": "Der Kunde hat ein bestehendes Problem und braucht Hilfe.", "sales_intent_key": "support-route", "agent_response": "Verstanden, das ist ein Fall für den Support. Ich leite Sie dorthin weiter.", "customer_utterances": ["Ich habe eigentlich ein Problem mit meinem Vertrag.", "Das ist eher ein Support-Thema.", "Können Sie mich mit dem Support verbinden?"], "original_case_ids": ["source-informed-de-support_issue-001", "source-informed-de-support_issue-002", "source-informed-de-support_issue-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 8, "group_id": "de-review-group-008", "status_de": "Noch nicht geprüft", "topic_title_de": "Kündigung", "situation_de": "Der Kunde möchte etwas kündigen oder beenden.", "sales_intent_key": "cancellation-route", "agent_response": "Verstanden, dann leite ich Sie an die zuständige Stelle für Kündigungen weiter.", "customer_utterances": ["Ich möchte kündigen.", "Ich will meinen Vertrag beenden.", "Wie kann ich das kündigen?"], "original_case_ids": ["source-informed-de-cancellation_request-001", "source-informed-de-cancellation_request-002", "source-informed-de-cancellation_request-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 9, "group_id": "de-review-group-009", "status_de": "Noch nicht geprüft", "topic_title_de": "Technische Frage", "situation_de": "Der Kunde fragt nach technischen Details.", "sales_intent_key": "technical-specialist-route", "agent_response": "Das sollte eine Fachperson prüfen. Ich leite es entsprechend weiter.", "customer_utterances": ["Lässt sich das mit unserem System verbinden?", "Geht das technisch mit unserem CRM?", "Da hätte ich eine technische Frage.", "Lässt sich das mit unserem System verbinden?", "Geht das technisch mit unserem CRM?", "Da hätte ich eine technische Frage."], "original_case_ids": ["source-informed-de-technical_question-001", "source-informed-de-technical_question-002", "source-informed-de-technical_question-003", "source-informed-interp-de-technical_question-001", "source-informed-interp-de-technical_question-002", "source-informed-interp-de-technical_question-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 10, "group_id": "de-review-group-010", "status_de": "Noch nicht geprüft", "topic_title_de": "Sicherheitsprüfung", "situation_de": "Der Kunde braucht eine Sicherheits- oder IT-Prüfung.", "sales_intent_key": "security-review-route", "agent_response": "Das sollte eine Fachperson prüfen. Ich mache dazu keine allgemeinen Zusagen.", "customer_utterances": ["Das muss unsere IT-Sicherheit prüfen.", "Unsere Security muss da erst drüberschauen.", "Haben Sie Unterlagen für die Sicherheitsprüfung?", "Das muss unsere IT-Sicherheit prüfen.", "Unsere Security muss da erst drüberschauen.", "Haben Sie Unterlagen für die Sicherheitsprüfung?", "Das muss unsere IT-Sicherheit prüfen.", "Unsere Security muss da erst drüberschauen.", "Haben Sie Unterlagen für die Sicherheitsprüfung?"], "original_case_ids": ["source-informed-de-security_review-001", "source-informed-de-security_review-002", "source-informed-de-security_review-003", "source-informed-interp-de-security_review-001", "source-informed-interp-de-security_review-002", "source-informed-interp-de-security_review-003", "source-informed-interp-legacy-de-security_review-001", "source-informed-interp-legacy-de-security_review-002", "source-informed-interp-legacy-de-security_review-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 11, "group_id": "de-review-group-011", "status_de": "Noch nicht geprüft", "topic_title_de": "Versicherungsschutz / Gesundheit", "situation_de": "Der Kunde fragt nach Versicherungsschutz oder Abdeckung.", "sales_intent_key": "coverage-boundary-route", "agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter.", "customer_utterances": ["Ist das in meinem Tarif überhaupt enthalten?", "Was genau ist da abgedeckt?", "Gilt das auch für meinen Fall?", "Ist das in meinem Tarif überhaupt enthalten?", "Was genau ist da abgedeckt?", "Gilt das auch für meinen Fall?"], "original_case_ids": ["source-informed-de-coverage_confusion-001", "source-informed-de-coverage_confusion-002", "source-informed-de-coverage_confusion-003", "source-informed-interp-de-coverage_confusion-001", "source-informed-interp-de-coverage_confusion-002", "source-informed-interp-de-coverage_confusion-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 12, "group_id": "de-review-group-012", "status_de": "Noch nicht geprüft", "topic_title_de": "Versicherungsschutz / Gesundheit", "situation_de": "Der Kunde spricht ein medizinisches oder gesundheitliches Thema an.", "sales_intent_key": "healthcare-boundary-route", "agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter.", "customer_utterances": ["Geht es hier um medizinische Beratung?", "Das ist ein gesundheitliches Thema.", "Ich will keine Gesundheitsberatung am Telefon.", "Geht es hier um medizinische Beratung?", "Das ist ein gesundheitliches Thema.", "Ich will keine Gesundheitsberatung am Telefon."], "original_case_ids": ["source-informed-de-sensitive_healthcare_concern-001", "source-informed-de-sensitive_healthcare_concern-002", "source-informed-de-sensitive_healthcare_concern-003", "source-informed-interp-de-sensitive_healthcare_concern-001", "source-informed-interp-de-sensitive_healthcare_concern-002", "source-informed-interp-de-sensitive_healthcare_concern-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 13, "group_id": "de-review-group-013", "status_de": "Noch nicht geprüft", "topic_title_de": "Bestehender Anbieter", "situation_de": "Der Kunde hat schon einen Anbieter oder eine Lösung.", "sales_intent_key": "existing-provider-gap", "agent_response": "Verstehe. Es geht nicht darum, Ihren Anbieter zu ersetzen, sondern nur darum, ob noch Rückrufe oder Nachverfolgungen offen bleiben.", "customer_utterances": ["Wir haben schon einen Anbieter.", "Das läuft bei uns bereits über jemand anderen.", "Unser aktueller Anbieter kümmert sich darum.", "Wir haben schon einen Anbieter.", "Das läuft bei uns bereits über jemand anderen.", "Unser aktueller Anbieter kümmert sich darum."], "original_case_ids": ["source-informed-de-existing_provider-001", "source-informed-de-existing_provider-002", "source-informed-de-existing_provider-003", "source-informed-interp-de-existing_provider-001", "source-informed-interp-de-existing_provider-002", "source-informed-interp-de-existing_provider-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 14, "group_id": "de-review-group-014", "status_de": "Noch nicht geprüft", "topic_title_de": "Entscheidung mit Chef oder Partner", "situation_de": "Der Kunde möchte mit einer Partnerperson sprechen.", "sales_intent_key": "partner-review", "agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung.", "customer_utterances": ["Das muss ich mit meinem Mann besprechen.", "Das muss ich mit meiner Frau abklären.", "Ich entscheide das nicht alleine."], "original_case_ids": ["source-informed-de-needs_spouse_or_partner_input-001", "source-informed-de-needs_spouse_or_partner_input-002", "source-informed-de-needs_spouse_or_partner_input-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 15, "group_id": "de-review-group-015", "status_de": "Noch nicht geprüft", "topic_title_de": "Entscheidung mit Chef oder Partner", "situation_de": "Der Kunde muss eine andere Person einbeziehen.", "sales_intent_key": "stakeholder-review", "agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung.", "customer_utterances": ["Das muss ich mit meinem Chef abklären.", "Da muss mein Vorgesetzter draufschauen.", "Das entscheidet bei uns nicht nur ich."], "original_case_ids": ["source-informed-de-needs_manager_approval-001", "source-informed-de-needs_manager_approval-002", "source-informed-de-needs_manager_approval-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 16, "group_id": "de-review-group-016", "status_de": "Noch nicht geprüft", "topic_title_de": "Nächster Schritt", "situation_de": "Der Kunde möchte den nächsten Schritt wissen oder festhalten.", "sales_intent_key": "sale-ready-commitment", "agent_response": "Gut, dann halte ich den nächsten Schritt fest. Bezahlt oder unterschrieben wird hier am Telefon nichts.", "customer_utterances": ["Okay, dann machen wir das so.", "Das klingt gut, was ist der nächste Schritt?", "Von mir aus können wir weitermachen.", "Okay, dann machen wir das so.", "Das klingt gut, was ist der nächste Schritt?", "Von mir aus können wir weitermachen."], "original_case_ids": ["source-informed-de-sale_ready_interest-001", "source-informed-de-sale_ready_interest-002", "source-informed-de-sale_ready_interest-003", "source-informed-interp-de-sale_ready_interest-001", "source-informed-interp-de-sale_ready_interest-002", "source-informed-interp-de-sale_ready_interest-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 17, "group_id": "de-review-group-017", "status_de": "Noch nicht geprüft", "topic_title_de": "Rückruf", "situation_de": "Der Kunde bittet um einen späteren Rückruf.", "sales_intent_key": "callback-request", "agent_response": "Ja, ich merke einen Rückruf vor.", "customer_utterances": ["Rufen Sie nächste Woche nochmal an.", "Melden Sie sich später noch mal.", "Können Sie mich morgen zurückrufen?"], "original_case_ids": ["source-informed-de-callback_request-001", "source-informed-de-callback_request-002", "source-informed-de-callback_request-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 18, "group_id": "de-review-group-018", "status_de": "Noch nicht geprüft", "topic_title_de": "Kein Interesse / nicht mehr anrufen", "situation_de": "Der Kunde lehnt ab.", "sales_intent_key": "do-not-call", "agent_response": "Verstanden, dann belasse ich es dabei. Auf Wiederhören.", "customer_utterances": ["Nein danke, kein Interesse.", "Das ist nichts für mich.", "Brauche ich nicht."], "original_case_ids": ["source-informed-de-not_interested-001", "source-informed-de-not_interested-002", "source-informed-de-not_interested-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 19, "group_id": "de-review-group-019", "status_de": "Noch nicht geprüft", "topic_title_de": "Kein Interesse / nicht mehr anrufen", "situation_de": "Der Kunde möchte nicht mehr angerufen werden.", "sales_intent_key": "do-not-call", "agent_response": "Verstanden. Sie werden hierzu nicht mehr angerufen. Auf Wiederhören.", "customer_utterances": ["Rufen Sie mich nicht mehr an.", "Nehmen Sie meine Nummer aus der Liste.", "Ich will keine weiteren Anrufe."], "original_case_ids": ["source-informed-de-hostile_rejection-001", "source-informed-de-hostile_rejection-002", "source-informed-de-hostile_rejection-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 20, "group_id": "de-review-group-020", "status_de": "Noch nicht geprüft", "topic_title_de": "Terminbestätigung", "situation_de": "Der Kunde bestätigt einen Termin oder Rückrufzeitpunkt.", "sales_intent_key": "scheduling-confirmation", "agent_response": "Bestätigt, ich notiere den Rückruf so. Auf Wiederhören.", "customer_utterances": ["Mittwoch um zehn passt.", "Freitag gegen 14 Uhr wäre okay.", "Dienstag nachmittags passt mir."], "original_case_ids": ["source-informed-de-scheduling_confirmation-001", "source-informed-de-scheduling_confirmation-002", "source-informed-de-scheduling_confirmation-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 21, "group_id": "de-review-group-021", "status_de": "Noch nicht geprüft", "topic_title_de": "Sonstiges", "situation_de": "Der Kunde fragt nach Beleg, Nachweis oder Garantie.", "sales_intent_key": "claim-boundary", "agent_response": "Garantieren möchte ich nichts, was von Details abhängt. Ich leite es zur Prüfung weiter.", "customer_utterances": ["Können Sie mir garantieren, dass das funktioniert?", "Haben Sie dafür einen Nachweis?", "Können Sie das belegen?"], "original_case_ids": ["source-informed-de-skeptical_proof_request-001", "source-informed-de-skeptical_proof_request-002", "source-informed-de-skeptical_proof_request-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}, {"group_number": 22, "group_id": "de-review-group-022", "status_de": "Noch nicht geprüft", "topic_title_de": "Sonstiges", "situation_de": "Der Kunde fragt nach konkreten Produktdetails.", "sales_intent_key": "product-detail-lookup", "agent_response": "Einen Moment, ich prüfe die Produktinformationen.", "customer_utterances": ["Welcher Tarif ist das genau?", "Was ist in dem Paket enthalten?", "Welche Leistungen sind genau drin?"], "original_case_ids": ["source-informed-de-product_detail_lookup-001", "source-informed-de-product_detail_lookup-002", "source-informed-de-product_detail_lookup-003"], "followup_note_de": "Dieses Thema wurde noch nicht geprüft.", "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.", "native_german_approval_claimed": false, "legal_compliance_claimed": false}];
+    const storageKey = 'prod048cNativeGermanFollowupReview';
+    const ratingFields = ["passt_zu_allen", "natuerlich", "klar_verstaendlich", "freundlich", "gesprochene_sprache", "zu_abrupt", "intern_buerokratisch_technisch", "telefonisch_akzeptabel", "ueberarbeitung_noetig"];
+
+    function groupValue(groupId, fieldId) {
+      const selected = document.querySelector(`input[name="${groupId}-${fieldId}"]:checked`);
+      return selected ? selected.value : '';
+    }
+    function groupFlags(groupId) {
+      return Array.from(document.querySelectorAll(`input[name="${groupId}-flag"]:checked`)).map(node => node.value);
+    }
+    function collectReview() {
+      const items = reviewGroups.map(group => {
+        const ratings = {};
+        ratingFields.forEach(field => ratings[field] = groupValue(group.group_id, field));
+        return {
+          group_id: group.group_id,
+          status_de: group.status_de,
+          topic: group.topic_title_de,
+          original_case_ids: group.original_case_ids,
+          ratings,
+          safety_flags: groupFlags(group.group_id),
+          different_case_notes: document.querySelector(`[name="${group.group_id}-different-case-notes"]`).value,
+          rewrite_suggestion: document.querySelector(`[name="${group.group_id}-rewrite"]`).value,
+          comment: document.querySelector(`[name="${group.group_id}-comment"]`).value
+        };
+      });
+      return {
+        reviewer: {
+          name_or_initials: document.getElementById('reviewerName').value,
+          native_german: document.getElementById('nativeGerman').value,
+          region_optional: document.getElementById('region').value,
+          date: document.getElementById('reviewDate').value,
+          general_notes: document.getElementById('generalNotes').value
+        },
+        items,
+        summary: buildSummary(items)
+      };
+    }
+    function buildSummary(items) {
+      const checked = items.filter(item => Object.values(item.ratings).some(Boolean) || item.safety_flags.length || item.rewrite_suggestion || item.comment || item.different_case_notes);
+      return {
+        anzahl_gepruefter_antwortgruppen: checked.length,
+        anzahl_einzelner_kundensaetze: 99,
+        anzahl_akzeptiert: checked.filter(item => item.ratings.telefonisch_akzeptabel === 'ja' && item.ratings.ueberarbeitung_noetig === 'nein').length,
+        anzahl_mit_kleinen_aenderungen: checked.filter(item => item.ratings.ueberarbeitung_noetig === 'kleine_aenderung').length,
+        anzahl_mit_grossen_aenderungen: checked.filter(item => item.ratings.ueberarbeitung_noetig === 'grosse_aenderung').length,
+        anzahl_abgelehnt: checked.filter(item => item.ratings.telefonisch_akzeptabel === 'nein').length,
+        anzahl_mit_sicherheits_oder_wirkungs_hinweisen: checked.filter(item => item.safety_flags.length > 0).length
+      };
+    }
+    function updateSummary() {
+      const summary = collectReview().summary;
+      document.getElementById('checkedGroups').textContent = summary.anzahl_gepruefter_antwortgruppen;
+      document.getElementById('acceptedCount').textContent = summary.anzahl_akzeptiert;
+      document.getElementById('smallChangeCount').textContent = summary.anzahl_mit_kleinen_aenderungen;
+      document.getElementById('largeChangeCount').textContent = summary.anzahl_mit_grossen_aenderungen;
+      document.getElementById('rejectedCount').textContent = summary.anzahl_abgelehnt;
+      document.getElementById('flaggedCount').textContent = summary.anzahl_mit_sicherheits_oder_wirkungs_hinweisen;
+    }
+    function downloadBlob(name, type, text) {
+      const blob = new Blob([text], {type});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = name;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+    function downloadJson() {
+      downloadBlob('deutsche-telefonantworten-folgepruefung.json', 'application/json', JSON.stringify(collectReview(), null, 2));
+    }
+    function downloadCsv() {
+      const review = collectReview();
+      const header = ['group_id','status','topic','telefonisch_akzeptabel','ueberarbeitung_noetig','safety_flags','rewrite_suggestion','comment'];
+      const rows = review.items.map(item => [
+        item.group_id,
+        item.status_de,
+        item.topic,
+        item.ratings.telefonisch_akzeptabel,
+        item.ratings.ueberarbeitung_noetig,
+        item.safety_flags.join('|'),
+        item.rewrite_suggestion,
+        item.comment
+      ]);
+      const csv = [header, ...rows].map(row => row.map(value => `"${String(value || '').replaceAll('"', '""')}"`).join(',')).join('\n');
+      downloadBlob('deutsche-telefonantworten-folgepruefung.csv', 'text/csv', csv);
+    }
+    function saveProgress() {
+      localStorage.setItem(storageKey, JSON.stringify(collectReview()));
+      updateSummary();
+    }
+    function clearReviewInputs() {
+      document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => input.checked = false);
+      document.querySelectorAll('textarea').forEach(input => input.value = '');
+    }
+    function normalizeImportedItems(payload) {
+      if (Array.isArray(payload.items)) {
+        return payload.items.map(item => ({
+          group_id: item.group_id,
+          ratings: item.ratings || {},
+          safety_flags: item.safety_flags || [],
+          different_case_notes: item.different_case_notes || item.different_cases || '',
+          rewrite_suggestion: item.rewrite_suggestion || '',
+          comment: item.comment || ''
+        }));
+      }
+      if (Array.isArray(payload.groups)) {
+        return payload.groups.map(item => ({
+          group_id: item.group_id || item.review_group_id,
+          ratings: item.ratings || {},
+          safety_flags: item.safety_flags || [],
+          different_case_notes: item.different_case_notes || item.different_cases || '',
+          rewrite_suggestion: item.rewrite_suggestion || '',
+          comment: item.comment || ''
+        }));
+      }
+      return [];
+    }
+    function applyReviewPayload(payload) {
+      if (!payload) return false;
+      clearReviewInputs();
+      const reviewer = payload.reviewer || {};
+      document.getElementById('reviewerName').value = reviewer.name_or_initials || '';
+      document.getElementById('nativeGerman').value = reviewer.native_german || '';
+      document.getElementById('region').value = reviewer.region_optional || '';
+      document.getElementById('reviewDate').value = reviewer.date || '';
+      document.getElementById('generalNotes').value = reviewer.general_notes || '';
+      const items = normalizeImportedItems(payload);
+      items.forEach(item => {
+        Object.entries(item.ratings || {}).forEach(([field, value]) => {
+          const input = document.querySelector(`input[name="${item.group_id}-${field}"][value="${value}"]`);
+          if (input) input.checked = true;
+        });
+        (item.safety_flags || []).forEach(flag => {
+          const input = document.querySelector(`input[name="${item.group_id}-flag"][value="${flag}"]`);
+          if (input) input.checked = true;
+        });
+        const notes = document.querySelector(`[name="${item.group_id}-different-case-notes"]`);
+        const rewrite = document.querySelector(`[name="${item.group_id}-rewrite"]`);
+        const comment = document.querySelector(`[name="${item.group_id}-comment"]`);
+        if (notes) notes.value = item.different_case_notes || '';
+        if (rewrite) rewrite.value = item.rewrite_suggestion || '';
+        if (comment) comment.value = item.comment || '';
+      });
+      updateSummary();
+      return items.length > 0 || Object.keys(reviewer).length > 0;
+    }
+    function loadProgress() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      if (!saved) return;
+      applyReviewPayload(saved);
+    }
+    function importJsonFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const payload = JSON.parse(String(reader.result || '{}'));
+          if (!applyReviewPayload(payload)) throw new Error('empty');
+          localStorage.setItem(storageKey, JSON.stringify(collectReview()));
+          alert('Bewertung aus JSON geladen.');
+        } catch (error) {
+          alert('Die JSON-Datei konnte nicht geladen werden.');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file, 'utf-8');
+    }
+    function clearEntries() {
+      clearReviewInputs();
+      localStorage.removeItem(storageKey);
+      updateSummary();
+    }
+    function setFilter(filter, button) {
+      document.querySelectorAll('.toolbar button').forEach(node => node.classList.remove('active'));
+      button.classList.add('active');
+      document.querySelectorAll('.review-card').forEach(card => {
+        const groupId = card.dataset.group;
+        const review = collectReview().items.find(item => item.group_id === groupId);
+        let show = filter === 'Alle' || card.dataset.status === filter;
+        if (filter === 'Überarbeitung nötig') show = review && review.ratings.ueberarbeitung_noetig && review.ratings.ueberarbeitung_noetig !== 'nein';
+        if (filter === 'Abgelehnt') show = review && review.ratings.telefonisch_akzeptabel === 'nein';
+        if (filter === 'Hinweise') show = review && review.safety_flags.length > 0;
+        card.classList.toggle('hidden', !show);
+      });
+    }
+    document.addEventListener('change', updateSummary);
+    document.addEventListener('input', updateSummary);
+    updateSummary();
+  </script>
+</body>
+</html>

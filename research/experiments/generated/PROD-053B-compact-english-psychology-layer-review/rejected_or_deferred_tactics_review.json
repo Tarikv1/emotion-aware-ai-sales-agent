@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "source_tactic_id": "prod053a-reject-001",
+      "name": "False scarcity or fake urgency",
+      "source_decision": "reject",
+      "prod_053b_decision": "keep_rejected",
+      "allowed_in_compact_policy": false,
+      "reason": "It can increase pressure and reactance, and it violates the project's low-pressure sales boundary."
+    },
+    {
+      "source_tactic_id": "prod053a-reject-002",
+      "name": "Hidden emotion diagnosis",
+      "source_decision": "reject",
+      "prod_053b_decision": "keep_rejected",
+      "allowed_in_compact_policy": false,
+      "reason": "Emotion signals are weak context; hidden-state certainty is already blocked by existing project policy."
+    },
+    {
+      "source_tactic_id": "prod053a-reject-003",
+      "name": "Commitment traps",
+      "source_decision": "reject",
+      "prod_053b_decision": "keep_rejected",
+      "allowed_in_compact_policy": false,
+      "reason": "Turning a soft yes into obligation conflicts with autonomy, trust, and no-commitment relief."
+    },
+    {
+      "source_tactic_id": "prod053a-reject-004",
+      "name": "Full customer-category echoing",
+      "source_decision": "reject",
+      "prod_053b_decision": "keep_rejected",
+      "allowed_in_compact_policy": false,
+      "reason": "Repeating boss, spouse, manager, or partner every time sounds scripted and does not add useful listening evidence."
+    },
+    {
+      "source_tactic_id": "prod053a-reject-005",
+      "name": "Large live psychology planner",
+      "source_decision": "defer",
+      "prod_053b_decision": "keep_deferred",
+      "allowed_in_compact_policy": false,
+      "reason": "A heavy reasoning layer can add latency. Research should be compressed into deterministic, reviewed rules first."
+    },
+    {
+      "source_tactic_id": "prod053a-reject-006",
+      "name": "General persuasion principles without source mapping",
+      "source_decision": "reject",
+      "prod_053b_decision": "keep_rejected",
+      "allowed_in_compact_policy": false,
+      "reason": "Generic tricks such as reciprocity, liking, and social proof are too easy to misuse unless tied to a safe, source-backed response rule."
+    }
+  ]
+}

@@ -15,7 +15,10 @@ data/external/*
 
 config/local/*
 !config/local/.gitignore
-!config/local/voice_ids.example.json
+
+runtime/config/local/*
+!runtime/config/local/.gitignore
+!runtime/config/local/voice_ids.example.json
 
 __pycache__/
 *.pyc

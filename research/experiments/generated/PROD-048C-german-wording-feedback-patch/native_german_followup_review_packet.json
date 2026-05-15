@@ -1,0 +1,754 @@
+{
+  "checkpoint_id": "PROD-048C-german-wording-feedback-patch",
+  "checkpoint_name": "German Wording Feedback Patch",
+  "packet_language": "de",
+  "reviewer_audience": "native_german_non_technical_reviewer",
+  "source_checkpoint_id": "PROD-048B-native-german-review-import",
+  "reviewer_feedback_source": {
+    "reviewer_name_or_initials": "Diro",
+    "reviewer_native_german": "Ja",
+    "reviewer_region": "Basel",
+    "reviewer_date": "2026-05-12",
+    "source_item_count": 99,
+    "reported_checked_count": 0,
+    "reviewed_item_count": 5,
+    "unreviewed_item_count": 94,
+    "accepted_count": 4,
+    "small_change_count": 1,
+    "large_change_count": 0,
+    "rejected_count": 0,
+    "safety_or_impact_count": 1,
+    "blank_rows_counted_as_unreviewed": true,
+    "price_feedback_captured": true,
+    "price_revision_candidate_count": 1,
+    "returned_individual_item_count": 99,
+    "current_grouped_packet_group_count": 22,
+    "import_shape_concern_recorded": true,
+    "full_native_german_approval_claimed": false,
+    "legal_compliance_claimed": false,
+    "runtime_behavior_changed": false,
+    "call_control_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  },
+  "review_scope_de": "Bitte prüfen Sie nur die deutsche Formulierung der Antwort. Dies ist keine Rechtsprüfung.",
+  "review_groups": [
+    {
+      "group_number": 1,
+      "group_id": "de-review-group-001",
+      "status_de": "Erneut prüfen",
+      "topic_title_de": "Preisfrage",
+      "situation_de": "Der Kunde fragt zuerst nach Preis oder Kosten.",
+      "sales_intent_key": "price-first-direct",
+      "agent_response": "Das Starter-Paket liegt bei 29 Euro pro Nutzer und Monat. Die genauen Bedingungen schicke ich Ihnen schriftlich.",
+      "customer_utterances": [
+        "Was kostet mich das denn?",
+        "Mit welchen Kosten muss ich da rechnen?",
+        "Was kommt da monatlich auf mich zu?",
+        "Was kostet mich das denn?",
+        "Mit welchen Kosten muss ich da rechnen?",
+        "Was kommt da monatlich auf mich zu?",
+        "Was kostet mich das denn?",
+        "Mit welchen Kosten muss ich da rechnen?",
+        "Was kommt da monatlich auf mich zu?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-price_first-001",
+        "source-informed-de-price_first-002",
+        "source-informed-de-price_first-003",
+        "source-informed-interp-de-price_first-001",
+        "source-informed-interp-de-price_first-002",
+        "source-informed-interp-de-price_first-003",
+        "source-informed-interp-legacy-de-price_first-001",
+        "source-informed-interp-legacy-de-price_first-002",
+        "source-informed-interp-legacy-de-price_first-003"
+      ],
+      "followup_note_de": "Diese Antwort wurde nach der ersten Rückmeldung gekürzt. Bitte prüfen Sie, ob sie jetzt natürlicher klingt.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 2,
+      "group_id": "de-review-group-002",
+      "status_de": "Bereits teilweise geprüft",
+      "topic_title_de": "Wer ruft an?",
+      "situation_de": "Der Kunde möchte wissen, wer anruft und warum.",
+      "sales_intent_key": "identity-repair",
+      "agent_response": "Hier ist Maya von RouteSignal. Ich rufe an, weil wir kurz die Zuständigkeit für Rückrufe klären möchten.",
+      "customer_utterances": [
+        "Wer ist denn da?",
+        "Von welcher Firma rufen Sie an?",
+        "Worum geht es hier überhaupt?",
+        "Wer ist denn da?",
+        "Von welcher Firma rufen Sie an?",
+        "Worum geht es hier überhaupt?",
+        "Wer ist denn da?",
+        "Von welcher Firma rufen Sie an?",
+        "Worum geht es hier überhaupt?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-who_are_you-001",
+        "source-informed-de-who_are_you-002",
+        "source-informed-de-who_are_you-003",
+        "source-informed-interp-de-who_are_you-001",
+        "source-informed-interp-de-who_are_you-002",
+        "source-informed-interp-de-who_are_you-003",
+        "source-informed-interp-legacy-de-who_are_you-001",
+        "source-informed-interp-legacy-de-who_are_you-002",
+        "source-informed-interp-legacy-de-who_are_you-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 3,
+      "group_id": "de-review-group-003",
+      "status_de": "Bereits teilweise geprüft",
+      "topic_title_de": "Schriftliche Informationen",
+      "situation_de": "Der Kunde möchte Informationen schriftlich bekommen.",
+      "sales_intent_key": "written-info-request",
+      "agent_response": "Ja, ich schicke Ihnen die kurze Zusammenfassung per E-Mail.",
+      "customer_utterances": [
+        "Schicken Sie mir das bitte schriftlich.",
+        "Können Sie mir die Unterlagen per Mail senden?",
+        "Senden Sie mir erst mal die Infos zu."
+      ],
+      "original_case_ids": [
+        "source-informed-de-send_info-001",
+        "source-informed-de-send_info-002",
+        "source-informed-de-send_info-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 4,
+      "group_id": "de-review-group-004",
+      "status_de": "Bereits teilweise geprüft",
+      "topic_title_de": "Nur E-Mail",
+      "situation_de": "Der Kunde möchte nur per E-Mail kontaktiert werden.",
+      "sales_intent_key": "email-only-boundary",
+      "agent_response": "Verstanden, dann nur per E-Mail.",
+      "customer_utterances": [
+        "Bitte nur per E-Mail.",
+        "Rufen Sie mich nicht an, schicken Sie es per Mail.",
+        "Wenn überhaupt, dann per Mail."
+      ],
+      "original_case_ids": [
+        "source-informed-de-email_only-001",
+        "source-informed-de-email_only-002",
+        "source-informed-de-email_only-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 5,
+      "group_id": "de-review-group-005",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Betrugs- oder Zahlungsangst",
+      "situation_de": "Der Kunde möchte keine Zahlungsdaten nennen.",
+      "sales_intent_key": "payment-safety-boundary",
+      "agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich.",
+      "customer_utterances": [
+        "Ich gebe am Telefon keine Bankdaten raus.",
+        "Meine Karte gebe ich nicht am Telefon durch.",
+        "Zahlungsdaten nenne ich am Telefon grundsätzlich nicht."
+      ],
+      "original_case_ids": [
+        "source-informed-de-payment_safety_fear-001",
+        "source-informed-de-payment_safety_fear-002",
+        "source-informed-de-payment_safety_fear-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 6,
+      "group_id": "de-review-group-006",
+      "status_de": "Bereits teilweise geprüft",
+      "topic_title_de": "Betrugs- oder Zahlungsangst",
+      "situation_de": "Der Kunde ist unsicher, ob der Anruf seriös ist.",
+      "sales_intent_key": "scam-safety-boundary",
+      "agent_response": "Verständlich. Ich frage Sie hier nicht nach Zahlungsdaten oder Passwörtern. Ich schicke Ihnen die Informationen schriftlich.",
+      "customer_utterances": [
+        "Woher weiß ich, dass das seriös ist?",
+        "Das klingt für mich ehrlich gesagt unseriös.",
+        "Woran erkenne ich, dass das kein Betrug ist?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-scam_or_card_fear-001",
+        "source-informed-de-scam_or_card_fear-002",
+        "source-informed-de-scam_or_card_fear-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde in der ersten Rückmeldung bereits teilweise geprüft. Sie können es bei Bedarf erneut ansehen.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 7,
+      "group_id": "de-review-group-007",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Support",
+      "situation_de": "Der Kunde hat ein bestehendes Problem und braucht Hilfe.",
+      "sales_intent_key": "support-route",
+      "agent_response": "Verstanden, das ist ein Fall für den Support. Ich leite Sie dorthin weiter.",
+      "customer_utterances": [
+        "Ich habe eigentlich ein Problem mit meinem Vertrag.",
+        "Das ist eher ein Support-Thema.",
+        "Können Sie mich mit dem Support verbinden?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-support_issue-001",
+        "source-informed-de-support_issue-002",
+        "source-informed-de-support_issue-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 8,
+      "group_id": "de-review-group-008",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Kündigung",
+      "situation_de": "Der Kunde möchte etwas kündigen oder beenden.",
+      "sales_intent_key": "cancellation-route",
+      "agent_response": "Verstanden, dann leite ich Sie an die zuständige Stelle für Kündigungen weiter.",
+      "customer_utterances": [
+        "Ich möchte kündigen.",
+        "Ich will meinen Vertrag beenden.",
+        "Wie kann ich das kündigen?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-cancellation_request-001",
+        "source-informed-de-cancellation_request-002",
+        "source-informed-de-cancellation_request-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 9,
+      "group_id": "de-review-group-009",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Technische Frage",
+      "situation_de": "Der Kunde fragt nach technischen Details.",
+      "sales_intent_key": "technical-specialist-route",
+      "agent_response": "Das sollte eine Fachperson prüfen. Ich leite es entsprechend weiter.",
+      "customer_utterances": [
+        "Lässt sich das mit unserem System verbinden?",
+        "Geht das technisch mit unserem CRM?",
+        "Da hätte ich eine technische Frage.",
+        "Lässt sich das mit unserem System verbinden?",
+        "Geht das technisch mit unserem CRM?",
+        "Da hätte ich eine technische Frage."
+      ],
+      "original_case_ids": [
+        "source-informed-de-technical_question-001",
+        "source-informed-de-technical_question-002",
+        "source-informed-de-technical_question-003",
+        "source-informed-interp-de-technical_question-001",
+        "source-informed-interp-de-technical_question-002",
+        "source-informed-interp-de-technical_question-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 10,
+      "group_id": "de-review-group-010",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Sicherheitsprüfung",
+      "situation_de": "Der Kunde braucht eine Sicherheits- oder IT-Prüfung.",
+      "sales_intent_key": "security-review-route",
+      "agent_response": "Das sollte eine Fachperson prüfen. Ich mache dazu keine allgemeinen Zusagen.",
+      "customer_utterances": [
+        "Das muss unsere IT-Sicherheit prüfen.",
+        "Unsere Security muss da erst drüberschauen.",
+        "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+        "Das muss unsere IT-Sicherheit prüfen.",
+        "Unsere Security muss da erst drüberschauen.",
+        "Haben Sie Unterlagen für die Sicherheitsprüfung?",
+        "Das muss unsere IT-Sicherheit prüfen.",
+        "Unsere Security muss da erst drüberschauen.",
+        "Haben Sie Unterlagen für die Sicherheitsprüfung?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-security_review-001",
+        "source-informed-de-security_review-002",
+        "source-informed-de-security_review-003",
+        "source-informed-interp-de-security_review-001",
+        "source-informed-interp-de-security_review-002",
+        "source-informed-interp-de-security_review-003",
+        "source-informed-interp-legacy-de-security_review-001",
+        "source-informed-interp-legacy-de-security_review-002",
+        "source-informed-interp-legacy-de-security_review-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 11,
+      "group_id": "de-review-group-011",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "situation_de": "Der Kunde fragt nach Versicherungsschutz oder Abdeckung.",
+      "sales_intent_key": "coverage-boundary-route",
+      "agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter.",
+      "customer_utterances": [
+        "Ist das in meinem Tarif überhaupt enthalten?",
+        "Was genau ist da abgedeckt?",
+        "Gilt das auch für meinen Fall?",
+        "Ist das in meinem Tarif überhaupt enthalten?",
+        "Was genau ist da abgedeckt?",
+        "Gilt das auch für meinen Fall?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-coverage_confusion-001",
+        "source-informed-de-coverage_confusion-002",
+        "source-informed-de-coverage_confusion-003",
+        "source-informed-interp-de-coverage_confusion-001",
+        "source-informed-interp-de-coverage_confusion-002",
+        "source-informed-interp-de-coverage_confusion-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 12,
+      "group_id": "de-review-group-012",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Versicherungsschutz / Gesundheit",
+      "situation_de": "Der Kunde spricht ein medizinisches oder gesundheitliches Thema an.",
+      "sales_intent_key": "healthcare-boundary-route",
+      "agent_response": "Dazu darf ich am Telefon keine Beratung geben. Ich leite es an eine Fachperson weiter.",
+      "customer_utterances": [
+        "Geht es hier um medizinische Beratung?",
+        "Das ist ein gesundheitliches Thema.",
+        "Ich will keine Gesundheitsberatung am Telefon.",
+        "Geht es hier um medizinische Beratung?",
+        "Das ist ein gesundheitliches Thema.",
+        "Ich will keine Gesundheitsberatung am Telefon."
+      ],
+      "original_case_ids": [
+        "source-informed-de-sensitive_healthcare_concern-001",
+        "source-informed-de-sensitive_healthcare_concern-002",
+        "source-informed-de-sensitive_healthcare_concern-003",
+        "source-informed-interp-de-sensitive_healthcare_concern-001",
+        "source-informed-interp-de-sensitive_healthcare_concern-002",
+        "source-informed-interp-de-sensitive_healthcare_concern-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 13,
+      "group_id": "de-review-group-013",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Bestehender Anbieter",
+      "situation_de": "Der Kunde hat schon einen Anbieter oder eine Lösung.",
+      "sales_intent_key": "existing-provider-gap",
+      "agent_response": "Verstehe. Es geht nicht darum, Ihren Anbieter zu ersetzen, sondern nur darum, ob noch Rückrufe oder Nachverfolgungen offen bleiben.",
+      "customer_utterances": [
+        "Wir haben schon einen Anbieter.",
+        "Das läuft bei uns bereits über jemand anderen.",
+        "Unser aktueller Anbieter kümmert sich darum.",
+        "Wir haben schon einen Anbieter.",
+        "Das läuft bei uns bereits über jemand anderen.",
+        "Unser aktueller Anbieter kümmert sich darum."
+      ],
+      "original_case_ids": [
+        "source-informed-de-existing_provider-001",
+        "source-informed-de-existing_provider-002",
+        "source-informed-de-existing_provider-003",
+        "source-informed-interp-de-existing_provider-001",
+        "source-informed-interp-de-existing_provider-002",
+        "source-informed-interp-de-existing_provider-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 14,
+      "group_id": "de-review-group-014",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Entscheidung mit Chef oder Partner",
+      "situation_de": "Der Kunde möchte mit einer Partnerperson sprechen.",
+      "sales_intent_key": "partner-review",
+      "agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung.",
+      "customer_utterances": [
+        "Das muss ich mit meinem Mann besprechen.",
+        "Das muss ich mit meiner Frau abklären.",
+        "Ich entscheide das nicht alleine."
+      ],
+      "original_case_ids": [
+        "source-informed-de-needs_spouse_or_partner_input-001",
+        "source-informed-de-needs_spouse_or_partner_input-002",
+        "source-informed-de-needs_spouse_or_partner_input-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 15,
+      "group_id": "de-review-group-015",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Entscheidung mit Chef oder Partner",
+      "situation_de": "Der Kunde muss eine andere Person einbeziehen.",
+      "sales_intent_key": "stakeholder-review",
+      "agent_response": "Natürlich. Ich schicke Ihnen eine kurze Zusammenfassung zur Prüfung.",
+      "customer_utterances": [
+        "Das muss ich mit meinem Chef abklären.",
+        "Da muss mein Vorgesetzter draufschauen.",
+        "Das entscheidet bei uns nicht nur ich."
+      ],
+      "original_case_ids": [
+        "source-informed-de-needs_manager_approval-001",
+        "source-informed-de-needs_manager_approval-002",
+        "source-informed-de-needs_manager_approval-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 16,
+      "group_id": "de-review-group-016",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Nächster Schritt",
+      "situation_de": "Der Kunde möchte den nächsten Schritt wissen oder festhalten.",
+      "sales_intent_key": "sale-ready-commitment",
+      "agent_response": "Gut, dann halte ich den nächsten Schritt fest. Bezahlt oder unterschrieben wird hier am Telefon nichts.",
+      "customer_utterances": [
+        "Okay, dann machen wir das so.",
+        "Das klingt gut, was ist der nächste Schritt?",
+        "Von mir aus können wir weitermachen.",
+        "Okay, dann machen wir das so.",
+        "Das klingt gut, was ist der nächste Schritt?",
+        "Von mir aus können wir weitermachen."
+      ],
+      "original_case_ids": [
+        "source-informed-de-sale_ready_interest-001",
+        "source-informed-de-sale_ready_interest-002",
+        "source-informed-de-sale_ready_interest-003",
+        "source-informed-interp-de-sale_ready_interest-001",
+        "source-informed-interp-de-sale_ready_interest-002",
+        "source-informed-interp-de-sale_ready_interest-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 17,
+      "group_id": "de-review-group-017",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Rückruf",
+      "situation_de": "Der Kunde bittet um einen späteren Rückruf.",
+      "sales_intent_key": "callback-request",
+      "agent_response": "Ja, ich merke einen Rückruf vor.",
+      "customer_utterances": [
+        "Rufen Sie nächste Woche nochmal an.",
+        "Melden Sie sich später noch mal.",
+        "Können Sie mich morgen zurückrufen?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-callback_request-001",
+        "source-informed-de-callback_request-002",
+        "source-informed-de-callback_request-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 18,
+      "group_id": "de-review-group-018",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "situation_de": "Der Kunde lehnt ab.",
+      "sales_intent_key": "do-not-call",
+      "agent_response": "Verstanden, dann belasse ich es dabei. Auf Wiederhören.",
+      "customer_utterances": [
+        "Nein danke, kein Interesse.",
+        "Das ist nichts für mich.",
+        "Brauche ich nicht."
+      ],
+      "original_case_ids": [
+        "source-informed-de-not_interested-001",
+        "source-informed-de-not_interested-002",
+        "source-informed-de-not_interested-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 19,
+      "group_id": "de-review-group-019",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Kein Interesse / nicht mehr anrufen",
+      "situation_de": "Der Kunde möchte nicht mehr angerufen werden.",
+      "sales_intent_key": "do-not-call",
+      "agent_response": "Verstanden. Sie werden hierzu nicht mehr angerufen. Auf Wiederhören.",
+      "customer_utterances": [
+        "Rufen Sie mich nicht mehr an.",
+        "Nehmen Sie meine Nummer aus der Liste.",
+        "Ich will keine weiteren Anrufe."
+      ],
+      "original_case_ids": [
+        "source-informed-de-hostile_rejection-001",
+        "source-informed-de-hostile_rejection-002",
+        "source-informed-de-hostile_rejection-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 20,
+      "group_id": "de-review-group-020",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Terminbestätigung",
+      "situation_de": "Der Kunde bestätigt einen Termin oder Rückrufzeitpunkt.",
+      "sales_intent_key": "scheduling-confirmation",
+      "agent_response": "Bestätigt, ich notiere den Rückruf so. Auf Wiederhören.",
+      "customer_utterances": [
+        "Mittwoch um zehn passt.",
+        "Freitag gegen 14 Uhr wäre okay.",
+        "Dienstag nachmittags passt mir."
+      ],
+      "original_case_ids": [
+        "source-informed-de-scheduling_confirmation-001",
+        "source-informed-de-scheduling_confirmation-002",
+        "source-informed-de-scheduling_confirmation-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 21,
+      "group_id": "de-review-group-021",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Sonstiges",
+      "situation_de": "Der Kunde fragt nach Beleg, Nachweis oder Garantie.",
+      "sales_intent_key": "claim-boundary",
+      "agent_response": "Garantieren möchte ich nichts, was von Details abhängt. Ich leite es zur Prüfung weiter.",
+      "customer_utterances": [
+        "Können Sie mir garantieren, dass das funktioniert?",
+        "Haben Sie dafür einen Nachweis?",
+        "Können Sie das belegen?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-skeptical_proof_request-001",
+        "source-informed-de-skeptical_proof_request-002",
+        "source-informed-de-skeptical_proof_request-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    },
+    {
+      "group_number": 22,
+      "group_id": "de-review-group-022",
+      "status_de": "Noch nicht geprüft",
+      "topic_title_de": "Sonstiges",
+      "situation_de": "Der Kunde fragt nach konkreten Produktdetails.",
+      "sales_intent_key": "product-detail-lookup",
+      "agent_response": "Einen Moment, ich prüfe die Produktinformationen.",
+      "customer_utterances": [
+        "Welcher Tarif ist das genau?",
+        "Was ist in dem Paket enthalten?",
+        "Welche Leistungen sind genau drin?"
+      ],
+      "original_case_ids": [
+        "source-informed-de-product_detail_lookup-001",
+        "source-informed-de-product_detail_lookup-002",
+        "source-informed-de-product_detail_lookup-003"
+      ],
+      "followup_note_de": "Dieses Thema wurde noch nicht geprüft.",
+      "same_answer_note_de": "Diese Antwort wird aktuell für alle oben genannten Kundensätze verwendet.",
+      "native_german_approval_claimed": false,
+      "legal_compliance_claimed": false
+    }
+  ],
+  "rating_fields": [
+    {
+      "field_id": "passt_zu_allen",
+      "label_de": "Passt die Antwort zu allen Kundensätzen?",
+      "options_de": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "natuerlich",
+      "label_de": "Klingt natürlich?",
+      "options_de": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "klar_verstaendlich",
+      "label_de": "Ist die Antwort klar verständlich?",
+      "options_de": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "freundlich",
+      "label_de": "Ist die Antwort freundlich?",
+      "options_de": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "gesprochene_sprache",
+      "label_de": "Klingt die Antwort wie echte gesprochene Sprache?",
+      "options_de": [
+        "Ja",
+        "Teilweise",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "zu_abrupt",
+      "label_de": "Klingt die Antwort zu abrupt?",
+      "options_de": [
+        "Nein",
+        "Etwas",
+        "Ja"
+      ]
+    },
+    {
+      "field_id": "intern_buerokratisch_technisch",
+      "label_de": "Klingt die Antwort intern, bürokratisch oder technisch?",
+      "options_de": [
+        "Nein",
+        "Etwas",
+        "Ja"
+      ]
+    },
+    {
+      "field_id": "telefonisch_akzeptabel",
+      "label_de": "Würden Sie diese Antwort am Telefon akzeptieren?",
+      "options_de": [
+        "Ja",
+        "Nur mit Änderung",
+        "Nein"
+      ]
+    },
+    {
+      "field_id": "ueberarbeitung_noetig",
+      "label_de": "Muss die Antwort überarbeitet werden?",
+      "options_de": [
+        "Nein",
+        "Kleine Änderung",
+        "Große Änderung"
+      ]
+    }
+  ],
+  "safety_flags": [
+    {
+      "flag_id": "zu_draengend",
+      "label_de": "Klingt zu drängend"
+    },
+    {
+      "flag_id": "verkaufsdruck",
+      "label_de": "Klingt wie Verkaufsdruck"
+    },
+    {
+      "flag_id": "rechtlich_unsicher",
+      "label_de": "Klingt rechtlich unsicher"
+    },
+    {
+      "flag_id": "medizinische_beratung",
+      "label_de": "Klingt nach medizinischer Beratung"
+    },
+    {
+      "flag_id": "versicherungsschutz_beratung",
+      "label_de": "Klingt nach Beratung zum Versicherungsschutz"
+    },
+    {
+      "flag_id": "zahlungsaufforderung",
+      "label_de": "Klingt nach Zahlungsaufforderung"
+    },
+    {
+      "flag_id": "vertragsabschluss",
+      "label_de": "Klingt nach Vertragsabschluss"
+    },
+    {
+      "flag_id": "unhoeflich",
+      "label_de": "Klingt unhöflich"
+    },
+    {
+      "flag_id": "unklar",
+      "label_de": "Klingt unklar"
+    },
+    {
+      "flag_id": "passt_nicht_zu_allen",
+      "label_de": "Passt nicht zu allen Kundensätzen"
+    },
+    {
+      "flag_id": "sonstiges",
+      "label_de": "Sonstiges"
+    }
+  ],
+  "review_boundary": {
+    "full_native_german_approval_claimed": false,
+    "legal_compliance_claimed": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

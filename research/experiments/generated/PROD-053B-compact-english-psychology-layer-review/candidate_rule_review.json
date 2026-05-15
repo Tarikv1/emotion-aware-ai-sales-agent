@@ -1,0 +1,105 @@
+{
+  "items": [
+    {
+      "source_rule_id": "english_psych_001_listen_answer_then_continue",
+      "source_name": "Listen, answer, then continue.",
+      "decision": "accept",
+      "constraint": "",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-002",
+        "prod053a-finding-008"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_002_relief_without_policy_dump",
+      "source_name": "Keep relief, remove policy tone.",
+      "decision": "accept",
+      "constraint": "",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-003",
+        "prod053a-finding-008"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_003_mirror_only_for_repair_or_discovery",
+      "source_name": "Mirror only when it does work.",
+      "decision": "accept_with_constraint",
+      "constraint": "Use mirroring only for ambiguity repair or discovery. Do not echo stakeholder categories in normal answer turns.",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-002",
+        "prod053a-finding-007"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_004_one_small_decision",
+      "source_name": "One small decision per turn.",
+      "decision": "accept",
+      "constraint": "",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-003",
+        "prod053a-finding-008"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_005_diagnose_friction_not_personality",
+      "source_name": "Diagnose friction, not personality.",
+      "decision": "accept_with_constraint",
+      "constraint": "Use one narrow friction question only when the customer has not already given enough detail.",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-001",
+        "prod053a-finding-005"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_006_autonomy_visible",
+      "source_name": "Make autonomy visible.",
+      "decision": "accept_with_constraint",
+      "constraint": "Autonomy language must not become terminal hang-up wording unless the customer is actually ending the call.",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-004"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_007_trust_gap_specific",
+      "source_name": "Answer the specific trust gap.",
+      "decision": "accept",
+      "constraint": "",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-006"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    },
+    {
+      "source_rule_id": "english_psych_008_stop_after_question",
+      "source_name": "Ask, then stop.",
+      "decision": "accept",
+      "constraint": "",
+      "prod_053c_use": "Use as a deterministic English response-shape rule, not as exact customer-facing wording.",
+      "source_finding_ids": [
+        "prod053a-finding-008"
+      ],
+      "runtime_promoted": false,
+      "exact_phrase_change_allowed": false
+    }
+  ]
+}

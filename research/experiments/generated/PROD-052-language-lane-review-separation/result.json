@@ -1,0 +1,54 @@
+{
+  "checkpoint_id": "PROD-052-language-lane-review-separation",
+  "title": "Language Lane Review Separation",
+  "source_checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+  "validation": {
+    "passed": true
+  },
+  "outputs": {
+    "result": "research/experiments/generated/PROD-052-language-lane-review-separation/result.json",
+    "report": "research/experiments/generated/PROD-052-language-lane-review-separation/report.md",
+    "english_review": "research/experiments/generated/PROD-052-language-lane-review-separation/english_spoken_review_items.json",
+    "german_pending": "research/experiments/generated/PROD-052-language-lane-review-separation/german_pending_review_items.json",
+    "policy_rules": "research/experiments/generated/PROD-052-language-lane-review-separation/multilingual_policy_rules.json",
+    "legacy_surfaces": "research/experiments/generated/PROD-052-language-lane-review-separation/legacy_mixed_review_surfaces.json",
+    "review_html": "research/experiments/generated/PROD-052-language-lane-review-separation/prod_052_language_lane_review.html"
+  },
+  "summary": {
+    "source_checkpoint_id": "PROD-051-safe-call-control-runtime-update",
+    "source_result_statuses": {
+      "source_result": true,
+      "runtime_results": true,
+      "naturalness_audit": true,
+      "source_result_passed": true
+    },
+    "source_case_count": 22,
+    "english_spoken_review_case_count": 4,
+    "english_exact_phrase_review_allowed_count": 4,
+    "german_pending_review_case_count": 18,
+    "german_exact_phrase_acceptance_allowed_count": 0,
+    "german_pending_native_or_source_backed_review_count": 18,
+    "multilingual_policy_rule_count": 8,
+    "multilingual_policy_rule_pass_count": 8,
+    "legacy_mixed_surface_count": 4,
+    "legacy_mixed_surface_active_acceptance_count": 0,
+    "cross_language_policy_reuse_allowed": true,
+    "cross_language_exact_phrase_reuse_allowed": false,
+    "english_focus_next": true,
+    "english_review_scope_note": "This lane covers only the four English PROD-051 call-control update cases. Broader English spoken-response review and promotion status belong to later English expansion checkpoints.",
+    "native_german_approval_claimed": false,
+    "german_naturalness_claimed": false,
+    "llm_judging_used": false,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false
+  }
+}

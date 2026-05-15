@@ -190,6 +190,37 @@ Use the source categories carefully:
 - Current project status: extracted into `research/experiments/cases/rag-021-buyer-trust-conversation-repair.json` as project-owned paraphrases with source URLs, hard limits, and no runtime eligibility by default.
 - Thesis caution: RAG-021 is a source expansion and design-control checkpoint, not runtime evidence. It must not be treated as proof that sales outcomes improve until a separate registry rebuild, RAG-018 evaluation, and human review are completed.
 
+### PROD-053A English sales psychology deep dive
+
+- Type: public academic, practitioner, government, and voice UX source pack
+- Adaptive selling, sales listening, buyer confidence, and buyer value sources:
+  - Franke and Park adaptive selling/customer orientation meta-analysis: https://journals.sagepub.com/doi/10.1509/jmkr.43.4.693
+  - Adaptive selling integrative framework: https://link.springer.com/article/10.1007/s11747-025-01096-3
+  - Salesperson listening meta-analysis: https://www.sciencedirect.com/science/article/abs/pii/S0148296319303017
+  - Perceived listening work-outcomes meta-analysis: https://link.springer.com/article/10.1007/s10869-023-09897-5
+  - Gartner modern B2B buyers and information overload: https://www.gartner.com/smarterwithgartner/what-sales-should-know-about-modern-b2b-buyers
+  - HBR customer indecision and no-decision sales losses: https://hbr.org/2022/06/stop-losing-sales-to-customer-indecision
+  - Bain B2B Elements of Value article: https://www.bain.com/insights/the-b2b-elements-of-value-hbr
+- Communication psychology, autonomy, conversation repair, and decision psychology sources:
+  - NCBI Bookshelf motivational interviewing chapter: https://www.ncbi.nlm.nih.gov/books/NBK571068/
+  - Empathy in motivational interviewing and language synchrony: https://pmc.ncbi.nlm.nih.gov/articles/PMC5018199/
+  - Frontiers reactance and persuasive communication review: https://www.frontiersin.org/journals/communication/articles/10.3389/fcomm.2019.00056/full
+  - Ryan and Deci self-determination theory PDF mirror used for access: https://digitalwellbeing.org/wp-content/uploads/2020/03/Ryan-and-Deci-2000-Self-Determination-Theory-and-the-Facilitation-of-Intrinsic-Motivation-Social-Development-and-Well-Being.pdf
+  - Leader autonomy support meta-analysis: https://link.springer.com/article/10.1007/s11031-018-9698-y
+  - Oxford conversation analysis overview: https://academic.oup.com/edited-volume/61882/chapter/547683169
+  - Repair as interface between interaction and cognition: https://pmc.ncbi.nlm.nih.gov/articles/PMC6849777/
+  - Samuelson and Zeckhauser status quo bias: https://rzeckhauser.scholars.harvard.edu/publications/status-quo-bias-decision-making
+  - Iyengar and Lepper choice overload PubMed record: https://pubmed.ncbi.nlm.nih.gov/11138768/
+- Spoken interaction and plain-language sources:
+  - Amazon Alexa design principle, be brief: https://developer.amazon.com/en-US/alexa/alexa-haus/design-principles/be-brief
+  - Google conversation design quick reference: https://developers.google.com/assistant/downloads/design-principles-quick-reference.pdf
+  - Digital.gov clear and short plain-language guide: https://digital.gov/guides/plain-language/writing/clear-short
+  - CDC plain language checklist: https://www.cdc.gov/health-literacy/php/develop-materials/plain-language.html
+  - NIH plain language guide: https://www.nih.gov/sites/default/files/2025-02/nih-plain-language-getting-started-brushing-up.pdf
+- Project use: source-backed paraphrased research packet for PROD-053A, covering adaptive selling, salesperson listening, buyer confidence, no-decision risk, autonomy/reactance, behavior friction, trust repair, conversation repair, spoken brevity, decision psychology, and ethical insight-led selling.
+- Current project status: extracted into `research/experiments/generated/PROD-053A-english-sales-psychology-deep-dive/` as project-owned paraphrased findings, compact English rule candidates, and rejected/deferred tactics. `PROD-053B` then compresses those candidates into reviewed English-only deterministic response-shape rules under `research/experiments/generated/PROD-053B-compact-english-psychology-layer-review/`. `PROD-053C` applies those rules as review criteria to the reachable English deterministic runtime response surface under `research/experiments/generated/PROD-053C-english-spoken-response-expansion-review/`, excluding already-approved carry-forward items and keeping runtime text unchanged. `PROD-053D` imports Tarik's English review decisions under `research/experiments/generated/PROD-053D-english-review-import/`, separating approved-as-written items from rework and behavior-design notes. No source excerpts, copied scripts, private customer data, provider outputs, LLM judging, or runtime import are used.
+- Thesis caution: PROD-053A, PROD-053B, PROD-053C, and PROD-053D are research, design-control, and human-review evidence only. They are not proof that the agent improves sales outcomes, and exact runtime text is not changed until a later patch checkpoint applies reviewed wording and passes regression.
+
 ## Speech Realism Sources
 
 Detailed notes live in `docs/thesis/SPEECH_REALISM_REFERENCES.md`.

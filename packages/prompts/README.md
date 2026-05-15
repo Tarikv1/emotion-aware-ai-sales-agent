@@ -11,4 +11,4 @@ These prompts are experiment assets, not final product prompts.
 
 ## Product Qualification Prompt
 
-- `product-qualification-agent.txt`: structured-output prompt for the autonomous lead-qualification and appointment-setting simulation.
+- Runtime-facing prompts live under `runtime/prompts/`.

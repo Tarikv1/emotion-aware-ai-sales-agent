@@ -3,61 +3,61 @@
     {
       "case_id": "valid-en-internal-review",
       "campaign_id": "campaign-prod-047-valid-en-internal-review",
-      "path": "campaigns/examples/campaign-prod-047-valid-en-internal-review.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-valid-en-internal-review.json",
       "expected_valid": true
     },
     {
       "case_id": "valid-de-source-informed",
       "campaign_id": "campaign-prod-047-valid-de-source-informed",
-      "path": "campaigns/examples/campaign-prod-047-valid-de-source-informed.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-valid-de-source-informed.json",
       "expected_valid": true
     },
     {
       "case_id": "invalid-de-fragment-interpolation",
       "campaign_id": "campaign-prod-047-invalid-de-fragment-interpolation",
-      "path": "campaigns/examples/campaign-prod-047-invalid-de-fragment-interpolation.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-de-fragment-interpolation.json",
       "expected_valid": false
     },
     {
       "case_id": "invalid-en-internal-copy",
       "campaign_id": "campaign-prod-047-invalid-en-internal-copy",
-      "path": "campaigns/examples/campaign-prod-047-invalid-en-internal-copy.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-en-internal-copy.json",
       "expected_valid": false
     },
     {
       "case_id": "invalid-payment-enabled",
       "campaign_id": "campaign-prod-047-invalid-payment-enabled",
-      "path": "campaigns/examples/campaign-prod-047-invalid-payment-enabled.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-payment-enabled.json",
       "expected_valid": false
     },
     {
       "case_id": "invalid-missing-regulated-boundary",
       "campaign_id": "campaign-prod-047-invalid-missing-regulated-boundary",
-      "path": "campaigns/examples/campaign-prod-047-invalid-missing-regulated-boundary.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-missing-regulated-boundary.json",
       "expected_valid": false
     },
     {
       "case_id": "invalid-missing-native-review-status",
       "campaign_id": "campaign-prod-047-invalid-missing-native-review-status",
-      "path": "campaigns/examples/campaign-prod-047-invalid-missing-native-review-status.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-missing-native-review-status.json",
       "expected_valid": false
     },
     {
       "case_id": "invalid-sale-ready-without-close-criteria",
       "campaign_id": "campaign-prod-047-invalid-sale-ready-without-close-criteria",
-      "path": "campaigns/examples/campaign-prod-047-invalid-sale-ready-without-close-criteria.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-sale-ready-without-close-criteria.json",
       "expected_valid": false
     },
     {
       "case_id": "invalid-support-cancellation-route-label",
       "campaign_id": "campaign-prod-047-invalid-support-cancellation-route-label",
-      "path": "campaigns/examples/campaign-prod-047-invalid-support-cancellation-route-label.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-invalid-support-cancellation-route-label.json",
       "expected_valid": false
     },
     {
       "case_id": "incomplete-identity-reason",
       "campaign_id": "campaign-prod-047-incomplete-identity-reason",
-      "path": "campaigns/examples/campaign-prod-047-incomplete-identity-reason.json",
+      "path": "runtime/campaigns/examples/campaign-prod-047-incomplete-identity-reason.json",
       "expected_valid": false
     }
   ]
