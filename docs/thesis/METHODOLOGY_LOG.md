@@ -3822,3 +3822,61 @@ Interpretation:
   - it records a maintenance migration that affects reproducibility of prior checkpoints
   - it keeps legacy command names usable while making the runtime package the source of truth
   - it separates engineering import hygiene from product behavior evidence
+
+### 2026-05-15 - PROD-054 English multi-turn naturalness stress review
+
+- Objective: test whether the `26` English responses promoted by `PROD-053E` still behave naturally after the customer's next turn
+- Action taken:
+  - added `scripts/run_prod_054_english_multi_turn_naturalness_stress_review.py`
+  - added `scripts/validate_prod_054_english_multi_turn_naturalness_stress_review.py`
+  - added `research/experiments/cases/prod-054-english-multi-turn-naturalness-stress-review.json`
+  - documented `PROD_054_ENGLISH_MULTI_TURN_NATURALNESS_STRESS_REVIEW.md`
+  - generated `PROD-054-english-multi-turn-naturalness-stress-review` review artifacts
+- Method:
+  - split promoted `PROD-053E` responses into `10` runtime second-turn stress cases and `16` terminal-boundary cases
+  - checked second turns for English response language, non-repetition, expected deterministic route, required follow-up markers, and skipped-behavior boundaries
+  - checked terminal first turns for inappropriate same-loop continuation and question text under terminal call control
+- Result:
+  - checkpoint validation passed
+  - stress gate did not pass
+  - blocking findings were recorded for callback request, existing-provider gap, price objection, procurement review, product-detail lookup, and unknown runtime signal
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no runtime behavior change
+  - no response text promotion
+  - no production runtime promotion
+- Why it matters for the thesis:
+  - it separates single-turn wording acceptance from multi-turn dialogue robustness
+  - it preserves negative evidence instead of treating accepted wording as a production-ready conversation policy
+  - it creates a concrete next patch target for `PROD-055`
+
+### 2026-05-15 - PROD-055 English multi-turn runtime patch
+
+- Objective: patch the six blocking findings from the `PROD-054` English multi-turn stress review
+- Action taken:
+  - added `scripts/run_prod_055_english_multi_turn_runtime_patch.py`
+  - added `scripts/validate_prod_055_english_multi_turn_runtime_patch.py`
+  - added `research/experiments/cases/prod-055-english-multi-turn-runtime-patch.json`
+  - documented `PROD_055_ENGLISH_MULTI_TURN_RUNTIME_PATCH.md`
+  - updated `runtime/core/realtime_turns.py` for narrow English follow-up routing and callback call-control coherence
+- Method:
+  - preserved the six `PROD-054` source findings as patch cases
+  - added follow-up-specific deterministic responses for product-detail lookup, price/effort objection, unknown-signal clarification, procurement written-only follow-up, and existing-provider gap confirmation
+  - changed callback-request from `create-follow-up-task` to `offer-scheduling` so asking for a time keeps the call open
+- Result:
+  - post-patch blocking findings: `0`
+  - runtime behavior changed: `true`
+  - response text behavior changed: `true`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no payment, contract, public demo, or production promotion
+- Why it matters for the thesis:
+  - it shows the value of using multi-turn stress failures as actionable engineering evidence
+  - it keeps the patch small and auditable instead of making a broad dialogue-policy rewrite
+  - it creates a cleaner boundary for the next regression checkpoint

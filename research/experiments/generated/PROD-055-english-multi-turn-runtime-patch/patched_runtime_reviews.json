@@ -1,0 +1,237 @@
+{
+  "checkpoint_id": "PROD-055-english-multi-turn-runtime-patch",
+  "items": [
+    {
+      "case_id": "prod-055-callback-request-call-control",
+      "source_case_id": "prod-053c-callback-request",
+      "patch_mode": "current_first_turn",
+      "source_agent_response": "Of course. Do you have a time in mind?",
+      "customer_input": {
+        "input_type": "speech",
+        "transcript": "Can you call back later?",
+        "stage": "objection"
+      },
+      "expected_runtime_after_patch": {
+        "sales_difficulty": "callback-request",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "time"
+        ]
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "callback-request",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "agent_response": "Of course. Do you have a time in mind?"
+      },
+      "patch_gates": {
+        "response_language_en": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-055-product-detail-followup",
+      "source_case_id": "prod-053c-product-detail-lookup",
+      "patch_mode": "runtime_second_turn",
+      "source_agent_response": "One moment. I will check the product details before I answer.",
+      "customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, which exact plan is included?",
+        "stage": "follow-up"
+      },
+      "expected_runtime_after_patch": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "plan",
+          "details"
+        ]
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I should not invent exact plan details. I can send the approved plan details in writing before any next step."
+      },
+      "patch_gates": {
+        "response_language_en": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true,
+        "not_exact_repeat": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-055-price-effort-followup",
+      "source_case_id": "prod-053c-price-objection",
+      "patch_mode": "runtime_second_turn",
+      "source_agent_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "customer_input": {
+        "input_type": "speech",
+        "transcript": "It is about whether this is worth the effort.",
+        "stage": "follow-up"
+      },
+      "expected_runtime_after_patch": {
+        "sales_difficulty": "price-objection",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "effort",
+          "worth"
+        ]
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "price-objection",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "That helps. The useful effort check is whether missed callbacks or follow-up work cost more time than reviewing this would."
+      },
+      "patch_gates": {
+        "response_language_en": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true,
+        "not_exact_repeat": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-055-unknown-signal-followup",
+      "source_case_id": "prod-053c-unknown-runtime-signal",
+      "patch_mode": "runtime_second_turn",
+      "source_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, what is the quick question?",
+        "stage": "follow-up"
+      },
+      "expected_runtime_after_patch": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "missed callbacks",
+          "follow-up work"
+        ]
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "The quick question is whether missed callbacks or follow-up work are still a problem for your team."
+      },
+      "patch_gates": {
+        "response_language_en": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true,
+        "not_exact_repeat": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-055-procurement-written-only-followup",
+      "source_case_id": "prod-053c-procurement-review",
+      "patch_mode": "runtime_second_turn",
+      "source_agent_response": "Sure. I can keep this to written review information. Nothing firm today.",
+      "customer_input": {
+        "input_type": "speech",
+        "transcript": "Send written information only.",
+        "stage": "procurement-review"
+      },
+      "expected_runtime_after_patch": {
+        "sales_difficulty": "procurement-review",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "send",
+          "written information"
+        ]
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "procurement-review",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Understood. I will send the written information only and avoid asking for anything firm today."
+      },
+      "patch_gates": {
+        "response_language_en": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true,
+        "not_exact_repeat": true
+      },
+      "passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-055-existing-provider-gap-followup",
+      "source_case_id": "prod-053c-existing-provider-gap",
+      "patch_mode": "runtime_second_turn",
+      "source_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, our current provider misses follow-up work.",
+        "stage": "follow-up"
+      },
+      "expected_runtime_after_patch": {
+        "sales_difficulty": "existing-provider-gap",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "misses",
+          "follow-up work"
+        ]
+      },
+      "runtime_decision": {
+        "response_language": "en",
+        "sales_difficulty": "existing-provider-gap",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "That is the gap to check: your current provider misses follow-up work. I can keep the next step to a short written comparison."
+      },
+      "patch_gates": {
+        "response_language_en": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true,
+        "not_exact_repeat": true
+      },
+      "passed": true,
+      "issue_codes": []
+    }
+  ]
+}

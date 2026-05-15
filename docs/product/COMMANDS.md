@@ -1389,6 +1389,30 @@ Validate that PROD-053E promotes only accepted and safe English wording into the
 python scripts\validate_prod_053e_english_runtime_wording_patch.py
 ```
 
+Run the PROD-054 English multi-turn naturalness stress review:
+
+```powershell
+python scripts\run_prod_054_english_multi_turn_naturalness_stress_review.py
+```
+
+Validate that PROD-054 turns the PROD-053E promoted English responses into a deterministic second-turn stress report, keeps runtime promotion blocked, and preserves no-provider/no-LLM/no-private-data boundaries:
+
+```powershell
+python scripts\validate_prod_054_english_multi_turn_naturalness_stress_review.py
+```
+
+Run the PROD-055 English multi-turn runtime patch:
+
+```powershell
+python scripts\run_prod_055_english_multi_turn_runtime_patch.py
+```
+
+Validate that PROD-055 patches the six PROD-054 blocking findings while keeping provider, LLM, private-data, German exact-phrase, payment, contract, and production-promotion boundaries blocked:
+
+```powershell
+python scripts\validate_prod_055_english_multi_turn_runtime_patch.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

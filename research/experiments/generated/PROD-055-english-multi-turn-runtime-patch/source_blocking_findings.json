@@ -1,0 +1,51 @@
+{
+  "checkpoint_id": "PROD-055-english-multi-turn-runtime-patch",
+  "items": [
+    {
+      "source_case_id": "prod-053c-callback-request",
+      "source_issue": "Callback response asks for a time while the first-turn call control ends the call.",
+      "source_issue_codes": [
+        "terminal_response_asks_question"
+      ]
+    },
+    {
+      "source_case_id": "prod-053c-existing-provider-gap",
+      "source_issue": "After the customer confirms the provider gap, runtime repeats the gap-isolation sentence.",
+      "source_issue_codes": [
+        "not_exact_repeat",
+        "required_marker_match"
+      ]
+    },
+    {
+      "source_case_id": "prod-053c-price-objection",
+      "source_issue": "After the customer answers effort rather than price, runtime repeats the price-or-effort question.",
+      "source_issue_codes": [
+        "not_exact_repeat"
+      ]
+    },
+    {
+      "source_case_id": "prod-053c-procurement-review",
+      "source_issue": "After the customer asks for written information only, runtime repeats the procurement-relief sentence.",
+      "source_issue_codes": [
+        "not_exact_repeat",
+        "required_marker_match"
+      ]
+    },
+    {
+      "source_case_id": "prod-053c-product-detail-lookup",
+      "source_issue": "After the customer accepts the product lookup bridge, runtime repeats the bridge phrase.",
+      "source_issue_codes": [
+        "not_exact_repeat",
+        "required_marker_match"
+      ]
+    },
+    {
+      "source_case_id": "prod-053c-unknown-runtime-signal",
+      "source_issue": "After the customer asks what the quick clarifying question is, runtime repeats the clarifying-question preface.",
+      "source_issue_codes": [
+        "not_exact_repeat",
+        "required_marker_match"
+      ]
+    }
+  ]
+}

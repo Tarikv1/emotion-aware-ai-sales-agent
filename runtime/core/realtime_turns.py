@@ -462,6 +462,94 @@ def stage_is(stage: str | None, *values: str) -> bool:
     return normalized in {value.lower() for value in values}
 
 
+def runtime_classification(
+    response_language: str,
+    detected_emotion: str,
+    sales_difficulty: str,
+    interest_state: str,
+    selected_strategy: str,
+    next_action: str,
+    agent_response: str,
+) -> dict:
+    return {
+        "response_language": response_language,
+        "detected_emotion": detected_emotion,
+        "sales_difficulty": sales_difficulty,
+        "interest_state": interest_state,
+        "selected_strategy": selected_strategy,
+        "next_action": next_action,
+        "agent_response": agent_response,
+    }
+
+
+def classify_english_follow_up_input(transcript: str, stage: str | None, response_language: str) -> dict | None:
+    if response_language != "en" or not stage_is(stage, "follow-up", "procurement-review"):
+        return None
+
+    if contains_any(transcript, ["which exact plan", "which plan", "exact plan", "plan is included", "which exact"]):
+        return runtime_classification(
+            response_language,
+            "neutral",
+            "product-detail-lookup",
+            "maybe-interested",
+            "evidence-or-benefit",
+            "continue",
+            "I should not invent exact plan details. I can send the approved plan details in writing before any next step.",
+        )
+
+    if contains_any(transcript, ["worth the effort", "worth my time"]):
+        return runtime_classification(
+            response_language,
+            "skeptical-or-negative",
+            "price-objection",
+            "maybe-interested",
+            "inquiry",
+            "ask-follow-up",
+            "That helps. The useful effort check is whether missed callbacks or follow-up work cost more time than reviewing this would.",
+        )
+
+    if contains_any(transcript, ["what is the quick question", "what's the quick question", "quick question"]):
+        return runtime_classification(
+            response_language,
+            "neutral",
+            "unknown-runtime-signal",
+            "maybe-interested",
+            "inquiry",
+            "ask-follow-up",
+            "The quick question is whether missed callbacks or follow-up work are still a problem for your team.",
+        )
+
+    if stage_is(stage, "procurement-review") and contains_any(
+        transcript,
+        ["written information only", "written info only", "send written information", "send written info"],
+    ):
+        return runtime_classification(
+            response_language,
+            "neutral",
+            "procurement-review",
+            "maybe-interested",
+            "inquiry",
+            "ask-follow-up",
+            "Understood. I will send the written information only and avoid asking for anything firm today.",
+        )
+
+    if contains_any(
+        transcript,
+        ["current provider misses", "provider misses", "misses follow-up work", "missed follow-up work"],
+    ):
+        return runtime_classification(
+            response_language,
+            "neutral",
+            "existing-provider-gap",
+            "maybe-interested",
+            "inquiry",
+            "ask-follow-up",
+            "That is the gap to check: your current provider misses follow-up work. I can keep the next step to a short written comparison.",
+        )
+
+    return None
+
+
 def latency_bucket(milliseconds: int) -> str:
     if milliseconds <= 1000:
         return "under-1s"
@@ -524,6 +612,10 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "next_action": "escalate",
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
+
+    follow_up_classification = classify_english_follow_up_input(transcript, stage, response_language)
+    if follow_up_classification is not None:
+        return follow_up_classification
 
     if contains_any(transcript, ["was kostet", "welchen kosten", "welche kosten", "monatlich", "preis reden", "preis wissen", "ist das teuer"]):
         sales_difficulty = "price-first-direct"
@@ -921,7 +1013,7 @@ def classify_runtime_input(case: dict, campaign: dict | None = None) -> dict:
             "sales_difficulty": sales_difficulty,
             "interest_state": "maybe-interested",
             "selected_strategy": "direct-ask-or-commitment",
-            "next_action": "create-follow-up-task",
+            "next_action": "offer-scheduling",
             "agent_response": localized_response(response_language, sales_difficulty, campaign),
         }
 

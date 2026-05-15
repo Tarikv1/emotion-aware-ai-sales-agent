@@ -1,0 +1,44 @@
+{
+  "checkpoint_id": "PROD-054-english-multi-turn-naturalness-stress-review",
+  "checkpoint_name": "English Multi-Turn Naturalness Stress Review",
+  "source_checkpoint_id": "PROD-053E-english-runtime-wording-patch",
+  "validation": {
+    "passed": true,
+    "stress_gate_passed": false
+  },
+  "summary": {
+    "source_promoted_response_count": 26,
+    "runtime_second_turn_case_count": 10,
+    "terminal_boundary_case_count": 16,
+    "runtime_second_turn_pass_count": 5,
+    "runtime_second_turn_failure_count": 5,
+    "terminal_boundary_pass_count": 15,
+    "terminal_boundary_failure_count": 1,
+    "blocking_finding_count": 6,
+    "blocking_case_ids": [
+      "prod-053c-callback-request",
+      "prod-053c-existing-provider-gap",
+      "prod-053c-price-objection",
+      "prod-053c-procurement-review",
+      "prod-053c-product-detail-lookup",
+      "prod-053c-unknown-runtime-signal"
+    ],
+    "stress_gate_passed": false,
+    "runtime_promotion_allowed": false,
+    "needs_followup_checkpoint": true,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false
+  }
+}

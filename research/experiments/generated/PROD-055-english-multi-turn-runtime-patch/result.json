@@ -1,0 +1,38 @@
+{
+  "checkpoint_id": "PROD-055-english-multi-turn-runtime-patch",
+  "checkpoint_name": "English Multi-Turn Runtime Patch",
+  "source_checkpoint_id": "PROD-054-english-multi-turn-naturalness-stress-review",
+  "validation": {
+    "passed": true
+  },
+  "summary": {
+    "source_blocking_finding_count": 6,
+    "source_blocking_case_ids": [
+      "prod-053c-callback-request",
+      "prod-053c-existing-provider-gap",
+      "prod-053c-price-objection",
+      "prod-053c-procurement-review",
+      "prod-053c-product-detail-lookup",
+      "prod-053c-unknown-runtime-signal"
+    ],
+    "patched_runtime_review_count": 6,
+    "post_patch_blocking_finding_count": 0,
+    "post_patch_blocking_case_ids": [],
+    "all_patch_cases_passed": true,
+    "runtime_promotion_allowed": false,
+    "runtime_behavior_changed": true,
+    "response_text_behavior_changed": true,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false
+  }
+}

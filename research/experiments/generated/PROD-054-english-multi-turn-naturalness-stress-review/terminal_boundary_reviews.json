@@ -1,0 +1,327 @@
+{
+  "checkpoint_id": "PROD-054-english-multi-turn-naturalness-stress-review",
+  "items": [
+    {
+      "case_id": "prod-054-prod-053c-repeated-silence",
+      "source_case_id": "prod-053c-repeated-silence",
+      "source_sales_difficulty": "repeated-silence",
+      "source_next_action": "close-politely",
+      "source_call_control": "end-call",
+      "source_agent_response": "I will end the call for now. Goodbye.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-do-not-call",
+      "source_case_id": "prod-053c-do-not-call",
+      "source_sales_difficulty": "do-not-call",
+      "source_next_action": "suppress-contact",
+      "source_call_control": "end-call",
+      "source_agent_response": "Understood. I will mark this so you are not called again. Goodbye.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-human-request",
+      "source_case_id": "prod-053c-human-request",
+      "source_sales_difficulty": "human-request",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Of course. I will pass this to a human specialist.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-scam-safety-boundary",
+      "source_case_id": "prod-053c-scam-safety-boundary",
+      "source_sales_difficulty": "scam-safety-boundary",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-payment-safety-boundary",
+      "source_case_id": "prod-053c-payment-safety-boundary",
+      "source_sales_difficulty": "payment-safety-boundary",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "No card or payment details are needed here. I can keep this to written information.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-email-only-boundary",
+      "source_case_id": "prod-053c-email-only-boundary",
+      "source_sales_difficulty": "email-only-boundary",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "Understood. I will keep this to email and will not push for a call.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-technical-specialist-route",
+      "source_case_id": "prod-053c-technical-specialist-route",
+      "source_sales_difficulty": "technical-specialist-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "I should not guess on technical details. I can send this to a specialist.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-timing-delay",
+      "source_case_id": "prod-053c-timing-delay",
+      "source_sales_difficulty": "timing-delay",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "No problem. I will leave it open for now instead of forcing a time today.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-support-route",
+      "source_case_id": "prod-053c-support-route",
+      "source_sales_difficulty": "support-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Of course. I'll send this to support right away. Have a good day.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-cancellation-route",
+      "source_case_id": "prod-053c-cancellation-route",
+      "source_sales_difficulty": "cancellation-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Sure, I'll stop and connect you to the cancellation team.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-security-review-route",
+      "source_case_id": "prod-053c-security-review-route",
+      "source_sales_difficulty": "security-review-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Security review needs verified material or a specialist. I should not make broad compliance claims here.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-healthcare-boundary-route",
+      "source_case_id": "prod-053c-healthcare-boundary-route",
+      "source_sales_difficulty": "healthcare-boundary-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "I can't give medical advice, but I can send you to someone qualified.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-claim-boundary",
+      "source_case_id": "prod-053c-claim-boundary",
+      "source_sales_difficulty": "claim-boundary",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "I can't guarantee something that depends on the details. A specialist can check that.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-scheduling-confirmation",
+      "source_case_id": "prod-053c-scheduling-confirmation",
+      "source_sales_difficulty": "scheduling-confirmation",
+      "source_next_action": "confirm-scheduling",
+      "source_call_control": "schedule-and-end",
+      "source_agent_response": "All right. I'll note that time for the specialist callback. Goodbye.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-sale-ready-commitment",
+      "source_case_id": "prod-053c-sale-ready-commitment",
+      "source_sales_difficulty": "sale-ready-commitment",
+      "source_next_action": "sale-ready-log",
+      "source_call_control": "close-and-log-sale-ready",
+      "source_agent_response": "All right. I'll mark that you want the next step. No payment is handled on this call.",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-054-prod-053c-callback-request",
+      "source_case_id": "prod-053c-callback-request",
+      "source_sales_difficulty": "callback-request",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "Of course. Do you have a time in mind?",
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      },
+      "terminal_boundary_passed": false,
+      "issue_codes": [
+        "terminal_response_asks_question"
+      ]
+    }
+  ]
+}

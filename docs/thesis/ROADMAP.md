@@ -522,24 +522,25 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Use `PROD-041-conditional-simulation-review` as the human review decision for the locked `PROD-041A-conditional-scenario-diversity-expansion` traces.
+Use `PROD-056` to convert the `PROD-055` patch into a wider post-patch English multi-turn regression gate.
 
 Purpose:
 
-- keep PROD-041A offline, deterministic, and locked as the scenario diversity checkpoint
-- inspect whether remaining deterministic phrasing is acceptable for offline review only
-- identify customer turns that remain too template-like before voice playback or demo use
-- decide whether safe-close outcomes feel earned enough to promote
-- keep provider calls, customer data, payment handling, retrieval defaults, and composer-hook defaults blocked
+- preserve the `PROD-053E` English single-turn wording gains and the `PROD-055` multi-turn patch without overclaiming production readiness
+- verify that the six patched findings stay fixed under a broader English post-patch regression set
+- check whether callback scheduling, written-only follow-up, provider-gap confirmation, product-detail follow-up, and unknown-signal clarification remain coherent across adjacent turns
+- keep `PROD-056` offline, deterministic, and finding-focused
+- keep provider calls, customer data, payment handling, retrieval defaults, German exact-phrase promotion, voice playback, and production runtime promotion blocked
 
-Immediate product artifact after `PROD-041`:
+Immediate product artifact after `PROD-056`:
 
-- targeted rewrite packet for selected customer turns if voice playback or public demo use is reopened
-- no PROD-041A scenario expansion unless a separate checkpoint explicitly reopens the scenario set
+- wider English multi-turn regression packet with explicit pass/fail gates
+- decision on whether the `PROD-055` follow-up routing should become a permanent regression guard
+- no German or voice promotion unless separate review gates reopen those tracks
 
 Next voice checkpoint:
 
-- optionally run a short live RESP-004 listening check of the VOICE-044 polished baseline before broadening voice changes
+- record the `RESP-007` German pacing-stability listening decision before promoting a voice-personality selector
 - keep VOICE-043 and VOICE-044 as the acceptance guards before and after any future baseline voice change
 - compare any future private-pattern or personalization variant against VOICE-043 baseline and promote it only if it wins a human listening review
 - connect RESP-003 audio output to the local demo/playback flow after the dry-run and missing-key gates remain stable
