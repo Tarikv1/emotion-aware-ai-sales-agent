@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from speech_interaction import EVALUATION_RUBRIC, apply_speech_interaction
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.speech_interaction import EVALUATION_RUBRIC, apply_speech_interaction
+
+
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-026-interaction-prosody.json"
 DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-026-interaction-prosody"
 DEFAULT_OUT_PATH = DEFAULT_RUN_DIR / "results.json"

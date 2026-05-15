@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from prosody_naturalness import apply_prosody_naturalness
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.prosody_naturalness import apply_prosody_naturalness
+
+
 VOICE_MILESTONE = "VOICE-015"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-015-prosody-naturalness.json"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-015-prosody-naturalness.json"

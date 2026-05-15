@@ -7,10 +7,14 @@ import time
 from pathlib import Path
 from typing import Any
 
-from generate_guarded_response import build_guarded_response_packet
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
+
+
 CHECKPOINT_ID = "PROD-028-synthetic-campaign-knowledge-grounding"
 TITLE = "PROD-028 synthetic campaign knowledge grounding"
 DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID

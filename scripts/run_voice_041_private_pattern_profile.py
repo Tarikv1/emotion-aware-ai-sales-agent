@@ -7,13 +7,17 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from generate_guarded_response import build_guarded_response_packet
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
-from runtime_voice_delivery import attach_runtime_voice_delivery
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
+from runtime.voice.runtime_voice_delivery import attach_runtime_voice_delivery
+
+
 VOICE_PRIVATE_PATTERN_PROFILE_RUNTIME_ID = "VOICE-041-private-pattern-profile"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-041-private-pattern-profile.json"
 DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-041-private-pattern-profile"

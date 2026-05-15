@@ -9,10 +9,13 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, value_if_present
-
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.config.local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, value_if_present
+
+
 RUNNER_PATH = ROOT / "scripts" / "run_voice_024_speech_realism_live_ab.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-024-speech-realism-live-ab.json"
 EXPECTED_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-024-speech-realism-live-ab"

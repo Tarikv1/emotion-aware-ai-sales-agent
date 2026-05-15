@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from provider_prosody_rendering import render_case
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.provider_prosody_rendering import render_case
+
+
 VOICE_MILESTONE = "VOICE-016"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-016-provider-prosody-rendering.json"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-016-provider-prosody-rendering.json"

@@ -12,19 +12,23 @@ from full_sale_scenario_grounding import (
     leakage_status,
     normalize_text,
 )
-from generate_guarded_response import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import (
     DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
     DEFAULT_RETRIEVAL_MIN_SCORE,
     DEFAULT_RETRIEVAL_REGISTRY,
     DEFAULT_RETRIEVAL_TARGET_MS,
     build_guarded_response_packet,
 )
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
 from run_resp_001_retrieval_ab_evaluation import forbidden_response_text, output_language_matches
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CAMPAIGN_CASE_SOURCE = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-latency-call-control.json"
 NON_SALE_OUTCOMES = {"non_sale_correct", "support_only", "escalate", "end_call", "human_handoff"}
 CLOSE_CONTROLS = {"close-and-log-sale-ready", "log-sale-ready"}

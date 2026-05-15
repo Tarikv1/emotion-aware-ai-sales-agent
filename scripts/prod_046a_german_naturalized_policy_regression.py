@@ -8,10 +8,14 @@ from pathlib import Path
 from typing import Any
 
 from prod_045_core_sales_policy_regression_rerun import evaluate_required_action, is_generic_clarification
-from run_realtime_turn_simulation import build_runtime_decision
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.core.realtime_turns import build_runtime_decision
+
+
 CHECKPOINT_ID = "PROD-046A-german-naturalized-policy-regression"
 CHECKPOINT_NAME = "German Naturalized Policy Regression"
 SOURCE_CHECKPOINT_ID = "PROD-045-core-sales-policy-regression-rerun"

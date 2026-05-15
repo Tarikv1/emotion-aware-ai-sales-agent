@@ -5,14 +5,18 @@ import argparse
 import json
 from pathlib import Path
 
-from rag_runtime_knowledge_registry import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.retrieval.runtime_knowledge_registry import (
     DEFAULT_INCLUDED_ARTIFACT_KEYS,
     build_runtime_knowledge_registry,
     render_runtime_knowledge_registry_report,
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-017-runtime-knowledge-registry"
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "report.md"

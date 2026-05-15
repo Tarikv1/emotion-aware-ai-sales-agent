@@ -6,15 +6,19 @@ import json
 from pathlib import Path
 from typing import Any
 
-from generate_guarded_response import build_guarded_response_packet
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
-from runtime_tts_delivery import attach_runtime_tts_delivery
-from runtime_voice_delivery import attach_runtime_voice_delivery
-from tts_provider_clients import project_relative_string
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
+from runtime.voice.runtime_tts_delivery import attach_runtime_tts_delivery
+from runtime.voice.runtime_voice_delivery import attach_runtime_voice_delivery
+from runtime.providers.tts_provider_clients import project_relative_string
+
+
 EXPERIMENT_ID = "RESP-004-voice-044-listening-check"
 DEFAULT_CAMPAIGN_CASES = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-latency-call-control.json"
 DEFAULT_FOCUS_CASES = ROOT / "research" / "experiments" / "cases" / "voice-044-baseline-delivery-polish.json"

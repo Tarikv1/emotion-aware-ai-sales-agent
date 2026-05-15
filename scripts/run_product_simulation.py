@@ -3,7 +3,12 @@ import argparse
 import json
 from pathlib import Path
 
-from product_agent_output_contract import call_control_for_final_outcome, call_control_for_next_action
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.contracts.product_agent_output_contract import call_control_for_final_outcome, call_control_for_next_action
 
 
 ALLOWED_EMOTIONS = {"positive", "neutral", "skeptical-or-negative"}

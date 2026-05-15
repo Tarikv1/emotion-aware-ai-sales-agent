@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from voice_feature_runtime_mapping import build_runtime_mapping_plan
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.voice.voice_feature_runtime_mapping import build_runtime_mapping_plan
+
+
 PRIVATE_DATA_ROOT = ROOT / "data" / "private"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "voice-031-feature-runtime-mapping.json"
 DEFAULT_PUBLIC_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-031-feature-runtime-mapping"

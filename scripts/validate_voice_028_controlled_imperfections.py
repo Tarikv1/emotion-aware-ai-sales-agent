@@ -12,7 +12,10 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from speech_imperfections import apply_speech_imperfections  # noqa: E402
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.speech_imperfections import apply_speech_imperfections  # noqa: E402
 
 RUNNER_PATH = ROOT / "scripts" / "run_voice_028_controlled_imperfections.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-028-controlled-imperfections.json"

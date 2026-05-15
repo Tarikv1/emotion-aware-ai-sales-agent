@@ -12,7 +12,10 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from speech_realism import apply_speech_realism  # noqa: E402
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.speech_realism import apply_speech_realism  # noqa: E402
 
 RUNNER_PATH = ROOT / "scripts" / "run_voice_025_filler_placement.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-025-filler-placement.json"

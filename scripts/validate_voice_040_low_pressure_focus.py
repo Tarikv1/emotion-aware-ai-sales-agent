@@ -9,6 +9,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 RUNNER = ROOT / "scripts" / "run_voice_040_low_pressure_focus.py"
 MODULE = ROOT / "scripts" / "voice_low_pressure_focus.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-040-low-pressure-focus.json"
@@ -87,7 +89,7 @@ def make_provider_rendering(
 def validate_module_behavior() -> None:
     assert_condition(MODULE.exists(), "VOICE-040 low-pressure focus module is missing.")
     sys.path.insert(0, str(ROOT / "scripts"))
-    from voice_low_pressure_focus import apply_voice_low_pressure_focus  # noqa: PLC0415
+    from runtime.voice.voice_low_pressure_focus import apply_voice_low_pressure_focus  # noqa: PLC0415
 
     source_text = (
         f"That makes sense. <break time=\"0.231s\" /> {RISKY_PHRASE}, well, "

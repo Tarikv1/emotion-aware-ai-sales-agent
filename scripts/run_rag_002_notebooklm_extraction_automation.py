@@ -7,7 +7,12 @@ import re
 from pathlib import Path
 from typing import Any
 
-from rag_knowledge_base import build_source_manifest_template
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.retrieval.knowledge_base import build_source_manifest_template
 from rag_notebooklm_automation import (
     DEFAULT_CHAT_CUSTOMIZATION_CHAR_LIMIT,
     DEFAULT_MIN_CHUNKS_PER_TOPIC,
@@ -19,7 +24,6 @@ from rag_notebooklm_automation import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASE = ROOT / "research" / "experiments" / "cases" / "rag-002-notebooklm-extraction-automation-bridge.json"
 DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-002-notebooklm-extraction-automation-bridge"
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"

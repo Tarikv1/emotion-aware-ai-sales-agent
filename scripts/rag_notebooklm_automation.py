@@ -3,7 +3,13 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
-from rag_knowledge_base import (
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.retrieval.knowledge_base import (
     build_source_manifest_template,
     get_topic_taxonomy,
     validate_notebooklm_chunks,

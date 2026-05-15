@@ -7,14 +7,18 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
-from generate_guarded_response import apply_guarded_response_to_decision
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import apply_guarded_response_to_decision
 from generate_voice_response import build_voice_packet, resolve_project_path
-from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
-from run_realtime_turn_simulation import load_realtime_cases
+from runtime.entrypoints.realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
+from runtime.core.realtime_turns import load_realtime_cases
 from voice_interruption_policy import interruption_policy_metadata
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-latency-call-control.json"
 DEFAULT_CAMPAIGN_ID = "campaign-prod-005-b2c-telecom"
 DEFAULT_STAGE = "relevance-check"

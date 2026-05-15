@@ -8,7 +8,12 @@ from pathlib import Path
 from typing import Any
 
 from callcenteren_specificity_scoring import ROOT, rate, rel_path, score_answer, write_json, write_text
-from generate_guarded_response import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import (
     DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
     DEFAULT_RETRIEVAL_MIN_SCORE,
     DEFAULT_RETRIEVAL_REGISTRY,
@@ -24,8 +29,8 @@ from prod_019_guarded_runtime_composer_hooks import (
     winner,
 )
 from prod_020_naturalized_customer_turn_evaluation import DEFAULT_RESULT as DEFAULT_PROD_020_RESULT
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
 
 
 PROD_021_ID = "PROD-021-live-shaped-dialogue-policy-simulation"

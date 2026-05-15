@@ -6,7 +6,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from campaign_profile_contract import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.contracts.campaign_profile_contract import (
     CHECKPOINT_ID,
     CHECKPOINT_NAME,
     NEXT_CHECKPOINT_ID,

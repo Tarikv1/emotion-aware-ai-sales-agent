@@ -9,6 +9,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 CHECKPOINT_ID = "PROD-044-core-sales-policy-update"
 CHECKPOINT_NAME = "Core Sales Policy Update Review Packet"
 SOURCE_CHECKPOINT_ID = "PROD-043-sales-playbook-runtime-adapter"
@@ -270,7 +272,7 @@ def load_source() -> dict[str, Any]:
 
 def probe_current_runtime(classifier_cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     sys.path.insert(0, str(ROOT / "scripts"))
-    from run_realtime_turn_simulation import build_runtime_decision  # type: ignore
+    from runtime.core.realtime_turns import build_runtime_decision  # type: ignore
     from prod_043_sales_playbook_runtime_adapter import evaluate_response, load_prod_042  # type: ignore
 
     artifacts = load_prod_042()

@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from speech_realism import apply_speech_realism
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.speech_realism import apply_speech_realism
+
+
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-023-speech-realism.json"
 DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-023"
 DEFAULT_OUT_PATH = DEFAULT_RUN_DIR / "VOICE-023-speech-realism.json"

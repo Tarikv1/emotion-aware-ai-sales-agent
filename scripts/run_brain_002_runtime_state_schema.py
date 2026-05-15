@@ -5,10 +5,14 @@ import argparse
 import json
 from pathlib import Path
 
-from brain_runtime_state_schema import build_brain_002_payload, render_brain_002_report
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.contracts.brain_runtime_state_schema import build_brain_002_payload, render_brain_002_report
+
+
 DEFAULT_CASE = ROOT / "research" / "experiments" / "cases" / "brain-002-runtime-state-schema.json"
 DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "BRAIN-002-runtime-state-schema"
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"

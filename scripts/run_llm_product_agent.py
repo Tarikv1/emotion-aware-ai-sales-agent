@@ -14,7 +14,11 @@ from run_product_simulation import (
     render_prompt,
     update_call_state,
 )
-from product_agent_output_contract import (
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.contracts.product_agent_output_contract import (
     call_control_prompt_block,
     normalize_final_outcome,
     normalize_turn_output,

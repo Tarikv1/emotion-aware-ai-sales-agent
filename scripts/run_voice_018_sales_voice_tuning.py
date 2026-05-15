@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from sales_voice_tuning import apply_sales_voice_tuning
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.voice.sales_voice_tuning import apply_sales_voice_tuning
+
+
 VOICE_MILESTONE = "VOICE-018"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-018-sales-voice-tuning.json"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-018-sales-voice-tuning.json"

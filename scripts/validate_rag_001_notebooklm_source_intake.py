@@ -11,6 +11,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 MODULE = ROOT / "scripts" / "rag_knowledge_base.py"
 RUNNER = ROOT / "scripts" / "run_rag_001_notebooklm_source_intake.py"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "rag-001-notebooklm-source-intake-bridge.json"
@@ -82,7 +84,7 @@ def assert_no_secret_text(text: str, label: str) -> None:
 def validate_module_contract() -> None:
     assert_condition(MODULE.exists(), "RAG-001 knowledge-base module is missing.")
     sys.path.insert(0, str(ROOT / "scripts"))
-    from rag_knowledge_base import (  # noqa: PLC0415
+    from runtime.retrieval.knowledge_base import (  # noqa: PLC0415
         build_knowledge_base,
         build_notebooklm_extraction_prompt,
         build_source_manifest_template,

@@ -5,7 +5,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from campaign_profile_contract import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.contracts.campaign_profile_contract import (
     BOUNDARY_FALSE_FIELDS,
     CHECKPOINT_ID,
     REQUIRED_POLICY_GROUPS,
@@ -13,7 +18,6 @@ from campaign_profile_contract import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 EXAMPLE_DIR = ROOT / "runtime" / "campaigns" / "examples"
 

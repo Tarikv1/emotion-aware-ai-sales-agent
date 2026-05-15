@@ -8,12 +8,16 @@ from pathlib import Path
 from typing import Any
 
 from callcenteren_runtime_comparison import contains_payment_collection
-from generate_guarded_response import build_guarded_response_packet
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
 from prod_028_synthetic_campaign_knowledge_grounding import build_synthetic_campaign
 from run_resp_001_retrieval_ab_evaluation import forbidden_response_text, output_language_matches
 
 
-ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT_ID = "PROD-031-interactive-grounded-call-simulation"
 SOURCE_SPEC = ROOT / "docs" / "superpowers" / "specs" / "2026-05-09-interactive-grounded-call-simulation-design.md"
 NEXT_CHECKPOINT_ID = "PROD-032-interactive-simulation-review"

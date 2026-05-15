@@ -5,11 +5,15 @@ import os
 import subprocess
 from pathlib import Path
 
-from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
-from run_realtime_turn_simulation import load_realtime_cases
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
+from runtime.core.realtime_turns import load_realtime_cases
+
+
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "prod-005-realtime-latency-call-control.json"
 DEFAULT_VOICE_LABEL = "Neutral Synthetic Test Voice"
 VOICE_STYLE = "neutral-synthetic-test"

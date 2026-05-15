@@ -7,11 +7,15 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from generate_guarded_response import build_guarded_response_packet
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
 from prod_028_synthetic_campaign_knowledge_grounding import build_synthetic_campaign
 
 
-ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT_ID = "PROD-035-runtime-decision-trace-alignment"
 SOURCE_CHECKPOINT_ID = "PROD-034-interactive-post-fix-review"
 TRACE_SOURCE_CHECKPOINT_ID = "PROD-033-interactive-simulator-termination-fix"

@@ -11,6 +11,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 CHECKPOINT_ID = "PROD-043-sales-playbook-runtime-adapter"
 CHECKPOINT_NAME = "Sales Playbook Runtime Adapter"
 SOURCE_CHECKPOINT_ID = "PROD-042-callcenteren-turn-pattern-playbook"
@@ -388,7 +390,7 @@ def evaluate_response(case: dict[str, Any], artifacts: dict[str, Any]) -> dict[s
 def run_actual_agent_probe(cases: list[dict[str, Any]]) -> tuple[bool, str, list[dict[str, Any]]]:
     try:
         sys.path.insert(0, str(ROOT / "scripts"))
-        from run_realtime_turn_simulation import build_runtime_decision  # type: ignore
+        from runtime.core.realtime_turns import build_runtime_decision  # type: ignore
     except Exception as exc:
         return False, f"clean deterministic runtime entrypoint unavailable: {exc}", []
     probes = []

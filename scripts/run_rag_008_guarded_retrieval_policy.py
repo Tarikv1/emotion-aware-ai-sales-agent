@@ -5,10 +5,14 @@ import argparse
 import json
 from pathlib import Path
 
-from rag_guarded_retrieval_policy import build_guarded_retrieval_policy, render_guarded_retrieval_policy_report
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.retrieval.guarded_retrieval_policy import build_guarded_retrieval_policy, render_guarded_retrieval_policy_report
+
+
 DEFAULT_REGISTRY = ROOT / "research" / "experiments" / "generated" / "RAG-017-runtime-knowledge-registry" / "result.json"
 DEFAULT_CASE = ROOT / "research" / "experiments" / "cases" / "rag-008-guarded-retrieval-policy.json"
 DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-008-guarded-retrieval-policy"

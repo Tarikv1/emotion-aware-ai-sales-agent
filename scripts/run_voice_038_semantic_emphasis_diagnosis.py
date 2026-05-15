@@ -7,7 +7,12 @@ import os
 from pathlib import Path
 from typing import Any
 
-from tts_provider_clients import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.providers.tts_provider_clients import (
     call_elevenlabs_stream,
     fallback_reason,
     maybe_remove,
@@ -18,7 +23,6 @@ from tts_provider_clients import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 VOICE_MILESTONE = "VOICE-038"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-038-semantic-emphasis-diagnosis.json"
 DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-038-semantic-emphasis-diagnosis"

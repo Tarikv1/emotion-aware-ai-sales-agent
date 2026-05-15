@@ -8,13 +8,18 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from local_voice_config import LOCAL_VOICE_IDS_PATH, local_voice_candidate_for_provider, local_voice_id_for_provider
-from prosody_naturalness import apply_prosody_naturalness
-from provider_prosody_rendering import render_provider_variant, validate_variant
-from runtime_voice_delivery import build_realistic_segments, build_spoken_segments
-from speech_realism import apply_speech_realism
-from spoken_text_normalization import apply_spoken_text_normalization
-from tts_provider_clients import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.config.local_voice_config import LOCAL_VOICE_IDS_PATH, local_voice_candidate_for_provider, local_voice_id_for_provider
+from runtime.speech.prosody_naturalness import apply_prosody_naturalness
+from runtime.speech.provider_prosody_rendering import render_provider_variant, validate_variant
+from runtime.voice.runtime_voice_delivery import build_realistic_segments, build_spoken_segments
+from runtime.speech.speech_realism import apply_speech_realism
+from runtime.speech.spoken_text_normalization import apply_spoken_text_normalization
+from runtime.providers.tts_provider_clients import (
     call_elevenlabs_stream,
     fallback_reason,
     normalize_language,
@@ -23,7 +28,6 @@ from tts_provider_clients import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 VOICE_MILESTONE = "VOICE-024"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-024-speech-realism-live-ab.json"
 DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-024-speech-realism-live-ab"

@@ -7,10 +7,14 @@ import shutil
 import uuid
 from pathlib import Path
 
-from local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, local_voice_candidate_for_provider, local_voice_id_for_provider
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.config.local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, local_voice_candidate_for_provider, local_voice_id_for_provider
+
+
 TMP_DIR = ROOT / ".tmp" / "local-voice-config-validation" / f"run-{uuid.uuid4().hex}"
 
 SECRET_PATTERN = re.compile(

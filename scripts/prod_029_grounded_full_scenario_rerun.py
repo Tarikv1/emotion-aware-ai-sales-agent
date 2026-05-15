@@ -13,7 +13,12 @@ from callcenteren_runtime_comparison import (
     SAFE_CLOSE_OUTCOMES,
     contains_payment_collection,
 )
-from generate_guarded_response import build_guarded_response_packet
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
 from prod_027_full_scenario_route_evaluation import (
     CALL_CONTROL_BY_DIFFICULTY,
     POLICY_ACTION_BY_DIFFICULTY,
@@ -25,7 +30,6 @@ from prod_028_synthetic_campaign_knowledge_grounding import build_synthetic_camp
 from run_resp_001_retrieval_ab_evaluation import forbidden_response_text, output_language_matches
 
 
-ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT_ID = "PROD-029-grounded-full-scenario-rerun"
 SOURCE_CHECKPOINT_ID = "PROD-027-full-scenario-route-evaluation"
 GROUNDING_CHECKPOINT_ID = "PROD-028-synthetic-campaign-knowledge-grounding"

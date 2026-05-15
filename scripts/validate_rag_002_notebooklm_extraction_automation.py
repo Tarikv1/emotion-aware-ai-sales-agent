@@ -11,6 +11,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 MODULE = ROOT / "scripts" / "rag_notebooklm_automation.py"
 RUNNER = ROOT / "scripts" / "run_rag_002_notebooklm_extraction_automation.py"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "rag-002-notebooklm-extraction-automation-bridge.json"
@@ -58,7 +60,7 @@ def assert_no_secret_text(text: str, label: str) -> None:
 def validate_module_contract() -> None:
     assert_condition(MODULE.exists(), "RAG-002 NotebookLM automation module is missing.")
     sys.path.insert(0, str(ROOT / "scripts"))
-    from rag_knowledge_base import build_source_manifest_template  # noqa: PLC0415
+    from runtime.retrieval.knowledge_base import build_source_manifest_template  # noqa: PLC0415
     from rag_notebooklm_automation import (  # noqa: PLC0415
         RAG_AUTOMATION_ID,
         build_notebooklm_prompt_pack,

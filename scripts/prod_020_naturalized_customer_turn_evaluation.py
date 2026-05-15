@@ -18,7 +18,12 @@ from callcenteren_specificity_scoring import (
     write_json,
     write_text,
 )
-from generate_guarded_response import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import (
     DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
     DEFAULT_RETRIEVAL_MIN_SCORE,
     DEFAULT_RETRIEVAL_REGISTRY,
@@ -37,8 +42,8 @@ from prod_019_guarded_runtime_composer_hooks import (
     expected_outcome_correct,
     winner,
 )
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
 
 
 PROD_020_ID = "PROD-020-naturalized-customer-turn-evaluation"

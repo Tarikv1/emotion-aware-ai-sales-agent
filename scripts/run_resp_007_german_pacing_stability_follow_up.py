@@ -8,15 +8,20 @@ import re
 from pathlib import Path
 from typing import Any
 
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
 from run_resp_006_german_runtime_version_ab_listening_check import (
     build_runtime_packet,
     new_runtime_spec,
     old_runtime_spec,
 )
-from runtime_tts_delivery import offline_provider_result, provider_for_key
-from tts_provider_clients import (
+from runtime.voice.runtime_tts_delivery import offline_provider_result, provider_for_key
+from runtime.providers.tts_provider_clients import (
     call_cartesia_websocket,
     call_elevenlabs_stream,
     fallback_reason,
@@ -27,7 +32,6 @@ from tts_provider_clients import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENT_ID = "RESP-007-german-pacing-stability-follow-up"
 SOURCE_CHECKPOINT = "RESP-006-german-runtime-version-ab-listening-check"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "resp-007-german-pacing-stability-follow-up.json"

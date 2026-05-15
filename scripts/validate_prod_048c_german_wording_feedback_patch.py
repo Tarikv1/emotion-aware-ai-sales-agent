@@ -8,10 +8,14 @@ from pathlib import Path
 from typing import Any
 
 from prod_046a_german_naturalized_policy_regression import GERMAN_CAMPAIGN
-from run_realtime_turn_simulation import build_runtime_decision
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.core.realtime_turns import build_runtime_decision
+
+
 CHECKPOINT_ID = "PROD-048C-german-wording-feedback-patch"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 

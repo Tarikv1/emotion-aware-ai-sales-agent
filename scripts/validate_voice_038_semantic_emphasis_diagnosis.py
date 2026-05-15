@@ -9,10 +9,13 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, value_if_present
-
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.config.local_voice_config import LOCAL_VOICE_IDS_PATH, load_local_voice_ids, value_if_present
+
+
 RUNNER_PATH = ROOT / "scripts" / "run_voice_038_semantic_emphasis_diagnosis.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-038-semantic-emphasis-diagnosis.json"
 DOC_PATH = ROOT / "docs" / "product" / "VOICE_038_SEMANTIC_EMPHASIS_DIAGNOSIS.md"

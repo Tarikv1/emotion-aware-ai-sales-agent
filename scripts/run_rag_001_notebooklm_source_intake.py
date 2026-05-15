@@ -6,7 +6,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from rag_knowledge_base import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.retrieval.knowledge_base import (
     RAG_INTAKE_ID,
     build_knowledge_base,
     build_notebooklm_extraction_prompt,
@@ -17,7 +22,6 @@ from rag_knowledge_base import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASE = ROOT / "research" / "experiments" / "cases" / "rag-001-notebooklm-source-intake-bridge.json"
 DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-001-notebooklm-source-intake-bridge"
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"

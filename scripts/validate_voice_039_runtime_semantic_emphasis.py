@@ -9,6 +9,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 RUNNER = ROOT / "scripts" / "run_voice_039_runtime_semantic_emphasis.py"
 MODULE = ROOT / "scripts" / "voice_semantic_emphasis.py"
 CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-039-runtime-semantic-emphasis.json"
@@ -86,7 +88,7 @@ def make_provider_rendering(
 def validate_module_behavior() -> None:
     assert_condition(MODULE.exists(), "VOICE-039 semantic emphasis module is missing.")
     sys.path.insert(0, str(ROOT / "scripts"))
-    from voice_semantic_emphasis import apply_voice_semantic_emphasis  # noqa: PLC0415
+    from runtime.voice.voice_semantic_emphasis import apply_voice_semantic_emphasis  # noqa: PLC0415
 
     source_text = (
         f"That makes sense. You do not need to change anything today. {FRAGILE_PHRASE}, "

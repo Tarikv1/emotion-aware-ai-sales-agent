@@ -2527,7 +2527,11 @@ def render_surface_html(payload: dict[str, Any], surface_data: dict[str, Any]) -
 # agent turn harness -> customer simulator -> final interaction traces.
 # ---------------------------------------------------------------------------
 
-from generate_guarded_response import build_guarded_response_packet
+import sys
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import build_guarded_response_packet
 
 
 PATHS = [

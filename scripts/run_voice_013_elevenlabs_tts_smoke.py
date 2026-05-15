@@ -17,12 +17,16 @@ from generate_voice_response import (
     project_relative_string,
     resolve_project_path,
 )
-from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
-from run_realtime_turn_simulation import load_realtime_cases
-from local_voice_config import local_voice_id_for_provider
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
+from runtime.core.realtime_turns import load_realtime_cases
+from runtime.config.local_voice_config import local_voice_id_for_provider
+
+
 VOICE_MILESTONE = "VOICE-013"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-013-elevenlabs-tts-smoke.json"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-013-elevenlabs-tts-smoke.json"

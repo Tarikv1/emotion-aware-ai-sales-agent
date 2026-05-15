@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from spoken_text_normalization import apply_spoken_text_normalization
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.spoken_text_normalization import apply_spoken_text_normalization
+
+
 VOICE_MILESTONE = "VOICE-022"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-022-spoken-text-normalization.json"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-022-spoken-text-normalization.json"

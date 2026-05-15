@@ -7,19 +7,23 @@ import time
 from pathlib import Path
 from typing import Any
 
-from generate_guarded_response import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.generate_guarded_response import (
     DEFAULT_RETRIEVAL_ACCEPTABLE_MS,
     DEFAULT_RETRIEVAL_MIN_SCORE,
     DEFAULT_RETRIEVAL_REGISTRY,
     DEFAULT_RETRIEVAL_TARGET_MS,
     build_guarded_response_packet,
 )
-from realtime_turn_cli import find_campaign
-from run_realtime_turn_simulation import load_realtime_cases
+from runtime.entrypoints.realtime_turn_cli import find_campaign
+from runtime.core.realtime_turns import load_realtime_cases
 from run_resp_001_retrieval_ab_evaluation import forbidden_response_text, output_language_matches
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "rag-018-scripted-call-simulation.json"
 DEFAULT_OUT_DIR = ROOT / "research" / "experiments" / "generated" / "RAG-018-scripted-call-simulation"
 DEFAULT_RESULT = DEFAULT_OUT_DIR / "result.json"

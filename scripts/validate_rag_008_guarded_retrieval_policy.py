@@ -10,6 +10,8 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 MODULE = ROOT / "scripts" / "rag_guarded_retrieval_policy.py"
 RUNNER = ROOT / "scripts" / "run_rag_008_guarded_retrieval_policy.py"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "rag-008-guarded-retrieval-policy.json"
@@ -430,7 +432,7 @@ def validate_payload(payload: dict[str, Any], report: str) -> None:
 def validate_module_contract() -> None:
     assert_condition(MODULE.exists(), "RAG-008 guarded retrieval policy module is missing.")
     sys.path.insert(0, str(ROOT / "scripts"))
-    from rag_guarded_retrieval_policy import (  # noqa: PLC0415
+    from runtime.retrieval.guarded_retrieval_policy import (  # noqa: PLC0415
         RAG_GUARDED_RETRIEVAL_POLICY_ID,
         build_guarded_retrieval_policy,
         render_guarded_retrieval_policy_report,

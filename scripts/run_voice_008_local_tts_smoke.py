@@ -11,11 +11,15 @@ from generate_voice_response import (
     resolve_project_path,
     synthesize_with_windows_sapi,
 )
-from realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
-from run_realtime_turn_simulation import load_realtime_cases
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.entrypoints.realtime_turn_cli import build_turn_case, find_campaign, run_turn_decision
+from runtime.core.realtime_turns import load_realtime_cases
+
+
 VOICE_MILESTONE = "VOICE-008"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-008-local-tts-smoke.json"
 DEFAULT_REPORT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-008-local-tts-smoke-report.md"

@@ -7,10 +7,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-from voice_private_pattern_profile import apply_voice_private_pattern_profile
-
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.voice.voice_private_pattern_profile import apply_voice_private_pattern_profile
+
+
 RUNNER = ROOT / "scripts" / "run_voice_041_private_pattern_profile.py"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "voice-041-private-pattern-profile.json"
 TMP_DIR = ROOT / ".tmp" / "voice-041-validation"

@@ -3800,3 +3800,25 @@ Interpretation:
   - final citation style required by the university
   - exact local archive provenance and license terms for downloaded datasets
   - final legal sources for German outbound calling, insurance sales, and call recording
+
+### 2026-05-15 - RUNTIME-IMPORT-001 canonical runtime import migration
+
+- Objective: keep the project runnable after moving runtime dependencies from script-local modules into the `runtime` package
+- Action taken:
+  - migrated active operational script imports from legacy `scripts/*` module names to canonical `runtime.*` module paths
+  - kept the `scripts/*` wrapper modules as backward-compatible command shims instead of deleting or rewriting them
+  - added explicit repo-root `sys.path` bootstraps where direct script execution now imports `runtime.*`
+  - left historical generated artifacts and ignored temporary outputs untouched
+- Verification method:
+  - used syntax-only Python compilation with bytecode writes disabled because existing `__pycache__` files were not writable in this workspace
+  - checked for remaining active wrapper imports in `scripts/*.py`
+  - reran runtime manifest, PROD, RAG, and VOICE validators relevant to the moved imports
+- Boundary:
+  - no provider calls
+  - no LLM calls
+  - no customer or private audio read
+  - no runtime response text or policy behavior intentionally changed
+- Why it matters for the thesis:
+  - it records a maintenance migration that affects reproducibility of prior checkpoints
+  - it keeps legacy command names usable while making the runtime package the source of truth
+  - it separates engineering import hygiene from product behavior evidence

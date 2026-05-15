@@ -14,10 +14,14 @@ import wave
 from pathlib import Path
 from typing import Any
 
-from local_voice_config import local_voice_id_for_provider
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.config.local_voice_config import local_voice_id_for_provider
+
+
 VOICE_MILESTONE = "VOICE-017"
 DEFAULT_CASES = ROOT / "research" / "experiments" / "cases" / "voice-017-live-ab-audio.json"
 DEFAULT_OUT = ROOT / "research" / "experiments" / "generated" / "VOICE-017-live-ab-audio.json"

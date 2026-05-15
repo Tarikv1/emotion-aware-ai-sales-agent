@@ -3,14 +3,18 @@ import argparse
 import json
 from pathlib import Path
 
-from core_sales_delivery_playbook import (
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.policy.core_sales_delivery_playbook import (
     build_core_sales_delivery_pack,
     render_core_sales_delivery_pack_report,
     validate_core_sales_delivery_pack,
 )
 
 
-ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_DIR = ROOT / "research" / "experiments" / "generated" / "CORE-sales-delivery-playbook"
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "report.md"

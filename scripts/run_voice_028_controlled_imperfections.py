@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-from speech_imperfections import EVALUATION_RUBRIC, apply_speech_imperfections
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.speech.speech_imperfections import EVALUATION_RUBRIC, apply_speech_imperfections
+
+
 DEFAULT_CASES_PATH = ROOT / "research" / "experiments" / "cases" / "voice-028-controlled-imperfections.json"
 DEFAULT_RUN_DIR = ROOT / "research" / "experiments" / "generated" / "VOICE-028-controlled-imperfections"
 DEFAULT_OUT_PATH = DEFAULT_RUN_DIR / "results.json"

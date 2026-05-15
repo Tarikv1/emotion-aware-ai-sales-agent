@@ -8,7 +8,12 @@ from io import StringIO
 from pathlib import Path
 from typing import Any
 
-from rag_knowledge_base import get_topic_taxonomy
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.retrieval.knowledge_base import get_topic_taxonomy
 from rag_report_import_readiness import infer_topic_ids, normalize_report_text
 
 
