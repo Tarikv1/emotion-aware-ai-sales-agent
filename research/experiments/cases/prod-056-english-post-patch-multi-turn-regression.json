@@ -1,0 +1,756 @@
+{
+  "checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "checkpoint_name": "English Post-Patch Multi-Turn Regression",
+  "source_checkpoint_id": "PROD-055-english-multi-turn-runtime-patch",
+  "previous_stress_checkpoint_id": "PROD-054-english-multi-turn-naturalness-stress-review",
+  "cases": [
+    {
+      "case_id": "prod-056-prod-045-manager",
+      "source_case_id": "prod-045-manager",
+      "source_sales_difficulty": "stakeholder-review",
+      "source_next_action": "answer-and-continue",
+      "source_call_control": "bridge-then-continue",
+      "source_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After agreeing to send review material, handle a manager-specific details request without repeating the first turn.",
+      "follow_up_customer_utterance": "Send me the details for my manager.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Send me the details for my manager.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "tailor",
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-045-spouse",
+      "source_case_id": "prod-045-spouse",
+      "source_sales_difficulty": "partner-review",
+      "source_next_action": "answer-and-continue",
+      "source_call_control": "bridge-then-continue",
+      "source_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After partner-review relief, handle a written-info request without reusing the same review handoff line.",
+      "follow_up_customer_utterance": "Send me information I can review with my partner.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Send me information I can review with my partner.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "tailor",
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-repeated-silence",
+      "source_case_id": "prod-053c-repeated-silence",
+      "source_sales_difficulty": "repeated-silence",
+      "source_next_action": "close-politely",
+      "source_call_control": "end-call",
+      "source_agent_response": "I will end the call for now. Goodbye.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-do-not-call",
+      "source_case_id": "prod-053c-do-not-call",
+      "source_sales_difficulty": "do-not-call",
+      "source_next_action": "suppress-contact",
+      "source_call_control": "end-call",
+      "source_agent_response": "Understood. I will mark this so you are not called again. Goodbye.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-human-request",
+      "source_case_id": "prod-053c-human-request",
+      "source_sales_difficulty": "human-request",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Of course. I will pass this to a human specialist.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-scam-safety-boundary",
+      "source_case_id": "prod-053c-scam-safety-boundary",
+      "source_sales_difficulty": "scam-safety-boundary",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-payment-safety-boundary",
+      "source_case_id": "prod-053c-payment-safety-boundary",
+      "source_sales_difficulty": "payment-safety-boundary",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "No card or payment details are needed here. I can keep this to written information.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-email-only-boundary",
+      "source_case_id": "prod-053c-email-only-boundary",
+      "source_sales_difficulty": "email-only-boundary",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "Understood. I will keep this to email and will not push for a call.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-technical-specialist-route",
+      "source_case_id": "prod-053c-technical-specialist-route",
+      "source_sales_difficulty": "technical-specialist-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "I should not guess on technical details. I can send this to a specialist.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-product-detail-lookup",
+      "source_case_id": "prod-053c-product-detail-lookup",
+      "source_sales_difficulty": "product-detail-lookup",
+      "source_next_action": "continue",
+      "source_call_control": "bridge-then-continue",
+      "source_agent_response": "One moment. I will check the product details before I answer.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After the bridge response promises a product lookup, the next turn should not repeat the bridge phrase.",
+      "follow_up_customer_utterance": "Yes, which exact plan is included?",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, which exact plan is included?",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "plan",
+          "included"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-sale-ready-missing-criteria",
+      "source_case_id": "prod-053c-sale-ready-missing-criteria",
+      "source_sales_difficulty": "sale-ready-missing-criteria",
+      "source_next_action": "ask-follow-up",
+      "source_call_control": "continue-call",
+      "source_agent_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "If the missing close check needs a human, route safely instead of marking a sale ready.",
+      "follow_up_customer_utterance": "I need a human to confirm that check.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "I need a human to confirm that check.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "human-request",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "response_must_include_any": [
+          "human",
+          "specialist"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-trust-gap",
+      "source_case_id": "prod-053c-trust-gap",
+      "source_sales_difficulty": "trust-gap",
+      "source_next_action": "ask-follow-up",
+      "source_call_control": "continue-call",
+      "source_agent_response": "Fair question. I can send the verification path before we discuss any next step.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After a trust repair offer, handle a legitimacy verification request through the safe verification path.",
+      "follow_up_customer_utterance": "Yes, verify this is legitimate first.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, verify this is legitimate first.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "scam-safety-boundary",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "response_must_include_any": [
+          "verification path"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-timing-delay",
+      "source_case_id": "prod-053c-timing-delay",
+      "source_sales_difficulty": "timing-delay",
+      "source_next_action": "create-follow-up-task",
+      "source_call_control": "end-call",
+      "source_agent_response": "No problem. I will leave it open for now instead of forcing a time today.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-price-objection",
+      "source_case_id": "prod-053c-price-objection",
+      "source_sales_difficulty": "price-objection",
+      "source_next_action": "ask-follow-up",
+      "source_call_control": "continue-call",
+      "source_agent_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After asking whether the issue is price or effort, handle the effort answer without repeating the same question.",
+      "follow_up_customer_utterance": "It is about whether this is worth the effort.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "It is about whether this is worth the effort.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "price-objection",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "effort",
+          "worth"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-unknown-runtime-signal",
+      "source_case_id": "prod-053c-unknown-runtime-signal",
+      "source_sales_difficulty": "unknown-runtime-signal",
+      "source_next_action": "ask-follow-up",
+      "source_call_control": "continue-call",
+      "source_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After asking for one clarifying question, ask a concrete product-relevant question instead of looping.",
+      "follow_up_customer_utterance": "Yes, what is the quick question?",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, what is the quick question?",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "missed callbacks",
+          "follow-up work"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-identity-repair",
+      "source_case_id": "prod-053c-identity-repair",
+      "source_sales_difficulty": "identity-repair",
+      "source_next_action": "continue",
+      "source_call_control": "continue-call",
+      "source_agent_response": "This is Maya from RouteSignal. I'm calling because we're checking whether missed callbacks and follow-up work are still an issue.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After identity repair, handle a details request as written-info rather than restarting identity repair.",
+      "follow_up_customer_utterance": "Okay, send me the details.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Okay, send me the details.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "tailor",
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-support-route",
+      "source_case_id": "prod-053c-support-route",
+      "source_sales_difficulty": "support-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Of course. I'll send this to support right away. Have a good day.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-cancellation-route",
+      "source_case_id": "prod-053c-cancellation-route",
+      "source_sales_difficulty": "cancellation-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Sure, I'll stop and connect you to the cancellation team.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-security-review-route",
+      "source_case_id": "prod-053c-security-review-route",
+      "source_sales_difficulty": "security-review-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "Security review needs verified material or a specialist. I should not make broad compliance claims here.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-healthcare-boundary-route",
+      "source_case_id": "prod-053c-healthcare-boundary-route",
+      "source_sales_difficulty": "healthcare-boundary-route",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "I can't give medical advice, but I can send you to someone qualified.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-claim-boundary",
+      "source_case_id": "prod-053c-claim-boundary",
+      "source_sales_difficulty": "claim-boundary",
+      "source_next_action": "escalate",
+      "source_call_control": "transfer-or-escalate",
+      "source_agent_response": "I can't guarantee something that depends on the details. A specialist can check that.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-scheduling-confirmation",
+      "source_case_id": "prod-053c-scheduling-confirmation",
+      "source_sales_difficulty": "scheduling-confirmation",
+      "source_next_action": "confirm-scheduling",
+      "source_call_control": "schedule-and-end",
+      "source_agent_response": "All right. I'll note that time for the specialist callback. Goodbye.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-sale-ready-commitment",
+      "source_case_id": "prod-053c-sale-ready-commitment",
+      "source_sales_difficulty": "sale-ready-commitment",
+      "source_next_action": "sale-ready-log",
+      "source_call_control": "close-and-log-sale-ready",
+      "source_agent_response": "All right. I'll mark that you want the next step. No payment is handled on this call.",
+      "language": "en",
+      "next_turn_mode": "terminal_boundary",
+      "case_goal": "The first turn already ended, transferred, scheduled, or logged the call, so no second automated sales turn should be generated.",
+      "follow_up_customer_utterance": null,
+      "follow_up_customer_input": null,
+      "expected_second_turn": null,
+      "terminal_boundary": {
+        "no_second_agent_turn_expected": true,
+        "terminal_call_controls": [
+          "close-and-log-sale-ready",
+          "end-call",
+          "schedule-and-end",
+          "transfer-or-escalate"
+        ],
+        "reason": "Terminal or routed first-turn call control blocks same-loop continuation."
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-procurement-review",
+      "source_case_id": "prod-053c-procurement-review",
+      "source_sales_difficulty": "procurement-review",
+      "source_next_action": "ask-follow-up",
+      "source_call_control": "continue-call",
+      "source_agent_response": "Sure. I can keep this to written review information. Nothing firm today.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After procurement-review relief, a written-only confirmation should not repeat the same procurement sentence.",
+      "follow_up_customer_utterance": "Send written information only.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Send written information only.",
+        "stage": "procurement-review"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "procurement-review",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    },
+    {
+      "case_id": "prod-056-prod-053c-callback-request-scheduling-flow",
+      "source_case_id": "prod-053c-callback-request",
+      "source_sales_difficulty": "callback-request",
+      "source_next_action_before_patch": "create-follow-up-task",
+      "source_call_control_before_patch": "end-call",
+      "source_agent_response": "Of course. Do you have a time in mind?",
+      "language": "en",
+      "next_turn_mode": "callback_scheduling_flow",
+      "case_goal": "After the post-patch callback answer asks for a time, keep the call open and confirm the supplied callback time.",
+      "initial_customer_input": {
+        "input_type": "speech",
+        "transcript": "Can you call back later?",
+        "stage": "objection"
+      },
+      "follow_up_customer_utterance": "Tomorrow at 10 works.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Tomorrow at 10 works.",
+        "stage": "scheduling"
+      },
+      "expected_first_turn": {
+        "sales_difficulty": "callback-request",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "time"
+        ]
+      },
+      "expected_follow_up_turn": {
+        "sales_difficulty": "scheduling-confirmation",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "response_must_include_any": [
+          "note that time",
+          "callback",
+          "goodbye"
+        ]
+      }
+    },
+    {
+      "case_id": "prod-056-prod-053c-existing-provider-gap",
+      "source_case_id": "prod-053c-existing-provider-gap",
+      "source_sales_difficulty": "existing-provider-gap",
+      "source_next_action": "ask-follow-up",
+      "source_call_control": "continue-call",
+      "source_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "language": "en",
+      "next_turn_mode": "runtime_second_turn",
+      "case_goal": "After isolating a provider gap, handle the customer's gap confirmation instead of repeating the gap question.",
+      "follow_up_customer_utterance": "Yes, our current provider misses follow-up work.",
+      "follow_up_customer_input": {
+        "input_type": "speech",
+        "transcript": "Yes, our current provider misses follow-up work.",
+        "stage": "follow-up"
+      },
+      "expected_second_turn": {
+        "sales_difficulty": "existing-provider-gap",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "misses",
+          "follow-up work"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "terminal_boundary": null
+    }
+  ]
+}

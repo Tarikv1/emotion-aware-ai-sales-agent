@@ -3880,3 +3880,34 @@ Interpretation:
   - it shows the value of using multi-turn stress failures as actionable engineering evidence
   - it keeps the patch small and auditable instead of making a broad dialogue-policy rewrite
   - it creates a cleaner boundary for the next regression checkpoint
+
+### 2026-05-15 - PROD-056 English post-patch multi-turn regression
+
+- Objective: verify that the `PROD-055` English multi-turn patch holds across the wider `PROD-054` promoted surface
+- Action taken:
+  - added `scripts/run_prod_056_english_post_patch_multi_turn_regression.py`
+  - added `scripts/validate_prod_056_english_post_patch_multi_turn_regression.py`
+  - added `research/experiments/cases/prod-056-english-post-patch-multi-turn-regression.json`
+  - documented `PROD_056_ENGLISH_POST_PATCH_MULTI_TURN_REGRESSION.md`
+  - generated `PROD-056-english-post-patch-multi-turn-regression` review artifacts
+- Method:
+  - reran all `26` promoted English surfaces after the patch
+  - preserved `10` runtime second-turn checks from the stress review
+  - converted callback request into a two-step scheduling flow because `PROD-055` now keeps the call open when asking for a time
+  - preserved `15` terminal-boundary checks that must not create a same-loop automated sales turn
+- Result:
+  - regression gate passed
+  - blocking finding count: `0`
+  - runtime behavior changed: `false`
+  - response text behavior changed: `false`
+- Boundary:
+  - no provider calls
+  - no LLM or LLM judging
+  - no private data reads
+  - no retrieval enablement
+  - no German exact-phrase promotion or German naturalness claim
+  - no payment, contract, public demo, voice playback, or production promotion
+- Why it matters for the thesis:
+  - it records a clean positive regression after a negative stress review and narrow patch
+  - it keeps the evidence chain reproducible: accepted wording, stress failure, targeted patch, post-patch regression
+  - it prevents a passing patch from being confused with production readiness

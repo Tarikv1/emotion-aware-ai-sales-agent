@@ -1,0 +1,64 @@
+{
+  "checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "items": [
+    {
+      "case_id": "prod-056-prod-053c-callback-request-scheduling-flow",
+      "source_case_id": "prod-053c-callback-request",
+      "case_goal": "After the post-patch callback answer asks for a time, keep the call open and confirm the supplied callback time.",
+      "initial_customer_input": {
+        "input_type": "speech",
+        "transcript": "Can you call back later?",
+        "stage": "objection"
+      },
+      "follow_up_customer_utterance": "Tomorrow at 10 works.",
+      "expected_first_turn": {
+        "sales_difficulty": "callback-request",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "time"
+        ]
+      },
+      "expected_follow_up_turn": {
+        "sales_difficulty": "scheduling-confirmation",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "response_must_include_any": [
+          "note that time",
+          "callback",
+          "goodbye"
+        ]
+      },
+      "first_turn": {
+        "response_language": "en",
+        "sales_difficulty": "callback-request",
+        "next_action": "offer-scheduling",
+        "call_control": "continue-call",
+        "agent_response": "Of course. Do you have a time in mind?"
+      },
+      "follow_up_turn": {
+        "response_language": "en",
+        "sales_difficulty": "scheduling-confirmation",
+        "next_action": "confirm-scheduling",
+        "call_control": "schedule-and-end",
+        "agent_response": "All right. I'll note that time for the specialist callback. Goodbye."
+      },
+      "callback_flow_gates": {
+        "first_response_language_en": true,
+        "first_sales_difficulty_match": true,
+        "first_next_action_match": true,
+        "first_call_control_match": true,
+        "first_marker_match": true,
+        "first_question_keeps_call_open": true,
+        "follow_up_response_language_en": true,
+        "follow_up_sales_difficulty_match": true,
+        "follow_up_next_action_match": true,
+        "follow_up_call_control_match": true,
+        "follow_up_marker_match": true,
+        "follow_up_terminal_question_coherent": true
+      },
+      "callback_flow_passed": true,
+      "issue_codes": []
+    }
+  ]
+}

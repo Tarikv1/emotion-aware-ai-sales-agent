@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: `PROD-054-english-multi-turn-naturalness-stress-review`, which should test whether the `PROD-053E` promoted single-turn English wording stays natural after the customer's next turn.
+- [ ] Current: `PROD-057-english-multi-turn-regression-guard-decision`, which should decide whether the `PROD-056` post-patch English multi-turn regression becomes a permanent guard before broader runtime promotion.
 
 Next checkpoints:
 
-- [ ] Next after `PROD-054`: decide whether the promoted English wording needs another patch before any voice playback or demo polish gate.
+- [ ] Next after `PROD-057`: decide whether remaining English-only runtime promotion blockers are evidence gaps, product-policy blockers, or separate German/voice/retrieval gates.
 - [ ] Parked until reviewer input exists: `PROD-048D-native-german-followup-review-import`, which imports the corrected follow-up review export and decides whether the patched price-first answer and remaining grouped answers are accepted, still unreviewed, or need another narrow wording patch.
 - [ ] Next: after targeted policy regression evidence, decide whether voice playback or demo use is still blocked by dialogue realism and customer-turn quality.
 - [ ] Deferred: voice playback, scenario branching, more call seeds, and customer-facing polish remain blocked until targeted customer-turn rewrites make the safe-close outcomes feel earned.
@@ -61,6 +61,12 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-056-english-post-patch-multi-turn-regression`, which reruns all `26` promoted English surfaces after the `PROD-055` patch: `10` runtime second-turn cases, `1` callback scheduling flow, and `15` terminal-boundary cases. It passes with `0` blocking findings, changes no runtime behavior or response text, and recommends making the post-patch regression a permanent English multi-turn guard before broader runtime promotion. Provider calls, LLM calls, private data, retrieval defaults, German exact-phrase promotion, voice playback, public demo use, real customer use, payment collection, contract signing, and production promotion remain blocked.
+
+- [x] `PROD-055-english-multi-turn-runtime-patch`, which patches the `6` blocking findings from `PROD-054` with narrow English follow-up routing and callback call-control coherence. It changes deterministic English runtime behavior and response text only for the selected follow-up cases, reduces post-patch blocking findings to `0`, and keeps German exact-phrase promotion, retrieval, providers, LLM calls, private data, voice playback, payment, contract, public demo, and production promotion blocked.
+
+- [x] `PROD-054-english-multi-turn-naturalness-stress-review`, which tests the `26` `PROD-053E` promoted English responses across `10` runtime second-turn cases and `16` terminal-boundary cases. It records `6` blocking findings rather than treating accepted single-turn wording as multi-turn-ready, and keeps runtime behavior, response text, retrieval, providers, LLM calls, private data, voice playback, payment, contract, public demo, and production promotion blocked.
 
 - [x] `PROD-053E-english-runtime-wording-patch`, which promotes `26` reviewed English responses into `runtime/core/realtime_turns.py`: `15` accepted-as-written items, `10` safe wording-only rework candidates, and `1` approved-with-edit-note item. It deliberately leaves voicemail action-only behavior, coverage knowledge-policy behavior, and context-sensitive autonomy wording for separate checkpoints. Retrieval, providers, LLM calls, private data, voice playback, demo use, payment collection, contract signing, German phrase promotion, German naturalness claims, and production runtime promotion remain blocked.
 
@@ -522,20 +528,20 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Use `PROD-056` to convert the `PROD-055` patch into a wider post-patch English multi-turn regression gate.
+Use `PROD-057` to decide whether `PROD-056` should become the permanent English multi-turn regression guard.
 
 Purpose:
 
-- preserve the `PROD-053E` English single-turn wording gains and the `PROD-055` multi-turn patch without overclaiming production readiness
-- verify that the six patched findings stay fixed under a broader English post-patch regression set
-- check whether callback scheduling, written-only follow-up, provider-gap confirmation, product-detail follow-up, and unknown-signal clarification remain coherent across adjacent turns
-- keep `PROD-056` offline, deterministic, and finding-focused
+- preserve the `PROD-053E` English single-turn wording gains, the `PROD-055` multi-turn patch, and the passing `PROD-056` regression without overclaiming production readiness
+- decide whether the `26`-case post-patch set is sufficient as a permanent guard or whether it needs more English variations first
+- separate English regression evidence from still-blocked German, voice, retrieval, legal, and production decisions
+- keep `PROD-057` offline, deterministic, and decision-focused
 - keep provider calls, customer data, payment handling, retrieval defaults, German exact-phrase promotion, voice playback, and production runtime promotion blocked
 
-Immediate product artifact after `PROD-056`:
+Immediate product artifact after `PROD-057`:
 
-- wider English multi-turn regression packet with explicit pass/fail gates
-- decision on whether the `PROD-055` follow-up routing should become a permanent regression guard
+- permanent-guard decision for the English multi-turn regression
+- explicit list of what still blocks runtime promotion after the English guard is stable
 - no German or voice promotion unless separate review gates reopen those tracks
 
 Next voice checkpoint:

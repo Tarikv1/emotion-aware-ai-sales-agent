@@ -1413,6 +1413,18 @@ Validate that PROD-055 patches the six PROD-054 blocking findings while keeping 
 python scripts\validate_prod_055_english_multi_turn_runtime_patch.py
 ```
 
+Run the PROD-056 English post-patch multi-turn regression:
+
+```powershell
+python scripts\run_prod_056_english_post_patch_multi_turn_regression.py
+```
+
+Validate that PROD-056 reruns all 26 promoted English surfaces after the PROD-055 patch, keeps the callback request coherent through scheduling, and preserves no-provider/no-LLM/no-private-data/no-production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_056_english_post_patch_multi_turn_regression.py
+```
+
 ## Guarded Response And Voice Safety
 
 Build and validate the core sales delivery playbook:

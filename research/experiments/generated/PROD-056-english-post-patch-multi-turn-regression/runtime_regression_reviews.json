@@ -1,0 +1,443 @@
+{
+  "checkpoint_id": "PROD-056-english-post-patch-multi-turn-regression",
+  "items": [
+    {
+      "case_id": "prod-056-prod-045-manager",
+      "source_case_id": "prod-045-manager",
+      "source_sales_difficulty": "stakeholder-review",
+      "case_goal": "After agreeing to send review material, handle a manager-specific details request without repeating the first turn.",
+      "source_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "follow_up_customer_utterance": "Send me the details for my manager.",
+      "expected_second_turn": {
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "tailor",
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course, I can tailor a short written summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-045-spouse",
+      "source_case_id": "prod-045-spouse",
+      "source_sales_difficulty": "partner-review",
+      "case_goal": "After partner-review relief, handle a written-info request without reusing the same review handoff line.",
+      "source_agent_response": "Of course. I can send it over. No commitment today. Take a look and let me know.",
+      "follow_up_customer_utterance": "Send me information I can review with my partner.",
+      "expected_second_turn": {
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "tailor",
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course, I can tailor a short written summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-product-detail-lookup",
+      "source_case_id": "prod-053c-product-detail-lookup",
+      "source_sales_difficulty": "product-detail-lookup",
+      "case_goal": "After the bridge response promises a product lookup, the next turn should not repeat the bridge phrase.",
+      "source_agent_response": "One moment. I will check the product details before I answer.",
+      "follow_up_customer_utterance": "Yes, which exact plan is included?",
+      "expected_second_turn": {
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "plan",
+          "included"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "product-detail-lookup",
+        "next_action": "continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "I should not invent exact plan details. I can send the approved plan details in writing before any next step."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-sale-ready-missing-criteria",
+      "source_case_id": "prod-053c-sale-ready-missing-criteria",
+      "source_sales_difficulty": "sale-ready-missing-criteria",
+      "case_goal": "If the missing close check needs a human, route safely instead of marking a sale ready.",
+      "source_agent_response": "Before I mark this as ready, I need one more check. No payment or contract signing happens on this call.",
+      "follow_up_customer_utterance": "I need a human to confirm that check.",
+      "expected_second_turn": {
+        "sales_difficulty": "human-request",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "response_must_include_any": [
+          "human",
+          "specialist"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "human-request",
+        "next_action": "escalate",
+        "call_control": "transfer-or-escalate",
+        "agent_response": "Of course. I will pass this to a human specialist."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-trust-gap",
+      "source_case_id": "prod-053c-trust-gap",
+      "source_sales_difficulty": "trust-gap",
+      "case_goal": "After a trust repair offer, handle a legitimacy verification request through the safe verification path.",
+      "source_agent_response": "Fair question. I can send the verification path before we discuss any next step.",
+      "follow_up_customer_utterance": "Yes, verify this is legitimate first.",
+      "expected_second_turn": {
+        "sales_difficulty": "scam-safety-boundary",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "response_must_include_any": [
+          "verification path"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "scam-safety-boundary",
+        "next_action": "create-follow-up-task",
+        "call_control": "end-call",
+        "agent_response": "No payment, card, or sensitive details are collected on this call. I can send the verification path instead."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-price-objection",
+      "source_case_id": "prod-053c-price-objection",
+      "source_sales_difficulty": "price-objection",
+      "case_goal": "After asking whether the issue is price or effort, handle the effort answer without repeating the same question.",
+      "source_agent_response": "That makes sense. Is the main concern price, or whether it is worth the effort?",
+      "follow_up_customer_utterance": "It is about whether this is worth the effort.",
+      "expected_second_turn": {
+        "sales_difficulty": "price-objection",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "effort",
+          "worth"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "price-objection",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "That helps. The useful effort check is whether missed callbacks or follow-up work cost more time than reviewing this would."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-unknown-runtime-signal",
+      "source_case_id": "prod-053c-unknown-runtime-signal",
+      "source_sales_difficulty": "unknown-runtime-signal",
+      "case_goal": "After asking for one clarifying question, ask a concrete product-relevant question instead of looping.",
+      "source_agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "follow_up_customer_utterance": "Yes, what is the quick question?",
+      "expected_second_turn": {
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "missed callbacks",
+          "follow-up work"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "unknown-runtime-signal",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "The quick question is whether missed callbacks or follow-up work are still a problem for your team."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-identity-repair",
+      "source_case_id": "prod-053c-identity-repair",
+      "source_sales_difficulty": "identity-repair",
+      "case_goal": "After identity repair, handle a details request as written-info rather than restarting identity repair.",
+      "source_agent_response": "This is Maya from RouteSignal. I'm calling because we're checking whether missed callbacks and follow-up work are still an issue.",
+      "follow_up_customer_utterance": "Okay, send me the details.",
+      "expected_second_turn": {
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "response_must_include_any": [
+          "tailor",
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "written-info-request",
+        "next_action": "answer-and-continue",
+        "call_control": "bridge-then-continue",
+        "agent_response": "Of course, I can tailor a short written summary to your main point. Then I can send it over, so it is more useful to you."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-procurement-review",
+      "source_case_id": "prod-053c-procurement-review",
+      "source_sales_difficulty": "procurement-review",
+      "case_goal": "After procurement-review relief, a written-only confirmation should not repeat the same procurement sentence.",
+      "source_agent_response": "Sure. I can keep this to written review information. Nothing firm today.",
+      "follow_up_customer_utterance": "Send written information only.",
+      "expected_second_turn": {
+        "sales_difficulty": "procurement-review",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "send"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "procurement-review",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "Understood. I will send the written information only and avoid asking for anything firm today."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    },
+    {
+      "case_id": "prod-056-prod-053c-existing-provider-gap",
+      "source_case_id": "prod-053c-existing-provider-gap",
+      "source_sales_difficulty": "existing-provider-gap",
+      "case_goal": "After isolating a provider gap, handle the customer's gap confirmation instead of repeating the gap question.",
+      "source_agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "follow_up_customer_utterance": "Yes, our current provider misses follow-up work.",
+      "expected_second_turn": {
+        "sales_difficulty": "existing-provider-gap",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "response_must_include_any": [
+          "misses",
+          "follow-up work"
+        ],
+        "response_must_not_include_any": [
+          "i reached voicemail",
+          "coverage advice",
+          "give coverage advice",
+          "give medical advice",
+          "low pressure and clarify only what you need",
+          "low-pressure and only clarify what you need"
+        ]
+      },
+      "runtime_second_turn": {
+        "response_language": "en",
+        "sales_difficulty": "existing-provider-gap",
+        "next_action": "ask-follow-up",
+        "call_control": "continue-call",
+        "agent_response": "That is the gap to check: your current provider misses follow-up work. I can keep the next step to a short written comparison."
+      },
+      "regression_gates": {
+        "response_language_en": true,
+        "not_exact_repeat": true,
+        "sales_difficulty_match": true,
+        "next_action_match": true,
+        "call_control_match": true,
+        "required_marker_match": true,
+        "forbidden_marker_absent": true,
+        "terminal_question_coherent": true
+      },
+      "regression_gates_passed": true,
+      "issue_codes": []
+    }
+  ]
+}
