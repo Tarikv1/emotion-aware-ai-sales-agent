@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-05-17 - PROD-101 English recommendation roleplay post-patch regression
+
+- Objective: verify the `PROD-100` English recommendation-roleplay runtime route after application without opening another checkpoint.
+- Action taken: added a failing `PROD-101` validator first, then added the regression runner, case file, product doc, recommendation-roleplay regression cases, adjacent control cases, stable English guard summary, evidence summary, report, and result artifacts.
+- Data used: `PROD-100` runtime patch output, positive runtime cases, control runtime cases, and the stable English multi-turn guard. No provider calls, LLM judging, private data reads, retrieval, voice playback, runtime behavior changes, response text changes, classifier reachability changes, payment collection, contract signing, German wording promotion, or production promotion were used.
+- Output created: `scripts/prod_101_english_recommendation_roleplay_post_patch_regression.py`, `scripts/run_prod_101_english_recommendation_roleplay_post_patch_regression.py`, `scripts/validate_prod_101_english_recommendation_roleplay_post_patch_regression.py`, `docs/product/PROD_101_ENGLISH_RECOMMENDATION_ROLEPLAY_POST_PATCH_REGRESSION.md`, and generated artifacts under `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/`.
+- Result: recommendation roleplay positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, do not open the next checkpoint in this run: `true`, runtime behavior changed: `false`, response text behavior changed: `false`, classifier behavior changed: `false`, retrieval enabled: `false`, production runtime promotion allowed: `false`.
+- Why it matters for the thesis: it closes the recommendation-roleplay runtime patch loop with regression evidence while preserving agency, value-claim, payment, contract, provider, process, generic-confusion, German, and production boundaries.
+- Open questions: none inside this run; the next customer-move slice remains parked until Tarik explicitly resumes after `PROD-101`.
+
 ### 2026-05-17 - PROD-100 English recommendation roleplay runtime patch
 
 - Objective: apply the narrow English runtime route for the recommendation-roleplay gaps proven by `PROD-099`.

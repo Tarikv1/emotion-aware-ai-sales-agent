@@ -1,0 +1,14 @@
+{
+  "checkpoint_id": "PROD-101-english-recommendation-roleplay-post-patch-regression",
+  "source_checkpoint_id": "PROD-100-english-recommendation-roleplay-runtime-patch",
+  "scope": "english_recommendation_roleplay_post_patch_regression",
+  "post_patch_regression_only": true,
+  "runtime_patch_allowed_inside_checkpoint": false,
+  "requires_customer_facts_for_recommendation": true,
+  "requires_agency_preservation": true,
+  "no_agent_decides_for_customer": true,
+  "no_value_guarantee": true,
+  "review_html_created": false,
+  "recommended_next_checkpoint": "PROD-102-english-customer-move-remaining-slice-selection-after-recommendation-roleplay",
+  "do_not_open_next_checkpoint_in_this_run": true
+}

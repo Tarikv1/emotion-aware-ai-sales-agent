@@ -1959,6 +1959,18 @@ Validate that PROD-100 applies the English recommendation-roleplay runtime patch
 python scripts\validate_prod_100_english_recommendation_roleplay_runtime_patch.py
 ```
 
+Run the PROD-101 English recommendation-roleplay post-patch regression:
+
+```powershell
+python scripts\run_prod_101_english_recommendation_roleplay_post_patch_regression.py
+```
+
+Validate that PROD-101 verifies the English recommendation-roleplay runtime patch after application, records recommendation roleplay positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, do not open the next checkpoint in this run: `true`, changes no runtime behavior, response text behavior, classifier behavior, retrieval default, provider, LLM, private-data, German, voice, legal, payment, contract, real-customer, public-demo, or production-promotion boundaries:
+
+```powershell
+python scripts\validate_prod_101_english_recommendation_roleplay_post_patch_regression.py
+```
+
 PROD checkpoints that ask Tarik for review should include a browser-openable HTML review file with concrete examples. For PROD-059:
 
 ```text

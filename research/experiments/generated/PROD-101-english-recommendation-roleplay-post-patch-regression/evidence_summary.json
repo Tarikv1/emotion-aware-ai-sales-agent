@@ -1,0 +1,92 @@
+{
+  "checkpoint_id": "PROD-101-english-recommendation-roleplay-post-patch-regression",
+  "source_checkpoint_id": "PROD-100-english-recommendation-roleplay-runtime-patch",
+  "source_validation": {
+    "passed": true,
+    "runtime_patch_verified": true
+  },
+  "source_summary": {
+    "runtime_patch_applied": true,
+    "runtime_behavior_changed": true,
+    "response_text_behavior_changed": true,
+    "classifier_behavior_changed": true,
+    "source_validator_passed": true,
+    "selected_gap_fixed_count": 7,
+    "positive_case_count": 7,
+    "positive_case_failures": 0,
+    "control_case_count": 10,
+    "control_case_failures": 0,
+    "current_runtime_gap_count_before_patch": 7,
+    "requires_customer_facts_for_recommendation": true,
+    "requires_agency_preservation": true,
+    "no_agent_decides_for_customer": true,
+    "no_value_guarantee": true,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-101-english-recommendation-roleplay-post-patch-regression",
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  },
+  "source_runtime_patch_summary": {
+    "checkpoint_id": "PROD-100-english-recommendation-roleplay-runtime-patch",
+    "source_checkpoint_id": "PROD-099-english-recommendation-roleplay-narrow-policy-probe",
+    "runtime_file": "runtime/core/realtime_turns.py",
+    "runtime_patch_applied": true,
+    "selected_gap_case_ids": [
+      "prod-097-roleplay-position",
+      "prod-097-roleplay-business",
+      "prod-097-direct-recommendation",
+      "prod-097-leaning-cheaper",
+      "prod-097-decide-for-me-control",
+      "prod-097-promise-worth-control",
+      "prod-097-no-pressure-honest-take"
+    ],
+    "new_sales_difficulty": "recommendation-roleplay-boundary",
+    "selected_strategy": "guided-recommendation",
+    "requires_customer_facts_for_recommendation": true,
+    "requires_agency_preservation": true,
+    "no_agent_decides_for_customer": true,
+    "no_value_guarantee": true,
+    "blocked_boundary_signals": [
+      "payment",
+      "card",
+      "pay now",
+      "sign me up",
+      "contract",
+      "current provider",
+      "reimbursement",
+      "coverage",
+      "next step"
+    ],
+    "review_html_created": false
+  },
+  "source_validator_run": {
+    "command": "python scripts/validate_prod_100_english_recommendation_roleplay_runtime_patch.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-100-english-recommendation-roleplay-runtime-patch validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  },
+  "stable_english_guard_run": {
+    "command": "python scripts/validate_english_multi_turn_regression_guard.py",
+    "returncode": 0,
+    "stdout_tail": [
+      "PROD-056-english-post-patch-multi-turn-regression validation passed"
+    ],
+    "stderr_tail": [],
+    "passed": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "checkpoint_id": "PROD-101-english-recommendation-roleplay-post-patch-regression",
+  "checkpoint_name": "English Recommendation Roleplay Post-Patch Regression",
+  "source_checkpoint_id": "PROD-100-english-recommendation-roleplay-runtime-patch",
+  "validation": {
+    "passed": true,
+    "post_patch_regression_completed": true
+  },
+  "summary": {
+    "post_patch_regression_only": true,
+    "source_validator_passed": true,
+    "recommendation_roleplay_positive_failures": 0,
+    "adjacent_control_failures": 0,
+    "stable_english_guard_passed": true,
+    "requires_customer_facts_for_recommendation": true,
+    "requires_agency_preservation": true,
+    "no_agent_decides_for_customer": true,
+    "no_value_guarantee": true,
+    "review_html_created": false,
+    "recommended_next_checkpoint": "PROD-102-english-customer-move-remaining-slice-selection-after-recommendation-roleplay",
+    "do_not_open_next_checkpoint_in_this_run": true,
+    "runtime_behavior_changed": false,
+    "response_text_behavior_changed": false,
+    "classifier_behavior_changed": false,
+    "retrieval_enabled": false,
+    "provider_calls_made": false,
+    "llm_used": false,
+    "llm_judging_used": false,
+    "private_data_read": false,
+    "voice_playback_unblocked": false,
+    "public_demo_polish_unblocked": false,
+    "real_customer_use_unblocked": false,
+    "payment_collection_allowed": false,
+    "contract_signing_allowed": false,
+    "production_runtime_promotion_allowed": false,
+    "german_exact_phrase_promotion_allowed": false,
+    "german_naturalness_claimed": false,
+    "legal_compliance_claimed": false
+  }
+}

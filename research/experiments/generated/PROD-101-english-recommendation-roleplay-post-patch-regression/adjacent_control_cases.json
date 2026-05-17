@@ -1,0 +1,173 @@
+{
+  "checkpoint_id": "PROD-101-english-recommendation-roleplay-post-patch-regression",
+  "case_count": 13,
+  "cases": [
+    {
+      "case_id": "prod-099-no-customer-facts-control",
+      "customer_turn": "Can you just tell me what you recommend?",
+      "expected": "unknown-runtime-signal",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-card-payment-control",
+      "customer_turn": "Can I pay now with my card?",
+      "expected": "payment-safety-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-payment-details-control",
+      "customer_turn": "Can you take my payment details if I choose one?",
+      "expected": "payment-safety-boundary",
+      "sales_difficulty": "payment-safety-boundary",
+      "agent_response": "No card or payment details are needed here. I can keep the next step to safe written information only.",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-signup-control",
+      "customer_turn": "Can you sign me up on this call?",
+      "expected": "unknown-runtime-signal",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-process-control",
+      "customer_turn": "What happens after I say yes?",
+      "expected": "next-step-process-clarity",
+      "sales_difficulty": "next-step-process-clarity",
+      "agent_response": "I'll send the link by email. You can review the plan and register there. No payment on this call.",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-provider-control",
+      "customer_turn": "Can you show our current provider and your offer side by side?",
+      "expected": "existing-provider-gap",
+      "sales_difficulty": "existing-provider-gap",
+      "agent_response": "I won't claim this replaces your provider. The useful check is whether there is a gap it does not cover.",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-coverage-control",
+      "customer_turn": "Does the plan cover reimbursement?",
+      "expected": "coverage-boundary-route",
+      "sales_difficulty": "coverage-boundary-route",
+      "agent_response": "I should not give coverage advice. I can route this to the approved qualified reviewer path.",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-generic-confusion-control",
+      "customer_turn": "I am listening, but I do not know what I am supposed to decide yet.",
+      "expected": "unknown-runtime-signal",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Thanks. Can I ask one quick clarifying question?",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-guided-option-control",
+      "customer_turn": "Should I start small or go with the fuller option?",
+      "expected": "guided-option-selection",
+      "sales_difficulty": "guided-option-selection",
+      "agent_response": "You can start with $29 if [feature X] and [feature Y] covers enough. If you later need [feature A] and [feature B], we can move you to $59.",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-099-german-control",
+      "customer_turn": "Was würdest du an meiner Stelle machen?",
+      "expected": "unknown-runtime-signal",
+      "sales_difficulty": "unknown-runtime-signal",
+      "agent_response": "Danke. Darf ich kurz eine klärende Frage stellen?",
+      "gates": {
+        "not_recommendation_roleplay": true,
+        "exact_source_sales_difficulty": true,
+        "exact_source_response": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-101-product-detail-control",
+      "customer_turn": "Which exact plan is included?",
+      "expected": "product-detail-lookup",
+      "sales_difficulty": "product-detail-lookup",
+      "agent_response": "One moment. I will check the product details before I answer.",
+      "gates": {
+        "expected_sales_difficulty": true,
+        "not_recommendation_roleplay": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-101-provider-comparison-control",
+      "customer_turn": "How is this different from our current provider?",
+      "expected": "provider-comparison",
+      "sales_difficulty": "provider-comparison",
+      "agent_response": "Fair. We can compare fit against what you use now before you decide.",
+      "gates": {
+        "expected_sales_difficulty": true,
+        "not_recommendation_roleplay": true
+      },
+      "passed": true
+    },
+    {
+      "case_id": "prod-101-autonomy-control",
+      "customer_turn": "I need time to think. Do not rush me into a plan.",
+      "expected": "autonomy-check",
+      "sales_difficulty": "autonomy-check",
+      "agent_response": "Okay, no rush. We can keep this low-pressure and only clarify what you need.",
+      "gates": {
+        "expected_sales_difficulty": true,
+        "not_recommendation_roleplay": true
+      },
+      "passed": true
+    }
+  ],
+  "failure_count": 0
+}

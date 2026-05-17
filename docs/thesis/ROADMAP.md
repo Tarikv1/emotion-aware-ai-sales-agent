@@ -33,11 +33,11 @@ Active phase: full-sale runtime convergence, guarded RAG evidence, live-shaped d
 
 Current checkpoint:
 
-- [ ] Current: open `PROD-101-english-recommendation-roleplay-post-patch-regression` after `PROD-100` applies the English recommendation-roleplay runtime patch.
+- [ ] Current: stopped after `PROD-101-english-recommendation-roleplay-post-patch-regression`; do not open `PROD-102` or any other next checkpoint until Tarik explicitly resumes.
 
 Next checkpoints:
 
-- [ ] Next after `PROD-101`: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
+- [ ] Parked after `PROD-101` until Tarik resumes: select the next remaining English customer-move classifier slice only if recommendation-roleplay positives, adjacent controls, and the stable English guard pass.
 - [ ] Next after `PROD-079`: select the next remaining English customer-move classifier slice only if provider-comparison regression stays stable.
 - [ ] Future persuasion-tactics checkpoint candidate: define and test `guided_option_selection` only after current coverage-boundary/runtime regression work is stable. Guardrails: use only after fit or interest is established, present two real options fairly, preserve `neither`, `not now`, and `explain the difference`, avoid fake urgency, and never pretend the customer already agreed.
 - [ ] Parked until reviewer input exists: `PROD-048D-native-german-followup-review-import`, which imports the corrected follow-up review export and decides whether the patched price-first answer and remaining grouped answers are accepted, still unreviewed, or need another narrow wording patch.
@@ -63,6 +63,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `PROD-101-english-recommendation-roleplay-post-patch-regression`, which verifies the `PROD-100` English recommendation-roleplay runtime patch after application. It records recommendation roleplay positive failures: `0`, adjacent control failures: `0`, stable English guard passed: `true`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, do not open the next checkpoint in this run: `true`, changes no runtime behavior, response text behavior, classifier reachability, retrieval default, or deployment boundary inside the regression checkpoint, and keeps retrieval defaults, voice playback, providers, LLM calls, private data, public demo use, real customer use, payment collection, contract signing, legal readiness, German promotion, and production promotion blocked.
 
 - [x] `PROD-100-english-recommendation-roleplay-runtime-patch`, which applies the English `recommendation-roleplay-boundary` runtime branch approved by `PROD-099`. It records selected gap fixed count: `7`, positive case failures: `0`, control case failures: `0`, requires customer facts for recommendation: `true`, requires agency preservation: `true`, no agent decides for customer: `true`, no value guarantee: `true`, review HTML created: `false`, changes English runtime behavior, response text behavior, and classifier behavior for this selected branch, recommends `PROD-101-english-recommendation-roleplay-post-patch-regression`, and keeps retrieval defaults, voice playback, providers, LLM calls, private data, public demo use, real customer use, payment collection, contract signing, legal readiness, German promotion, and production promotion blocked.
 
@@ -618,23 +620,23 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Open `PROD-101-english-recommendation-roleplay-post-patch-regression`.
+Stop after `PROD-101-english-recommendation-roleplay-post-patch-regression` until Tarik explicitly resumes.
 
 Purpose:
 
-- verify the `PROD-100` recommendation-roleplay runtime patch after application
+- do not open the next checkpoint in this run
+- keep `PROD-102` or any customer-move slice selection parked until Tarik resumes
 - preserve customer facts before direct recommendation
 - preserve customer agency and no agent-decides-for-customer behavior
-- rerun the stable English guard before selecting the next remaining customer-move slice
 - keep value guarantees, payment collection, contract signing, provider comparison, process clarity, generic confusion, German exact-phrase promotion, and production runtime promotion blocked
 - keep provider calls, customer data, payment handling, retrieval defaults, German exact-phrase promotion, voice playback, and production runtime promotion blocked
 
-Immediate product artifact from `PROD-100`:
+Immediate product artifact from `PROD-101`:
 
-- runtime patch summary at `research/experiments/generated/PROD-100-english-recommendation-roleplay-runtime-patch/runtime_patch_summary.json`
-- positive runtime cases at `research/experiments/generated/PROD-100-english-recommendation-roleplay-runtime-patch/positive_runtime_cases.json`
-- control runtime cases at `research/experiments/generated/PROD-100-english-recommendation-roleplay-runtime-patch/control_runtime_cases.json`
-- no production or real-customer use from this runtime-patch checkpoint
+- regression result at `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/result.json`
+- recommendation-roleplay regression cases at `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/recommendation_roleplay_regression_cases.json`
+- adjacent control cases at `research/experiments/generated/PROD-101-english-recommendation-roleplay-post-patch-regression/adjacent_control_cases.json`
+- no production or real-customer use from this regression checkpoint
 
 Next voice checkpoint:
 
